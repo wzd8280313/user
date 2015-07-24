@@ -1,0 +1,716 @@
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 08:48:30
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 08:48:30
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 08:48:30
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 08:48:55
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 08:48:55
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 08:48:55
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 08:49:10
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 08:49:10
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 08:49:10
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 08:51:55
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 08:51:55
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 08:51:55
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 08:52:22
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 08:52:22
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 08:52:22
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 09:18:28
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 09:18:28
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 09:18:28
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 09:30:39
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 09:30:39
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 09:30:39
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: order_id
+errFile:D:\wamp\www\iwebshop\runtime\sysseller\seller\order_deliver.php
+errLine:119
+errTime:15-07-24 09:34:55
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  og.*,go.seller_id from shop_order_goods as og left join shop_goods  as go on go.id = og.goods_id where og.order_id =  and go.seller_id = 1    limit 1000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'and go.seller_id = 1    limit 1000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:119  	File:D:\wamp\www\iwebshop\runtime\sysseller\seller\order_deliver.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:283  	File:D:\wamp\www\iwebshop\controllers\seller.php
+	Func:order_deliver  	Class:Seller         	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: order_id
+errFile:D:\wamp\www\iwebshop\runtime\sysseller\seller\order_deliver.php
+errLine:119
+errTime:15-07-24 09:41:08
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  og.*,go.seller_id from shop_order_goods as og left join shop_goods  as go on go.id = og.goods_id where og.order_id =  and go.seller_id = 1    limit 1000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'and go.seller_id = 1    limit 1000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:119  	File:D:\wamp\www\iwebshop\runtime\sysseller\seller\order_deliver.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:283  	File:D:\wamp\www\iwebshop\controllers\seller.php
+	Func:order_deliver  	Class:Seller         	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 09:46:03
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 09:46:03
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 09:46:03
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: order_id
+errFile:D:\wamp\www\iwebshop\runtime\sysseller\seller\order_deliver.php
+errLine:119
+errTime:15-07-24 09:46:25
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  og.*,go.seller_id from shop_order_goods as og left join shop_goods  as go on go.id = og.goods_id where og.order_id =  and go.seller_id = 1    limit 1000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'and go.seller_id = 1    limit 1000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:119  	File:D:\wamp\www\iwebshop\runtime\sysseller\seller\order_deliver.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:283  	File:D:\wamp\www\iwebshop\controllers\seller.php
+	Func:order_deliver  	Class:Seller         	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 09:56:23
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 09:56:23
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 09:56:23
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:18:54
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:18:54
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:18:54
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:21:38
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:21:38
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:21:38
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_seller  where id =     limit 1000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'limit 1000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:133  	File:D:\wamp\www\iwebshop\runtime\sysdefault\market\order_goods_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:24:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:24:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:24:05
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_seller  where id =     limit 1000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'limit 1000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:133  	File:D:\wamp\www\iwebshop\runtime\sysdefault\market\order_goods_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:24:18
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:24:18
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:24:18
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_seller  where id =     limit 1000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'limit 1000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:133  	File:D:\wamp\www\iwebshop\runtime\sysdefault\market\order_goods_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:24:25
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:24:25
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:24:25
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_seller  where id =     limit 1000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'limit 1000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:133  	File:D:\wamp\www\iwebshop\runtime\sysdefault\market\order_goods_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:26:04
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:26:04
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:26:04
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:32:15
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:32:15
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:32:15
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:46:07
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:46:07
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:46:07
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:46:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:46:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:46:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:46:45
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:46:45
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:46:45
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:46:53
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:46:53
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:46:53
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:48:52
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:48:52
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:48:52
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 11:50:19
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 11:50:19
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 11:50:19
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_goods_attribute WHERE goods_id in () limit 50000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') limit 50000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:186  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:379  	File:D:\wamp\www\iwebshop\classes\search_goods.php
+	Func:find           	Class:search_goods   	Type:::   	Line:126  	File:D:\wamp\www\iwebshop\runtime\index\site\pro_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:193  	File:D:\wamp\www\iwebshop\controllers\site.php
+	Func:pro_list       	Class:Site           	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 14:47:14
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 14:47:14
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 14:47:14
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 14:50:01
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 14:50:01
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 14:50:01
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::__construct(), called in D:\wamp\www\iwebshop\controllers\site.php on line 33 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:30
+errTime:15-07-24 14:50:04
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:36
+errTime:15-07-24 14:50:04
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tableName
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:51
+errTime:15-07-24 14:50:04
+<\ERROR_INFO>

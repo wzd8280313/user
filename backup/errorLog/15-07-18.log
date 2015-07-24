@@ -1,0 +1,315 @@
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:16:29
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:16:29
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:137
+errTime:15-07-18 14:17:43
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:137
+errTime:15-07-18 14:17:43
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:18:09
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:18:09
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:19:30
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:19:30
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:19:56
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:19:56
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:20:19
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:20:19
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:21:00
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:136
+errTime:15-07-18 14:21:00
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: items
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:137
+errTime:15-07-18 14:21:33
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:137
+errTime:15-07-18 14:21:33
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_goods_attribute WHERE goods_id in () limit 50000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') limit 50000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:186  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:379  	File:D:\wamp\www\iwebshop\classes\search_goods.php
+	Func:find           	Class:search_goods   	Type:::   	Line:120  	File:D:\wamp\www\iwebshop\runtime\index\site\pro_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:178  	File:D:\wamp\www\iwebshop\controllers\site.php
+	Func:pro_list       	Class:Site           	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_goods_attribute WHERE goods_id in () limit 50000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') limit 50000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:186  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:379  	File:D:\wamp\www\iwebshop\classes\search_goods.php
+	Func:find           	Class:search_goods   	Type:::   	Line:120  	File:D:\wamp\www\iwebshop\runtime\index\site\pro_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:178  	File:D:\wamp\www\iwebshop\controllers\site.php
+	Func:pro_list       	Class:Site           	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_goods_attribute WHERE goods_id in () limit 50000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') limit 50000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:186  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:379  	File:D:\wamp\www\iwebshop\classes\search_goods.php
+	Func:find           	Class:search_goods   	Type:::   	Line:120  	File:D:\wamp\www\iwebshop\runtime\index\site\pro_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:178  	File:D:\wamp\www\iwebshop\controllers\site.php
+	Func:pro_list       	Class:Site           	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:248
+errTime:15-07-18 16:07:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:248
+errTime:15-07-18 16:07:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:248
+errTime:15-07-18 16:07:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:248
+errTime:15-07-18 16:07:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:248
+errTime:15-07-18 16:07:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:05
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: ietm
+errFile:D:\wamp\www\iwebshop\runtime\index\site\index.php
+errLine:251
+errTime:15-07-18 16:19:06
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_goods_attribute WHERE goods_id in () limit 50000
+ -- You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') limit 50000' at line 1
+Line: 68
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:186  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:379  	File:D:\wamp\www\iwebshop\classes\search_goods.php
+	Func:find           	Class:search_goods   	Type:::   	Line:122  	File:D:\wamp\www\iwebshop\runtime\index\site\pro_list.php
+	Func:require        	Class:               	Type:     	Line:116  	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:requireFile    	Class:IControllerBase	Type:->   	Line:82   	File:IWEB_PATH/web\controller\controllerbase_class.php
+	Func:renderView     	Class:IControllerBase	Type:->   	Line:201  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:render         	Class:IController    	Type:->   	Line:36   	File:IWEB_PATH/web\action\view_action.php
+	Func:run            	Class:IViewAction    	Type:->   	Line:370  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:redirect       	Class:IController    	Type:->   	Line:178  	File:D:\wamp\www\iwebshop\controllers\site.php
+	Func:pro_list       	Class:Site           	Type:->   	Line:24   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:137  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:29   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:108  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:5    	File:D:\wamp\www\iwebshop\index.php
+</ERROR_INFO>
