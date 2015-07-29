@@ -18,6 +18,15 @@ return array(
 			'type'   => 'row',
 		)
 	),
+		//取商户支持的配送方式z
+	'getSellerDelivery' => array(
+			'query' => array(
+				'name' => 'delivery as deli,delivery_extend as ext',
+				'where' => 'ext.seller_id = #seller_id# and ext.is_open = 1 and ext.delivery_id = deli.id and deli.status = 1 and deli.is_delete = 0',
+				'fields' => 'deli.*',
+				'limit' => '10'
+			)
+		),
 	//取文章置顶列表
 	'getArtList' => array(
 		'query' => array(

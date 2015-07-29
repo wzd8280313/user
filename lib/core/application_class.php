@@ -77,7 +77,6 @@ abstract class IApplication
 				$basePath = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'],'\\/').dirname($_SERVER['SCRIPT_NAME']),'\\/').DIRECTORY_SEPARATOR;
 			}
 		}
-
 		$this->setBasePath($basePath);
 		ini_set('upload_tmp_dir',$basePath.'runtime'.DIRECTORY_SEPARATOR);
 		ini_set('session.save_path',$basePath.'backup'.DIRECTORY_SEPARATOR);

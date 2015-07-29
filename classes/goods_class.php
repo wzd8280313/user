@@ -694,4 +694,47 @@ class goods_class
 		}
 		return true;
 	}
+	
+	/*
+	 * zi
+	 * 添加商品库存
+	 * @$data array  array(array('goods_id'=>3,'product_id'=>45,'store_nums'=>'store_nums' + 99),array())
+	 * @$sellerid int 商户id，平台id为0
+	 */
+	public static function store_chg($D,$sellerid){
+		$goodsDB = new expImodel();
+		$flag = true;
+		foreach($D as $key=>$v){
+			$num = IFilter::act($v['add_num'],'int');
+			if($num == '' || $num == 0)continue;
+			$data[$key]['goods_id'] =  IFilter::act($v['goods_id'],'int');
+			$data[$key]['product_id'] =  IFilter::act($v['product_id'],'int');
+			$data[$key]['store_nums'] =  'store_nums + '.$num;
+		}
+		$goodsDB->begin_trans();
+		foreach($data as $value){
+			$goodsDB->changeTable('goods');
+			$setData = array('store_nums'=>$value['store_nums']);
+			$goodsDB->setData($setData);
+			$where = 'id = '.$value['goods_id'] . ' AND seller_id = '.$sellerid ;
+			if($goodsDB->update($where)){
+				if($value['product_id'] != 0){
+					$goodsDB->changeTable('products');
+					$where = 'id = '.$value['product_id'];
+					$goodsDB->setData($setData);
+					if(!$goodsDB->update($where))$flag=false;
+				}
+				
+			}else $flag=false;
+		}
+		if($flag){
+			$goodsDB->commit();
+			return 1;
+		}
+		else {
+			$goodsDB->rollback();
+			return 0;
+		}
+		
+	}
 }

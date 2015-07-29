@@ -243,8 +243,7 @@ class Goods extends IController
 
 		//初始化商品数据
 		unset($_POST['id']);
-		unset($_POST['callback']);
-
+		unset($_POST['callback']); 
 		$goodsObject = new goods_class();
 		$goodsObject->update($id,$_POST);
 
@@ -271,6 +270,15 @@ class Goods extends IController
 			die('请选择要删除的数据');
 		}
 		$this->redirect("goods_list");
+	}
+	/*
+	 * 商品库存累加（zz）
+	 * 
+	 */
+	function store_add(){
+		$sellerid = 0;
+		echo goods_class::store_chg($_POST,$sellerid) ? 1 : 0;
+		 
 	}
 	/**
 	 * @brief 商品上下架

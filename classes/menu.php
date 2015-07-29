@@ -49,7 +49,8 @@ class Menu
 		'商品'=>array(
 			'商品管理'=>array(
 				'/goods/goods_list' => '商品列表',
-				'/goods/goods_edit' => '商品添加'
+				'/goods/goods_edit' => '商品添加',
+				'/goods/goods_in' => '库存添加'
 			),
 			'商品分类'=>array(
 				'/goods/category_list'	=>	'分类列表',

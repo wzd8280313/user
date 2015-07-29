@@ -23,7 +23,7 @@ class Site extends IController
 	}
 
 	function index()
-	{
+	{ 
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
 		$index_slide = isset($site_config['index_slide'])? unserialize($site_config['index_slide']) :array();

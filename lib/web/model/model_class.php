@@ -15,13 +15,16 @@
 class IModel
 {
 	//数据库操作对象
-	private $db = NULL;
+	protected  $db = NULL;
+	
+	//数据表前缀
+	protected $tablePre = '';
 
 	//数据表名称
-	private $tableName = '';
+	protected $tableName = '';
 
 	//要更新的表数据,key:对应表字段; value:数据;
-	private $tableData = array();
+	protected $tableData = array();
 
 	/**
 	 * @brief 构造函数,创建数据库对象
@@ -30,8 +33,8 @@ class IModel
 	public function __construct($tableName)
 	{
 		$this->db = IDBFactory::getDB();
-		$tablePre = isset(IWeb::$app->config['DB']['tablePre']) ? IWeb::$app->config['DB']['tablePre'] : '';
-
+		$this->tablePre = isset(IWeb::$app->config['DB']['tablePre']) ? IWeb::$app->config['DB']['tablePre'] : '';
+		$tablePre = $this->tablePre;
 		//多表处理
 		if(stripos($tableName,','))
 		{
@@ -51,7 +54,14 @@ class IModel
 			$this->tableName = $tablePre.$tableName;
 		}
 	}
-
+	//更改表名
+	public function changeTable($tableName){
+		$this->tableName = $this->tablePre . $tableName;
+	}
+	//获取表名
+	public function getTableName(){
+		return $this->tableName;
+	}
 	/**
 	 * @brief 设置要更新的表数据
 	 * @param array $data key:字段名; value:字段值;

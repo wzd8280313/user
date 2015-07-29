@@ -386,6 +386,7 @@ function selectTakeself(deliveryId)
 						<col />
 
 						<tbody>
+							{set:$seller_id = $this->goodsList['seller_id'];}
 							{set:$deliveryData = Api::run('getDeliveryList')}
 							{foreach:items = $deliveryData}
 							<tr>

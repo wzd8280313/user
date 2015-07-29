@@ -1079,7 +1079,10 @@ class Seller extends IController
         $low_price = IFilter::act(IReq::get('low_price'),'float');
 		//配送ID
         $delivery_id = IFilter::act(IReq::get('deliveryId'),'int');
-
+		
+        //是否开启
+        $is_open = IFilter::act(IReq::get('is_open'),'int');
+        
         $deliveryDB  = new IModel('delivery');
         $deliveryRow = $deliveryDB->getObj('id = '.$delivery_id);
         if(!$deliveryRow)
@@ -1102,6 +1105,7 @@ class Seller extends IController
         	'low_price'    => $low_price,
         	'seller_id'    => $this->seller['seller_id'],
         	'delivery_id'  => $delivery_id,
+        	'is_open'      => $is_open,
         );
         $deliveryExtendDB = new IModel('delivery_extend');
         $deliveryExtendDB->setData($data);
@@ -1117,4 +1121,20 @@ class Seller extends IController
         }
 		$this->redirect('delivery');
     }
+    
+	/*
+	 * 商品库存累加（zz）
+	 * 
+	 */
+	function store_add(){
+		$sellerid = $this->seller['seller_id'];
+		echo goods_class::store_chg($_POST,$sellerid) ? 1 : 0;
+	}
+    
+    
+    
+    
+    
+    
+    
 }

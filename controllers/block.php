@@ -55,7 +55,7 @@ class Block extends IController
 
 		$where   = 'go.is_del = 0';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
-		$where  .= $seller_id ? ' and go.seller_id    = '.$seller_id     : '';
+		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
 		$where  .= $goods_no  ? ' and go.goods_no     = "'.$goods_no.'"' : '';
 		$where  .= $min_price ? ' and go.sell_price  >= '.$min_price     : '';
 		$where  .= $max_price ? ' and go.sell_price  <= '.$max_price     : '';
