@@ -208,4 +208,9 @@ class IModel
 	public function doSql($sql){
 		return $this->db->doSql($sql);
 	}
+	//获取一个字段的值
+	public function getField($where,$field){
+		$res = $this->getObj($where,$field);
+		return $res[$field];
+	}
 }

@@ -153,6 +153,7 @@ class goods_class
 		$goodsDB = new IModel('goods');
 		if($id)
 		{
+			if($this->getSellerId($goodsDB,$id)!=0)$goodsUpdateData['is_share'] = 0;
 			$goodsDB->setData($goodsUpdateData);
 
 			$where = " id = {$id} ";
@@ -736,5 +737,13 @@ class goods_class
 			return 0;
 		}
 		
+	}
+	/*
+	 * z
+	 * 获取商品所属商家
+	 */
+	public function getSellerId($goodsDB,$goodId){
+		$where = 'id='.$goodId;
+		return $goodsDB->getField($where,'seller_id');
 	}
 }
