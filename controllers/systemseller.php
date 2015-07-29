@@ -16,6 +16,7 @@ class SystemSeller extends IController
 	{
 		$seller_name = IFilter::act(IReq::get('username'));
 		$password    = IReq::get('password');
+		$captcha = IFilter::act(IReq::get('captcha'));
 		$message     = '';
 
 		if($seller_name == '')
@@ -25,6 +26,9 @@ class SystemSeller extends IController
 		else if($password == '')
 		{
 			$message = '密码不能为空';
+		}
+		else if($captcha!=ISafe::get('captcha')){
+			$message = '验证码错误';
 		}
         else
 		{

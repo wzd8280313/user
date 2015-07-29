@@ -176,6 +176,7 @@ class Simple extends IController
     	$callback   = IFilter::act(IReq::get('callback'),'text');
 		$message    = '';
 		$password   = md5($password);
+		$captcha = IFilter::act(IReq::get('captcha'),'str');
 
     	if($login_info == '')
     	{
@@ -185,10 +186,19 @@ class Simple extends IController
     	{
     		$message = '密码格式不正确,请输入6-32个字符';
     	}
+    	else if($this->getErrTimes($login_info)>3 && ISafe::get('captcha')!=$captcha){//二次添加
+    			$message = '验证码错误';
+    		}
     	else
     	{
+    		
     		if($userRow = CheckRights::isValidUser($login_info,$password))
     		{
+    			$M = new IModel('user');
+    			$where = 'username = "'.$login_info.'" OR email = "'.$login_info.'"';
+    			$M->setData(array('err_times'=>0));
+    			$M->update($where);
+    			
 				CheckRights::loginAfter($userRow);
 
 				//记住帐号
@@ -236,6 +246,8 @@ class Simple extends IController
 				}
 				else
 				{
+					$M = new expImodel('user');
+					$M->addNum(array('username'=>$login_info),array('err_times'=>1));//zi
 					$message = '用户名和密码不匹配';
 				}
     		}
@@ -1769,5 +1781,19 @@ class Simple extends IController
 			$result = array('data' => $sqlData);
 		}
 		die(JSON::encode($result));
+	}
+	//获取用户密码错误次数
+	private function getErrTimes($username){
+		$M = new IModel('user');
+		$where = 'username = "'.$username.'" OR email = "'.$username.'"';
+		if($res = $M->getObj($where,'err_times'))return  $res['err_times'];
+	}
+	//验证用户密码错误次数ajax(zz)
+	public function checkErrTimes(){
+		$username = IFilter::act(IReq::get('username'),'str');
+		$M = new IModel('user');
+		$where = 'username = "'.$username.'" OR email = "'.$username.'"';
+		if($res = $M->getObj($where,'err_times'))echo $res['err_times'];
+		else echo 0;
 	}
 }

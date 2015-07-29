@@ -9,6 +9,7 @@
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     {js:dialog}
+	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
     <link rel="stylesheet" href="{skin:css/login.css}" />
 </head>
 
@@ -28,7 +29,6 @@
                 <div class="row clearfix">
                     <div class="col-md-12 column">
                         <h3 class="text-center w700" style="color:#333">商家管理中心</h3>
-                        <p class="text-center" style="color:#333">IWEBSHOP</p>
                         <form method="post" name="login" action="{url:/systemseller/login}" autoComplete="off" class="form-horizontal" role="form">
                             <div class="form-group">
                                 <div class="col-sm-12">
@@ -41,7 +41,18 @@
                                     <input name="password" class="form-control" placeholder="密码" type="password" />
                                 </div>
                             </div>
+							
+							<div class="form-group">
+                                <div class="col-sm-12">
+                                    <input name="captcha" class="form-control" placeholder="验证码" type="text" />
+                                </div>
+                            </div>
 
+							<div class="form-group">
+                                <div class="col-sm-12">
+                                    <img src='{url:/simple/getCaptcha/w/110/h/33/s/15}' id='captchaImg' /><span class="light_gray" style='margin-left:10px;'>看不清？<a class="link" href="javascript:changeCaptcha('{url:/simple/getCaptcha/w/110/h/33/s/15}');">换一张</a></span>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class=" col-sm-12">
                                     <button type="submit"  class="btn btn-block btn-success">登录</button>
@@ -50,8 +61,7 @@
                         </form>
 
                         <div style="margin-top:20px;margin-bottom:20px">
-                            <a  target="_blank" href="http://www.aircheng.com"><p style="font-size:12px">联系IWEBSHOP</p></a>
-                            <a target="_blank" href="{url:/site/help_list}"><p style="font-size:12px">服务中心</p></a>
+                           <a target="_blank" href="{url:/site/help_list}"><p style="font-size:12px">服务中心</p></a>
                         </div>
                         <a href="{url:/simple/seller}" type="button" class="btn btn-block btn-info">商家入驻</a>
                     </div>

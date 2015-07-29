@@ -11,6 +11,7 @@ hr{height:1px;border:none;border-top:1px solid #e4e4e4;overflow:hidden}
 hr.dashed{border-top:1px dashed #e4e4e4}
 a.hidefocus{outline:none}
 button.hidefocus::-moz-focus-inner{border:none}
+.hide{display:none}
 .green{color:#8fc21d}
 .brown{color:#db054b}
 .gray{color:#4f4f4f}
