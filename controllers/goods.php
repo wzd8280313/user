@@ -500,7 +500,7 @@ class Goods extends IController
 			$tb_category->add();
 		}
 
-		$this->category_list();
+		$this->redirect('category_list');
 	}
 
 	/**
@@ -526,7 +526,7 @@ class Goods extends IController
 			{
 				$tb_category_extend  = new IModel('category_extend');
 				$tb_category_extend->del('category_id = '.$category_id);
-				$this->category_list();
+				$this->redirect('category_list');
 			}
 			else
 			{

@@ -1796,4 +1796,12 @@ class Simple extends IController
 		if($res = $M->getObj($where,'err_times'))echo $res['err_times'];
 		else echo 0;
 	}
+	//检测用户名邮箱是否已注册
+	public function checkIsOne(){
+		$field = IFilter::act(IReq::get('field'),'str');
+		$value = IFilter::act(IReq::get('value'),'str');
+		$M = new IModel('user');
+		$where = $field.'="' . $value.'"';
+		echo $M->getObj($where,'id') ? 1 : 0;
+	}
 }
