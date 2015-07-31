@@ -261,13 +261,13 @@ class System extends IController
         $paymentRow = array();
         $paymentObj = new IModel('payment');
     	$paymentRow = $paymentObj->getObj("id = ".$payment_id);
-
         $this->paymentRow = $paymentRow;
         $this->redirect('payment_edit');
     }
 
  	/**
      * @brief 更新支付方式插件
+     * z:加了payment_id!=0的判断
      */
     function payment_update()
     {
@@ -281,15 +281,15 @@ class System extends IController
         $status        = IFilter::act(IReq::get('status'),'int');
         $client_type   = IFilter::act(IReq::get('client_type'),'int');
         $config_param  = array();
-
-        $paymentInstance = Payment::createPaymentInstance($payment_id);
-        $configParam     = $paymentInstance->configParam();
-        foreach($configParam as $key => $val)
-        {
-			$config_param[$key] = IFilter::act(IReq::get($key));
-        }
-        $config_param = JSON::encode($config_param);
-
+		if($payment_id!=0){
+	        $paymentInstance = Payment::createPaymentInstance($payment_id);
+	        $configParam     = $paymentInstance->configParam();
+	        foreach($configParam as $key => $val)
+	        {
+				$config_param[$key] = IFilter::act(IReq::get($key));
+	        }
+	        $config_param = JSON::encode($config_param);
+		}
         $updateData = array(
         	'name'          => $name,
         	'poundage_type' => $poundage_type,

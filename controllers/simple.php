@@ -409,9 +409,23 @@ class Simple extends IController
     	$this->count     = $result['count'];
     	$this->reduce    = $result['reduce'];
     	$this->weight    = $result['weight'];
-
+    	
+    	//将商品按商家分开
+    	
+    	$this->goodsList = $this->goodsListBySeller($this->goodsList);
 		//渲染视图
     	$this->redirect('cart',$redirect);
+    }
+    //将商品列表按商家分开
+    private function goodsListBySeller($goodsList){
+    	$goodsListSeller = array();
+    	foreach($goodsList as $key => $value){
+    		if(!isset($goodsListSeller[$value['seller_id']])){
+    			$goodsListSeller[$value['seller_id']]['seller_name'] = $value['seller_id']==0 ? '平台':API::run('getSellerInfo',$value['seller_id'],'true_name')['true_name'];
+    		}
+    		$goodsListSeller[$value['seller_id']][] = $value;
+    	}
+    	return $goodsListSeller;
     }
 
     //计算促销规则[ajax]
@@ -713,10 +727,23 @@ class Simple extends IController
     	$this->reduce      = $result['reduce'];
     	$this->weight      = $result['weight'];
     	$this->freeFreight = $result['freeFreight'];
-
+    	
+    	//商品列表按商家分开
+    	$this->goodsList = $this->goodsListBySeller($this->goodsList);
+    	
+    	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
+    	$sellerObj = new IModel('seller');
+    	$this->freight_collect=1;
+    	$where = array('id'=>array_keys($this->goodsList));
+    	foreach($sellerObj->select($where,'freight_collect') as $value){
+    		if($value['freight_collect']==0){
+    			$this->freight_collect=0;
+    			break;
+    		}
+    	}
+    	
 		//收货地址列表
 		$this->addressList = $addressList;
-
 		//获取商品税金
 		$this->goodsTax    = $result['tax'];
 		
@@ -755,7 +782,6 @@ class Simple extends IController
     	$order_no      = Order_Class::createOrderNum();
     	$order_type    = 0;
     	$dataArray     = array();
-
 		//防止表单重复提交
     	if(IReq::get('timeKey') != null)
     	{
@@ -783,32 +809,32 @@ class Simple extends IController
     	$user_id = ($this->user['user_id'] == null) ? 0 : $this->user['user_id'];
 
 		//配送方式,判断是否为货到付款
-		$deliveryObj = new IModel('delivery');
-		$deliveryRow = $deliveryObj->getObj('id = '.$delivery_id);
+// 		$deliveryObj = new IModel('delivery');
+// 		$deliveryRow = $deliveryObj->getObj('id = '.$delivery_id);
 
-		if($deliveryRow['type'] == 0)
-		{
-			if($payment == 0)
-			{
-				IError::show(403,'请选择正确的支付方式');
-			}
-		}
-		else if($deliveryRow['type'] == 1)
-		{
-			$payment = 0;
-		}
-		else if($deliveryRow['type'] == 2)
-		{
-			if($takeself == 0)
-			{
-				IError::show(403,'请选择正确的自提点');
-			}
-		}
+// 		if($deliveryRow['type'] == 0)//配送方式与付款方式分离
+// 		{
+// 			if($payment == 0)
+// 			{
+// 				IError::show(403,'请选择正确的支付方式');
+// 			}
+// 		}
+// 		else if($deliveryRow['type'] == 1)
+// 		{
+// 			$payment = 0;
+// 		}
+// 		else if($deliveryRow['type'] == 2)
+// 		{
+// 			if($takeself == 0)
+// 			{
+// 				IError::show(403,'请选择正确的自提点');
+// 			}
+// 		}
 		//如果不是自提方式自动清空自提点
-		if($deliveryRow['type'] != 2)
-		{
-			$takeself = 0;
-		}
+// 		if($deliveryRow['type'] != 2)
+// 		{
+// 			$takeself = 0;
+// 		}
 
 		//计算费用
     	$countSumObj = new CountSum($user_id);

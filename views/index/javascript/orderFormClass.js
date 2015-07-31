@@ -214,7 +214,7 @@ function orderFormClass()
 			{
 				"province_val":$('select[name="province"]>option:selected').text(),
 				"city_val":$('select[name="city"]>option:selected').text(),
-				"area_val":$('select[name="area"]>option:selected').text()
+				"area_val":$('select[name="area"]>option:selected').text(),
 			};
 
 			//刷新修改form部分

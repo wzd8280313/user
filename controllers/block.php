@@ -565,7 +565,7 @@ class Block extends IController
 		}
 		die(JSON::encode($takeselfList));
 	}
-	
+
 	//自添
 	/*
 	 * 通过自提点id获取数据，省市转为中文名

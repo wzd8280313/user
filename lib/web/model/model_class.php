@@ -73,7 +73,35 @@ class IModel
 		else
 			return false;
 	}
-
+	/*
+	 * @brief 查找
+	 * @$where array 查询条件
+	 * @$fields array  查询字段
+	 */
+	public function select($where,$fields='*'){
+		if(isset($where) && is_array($where)){
+			$condition = '';
+			foreach($where as $key=>$v){
+				if(strpos($v,',')){
+					$condition .= '`'.$key.'` in ('.$v.') AND ';
+				}else if(is_array($v)){
+					$l='';
+					$condition .= '`'.$key.'` in (';
+					foreach($v as $k){
+						$condition .= $k.',';
+					}
+					$condition = substr($condition,0,-1); 
+					$condition .= ') AND ';
+				}else{
+					$condition .= '`'.$key.'` = '.$v.' AND ';
+				}
+			}
+			$condition = substr($condition,0,-4);
+			return $this->query($condition,$fields);
+		}else{
+			return false;
+		}
+	}
 	/**
 	 * @brief 更新
 	 * @param  string $where 更新条件
@@ -161,7 +189,7 @@ class IModel
 	 * @param array or int $limit 显示数据条数 默认(500)
 	 * @return array 查询结果
 	 */
-	public function query($where=false,$cols='*',$orderBy=false,$desc='DESC',$limit=50000)
+	public function query($where=false,$cols='*',$orderBy=false,$desc='DESC',$limit=500)
 	{
 		//字段拼接
 		if(is_array($cols))

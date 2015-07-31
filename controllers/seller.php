@@ -395,6 +395,7 @@ class Seller extends IController
 		$server_num  = IFilter::act(IReq::get('server_num'));
 		$home_url    = IFilter::act(IReq::get('home_url'));
 		$tax         = IFilter::act(IReq::get('tax'),'float');
+		$freight_collect = IFilter::act(IReq::get('freight_collect'),'int');
 
 		if(!$seller_id && $password == '')
 		{
@@ -427,6 +428,7 @@ class Seller extends IController
 			'server_num'=> $server_num,
 			'home_url'  => $home_url,
 			'tax'      => $tax,
+			'freight_collect'=>$freight_collect,
 		);
 
 		//创建商家操作类

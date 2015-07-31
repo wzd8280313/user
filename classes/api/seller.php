@@ -10,10 +10,10 @@
 class APISeller
 {
 	//商户信息
-	public function getSellerInfo($id)
+	public function getSellerInfo($id,$cols='*')
 	{
 		$query = new IModel('seller');
-		$info  = $query->getObj("id=".$id);
+		$info  = $query->getObj("id=".$id,$cols);
 		return $info;
 	}
 

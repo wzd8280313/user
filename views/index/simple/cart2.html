@@ -65,10 +65,11 @@ function takeselfInit(id){
 			  url: '{url:block/getOneTakeself}',
 			  data: {'id':id},
 			  success: function(data){
-			  	$('#takeself3').html(template.render('takeselfTemplate',{"item":data}));
+			  	$('#takeself').html(template.render('takeselfTemplate',{"item":data}));
 			  },
 			  
 			});
+			$('input[name=takeself]').removeClass('hide');
 		}	
 	}
 /**
@@ -220,7 +221,13 @@ function cancel_ticket()
 //选择自提点
 function selectTakeself(deliveryId)
 {
-	art.dialog.open("{url:/block/takeself}",{
+	if(!deliveryId)var deliveryId = '';
+	var takeselfParam = $('#takeselfParam td');
+	var pro = takeselfParam.eq(0).text();
+	var city = takeselfParam.eq(1).text();
+	var area = takeselfParam.eq(2).text();
+	var paramStr = "/pro/"+pro+"/city/"+city+"/area/"+area;
+	art.dialog.open("{url:/block/takeself}"+paramStr,{
 		title:'选择自提点',
 		okVal:'选择',
 		ok:function(iframeWin, topWin)
@@ -234,7 +241,7 @@ function selectTakeself(deliveryId)
 			}
 			var json = $.parseJSON(takeselfJson);
 			$('#takeself'+deliveryId).empty();
-			$('[name="takeself"]').val(json.id);
+			$('[name="takeself"]').removeClass('hide').val(json.id).attr('checked','checked');
 			$('#takeself'+deliveryId).html(template.render('takeselfTemplate',{"item":json}));
 			return true;
 		}
@@ -260,7 +267,7 @@ function selectTakeself(deliveryId)
 		<input type='hidden' name='direct_num' value='{$this->num}' />
 		<input type='hidden' name='direct_promo' value='{$this->promo}' />
 		<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
-		<input type='hidden' name='takeself' value='0' />
+		
 
 		<div class="cart_box m_10">
 			<div class="title">填写核对订单信息</div>
@@ -279,15 +286,15 @@ function selectTakeself(deliveryId)
 						<col />
 
 						<tbody id="addressShowBox"></tbody>
-
 						<!--收货地址展示模板-->
 						<script type='text/html' id='addressShowTemplate'>
-						<tr><th>收货人姓名：</th><td><%=accept_name%></td></tr>
-						<tr><th>省份：</th><td><%=province_val%> <%=city_val%> <%=area_val%></td></tr>
-						<tr><th>地址：</th><td><%=address%></td></tr>
-						<tr><th>手机号码：</th><td><%=mobile%></td></tr>
-						<tr><th>固定电话：</th><td><%=telphone%></td></tr>
-						<tr><th>邮政编码：</th><td><%=zip%></td></tr>
+							<tr><th>收货人信息：</th><td><%=province_val%> <%=city_val%>  (<%=accept_name%>收)</td></tr>
+							<tr><th></th><td><%=area_val%> <%=address%>  <%=mobile%>  <%=telphone%></td></tr>
+							<tr><th>代收点：</th><td><input type='checkbox' name='takeself' class='hide' value='0'/> <span id="takeself"></span>
+								<a href="javascript:selectTakeself();"><span class="red">切换自提点</span></a>
+								</td>
+							</tr>
+							<tr class='hide' id='takeselfParam'><td><%=province%></td><td><%=city%></td><td><%=area%></td></tr>
 						</script>
 					</table>
 					<!--地址展示 结束-->
@@ -437,10 +444,12 @@ function selectTakeself(deliveryId)
 						{set:$paymentList=Api::run('getPaymentList')}
 						{foreach:items = $paymentList}
 						{set:$paymentPrice = CountSum::getGoodsPaymentPrice($item['id'],$this->sum);}
+						{if:$item['id']!=0 || $this->freight_collect!=0}
 						<tr>
 							<th><label><input class="radio" name="payment" alt="{$paymentPrice}" onclick='orderFormInstance.paymentSelected({echo:JSON::encode($item)});' title="{$item['name']}" type="radio" value="{$item['id']}" />{$item['name']}</label></th>
 							<td>{$item['note']} 支付手续费：￥{$paymentPrice}</td>
 						</tr>
+						{/if}
 						{/foreach}
 					</table>
 
@@ -504,60 +513,66 @@ function selectTakeself(deliveryId)
 						<p class="indent blue">{$item['plan']}，{$item['info']}</p>
 						{/foreach}
 					</div>
-
-					<table width="100%" class="cart_table t_c">
-						<colgroup>
-							<col width="115px" />
-							<col />
-							<col width="80px" />
-							<col width="80px" />
-							<col width="80px" />
-							<col width="80px" />
-							<col width="80px" />
-							<col width="80px" />
-						</colgroup>
-
-						<thead>
-							<tr>
-								<th>图片</th>
-								<th>商品名称</th>
-								<th>运费</th>
-								<th>赠送积分</th>
-								<th>单价</th>
-								<th>优惠</th>
-								<th>数量</th>
-								<th class="last">商品小计</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							<!-- 商品展示 开始-->
-							{foreach:items = $this->goodsList}
-							<tr>
-								<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
-								<td class="t_l">
-									<a href="{url:/site/products/id/$item[goods_id]}" class="blue">{$item['name']}</a>
-									{if:isset($item['spec_array'])}
-									<p>
-									{set:$spec_array=Block::show_spec($item['spec_array']);}
-									{foreach:items=$spec_array item=$specValue key=$specName}
-										{$specName}：{$specValue} &nbsp&nbsp
-									{/foreach}
-									</p>
-									{/if}
-								</td>
-								<td id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"></td>
-								<td>{$item['point']}</td>
-								<td><b>￥{$item['sell_price']}</b></td>
-								<td>减￥{$item['reduce']}</td>
-								<td>{$item['count']}</td>
-								<td><b class="red2">￥{$item['sum']}</b></td>
-							</tr>
-							{/foreach}
-							<!-- 商品展示 结束-->
-						</tbody>
-					</table>
+						{foreach:items=$this->goodsList item=$value}
+						
+						<table width="100%" class="cart_table t_c" >
+							<colgroup>
+								<col width="115px" />
+								<col />
+								<col width="80px" />
+								<col width="80px" />
+								<col width="80px" />
+								<col width="80px" />
+								<col width="80px" />
+								<col width="80px" />
+							</colgroup>
+							<caption>商家：{$value['seller_name']}</caption>
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>商品名称</th>
+									<th>运费</th>
+									<th>赠送积分</th>
+									<th>单价</th>
+									<th>优惠</th>
+									<th>数量</th>
+									<th class="last">商品小计</th>
+								</tr>
+							</thead>
+	
+							<tbody >
+								<!-- 商品展示 开始-->
+								{foreach:items = $value $key=$k}
+								{if:$k!=='seller_name'}
+								<tr>
+									<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
+									<td class="t_l">
+										<a href="{url:/site/products/id/$item[goods_id]}" class="blue">{$item['name']}</a>
+										{if:isset($item['spec_array'])}
+										<p>
+										{set:$spec_array=Block::show_spec($item['spec_array']);}
+										{foreach:items=$spec_array item=$specValue key=$specName}
+											{$specName}：{$specValue} &nbsp&nbsp
+										{/foreach}
+										</p>
+										{/if}
+									</td>
+									<td id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"></td>
+									<td>{$item['point']}</td>
+									<td><b>￥{$item['sell_price']}</b></td>
+									<td>减￥{$item['reduce']}</td>
+									<td>{$item['count']}</td>
+									<td><b class="red2">￥{$item['sum']}</b></td>
+								</tr>
+								{/if}
+								{/foreach}
+								<!-- 商品展示 结束-->
+							</tbody>
+						</table>
+						{/foreach}
+					
 				</div>
+				
 				<!--购买清单 结束-->
 
 			</div>
