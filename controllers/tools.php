@@ -983,11 +983,11 @@ class Tools extends IController
 		$keywordRow = $keywordObj->getObj('word = "'.$id.'"');
 		if($is_result!==false)
 		{
-			echo JSON::encode(array('isError' => false,'hot' => $keywordRow['hot']));
+			echo JSON::encode(array('isError' => 0,'hot' => $keywordRow['hot']));
 		}
 		else
 		{
-			echo JSON::encode(array('isError'=>true,'message'=>'设置失败'));
+			echo JSON::encode(array('isError'=>1,'message'=>'设置失败'));
 		}
 	}
 

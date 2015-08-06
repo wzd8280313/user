@@ -40,7 +40,7 @@
   'rewriteRule' => 'pathinfo',
   'theme' => 
   array (
-    'pc' => 'index',
+    'pc' => 'scsg',
     'mobile' => 'default',
   ),
   'skin' => 
@@ -53,7 +53,7 @@
   'dbbackup' => 'backup/database',
   'safe' => 'session',
   'lang' => 'zh_sc',
-  'debug' => false,
+  'debug' => true,
   'configExt' => 
   array (
     'site_config' => 'config/site_config.php',

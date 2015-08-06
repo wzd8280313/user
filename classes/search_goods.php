@@ -306,6 +306,7 @@ class search_goods
 						if(IString::getStrLen($defaultWhere['search']) >= 4 || IString::getStrLen($defaultWhere['search']) <= 100)
 						{
 							$wordData = words_facade::run($defaultWhere['search']);
+							
 							if(isset($wordData['data']) && count($wordData['data']) >= 2)
 							{
 								foreach($wordData['data'] as $word)
@@ -350,8 +351,9 @@ class search_goods
 				$GoodsId = $GoodsId === null ? array_unique($goodsCondId) : array_unique( array_intersect($goodsCondId,$GoodsId) );
 			}
 		}
+		
 		$GoodsId = ($GoodsId === array() || $GoodsId === null) ? array(0) : array_unique($GoodsId);
-
+		
 		//存在商品ID数据
 		if($GoodsId)
 		{
@@ -360,7 +362,9 @@ class search_goods
 			{
 				$goodsDB = new IModel("goods as go");
 			}
+			
 			$goodsCondData = $goodsDB->query("go.id in (".join(',',$GoodsId).") and go.is_del = 0 ","id");
+			
 			$GoodsId = array();
 			foreach($goodsCondData as $key => $val)
 			{
@@ -368,15 +372,19 @@ class search_goods
 			}
 
 			$GoodsId = array_slice($GoodsId,0,search_goods::MAX_GOODSID);
-			$where .= " and go.id in (".join(',',$GoodsId).") ";
-
+			if(count($GoodsId)!=0){
+				$where .= " and go.id in (".join(',',$GoodsId).") ";
+			}else $where .= ' and false';
+			
+	
 			//商品属性进行检索
 			if($isCondition == true)
 			{
 				/******属性 开始******/
 				$attrTemp = array();
 				$goodsAttrDB = new IModel('goods_attribute');
-				$attrData    = $goodsAttrDB->query("goods_id in (".join(',',$GoodsId).")");
+				$w = count($GoodsId)==0 ? false : "goods_id in (".join(',',$GoodsId).")";
+				$attrData    = $goodsAttrDB->query($w);
 				foreach($attrData as $key => $val)
 				{
 					//属性
@@ -407,16 +415,19 @@ class search_goods
 					{
 						self::$attrSearch[] = array('id' => $val['id'],'name' => $val['name'],'value' => $attrTemp[$val['id']]);
 					}
-				}
+				} 
 				/******属性 结束******/
 
 				/******品牌 开始******/
 				$brandQuery = new IModel('brand as b,goods as go');
-				self::$brandSearch = $brandQuery->query("go.brand_id = b.id and go.id in (".join(',',$GoodsId).")","distinct b.id,b.name","b.sort","asc",10);
+				$w="go.brand_id = b.id";
+				if(count($GoodsId)!=0)$w .= " and go.id in (".join(',',$GoodsId).")";
+				self::$brandSearch = $brandQuery->query($w,"distinct b.id,b.name","b.sort","asc",10);
 				/******品牌 结束******/
 
 				/******价格 开始******/
-				self::$priceSearch = goods_class::getGoodsPrice(join(',',$GoodsId));
+				$w = count($GoodsId)==0 ? false : join(',',$GoodsId);
+				self::$priceSearch = goods_class::getGoodsPrice($w);
 				/******价格 结束******/
 			}
 		}
@@ -488,6 +499,7 @@ class search_goods
 		//设置IQuery类的各个属性
 		$goodsObj->where = $where;
 		$goodsObj->order = join(',',$orderArray);
+		
 		return $goodsObj;
 	}
 }

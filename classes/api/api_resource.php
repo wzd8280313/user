@@ -69,7 +69,7 @@ return array(
 			'fields'=>'p.end_time,go.img as img,p.name as name,p.award_value as award_value,go.id as goods_id,p.id as p_id,end_time',
 			'where'=>'p.type = 1 and p.is_close = 0 and go.is_del = 0 and NOW() between start_time and end_time AND go.id is not null',
 			'order'=>'p_id desc',
-			'limit'=>'10'
+			'limit'=>'1'
 		)
 	),
 	//根据ID限时抢购

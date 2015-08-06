@@ -483,7 +483,8 @@ class goods_class
 	public static function getGoodsPrice($goodsId,$showPriceNum = 5)
 	{
 		$goodsObj     = new IModel('goods');
-		$goodsPrice   = $goodsObj->getObj('id in ('.$goodsId.')','MIN(sell_price) as min,MAX(sell_price) as max');
+		$where = !$goodsId ? false : 'id in ('.$goodsId.')';
+		$goodsPrice   = $goodsObj->getObj($where,'MIN(sell_price) as min,MAX(sell_price) as max');
 		if($goodsPrice['min'] <= 0)
 		{
 			$minPrice = 1;

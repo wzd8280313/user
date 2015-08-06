@@ -66,7 +66,7 @@ function set_hot(word,obj)
 	$.getJSON('{url:/tools/keyword_hot/hot/1}',{id:word,rd:rd},function(content){
 		if(content.isError ==  false)
 		{
-			if(content.hot == 1)
+			if(content.hot == 0)
 			{
 				obj.innerHTML = '是';
 				$(obj).removeClass('blue');

@@ -1,3 +1,4 @@
+ 
 //全选
 function selectAll(nameVal)
 {
@@ -349,3 +350,4 @@ function createGoodsCategory(categoryObj)
 		$('#__categoryBox').append(goodsCategoryHtml);
 	}
 }
+

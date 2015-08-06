@@ -21,7 +21,15 @@ class Site extends IController
 	{
 		CheckRights::checkUserRights();
 	}
-
+	public function ccc(){
+		$defaultWhere = array('search' => '手环');
+		$goodsObj = search_goods::find($defaultWhere);
+		//print_r($goodsObj);
+		$resultData = $goodsObj->find();
+		print_r($resultData);
+		//if(is_object($goodsObj))echo 9;
+		echo $goodsObj->where;
+	}
 	function index()
 	{ 
 		$siteConfigObj = new Config("site_config");
@@ -34,14 +42,12 @@ class Site extends IController
 		$sql = 'select b.id,b.name,b.logo from shop_brand_category as a right join shop_brand as b on a.id in (b.category_ids) where a.goods_category_id=';
 		foreach( Api::run('getCategoryListTop') as $key=>$v){
 			$categoryList[$key] = $v;
-			$categoryList[$key]['child'] = Api::run('getCategoryByParentid',array('#parent_id#',$v['id']));
-			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']));
-			$categoryList[$key]['goods'] = array_slice($categoryList[$key]['goods'],0,6);
+			$categoryList[$key]['child'] = Api::run('getCategoryByParentid',array('#parent_id#',$v['id']),5);
+			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']),6);
 			$categoryList[$key]['brand'] = $M->doSql($sql.$categoryList[$key]['id']) ;
 		}
-		
-		//print_r($categoryList);
 		$this->categoryList = $categoryList;
+		$this->isIndex = 1;
 		unset($categoryList);
 		$this->redirect('index');
 	}
@@ -96,6 +102,7 @@ class Site extends IController
 			IError::show(403,'请输入正确的查询关键词');
 		}
 		$this->cat_id = $cat_id;
+		
 		$this->redirect('search_list');
 	}
 
@@ -355,7 +362,7 @@ class Site extends IController
 		$goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0");
 		if(!$goods_info)
 		{
-			IError::show(403,"这件商品不存在");
+			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
 
@@ -395,6 +402,7 @@ class Site extends IController
 		//商品是否参加促销活动(团购，抢购)
 		$goods_info['promo']     = IReq::get('promo')     ? IReq::get('promo') : '';
 		$goods_info['active_id'] = IReq::get('active_id') ? IFilter::act(IReq::get('active_id'),'int') : '';
+		
 		if($goods_info['promo'])
 		{
 			switch($goods_info['promo'])
@@ -515,7 +523,6 @@ class Site extends IController
 			$visit = $visit === null ? $checkStr : $visit.$checkStr;
 			ISafe::set('visit',$visit);
 		}
-
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}

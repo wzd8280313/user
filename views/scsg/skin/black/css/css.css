@@ -1,0 +1,24 @@
+* {
+	margin: 0px; padding: 0px; list-style-type: none;
+}
+a {
+	border: 0px currentColor;
+}
+img {
+	border: 0px currentColor;
+}
+.advbox {
+	margin: 0px auto; width: 1190px;
+}
+.advbox .dt_small {
+	width: 1190px;
+}
+.advbox .dt_big {
+	width: 1190px;
+}
+.advbox .dt_toBig {
+	background: url("../images/public_showTL_1201.png"); margin: 5px 0px 0px 500px; left: 50%; width: 49px; height: 21px; position: absolute; cursor: pointer;
+}
+.advbox .dt_toSmall {
+	background: url("../images/public_closeTL_1201.png"); margin: 5px 0px 0px 500px; left: 50%; width: 49px; height: 21px; position: absolute; cursor: pointer;
+}

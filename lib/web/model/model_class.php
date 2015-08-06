@@ -30,7 +30,7 @@ class IModel
 	 * @brief 构造函数,创建数据库对象
 	 * @param string $tableName 表名称(当多表操作时以逗号分隔,如：user,goods);
 	 */
-	public function __construct($tableName)
+	public function __construct($tableName='')
 	{
 		$this->db = IDBFactory::getDB();
 		$this->tablePre = isset(IWeb::$app->config['DB']['tablePre']) ? IWeb::$app->config['DB']['tablePre'] : '';
@@ -189,7 +189,7 @@ class IModel
 	 * @param array or int $limit 显示数据条数 默认(500)
 	 * @return array 查询结果
 	 */
-	public function query($where=false,$cols='*',$orderBy=false,$desc='DESC',$limit=500)
+	public function query($where=false,$cols='*',$orderBy=false,$desc='DESC',$limit=500,$printSql=0)
 	{
 		//字段拼接
 		if(is_array($cols))
@@ -220,7 +220,7 @@ class IModel
 			$limit = $limit ? $limit : 500;
 			$sql.=' limit ' . $limit;
 		}
-
+		if($printSql)echo $sql;
 		return $this->db->query($sql);
 	}
 
