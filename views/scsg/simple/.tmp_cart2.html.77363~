@@ -396,9 +396,14 @@ function selectTakeself(deliveryId)
 							{set:$deliveryData = Api::run('getDeliveryList')}
 							{foreach:items = $deliveryData}
 							<tr>
-								<th><label><input type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
+								<th><label><input type="radio" name="delivery_id" value="{$item['id']}" paytype="{$item['type']}" onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
 								<td>
 									{$item['description']}
+
+									{if:$item['type'] == 2}
+									<a href="javascript:selectTakeself({$item['id']});"><span class="red">选择自提点</span></a>
+									<span id="takeself{$item['id']}"></span>
+									{/if}
 								</td>
 							</tr>
 							{/foreach}

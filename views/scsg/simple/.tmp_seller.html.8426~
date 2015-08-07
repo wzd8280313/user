@@ -25,18 +25,10 @@
 							<tr>
 								<th>确认密码：</th><td><input class="normal" name="repassword" type="password" bind='password' pattern="required" /><label>* 重复确认密码</label></td>
 							</tr>
-							
 							<tr>
 								<th>商户真实全称：</th>
 								<td><input class="normal" name="true_name" type="text" value="" pattern="required" /></td>
 							</tr>
-							<tr>
-								<th>商家logo图片：</th>
-								<td>
-								<input type='file' name='logo_img' />
-								</td>
-							</tr>
-							
 							<tr>
 								<th>商户资质材料：</th>
 								<td>
@@ -44,7 +36,6 @@
 									{if:isset($this->sellerRow['paper_img']) && $this->sellerRow['paper_img']}
 									<p><a target="_blank" href="{webroot:}{$this->sellerRow['paper_img']}"><img src='{webroot:}{$this->sellerRow['paper_img']}' style='width:320px;border:1px solid #ccc' /></a></p>
 									{/if}
-									(照片大小不得超过2M)
 								</td>
 							</tr>
 							<tr>

@@ -77,7 +77,6 @@
 			<li class="icn_categories"><a href="{url:/seller/delivery}">物流配送</a></li>
 			<li class="icn_categories"><a href="{url:/seller/ship_info_list}">发货地址</a></li>
 			<li class="icn_profile"><a href="{url:/seller/seller_edit}">资料修改</a></li>
-			<li ><a href="{url:/seller/chg_pass}">密码修改</a></li>
 			<li class="icn_video"><a href="{url:/site/home/id/$seller_id}" target="_blank">主页信息</a></li>
 		</ul>
 

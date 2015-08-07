@@ -741,7 +741,6 @@ class Simple extends IController
     			break;
     		}
     	}
-    	
 		//收货地址列表
 		$this->addressList = $addressList;
 		//获取商品税金
@@ -809,32 +808,8 @@ class Simple extends IController
     	$user_id = ($this->user['user_id'] == null) ? 0 : $this->user['user_id'];
 
 		//配送方式,判断是否为货到付款
-// 		$deliveryObj = new IModel('delivery');
-// 		$deliveryRow = $deliveryObj->getObj('id = '.$delivery_id);
-
-// 		if($deliveryRow['type'] == 0)//配送方式与付款方式分离
-// 		{
-// 			if($payment == 0)
-// 			{
-// 				IError::show(403,'请选择正确的支付方式');
-// 			}
-// 		}
-// 		else if($deliveryRow['type'] == 1)
-// 		{
-// 			$payment = 0;
-// 		}
-// 		else if($deliveryRow['type'] == 2)
-// 		{
-// 			if($takeself == 0)
-// 			{
-// 				IError::show(403,'请选择正确的自提点');
-// 			}
-// 		}
-		//如果不是自提方式自动清空自提点
-// 		if($deliveryRow['type'] != 2)
-// 		{
-// 			$takeself = 0;
-// 		}
+ 		$deliveryObj = new IModel('delivery');
+ 		$deliveryRow = $deliveryObj->getObj('id = '.$delivery_id);
 
 		//计算费用
     	$countSumObj = new CountSum($user_id);
@@ -1662,8 +1637,9 @@ class Simple extends IController
 			'is_lock'   => 1,
 		);
 
+		
 		//商户资质上传
-		if(isset($_FILES['paper_img']['name']) && $_FILES['paper_img']['name'])
+		if((isset($_FILES['paper_img']['name']) && $_FILES['paper_img']['name']) || (isset($_FILES['logo_img']['name']) && $_FILES['logo_img']['name']))
 		{
 			$uploadObj = new PhotoUpload();
 			$uploadObj->setIterance(false);
@@ -1671,6 +1647,10 @@ class Simple extends IController
 			if(isset($photoInfo['paper_img']['img']) && file_exists($photoInfo['paper_img']['img']))
 			{
 				$sellerRow['paper_img'] = $photoInfo['paper_img']['img'];
+			}
+			if(isset($photoInfo['logo_img']['img']) && file_exists($photoInfo['logo_img']['img']))
+			{
+				$sellerRow['logo_img'] = $photoInfo['logo_img']['img'];
 			}
 		}
 

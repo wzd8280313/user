@@ -391,13 +391,19 @@ class Order extends IController
 		$order_id = IFilter::act(IReq::get('id'),'int');
 		$type     = IFilter::act(IReq::get('type'),'int');
 		$order_no = IFilter::act(IReq::get('order_no'));
-
+		
+		
+		if($type==4 && !Order_Class::is_cancle($order_id)){//不可作废
+			echo 0;
+			return false;
+		}
 		//oerder表的对象
 		$tb_order = new IModel('order');
 		$tb_order->setData(array(
 			'status'          => $type,
 			'completion_time' => ITime::getDateTime(),
 		));
+		
 		$tb_order->update('id='.$order_id);
 
 		//生成订单日志

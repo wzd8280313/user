@@ -180,8 +180,6 @@ class System extends IController
         $id   = IFilter::act(IReq::get('id'),'int');
 		//配送方式名称
 		$name = IFilter::act(IReq::get('name'));
-		//类型
-		$type = IFilter::act(IReq::get('type'),'int');
         //首重重量
         $first_weight = IFilter::act(IReq::get('first_weight'),'float');
         //续重重量
@@ -215,7 +213,6 @@ class System extends IController
 
         $data = array(
         	'name'         => $name,
-        	'type'         => $type,
         	'first_weight' => $first_weight,
         	'second_weight'=> $second_weight,
         	'first_price'  => $first_price,

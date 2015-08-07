@@ -3,7 +3,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 label input{vertical-align:middle}
 a:link,a:visited{color:#333;text-decoration:none;}
 a:hover,a:active{text-decoration:underline}
-body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;text-align:center}
+body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;}
 img{border:0;vertical-align: middle;}
 table{border-collapse:collapse}
 ul li{list-style:none}
@@ -55,7 +55,7 @@ a.line{text-decoration:underline}
 a.more{color:#a2a2a2}a.zoom{padding-left:20px;background:url(../images/front/sprites_2.gif) -63px -284px no-repeat}
 .close,.close_2{display:inline-block;width:13px;height:13px;line-height:100px;overflow:hidden;background:url(../images/front/ucenter/close.gif) no-repeat}
 .close_2{width:27px;height:21px;margin-right:8px;background:url(../images/front/sprites_2.gif) -24px -739px no-repeat}
-.countdown{margin:5px auto 5px;font:bold 14px "Microsoft YaHei",Arial, Tahoma;color:#999}
+
 	.countdown b{margin:0 3px;font-size:20px;color:#c4000f}
 /* grade style start */
 span.grade{display:inline-block;width:70px;height:15px;background:url(../images/front/grade_bg.gif) 0 -16px no-repeat}

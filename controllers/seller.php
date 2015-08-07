@@ -374,6 +374,7 @@ class Seller extends IController
 		$sellerDB        = new IModel('seller');
 		$this->sellerRow = $sellerDB->getObj('id = '.$seller_id);
 		$this->redirect('seller_edit');
+		
 	}
 
 	/**
@@ -383,8 +384,6 @@ class Seller extends IController
 	{
 		$seller_id   = $this->seller['seller_id'];
 		$email       = IFilter::act(IReq::get('email'));
-		$password    = IFilter::act(IReq::get('password'));
-		$repassword  = IFilter::act(IReq::get('repassword'));
 		$phone       = IFilter::act(IReq::get('phone'));
 		$mobile      = IFilter::act(IReq::get('mobile'));
 		$province    = IFilter::act(IReq::get('province'),'int');
@@ -396,16 +395,6 @@ class Seller extends IController
 		$home_url    = IFilter::act(IReq::get('home_url'));
 		$tax         = IFilter::act(IReq::get('tax'),'float');
 		$freight_collect = IFilter::act(IReq::get('freight_collect'),'int');
-
-		if(!$seller_id && $password == '')
-		{
-			$errorMsg = '请输入密码！';
-		}
-
-		if($password != $repassword)
-		{
-			$errorMsg = '两次输入的密码不一致！';
-		}
 
 		//操作失败表单回填
 		if(isset($errorMsg))
@@ -430,15 +419,24 @@ class Seller extends IController
 			'tax'      => $tax,
 			'freight_collect'=>$freight_collect,
 		);
+		//商户资质上传
+		if((isset($_FILES['paper_img']['name']) && $_FILES['paper_img']['name']) || (isset($_FILES['logo_img']['name']) && $_FILES['logo_img']['name']))
+		{
+			$uploadObj = new PhotoUpload();
+			$uploadObj->setIterance(false);
+			$photoInfo = $uploadObj->run();
+			if(isset($photoInfo['paper_img']['img']) && file_exists($photoInfo['paper_img']['img']))
+			{
+				$sellerRow['paper_img'] = $photoInfo['paper_img']['img'];
+			}
+			if(isset($photoInfo['logo_img']['img']) && file_exists($photoInfo['logo_img']['img']))
+			{
+				$sellerRow['logo_img'] = $photoInfo['logo_img']['img'];
+			}
+		}
 
 		//创建商家操作类
 		$sellerDB   = new IModel("seller");
-
-		//修改密码
-		if($password)
-		{
-			$sellerRow['password'] = md5($password);
-		}
 
 		$sellerDB->setData($sellerRow);
 		$sellerDB->update("id = ".$seller_id);
@@ -1133,7 +1131,35 @@ class Seller extends IController
 		echo goods_class::store_chg($_POST,$sellerid) ? 1 : 0;
 	}
     
-    
+    /**
+     * 更改密码
+     */
+	public function seller_pass(){
+		//print_r($_POST);
+		$old_pass = IFilter::act(IReq::get('old_pass','post'),'string');
+		$new_pass = IFilter::act(IReq::get('new_pass','post'),'string');
+		$new_pass2 = IFilter::act(IReq::get('new_pass_2','post'),'string');
+		if(strlen($new_pass)<6 || strlen($old_pass)<6)
+			$errorMsg = '密码不得少于6位字符！';
+		if($new_pass != $new_pass2){
+			$errorMsg = '两次密码不一致！';
+		}
+		
+		
+		$seller = new IModel('seller');
+		$sellerid = $this->seller['seller_id'];
+		if($seller->getObj('id='.$sellerid.' AND password = "'.md5($old_pass).'"')){
+			$seller->setData(array('password'=>md5($new_pass)));
+			$seller->update('id='.$sellerid);
+		}else $errorMsg = '原密码不正确！';
+			
+		//操作失败表单回填
+		if(isset($errorMsg))
+		{
+			$this->redirect('chg_pass',false);
+			Util::showMessage($errorMsg);
+		}
+	}
     
     
     

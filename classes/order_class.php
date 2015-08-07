@@ -504,21 +504,21 @@ class Order_Class
 			{
 				if($orderRow['distribution_status'] == 0)
 				{
-					return 1;
+					return 1;//等待发货
 				}
 				else if($orderRow['distribution_status'] == 1)
 				{
-					return 11;
+					return 11;//已发货
 				}
 				else if($orderRow['distribution_status'] == 2)
 				{
-					return 8;
+					return 8;//部分发货
 				}
 			}
 			//选择在线支付
 			else
 			{
-				return 2;
+				return 2;//等待付款
 			}
 		}
 		//2,已经付款
@@ -526,15 +526,15 @@ class Order_Class
 		{
 			if($orderRow['distribution_status'] == 0)
 			{
-				return 4;
+				return 4;//已付款等待发货
 			}
 			else if($orderRow['distribution_status'] == 1)
 			{
-				return 3;
+				return 3;//已付款已发货
 			}
 			else if($orderRow['distribution_status'] == 2)
 			{
-				return 8;
+				return 8;//部分发货
 			}
 		}
 		//3,取消或者作废订单
@@ -1131,5 +1131,19 @@ class Order_Class
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * 是否可以作废订单
+	 */
+	public static function is_cancle($order_id){
+		$orderM = new IModel('order');
+		$orderRow = $orderM->getObj('id='.$order_id);
+		$period = 6;//有效期6小时
+		$now = ITime::getNow();
+		$orderTime = ITime::getTime($orderRow['create_time']);
+		if($orderRow['pay_type']==0 || $orderRow['pay_status']==1 || $now-$orderTime<=3600*$period){
+			return false;//不可作废
+		}
+		return true;
 	}
 }

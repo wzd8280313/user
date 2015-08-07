@@ -82,7 +82,7 @@ class IModel
 		if(isset($where) && is_array($where)){
 			$condition = '';
 			foreach($where as $key=>$v){
-				if(strpos($v,',')){
+				if(is_string($v)&&strpos($v,',')){
 					$condition .= '`'.$key.'` in ('.$v.') AND ';
 				}else if(is_array($v)){
 					$l='';

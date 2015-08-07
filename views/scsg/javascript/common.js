@@ -114,7 +114,7 @@ var countdown=function()
 {
 	var _self=this;
 	this.handle={};
-	this.parent={'second':'minute','minute':'hour','hour':""};
+	this.parent={'second':'minute','minute':'hour','hour':'day','day':''};
 	this.add=function(id)
 	{
 		_self.handle.id=setInterval(function(){_self.work(id,'second');},1000);
@@ -134,8 +134,13 @@ var countdown=function()
 			return false;
 		}
 		else
-		{
-			e.innerHTML = (value==0?59:(value-1));
+		{var val=0;
+			if(value==0){
+				val=59;
+			}else if(value<=10){
+				val= '0'+(value-1);
+			}else val=value-1;
+			e.innerHTML = val;
 			return true;
 		}
 	};

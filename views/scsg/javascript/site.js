@@ -177,15 +177,26 @@ jQuery(function()
 	});
 	//自动倒计时
 	(function(){
-		$('span.limit-time').each(function(){
+		$('ul.countdown').each(function(){
 			var id = $(this).attr('id').split('-')[1];
+			var temp;
 			var endTime = $(this).find('input[name=endTime]').val();
 			var now = Date.parse(new Date())/1000;
 			var count = endTime - now;
-			var hour = parseInt(count/3600);
+			var day = parseInt(count/(24*3600));
+			count=count%(24*3600);
+			var hour = (temp = parseInt(count/3600))<10 ? '0'+temp : temp;
 			count = count%3600;
-			var min = parseInt(count/60);
-			var sec = count%60;
+			var min = (temp=parseInt(count/60))<10 ? '0'+temp :temp ;
+			var sec = (temp=count%60)<10 ? '0' + temp : temp;
+			if(day==0){
+				$(this).children('li').eq(1).remove();
+				$(this).children('li').eq(1).remove();
+				$(this).css('width','85%');
+			}else{
+				$('#cd_day_'+id).text(day);
+			}
+			
 			$('#cd_hour_'+id).text(hour);
 			$('#cd_minute_'+id).text(min);
 			$('#cd_second_'+id).text(sec);

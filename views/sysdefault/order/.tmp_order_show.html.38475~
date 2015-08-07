@@ -122,7 +122,6 @@
 				<tr>
 					<th>地址:</th><td>{$address}</td>
 				</tr>
-				
 				<tr>
 					<th>邮编:</th><td>{$postcode}</td>
 				</tr>
@@ -143,12 +142,6 @@
 					<th>配送方式:</th><td>{$delivery}</td>
 				</tr>
 
-				<tr>
-					<th>配送保价:</th><td>{if:$if_insured==0}不保价{else:}已保价{/if}</td>
-				</tr>
-				<tr>
-					<th>商品重量:</th><td>{$goods_weight}</td>
-				</tr>
 				{if:$takeself}
 				<tr>
 					<th>自提地址:</th>
@@ -171,6 +164,13 @@
 					<td class="green">{$checkcode}</td>
 				</tr>
 				{/if}
+
+				<tr>
+					<th>配送保价:</th><td>{if:$if_insured==0}不保价{else:}已保价{/if}</td>
+				</tr>
+				<tr>
+					<th>商品重量:</th><td>{$goods_weight}</td>
+				</tr>
 				<tr>
 					<th>支付方式:</th><td>{$payment}</td>
 				</tr>

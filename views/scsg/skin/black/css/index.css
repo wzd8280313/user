@@ -85,14 +85,18 @@ padding: 6px 0;
 }
 
 .bn .limit .limit-zero .limit-timeout {
-width: 165px;
+width: 90%;
 margin: 0 auto;
 height: 30px;
 position: relative;
 }
 .bn .limit .limit-zero .time-format {
-width: 165px;
 margin: 0 auto;
+}
+.time-format .time-num b{
+	color:#fff;
+	font-weight:normal;
+	font-size:14px;
 }
 .bn .limit .limit-zero .time-format li {
 float: left;
@@ -272,7 +276,6 @@ height: 196px;
 }
 .notice .news-list a {
 width: 210px;
-display: block;
 height: 180px;
 line-height: 24px;
 text-overflow: ellipsis;

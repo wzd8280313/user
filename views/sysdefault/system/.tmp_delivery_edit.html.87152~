@@ -23,6 +23,17 @@
 						<input class="normal" name="name" value="" type="text" pattern="required" alt="配送方式名称不能为空" />
 					</td>
 				</tr>
+
+				<tr>
+					<th>类型:</th>
+					<td>
+						<label class='attr'><input type="radio" value='0' name="type" checked='checked'>先收款后发货</label>
+						<label class='attr'><input type="radio" value='1' name="type">货到付款</label>
+						<label class='attr'><input type="radio" value='2' name="type">商品自提点 [ <a href="{url:/system/takeself_edit}">添加地点</a> ]</label>
+						<label>类型选择货到付款后顾客无需再选择支付方式;自提点使用前需要先去添加</label>
+					</td>
+				</tr>
+
 				<tr>
 					<th>重量设置:</th>
 					<td>
