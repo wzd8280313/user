@@ -36,7 +36,26 @@ class IFilter
 		}
 		return $str;
 	}
-
+	/**
+	 * 用正则表达式对数据过滤处理
+	 * @$str string 被过滤的字符串
+	 * @$reg string 正则表达式
+	 */
+	public static function regAct($str,$reg){
+		if(is_array($str)){
+			$resultStr = array();
+			foreach($str as $key=>$val){
+				$key = self::regAct($key,$reg);
+				$val = self::regAct($val,$reg);
+				$resultStr[$key] = $val;
+			}
+			return $resultStr;
+		}else{
+			if(preg_match($reg,$str)==true)
+				return $str;
+			else return '';
+		}
+	}
 	/**
 	 * @brief 对字符串进行过滤处理
 	 * @param  string $str      被过滤的字符串
@@ -263,4 +282,7 @@ class IFilter
 		}
 		return '';
 	}
+	/**
+	 * 
+	 */
 }

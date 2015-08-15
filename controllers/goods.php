@@ -472,6 +472,7 @@ class Goods extends IController
 		$title = IFilter::act(IReq::get('title'));
 		$keywords = IFilter::act(IReq::get('keywords'));
 		$descript = IFilter::act(IReq::get('descript'));
+		$hot = IFilter::act(IReq::get('hot'));
 
 		if(!$name)
 		{
@@ -487,7 +488,8 @@ class Goods extends IController
 			'visibility'=> $visibility,
 			'keywords'  => $keywords,
 			'descript'  => $descript,
-			'title'     => $title
+			'title'     => $title,
+			'hot'       => $hot
 		);
 		$tb_category->setData($category_info);
 		if($category_id)									//保存修改分类信息

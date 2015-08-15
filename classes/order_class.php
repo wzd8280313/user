@@ -1036,9 +1036,8 @@ class Order_Class
 		//更新退款状态
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
-
 		//更新order表状态
-		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and is_send != 2');
+		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and is_send != 2 and id != '.$order_goods_id);
 		$orderStatus = 6;//全部退款
 		if($isSendData)
 		{

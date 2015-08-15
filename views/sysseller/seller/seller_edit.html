@@ -30,7 +30,19 @@
 					{/if}
 				</div>
 			</fieldset>
-
+			<fieldset>
+				<label>经营范围：</label>
+				{set:$goods_cat = explode(',',$this->sellerRow['goods_cat'])}
+				{foreach:items=Api::run('getCategoryListTop')}
+				{if:in_array($item['id'],$goods_cat)}
+				{set:$check = 'checked';}
+				{else:}
+				{set:$check = ''}
+				{/if}
+					<input name="goods_cat[]" type="checkbox" value="{$item['id']}" {$check}/>{$item['name']}
+				{/foreach}
+				<label class="tip"></label>
+			</fieldset>
 			<fieldset>
 				<label>保证金数额：</label>
 				<input type="text" name="cash" pattern="float" empty disabled="disabled" />
@@ -100,11 +112,8 @@
 					{/if}
 				</div>
 			</fieldset>
-			<fieldset>
-				<label>企业官网：</label>
-				<input name="home_url" type="text" pattern="url" empty value="" />
-				<label class="tip">官网的URL网址，如：http://www.aircheng.com</label>
-			</fieldset>
+			
+			
 		</div>
 
 		<footer>

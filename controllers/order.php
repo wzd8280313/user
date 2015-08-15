@@ -309,6 +309,7 @@ class Order extends IController
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{
+			if(!$order_goods_id)return false;
 			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
 
 			//插入refundment_doc表
@@ -322,6 +323,7 @@ class Order extends IController
 
 			$tb_refundment_doc->setData($updateData);
 			$refunds_id = $tb_refundment_doc->add();
+			$tb_refundment_doc->commit();
 		}
 
 		$result = Order_Class::refund($refunds_id,$this->admin['admin_id'],'admin');

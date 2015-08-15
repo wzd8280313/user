@@ -21,15 +21,7 @@ class Site extends IController
 	{
 		CheckRights::checkUserRights();
 	}
-	public function ccc(){
-		$defaultWhere = array('search' => '手环');
-		$goodsObj = search_goods::find($defaultWhere);
-		//print_r($goodsObj);
-		$resultData = $goodsObj->find();
-		print_r($resultData);
-		//if(is_object($goodsObj))echo 9;
-		echo $goodsObj->where;
-	}
+
 	function index()
 	{ 
 		$siteConfigObj = new Config("site_config");
@@ -38,17 +30,22 @@ class Site extends IController
 		$this->index_slide = $index_slide;
 		//获取商品分类
 		$categoryList = array();
-		$M = new IModel();
-		$sql = 'select b.id,b.name,b.logo from shop_brand_category as a right join shop_brand as b on a.id in (b.category_ids) where a.goods_category_id=';
+		//$M = new IModel();
+		//$sql = 'select b.id,b.name,b.logo from shop_brand_category as a right join shop_brand as b on a.id in (b.category_ids) where a.goods_category_id=';
+
 		foreach( Api::run('getCategoryListTop') as $key=>$v){
 			$categoryList[$key] = $v;
 			$categoryList[$key]['child'] = Api::run('getCategoryByParentid',array('#parent_id#',$v['id']),5);
 			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']),6);
-			$categoryList[$key]['brand'] = $M->doSql($sql.$categoryList[$key]['id']) ;
+			$categoryList[$key]['seller']= Api::run('getSellerListByCat',array('#cat_id#',$v['id']));
+			
 		}
 		$this->categoryList = $categoryList;
 		$this->isIndex = 1;
 		unset($categoryList);
+		//获取用户喜好产品
+		$uid = $this->user ? $this->user['user_id'] : 0;
+		$this->user_like_goods = user_like::get_like_cate($uid);
 		$this->redirect('index');
 	}
 
@@ -381,7 +378,7 @@ class Site extends IController
 		$categoryObj = new IModel('category_extend as ca,category as c');
 		$categoryRow = $categoryObj->getObj('ca.goods_id = '.$goods_id.' and ca.category_id = c.id','c.id,c.name');
 		$goods_info['category'] = $categoryRow ? $categoryRow['id'] : 0;
-
+	
 		//商品图片
 		$tb_goods_photo = new IQuery('goods_photo_relation as g');
 		$tb_goods_photo->fields = 'p.id AS photo_id,p.img ';
@@ -523,6 +520,7 @@ class Site extends IController
 			$visit = $visit === null ? $checkStr : $visit.$checkStr;
 			ISafe::set('visit',$visit);
 		}
+		user_like::add_like_cate($goods_id,$this->user['user_id']);
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}
@@ -885,5 +883,6 @@ class Site extends IController
 		$this->ever_list = Api::run('getEverRegimentList');
 		$this->redirect("groupon");
 	}
+
 	
 }

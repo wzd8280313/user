@@ -76,6 +76,15 @@
 						<td><input class="normal" name="server_num" type="text" empty value="" /><label>输入客服QQ号码，可以商品详情页面对客户进行解答</label></td>
 					</tr>
 					<tr>
+						<th>企业logo：</th>
+						<td>
+						<input type='file' name='logo_img' />
+							{if:isset($this->sellerRow['logo_img']) && $this->sellerRow['logo_img']}
+							<p><a target="_blank" href="{webroot:}{$this->sellerRow['logo_img']}"><img src='{webroot:}{$this->sellerRow['logo_img']}' style='width:320px;border:1px solid #ccc' /></a></p>
+							{/if}
+							</td>
+					</tr>
+					<tr>
 						<th>企业官网：</th>
 						<td><input class="normal" name="home_url" type="text" pattern="url" empty value="" /><label>填写完整的网址，如：http://www.aircheng.com</label></td>
 					</tr>

@@ -1,4 +1,12 @@
-{set:$where = $this->where;}
+{set:
+	$search   = IFilter::act(IReq::get('search'),'strict');
+	$keywords = IFilter::act(IReq::get('keywords'));
+	$where    = ($search && $keywords) ? $search.' = "'.$keywords.'"' : 1;
+	
+	
+	
+}
+{$filter['is_vip']}
 <div class="headbar">
 	<div class="position">
 		<span>会员</span><span>></span><span>商户管理</span><span>></span><span>商户列表</span>
@@ -30,11 +38,12 @@
 		<form action="{url:/}" method="get" name="searchListForm">
 			<input type='hidden' name='controller' value='member' />
 			<input type='hidden' name='action' value='seller_list' />
-			<select class="auto" name="search[is_recom]">
-				<option value="">选择会员</option>
+			<select class="auto" name="filter[is_vip]">
+				<option value="-1">选择会员</option>
 				<option value="1">推荐商户</option>
 			</select>
 			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+			<button class="btn" onclick='changeAction(true)'><span class="sel">导出Excel</span></button>
 		</form>
 	</div>
 	<div class="field">
@@ -60,7 +69,6 @@
 					<th>座机</th>
 					<th>移动电话</th>
 					<th>VIP</th>
-					<th>推荐</th>
 					<th>销量</th>
 					<th>评分</th>
 					<th>状态</th>
@@ -82,7 +90,6 @@
 				<col width="100px" />
 				<col width="110px" />
 				<col width="70px" />
-				<col width="70px" />
 				<col width="80px" />
 				<col width="80px" />
 				<col width="80px" />
@@ -98,19 +105,7 @@
 					<td title="{$item['true_name']}">{$item['true_name']}</td>
 					<td title="{$item['phone']}">{$item['phone']}</td>
 					<td title="{$item['mobile']}">{$item['mobile']}</td>
-					<td>{if:$item['is_vip']==1}
-						<a class='red2' href='javascript:void(0);' onclick='set_type("{$item['id']}","is_vip","seller",this);'>是</a>
-						{else:}
-						<a class='blue' href='javascript:void(0);' onclick='set_type("{$item['id']}","is_vip","seller",this);'>否</a>
-						{/if}
-					</td>
-					<td>
-						{if:$item['is_recom']==1}
-						<a class='red2' href='javascript:void(0);' onclick='set_type("{$item['id']}","is_recom","seller",this);'>是</a>
-						{else:}
-						<a class='blue' href='javascript:void(0);' onclick='set_type("{$item['id']}","is_recom","seller",this);'>否</a>
-						{/if}
-					</td>
+					<td>{echo:$item['is_vip'] == 0 ? '否':'是'}</td>
 					<td>{echo:statistics::sellCountSeller($item['id'])} 件</td>
 					<td>{echo:statistics::gradeSeller($item['id'])} 分</td>
 					<td>
@@ -138,7 +133,7 @@ $(function(){
 	var formObj = new Form('searchseller');
 	formObj.init({'search':'{$search}'});
 })
-//商户推荐(新增）
+//商户推荐
 function sellerCommend(){
 	if($('input:checkbox[name="id[]"]:checked').length > 0)
 	{
@@ -153,27 +148,10 @@ function sellerCommend(){
 		return false;
 	}
 }
-//商品导入或查询切换(新增）
-function changeAction(excel)
-{
-	if(excel)
-	{
-		$("input[name=\"action\"]").val("seller_report");
-		$("form[name=\"searchListForm\"]").attr("target", "_blank");
-	}
-	else
-	{
-		$("input[name=\"action\"]").val("seller_list");
-		$("form[name=\"searchListForm\"]").attr("target", "_self");
-	}
-}
 //商户状态修改
 function changeStatus(sid,obj)
 {
 	var lockVal = obj.value;
 	$.getJSON("{url:/member/ajax_seller_lock}",{"id":sid,"lock":lockVal});
 }
-
-
-
 </script>

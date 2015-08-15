@@ -278,9 +278,8 @@ if($("#actionimg").length>0){
 								<div class="cat-layer clearfix ">
 			                        <ul class="cat-col">
 			                        	{foreach:items=$secondCat key=$keyS item=$valS}
-											{if:$valS['hot']==1}
+										
 											{set:$hotCat[$valT['id']][] = $valS;}
-											{/if}
 										
 										<li class="cat-item">
 			                        		<h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a></h3>

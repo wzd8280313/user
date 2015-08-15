@@ -311,13 +311,14 @@ class System extends IController
 	//[网站管理][站点设置]保存
 	function save_conf()
 	{
-		if(!$_POST)
+		//错误信息
+		$form_index = IReq::get('form_index');
+		if($form_index == null)
 		{
 			$this->redirect('conf_base');
 		}
 
-		//错误信息
-		$form_index = IReq::get('form_index');
+		
 		switch($form_index)
 		{
 			case "base_conf":
@@ -364,7 +365,6 @@ class System extends IController
 							}
 						}
 					}
-
 				}
 				$_POST = array('index_slide' => serialize( $config_slide ));
 			}
@@ -394,7 +394,7 @@ class System extends IController
 				//清空导航栏
 				$guideObj->del('all');
 
-				if($data)
+				if(!empty($data))
 				{
 					//插入数据
 					foreach($data as $order => $rs)
@@ -406,6 +406,7 @@ class System extends IController
 						);
 						$guideObj->setData($dataArray);
 						$guideObj->add();
+						$guideObj->commit();
 					}
 
 					//跳转方法
@@ -433,10 +434,13 @@ class System extends IController
 				$serviceName = IFilter::act(IReq::get('service_name'));
 				$serviceQQ   = IFilter::act(IReq::get('service_qq'));
 				$data        = array();
-				foreach($serviceName as $key => $val)
-				{
-					$data[] = array('name' => $serviceName[$key],'qq' => $serviceQQ[$key]);
-				}
+				if(is_array($serviceName)!=0){
+					foreach($serviceName as $key => $val)
+					{
+						$data[] = array('name' => $serviceName[$key],'qq' => $serviceQQ[$key]);
+					}
+				}else $data=array();
+				
 				$_POST = array('service_online' => serialize( $data ));
 			}
 			break;

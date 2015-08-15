@@ -40,6 +40,7 @@ function getArray(nameVal,sort)
 	}
 	return jsonData;
 }
+window.siteUrl = location.host=='localhost' ? location.origin+'/iwebshop/' : location.origin+'/';
 window.loadding = function(message){var message = message ? message : '正在执行，请稍后...';art.dialog({"id":"loadding","lock":true,"fixed":true,"drag":false}).content(message);}
 window.unloadding = function(){art.dialog({"id":"loadding"}).close();}
 window.tips = function(mess){art.dialog.tips(mess);}
@@ -348,4 +349,39 @@ function createGoodsCategory(categoryObj)
 		var goodsCategoryHtml = template.render('categoryButtonTemplate',{'templateData':item});
 		$('#__categoryBox').append(goodsCategoryHtml);
 	}
+}
+
+//设置字段状态0和1切换
+/*
+ * @id int 数据id
+ * @field str 字段
+ * @table str 操作的表
+ * @obj object 
+ * 
+ */
+function set_type(id,field,table,obj)
+{
+	var rd = Math.random();
+	url = window.siteUrl + 'admin_common/set_type/';
+	$.getJSON(url,{id:id,field:field,table:table},function(content){
+		if(content.isError ==  false)
+		{
+			if(content.succ == 0)
+			{
+				obj.innerHTML = '是';
+				$(obj).removeClass('blue');
+				$(obj).addClass('red2');
+			}
+			else
+			{
+				obj.innerHTML = '否';
+				$(obj).removeClass('red2');
+				$(obj).addClass('blue');
+			}
+		}
+		else
+		{
+			alert(content.message);
+		}
+	});
 }

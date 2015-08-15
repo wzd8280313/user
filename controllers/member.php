@@ -704,6 +704,18 @@ class Member extends IController
 				$sellerRow['paper_img'] = $photoInfo['paper_img']['img'];
 			}
 		}
+		
+		//商户logo上传
+		if(isset($_FILES['logo_img']['name']) && $_FILES['logo_img']['name'])
+		{
+			$uploadObj = new PhotoUpload();
+			$uploadObj->setIterance(false);
+			$photoInfo = $uploadObj->run();
+			if(isset($photoInfo['logo_img']['img']) && file_exists($photoInfo['logo_img']['img']))
+			{
+				$sellerRow['logo_img'] = $photoInfo['logo_img']['img'];
+			}
+		}
 
 		//添加新会员
 		if(!$seller_id)
@@ -810,4 +822,36 @@ class Member extends IController
 			$result = Hsms::send($sellerRow['mobile'],$content);
 		}
 	}
+	
+	//商户推荐vip
+	public function seller_commend(){
+		$sellerIds = array();
+		foreach($_POST['id'] as $v){
+			$sellerIds[] = IFilter::act($v,'int');
+		}
+		$sellerIds = implode(',',$sellerIds);
+		$sellerObj = new IModel('seller');
+		$sellerObj->setData(array('is_recom'=>1));
+		$sellerObj->update('id in ('.$sellerIds.')');
+		$this->redirect('seller_list');
+	}
+	//商户列表
+	public function seller_list(){
+		$search = IReq::get('search');
+		if(is_array($search)){
+			foreach($search as $k=>$v){
+				$k = IFilter::act($k,'strict');
+				$v = IFilter::act($v,'strict');
+				$search[$k] = $v;
+			}
+			$this->where = getSearchCondition($search);
+		}else{
+			$search = IFilter::act($search,'strict');
+			$keywords = IFilter::act(IReq::get('keywords'));
+			$this->where    = ($search && $keywords) ? $search.' = "'.$keywords.'"' : 1;
+		}
+		$this->redirect('seller_list');
+	}
+
+	
 }

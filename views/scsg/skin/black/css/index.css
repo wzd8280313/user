@@ -299,8 +299,12 @@ display: block;
 .big-pro {
 margin-top:10px;
 width: 1190px;
-height: 120px;
 overflow: hidden;
+}
+.big-pro .seller_list{
+	background:#f7f7f7;
+	margin-bottom:8px;
+	width:100%;
 }
 .big-shop {
 margin-top:10px;

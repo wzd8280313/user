@@ -189,7 +189,7 @@ class IModel
 	 * @param array or int $limit 显示数据条数 默认(500)
 	 * @return array 查询结果
 	 */
-	public function query($where=false,$cols='*',$orderBy=false,$desc='DESC',$limit=500,$printSql=0)
+	public function query($where=false,$cols='*',$orderBy=false,$desc='DESC',$limit=500,$print=0)
 	{
 		//字段拼接
 		if(is_array($cols))
@@ -220,8 +220,16 @@ class IModel
 			$limit = $limit ? $limit : 500;
 			$sql.=' limit ' . $limit;
 		}
-		if($printSql)echo $sql;
+		if($print)echo $sql;
 		return $this->db->query($sql);
+	}
+	//开启事务
+	public function begin_trans(){
+		return $this->db->autoCommit();
+	}
+	//提交事务
+	public function commit(){
+		return $this->db->commit();
 	}
 
 	/**
@@ -240,5 +248,20 @@ class IModel
 	public function getField($where,$field){
 		$res = $this->getObj($where,$field);
 		return $res[$field];
+	}
+	//获取单个字段多条数据，结果类似于array(1,2,3,)
+	//@where array 
+	public function getFields($where,$field){
+		$res = $this->select($where,$field);
+		$returnData = array();
+		foreach($res as $v){
+			if(!in_array($v[$field],$returnData))array_push($returnData,$v[$field]);
+		}
+		return $returnData;
+		
+	}
+	//
+	public function db_query($sql){
+		return $this->db->query($sql);
 	}
 }

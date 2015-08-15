@@ -395,7 +395,8 @@ class Seller extends IController
 		$home_url    = IFilter::act(IReq::get('home_url'));
 		$tax         = IFilter::act(IReq::get('tax'),'float');
 		$freight_collect = IFilter::act(IReq::get('freight_collect'),'int');
-
+		$goods_cat = implode(',',IFilter::act(IReq::get('goods_cat')));
+		
 		//操作失败表单回填
 		if(isset($errorMsg))
 		{
@@ -418,6 +419,7 @@ class Seller extends IController
 			'home_url'  => $home_url,
 			'tax'      => $tax,
 			'freight_collect'=>$freight_collect,
+			'goods_cat' => $goods_cat,
 		);
 		//商户资质上传
 		if((isset($_FILES['paper_img']['name']) && $_FILES['paper_img']['name']) || (isset($_FILES['logo_img']['name']) && $_FILES['logo_img']['name']))
