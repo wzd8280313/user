@@ -39,11 +39,9 @@
 					<tr>
 						<th>咨询类型：</th>
 						<td>
-							<label><input class="radio" type="radio" value="0" name="type" checked=checked />商品咨询</label>
-							<label><input class="radio" type="radio" value="1" name="type" />库存及配送</label>
-							<label><input class="radio" type="radio" value="2" name="type" />支付问题</label>
-							<label><input class="radio" type="radio" value="3" name="type" />发票及保修</label>
-							<label><input class="radio" type="radio" value="4" name="type" />促销及商品</label>
+							{query:name=refer_type where=is_open eq 1 order=sort ASC limit=5}
+							<label><input class="radio" type="radio" value="{$item['id']}" name="type" checked=checked />{$item['name']}</label>
+							{/query}
 						</td>
 					</tr>
 					<tr>

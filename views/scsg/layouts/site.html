@@ -152,12 +152,18 @@
 <DIV class="advbox" >
 	<DIV style="display: none;" class="dt_small">
 		<DIV style="display: none;" class="dt_toBig"></DIV>
-			<A href="#" target="_blank"><IMG alt="jquery广告图片缩略图" src="{skin:images/1325.jpg}" width="1190" height="60"></A> 
-		</DIV>
+		{query:name=ad_manage as ad fields=ad.name,ad.link,ad.content where=position_id eq 20 item=$adData}
+			
+		{/query}
+			<A href="{$adData['name']}" target="_blank"><IMG alt="jquery广告图片缩略图" src="{url:$adData['content']}" width="1190" ></A> 
+	</DIV>
 	<DIV class="dt_big">
 		<DIV class="dt_toSmall"></DIV>
-		<A href="#" target="_blank">
-			<IMG id="actionimg" alt="jquery广告图片大图" src="{skin:images/sa11.jpg}" width="1190" height="500"></A> 
+		{query:name=ad_manage as ad fields=ad.name,ad.link,ad.content where=position_id eq 19 item=$adBig}
+			
+		{/query}
+		<A href="{$adBig['name']}" target="_blank">
+			<IMG id="actionimg" alt="jquery广告图片大图" src="{url:$adBig['content']}" width="1190" ></A> 
 	</DIV>
 </DIV>
 <SCRIPT type="text/javascript">
@@ -169,8 +175,7 @@ function AdvClick(){
 		$(".dt_big").stop().slideUp(a);
 		$(".dt_toSmall").stop().fadeOut(0);
 		$(".dt_toBig").delay(a*2).fadeIn(0)
-	});$
-	(".dt_toBig").click(function(){
+	});$(".dt_toBig").click(function(){
 		$(".dt_big").delay(a).slideDown(a);
 		$(".dt_small").stop().slideUp(a);
 		$(".dt_toBig").stop().fadeOut(0);
@@ -198,7 +203,7 @@ if($("#actionimg").length>0){
 }
 </SCRIPT>
 
-<!--下拉广告图
+下拉广告图-->
 <!--search-->
 <div class="search">
 	<!--w1190 clearfix-->
@@ -492,7 +497,7 @@ function joinCart_list(id)
 }
 </script>
 <div class="copyright">
-<div class="footer" style="text-align:center"><p class="links"><a href="">关于我们</a>|<a href="">常见问题</a>|<a href="">安全交易</a>|<a href="">购买流程</a>|<a href="">如何付款</a>|<a href="">联系我们</a>|<a href="">合作提案</a></p><p class="copyright">Powered by <a href="http://www.aircheng.com/">耐耐云商科技</a></p>Copyright © 2005-2014 <a class="copyys" target="_blank" href="http://www.miibeian.gov.cn/">晋ICP备01000010号</a></div></div>
+<div class="footer" style="text-align:center"><p class="links"><a href="">关于我们</a>|<a href="">常见问题</a>|<a href="">安全交易</a>|<a href="">购买流程</a>|<a href="">如何付款</a>|<a href="">联系我们</a>|<a href="">合作提案</a></p><p class="copyright">Powered by <a href="">耐耐云商科技</a></p>Copyright © 2005-2014 <a class="copyys" target="_blank" href="http://www.miibeian.gov.cn/">晋ICP备01000010号</a></div></div>
 
 </body>
 </html>

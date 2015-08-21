@@ -48,6 +48,8 @@ class hookCreateAction extends IInterceptorBase
 		$resultData = array_merge($orderCreateData,$orderCancelData);
 		if($resultData)
 		{
+			$tb_order = new IModel('order');
+			$tb_order_log = new IModel('order_log');
 			foreach($resultData as $key => $val)
 			{
 				$type     = $val['type_data'];
@@ -55,7 +57,7 @@ class hookCreateAction extends IInterceptorBase
 				$order_no = $val['order_no'];
 
 				//oerder表的对象
-				$tb_order = new IModel('order');
+				
 				$tb_order->setData(array(
 					'status'          => $type,
 					'completion_time' => ITime::getDateTime(),
@@ -63,7 +65,7 @@ class hookCreateAction extends IInterceptorBase
 				$tb_order->update('id='.$order_id);
 
 				//生成订单日志
-				$tb_order_log = new IModel('order_log');
+				
 				$action = '作废';
 				$note   = '订单【'.$order_no.'】作废成功';
 

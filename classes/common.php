@@ -221,4 +221,5 @@ class Common
     	);
     	return isset($data[$status]) ? $data[$status] : '未知状态';
     }
+    
 }

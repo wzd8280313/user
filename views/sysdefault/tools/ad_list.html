@@ -1,3 +1,5 @@
+
+	{set:$conArr = IFilter::act(IReq::get('search'),'strict');$where = getSearchCondition($conArr);}
 <div class="headbar">
 	<div class="position"><span>工具</span><span>></span><span>广告管理</span><span>></span><span>广告列表</span></div>
 	<div class="operating">
@@ -5,6 +7,20 @@
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="searchListForm">
+			<input type='hidden' name='controller' value='tools' />
+			<input type='hidden' name='action' value='ad_list' />
+			<select class="auto" name="search[position_id]">
+				<option value="">选择广告位</option>
+				{foreach:items = Api::run('getAdPosition') }
+				<option value="{$item['id']}">{$item['name']}</option>
+				{/foreach}
+			</select>
+			<button class="btn" type="submit"  onclick='changeAction(false)'><span class="sel">筛 选</span></button>
+		</form>
+	</div>
+	
 	<div class="field">
 		<table class="list_table">
 			<col width="40px" />
@@ -39,7 +55,7 @@
 			<col width="180px" />
 			<col />
 			<tbody>
-				{query: name=ad_manage as ad,ad_position as adp fields=adp.name as adp_name,ad.* where=ad.position_id eq adp.id order=ad.order ASC}
+				{query: name=ad_manage as ad,ad_position as adp fields=adp.name as adp_name,ad.* where= $where and ad.position_id eq adp.id order=ad.order ASC}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
 					<td>{$item['name']}</td>

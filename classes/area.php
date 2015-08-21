@@ -32,4 +32,23 @@ class area
 		}
 		return $result;
 	}
+	
+	/**
+	 * 获取省市区地址全称
+	 * @param int 区域代码
+	 */
+	public static function allName(){
+		$result = array();
+		$paramStr = func_get_args();
+		$paramStr = $paramStr[0];
+		$areaDB = new IModel('areas');
+		if(strlen($paramStr)!=6)
+			return false;
+		$provinceCode = substr($paramStr,0,2).'0000';
+		$cityCode = substr($paramStr,0,4).'00';
+		$result['province'] = $areaDB->getField('area_id = '.$provinceCode,'area_name');
+		$result['city'] = $areaDB->getField('area_id = '.$cityCode,'area_name');
+		$result['area'] = $areaDB->getField('area_id = '.$paramStr,'area_name');
+		return $result;
+	}
 }

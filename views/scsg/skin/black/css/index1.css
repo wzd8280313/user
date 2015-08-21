@@ -528,7 +528,7 @@ dl.sorting{ position:relative;width:688px;border-bottom:1px solid #e5e5e5;paddin
 				.display_list li .handle label.btn_gray_m{float:left;margin-bottom:7px;text-align:left}
 					.display_list li .handle label.btn_gray_m input{font-weight:normal;color:#333}
 					.display_list li .handle label.btn_gray_m img{margin:3px 3px 5px 0}
-	.display_list li.win{float:left;width:205px;height:352px;padding:0;margin:20px 15px 10px;text-align:left;border:none;_margin:20px 18px 10px;overflow:hidden}
+	.display_list li.win{float:left;width:205px;height:335px;padding:0;margin:10px 15px 10px;text-align:left;border:none;_margin:20px 18px 10px;overflow:hidden}
 		.display_list li.win .pic{width:201px;height:201px;margin:0 0 5px;_width:196px}
 		.display_list li.win .title,.display_list li.win .price{float:left;width:190px;padding:5px}
 		.display_list li.win .handle{width:204px}
@@ -537,7 +537,7 @@ dl.sorting{ position:relative;width:688px;border-bottom:1px solid #e5e5e5;paddin
 			.display_list li.win .title span.grade{margin-top:0}
 			.display_list li.win .handle label.btn_gray_m{ display:inline-block}
 		.display_list li.win .handle{width:204px;}
-		.display_list li.win .price{margin-top:-108px;*margin-top:-98px}
+		.display_list li.win .price{margin-top:-85px;*margin-top:-75px}
 			.display_list li.win .price s{display:inline;margin-left:13px}
 		.display_list li.win .handle label.btn_gray_m img{*display:none}
 /* display_list style end */

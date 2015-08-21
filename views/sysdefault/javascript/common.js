@@ -385,3 +385,37 @@ function set_type(id,field,table,obj)
 		}
 	});
 }
+
+/*
+ * 编辑页面自动嵌入数据
+ */
+function edit_info_init(data,formName){
+	/*if(areaTemplate){
+		//初始化地域联动
+		template.compile("areaTemplate",areaTemplate);
+		//城市设置
+		if(data.area)
+			createAreaSelect('province',0,data.province);
+			createAreaSelect('city',data.province,data.city);
+			createAreaSelect('area',data.city,data.area);
+		else{
+			createAreaSelect('province',0,"");
+		}
+	}*/
+	//修改模式
+	var formObj = new Form(formName);
+	formObj.init(data);
+
+	//锁定字段一旦注册无法修改
+	if(data.lockField)
+	{
+		var lockCols =data.lockField;
+		for(var index in lockCols)
+		{
+			$('input:text[name="'+lockCols[index]+'"]').addClass('readonly');
+			$('input:text[name="'+lockCols[index]+'"]').attr('readonly',true);
+		}
+	}
+		
+
+}

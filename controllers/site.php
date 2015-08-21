@@ -231,6 +231,7 @@ class Site extends IController
 		$goods_id   = IFilter::act(IReq::get('goods_id','post'),'int');
 		$captcha    = IFilter::act(IReq::get('captcha','post'));
 		$question   = IFilter::act(IReq::get('question','post'));
+		$type = IFilter::act(IReq::get('type','post'),'int');
 		$callback   = IReq::get('callback');
 		$message    = '';
 
@@ -283,6 +284,7 @@ class Site extends IController
 			$dataArray = array(
 				'question' => $question,
 				'goods_id' => $goods_id,
+				'type'=>$type,
 				'user_id'  => isset($this->user['user_id']) ? $this->user['user_id'] : 0,
 				'time'     => ITime::getDateTime(),
 			);

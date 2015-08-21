@@ -37,11 +37,12 @@
 				<col width="160px" />
 				<col width="130px" />
 				<col width="160px" />
+				<col width="160px" />
 				<col />
 			</colgroup>
 			<tbody>
 				{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query: name=refundment_doc as rd join=left join order_goods as og on og.order_id eq rd.order_id where=rd.if_del eq 0 and rd.pay_status eq 0 and rd.goods_id eq og.goods_id and rd.product_id eq og.product_id order=id desc page=$page fields=og.goods_array,og.goods_nums,rd.*}
+				{query: name=refundment_doc as rd join=left join order_goods as og on og.order_id eq rd.order_id where=rd.if_del eq 0 and rd.pay_status in (0,3,4) and rd.goods_id eq og.goods_id and rd.product_id eq og.product_id order=id desc page=$page fields=og.goods_array,og.goods_nums,rd.*}
 				{set:$goods = JSON::decode($item['goods_array'])}
 				<tr>
 					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
@@ -49,6 +50,7 @@
 					<td>{$item['order_no']}</td>
 					<td>{$item['amount']}</td>
 					<td>{$item['time']}</td>
+					<td>{echo:Order_Class::refundmentText($item['pay_status'])}</td>
 					<td>
 						{$goods['name']} X {$item['goods_nums']}件
 						{if:$item['seller_id']}

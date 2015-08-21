@@ -119,6 +119,7 @@ class Order extends IController
 
 	 	$this->redirect('refundment_list');
 	}
+
 	//删除申请退款单
 	public function refundment_doc_del()
 	{
@@ -150,16 +151,21 @@ class Order extends IController
 		$refundment_id = IFilter::act(IReq::get('id'),'int');
 		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
 		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
+		$status=IFilter::act(IReq::get('status'),'int');
+		$delivery_add = IFilter::act(IReq::get('delivery_add'),'int');
 
 		//获得refundment_doc对象
 		$tb_refundment_doc = new IModel('refundment_doc');
-		$tb_refundment_doc->setData(array(
-			'pay_status'   => $pay_status,
-			'dispose_idea' => $dispose_idea,
-			'dispose_time' => ITime::getDateTime(),
-			'admin_id'     => $this->admin['admin_id'],
-		));
-
+		$dispose_time_name = !$status ? 'dispose_time' : 'dispose_time2';
+		$setData=array(
+				'pay_status'   => $pay_status,
+				'dispose_idea' => $dispose_idea,
+				$dispose_time_name => ITime::getDateTime(),
+				'admin_id'     => $this->admin['admin_id'],
+		);
+		if($delivery_add)$setData['delivery_add']=$delivery_add;
+		$tb_refundment_doc->setData($setData);
+		
 		if($refundment_id)
 		{
 			$tb_refundment_doc->update('id='.$refundment_id);
@@ -276,6 +282,7 @@ class Order extends IController
 		}
 		die('订单数据不存在');
 	}
+
 	/**
 	 * @brief 保存退款单页面
 	 */
@@ -325,8 +332,9 @@ class Order extends IController
 			$refunds_id = $tb_refundment_doc->add();
 			$tb_refundment_doc->commit();
 		}
+		
+			$result = Order_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
 
-		$result = Order_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
 		if($result)
 		{
 			//记录操作日志

@@ -1,4 +1,7 @@
 {set:$orderStatus = Order_class::getOrderStatus(array('status' => $status,'pay_type' => $pay_type,'distribution_status' => $distribution_status))}
+{set:$id=IFilter::act(IReq::get('id'),'int');}
+{set:$cancle = Order_Class::is_cancle($id);}
+
 <div class="headbar clearfix">
 	<div class="position">订单<span>></span><span>订单管理</span><span>></span><span>订单查看</span></div>
 	<ul class="tab" name="menu1">
@@ -482,8 +485,10 @@ function initButton()
 	$('#ctrlButtonArea button').addClass('inactive');
 
 	//作废
+	{if:$cancle}
 	$('#to_cancel').removeAttr('disabled');
 	$('#to_cancel').removeClass('inactive');
+	{/if}
 
 	//完成
 	{if:in_array($orderStatus,array(11,3))}

@@ -600,4 +600,12 @@ return array(
 			'where'=> 'is_delete = 0 and status = 1',
 		)
 	),
+	//获取所有广告位
+	'getAdPosition' => array(
+		'query' => array(
+			'name'=>'ad_position as ap',
+			'fields'=>'ap.id,ap.name,ap.status',
+			'limit'=> 20,
+		)
+	),
 );

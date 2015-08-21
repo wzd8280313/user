@@ -386,7 +386,69 @@ class Comment extends IController
 		}
 		$this->refer_list();
 	}
-
+	/**
+	 * 添加、编辑咨询类型
+	 */
+	public function refer_type_edit(){
+		$refer_type_id = IFilter::act(IReq::get('id'),'int');
+		if($refer_type_id)
+		{
+			$refer_type_obj = new IModel('refer_type');
+			$this->referTypeRow = $refer_type_obj->getObj('id = '.$refer_type_id);
+		}
+		$this->redirect('refer_type_edit');
+	} 
+	/**
+	 * @添加咨询类型
+	 */
+	function refer_type_act(){
+		$typeId = IFilter::act(IReq::get('id'),'int');
+		$name = IFilter::act(IReq::get('name'));
+		$is_open = IFilter::act(IReq::get('is_open'));
+		$sort = IFilter::act(IReq::get('sort'),'int');
+		$description = IFilter::act(IReq::get('description'));
+		if(!$name)
+		{
+			$this->redirect('refer_type_list');
+			exit;
+		}
+		
+		$refer_type = new IModel('refer_type');
+		$typeInfo = array(
+					'id'=>$typeId,
+					'name'=>$name,
+					'is_open'=>$is_open,
+					'sort'=>$sort,
+					'description'=>$description
+		);
+		
+		$refer_type->setData($typeInfo);
+		if($typeId){
+			$refer_type->update('id='.$typeId);
+		}else{
+			$refer_type->add();
+		}
+		$this->redirect('refer_type_list');
+		
+	}
+	/**
+	 * 咨询类型列表
+	 */
+	public function refer_type_list(){
+		$refer_type = new IModel('refer_type');
+		$this->typeData = $refer_type->query(false,'*','sort');
+		$this->redirect('refer_type_list');
+	}
+	/**
+	 * 咨询类型删除
+	 */
+	public function refer_type_del(){
+		$id = IFilter::act(IReq::get('id'),'int');
+		$idstr = is_array($id) ? implode(',',$id) : $id;
+		$refer_type = new IModel('refer_type');
+		$refer_type->del(' id in('.$idstr.')');
+		$this->redirect('refer_type_list');
+	}
 	/**
 	 * @brief 站内消息列表
 	 */

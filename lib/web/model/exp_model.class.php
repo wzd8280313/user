@@ -1,7 +1,6 @@
 <?php
 class expImodel extends IModel{
-	
-	public function update($where){
+	public function update($where,$except=array()){
 		
 		//获取更新数据
 		$tableObj  = $this->tableData;

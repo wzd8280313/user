@@ -1,11 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file Order_Class.php
  * @brief 订单中相关的
- * @author relay
- * @date 2011-02-24
- * @version 0.6
  */
 class Order_Class
 {
@@ -247,6 +243,7 @@ class Order_Class
 		$orderGoodsObj = new IModel('order_goods');
 		$goodsObj      = new IModel('goods');
 		$productObj    = new IModel('products');
+		if(!is_array($orderGoodsId))$orderGoodsId = array($orderGoodsId);
 		$goodsList     = $orderGoodsObj->query('id in('.join(",",$orderGoodsId).') and is_send = 0','goods_id,product_id,goods_nums');
 
 		foreach($goodsList as $key => $val)
@@ -940,7 +937,19 @@ class Order_Class
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 判断快递单是否签收/
+	 * @param $deliveryData array  快递单数据（可能有多个）
+	 */
+	public static function has_accept($deliveryData){
+		foreach($deliveryData as $k=>$v){
+			//调用物流接口
+			
+		}
+		return true;
+	}
+	
 	/**
 	 * @brief 退款状态
 	 * @param int $pay_status 退款单状态数值
@@ -948,7 +957,7 @@ class Order_Class
 	 */
 	public static function refundmentText($pay_status)
 	{
-		$result = array('0' => '申请退款', '1' => '退款失败', '2' => '退款成功');
+		$result = array('0' => '申请退款', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）');
 		return isset($result[$pay_status]) ? $result[$pay_status] : '';
 	}
 
@@ -1140,6 +1149,10 @@ class Order_Class
 		$period = 6;//有效期6小时
 		$now = ITime::getNow();
 		$orderTime = ITime::getTime($orderRow['create_time']);
+		if($orderRow['pay_status']==1 && $orderRow['status']==6){//已付款、已退款可以作废
+			return true;
+		}
+		//
 		if($orderRow['pay_type']==0 || $orderRow['pay_status']==1 || $now-$orderTime<=3600*$period){
 			return false;//不可作废
 		}

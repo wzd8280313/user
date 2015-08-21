@@ -147,18 +147,31 @@
 
 		{if:$resultData}
 		{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')))}
+		{set:$seller=array();}
 		<ul class="display_list clearfix m_10">
 			{foreach:items=$resultData}
+			{if:!isset($seller[$item['seller_id']])}
+				{set:$seller[$item['seller_id']] = $item['seller_id']==0 ? '平台自营' : Api::run('getSellerInfo',$item['seller_id'],'true_name')['true_name']}
+			{/if}
 			<li class="clearfix {echo:search_goods::getListShow(IFilter::act(IReq::get('show_type')))}">
 				<div class="pic">
 					<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" title="{$item['name']}" /></a>
 				</div>
-				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
+				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span>
+				</h3>
+				{if:$item['seller_id']!=0}
+					<a target='blank' href="{url:/site/home/id/$item['seller_id']}" style='margin-left:5px;'>{$seller[$item['seller_id']]}</a>
+				{else:}
+					<a  style='margin-left:5px;text-decoration:none;'>{$seller[$item['seller_id']]}</a>
+				{/if}
+				<!--
 				<div class="handle">
 					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/shopping.gif}" width="15" height="15" /><input type="button" value="加入购物车" onclick="joinCart_list({$item['id']});"></label>
 					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/favorites.gif}" width="15" height="14" /><input type="button" value="收藏" onclick="favorite_add_ajax('{url:/simple/favorite_add}','{$item['id']}',this);"></label>
 				</div>
+				-->
 				<div class="price">￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
+				
 			</li>
 			{/foreach}
 		</ul>

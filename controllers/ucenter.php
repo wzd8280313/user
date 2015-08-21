@@ -276,7 +276,7 @@ class Ucenter extends IController
         $goodsOrderDB = new IModel('order_goods');
         $orderRow = $orderDB->getObj("id = ".$order_id." and user_id = ".$user_id);
 
-        //判断订单是否付款
+        //判断订单是否付款（已付款且非退款）
         if($orderRow && Order_Class::isRefundmentApply($orderRow))
         {
         	$goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id.' and order_id = '.$order_id);
@@ -287,9 +287,9 @@ class Ucenter extends IController
         		$refundsDB = new IModel('refundment_doc');
 
         		//判断是否重复提交申请
-        		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 and pay_status = 0'))
+        		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 '))
         		{
-        			$message = '您已经对此商品提交了退款申请，请耐心等待';
+        			$message = '请不要重复提交申请';
 			        $this->redirect('refunds',false);
 			        Util::showMessage($message);
         		}
@@ -353,13 +353,16 @@ class Ucenter extends IController
         $this->redirect('refunds');
     }
     /**
-     * @brief 查看退款申请详情
+     * @brief 查看退款申请详情（此处做了更改）
      */
     public function refunds_detail()
     {
+    	$timeLimit = 7;//限时7天
         $id = IFilter::act( IReq::get('id'),'int' );
         $refundDB = new IModel("refundment_doc");
-        $refundRow = $refundDB->getObj("id = ".$id." and user_id = ".$this->user['user_id']);
+        $where = "id = ".$id." and user_id = ".$this->user['user_id'];
+        $refundRow = $refundDB->getObj($where);
+        
         if($refundRow)
         {
         	//获取商品信息
@@ -369,6 +372,16 @@ class Ucenter extends IController
         	{
         		$refundRow['goods'] = $orderGoodsRow;
         		$this->data = $refundRow;
+        		if($this->data['pay_status']==3){
+        			$this->endTime = strtotime($this->data['dispose_time']) + $timeLimit*24*3600;
+        			$this->endTime = strtotime('now')>$this->endTime ? false : $this->endTime;
+        			if(!$this->endTime){//未按时上传，状态更新为失败
+        				$refundDB->setData(array('pay_status'=>6));
+        				$refundDB->update($where);
+        				$this->data['pay_status']=6;
+        			}
+        		}
+        		
         	}
         	else
         	{
@@ -402,7 +415,40 @@ class Ucenter extends IController
 		}
 		$this->redirect('refunds');
 	}
-
+	/**
+	 * 退货处理，用户上传退货单据
+	 * 
+	 */
+	public function refunds_delivery(){
+		$refundment_id = IFilter::act(IReq::get('id'),'int');
+		$delivery_com = IFilter::act(IReq::get('delivery_com'));
+		$delivery_code=IFilter::act(IReq::get('delivery_code'));
+		$delivery_img=IFilter::act(IReq::get('delivery_img'));
+		$data = array(
+				'delivery_com'=>$delivery_com,
+				'delivery_code'=>$delivery_code,
+				'delivery_time'=>ITime::getDateTime(),
+				'pay_status'=>4
+				
+		);
+		if(isset($_FILES['delivery_img']['name']) && $_FILES['delivery_img']['name'])
+		{
+			$uploadObj = new PhotoUpload();
+			$uploadObj->setIterance(false);
+			$photoInfo = $uploadObj->run();
+			if(isset($photoInfo['delivery_img']['img']) && file_exists($photoInfo['delivery_img']['img']))
+			{
+				$data['delivery_img'] = $photoInfo['delivery_img']['img'];
+			}
+			
+		}
+		if($refundment_id){
+			$refundsDB = new IModel('refundment_doc');
+			$refundsDB->setData($data);
+			$refundsDB->update('id='.$refundment_id.' AND user_id='.$this->user['user_id'].' AND pay_status = 3');
+		}
+		$this->redirect('refunds');
+	}
     /**
      * @brief 建议中心
      */

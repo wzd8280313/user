@@ -31,4 +31,5 @@ Class Admin_common extends IController{
 			echo JSON::encode(array('isError'=>1,'message'=>'设置失败'));
 		}
 	}
+
 }

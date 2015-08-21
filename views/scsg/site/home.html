@@ -84,7 +84,7 @@
 					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/shopping.gif}" width="15" height="15" /><input type="button" value="加入购物车" onclick="joinCart_list({$item['id']});"></label>
 					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/favorites.gif}" width="15" height="14" /><input type="button" value="收藏" onclick="favorite_add_ajax('{url:/simple/favorite_add}','{$item['id']}',this);"></label>
 				</div>
-				<div class="price">￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
+				<div class="price" style='margin-top:-108px;'>￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
 			</li>
 			{/foreach}
 		</ul>

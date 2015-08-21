@@ -1,12 +1,6 @@
 {set:$seller_id = IFilter::act(IReq::get('seller_id'),'int')}
 {query:name=expresswaybill where = is_close eq 0 fields = id,name items = $printType /}
 <div class="container">
-	<table class="m_10" width="100%" cellspacing="0" cellpadding="0" border="0">
-		<col />
-		<tr>
-			<td align="left"><img src="{skin:images/admin/logo.gif}" width="250" height="53" /></td>
-		</tr>
-	</table>
 
 	<div class="container">
 		<form action='{url:/order/expresswaybill_print}' method='post' id='express_print'>
