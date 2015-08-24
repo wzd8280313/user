@@ -357,7 +357,8 @@ class Ucenter extends IController
      */
     public function refunds_detail()
     {
-    	$timeLimit = 7;//限时7天
+    	$siteConfig = new Config('site_config');
+    	$timeLimit=isset($siteConfig->refunds_limit_time) ? intval($siteConfig['refunds_limit_time']) : 7;
         $id = IFilter::act( IReq::get('id'),'int' );
         $refundDB = new IModel("refundment_doc");
         $where = "id = ".$id." and user_id = ".$this->user['user_id'];
@@ -375,11 +376,6 @@ class Ucenter extends IController
         		if($this->data['pay_status']==3){
         			$this->endTime = strtotime($this->data['dispose_time']) + $timeLimit*24*3600;
         			$this->endTime = strtotime('now')>$this->endTime ? false : $this->endTime;
-        			if(!$this->endTime){//未按时上传，状态更新为失败
-        				$refundDB->setData(array('pay_status'=>6));
-        				$refundDB->update($where);
-        				$this->data['pay_status']=6;
-        			}
         		}
         		
         	}

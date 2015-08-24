@@ -523,6 +523,7 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
+		
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}
@@ -787,6 +788,8 @@ class Site extends IController
 		$data             = array();
 		$data['point']    = IFilter::act(IReq::get('point'),'float');
 		$data['contents'] = IFilter::act(IReq::get("contents"),'content');
+		$data['sellerid'] = IFilter::act(IReq::get('sellerid'),'int');
+		$data['sellerid']=1;
 		$data['status']   = 1;
 
 		if($data['point']==0)
@@ -814,10 +817,19 @@ class Site extends IController
 			$goodsDB = new IModel('goods');
 			$goodsDB->setData(array(
 				'comments' => 'comments + 1',
-				'grade'    => 'grade + '.$commentRow['point'],
+				'grade'    => 'grade + '.$data['point'],
 			));
 			$goodsDB->update('id = '.$commentRow['goods_id'],array('grade','comments'));
 
+			
+			
+			//更新seller表，point 、num
+			$sellerDB = new IModel('seller');
+			$sellerDB->setData(array(
+				'point'=>'point + '.$data['point'],
+				'num'=>'num + 1',
+			));
+			$sellerDB->update('id = '.$data['sellerid'],array('point','num'));
 			echo "success";
 		}
 		else

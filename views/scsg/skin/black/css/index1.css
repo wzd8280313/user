@@ -114,8 +114,8 @@ span.grade{display:inline-block;width:70px;height:15px;background:url(../images/
 /* position style end */
 .wrapper{margin-bottom:10px}
 body.second .wrapper{border-top:2px solid #000}
-.main{width:980px}
-.sidebar{width:200px}
+.main{width:950px}
+.sidebar{width:230px}
 	.wrapper .box{border:1px #e1e1e1 solid}
 		.wrapper .box .title{height:31px;border-bottom:1px #e1e1e1 solid;line-height:30px}
 		.wrapper .box .title2{height:36px;border-bottom:1px #e1e1e1 solid;line-height:36px}
@@ -166,7 +166,7 @@ body.second .wrapper{border-top:2px solid #000}
 		.sidebar .box2 .title h2{margin-left:15px;font-size:14px;text-align:left;line-height:32px;color:#d34c02}
 /* ul.list style start */
 ul.list{padding:6px 6px 4px}
-	ul.list li{height:15px;line-height:15px;margin:0 0 5px;padding:8px 0 0 9px;text-align:left;background:url(../images/front/sprites.gif) -290px -185px no-repeat;overflow:hidden}
+	ul.list li{margin:0 0 5px;padding:8px 0 0 9px;text-align:left;background:url(../images/front/sprites.gif) -290px -185px no-repeat;overflow:hidden}
 /* ul.list style end */
 /* prolist style start */
 ul.prolist li{float:left;display:inline;width:175px;height:238px;margin:10px 1px 10px 9px;text-align:left}
@@ -410,6 +410,7 @@ a.btn_pay{display:inline-block;width:119px;height:37px;margin-right:20px;backgro
 	.orange_title{height:31px;line-height:31px;border:1px solid #fee1cd;text-align:left;font-size:14px;background:url(../images/front/sprites_2.gif) 0 -774px repeat-x}
 		.orange_title strong{display:inline-block;height:31px;margin-left:14px;padding-left:12px;color:#c15408;background:url(../images/front/sprites_2.gif) -184px -714px no-repeat}
 	/* orange_title style end */
+.title a{color:#638C0B}
 /* common title style end */
 /* piclist_2 style start */
 ul.piclist_2{padding:5px 11px}
@@ -606,7 +607,7 @@ span.sel{padding-right:18px;background:url(../images/front/ucenter/sel.gif) righ
 .summary{float:right;width:700px;text-align:left}
 	.summary h2{font-size:14px;border-bottom:1px dashed #ddd;padding:5px 0;color:#333}
 	.summary ul li{padding-left:6px;margin:10px 0;line-height:20px;color:#636363}
-	.summary div.current{padding:10px 20px;border:1px solid #fdb888;background:#ffffe5}
+	.summary div.current{padding:10px 20px;}
 	.summary li.current{padding:0 0 2px 2px;border-color:#ffe4ba}
 		.summary ul li .price{margin-right:5px;font:bold 24px "Microsoft YaHei",Arial, Tahoma;vertical-align:top;*vertical-align:middle}
 		.favorite,.time{display:inline-block;height:14px;line-height:14px;margin-left:35px;padding:2px 0 2px 22px;background:url(../images/front/sprites_2.gif) -57px -199px no-repeat}

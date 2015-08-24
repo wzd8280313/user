@@ -29,5 +29,7 @@
   'service_online' => 'a:0:{}',
   'order_finish_time' => '',
   'order_cancel_time' => '',
+	'refunds_limit_time'=>'',//退款期限
+	'refunds_seller_time'=>'3',//后台退款期限，超过则自动退款
   'store_num_warning' => '10',
 )?>

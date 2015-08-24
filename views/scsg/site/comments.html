@@ -30,6 +30,7 @@
 				<caption><img src="{skin:images/front/comments.gif}" width="88" height="23" alt="我要评论" /></caption>
 				<col width="120px" />
 				<col />
+				<input type='hidden' name='sellerid' value="{$item['seller_id']}"/>
 				<tr>
 					<th>评论等级：</th>
 					<td>
@@ -76,7 +77,8 @@ function comment_add()
 	}
 
 	var contents=$("#contents").val();
-	var data={'point':point,'contents':contents,'id':{$id}};
+	var sellerid = $('input[name=sellerid]').val();
+	var data={'point':point,'contents':contents,'id':{$id},'sellerid':sellerid};
 	$.post("{url:/site/comment_add/id/$id}",data,function(c)
 	{
 		if(c==='success')

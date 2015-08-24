@@ -785,7 +785,7 @@ class Seller extends IController
 	 			$this->redirect('refundment_show',false);
 	 		}
 	 	}
-
+	 	
 	 	if(!$data)
 		{
 			$this->redirect('refundment_list');
@@ -795,32 +795,57 @@ class Seller extends IController
 	//商品退款操作
 	function refundment_update()
 	{
-		$id           = IFilter::act(IReq::get('id'),'int');
-		$pay_status   = IFilter::act(IReq::get('pay_status'),'int');
-		$dispose_idea = IFilter::act(IReq::get('dispose_idea'));
+		$id = IFilter::act(IReq::get('id'),'int');
+		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
+		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
+		$status=IFilter::act(IReq::get('status'),'int');
+		$delivery_add = IFilter::act(IReq::get('delivery_add'),'int');
 
 		//商户处理退款
 		if($id && Order_Class::isSellerRefund($id,$this->seller['seller_id']) == 2)
 		{
 			$tb_refundment_doc = new IModel('refundment_doc');
-			$updateData = array(
-				'dispose_time' => ITime::getDateTime(),
-				'dispose_idea' => $dispose_idea,
-				'pay_status'   => $pay_status,
+			$dispose_time_name = !$status ? 'dispose_time' : 'dispose_time2';
+			$setData=array(
+					'pay_status'   => $pay_status,
+					'dispose_idea' => $dispose_idea,
+					$dispose_time_name => ITime::getDateTime(),
+					'admin_id'     => $this->admin['admin_id'],
 			);
-			$tb_refundment_doc->setData($updateData);
+			
+			if($delivery_add)$setData['delivery_add']=$delivery_add;
+			$tb_refundment_doc->setData($setData);
 			$tb_refundment_doc->update('id = '.$id);
-
-			if($pay_status == 2)
-			{
-				$result = Order_Class::refund($id,$this->seller['seller_id'],'seller');
-				if(!$result)
-				{
-					die('退款失败');
-				}
-			}
 		}
 		$this->redirect('refundment_list');
+	}
+	/**
+	 * @brief 退款单页面
+	 */
+	public function order_refundment()
+	{
+		//去掉左侧菜单和上部导航
+		$this->layout='';
+		$orderId   = IFilter::act(IReq::get('id'),'int');
+		$refundsId = IFilter::act(IReq::get('refunds_id'),'int');
+	
+		if($orderId)
+		{
+			$orderDB = new Order_Class();
+			$data    = $orderDB->getOrderShow($orderId);
+	
+			//已经存退款申请
+			if($refundsId)
+			{
+				$refundsDB  = new IModel('refundment_doc');
+				$refundsRow = $refundsDB->getObj('id = '.$refundsId);
+				$data['refunds'] = $refundsRow;
+			}
+			$this->setRenderData($data);
+			$this->redirect('order_refundment');
+			exit;
+		}
+		die('订单数据不存在');
 	}
 
 	//商品复制

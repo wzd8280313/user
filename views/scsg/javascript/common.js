@@ -245,3 +245,11 @@ function searchGoods(url,callback)
 		}
 	});
 }
+
+	//详情页跳转
+	function jumpTo(id){
+		$('#'+id).trigger('click');
+		location.href='#'+id;
+	}
+
+

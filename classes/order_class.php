@@ -1063,6 +1063,7 @@ class Order_Class
 
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
+		if($type=='system')$authorName='系统自动';
 		$tb_order_log = new IModel('order_log');
 		$tb_order_log->setData(array(
 			'order_id' => $order_id,

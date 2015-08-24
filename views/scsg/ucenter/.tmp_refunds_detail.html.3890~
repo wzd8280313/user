@@ -78,7 +78,7 @@
 			</tr>
 			<tr>
 				<th>快递图片：</th>
-				<td><img height='200' src="{url:$this->data['delivery_img']}" style='max-width:100%;'/></td>
+				<td><img height='200' src="{url:$this->data['delivery_img']}"/></td>
 			</tr>
 			{/if}
 			{if:$this->data['pay_status']==3}

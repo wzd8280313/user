@@ -33,7 +33,7 @@
 						<dt class="tb-metatit">价格</dt>
 						<dd>
 							<em class="tm-yen">¥</em>
-							<span class="tm-price" id='real_price'>{$sell_price}</span>
+							<span class="tm-price">{$sell_price}</span>
 							<div class="staticPromoTip"> </div>
 						</dd>
 					</dl>
@@ -46,16 +46,27 @@
 					<dl id="J_RSPostageCont" class="tm-delivery-panel">
 						<dt class="tb-metatit">运费</dt>
 						<dd>
-							<div class="tb-postAge" style='color:#666;'>
-								满￥100免运费	运费￥10.0
-								<a href="" style='color:blue;'>配送说明</a>
+							<div class="tb-postAge">
+								<span id="J_deliveryAdd" class="tb-deliveryAdd">上海</span>
+								至
+								<span id="J_AddrSelectTrigger" class="mui_addr_tri">
+									<span class="mui_addr_tri_1" data-code="140300">
+									阳泉
+									
+									</span>
+								</span>
+								<div id="J_PostageToggleCont" class="tb-postAge-info">
+									<p>
+										<span>快递: 0.00 </span>
+									</p>
+								</div>
 							</div>
 						</dd>
 					</dl>
 				</div>
 				<div class="tb-meta">
 					<dl id="J_RSPostageCont" class="tm-delivery-panel">
-						<dt class="tb-metatit">服务</dt>
+						<dt class="tb-metatit">服务：</dt>
 						<dd>
 							<div class="tb-postAge">
 							由{if:isset($seller)}
@@ -71,7 +82,7 @@
 					<ul class="tm-ind-panel">
 						<li class="tm-ind-item tm-ind-sellCount canClick" >
 							<div class="tm-indcon" onclick="jumpTo('buyHistory')">
-									<span class="tm-label">销售记录</span>
+									<span class="tm-label">月销量</span>
 								<span class="tm-count">{$buy_num}</span>
 							</div>
 						</li>
@@ -97,7 +108,7 @@
 								{set:$specArray = JSON::decode($spec_array);}
 								{foreach:items=$specArray}
 								<dl class="m_10 clearfix" name="specCols">
-									<dt>{$item['name']}</dt>
+									<dt>{$item['name']}：</dt>
 									<dd class="w_45" style="margin-left:67px;" id="specList{$item['id']}">
 										{set:$specVal=explode(',',trim($item['value'],','))}
 										{foreach:items=$specVal item=$spec_value}
@@ -115,12 +126,14 @@
 								<dl class="tb-amount tm-clear">
 									<dt class="tb-metatit">数量</dt>
 									<dd id="J_Amount">
+										<span class="tb-amount-widget mui-amount-wrap">
 										<input class="gray_t f_l" type="text" id="buyNums" onblur="checkBuyNums();" value="1" maxlength="5" />
 											<div class="resize">
 												<a class="add" href="javascript:modified(1);"></a>
 												<a class="reduce" href="javascript:modified(-1);"></a>
 											</div>
-											<span class="mui-amount-unit">&nbsp;件</span>
+											<span class="mui-amount-unit">件</span>
+										</span>
 										<em id="J_EmStock" class="tb-hidden" style="display: inline;">库存<label id="data_storeNums">{$store_nums}</label>件</em>
 										<span id="J_StockTips"> </span>
 									</dd>
@@ -161,24 +174,6 @@
 			</div>
 			{/if}
 		{/if}
-		</div>
-		
-		<div class="tm-ser tm-clear">
-			<dl class="tm-clear">
-				<dt class="tb-metatit">服务承诺</dt>
-				<dd class="tm-laysku-dd">
-				<ul class="tb-serPromise">
-					<li>
-						<a target="_blank" title="按时发货" href=""> 按时发货 </a>
-					</li>
-					<li>
-						<a target="_blank" title="七天无理由退还" href=""> 七天无理由退还 </a>
-					</li>
-					<li>
-						<a target="_blank" title="品质保障" href=""> 品质保障 </a>
-					</li>
-				</ul>
-			</dl>
 		</div>
 
 	</div>
@@ -226,6 +221,7 @@
 					<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
 					<li style='background:none;'>
 					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}">进入店铺</a>
+					<a class="comm_btn bold">收藏</a>
 					</li>
 				</ul>
 			</div>

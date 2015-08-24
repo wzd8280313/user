@@ -151,7 +151,7 @@ class Order extends IController
 		$refundment_id = IFilter::act(IReq::get('id'),'int');
 		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
 		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
-		$status=IFilter::act(IReq::get('status'),'int');
+		$status=IFilter::act(IReq::get('status'),'int');//原先的pay_status
 		$delivery_add = IFilter::act(IReq::get('delivery_add'),'int');
 
 		//获得refundment_doc对象

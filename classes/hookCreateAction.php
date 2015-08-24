@@ -10,6 +10,17 @@
  */
 class hookCreateAction extends IInterceptorBase
 {
+	private static $hookAction = array(
+		'ucenter_refunds'=>array('order_refundment_list',
+				'ucenter_refunds_detail',
+				'order_order_refundment_list',
+				'order_refundment_doc_show',
+				'seller_refundment_list',
+				'seller_refundment_show'
+		),
+		'ucenter_order' =>array('order_order_list'),
+	);
+	
 	//根据控制器ID和动作ID生成钩子方法名
 	public static function getHookRule()
 	{
@@ -26,14 +37,47 @@ class hookCreateAction extends IInterceptorBase
 		{
 			call_user_func(array(__CLASS__,$hookName));
 		}
+		foreach(self::$hookAction as $k=>$v){
+			if( in_array($hookName,$v))
+				call_user_func(array(__CLASS__,$k));
+		}
 	}
 
-	//后台订单列表
-	public static function order_order_list()
+
+	//用户中心退款列表 
+	public static function ucenter_refunds()
 	{
-		self::ucenter_order();
+		$siteConfig = new Config('site_config');
+		$refunds_limit_time=isset($siteConfig->refunds_limit_time) ? intval($siteConfig['refunds_limit_time']) : 7;
+		$refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
+		$refunds_db = new IModel('refundment_doc');
+		$refunds_db->setData(array(
+			'pay_status'=>6,
+		));
+		$refunds_limit_second = $refunds_limit_time*24*3600;
+		$refunds_seller_second = $refunds_seller_time*24*3600;
+		//超期未退货状态更改
+		$refunds_db->update(" if_del = 0 and pay_status =3 and TIMESTAMPDIFF(second,dispose_time,NOW()) >= {$refunds_limit_second}");
+		
+		//后台超期未审核，自动打钱
+		$resData = $refunds_db->query(" if_del = 0 and pay_status=0 and TIMESTAMPDIFF(second,time,NOW())>= {$refunds_seller_second}","id,order_id,pay_status");
+		$resData1 = $refunds_db->query(" if_del = 0 and pay_status=4 and TIMESTAMPDIFF(second,delivery_time,NOW())>= {$refunds_seller_second}","id,order_id,pay_status");
+		//print_r($resData);
+		$resData = array_merge($resData,$resData1);
+		foreach($resData as $k=>$v){
+			$is_send = refunds::is_send($v['id']);
+			if($v['pay_status']==0&&$is_send==1){
+				$refunds_db->setData(array('pay_status'=>3,'dispose_time'=>ITime::getDateTime()));
+				$refunds_db->update('id='.$v['id']);
+			}else{
+				Order_Class::refund($v['id'],'','system');
+			}
+			
+		}
+		
+		
+		
 	}
-
 	//用户中心订单列表
 	public static function ucenter_order()
 	{
@@ -41,9 +85,14 @@ class hookCreateAction extends IInterceptorBase
 		$order_cancel_time = isset($siteConfig->order_cancel_time) ? intval($siteConfig['order_cancel_time']) : 7;
 		$order_finish_time = isset($siteConfig->order_finish_time) ? intval($siteConfig['order_finish_time']) : 20;
 
+		$refunds_limit_time=isset($siteConfig->refunds_limit_time) ? intval($siteConfig['refunds_limit_time']) : 7;
+		
+		
 		$orderModel = new IModel('order');
-		$orderCancelData  = $order_cancel_time > 0 ? $orderModel->query(" if_del = 0 and pay_type != 0 and status in(1) and datediff(NOW(),create_time) >= {$order_cancel_time} ","id,order_no,4 as type_data") : array();
-		$orderCreateData  = $order_finish_time > 0 ? $orderModel->query(" if_del = 0 and distribution_status = 1 and status in(1,2) and datediff(NOW(),send_time) >= {$order_finish_time} ","id,order_no,5 as type_data") : array();
+		$order_cancel_second = $order_cancel_time*24*3600;
+		$order_finish_second = $order_finish_time*24*3600;
+		$orderCancelData  = $order_cancel_time > 0 ? $orderModel->query(" if_del = 0 and pay_type != 0 and status in(1) and TIMESTAMPDIFF(second,create_time,NOW()) >= {$order_cancel_second} ","id,order_no,4 as type_data") : array();
+		$orderCreateData  = $order_finish_time > 0 ? $orderModel->query(" if_del = 0 and distribution_status = 1 and status in(1,2) and TIMESTAMPDIFF(second,send_time,NOW()) >= {$order_finish_second} ","id,order_no,5 as type_data") : array();
 
 		$resultData = array_merge($orderCreateData,$orderCancelData);
 		if($resultData)
