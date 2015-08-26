@@ -144,38 +144,11 @@ class Order extends IController
 		$this->redirect('refundment_list');
 	}
 
+
 	/**
 	 * @brief更新申请退款单
 	 */
 	public function refundment_doc_show_save()
-	{
-		//获得post传来的退款单id值
-		$refundment_id = IFilter::act(IReq::get('id'),'int');
-		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
-		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
-	
-		//获得refundment_doc对象
-		$tb_refundment_doc = new IModel('refundment_doc');
-		$tb_refundment_doc->setData(array(
-				'pay_status'   => $pay_status,
-				'dispose_idea' => $dispose_idea,
-				'dispose_time' => ITime::getDateTime(),
-				'admin_id'     => $this->admin['admin_id'],
-		));
-	
-		if($refundment_id)
-		{
-			$tb_refundment_doc->update('id='.$refundment_id);
-	
-			$logObj = new log('db');
-			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了退款单",'修改的ID：'.$refundment_id));
-		}
-		$this->redirect('refundment_list');
-	}
-	/**
-	 * @brief更新申请退款单
-	 */
-	public function refundment_doc_show_save1()
 	{
 		
 		//获得post传来的退款单id值
@@ -329,6 +302,7 @@ class Order extends IController
 	 */
 	public function order_refundment_doc()
 	{
+		
 		$refunds_id = IFilter::act(IReq::get('refunds_id'),'int');
 		$order_id = IFilter::act(IReq::get('id'),'int');
 		$order_no = IFilter::act(IReq::get('order_no'));

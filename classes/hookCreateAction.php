@@ -37,13 +37,21 @@ class hookCreateAction extends IInterceptorBase
 		{
 			call_user_func(array(__CLASS__,$hookName));
 		}
-		foreach(self::$hookAction as $k=>$v){
-			if( in_array($hookName,$v))
-				call_user_func(array(__CLASS__,$k));
-		}
+// 		foreach(self::$hookAction as $k=>$v){
+// 			if( in_array($hookName,$v)){
+// 				call_user_func(array(__CLASS__,$k));
+// 				break;
+// 			}
+				
+// 		}
+	}
+	public static function order_order_list(){
+		self::ucenter_order();
 	}
 
-
+	public static function order_refundment_list(){
+		self::ucenter_refunds();
+	}
 	//用户中心退款列表 
 	public static function ucenter_refunds()
 	{
@@ -60,20 +68,23 @@ class hookCreateAction extends IInterceptorBase
 		$refunds_db->update(" if_del = 0 and pay_status =3 and TIMESTAMPDIFF(second,dispose_time,NOW()) >= {$refunds_limit_second}");
 		
 		//后台超期未审核，自动打钱
-		$resData = $refunds_db->query(" if_del = 0 and pay_status=0 and TIMESTAMPDIFF(second,time,NOW())>= {$refunds_seller_second}","id,order_id,pay_status");
-		$resData1 = $refunds_db->query(" if_del = 0 and pay_status=4 and TIMESTAMPDIFF(second,delivery_time,NOW())>= {$refunds_seller_second}","id,order_id,pay_status");
+		$resData = $refunds_db->query(" if_del = 0 and pay_status=0 and TIMESTAMPDIFF(second,time,NOW()) >= {$refunds_seller_second}","id,order_id,pay_status");
+		$resData1 = $refunds_db->query(" if_del = 0 and pay_status=4 and TIMESTAMPDIFF(second,delivery_time,NOW()) >= {$refunds_seller_second}","id,order_id,pay_status");
 		//print_r($resData);
 		$resData = array_merge($resData,$resData1);
-		foreach($resData as $k=>$v){
-			$is_send = refunds::is_send($v['id']);
-			if($v['pay_status']==0&&$is_send==1){
-				$refunds_db->setData(array('pay_status'=>3,'dispose_time'=>ITime::getDateTime()));
-				$refunds_db->update('id='.$v['id']);
-			}else{
-				Order_Class::refund($v['id'],'','system');
+		if(count($resData)>0){
+			foreach($resData as $k=>$v){
+				$is_send = refunds::is_send($v['id']);
+				if($v['pay_status']==0&&$is_send==1){
+					$refunds_db->setData(array('pay_status'=>3,'dispose_time'=>ITime::getDateTime()));
+					$refunds_db->update('id='.$v['id']);
+				}else{
+					Order_Class::refund($v['id'],'','system');
+				}
+					
 			}
-			
 		}
+		
 		
 		
 		
