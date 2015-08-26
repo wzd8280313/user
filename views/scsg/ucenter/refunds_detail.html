@@ -18,7 +18,7 @@
 
 			<tr>
 				<th>处理结果：</th>
-				<td>{echo:Order_Class::refundmentText($this->data['pay_status'])}</td>
+				<td>{echo:Order_Class::refundmentText($this->data['pay_status'],$this->data['type'])}</td>
 			</tr>
 
 			<tr>
@@ -58,15 +58,7 @@
 				<th>退款原因：</th>
 				<td>{$this->data['content']}</td>
 			</tr>
-			<tr>
-				<th>退货地址：</th>{set:$add=$this->data['delivery_add']}
-				{query:name=merch_ship_info where=id eq $add fields=area,postcode,address,telphone limit=1 }
-				{set:$area=area::allName($item['area']);}
-				<td>{$area['province']}&nbsp;{$area['city']}&nbsp;{$area['area']}
-					&nbsp;{$item['address']}&nbsp;邮编：{$item['postcode']}&nbsp;电话：{$item['telphone']}
-				</td>
-				{/query}
-			</tr>
+			
 			{if:$this->data['delivery_time']}
 			<tr>
 				<th>退货时间：</th>
@@ -98,6 +90,15 @@
 						<input name='endTime' type='hidden' value='{$this->endTime}' />
 					</ul>
 				</td>
+			</tr>
+			<tr>
+				<th>退货地址：</th>{set:$add=$this->data['delivery_add']}
+				{query:name=merch_ship_info where=id eq $add fields=area,postcode,address,telphone limit=1 }
+				{set:$area=area::allName($item['area']);}
+				<td>{$area['province']}&nbsp;{$area['city']}&nbsp;{$area['area']}
+					&nbsp;{$item['address']}&nbsp;邮编：{$item['postcode']}&nbsp;电话：{$item['telphone']}
+				</td>
+				{/query}
 			</tr>
 				
 			{/if}

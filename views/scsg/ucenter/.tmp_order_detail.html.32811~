@@ -48,7 +48,7 @@
 
 	        {if:Order_Class::isRefundmentApply($this->order_info)}
 	        <label class="btn_orange">
-	        	<input type="button" style='color:#fff;' value="申请退换货" onclick='javascript:window.location.href="{url:/ucenter/refunds_edit/order_id/$this->order_info['order_id']}"' />
+	        	<input type="button" value="申请退款" onclick='javascript:window.location.href="{url:/ucenter/refunds_edit/order_id/$this->order_info['order_id']}"' />
 	        </label>
 	    	{/if}
 	    </p>

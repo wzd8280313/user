@@ -256,13 +256,14 @@ class Ucenter extends IController
         $this->redirect('address');
     }
     /**
-     * @brief 退款申请页面
+     * @brief 退款申请页面,（包括换货）
      */
     public function refunds_update()
     {
         $order_goods_id = IFilter::act( IReq::get('order_goods_id'),'int' );
         $order_id       = IFilter::act( IReq::get('order_id'),'int' );
         $user_id        = $this->user['user_id'];
+        $type           = IFilter::act(IReq::get('type'),'int');
         $content        = IFilter::act(IReq::get('content'),'text');
         $message        = '请完整填写内容';
 
@@ -306,6 +307,7 @@ class Ucenter extends IController
 					'order_no' => $orderRow['order_no'],
 					'order_id' => $order_id,
 					'user_id'  => $user_id,
+        			'type'     => $type,
 					'amount'   => $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'] + $otherFee,
 					'time'     => ITime::getDateTime(),
 					'content'  => $content,

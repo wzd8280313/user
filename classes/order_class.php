@@ -487,12 +487,32 @@ class Order_Class
 		}
 	}
 	/**
+	 * 生成order_goods表中的good_array字段
+	 * @param arr $goodRow 商品数据
+	 * @return 
+	 */
+	protected static function order_goods_spec($goodRow){
+		$specArray = array('name' => $goodRow['name'],'goodsno' => $goodRow['goods_no'],'value' => '');
+		
+		if(isset($goodRow['spec_array']))
+		{
+			$spec = block::show_spec($goodRow['spec_array']);
+			foreach($spec as $skey => $svalue)
+			{
+				$specArray['value'] .= $skey.':'.$svalue.',';
+			}
+			$specArray['value'] = trim($specArray['value'],',');
+		}
+		return IFilter::addSlash(JSON::encode($specArray));
+	}
+	/**
 	 * 获取订单状态
 	 * @param $orderRow array('status' => '订单状态','pay_type' => '支付方式ID','distribution_status' => '配送状态','pay_status' => '支付状态')
 	 * @return int 订单状态值 0:未知; 1:未付款等待发货(货到付款); 2:等待付款(线上支付); 3:已发货(已付款); 4:已付款等待发货; 5:已取消; 6:已完成(已付款,已收货); 7:已退款; 8:部分发货(不需要付款); 9:部分退款(未发货+部分发货); 10:部分退款(已发货); 11:已发货(未付款);
 	 */
 	public static function getOrderStatus($orderRow)
 	{
+		//print_r($orderRow);
 		//1,刚生成订单,未付款
 		if($orderRow['status'] == 1)
 		{
@@ -561,6 +581,15 @@ class Order_Class
 			else
 			{
 				return 9;
+			}
+		}
+		//换货
+		else if($orderRow['status'] == 8)
+		{
+			if($orderRow['distribution_status'] == 1){
+				return 13;//已发货
+			}else {
+				return 12;//换货处理
 			}
 		}
 		return 0;
@@ -645,6 +674,8 @@ class Order_Class
 			9 => '部分发货',
 			10=> '部分退款',
 			11=> '已发货',
+			12=> '换货处理',
+			13=> '已发货'
 		);
 		return isset($result[$statusCode]) ? $result[$statusCode] : '';
 	}
@@ -955,9 +986,13 @@ class Order_Class
 	 * @param int $pay_status 退款单状态数值
 	 * @return string 状态描述
 	 */
-	public static function refundmentText($pay_status)
-	{
-		$result = array('0' => '申请退款', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）');
+	public static function refundmentText($pay_status,$type)
+	{	
+		if($type==0){//退货
+			$result = array('0' => '申请退款', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）');
+		}else{//换货
+			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'换货失败（超期未退货）');
+		}
 		return isset($result[$pay_status]) ? $result[$pay_status] : '';
 	}
 
@@ -1025,7 +1060,7 @@ class Order_Class
 		);
 		$refundDB->setData($updateData);
 		$refundDB->update('id = '.$refundId);
-
+		
 		//获取goods_id和product_id用于给用户减积分，经验
 		$refundsRow = $refundDB->getObj('id = '.$refundId);
 		$order_id   = $refundsRow['order_id'];
@@ -1115,7 +1150,7 @@ class Order_Class
 		);
 		$pointObj = new Point();
 		$pointObj->update($pointConfig);
-
+		
 		if($isSuccess)
 		{
 			//用户余额进行的操作记入account_log表
@@ -1140,6 +1175,102 @@ class Order_Class
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 退货不退款，订单中加入新商品
+	 * @$refundId int 退货单id
+	 * @$new_goods_id int 更换的新商品id
+	 * @$new_product_id int 更换的新货品id
+	 * @$authorId int 操作的管理员id
+	 * @$type  string admin,seller
+	 * @return 
+	 */
+	public static function chg_goods($refundId,$new_goods_id,$new_product_id,$authorId,$type = 'admin'){
+		$orderGoodsDB= new IModel('order_goods');
+		$refundDB    = new IModel('refundment_doc');
+		
+		
+		//获取goods_id和product_id用于给用户减积分，经验
+		$refundsRow = $refundDB->getObj('id = '.$refundId,'order_id,order_no,user_id,goods_id,product_id');
+		$order_id   = $refundsRow['order_id'];
+		$order_no   = $refundsRow['order_no'];
+		$user_id    = $refundsRow['user_id'];
+		
+		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
+		$order_goods_id = $orderGoodsRow['id'];
+		
+		//未发货的情况下还原商品库存
+		if($orderGoodsRow['is_send'] == 0)
+		{
+			self::updateStore($order_goods_id,'add');
+		}
+		
+		//原商品更新为退款状态
+		$orderGoodsDB->setData(array('is_send' => 2));
+		$orderGoodsDB->update('id = '.$order_goods_id);
+		
+		//新增order_good
+		$new_order_good = array(
+			'order_id'=>$order_id,
+			'goods_id'=>$new_goods_id,
+			'product_id'=>$new_product_id,
+			'real_price'=>$orderGoodsRow['real_price'],
+			'goods_nums'=>$orderGoodsRow['goods_nums'],
+			'goods_weight'=>$orderGoodsRow['goods_weight'],
+			'delivery_fee'=>$orderGoodsRow['delivery_fee'],
+			'save_price'=>$orderGoodsRow['save_price']
+		);
+		$goods_db = new IModel('products');
+		if($new_product_id){//存在货品
+			$resData = $goods_db->getObj('id='.$new_product_id,'sell_price,spec_array,products_no as goods_no');
+			$goods_db ->changeTable('goods');
+			$resData = array_merge($resData,$goods_db->getObj('id='.$new_goods_id,'name'));
+		}else {
+			$goods_db ->changeTable('goods');
+			$resData = $goods_db->getObj('id='.$new_goods_id,'name,sell_price,spec_array,goods_no');
+		}
+// 		if($resData['sell_price']>$orderGoodsRow['goods_price'])//如果大于原商品价格
+// 			return false;
+// 		else{
+
+			$new_order_good['goods_price']=$resData['sell_price'];
+			$new_order_good['goods_array'] = self::order_goods_spec($resData);
+			
+			$orderGoodsDB->setData($new_order_good);
+			$orderGoodsDB->add();
+	//	}
+		//获取原商品货号
+		if($refundsRow['product_id']!=0){
+			$goods_db->changeTable('products');
+			$old_good_no = $goods_db->getField('id='.$refundsRow['product_id'],'products_no');
+		}else{
+			$goods_db->changeTable('goods');
+			$old_good_no = $goods_db->getField('id='.$refundsRow['goods_id'],'goods_no');
+		}
+		
+		//更新order表状态
+		$orderStatus=8;//换货
+		$tb_order = new IModel('order');
+		$tb_order->setData(array('status' => $orderStatus));
+		$tb_order->update('id='.$order_id);
+		$tb_order->setData(array('distribution_status' => 2));
+		$tb_order->update('id='.$order_id.' AND distribution_status=1 ');
+		
+		//生成订单日志
+		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
+		if($type=='system')$authorName='系统自动';
+		$tb_order_log = new IModel('order_log');
+		$tb_order_log->setData(array(
+				'order_id' => $order_id,
+				'user'     => $authorName,
+				'action'   => '换货',
+				'result'   => '成功',
+				'note'     => '商品【'.$old_good_no.'】更换为'.$resData['goods_no'],
+				'addtime'  => ITime::getDateTime(),
+		));
+		$tb_order_log->add();
+		return true;
 	}
 	/**
 	 * 是否可以作废订单

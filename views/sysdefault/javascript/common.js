@@ -419,3 +419,26 @@ function edit_info_init(data,formName){
 		
 
 }
+//根据规格字符串得到规格数据
+function getSpec(spec_array){
+	var spec_num = 0;
+	for(var i=0;i<spec_array.length;i++){
+		if(spec_array[i]=='{')spec_num++;
+	}
+	var s = 0;
+	var spec_str = '';
+	for(var i=0;i<spec_num;i++){
+		var sta = spec_array.indexOf('{',s);
+		var end = spec_array.indexOf('}',s);
+		var s = end+1;
+		var sub = spec_array.slice(sta,s);
+		var a = $.parseJSON(sub);
+		if(a.type==2){//图片
+			spec_str += a.name + ':' + "<img height='40px' src='"+siteUrl+a.value+"'/></br>";
+		}else{
+			spec_str += a.name +':'+ a.value + '</br>';
+		}
+		
+	}
+	return spec_str;
+}

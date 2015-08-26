@@ -16,18 +16,9 @@
 					<th>订单号：</th>
 					<td>{$this->orderRow['order_no']}</td>
 				</tr>
+
 				<tr>
-					<th>类型：</th>
-					<td><p>
-							<label>
-								<input type="radio" name="type" value="0" checked/>退货
-								<input type="radio" name="type" value="1" />换货
-							</label>
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<th>退换货商品：</th>
+					<th>退款商品：</th>
 					<td>
 						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good}
 						{set:$good_info = JSON::decode($good['goods_array'])}

@@ -306,7 +306,7 @@
 					<th>申请时间：</th><td>{$item['time']}</td>
 				</tr>
 				<tr>
-					<th>状态：</th><td>{echo:Order_Class::refundmentText($item['pay_status'])}</td>
+					<th>状态：</th><td>{echo:Order_Class::refundmentText($item['pay_status'],$item['type'])}</td>
 				</tr>
 				<tr>
 					<th>退款理由：</th><td>{$item['content']}</td>
@@ -491,7 +491,7 @@ function initButton()
 	{/if}
 
 	//完成
-	{if:in_array($orderStatus,array(11,3))}
+	{if:in_array($orderStatus,array(11,3,13))}
 	$('#to_finish').removeAttr('disabled');
 	$('#to_finish').removeClass('inactive');
 	{/if}
@@ -503,13 +503,13 @@ function initButton()
 	{/if}
 
 	//发货
-	{if:in_array($orderStatus,array(1,4,8,9))}
+	{if:in_array($orderStatus,array(1,4,8,9,12))}
 	$('#to_deliver').removeAttr('disabled');
 	$('#to_deliver').removeClass('inactive');
 	{/if}
 
 	//退款
-	{if:in_array($orderStatus,array(4,6,9,10))}
+	{if:in_array($orderStatus,array(4,6,9,10,12,13))}
 	$('#to_refundment').removeAttr('disabled');
 	$('#to_refundment').removeClass('inactive');
 	{/if}
