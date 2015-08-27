@@ -1,10 +1,7 @@
 <?php
+
 /**
- * @copyright (c) 2015 aircheng.com
- * @file hsms.php
  * @brief 短信发送接口
- * @author nswe
- * @date 2015/5/30 16:23:21
  * @version 3.3
  */
 
@@ -15,6 +12,41 @@
 class Hsms
 {
 	private static $smsInstance = null;
+
+	public static function getSmsInstance(){
+		
+		//单例模式
+		if(self::$smsInstance != NULL && is_object(self::$smsInstance))
+		{
+			return self::$smsInstance;
+		}
+		
+		$platform = self::getPlatForm();
+		switch($platform)
+		{
+			case "jianzhou":
+				{
+					$classFile = IWeb::$app->getBasePath().'plugins/hsms/jianzhou.php';
+					require $classFile;
+					return self::$smsInstance = new jianzhou();
+					
+				}
+			case "zhutong":
+				{
+					$classFile = IWeb::$app->getBasePath().'plugins/hsms/zhutong.php';
+					require($classFile);
+					return self::$smsInstance = new zhutong();
+				}
+				break;
+	
+			default:
+				{
+					$classFile = IWeb::$app->getBasePath().'plugins/hsms/haiyan.php';
+					require($classFile);
+					return self::$smsInstance = new haiyan();
+				}
+		}
+	}
 
 	/**
 	 * @brief 获取config用户配置
@@ -34,28 +66,8 @@ class Hsms
 	 */
 	public static function send($mobile,$content)
 	{
-		if(self::$smsInstance == null)
-		{
-			$platform = self::getPlatForm();
-			switch($platform)
-			{
-				case "zhutong":
-				{
-					$classFile = IWeb::$app->getBasePath().'plugins/hsms/zhutong.php';
-					require($classFile);
-					self::$smsInstance = new zhutong();
-				}
-				break;
-
-				default:
-				{
-					$classFile = IWeb::$app->getBasePath().'plugins/hsms/haiyan.php';
-					require($classFile);
-					self::$smsInstance = new haiyan();
-				}
-			}
-		}
-
+		self::$smsInstance = self::getSmsInstance();
+		return self::$smsInstance->send($mobile,$content);
 		if(IValidate::mobi($mobile) && $content)
 		{
 			$ip = IClient::getIp();
@@ -68,7 +80,7 @@ class Hsms
 					return false;
 				}
 				ISession::set($mobileKey,time());
-				return self::$smsInstance->send($mobile,$content);
+				
 			}
 		}
 		return false;

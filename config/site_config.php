@@ -32,4 +32,9 @@
 	'refunds_limit_time'=>'',//退款期限
 	'refunds_seller_time'=>'3',//后台退款期限，超过则自动退款
   'store_num_warning' => '10',
+	//发送短信参数
+	'sms_platform'    => 'jianzhou',
+	'sms_account'     => 'sdk_yqrtv',
+	'sms_password'    => '97273007',
+	'sms_sign'        => '【无线阳泉】',
 )?>
