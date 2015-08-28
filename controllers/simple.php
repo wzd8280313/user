@@ -41,126 +41,133 @@ class Simple extends IController
     	ISafe::clearAll();
     	$this->redirect('login');
     }
-
+	function getMobileValidate(){
+		$phone = IFilter::act(IReq::get('phone'));
+		$text = rand(000000,999999);
+		ISafe::set('mobileValidate',$text);
+		$text = '山城速购的手机验证码'.$text;
+		hsms::send($phone,$text);
+	}
     //用户注册
     function reg_act()
     {
-    	$email      = IFilter::act(IReq::get('email','post'));
-    	$username   = IFilter::act(IReq::get('username','post'));
-    	$password   = IFilter::act(IReq::get('password','post'));
-    	$repassword = IFilter::act(IReq::get('repassword','post'));
-    	$captcha    = IFilter::act(IReq::get('captcha','post'));
     	$callback   = IFilter::act(IReq::get('callback'),'text');
-    	$message    = '';
-
-    	//获取注册配置参数
-		$siteConfig = new Config('site_config');
-		$reg_option = $siteConfig->reg_option;
-
-		/*注册信息校验*/
-		if($reg_option == 2)
-		{
-			$message = '当前网站禁止新用户注册';
-		}
-    	else if(IValidate::email($email) == false)
-    	{
-    		$message = '邮箱格式不正确';
+    	$type = IFilter::act(IReq::get('type','post'),'int');
+    	$agree = IFilter::act(IReq::get('agree','post'));
+    	$message = '';
+    	switch ($type){
+    		case '0' :{
+    			$name  = '手机';
+    			$phone = IFilter::act(IReq::get('phone','post'));
+    			$password   = IFilter::act(IReq::get('password1','post'));
+    			$repassword = IFilter::act(IReq::get('repassword1','post'));
+    			$number     = IFilter::act(Ireq::get('number','post'));
+    			$email = '';
+    			if(!IValidate::phone($phone))
+    			{
+    				$message = '手机格式不正确';
+    			}else if($number !=ISafe::get('mobileValidate')){
+    				$message = '手机验证码不正确';
+    			}else if(!preg_match('|\S{6,32}|',$password))
+		    	{
+		    		$message = '密码必须是字母，数字，下划线组成的6-32个字符';
+		    	}
+		    	else if($password != $repassword)
+		    	{
+		    		$message = '2次密码输入不一致';
+		    	}else{
+		    		$where   = 'phone = "'.$phone.'"';
+		    		
+		    	}
+		    	break;
+    		}
+    		case '1' :{
+    			$name = '邮箱';
+    			$email      = IFilter::act(IReq::get('email','post'));
+    			$password   = IFilter::act(IReq::get('password2','post'));
+    			$repassword = IFilter::act(IReq::get('repassword2','post'));
+    			$phone = '';
+    			if(!IValidate::email($email))
+    			{
+    				$message = '邮箱格式不正确';
+    			}
+    			else if(!preg_match('|\S{6,32}|',$password))
+		    	{
+		    		$message = '密码必须是字母，数字，下划线组成的6-32个字符';
+		    	}
+		    	else if($password != $repassword)
+		    	{
+		    		$message = '2次密码输入不一致';
+		    	}else{
+		    		$where   = 'email = "'.$email.'"';
+		    	}
+		    	break;
+    		}
     	}
-    	else if(!Util::is_username($username))
-    	{
-    		$message = '用户名必须是由2-20个字符，可以为字数，数字下划线和中文';
-    	}
-    	else if(!preg_match('|\S{6,32}|',$password))
-    	{
-    		$message = '密码必须是字母，数字，下划线组成的6-32个字符';
-    	}
-    	else if($password != $repassword)
-    	{
-    		$message = '2次密码输入不一致';
-    	}
-    	else if($captcha != ISafe::get('captcha'))
-    	{
-    		$message = '验证码输入不正确';
-    	}
-    	else
-    	{
+    	if(!$agree)$message = '未同意注册协议不能注册';
+    	if($message==''){
     		$userObj = new IModel('user');
-    		$where   = 'email = "'.$email.'" or username = "'.$email.'" or username = "'.$username.'"';
     		$userRow = $userObj->getObj($where);
-
     		if($userRow)
     		{
-    			$memberObj = new IModel('member');
-    			$memberRow = $memberObj->getObj('user_id = '.$userRow['id']);
-    			if($memberRow['status'] == 3 && $reg_option == 1)
-    			{
-    				$this->send_check_mail();
-    				exit;
-    			}
-
-    			if($email == $userRow['email'])
-    			{
-    				$message = '此邮箱已经被注册过，请重新更换';
-    			}
-    			else
-    			{
-    				$message = "此用户名已经被注册过，请重新更换";
-    			}
+    			$message = "此".$name."已经被注册过，请重新更换";
     		}
     		else
     		{
-	    		//user表
-	    		$userArray = array(
-	    			'username' => $username,
-	    			'password' => md5($password),
-	    			'email'    => $email,
-	    		);
-	    		$userObj->setData($userArray);
-	    		$user_id = $userObj->add();
-
-	    		if($user_id)
-	    		{
-					//member表
-		    		$memberArray = array(
-		    			'user_id' => $user_id,
-		    			'time'    => ITime::getDateTime(),
-		    			'status'  => $reg_option == 1 ? 3 : 1,
-		    		);
-
-		    		$memberObj = new IModel('member');
-		    		$memberObj->setData($memberArray);
-		    		$memberObj->add();
-
-		    		//邮箱激活帐号
-		    		if($reg_option == 1)
-		    		{
-		    			$this->send_check_mail();
-		    		}
-		    		else
-		    		{
-			    		//用户私密数据
-			    		ISafe::set('username',$username);
-			    		ISafe::set('user_id',$user_id);
-			    		ISafe::set('user_pwd',$userArray['password']);
-
-						//自定义跳转页面
-						$callback = $callback ? urlencode($callback) : '';
-						$this->redirect('/site/success?message='.urlencode("注册成功！").'&callback='.$callback);
-		    		}
-	    		}
-	    		else
-	    		{
-	    			$message = '对不起，注册失败';
-	    		}
-	    	}
+    			//$captcha    = IFilter::act(IReq::get('captcha','post'));
+    			//     	else if($captcha != ISafe::get('captcha'))
+    				//     	{
+    				//     		$message = '验证码输入不正确';
+    				//     	}
+    			//user表
+    			$userArray = array(
+    					'email'    => $email,
+    					'phone'    => $phone,
+    					'password' => md5($password),
+    			);
+    			$userObj->setData($userArray);
+    			$user_id = $userObj->add();
+    			$userObj->commit();
+    			if($user_id)
+    			{
+    				//member表
+    				$memberArray = array(
+    						'user_id' => $user_id,
+    						'time'    => ITime::getDateTime(),
+    						'status'  => 1,
+    				);
+    				if($type==1)$memberArray['status'] = 4;
+    				$memberObj = new IModel('member');
+    				$memberObj->setData($memberArray);
+    				$memberObj->add();
+    		
+    				//邮箱激活帐号
+    				if($type == 1)
+    				{
+    					$this->send_check_mail();
+    					ISafe::set('email',$email);
+    				}else{
+    					ISafe::set('phone',$phone);
+    				}
+    				ISafe::set('user_id',$user_id);
+    				ISafe::set('user_pwd',$userArray['password']);
+    		
+    				//自定义跳转页面
+    				$callback = $callback ? urlencode($callback) : '/';
+    				$this->redirect('/site/success?message='.urlencode("注册成功！").'&callback='.$callback);
+    				
+    			}else{
+    				$message = "注册失败";
+    			}
+    			
+    		}
     	}
-
-		//出错信息展示
-    	if($message)
+    	
+    	//出错信息展示
+    	if($message!='')
     	{
-    		$this->email    = $email;
-    		$this->username = $username;
-
+    		$this->email = $email;
+    		$this->phone = $phone;
     		$this->redirect('reg',false);
     		Util::showMessage($message);
     	}
@@ -177,7 +184,7 @@ class Simple extends IController
 		$message    = '';
 		$password   = md5($password);
 		$captcha = IFilter::act(IReq::get('captcha'),'str');
-
+		
     	if($login_info == '')
     	{
     		$message = '请填写用户名或者邮箱';
@@ -191,11 +198,10 @@ class Simple extends IController
     		}
     	else
     	{
-    		
     		if($userRow = CheckRights::isValidUser($login_info,$password))
-    		{
+    		{	
     			$M = new IModel('user');
-    			$where = 'username = "'.$login_info.'" OR email = "'.$login_info.'"';
+    			$where = 'phone = "'.$login_info.'" OR email = "'.$login_info.'"';
     			$M->setData(array('err_times'=>0));
     			$M->update($where);
     			
@@ -222,26 +228,24 @@ class Simple extends IController
 				{
 					$this->redirect('/ucenter/index');
 				}
+				
     		}
     		else
     		{
     			//邮箱未验证
     			$userDB = new IModel('user as u,member as m');
-    			$userRow= $userDB->getObj(" (u.email = '{$login_info}' or u.username = '{$login_info}') and password = '{$password}' ");
+    			$userRow= $userDB->getObj(" (u.email = '{$login_info}' or u.phone = '{$login_info}') and password = '{$password}' and u.id = m.user_id");
+
 				if($userRow)
 				{
-					$siteConfig = new Config('site_config');
-					if($userRow['status'] == 3)
+					if($userRow['status']==4)
 					{
-						if($siteConfig->reg_option == 1)
-						{
-							$message = "您的邮箱还未验证，请点击下面的链接发送您的邮箱验证邮件！";
-							$this->redirect('/site/success?message='.urlencode($message).'&email='.$userRow['email']);
-						}
-						else
-						{
-							$message = '您的账号已经被锁定';
-						}
+						$message = "您的邮箱还未验证，请点击下面的链接发送您的邮箱验证邮件！";
+						$this->redirect('/site/success?message='.urlencode($message).'&email='.$userRow['email']);
+					}
+					else if($userRow['status']==3)
+					{
+						$message = '您的账号已经被锁定';
 					}
 				}
 				else

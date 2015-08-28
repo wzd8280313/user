@@ -16,23 +16,25 @@
 	
 					<!-- Begin Form -->
 	
-					<form id="my-form" action='{url:/simple/reg_act}'>
-	
+					<form id="my-form" action='{url:/simple/reg_act}' method='post'>
+						<input type='hidden' name='callback' />
+						<input type='hidden' name='type' value='1'/>
 						<section name="手机注册">
 	
 						  <div><label>手机号:</label><input id="phone" name="phone" type="text"/></div>
-						  <div><label>验证码:</label><input id="number" name="number" type="text" maxlength="6"><button >获取验证码</button></div>
-						  <div><label>设置密码:</label><input id="pass" name="password" type="password"/></div>
-						  <div><label>确认密码:</label><input id="pass1" name="password1" type="password"/></div>
+						  <div><label>验证码:</label><input id="number" name="number" type="text" maxlength="6"><button type='button' onclick="getMobileValidate('{url:/simple/getMobileValidate}')">获取验证码</button></div>
+						  <div><label>设置密码:</label><input id="pass" name="password1" type="password"/></div>
+						  <div><label>确认密码:</label><input id="pass1" name="repassword1" type="password"/></div>
 						</section>
-	
+				
 						<section name="邮箱注册">
 						  
-						  <div><label>邮箱:</label><input id="email" name="email" data-ideal="required email" type="email"/></div>
-						  <div><label>设置密码:</label><input id="pass" name="password" type="password"/></div>
-						  <div><label>确认密码:</label><input id="pass1" name="password1" type="password"/></div>
+						  <div><label>邮箱:</label><input id="email" name="email"  type="email"/></div>
+						  <div><label>设置密码:</label><input id="pass" name="password2" type="password"/></div>
+						  <div><label>确认密码:</label><input id="pass1" name="repassword2" type="password"/></div>
 						</section>
 	
+						
 					  <div><hr/></div>
 					  <div><input type="checkbox" name='agree' /><a href="#">我已阅读并同意《会员注册协议》</a></div>
 	
@@ -52,33 +54,47 @@
 	</div>
 </div>
 <script type="text/javascript">
+	function getMobileValidate(url){
+		$.ajax({
+			type:'post',
+		//	async:false,
+			data:{phone:$('input[name=phone]').val()},
+			//dataType:'json',
+			url:url,
+			beforeSend:function(){
+				
+			},
+			success:function(data){
+				//alert(data);
+			},
+			error:function(){
+				
+			},
+			complete:function(){
+				
+			},
+			timeout:1000,
+		})
+	}
 var options = {
 
-	onFail: function(){
-		alert( $myform.getInvalid().length +' invalid fields.' )
-	},
+	
 
 	inputs: {
-		'password': {
-			filters: 'required pass',
+		'password1': {
+			//filters: 'required pass',
 		},
 		'phone': {
-			filters: 'required phone',
-		},
-		'username': {
-			filters: 'required username',
-			data: {
-			//ajax: { url:'validate.php' }
-			}
+			//filters: 'required phone',
 		}
 	}
 	
 };
 
 var $myform = $('#my-form').idealforms(options).data('idealforms');
-
+$('#my-form').idealforms('removeFields', ' password1');
 $('#reset').click(function(){
-	$myform.reset().fresh().focusFirst()
+	$myform.reset().fresh().focusFirst();
 });
 
 $myform.focusFirst();
@@ -106,10 +122,10 @@ $myform.focusFirst();
 $(function(){
 	{set:$callback = IReq::get('callback') ? IFilter::clearUrl(IReq::get('callback')) : IUrl::getRefRoute()}
 	$('input[name="callback"]').val("{$callback}");
-	$(".form_table input").focus(function(){$(this).addClass('current');}).blur(function(){$(this).removeClass('current');})
+	//$(".form_table input").focus(function(){$(this).addClass('current');}).blur(function(){$(this).removeClass('current');})
 
 	//表单回填
-	var formObj = new Form();
-	formObj.init({"email":"{$this->email}","username":"{$this->username}"});
+	//var formObj = new Form();
+	//formObj.init({"email":"{$this->email}","username":"{$this->username}"});
 });
 </script>

@@ -1,6 +1,6 @@
 function showBig(m,l){
 	//alert(pic.z);
-	$('#bigPic').find('img').attr('src',m);
+	$('#bigPic').find('img[name=bigpro]').attr('src',m);
 	$('#detShow').find('img').attr('src',l);
 }
 

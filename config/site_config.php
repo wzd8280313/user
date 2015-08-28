@@ -1,11 +1,11 @@
 <?php return array (
   'email_type' => '1',
   'email_safe' => '',
-  'mail_address' => '',
-  'smtp' => '',
-  'smtp_user' => '',
-  'smtp_pwd' => '',
-  'smtp_port' => '',
+  'mail_address' => 'weiping.lee@163.com',
+  'smtp' => 'smtp.163.com',
+  'smtp_user' => 'weiping.lee@163.com',
+  'smtp_pwd' => 'npu*#045016',
+  'smtp_port' => '25',
   'order_by' => 'new',
   'order_type' => 'asc',
   'list_type' => 'win',
@@ -29,12 +29,12 @@
   'service_online' => 'a:0:{}',
   'order_finish_time' => '',
   'order_cancel_time' => '',
-	'refunds_limit_time'=>'',//退款期限
-	'refunds_seller_time'=>'3',//后台退款期限，超过则自动退款
+  'refunds_limit_time' => '',
+  'refunds_seller_time' => '3',
   'store_num_warning' => '10',
-	//发送短信参数
-	'sms_platform'    => 'jianzhou',
-	'sms_account'     => 'sdk_yqrtv',
-	'sms_password'    => '97273007',
-	'sms_sign'        => '【无线阳泉】',
+  'sms_platform' => 'jianzhou',
+  'sms_account' => 'sdk_yqrtv',
+  'sms_password' => '97273007',
+  'sms_sign' => '【无线阳泉】',
+  'test_address' => 'weiping.lee@163.com',
 )?>

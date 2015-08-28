@@ -286,7 +286,7 @@ class CheckRights extends IInterceptorBase
 
 	/**
 	 * @brief  校验注册用户身份信息
-	 * @param  string $login_info 用户名或者email
+	 * @param  string $login_info 用户名或者phone
 	 * @param  string $password   用户名的md5密码
 	 * @return array or false 如果合法则返回用户数据;不合法返回false
 	 */
@@ -296,7 +296,7 @@ class CheckRights extends IInterceptorBase
 		$password   = IFilter::act($password);
 
 		$userObj = new IModel('user as u,member as m');
-		$where   = "(u.username = '{$login_info}' or u.email = '{$login_info}') and m.status = 1 and u.id = m.user_id";
+		$where   = "(u.phone = '{$login_info}' or u.email = '{$login_info}') and m.status = 1 and u.id = m.user_id";
 		$userRow = $userObj->getObj($where);
 
 		if($userRow && ($userRow['password'] == $password))
@@ -378,7 +378,7 @@ class CheckRights extends IInterceptorBase
     {
 		//用户私密数据
 		ISafe::set('user_id',$userRow['id']);
-		ISafe::set('username',$userRow['username']);
+		ISafe::set('phone',$userRow['phone']);
 		ISafe::set('head_ico',$userRow['head_ico']);
 		ISafe::set('user_pwd',$userRow['password']);
 		ISafe::set('last_login',isset($userRow['last_login']) ? $userRow['last_login']:'');

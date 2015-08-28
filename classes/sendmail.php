@@ -34,6 +34,7 @@ class SendMail
 
 			//创建实例
 			$this->smtp = new PHPMailer();
+			$this->smtp->CharSet = 'UTF-8';
 			$this->smtp->Timeout = 60;
 			$this->smtp->SMTPSecure = $site_config['email_safe'];
 			$this->smtp->isHTML();
