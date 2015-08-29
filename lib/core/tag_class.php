@@ -135,8 +135,12 @@ class ITag
 				case 'include:':
 				{
 					$fileName=trim($matches[4]);
-					$viewfile = IWeb::$app->controller->getViewPath().$fileName;
-					return "<?php include('$viewfile')?>";
+					$controller = IWeb::$app->controller;
+					$viewfile = $controller->getViewPath().$fileName;
+					$file = new IFile($viewfile);
+					$content = $file->read();
+					$text = $controller->renderText($content,1);
+					return $text;
 				}
 				default:
 				{

@@ -65,6 +65,7 @@ class IControllerBase extends IObject
 
 					//标签编译
 					$inputContent = $this->tagResolve($viewContent);
+					
 
 					//创建文件
 					$fileObj  = new IFile($runtimeFile,'w+');
