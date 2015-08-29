@@ -62,7 +62,7 @@
 				{/if}
 				
 				{if:$dispose_time2!=NULL}
-					{set:$h=$pay_status==5?'驳回':'退款'}
+					{set:$h=$pay_status==5?'驳回':'核准'}
 					<tr>
 						<th>{$h}时间：</th><td align="left">{$dispose_time2}</td>
 					</tr>
@@ -256,6 +256,13 @@ function checkForm(is_send,type)
 	{
 		refundment({$order_id},{$id});
 		return false;
+	}
+	if(payValue == 2 && type==1){
+		var chgGoodsId = $('input[name=goods_id]').val();
+		if(!chgGoodsId){
+			alert('请选择更换的商品');
+			return false;
+		}
 	}
 	
 	return true;

@@ -15,7 +15,7 @@ li{
 list-style: none;
 }
 body, button, input, select, textarea {
-font: 12px/1.5 tahoma, arial, 'Hiragino Sans GB', \5b8b\4f53, sans-serif;
+font: 12px/1.5 tahoma, arial, 'Hiragino Sans GB', \5b8b\4f53, sans-serif;behavior: url("css/csshover.htc");
 }
 fieldset, a img, iframe {
     border: 0 none;
@@ -188,7 +188,7 @@ width: 100%;
 z-index: 70;
 }
 .search .logo {
-width: 250px;
+width: 330px;
 height: 60px;
 margin-top: 16px;
 position: absolute;
@@ -205,10 +205,16 @@ height: 32px;
 margin-top: 21px;
 position: relative;
 }
-.search .cart .cart-buying .cart-account, .search .cart .cart-count, .search .cart .cart-count span, .help .t14, .help .contact .ic, .service li {
+.search .cart .cart-buying .cart-account, .search .cart .cart-count, .search .cart .cart-count span, .help .t14, .help .contact .ic
+{
 display: block;
 background: url(../images/hd-and-btm.png) 0 0 no-repeat;
 _background: url(../images/hd-and-btm-8.png) 0 0 no-repeat;
+}
+
+.service li{
+background: url(../images/npbg_0.png) 0 0 no-repeat;
+_background: url(../images/npbg_0.png) 0 0 no-repeat;
 }
 .search .cart .cart-count {
 position: absolute;
@@ -229,10 +235,9 @@ font: 400 12px/20px 'microsoft yahei';
 }
 .search .cart .cart-buying {
 display: block;
-border: 1px solid #ef8201;
 color: #fff;
 /*box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);*/
-border-radius: 2px;
+
 cursor: pointer;
 }
 .search .cart .cart-buying .cart-account {
@@ -304,7 +309,7 @@ overflow: hidden;
 font: 400 12px/14px '����';
 }
 .search .s-box .kw-suggest a {
-color: #a00;
+color: #777;
 margin-right: 10px;
 }
 .nav {
@@ -352,7 +357,9 @@ font-size: 14px;
 font-family: 'Lucida Grande', 'Microsoft YaHei';
 font-weight: 700;
 }
-
+.t18{
+font-size:18px;
+}
 .nav .category .cat-title .t14 b {
 position: absolute;
 right: 10px;
@@ -369,18 +376,14 @@ background: url(../images/category.png) 0 0 no-repeat;
 
 .nav .cat-list {
 position: relative;
-z-index: 1;
 width: 200px;
-height: 486px;
-
+height: 490px;
 background-color: #fff;
-
-/*box-shadow: 4px 2px 5px rgba(0, 0, 0, 0.2);*/
 z-index: 1;
-border-top: 0;
+border-top:0; /*2px solid */
 }
 .nav .cat-list li {
-height: 38px;
+height: 39px;
 padding: 5px 10px;
 position: relative;
 vertical-align: top;
@@ -558,7 +561,7 @@ font: 400 14px/31px "microsoft yahei";
 text-decoration: none;
 display: inline-block;
 padding: 0 35px;
-height: 31px;
+height: 32px;
 color: #fff;
 z-index: 2;
 -webkit-transition: background .3s ease-out;
@@ -569,31 +572,28 @@ margin-top: -1px;
 
 .category .cat-pop {
 position: absolute;
-left: 200px;
+left: 199px;
 top: 0px;
 z-index: 3;
 background-color: #fff;
-box-shadow: 4px 2px 5px rgba(0, 0, 0, 0.2);
-border: 1px solid #f1bec4;
 overflow: hidden;
 display:none;
-width: 744px;
+width: 990px;
+height:490px;
 }
-
 .category .cat-layer {
-
-border-radius: 0 3px 3px 0;
-width: 744px;
+width: 740px;
 height: auto;
+float:left;
 background-color: #fff;
 z-index: 17;
 }
 .category .cat-layer .cat-col {
 z-index: 30;
 float:left;
-width:720PX;
+width:739PX;
 height: auto;
-padding: 0 0 15px 10px;
+padding: 0 0 15px 5px;
 display: inline-block;
 vertical-align: top;
 overflow: hidden;
@@ -618,7 +618,7 @@ padding: 0 8px 0 9px;
 .category .cat-layer .level-title {
 height: 30px;
 line-height: 30px;
-border-bottom: 2px solid #666;
+/*border-bottom: 2px solid #666;*/
 font-size: 15px;
 font-family: 'Lucida Grande', 'Microsoft YaHei';
 margin-top: 10px;
@@ -633,7 +633,7 @@ color:#333;
 height:auto;
 float:left;
 width:218PX;
-margin-left:15PX;
+margin-left:10PX;
 padding:0px;
 }
 
@@ -782,4 +782,3 @@ cursor: pointer;
   border-width: 0 1px 1px 0;
   float: left;
 }
-.hide{display:none;}

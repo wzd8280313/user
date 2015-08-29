@@ -55,8 +55,16 @@ a.line{text-decoration:underline}
 a.more{color:#a2a2a2}a.zoom{padding-left:20px;background:url(../images/front/sprites_2.gif) -63px -284px no-repeat}
 .close,.close_2{display:inline-block;width:13px;height:13px;line-height:100px;overflow:hidden;background:url(../images/front/ucenter/close.gif) no-repeat}
 .close_2{width:27px;height:21px;margin-right:8px;background:url(../images/front/sprites_2.gif) -24px -739px no-repeat}
+.limit-timeout b{
+	display: inline-block;
+width: 25px;
+text-align: center;
+height: 30px;
+margin-right: 5px;
+color: #fff;
+}
 
-	.countdown b{margin:0 3px;font-size:20px;color:#c4000f}
+font: 400 16px/30px 'microsoft yahei';
 /* grade style start */
 span.grade{display:inline-block;width:70px;height:15px;background:url(../images/front/grade_bg.gif) 0 -16px no-repeat}
 	span.grade i{display:inline-block;height:15px;background:url(../images/front/grade_bg.gif) 0 2px no-repeat}

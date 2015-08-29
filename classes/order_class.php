@@ -494,7 +494,7 @@ class Order_Class
 	protected static function order_goods_spec($goodRow){
 		$specArray = array('name' => $goodRow['name'],'goodsno' => $goodRow['goods_no'],'value' => '');
 		
-		if(isset($goodRow['spec_array']))
+		if(isset($goodRow['spec_array']) && $goodRow['spec_array']!='')
 		{
 			$spec = block::show_spec($goodRow['spec_array']);
 			foreach($spec as $skey => $svalue)
@@ -1187,6 +1187,7 @@ class Order_Class
 	 * @return 
 	 */
 	public static function chg_goods($refundId,$new_goods_id,$new_product_id,$authorId,$type = 'admin'){
+		if(!$new_goods_id && !$new_product_id)return false;
 		$orderGoodsDB= new IModel('order_goods');
 		$refundDB    = new IModel('refundment_doc');
 		
@@ -1238,7 +1239,9 @@ class Order_Class
 			$new_order_good['goods_array'] = self::order_goods_spec($resData);
 			
 			$orderGoodsDB->setData($new_order_good);
-			$orderGoodsDB->add();
+			$new_goods_id = $orderGoodsDB->add();
+			$orderGoodsDB->commit();
+			self::updateStore($new_goods_id,'reduce');
 	//	}
 		//获取原商品货号
 		if($refundsRow['product_id']!=0){

@@ -245,7 +245,7 @@ function lateCall(t,func)
  * @param url string 执行的URL
  * @param callback function 筛选成功后执行的回调函数
  */
-function searchGoods(url,callback)
+function searchGoods(url,callback,param)
 {
 	var step = 0;
 	art.dialog.open(url,
@@ -286,7 +286,7 @@ function searchGoods(url,callback)
 					return false;
 				}
 				//执行处理回调
-				callback(goodsList);
+				callback(goodsList,param);
 				return true;
 			}
 		}
@@ -349,5 +349,29 @@ function createGoodsCategory(categoryObj)
 		var goodsCategoryHtml = template.render('categoryButtonTemplate',{'templateData':item});
 		$('#__categoryBox').append(goodsCategoryHtml);
 	}
+}
+
+//根据规格字符串得到规格数据
+function getSpec(spec_array){
+	var spec_num = 0;
+	for(var i=0;i<spec_array.length;i++){
+		if(spec_array[i]=='{')spec_num++;
+	}
+	var s = 0;
+	var spec_str = '';
+	for(var i=0;i<spec_num;i++){
+		var sta = spec_array.indexOf('{',s);
+		var end = spec_array.indexOf('}',s);
+		var s = end+1;
+		var sub = spec_array.slice(sta,s);
+		var a = $.parseJSON(sub);
+		if(a.type==2){//图片
+			spec_str += a.name + ':' + "<img height='40px' src='"+siteUrl+a.value+"'/></br>";
+		}else{
+			spec_str += a.name +':'+ a.value + '</br>';
+		}
+		
+	}
+	return spec_str;
 }
 

@@ -333,7 +333,7 @@ class Ucenter extends IController
         	}
         	else
         	{
-        		$message = '此商品已经做了退款处理，请耐心等待';
+        		$message = '此商品已经做了退换货处理，请耐心等待';
         	}
         }
         else
@@ -379,7 +379,7 @@ class Ucenter extends IController
         			$this->endTime = strtotime($this->data['dispose_time']) + $timeLimit*24*3600;
         			$this->endTime = strtotime('now')>$this->endTime ? false : $this->endTime;
         		}
-        		
+        		$this->setRenderData($this->data);
         	}
         	else
         	{

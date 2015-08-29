@@ -48,7 +48,7 @@ class Member extends IController
 	function member_save()
 	{
 		$user_id    = IFilter::act(IReq::get('user_id'),'int');
-		$user_name  = IFilter::act(IReq::get('username'));
+		//$user_name  = IFilter::act(IReq::get('username'));
 		$email      = IFilter::act(IReq::get('email'));
 		$password   = IFilter::act(IReq::get('password'));
 		$repassword = IFilter::act(IReq::get('repassword'));

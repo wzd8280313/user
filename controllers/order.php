@@ -175,7 +175,11 @@ class Order extends IController
 		
 		
 		if($type==1&&$pay_status==2){//换货类型且确认换货成功
-			Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
+			$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
+			if(!$chgRes){
+				$this->redirect('refundment_chg_list');
+				return false;
+			}
 		}
 		
 		if($refundment_id)

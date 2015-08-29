@@ -8,6 +8,7 @@
 	seo::set($seo_data);
 }		
 <script type="text/javascript" src="files/jquery.kinMaxShow-1.0.min.js"></script>
+<link href="{skin:css/bm.css}" rel="stylesheet">
 {set:$recommend = Api::run('getCommendRecom')}
 <!--bn-->
 <div class="bn" >
@@ -43,15 +44,15 @@
 			    $('.number li').addClass('initial');
 			    imgObj.removeClass('initial');
 			    imgObj.addClass('nonce');
-			    if($('.number img').length)
-			    {
-			        $('.number img')
+			     if($('.ad_cycle img').length)
+				 {
+			        $('.ad_cycle img')
 			            .attr('src', imgObj.attr('target_src'))
 			            .css('display', 'none')
 			            .fadeIn('normal')
 			            .parent().attr('href', imgObj.attr('target_link'))
 			            .attr('target', '_blank');
-			   }
+				 }
 			}
 			function stopHere(imgObj){
 			    slideHere(imgObj);
@@ -61,7 +62,7 @@
 		<div style="width: 100%; height: 486px; overflow: visible; position: relative; visibility: visible; display: block;">
 			{if:$this->index_slide}
 				<div class="number" >
-					<ul class='hide'>
+					<ul style='display:none;'>
 						{foreach:$items=$this->index_slide }
 							{set:$key=$key+1}
 							{if:$key==1}
@@ -72,8 +73,11 @@
 							{/if}
 						{/foreach}
 					</ul>
-					<img src="{webroot:$fImg}" style="width:100%;height:486px;">
+					
 				</div>
+				<a href="{webroot:$fUrl}" target="_blank">
+					<img src="{webroot:$fImg}" style="width:100%;height:486px;">
+				</a>
 			{/if}
 		</div>
 		<!--轮播结束-->
@@ -112,7 +116,7 @@
 										</li>
 									{/foreach}
 								</ul>
-							</div>
+								</div>
 							
 		                    <div class="tab-item tab-item-hover" style="display: none;">
 								<ul class="news-list">
@@ -132,8 +136,6 @@
 														<div class="limit-timeout">
 															<ul id='limit-2' class="time-format clearfix countdown">
 																<li>剩余 </li>
-																<li class="time-num"><b id='cd_day_2'></b></li>
-																<li class="split">天</li>
 																<li class="time-num"><b id='cd_hour_2'></b></li>
 																<li class="split">:</li>
 																<li class="time-num"><b id='cd_minute_2'></b></li>
@@ -174,7 +176,59 @@
 		                <div class="small-pro">
 		
 			                <div class="ad-pic" id="ad_pic_5712">
-			                     		便民服务	
+			                     <div class="demo">	
+								
+								<ul class="tabbtn" id="fadetab">
+									<li class="current"><a href="#">话费</a></li>
+									<li><a href="#">彩票</a></li>
+									<li><a href="#">游戏</a></li>
+									<li><a href="#">保险</a></li>
+								</ul><!--tabbtn end-->
+								<div class="tabcon" id="fadecon">
+									<div class="sublist">
+										<ul>
+											<li><a href="#" target="_blank">交话费</a></li>
+											
+										</ul>
+									</div><!--tabcon end-->
+									<div class="sublist">
+										<ul>
+											<li><a href="#" target="_blank">买彩票</a></li>
+											
+										</ul>
+									</div><!--tabcon end-->
+									<div class="sublist">
+										<ul>
+											<li><a href="#" target="_blank">充点卡</a></li>
+											
+										</ul>
+									</div><!--tabcon end-->
+									<div class="sublist">
+										<ul>
+											<li><a href="#" target="_blank">上保险</a></li>
+											
+										</ul>
+									</div><!--tabcon end-->
+								</div><!--tabcon end-->
+								
+								
+								
+							</div><!--tabbox end-->
+							<script type="text/javascript" src="{theme:javascript/jquery.tabso_yeso.js}"></script>
+							<script type="text/javascript">
+							$(document).ready(function($){
+								
+																
+								//淡隐淡现选项卡切换
+								$("#fadetab").tabso({
+									cntSelect:"#fadecon",
+									tabEvent:"mouseover",
+									tabStyle:"fade"
+								});
+								
+																
+							});
+							</script>
 						    </div>
 		
 						</div>
@@ -189,30 +243,51 @@
 </div>
 <!--bn-->
 <!--第二层-->
-<div class="cnt w1190">
+<div class="cnt w1190" id="w1190">
 	<!--猜你喜欢-->
-	<div class="floor floor-1" name="showGoods">
-		<div class="fl-title clearfix">
-			<h2 class="t18">猜你喜欢</h2>
-		</div>
+	<div class="floor floor-1" data-tpa="YHD_NHOME_INDEX2_FLOOR1" >
+			<div class="fl-title clearfix">
+				<div  id="floor-0" class="item"></div>
+				<h2 class="t18">猜你喜欢</h2>
+			</div>
+	
+	<!--buying-->
 		<div class="buying clearfix">
-			<ul>
+			<ul class="goods-list clearfix" style="width:1190px;margin-left:2px;">
 				{foreach:items=$this->user_like_goods}
-				<li>
-				 	<div  class="admanage" style="overflow: hidden;"><a target='blank' href='{url:/site/products/id/$item['id']}'><img src="{url:/pic/thumb/img/$item[img]/w/170/h/170}" style="cursor:pointer;width:170px;"></a></div>
-			    </li>
+				
+				<li class="xi">
+					 <a class="goods-img" href="{url:/site/products/id/$item['id']}">
+						<img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
+					</a>
+					<a class="goods-name" href="{url:/site/products/id/$item['id']}" title="{$item['name']}">
+						{$item['name']}<span class="txt-red"></span>
+					</a>
+					<div class="goods-price">
+						<span class="p-normal">￥{$item['sell_price']}</span>
+						<span class="p-del">￥{$item['market_price']}</span>
+					</div>
+				</li>
 				{/foreach}
 				{set:$len=count($this->user_like_goods)}
 				{foreach:items=$recommend}
-				{set:$len=$len+1;}
-				{if:$len<6}
-					<li>
-					 	<div  class="admanage" style="overflow: hidden;"><a target='blank' href='{url:/site/products/id/$item['id']}'><img src="{url:/pic/thumb/img/$item[img]/w/170/h/170}" style="cursor:pointer;width:170px;"></a></div>
-				    </li>
-				{/if}
-					
-					
+					{set:$len=$len+1;}
+					{if:$len<7}
+						<li class="xi">
+						 <a class="goods-img" href="{url:/site/products/id/$item['id']}">
+							<img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
+						</a>
+						<a class="goods-name" href="{url:/site/products/id/$item['id']}" title="{$item['name']}">
+							{$item['name']}<span class="txt-red"></span>
+						</a>
+						<div class="goods-price">
+							<span class="p-normal">￥{$item['sell_price']}</span>
+							<span class="p-del">￥{$item['market_price']}</span>
+						</div>
+					</li>
+					{/if}
 				{/foreach}
+					
 				
 			</ul>
 		</div>
@@ -335,7 +410,7 @@
 	<!--floor1-->
 	{foreach:items=$this->categoryList item=$base}
 	{set:$K=$key+1}
-	<div class="floor floor-{$K}" name="showGoods">
+	<div class="floor floor-{$K}" id='floor-{$K}' name="showGoods">
 			<div class="fl-title clearfix">
 				<h2 class="t18">{$base['name']}</h2>
 				<ul class="fl-cat">
@@ -388,13 +463,17 @@
 				 </div>
 			</div>
 		</div>
-		 <!--floor floor-1-->
-		 <div class="big-pro">
-		 	<div class='seller_list'>
+		
+		<div class="big-pro">
+	       <div class='seller_list'>
 		 		{foreach:items=$base['seller'] item=$seller}
 					<a href="{url:/site/home/id/$seller['id']}"><img src="{url:/pic/thumb/img/$seller['logo_img']/w/119/h/60}"/></a>
 				{/foreach}
 		 	</div>
+		</div>
+		 <!--floor floor-1-->
+		 <div class="big-pro">
+		 	
 	        <div class="ad-pic" id="ad_pic_5713">
 	            	{echo:Ad::show("首页通栏".$K)}		
 			</div>
@@ -406,3 +485,4 @@
 	
 	<!--分类产品列表-->
 </div>	
+
