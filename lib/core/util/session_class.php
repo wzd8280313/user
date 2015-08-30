@@ -35,6 +35,20 @@ class ISession
 		return self::$pre;
 	}
 
+	/*
+	 * 在某个session字段里添加数据，已存在则不添加
+	 * @$name str  session键名
+	 * @$value str 加入的值
+	 */
+	public static function add($name,$value=''){
+		self::$pre = self::getPre();
+		if(self::checkSafe()==-1)$_SESSION[self::$pre.'safecode']=self::sessionId();
+		if(!isset($_SESSION[self::$pre.$name]) || !is_array($_SESSION[self::$pre.$name]))$_SESSION[self::$pre.$name] = array();
+		if(!in_array($value,$_SESSION[self::$pre.$name])){
+			array_unshift($_SESSION[self::$pre.$name],$value);
+		}
+	}
+	
 	/**
 	 * @brief 设置session数据
 	 * @param string $name 字段名

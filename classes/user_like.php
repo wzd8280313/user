@@ -86,6 +86,37 @@ class user_like{
 		$res = $data!='' ? Api::run('getCategoryExtendListByCategoryid',array('#categroy_id#',$data),2,5) : array();
 		return $res;
 	}
-
 	
+	/**
+	 * @记录用户浏览记录
+	 */
+	public static function set_user_history($goods_id){
+		ISession::add('user_history',$goods_id);
+	}
+	
+	/**
+	 * @获取浏览历史
+	 */
+	public static function get_user_history(){
+		return ISession::get('user_history');
+	} 
+	
+	/**
+	 * @删除浏览记录
+	 * @$goods_id array or int 要删除的商品id
+	 */
+	
+	public static function del_user_history($goods_id){
+		if(!isset($goods_id))return false;
+		if(!is_array($goods_id))
+			$goods_id = array($goods_id);
+		if(!!$history = self::get_user_history()){
+			foreach($history as $k=>$v){
+				if(in_array($v,$goods_id))
+					unset($history[$k]);
+			}
+			ISession::set('user_history',$history);
+		}
+		return false;
+	}
 }

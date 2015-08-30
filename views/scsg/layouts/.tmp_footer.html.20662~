@@ -73,8 +73,12 @@ $(function()
 			$('#div_mycart').hide('slow');
 		}
 	);
-	
-	$("#jCat .list-item").hover(function(){
+
+
+	 	 
+
+
+	   $("#jCat .list-item").hover(function(){
 	    $(this).addClass("cat-hover");
 	  	$(this).children(".cat-pop").show();
 	  },function(){
@@ -102,9 +106,9 @@ $(function()
 });
 
 //[ajax]加入购物车
-function joinCart_ajax(id,url,type)
+function joinCart_ajax(id,type)
 {
-	$.getJSON(url,{"goods_id":id,"type":type,"random":Math.random()},function(content){
+	$.getJSON("/simple/joinCart",{"goods_id":id,"type":type,"random":Math.random()},function(content){
 		if(content.isError == false)
 		{
 			var count = parseInt($('[name="mycart_count"]').html()) + 1;
@@ -320,23 +324,25 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 							<div style="height: 943px;"
 								class="tbar-panel-content J-panel-content">
 								<div class="jt-history-wrap">
-									
 									<ul>
-										{set:$history=implode(',',user_like::get_user_history())}
-										{foreach:items=Api::run('getGoodsInfoByIds',array('#ids#',$history))}
-										
-										<li class="jth-item"><a href="{url:/site/products/id/$item[goods_id]}" class="img-wrap"
+										<li class="jth-item"><a href="#" class="img-wrap"
 											target="_blank"
-											title="{$item['name']}"> <img
-												src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"
+											title="小天鹅 （Little Swan） TP65-S602 6.5公斤 半自动双缸洗衣机（白色）"> <img
+												src="http://img10.360buyimg.com/n0/s100x100_g9/M03/0C/18/rBEHalCKCk8IAAAAAAD5nbR5xOAAACfgQENi_wAAPm1269.jpg"
 												height="100" width="100">
-										</a> <a class="add-cart-button" href="javascript:void(0)" onclick='joinCart_ajax({$item["goods_id"]},"{url:/simple/joinCart}","goods")'>加入购物车</a>
-											<a href="#" target="_blank" class="price">￥{$item['sell_price']}</a>
+										</a> <a class="add-cart-button" href="#" target="_blank">加入购物车</a>
+											<a href="#" target="_blank" class="price">￥498.00</a>
 										</li>
-										{/foreach}
-										
+										<li class="jth-item"><a href="#" class="img-wrap"
+											target="_blank"
+											title="小天鹅 （Little Swan） TP65-S602 6.5公斤 半自动双缸洗衣机（白色）"> <img
+												src="http://img10.360buyimg.com/n0/s100x100_g9/M03/0C/18/rBEHalCKCk8IAAAAAAD5nbR5xOAAACfgQENi_wAAPm1269.jpg"
+												height="100" width="100">
+										</a> <a class="add-cart-button" href="#" target="_blank">加入购物车</a>
+											<a href="#" target="_blank" class="price">￥498.00</a>
+										</li>
 									</ul>
-									<a href="{url:/ucenter/history}" class="history-bottom-more" target="_blank">查看更多足迹商品
+									<a href="#" class="history-bottom-more" target="_blank">查看更多足迹商品
 										&gt;&gt;</a>
 								</div>
 							</div>
@@ -393,7 +399,59 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 
 
 
+<script type="text/javascript">
+$(function()
+{
+		$('input:text[name="word"]').val("输入关键字...");
 
+	$('input:text[name="word"]').bind({
+		keyup:function(){autoComplete('/site/autoComplete','/search.html?word=@word@','');}
+	});
+
+	var mycartLateCall = new lateCall(200,function(){showCart('/simple/showCart')});
+
+	//购物车div层
+	$('.mycart').hover(
+		function(){
+			mycartLateCall.start();
+		},
+		function(){
+			mycartLateCall.stop();
+			$('#div_mycart').hide('slow');
+		}
+	);
+
+
+	   $("#jCat .list-item").hover(function(){
+	    $(this).addClass("cat-hover");
+	  	$(this).children(".cat-pop").show();
+	  },function(){
+		 $(this).removeClass("cat-hover");
+		 $(this).children(".cat-pop").hide();
+	  });
+
+	  $("#jSiteNavQuick li:first").hover(function(){
+	    $(this).children("a").addClass("menu-hd-hover");
+		$(this).children(".menu-bd").addClass("menu-bd-hover");
+	  },function(){
+		 $(this).children("a").removeClass("menu-hd-hover");
+		$(this).children(".menu-bd").removeClass("menu-bd-hover");
+	  });
+
+
+	   $(".tab-title li").hover(function(){
+	   	$(this).addClass('tab-title-hover').siblings().removeClass('tab-title-hover');
+		var p= $(this).index();
+		$(this).parent().parent().children(".tab-cnt").children(".tab-item").eq(p).show().siblings().hide();
+
+	  });
+
+
+});
+
+
+
+</script>
  
 <div style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; cursor: move; opacity: 0; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial;"></div> 
 

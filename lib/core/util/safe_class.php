@@ -37,6 +37,17 @@ class ISafe
 		return session_name();
 	}
 	/**
+	 * 
+	 * @param str $name session键名
+	 * @param str $val 加入的值
+	 * @param str $type session or cookie
+	 */
+	public static function add($name,$val,$type = ''){
+		$className = self::getSafeClass($type);
+		if(method_exists() )
+		call_user_func(array($className, 'add'),$key,$val);
+	}
+	/**
 	 * @brief 设置数据
 	 * @param string $key  键名;
 	 * @param mixed  $val  值;

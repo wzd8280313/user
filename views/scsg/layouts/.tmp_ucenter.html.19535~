@@ -27,7 +27,6 @@
 						<li><a href="{url:/ucenter/consult}">商品咨询</a></li>
 						<li><a href="{url:/ucenter/evaluation}">商品评价</a></li>
 						<li><a href="{url:/ucenter/favorite}">我的关注</a></li>
-						<li><a href="{url:/ucenter/history}">我的足迹</a></li>
 					</ul>
 				</div>
 			</div>

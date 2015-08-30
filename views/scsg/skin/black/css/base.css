@@ -16,7 +16,7 @@ del{text-decoration:line-through}
 a{text-decoration: none;}
 a:link {color:#606060;} /* 未访问的链接 */
 a:visited {color:#606060;} /* 已访问的链接 */
-a:hover{color:#8cb91e;text-decoration: underline;} /* 鼠标在链接上 */ 
+a:hover{color:#8cb91e;} /* 鼠标在链接上 */ 
 a:active {color:#606060;} /* 点击激活链接 */
 ol, ul li{list-style: none outside none}
 img{border:0px}

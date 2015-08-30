@@ -1,5 +1,14 @@
 <?php
 return array(
+	//根据多个商品id获取商品列表
+	'getGoodsInfoByIds'=>array(
+		'query'=>array(
+			'name'  => 'goods as go',
+			'where' => 'id in (#ids#) and is_del = 0',
+			'fields' => 'go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id',
+			'limit' => '6',
+		)
+	),
 	//取商品数据
 	'getGoodsInfo' => array(
 		'query' => array(

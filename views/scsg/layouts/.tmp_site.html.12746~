@@ -1,0 +1,12 @@
+{include:layouts/head.html}
+
+
+{if:!isset($this->isIndex)}
+<div style='width:1190px;margin:5px auto;'>
+	{viewcontent}
+</div>
+{else:}
+	{viewcontent}
+{/if}
+
+{include:layouts/footer.html}

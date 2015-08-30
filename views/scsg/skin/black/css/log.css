@@ -829,8 +829,7 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 			.help dl dd{padding-left:15px;background:url(../images/front/sprites.gif) -287px -292px no-repeat;margin-left:52px}
 /* help style end */
 /* service style start */
-.service{height:45px;overflow:hidden;border:1px solid #e1e1e1;background:url(../images/front/service.gif) no-repeat}
-	.service ul{text-indent:-9999px}
+.service ul{text-indent:-9999px}
 /* service style end */
 /* foot style start */
 .footer{color:#454545;line-height:25px}

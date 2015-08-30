@@ -818,6 +818,26 @@ class Ucenter extends IController
 		}
     }
 
+    /**
+     * 删除浏览历史
+     */
+    function history_del(){
+    	$user_id = $this->user['user_id'];
+    	$id      = IReq::get('id');
+    	
+    	if(!empty($id))
+    	{
+    		$id = IFilter::act($id,'int');
+    		user_like::del_user_history($id);
+    		$this->redirect('history');
+    	}
+    	else
+    	{
+    		$this->redirect('history',false);
+    		Util::showMessage('请选择要删除的数据');
+    	}
+    }
+    
     //[我的积分] 单页展示
     function integral()
     {

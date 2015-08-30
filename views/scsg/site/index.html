@@ -7,11 +7,11 @@
 	$seo_data['description']=$site_config->index_seo_description;
 	seo::set($seo_data);
 }		
-<script type="text/javascript" src="files/jquery.kinMaxShow-1.0.min.js"></script>
+<script type="text/javascript" src="{theme:javascript/jquery.kinMaxShow-1.0.min.js}"></script>
 <link href="{skin:css/bm.css}" rel="stylesheet">
 {set:$recommend = Api::run('getCommendRecom')}
 <!--bn-->
-<div class="bn" >
+<div class="bn" style="height:490px;">
 		<!--轮播开始-->
 		<script type='text/javascript' >
 			var tId;
@@ -87,17 +87,26 @@
 			<!--right-cnt-->
 			<div class="right-cnt">
 				  <!--promise-->
-				  <ul class="promise">
-	   					<li class="15day">
-	    					<span class="ic"></span> <a style="cursor: pointer;" href="">15天退货</a>
-	    				</li>
-	    				<li class="baoyou">
-	    					<span class="ic"></span> <a style="cursor: pointer;" href="">满99包邮</a>
-	    				</li>
-	    				<li class="cirida">
-	    					<span class="ic"></span><a style="cursor: pointer;" href="">郊区次日达</a>&nbsp;
-	    				</li>
-					</ul>
+				  <ul class="promise" id="promise">
+   					<li class="15day">
+    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_1.png}"></span> 15天退货</a>
+    				</li>
+    				<li class="baoyou">
+    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_2.png}"></span> 满79包邮</a>
+    				</li>
+    				<li class="cirida">
+    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_3.png}"></span> 郊区次日达</a>&nbsp;
+    				</li>
+				</ul>
+				 <script>
+					$("#promise").find("li").hover(function(){						
+						$(this).css("background-color","#e77b0d");
+						$(this).find("a").css("color","#fff");
+						},function(){
+						$(this).css("background-color","#f5c53a");
+						$(this).find("a").css("color","#933232");
+					});
+				 </script>
 					<!--promise-->
 				
 				<!--公告、抢购-->

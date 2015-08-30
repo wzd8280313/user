@@ -113,6 +113,16 @@ $(document).ready(function(){
 			$('.toolbar-wrap').addClass('toolbar-open'); 
 		}
 	});
-		
+	
+	$('.J-close').click(function(){
+		$('.toolbar-wrap').removeClass('toolbar-open');
+		$('.tbar-tab-cart').removeClass('tbar-tab-click-selected'); 
+		$('.tbar-tab-follow').removeClass('tbar-tab-click-selected');
+		$('.tbar-tab-history').removeClass('tbar-tab-click-selected');
+	});
+	
+		$('.tbar-tab-top').click(function(){
+			$('body,html').animate({scrollTop:0},500); return false; 
+		});
 	
 });
