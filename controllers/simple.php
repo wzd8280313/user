@@ -94,7 +94,7 @@ class Simple extends IController
 	   		$data['errorCode']=4;
 	  	}
        	if($data['errorCode']==0){
-       		$data['errorCode'] = checkMobileValidateCode($validPhoneCode);
+       		$data['errorCode'] = self::checkMobileValidateCode($validPhoneCode);
        	}
 	  	
     	if($data['errorCode']==0 ){

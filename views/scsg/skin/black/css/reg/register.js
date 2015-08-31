@@ -10113,7 +10113,7 @@ function registerByPhoneSubmit() {
             },
         success: function(k) {
             if (k.errorCode == 0) {
-                var l = $("#p").val();
+               /* var l = $("#p").val();
                 if (l == "") {
                     l = k.p
 
@@ -10121,7 +10121,7 @@ function registerByPhoneSubmit() {
                 if (l == "") {
                     l = "default"
 
-                }
+                }*/
 				location.href=returnUrl;
                // jsRegistFed.loadFunPopwin(l, returnUrl);
                 setTimeout("phone_button_recover()", 2000);
