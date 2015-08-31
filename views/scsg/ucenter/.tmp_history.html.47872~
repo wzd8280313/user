@@ -4,7 +4,7 @@
 	<div class="uc_title m_10">
 		<label class="current"><span>我的足迹</span></label>
 	</div>
-	<form action='#' method='post' id='history' name='history'>
+	<form action='#' method='post' id='favorite' name='favorite'>
 		<table class="border_table" width="100%" cellpadding="0" cellspacing="0">
 			<col width='15px' />
 			<col />
@@ -23,38 +23,43 @@
 
 			<tbody>
 				{set:$historyObj = null;$historyList = $this->get_history($historyObj)}
+				
 				{foreach:items=$historyList}
 				<tr>
 					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 					<td>
 						<dl>
-							
-							<dt><a href="{url:/site/products/id/$item['goods_id']}">
-								<img src="{url:/pic/thumb/img/$item['data']['img']/w/88/h/88}" width="88px" height="88px" alt="{$item['data']['name']}" />
-								</a>
-							</dt>
-							<dd><a class="blue" href="{url:/site/products/id/$item[goods_id]}">{$item['data']['name']}</a></dd>
+							{set:$tmp=$item['data']['id'];$tmpIMG=$item['data']['img'];}
+							<dt><a href="{url:/site/products/id/$tmp}"><img src="{url:/pic/thumb/img/$tmpIMG/w/88/h/88}" width="88px" height="88px" alt="{$item['data']['name']}" /></a></dt>
+							<dd><a class="blue" href="{url:/site/products/id/$tmp}">{$item['data']['name']}</a></dd>
 
-							<input type='hidden' name='goods_id[]' value='{$item["goods_id"]}' />
+							<input type='hidden' name='goods_id[]' value="{$item['data']['id']}" />
 							<dd>库存：{$item['data']['store_nums']}</dd>
-						</dl>
+							</dl>
 					</td>
+
 					<td>{$item['time']}</td>
 					<td><span class='red'>￥{$item['data']['sell_price']}</span></td>
 					<td>
-						<label class="btn_gray_s"><input type="button" value="加入购物车" onclick='joinCart_ajax({$item["goods_id"]},"{url:/simple/joinCart}","goods");' /></span></label><br />
-						<label class="btn_gray_s"><input type="button" value="删除" onclick="delModel({link:'{url:/ucenter/history_del/id/$item[id]}',msg:'是否删除？'});" /></span></label>
+						<label class="btn_gray_s"><input type="button" value="加入购物车" onclick='joinCart_ajax({$item['data']['id']},"{url:/simple/joinCart}","goods");' /></span></label><br />
+						<label class="btn_gray_s"><input type="button" value="取消关注" onclick="delModel({link:'{url:/ucenter/favorite_del/id/$item[id]}',msg:'是否取消关注？'});" /></span></label>
 					</td>
 				</tr>
 				{/foreach}
+				{else:}
+				<tr>
+					<td></td>
+					<td>当前没有浏览记录</td>
+				</tr>
+				{/if}
 			</tbody>
 
 			<tfoot>
 				<tr>
 					<td colspan="5">
-						<div class="pages_bar f_r">{$historyObj->getPageBar()}</div>
+						<div class="pages_bar f_r"></div>
 						<label><input class="radio" type="checkbox" onclick="selectAll('id[]');" />全选</label>
-						<label class="btn_gray_s"><input type="button" onclick="$('#history').attr('action','{url:/ucenter/history_del}');delModel({msg:'是否删除浏览历史？',form:'history'});" value="删除记录" /></span></label>
+						<label class="btn_gray_s"><input type="button" onclick="$('#favorite').attr('action','{url:/ucenter/history_del}');delModel({msg:'是否删除浏览历史？',form:'favorite'});" value="删除记录" /></span></label>
 					</td>
 				</tr>
 			</tfoot>

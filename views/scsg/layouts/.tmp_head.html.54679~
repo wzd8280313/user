@@ -47,7 +47,7 @@
 			<ul  class="cl sn-login" style="float:left;">
 				<li style="width:242px;color:#fff;">
 					{if:$this->user}
-						欢迎您来到{echo:$siteConfig->name}！
+						{echo:$this->user['username']}欢迎您来到{echo:$siteConfig->name}！
 						[<a href="{url:/simple/logout}">安全退出</a>]
 					{else:}
 						欢迎您来到{echo:$siteConfig->name}！

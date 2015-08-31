@@ -731,6 +731,50 @@ class Ucenter extends IController
     	echo JSON::encode($result);
     }
 
+    //获取历史浏览数据
+    function get_history(&$historyObj)
+    {
+    	//获取收藏夹信息
+    	$page = (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
+    
+    	$historyObj = new IQuery("user_history");
+    	$cat_id = intval(IReq::get('cat_id'));
+    	$where = '';
+    	if($cat_id != 0)
+    	{
+    		$where = ' and cat_id = '.$cat_id;
+    	}
+    	$historyObj->where = "user_id = ".$this->user['user_id'].$where;
+    	$historyObj->page  = $page;
+    	$items = $historyObj->find();
+    
+    	$goodsIdArray   = array();
+    	foreach($items as $val)
+    	{
+    		$goodsIdArray[] = $val['goods_id'];
+    	}
+    
+    	//商品数据
+    	if(!empty($goodsIdArray))
+    	{
+    		$goodsIdStr = join(',',$goodsIdArray);
+    		$goodsObj   = new IModel('goods');
+    		$goodsList  = $goodsObj->query('id in ('.$goodsIdStr.')','id,name,sell_price,store_nums,img,seller_id');
+    	}
+    
+    	foreach($items as $key => $val)
+    	{
+    		foreach($goodsList as $gkey => $goods)
+    		{
+    			if($goods['id'] == $val['goods_id'])
+    			{
+    				$items[$key]['data'] = $goods;
+    
+    			}
+    		}
+    	}
+    	return $items;
+    }
     //[收藏夹]获取收藏夹数据
 	function get_favorite(&$favoriteObj)
     {
@@ -820,22 +864,35 @@ class Ucenter extends IController
 
     /**
      * 删除浏览历史
+     * @$id int 浏览记录id
      */
     function history_del(){
-    	$user_id = $this->user['user_id'];
+   		 $user_id = $this->user['user_id'];
     	$id      = IReq::get('id');
-    	
-    	if(!empty($id))
-    	{
-    		$id = IFilter::act($id,'int');
-    		user_like::del_user_history($id);
-    		$this->redirect('history');
-    	}
-    	else
-    	{
-    		$this->redirect('history',false);
-    		Util::showMessage('请选择要删除的数据');
-    	}
+		if(!empty($id))
+		{
+			$id = IFilter::act($id,'int');
+
+			$historyObj = new IModel('user_history');
+
+			if(is_array($id))
+			{
+				$idStr = join(',',$id);
+				$where = 'user_id = '.$user_id.' and id in ('.$idStr.')';
+			}
+			else
+			{
+				$where = 'user_id = '.$user_id.' and id = '.$id;
+			}
+
+			$historyObj->del($where);
+			$this->redirect('history');
+		}
+		else
+		{
+			$this->redirect('history',false);
+			Util::showMessage('请选择要删除的数据');
+		}
     }
     
     //[我的积分] 单页展示

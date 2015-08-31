@@ -23,6 +23,7 @@
 				<div class="cont">
 					<ul class="list">
 						<li><a href="{url:/ucenter/refunds}">退换货申请</a></li>
+						<li><a href="{url:/ucenter/complain}">站点建议</a></li>
 						<li><a href="{url:/ucenter/consult}">商品咨询</a></li>
 						<li><a href="{url:/ucenter/evaluation}">商品评价</a></li>
 						<li><a href="{url:/ucenter/favorite}">我的关注</a></li>
@@ -36,7 +37,7 @@
 					<ul class="list">
 						<li><a href="{url:/ucenter/message}">短信息</a></li>
 						<li><a href="{}">在线服务</a></li>
-						<li><a href="{url:/ucenter/complain}">意见反馈</a></li>
+						<li><a href="{url:/ucenter/favorite}">意见反馈</a></li>
 					</ul>
 				</div>
 			</div>

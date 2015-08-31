@@ -1,28 +1,45 @@
-{set:$seo_data=array(); $site_config=new Config('site_config');}
-{set:$seo_data['title'] = $this->catRow['title']?$this->catRow['title']:$this->catRow['name']}
-{set:$seo_data['title'].="_".$site_config->name}
-{set:$seo_data['keywords']=$this->catRow['keywords']}
-{set:$seo_data['description']=$this->catRow['descript']}
-{set:seo::set($seo_data);}
-{set:$breadGuide = goods_class::catRecursion($this->catId)}
-{set:$goodsObj = search_goods::find(array('category_extend' => $this->childId));
-$resultData = $goodsObj->find();
-$seller = new IModel('seller');
-$seller_arr = array();
-$seller_arr[0]='平台自营';
-}
-{foreach:items =$resultData}
-	{if:!isset($seller_arr[$item['seller_id']])}
-	{set:$seller_arr[$item['seller_id']]=$seller->getField('id='.$item['seller_id'],'true_name')}
-	{/if}
-{/foreach}
-<div class="position">
-	<span>您当前的位置：</span>
-	<a href="{url:}">首页</a>{foreach:items=$breadGuide} » <a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a>{/foreach}
-</div>
 
 <div class="wrapper clearfix container_2">
-	
+	<div class="sidebar f_l">
+		<!--侧边栏分类-->
+		{set:$catSide = goods_class::catTree($this->catId)}
+		{if:$catSide}
+		<div class="box_2 m_10">
+			<div class="title">{$this->catRow['name']}</div>
+			<div class="content" style='width:95%'>
+				{foreach:items=$catSide item=$first}
+				<dl class="clearfix">
+					<dt><a href="{url:/site/pro_list/cat/$first[id]}">{$first['name']}</a></dt>
+					{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$first['id'])) item=$second}
+					<dd><a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a></dd>
+					{/foreach}
+				</dl>
+				{/foreach}
+			</div>
+		</div>
+		{/if}
+		<!--侧边栏分类-->
+
+		<!--销售排行-->
+		<div class="box m_10">
+			<div class="title">销售排行榜</div>
+			<div class="content" style='width:95%;'>
+				<ul class="ranklist" id='ranklist'>
+					{foreach:items=Api::run('getCategoryExtendListByCategoryid',array('#categroy_id#',$this->childId)) }
+				  	<li>
+				  		<span>{echo:intval($key+1)}</span>
+				  		<a href="{url:/site/products/id/$item[id]}" target="_blank">
+				  			<img src="{url:/pic/thumb/img/$item[img]/w/60/h/60}" width="60" height="60" alt="{$item['name']}" />
+				  		</a>
+				  		<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
+				  		<b>￥{$item['sell_price']}</b>
+				  	</li>
+				  	{/foreach}
+				</ul>
+			</div>
+		</div>
+		<!--销售排行-->
+	</div>
 
 	<div class="main f_r">
 		<!--推荐商品-->
@@ -34,15 +51,15 @@ $seller_arr[0]='平台自营';
 			<ul class="prolist">
 				{foreach:items=$pro_list}
 				<li>
-					<a class="pic" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/85/h/85}" height="85px" width="85px"></a>
+					<a class="pic" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/85/h/85}" alt="{$item['name']}" height="85px" width="85px"></a>
 					<p class="pro_title"><a class="blue" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span class="gray">{$item['description']}</span></p>
-					<p><b>￥{$item['sell_price']}</b> <s>￥{$item['sell_price']}</s></p>
+					<p><b>￥{$item['sell_price']}</b> <s>￥{$item['market_price']}</s></p>
 				</li>
 				{/foreach}
 			</ul>
 		</div>
 		{/if}
-				<!--推荐商品-->
+		<!--推荐商品-->
 
 		<!--商品条件检索-->
 		<div class="box m_10">
@@ -56,12 +73,12 @@ $seller_arr[0]='平台自营';
 					<dt>品牌：</dt>
 					<dd id='brand_dd'>
 						<a class="nolimit current" href="{echo:search_goods::searchUrl('brand','')}">不限</a>
-						{foreach:items = $brandList}	
+						{foreach:items = $brandList}
 						<a href="{echo:search_goods::searchUrl('brand',$item['id'])}" id='brand_{$item['id']}'>{$item['name']}</a>
 						{/foreach}
-						</dd>
+					</dd>
 				</dl>
-				{/if}				
+				{/if}
 				<!--品牌展示-->
 
 				<!--商品属性-->
@@ -98,8 +115,8 @@ $seller_arr[0]='平台自营';
 
 		<!--商品列表展示-->
 		<div class="display_title">
-		<!--<span class="l"></span>
-			<span class="r"></span> -->
+			<span class="l"></span>
+			<span class="r"></span>
 			<span class="f_l">排序：</span>
 			<ul>
 				{foreach:items=search_goods::getOrderType()}
@@ -115,33 +132,35 @@ $seller_arr[0]='平台自营';
 			<a class="show_s" href="{echo:search_goods::searchUrl('show_type','list')}" title='列表展示' alt='列表展示'><span class='{echo:search_goods::getListShow(IReq::get('show_type')) == 'list' ? 'current':''}'></span></a>
 		</div>
 
-			{if:$resultData}
-			{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')))}
-			<ul class="display_list clearfix m_10">
-				{foreach:items=$resultData}
-				<li class="clearfix win {echo:search_goods::getListShow(IFilter::act(IReq::get('show_type')))}">
-					<div class="pic">
-						<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" width="200" height="200" alt="{$item['name']}" title="{$item['name']}" /></a>
-					</div>
-					<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:0px'></i></span>
-					</h3>
-						<a  style='margin-left:5px;text-decoration:none;'>{$seller_arr[$item['seller_id']]}</a>
-					
-					<div class="price">￥{$item['sell_price']}<s>￥{$item['sell_price']}</s></div>
-				
-				</li>
-				{/foreach}
-			</ul>
+		{if:$resultData}
+		{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')))}
+		<ul class="display_list clearfix m_10">
+			{foreach:items=$resultData}
+			<li class="clearfix {echo:search_goods::getListShow(IFilter::act(IReq::get('show_type')))}">
+				<div class="pic">
+					<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" title="{$item['name']}" /></a>
+				</div>
+				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
+				<div class="handle">
+					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/shopping.gif}" width="15" height="15" /><input type="button" value="加入购物车" onclick="joinCart_list({$item['id']});"></label>
+					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/favorites.gif}" width="15" height="14" /><input type="button" value="收藏" onclick="favorite_add_ajax('{url:/simple/favorite_add}','{$item['id']}',this);"></label>
+				</div>
+				<div class="price">￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
+			</li>
+			{/foreach}
+		</ul>
 		{$goodsObj->getPageBar()}
 
 		{else:}
 		<p class="display_list mt_10" style='margin-top:50px;margin-bottom:50px'>
 			<strong class="gray f14">对不起，没有找到相关商品</strong>
 		</p>
-		{/if}	<!--商品列表展示-->
+		{/if}
+		<!--商品列表展示-->
 
 	</div>
 </div>
+
 <script type='text/javascript'>
 //价格跳转
 function priceLink()

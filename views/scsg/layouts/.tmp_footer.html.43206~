@@ -327,13 +327,10 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 										{/if}
 										{set:$history=user_like::get_user_history($user_id)}
 										{set:$ids='';}
-										{if:$history!=null}
 										{foreach:items=$history}
 											{set:$ids .=$item['goods_id'].',';}
 										{/foreach}
 										{set:$ids=substr($ids,0,-1);}
-										
-										
 										{foreach:items=Api::run('getGoodsInfoByIds',array('#ids#',$ids))}
 										
 										<li class="jth-item"><a href="{url:/site/products/id/$item[goods_id]}" class="img-wrap"
@@ -345,7 +342,7 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 											<a href="#" target="_blank" class="price">￥{$item['sell_price']}</a>
 										</li>
 										{/foreach}
-										{/if}
+										
 									</ul>
 									<a href="{url:/ucenter/history}" class="history-bottom-more" target="_blank">查看更多足迹商品
 										&gt;&gt;</a>

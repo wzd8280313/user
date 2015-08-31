@@ -3,7 +3,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 label input{vertical-align:middle}
 a:link,a:visited{color:#333;text-decoration:none;}
 a:hover,a:active{text-decoration:underline}
-body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;text-align:center}
+body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;}
 img{border:0;vertical-align: middle;}
 table{border-collapse:collapse}
 ul li{list-style:none}
@@ -91,7 +91,7 @@ body.index{ background:url(../images/front/sprites.gif) 0 -341px repeat-x}
 		.navbar li.selected a{padding-right:18px;color:#4e4e4e;background:url(../images/front/sprites.gif) right -99px no-repeat}
 			.navbar li a span{margin:0 0 0 3px}
 			.navbar li.selected a span{background-position:right -163px}
-.mycart{position:relative;z-index:60;float:right;width:244px;height:22px;padding-top:6px;background:url(../images/front/sprites.gif) 0 -255px no-repeat}
+.mycart{position:relative;z-index:60;float:right;width:244px;height:22px;padding-top:6px;}
 	.mycart dt,.mycart dd{float:left}
 	.mycart dt{position:relative;width:120px;padding:0 20px 0 40px}
 		.mycart dt a{color:#626262}
@@ -829,7 +829,6 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 			.help dl dd{padding-left:15px;background:url(../images/front/sprites.gif) -287px -292px no-repeat;margin-left:52px}
 /* help style end */
 /* service style start */
-.service ul{text-indent:-9999px}
 /* service style end */
 /* foot style start */
 .footer{color:#454545;line-height:25px}

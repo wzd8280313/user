@@ -25,7 +25,7 @@
 		</div>
 	</div>
 
-	<div class="main comment_list f_r" style='width:930px;'>
+	<div class="main comment_list f_r">
 		<div class="tabs">
 			<div class="tabs_menu uc_title">
 				<label><span><a href="{url:/site/comments_list/id/$id}">全部评论({$comment_total}条)</a></span></label>

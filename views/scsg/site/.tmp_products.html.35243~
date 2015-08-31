@@ -7,15 +7,14 @@
 	seo::set($seo_data);
 }
 {js:cookie}
+{set:$shareInstance = new Share();$shareInstance->show();}
 {set:$breadGuide = goods_class::catRecursion($category);}
-<link rel="stylesheet" href="{skin:css/index1.css}">
 <link rel="stylesheet" type='text/css' href="{skin:css/detail.css}"/>
 <link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />
 <script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
 <script type='text/javascript' src="{theme:javascript/piczoom.js}"></script>
 <div class="position"><span>您当前的位置：</span><a href="{url:}">首页</a>{foreach:items=$breadGuide} » <a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a>{/foreach} » {$name}</div>
 <div class="wrapper clearfix">
-	
 	<div class="summary" style='margin-right:15px;'>
 
 		<!--货品ID，当为商品时值为空-->
@@ -27,7 +26,6 @@
 			<div class="tb-wrap">
 				<div class="tb-detail-hd">
 					<h1 data-spm="1000983">	{$name} </h1>
-					<h2 data-spm="1000983" style="color:#e05757;">	{$name} </h2>
 					<p> </p>
 				</div>
 				<div class="tm-fcs-panel">
@@ -113,7 +111,7 @@
 								</dl>
 								{/foreach}
 								{/if}
-																								
+								
 								<dl class="tb-amount tm-clear">
 									<dt class="tb-metatit">数量</dt>
 									<dd id="J_Amount">
@@ -139,13 +137,15 @@
 
 		<!--购买区域-->
 		<div class="current">
-			{if:$store_nums <= 0}
-				该商品已售完，不能购买，您可以看看其它商品！(<a href="{url:/simple/arrival/goods_id/$id}" class="orange">到货通知</a>)
-			{else:}
+		{if:$store_nums <= 0}
+			该商品已售完，不能购买，您可以看看其它商品！(<a href="{url:/simple/arrival/goods_id/$id}" class="orange">到货通知</a>)
+		{else:}
+			
 
 			<input class="submit_buy" type="button" id="buyNowButton" onclick="buy_now();" value="立即购买" />
 
-						<div class="shop_cart" style="z-index:1">
+			{if:$promo==''}
+			<div class="shop_cart" style="z-index:1">
 				<input class="submit_join" type="button" id="joinCarButton" onclick="joinCart();" value="加入购物车" />
 
 				<div class="shopping" id="product_myCart" style='display:none'>
@@ -160,6 +160,7 @@
 				</div>
 			</div>
 			{/if}
+		{/if}
 		</div>
 		
 		<div class="tm-ser tm-clear">
@@ -184,11 +185,9 @@
 		<!--图片放大器-->
 		<div class="tb-gallery">
 		<div class="tb-booth" id='bigPic'>
-				<img src="{skin:images/sign_3.png}" class="mark">
 			<a target="_blank" rel="nofollow" href="" >
-			<span class="ks-imagezoom-wrap">		
-			
-				<img id="J_ImgBooth"  name="bigpro"  src="{url:/pic/thumb/img/$photo[0]['img']/w/435/h/435}" style='cursor:crosshair;'>
+			<span class="ks-imagezoom-wrap">
+				<img id="J_ImgBooth"  name='bigpro' src="{url:/pic/thumb/img/$photo[0]['img']/w/435/h/435}" style='cursor:crosshair;'>
 				<span class="ks-imagezoom-lens" style="position: absolute; border:1px solid blue;left:1px;"></span>
 			</span>
 			</a>
@@ -200,51 +199,31 @@
 		</div>
 		<ul id="J_UlThumb" class="tb-thumb tm-clear">
 			{foreach:items=$photo}
-						<li class="">
+			<li class="">
 				<a href="#" onmouseover='showBig("{url:/pic/thumb/img/$item[img]/w/435/h/435}","{webroot:$item[img]}")'>
 					<img src="{url:/pic/thumb/img/$item[img]/w/60/h/60}">
 				</a>
 			</li>
 			{/foreach}
 		</ul>
-		<div style="margin-top:10px;margin-left:50px;">			
-			<!-- JiaThis Button BEGIN -->
-				<style>
-					.bdshare_popup_box{z-index:100000000;}
-					.bdshare_dialog_box{z-index:100000000;}
-					.bd_weixin_popup_bg{z-index:100000000;}
-					.bd_weixin_popup{z-index:100000000;}
-				</style>
-
-				<div class="bdsharebuttonbox">
-					<a href="#" class="bds_more" data-cmd="more">分享到：</a>
-					<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-				</div>
-				<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{"bdSize":16},"image":{"viewList":["tsina"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
-			<!-- JiaThis Button END -->
-				<div class='quguan' style="position:absolute; left:300px;bottom:1px; padding-left:17px; " id="gz"><a href='javascript:void(0)' onclick='favorite_add(this)'>我的关注：{$favorite}</a></div>
-		</div>
 	</div>
 
 </div>
-	
-<script type='text/javascript'>
-	$("#gz").click(function(){$(this).removeClass('quguan').addClass('guanzhu');});
-</script>
+
 
 
 <div class="wrapper clearfix container_2">
 
 	<!--左边栏-->
 	<div class="sidebar f_l">
-		{if:isset($seller)}
 		<!--商家-->
+		{if:isset($seller)}
 		<div class="box m_10">
 			<div class="title"><a target='blank' href='{url:/site/home/id/$seller[id]}'>{$seller['true_name']}</a></div>
 			<div class="cont">
 				<ul class="list">
-					{set:$ave = $seller['num']==0?0:round($seller['point']/$seller['num'],1);$ave=$ave*70/5;}
-									<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
+				{set:$ave = $seller['num']==0?0:round($seller['point']/$seller['num'],1);$ave=$ave*70/5;}
+					<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
 					<li style='background:none;'>
 					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}">进入店铺</a>
 					</li>
@@ -252,7 +231,7 @@
 			</div>
 		</div>
 		{/if}
-				<!--促销规则-->
+		<!--促销规则-->
 		<div class="box m_10">
 			<div class="title">促销活动</div>
 			<div class="cont">
@@ -267,12 +246,12 @@
 
 		<!--购买推荐-->
 		{if:isset($buyer_id) && $buyer_id}
-				<div class="box m_10">
+		<div class="box m_10">
 			<div class="title">购买本商品的用户还购买过</div>
 			<div class="content" style='width:95%;'>
 				<ul class="ranklist">
 					{foreach:items=Api::run('getOrderGoodsByBuyerid',array('#buyer_id#',$buyer_id))}
-										<li class="current">
+					<li class="current">
 						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}"></a>
 						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
 						<b>￥{$item['price']}</b>
@@ -282,20 +261,20 @@
 			</div>
 		</div>
 		{/if}
-				<!--购买推荐-->
+		<!--购买推荐-->
 
 		<!--热卖商品-->
 		<div class="box m_10">
 			<div class="title">热卖商品</div>
 			<div class="content" style='width:95%;'>
 				<ul class="ranklist">
-					{foreach:items=Api::run('getCommendHot')}
-									<li class="current">
-						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" alt="苹果" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
+				{foreach:items=Api::run('getCommendHot')}
+					<li class="current">
+						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" alt="{$item['name']}" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
 						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
 						<b>￥{$item['sell_price']}</b>
 					</li>
-					{/foreach}
+				{/foreach}
 				</ul>
 			</div>
 		</div>
@@ -303,7 +282,7 @@
 	</div>
 
 	<!--滑动面tab标签-->
-	<div class="main f_r" style="overflow:hidden; width:950px;">
+	<div class="main f_r" style="overflow:hidden">
 
 		<div class="uc_title" name="showButton">
 			<label class="current"><span>商品详情</span></label>
@@ -321,11 +300,11 @@
 					{if:isset($brand) && $brand}
 					<li>品牌：{$brand}</li>
 					{/if}
-					
+
 					{if:isset($weight) && $weight}
 					<li>商品毛重：<label id="data_weight">{$weight}</label></li>
 					{/if}
-					
+
 					{if:isset($unit) && $unit}
 					<li>单位：{$unit}</li>
 					{/if}
@@ -333,12 +312,12 @@
 					{if:isset($up_time) && $up_time}
 					<li>上架时间：{$up_time}</li>
 					{/if}
+
 					{if:($attribute)}
 					{foreach:items=$attribute}
 					<li>{$item['name']}：{$item['attribute_value']}</li>
 					{/foreach}
 					{/if}
-					
 				</ul>
 				{if:isset($content) && $content}
 				<div class="salebox">
@@ -1102,12 +1081,3 @@ function buy_now()
 	window.location.href = url;
 }
 </script>
-</div>
-
-	
-	
-	
-	
-	
-	
-	

@@ -15,7 +15,7 @@
  */
 class Simple extends IController
 {
-    public $layout='site_mini';
+    public $layout='site_reg';
 
 	function init()
 	{
@@ -41,136 +41,113 @@ class Simple extends IController
     	ISafe::clearAll();
     	$this->redirect('login');
     }
-	function getMobileValidate(){
+    //设置手机验证码
+	function getMobileValidateCode(){
+		
 		$phone = IFilter::act(IReq::get('phone'));
+		$res = array('errorCode'=>0);echo JSON::encode($res);exit();
+		if($phone=='')$res['errorCode']==1;
+		if(!$phone)$res['errorCode']==15;
+		
 		$text = rand(000000,999999);
-		ISafe::set('mobileValidate',$text);
+		ISafe::set('mobileValidate',array('num'=>$text,'time'=>time()));
 		$text = '山城速购的手机验证码'.$text;
-		hsms::send($phone,$text);
+		if(!hsms::send($phone,$text))
+			$res['errorCode']=-1;
+		echo JSON::encode($res);
+		
+		
+	}
+	//验证手机验证码
+	function checkMobileValidateCode($num){return 0;
+		if($mobileValidateSess = Isafe::get('mobileValidate')){
+			if(time() - $mobileValidateSess['time']>=10){//session过期
+				return 41;
+			}else if($mobileValidateSess['num']!=$num){
+				return 2;//错误
+			}else return 0;//正确
+		}
+		else return 7;//没有验证码
 	}
     //用户注册
     function reg_act()
     {
-    	$callback   = IFilter::act(IReq::get('callback'),'text');
-    	$type = IFilter::act(IReq::get('type','post'),'int');
-    	$agree = IFilter::act(IReq::get('agree','post'));
-    	$message = '';
-    	switch ($type){
-    		case '0' :{
-    			$name  = '手机';
-    			$phone = IFilter::act(IReq::get('phone','post'));
-    			$password   = IFilter::act(IReq::get('password1','post'));
-    			$repassword = IFilter::act(IReq::get('repassword1','post'));
-    			$number     = IFilter::act(Ireq::get('number','post'));
-    			$email = '';
-    			if(!IValidate::phone($phone))
-    			{
-    				$message = '手机格式不正确';
-    			}else if($number !=ISafe::get('mobileValidate')){
-    				$message = '手机验证码不正确';
-    			}else if(!preg_match('|\S{6,32}|',$password))
-		    	{
-		    		$message = '密码必须是字母，数字，下划线组成的6-32个字符';
-		    	}
-		    	else if($password != $repassword)
-		    	{
-		    		$message = '2次密码输入不一致';
-		    	}else{
-		    		$where   = 'phone = "'.$phone.'"';
-		    		
-		    	}
-		    	break;
-    		}
-    		case '1' :{
-    			$name = '邮箱';
-    			$email      = IFilter::act(IReq::get('email','post'));
-    			$password   = IFilter::act(IReq::get('password2','post'));
-    			$repassword = IFilter::act(IReq::get('repassword2','post'));
-    			$phone = '';
-    			if(!IValidate::email($email))
-    			{
-    				$message = '邮箱格式不正确';
-    			}
-    			else if(!preg_match('|\S{6,32}|',$password))
-		    	{
-		    		$message = '密码必须是字母，数字，下划线组成的6-32个字符';
-		    	}
-		    	else if($password != $repassword)
-		    	{
-		    		$message = '2次密码输入不一致';
-		    	}else{
-		    		$where   = 'email = "'.$email.'"';
-		    	}
-		    	break;
-    		}
-    	}
-    	if(!$agree)$message = '未同意注册协议不能注册';
-    	if($message==''){
-    		$userObj = new IModel('user');
-    		$userRow = $userObj->getObj($where);
-    		if($userRow)
-    		{
-    			$message = "此".$name."已经被注册过，请重新更换";
-    		}
-    		else
-    		{
-    			//$captcha    = IFilter::act(IReq::get('captcha','post'));
-    			//     	else if($captcha != ISafe::get('captcha'))
-    				//     	{
-    				//     		$message = '验证码输入不正确';
-    				//     	}
-    			//user表
-    			$userArray = array(
-    					'email'    => $email,
-    					'phone'    => $phone,
-    					'password' => md5($password),
-    			);
-    			$userObj->setData($userArray);
-    			$user_id = $userObj->add();
-    			$userObj->commit();
-    			if($user_id)
-    			{
-    				//member表
-    				$memberArray = array(
-    						'user_id' => $user_id,
-    						'time'    => ITime::getDateTime(),
-    						'status'  => 1,
-    				);
-    				if($type==1)$memberArray['status'] = 4;
-    				$memberObj = new IModel('member');
-    				$memberObj->setData($memberArray);
-    				$memberObj->add();
-    		
-    				//邮箱激活帐号
-    				if($type == 1)
-    				{
-    					$this->send_check_mail();
-    					ISafe::set('email',$email);
-    				}else{
-    					ISafe::set('phone',$phone);
-    				}
-    				ISafe::set('user_id',$user_id);
-    				ISafe::set('user_pwd',$userArray['password']);
-    		
-    				//自定义跳转页面
-    				$callback = $callback ? urlencode($callback) : '/';
-    				$this->redirect('/site/success?message='.urlencode("注册成功！").'&callback='.$callback);
-    				
-    			}else{
-    				$message = "注册失败";
-    			}
-    			
-    		}
+    	$data = array('errorCode'=>0);
+    	$phone = IFilter::act(IReq::get('phone','post'));
+    	$password   = IFilter::act(IReq::get('password','post'));
+    	$password2 = IFilter::act(IReq::get('password2','post'));
+    	$validPhoneCode = IFilter::act(Ireq::get('validPhoneCode','post'),'int');
+    	$type = IFilter::act(IReq::get('type','post'));
+    	$email = '';
+    	if($type==1){//邮箱注册
+    		$email = IFilter::act(IReq::get('email','post'));
+    		if(!IValidate::email($email))
+    			$data['errorCode']=3;
     	}
     	
-    	//出错信息展示
-    	if($message!='')
+    	if(!IValidate::phone($phone))
     	{
-    		$this->email = $email;
-    		$this->phone = $phone;
-    		$this->redirect('reg',false);
-    		Util::showMessage($message);
+    		$data['errorCode']=15;
     	}
+	  	else if($password != $password2)
+	  	{
+	   		$data['errorCode']=4;
+	  	}
+       	if($data['errorCode']==0){
+       		$data['errorCode'] = checkMobileValidateCode($validPhoneCode);
+       	}
+	  	
+    	if($data['errorCode']==0 ){
+    		$userObj = new IModel('user');
+    		
+    		if($type==1 && !!$userObj->getObj(" email = '".$email."'",'id')){
+    			$data['errorCode']=18;
+    		}
+    		else if($userObj->getObj('phone = '.$phone,'id')){
+    			$data['errorCode']=16;
+    		}
+    		else
+    			{
+    				$userArray = array(
+    						'email'    => $email,
+    						'phone'    => $phone,
+    						'password' => md5($password),
+    				);
+    				$userObj->setData($userArray);
+    				$user_id = $userObj->add();
+    				$userObj->commit();
+    				if($user_id)
+    				{
+    					//member表
+    					$memberArray = array(
+    							'user_id' => $user_id,
+    							'time'    => ITime::getDateTime(),
+    							'status'  => 1,
+    					);
+    					if($type==1)$memberArray['status'] = 4;
+    					$memberObj = new IModel('member');
+    					$memberObj->setData($memberArray);
+    					$memberObj->add();
+    			
+    					//邮箱激活帐号
+    					if($type == 1)
+    					{
+    						$data['sendRes']=$this->send_check_mail();
+    						ISafe::set('email',$email);
+    					}
+    					ISafe::set('phone',$phone);
+    					
+    					ISafe::set('user_id',$user_id);
+    					ISafe::set('user_pwd',$userArray['password']);
+    			
+    				}else{
+    					$data['errorCode']=13;
+    				}
+    				 
+    			}
+    		
+    	}
+    	echo JSON::encode($data);
     }
 
     //用户登录
@@ -1332,6 +1309,8 @@ class Simple extends IController
 	    		);
 	    		$favoriteObj->setData($dataArray);
 	    		$favoriteObj->add();
+	    		$goodsObj = new IModel('goods');
+	    		$goodsObj->addNum('id='.$goods_id,array('favorite'=>1));
 	    		$message = '收藏成功';
     		}
     	}
@@ -1684,7 +1663,7 @@ class Simple extends IController
 		$email = IReq::get('email');
 		if(IValidate::email($email) == false)
 		{
-			IError::show(403,'邮件格式错误');
+			return 0;
 		}
 
 		$userDB  = new IModel('user');
@@ -1698,11 +1677,11 @@ class Simple extends IController
 		$result = $smtp->send($email,"用户注册邮箱验证",$content);
 		if($result===false)
 		{
-			IError::show(403,"发信失败,请重试！或者联系管理员查看邮件服务是否开启");
+			return 0;
 		}
 
 		$message = "您的邮箱验证邮件已发送到{$email}！请到您的邮箱中去激活";
-		$this->redirect('/site/success?message='.urlencode($message).'&email='.$email);
+		return IUrl::creatUrl('/site/success?message='.urlencode($message).'&email='.$email);//返回url
 	}
 
 	/**
@@ -1806,12 +1785,30 @@ class Simple extends IController
 		if($res = $M->getObj($where,'err_times'))echo $res['err_times'];
 		else echo 0;
 	}
-	//检测用户名邮箱是否已注册
-	public function checkIsOne(){
-		$field = IFilter::act(IReq::get('field'),'str');
-		$value = IFilter::act(IReq::get('value'),'str');
+	//检测手机是否注册是否已注册
+	public function checkPhoneIsOne(){
+		$res = array(
+			'checkResult'=>0,
+			'showValidCode'=>0
+		);
+		$phone = IFilter::act(IReq::get('phone'),'str');
 		$M = new IModel('user');
-		$where = $field.'="' . $value.'"';
-		echo $M->getObj($where,'id') ? 1 : 0;
+		$where = 'phone = "' . $phone.'"';
+		$res['checkResult'] = $M->getObj($where,'id') ? 1 : 0;
+		
+		echo JSON::encode($res);
+	}
+	//
+	public function checkEmailIsOne(){
+		$res = array(
+				'checkResult'=>0,
+				'showValidCode'=>0
+		);
+		$email = IFilter::act(IReq::get('email'),'str');
+		$M = new IModel('user');
+		$where = 'email = "' . $email.'"';
+		$res['checkResult'] = $M->getObj($where,'id') ? 1 : 0;
+		
+		echo JSON::encode($res);
 	}
 }

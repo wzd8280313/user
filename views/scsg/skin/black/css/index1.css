@@ -55,16 +55,8 @@ a.line{text-decoration:underline}
 a.more{color:#a2a2a2}a.zoom{padding-left:20px;background:url(../images/front/sprites_2.gif) -63px -284px no-repeat}
 .close,.close_2{display:inline-block;width:13px;height:13px;line-height:100px;overflow:hidden;background:url(../images/front/ucenter/close.gif) no-repeat}
 .close_2{width:27px;height:21px;margin-right:8px;background:url(../images/front/sprites_2.gif) -24px -739px no-repeat}
-.limit-timeout b{
-	display: inline-block;
-width: 25px;
-text-align: center;
-height: 30px;
-margin-right: 5px;
-color: #fff;
-}
 
-font: 400 16px/30px 'microsoft yahei';
+	.countdown b{margin:0 3px;font-size:20px;color:#c4000f}
 /* grade style start */
 span.grade{display:inline-block;width:70px;height:15px;background:url(../images/front/grade_bg.gif) 0 -16px no-repeat}
 	span.grade i{display:inline-block;height:15px;background:url(../images/front/grade_bg.gif) 0 2px no-repeat}
@@ -122,7 +114,7 @@ span.grade{display:inline-block;width:70px;height:15px;background:url(../images/
 /* position style end */
 .wrapper{margin-bottom:10px}
 body.second .wrapper{border-top:2px solid #000}
-.main{width:950px}
+.main{width:1190px}
 .sidebar{width:230px}
 	.wrapper .box{border:1px #e1e1e1 solid}
 		.wrapper .box .title{height:31px;border-bottom:1px #e1e1e1 solid;line-height:30px}
@@ -492,21 +484,18 @@ dl.sorting{ position:relative;width:688px;border-bottom:1px solid #e5e5e5;paddin
 /* c_box style end */
 /* display_title style start */
 .display_title{position:relative;z-index:10;height:38px;padding-left:5px;background:url(../images/front/sprites_2.gif) 0 -141px repeat-x;_width:745px;overflow:hidden}
-	.display_title .r,.display_title .l{position:absolute;top:0;width:6px;height:33px;padding-top:5px;background:url(../images/front/sprites_2.gif) no-repeat}
+	.display_title .r,.display_title .l{position:absolute;top:0;width:6px;height:33px;padding-top:5px;}
 	.display_title .r{right:0;background-position:-7px -179px}
 	.display_title .l{left:0;background-position:0 -179px}
 	.display_title span.f_l{margin:0 8px 0 11px;line-height:40px;color:#555}
-	.display_title ul{position:relative;top:5px;float:left;height:31px}
-		.display_title ul li{position:relative;float:left;height:31px;line-height:31px;margin:0 0 0 6px;background:url(../images/front/sprites_2.gif) 0 -248px repeat-x}
-		.display_title ul li.current{background-position:0 -217px}
+	.display_title ul{position:relative;float:left;height:42px}
 		.display_title ul .r{right:0;width:3px;background-position:-22px -179px}
 		.display_title ul .l{left:0;width:3px;background-position:-19px -179px}
 		.display_title ul li.current .r{background-position:-16px -179px}
 		.display_title ul li.current .l{background-position:-13px -179px}
 			.display_title ul li a{padding:0 6px 0 10px;font-size:14px;font-weight:bold;text-decoration:none}
 			.display_title a.hover{text-decoration:none}
-			.display_title ul li.current a{color:#fff;line-height:31px;}
-				.display_title ul li a span{margin:0 4px;padding:0 3px 0 0;padding:0 4px 0 0\9;background:url(../images/front/sprites_2.gif) -25px -180px no-repeat}
+				.display_title ul li a span{margin:0 4px;padding:0 3px 0 0;padding:0 4px 0 0\9;}
 				.display_title ul li.current a span{background-position:-36px -180px}
 				.display_title ul li.current a span.desc{background-position:-41px -198px}
 		.show_b,.show_s{display:block;float:left;width:16px;height:16px;margin:10px 6px 0 0;overflow:hidden}
@@ -628,7 +617,7 @@ span.sel{padding-right:18px;background:url(../images/front/ucenter/sel.gif) righ
 				.area_box li a:hover,.area_box li a:active{color:#fff;background-color:#ffbf69}
 		.summary li.relative{z-index:999}
 			.summary li.relative a.f_r{position:absolute;right:0;top:0;*top:-4px}
-	.summary dl dt{float:left;text-align:right;color:#666;margin:0 7px 0 0}
+	.summary dl dt{float:left;text-align:right;color:#666;margin:0 7px 0 0;padding-top:1px;}
 		.summary .item{float:left;margin-right:7px}
 			.summary .item a{position:relative;display:block;margin:1px;border:1px solid #ccc;text-align:center;vertical-align:middle;background-color:#fff}
 			.summary .item a.current{margin:0;border:2px solid #f90}
@@ -892,3 +881,12 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 .slide_button{position:absolute;bottom:0px;left:0px;right:0px;height:30px;overflow:hidden;width:100%;background:#fff;}
 	.slide_button a{display:block;height:30px;line-height:30px;color:#333;float:left;background:#dddddd;}
 	.slide_button a.current,#slide_name a:hover{background:#a8a8a8;color:#fff; font-weight:bold}
+
+	.mark{position:absolute; right:0;top:0;width:60px;z-index:10;}
+	
+.guanzhu{
+	background:url(../images/gz-22.png) no-repeat;
+}
+.quguan{
+	background:url(../images/gz-11.png) no-repeat;
+}

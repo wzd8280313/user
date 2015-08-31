@@ -88,35 +88,39 @@ class user_like{
 	}
 	
 	/**
-	 * @记录用户浏览记录
+	 * @记录用户浏览记录同一天同一产品不做重复记录
+	 * @
 	 */
-	public static function set_user_history($goods_id){
-		ISession::add('user_history',$goods_id);
+	public static function set_user_history($goods_id,$user_id=false){
+		if(!$user_id){
+			ISession::add('user_history',array('goods_id'=>$goods_id,'time'=>ITime::getDateTime('Y-m-d')));
+		}else{
+			$history = new IModel('user_history');
+			$time = ITime::getDateTime('Y-m-d');
+			$data = array('user_id'=>$user_id,'goods_id'=>$goods_id,'time'=>$time);
+			$res=$history->getObj('user_id = '.$user_id. ' and goods_id = '.$goods_id.' and DATEDIFF(NOW(),time) < 1','id');
+			if(!$res){
+				$history->setData($data);
+				$history->add();
+			}
+		}
 	}
 	
 	/**
-	 * @获取浏览历史
+	 * @获取浏览历史登陆和未登陆两种方式
+	 * @$user_id 用户id
+	 * @return arr 浏览历史数据
 	 */
-	public static function get_user_history(){
-		return ISession::get('user_history');
+	public static function get_user_history($user_id=false){
+		if(!$user_id)
+			return ISession::get('user_history');
+		else{
+			$history = new IModel('user_history');
+			if($res = $history->query('user_id = '.$user_id,'goods_id,time','time'))
+				return $res;
+			return null;
+		}
 	} 
 	
-	/**
-	 * @删除浏览记录
-	 * @$goods_id array or int 要删除的商品id
-	 */
 	
-	public static function del_user_history($goods_id){
-		if(!isset($goods_id))return false;
-		if(!is_array($goods_id))
-			$goods_id = array($goods_id);
-		if(!!$history = self::get_user_history()){
-			foreach($history as $k=>$v){
-				if(in_array($v,$goods_id))
-					unset($history[$k]);
-			}
-			ISession::set('user_history',$history);
-		}
-		return false;
-	}
 }

@@ -266,4 +266,29 @@ class IModel
 	public function db_query($sql){
 		return $this->db->query($sql);
 	}
+	
+	//某个字段累加一个数
+	/*
+	 * @$where array or str条件
+	* @$addArr array 累加的字段和数量array('field'=>$num)
+	*/
+	public function addNum($where,$addArr){
+		$con = ' WHERE ';
+		if(isset($where) && is_array($where)){
+			foreach($where as $key=>$val){
+				$con .= $key . ' = "'.$val.'" AND ';
+			}
+			$con = substr($con,0,-4);
+		}else{
+			$con .= $where;
+		}
+		$str='';
+		foreach($addArr as $key=>$val){
+			$str .= '`'.$key.'`' .'='.$key .' + '.$val. ',';
+		}
+		$str = substr($str,0,-1);
+		$sql = 'UPDATE '.$this->tableName.' SET '.$str.$con;
+		return $this->db->query($sql);
+	
+	}
 }

@@ -21,7 +21,7 @@
 	<link rel="stylesheet" href="{skin:css/red.css}">
 	<LINK rel="stylesheet" type="text/css" href="{skin:css/css.css}">
 	<link rel="stylesheet" href="{skin:css/PyoBeside.css}"/>
-	<link rel="stylesheet" href="{skin:css/index1.css}">
+	
 <script type="text/javascript" src="{theme:javascript/PyoBeside.js}"></script>
 	<meta name="renderer" content="webkit">
 	{js:jquery}
@@ -47,7 +47,7 @@
 			<ul  class="cl sn-login" style="float:left;">
 				<li style="width:242px;color:#fff;">
 					{if:$this->user}
-						欢迎您来到{echo:$siteConfig->name}！
+						{echo:$this->user['username']}欢迎您来到{echo:$siteConfig->name}！
 						[<a href="{url:/simple/logout}">安全退出</a>]
 					{else:}
 						欢迎您来到{echo:$siteConfig->name}！

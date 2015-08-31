@@ -356,8 +356,8 @@ class Site extends IController
 			IError::show(403,"传递的参数不正确");
 			exit;
 		}
-
-		user_like::set_user_history($goods_id);
+		$user_id = $this->user ? $this->user['user_id'] : 0;
+		user_like::set_user_history($goods_id,$user_id);
 		
 		//使用商品id获得商品信息
 		$tb_goods = new IModel('goods');
