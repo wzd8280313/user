@@ -50,6 +50,10 @@ class Site extends IController
 		$this->redirect('index');
 	}
 
+	function shangou(){
+		$this->logoUrl = 'images/sglogo.png';
+		$this->redirect('shangou');
+	}
 	//[首页]商品搜索
 	function search_list()
 	{
