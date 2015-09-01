@@ -104,11 +104,19 @@ class CheckRights extends IInterceptorBase
 		$user = array(
 			'user_id'  => ISafe::get('user_id'),
 			'username' => ISafe::get('username'),
+			'email'    => ISafe::get('email'),
+			'phone'    => ISafe::get('phone'),
 			'head_ico' => ISafe::get('head_ico'),
 			'user_pwd' => ISafe::get('user_pwd'),
 		);
-
-		if(self::isValidUser($user['username'],$user['user_pwd']))
+		if($user['email']!=''){
+			$loginInfo = $user['email'];
+		}else if($user['phone']!=''){
+			$loginInfo = $user['phone'];
+		}else 
+			$loginInfo = $user['username'];
+		
+		if(self::isValidUser($loginInfo,$user['user_pwd']))
 		{
 			return $user;
 		}
@@ -296,7 +304,7 @@ class CheckRights extends IInterceptorBase
 		$password   = IFilter::act($password);
 
 		$userObj = new IModel('user as u,member as m');
-		$where   = "(u.phone = '{$login_info}' or u.email = '{$login_info}') and m.status = 1 and u.id = m.user_id";
+		$where   = "(u.phone = '{$login_info}' or u.email = '{$login_info}' or u.username = '{$login_info}') and m.status = 1 and u.id = m.user_id";
 		$userRow = $userObj->getObj($where);
 
 		if($userRow && ($userRow['password'] == $password))
@@ -379,6 +387,8 @@ class CheckRights extends IInterceptorBase
 		//用户私密数据
 		ISafe::set('user_id',$userRow['id']);
 		ISafe::set('phone',$userRow['phone']);
+		ISafe::set('email',$userRow['email']);
+		ISafe::set('username',$userRow['username']);
 		ISafe::set('head_ico',$userRow['head_ico']);
 		ISafe::set('user_pwd',$userRow['password']);
 		ISafe::set('last_login',isset($userRow['last_login']) ? $userRow['last_login']:'');

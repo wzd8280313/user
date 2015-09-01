@@ -271,12 +271,14 @@ class IModel
 	/*
 	 * @$where array or str条件
 	* @$addArr array 累加的字段和数量array('field'=>$num)
+	* @$and  int 1：and连接，0：or连接
 	*/
-	public function addNum($where,$addArr){
+	public function addNum($where,$addArr,$and=1){
 		$con = ' WHERE ';
+		$and = $and ? 'AND' : 'OR';
 		if(isset($where) && is_array($where)){
 			foreach($where as $key=>$val){
-				$con .= $key . ' = "'.$val.'" AND ';
+				$con .= $key . ' = "'.$val.'" ' .$and.' ';
 			}
 			$con = substr($con,0,-4);
 		}else{

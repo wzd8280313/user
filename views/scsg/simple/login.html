@@ -5,157 +5,146 @@
 	$seo_data['title'] = "用户登录_".$site_config['name'];
 	seo::set($seo_data);
 }
-<script type='text/javascript'>
-	$(function(){
-		$('input[name=login_info]').blur(function(){
-			var name=$(this).val();
-			var checkUrl = '{url:/simple/checkErrTimes}';
-			$.ajax({
-				type:'post',
-				async:false,
-				data:{username:name},
-				url:checkUrl,
-				beforeSend:function(){
-				},
-				success:function(data){
-					if(data>3){
-						$('tr.hide').removeClass('hide');
-					}	
-				},
-				error:function(){
-					
-				},
-				complete:function(){
-					
-				},
-			})
-		})	
-	})
+
+	<link href="{skin:css/log/pc_login.css}" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="{skin:css/log/login.js}"></script>
+<script>
+	var logPath = '{url:/simple/login_act}';
+	var checkErrTimesUrl = '{url:/simple/checkErrTimes}';
+	var returnUrl = '{url:$callback}';
+	var servicePhone = '400-1234-1234567';
+	
+	
+	var LOGIN_RESULT = {SUCCESS:0,FAIL:1};                  
+	var REGISTER_RESULT = {SUCCESS:10,FAIL:11};             
+	var DOMAIN_TYPE = {YHD:1,MALL:2,YW_111:3};              
+	var LOGIN_SOURCE={NORMAL:1,FRAME:2};  
+	var URLPrefix = {"mymall":"#","passport_statics":"#","yiwangauth":"#","yaowang":"#","tracker":"tracker.yhd.com","passport":"#","my":"#","central":"#","validCodeShowUrl":"#","mall":"#","passportother":"#"}; 
+	var currSiteId = 1;                         
+	           
+	var autoLoginFlag= "1";        
+	var valid_code_service_flag="1"; 
+	var showValidCode = "0"; 
+	var mUrl = "#"; 
+	
+	var no3wUrl = "";
+	var imgPath = "#";
+	var fromDomain = "";         
+	var resetIframeUrl = fromDomain + "/login/callback.do";       
+	
+	var yhdUrl="#";
+    var yhdPassportUrl="#";
+	var ywPassportUrl="#";
+	//var pubkey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXQG8rnxhslm+2f7Epu3bB0inrnCaTHhUQCYE+2X+qWQgcpn+Hvwyks3A67mvkIcyvV0ED3HFDf+ANoMWV1Ex56dKqOmSUmjrk7s5cjQeiIsxX7Q3hSzO61/kLpKNH+NE6iAPpm96Fg15rCjbm+5rR96DhLNG7zt2JgOd2o1wXkQIDAQAB";
 </script>
-<div class="wrapper clearfix">
-	<div class="wrap_box">
-		<h3 class="notice">已注册用户，请登录</h3>
-		<p class="tips">欢迎来到我们的网站，如果您已是本站会员请登录</p>
-		<div class="box login_box clearfix">
-			<form action='{url:/simple/login_act}' method='post'>
-				<input type="hidden" name='callback' />
-				<table width="515" class="form_table f_l">
-					<col width="120px" />
-					<col />
 
-					{if:$this->message!=''}
-					<tr><td colspan="2">
-						<div class="prompt"><img src="{skin:images/front/error_s.gif}" width="16" height="15" />{$this->message}</div>
-					</td></tr>
-					{/if}
 
-					<tr><th>手机号/邮箱：</th><td><input class="gray"  type="text" name="login_info" value="{echo:ICookie::get('loginName');}" pattern='required' alt='填写用户名或邮箱' /></td></tr>
-					<tr><th>密码：</th><td><input class="gray" type="password" name="password" pattern='^\S{6,32}$' alt='填写密码' /></td></tr>
+	<link rel="shortcut icon" href="#">
+	
+	<script type="text/javascript">
+		var no3wUrl="";
+		var currSiteId = 1;
+		var URLPrefix = {"mymall":"#","passport_statics":"#","yiwangauth":"#","yaowang":"#","tracker":"tracker.yhd.com","passport":"#","my":"#","central":"#","validCodeShowUrl":"#","mall":"#","passportother":"#"};
+		var yhdUrl="#";
+        var yhdPassportUrl="#";
+        var ywPassportUrl="#";
+        var loli = window['loli'] || {};
+        var valid_code_service_flag="1"; 
+	</script>
+  
+   
+	<input type="hidden" id="isAutoLogin" value="0">
+	<input type="hidden" id="autoLoginFlag" value="1">
+	<div class="login_wrap">
+		<div class="wrap clearfix">
+			<div class="mod_login_wrap login_entry_css">
+				<div class="clearfix" style="position: relative;">
+	            	<div style="position: relative; padding-left: 160px; padding-right: 160px; height: 40px;">
+	            		<h3 style="margin: 0 auto;float: none; width: 100%;">山城速购用户登录</h3>
+	            	</div>
+	            	<!--
+	            	-->
+	            	<a style="position: absolute; right: 15px; top: 0px;" href="{url:/simple/reg}" class="regist_new blue_link">注册新账号</a>
+	            </div>
+				<div class="login_form">
+					<input id="login_source" type="hidden" value="1">
+					<input id="login_pc_home_page" type="hidden" value="1">
+	
+					<i class="arraow">&nbsp;</i>
+					<p id="error_tips" class="error_tips" style="display:none">您填写的账户名不存在请核对后重新填写</p>
+					<div class="form_item_wrap">
+					    <div class="form_item cur">
+					        <label class="user_ico">&nbsp;</label>
+					        <input id="un" type="text" name="credentials.username" spellcheck="false" tabindex="1" class="ipt ipt_username" style="outline: none;" value="">
+					    </div>
+					    <div class="form_item">
+					        <label class="paswd_ico">&nbsp;</label>
+					        <input id="pwd" type="password" name="credentials.password" tabindex="2" class="ipt ipt_password" style="outline: none;">
+					        <a href="{url:/simple/find_password}" target="_blank" class="forget_pswd" tabindex="-1">忘记密码？</a>
 					
-					<tr class='hide'>
-						<th valign="middle">验证码：</th><td><input style="width:85px" type='text' class='normal' name='captcha' pattern='^\w{5,10}$' alt='填写下面图片所示的字符' /><label>填写下图所示字符</label></td>
-					</tr>
-					<tr class="low hide">
-						<th></th>
-						<td><img src='{url:/simple/getCaptcha/w/90/h/30/s/15}' id='captchaImg' /><span class="light_gray">看不清？<a class="link" href="javascript:changeCaptcha('{url:/simple/getCaptcha/w/90/h/30/s/15}');">换一张</a></span></td>
-					</tr>
-					<tr class="low"><td></td>
-						<td>
-							<label class="attr"><input class="radio" type="checkbox" name="remember" value='1' />记住登录名</label>
-							<label class="attr"><a class="link pwd" href="{url:/simple/find_password}">忘记密码</a></label>
-						</td>
-					</tr>
-					<tr class="low">
-						<td></td>
-						<td>
-							{foreach:items=Api::run('getOauthList')}
-							<a href="javascript:oauthlogin('{$item['id']}');"><img src='{webroot:$item[logo]}' /></a>
-							{/foreach}
-						</td>
-					</tr>
-					<tr><td></td><td><input class="submit_login" type="submit" value="登录" /></td></tr>
-				</table>
-			</form>
-
-			{if:IReq::get('tourist') === null}
-			<!--正常登录时-->
-			<table width="360px" class="form_table prompt_3 f_l">
-				<col width="75px" />
-				<col />
-				<tr>
-					<th></th>
-					<td>
-						<p class="mt_10"><strong class="f14">您还不是<span class="orange">{echo:$siteConfig->name}</span>用户</strong></p>
-						<p>现在免费注册成为{echo:$siteConfig->name}商城用户，便能立即享受便宜又放心的购物乐趣。<a class="blue" href="{url:}">网站首页>></a></p>
-						<p class="mt_10"><a class="reg_btn" href="#">注册新用户</a></p>
-					</td>
-				</tr>
-			</table>
-
-			{else:}
-			<!--访客购买时跳转-->
-			<table id="reg_table" width="360px" class="form_table prompt_3 f_l">
-				<col width="75px" />
-				<col />
-				<tr>
-					<th></th>
-					<td>
-						<p class="mt_10 m_15">
-							<strong class="f14">您还不是<span class="orange">{echo:$siteConfig->name}</span>用户</strong><br />
-							<label>使用游客身份结账或注册</label>
-						</p>
-						<p><label class="attr"><input class="radio" type='radio' name='next_step' value='acount' />使用游客身份结账</label></p>
-						<p><label class="attr"><input class="radio" type='radio' name='next_step' value='reg' checked='checked' />注册新用户</label></p>
-						<p class="mt_10 indentation">现在免费注册成为{echo:$siteConfig->name}商城用户，便能立即享受便宜又放心的购物乐趣。<a class="blue" href="{url:}">网站首页>></a></p>
-						<p class="mt_40 f_r"><a class="next_step" href="javascript:next_step();">下一步</a></p>
-					</td>
-				</tr>
-			</table>
-			{/if}
-
+					    </div>
+					    <div id="vcd_div" class="verify_code" style="display: none;">
+					    	<input id="validateSig" type="hidden">
+					    	<div class="form_item">
+					        	<label>验证码：</label>
+					        	<input id="vcd" type="text" name="validCode" value="" tabindex="-1" class="ipt ipt_code" style="width: 50px; outline: none;" maxlength="5" onblur="javascript: checkValidCodeOnBlur()" onkeyup="javascript: login_param_validate();">
+					        	<span class="code_right" id="code_right" style="display:none"></span>
+                                <span class="code_wrong" id="code_wrong"></span>
+					        </div>
+					    	<span class="verify_code_box" style="margin: 0px 15px 0px 15px;"><img src='{url:/simple/getCaptcha/w/122/h/55/s/15}' onclick="changeCaptcha('{url:/simple/getCaptcha/w/90/h/30/s/15}')" id='captchaImg' /></span>
+					    </div>
+					    
+					    <p id="autoLoginDiv" class="auto_login">
+					    	<a id="check_agreement" class="uncheck_agreement" href="#">自动登录</a>
+					    	<input id="autoLoginCheck" type="hidden">
+					    	<label id="agreement_tips" style="display:none;color:red;">请勿在公用电脑上启用。</label>
+					    </p>
+					    
+					    <p class="service_agreement" style="">点击登录，表示您同意山城速购<a href="#" class="blue_link" target="_blank">《服务协议》</a>
+                    	</p>
+                    	
+					    <button id="login_button" type="button" class="login_btn" onclick="javascript:double_submit();return false;">登录</button>
+					
+					</div>
+					
+					<div class="login_entry">
+						<p>合作网站账号登录</p>
+						<ul class="account_list_big clearfix">
+							<li><a href="#" target="_blank" class="qq" title="QQ"></a></li>
+							<li><a href="#" target="_blank" class="sina" title="新浪微博"></a></li>
+							<li><a href="#" target="_blank" class="alipay" title="支付宝"></a></li>
+							<li><a href="#" target="_blank" class="weixin" title="微信"></a></li>
+						</ul>
+						<!--<div class="account_more">更多合作网站<a href="javascript:void(0);" class="unfold" title="展开"></a></div>
+						<ul class="account_list clearfix">
+							<li><a href="https://passport.yhd.com/netease/login.do" target="_blank" class="wangyi"><i></i>网易</a></li>
+							<li><a href="https://passport.yhd.com/baidu/login.do" target="_blank" class="baidu"><i></i>百度</a></li>
+							<li><a href="https://passport.yhd.com/139/login.do" target="_blank" class="yidong"><i></i>中国移动</a></li>
+							<li><a href="https://passport.yhd.com/kaixin/login.do" target="_blank" class="kaixin"><i></i>开心网</a></li>
+							<li><a href="https://passport.yhd.com/renren/login.do" target="_blank" class="renren"><i></i>人人网</a></li>
+							<li><a href="https://passport.yhd.com/wanlitong/login.do" target="_blank" class="pingan"><i></i>平安万里通</a></li>
+							<li><a href="https://passport.yhd.com/mogujie/login.do" target="_blank" class="mogujie"><i></i>蘑菇街</a></li>
+						</ul>	-->
+					</div>
+					
+				
+				</div>
+			</div>
+			<div class="mod_left_banner"><a id="imgLink" target="_blank"><img id="img" src="{skin:css/log/login_pic.jpg}" width="400" height="300"></a></div>
 		</div>
 	</div>
-</div>
-
-<script type='text/javascript'>
-{set:$callback = IReq::get('callback') ? IFilter::clearUrl(IReq::get('callback')) :IUrl::getRefRoute()}
-
-//DOM加载结束
-$(function(){
-	//回调地址设置
-	$('input[name="callback"]').val("{$callback}");
-	$('.reg_btn').attr('href',"{url:/simple/reg?callback=$callback}");
-
-	$(".form_table input").focus(function(){$(this).addClass('current');}).blur(function(){$(this).removeClass('current');})
-});
-
-//多平台登录
-function oauthlogin(oauth_id)
-{
-	$.getJSON('{url:/simple/oauth_login}',{"id":oauth_id,"callback":"{$callback}"},function(content){
-		if(content.isError == false)
-		{
-			window.location.href = content.url;
-		}
-		else
-		{
-			alert(content.message);
-		}
+	
+	<!--绑定手机送积分 begin -->
+	<div class="mod_login_bindmb_point"></div>
+	<!--绑定手机送积分 end -->
+<script>	
+	pageInit();
+	function getPageTag(){
+        return 1;	 
+    }
+    
+    $(document).ready(function(){
+		loadImageUrl("1","Passport_Login_Ad_Click");
 	});
-}
-
-//下一步操作
-function next_step()
-{
-	var step_val = $('[name="next_step"]:checked').val();
-	if(step_val == 'acount')
-	{
-		{set:$url = rtrim($callback,"/")."/tourist/yes"}
-		window.location.href = '{url:$url}';
-	}
-	else if(step_val == 'reg')
-	{
-		window.location.href = '{url:/simple/reg?callback=$callback}';
-	}
-}
 </script>
+	

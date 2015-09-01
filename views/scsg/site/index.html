@@ -8,6 +8,7 @@
 	seo::set($seo_data);
 }		
 <script type="text/javascript" src="{theme:javascript/jquery.kinMaxShow-1.0.min.js}"></script>
+<script type"text/javascript" src="{theme:javascript/a.js}"></script>
 <link href="{skin:css/bm.css}" rel="stylesheet">
 {set:$recommend = Api::run('getCommendRecom')}
 <!--bn-->
@@ -113,9 +114,13 @@
 		        <div class="notice f-r">
 		        	  <!--tabs-->
 		        	<div class="tabs">
+		        			{set:$promotion=Api::run('getPromotionList')}
+							
 		    				<ul class="tab-title clearfix">
 		    					<li class="tab-title-hover"><h2 class="t14">商城公告</h2></li>
+								{if:count($promotion)!=0}
 		    					<li class=""><h2 class="t14">限时抢购</h2></li>
+								{/if}
 		    				</ul>
 		    				<div class="tab-cnt">
 		                        <div class="tab-item tab-item-hover" style="display: block;">
@@ -129,7 +134,6 @@
 							
 		                    <div class="tab-item tab-item-hover" style="display: none;">
 								<ul class="news-list">
-									{set:$promotion=Api::run('getPromotionList')}
 									{if:count($promotion)!=0}
 									{set:$end=strtotime($promotion[0]['end_time'])}
 									<li>
@@ -316,12 +320,12 @@
             </div>
 			 <div class="tab-cnt">
 				<!--热卖商品列表 -->
-            	<div class="tab-item" style="display: none;">
+            	<div class="tab-item" >
                 	<ul class="goods-list clearfix">
                 		{foreach:items=Api::run('getCommendHot')}
                     	<li>
 	                         <a class="goods-img" target='blank' href="{url:/site/products/id/$item['id']}">
-	                            <img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}">
+	                            <img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
 	                        </a>
 	                        <a class="goods-name" target='blank' href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
 	                            {$item['name']}<span class="txt-red"></span>
@@ -336,13 +340,14 @@
                 </div>	
 				<!--热卖商品列表 -->
 				<!--新品商品列表 -->
-            	<div class="tab-item" >
-                	<ul class="goods-list clearfix">
+            	<div class="tab-item" style='display:block;' >
+                	<ul class="goods-list clearfix" >
                 		
                     	{foreach:items=Api::run('getCommendNew')}
                     	<li>
 	                         <a class="goods-img" target='blank' href="{url:/site/products/id/$item['id']}">
 	                            <img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}">
+								<div class="shine">&nbsp;</div>
 	                        </a>
 	                        <a class="goods-name" target='blank' href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
 	                            {$item['name']}<span class="txt-red"></span>
@@ -359,13 +364,14 @@
 				<!--新品商品列表 -->
 				
 				<!--特价商品列表 -->
-            	<div class="tab-item" style="display: none;">
+            	<div class="tab-item" >
                 	<ul class="goods-list clearfix">
                 		
                     	{foreach:items=Api::run('getCommendPrice')}
                     	<li>
 	                         <a class="goods-img" target='blank' href="{url:/site/products/id/$item['id']}">
 	                            <img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}">
+								<div class="shine">&nbsp;</div>
 	                        </a>
 	                        <a class="goods-name" target='blank' href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
 	                            {$item['name']}<span class="txt-red"></span>
@@ -381,13 +387,14 @@
                 </div>	
 				<!--特价商品列表 -->
 				<!--推荐商品列表 -->
-            	<div class="tab-item" style="display: none;">
+            	<div class="tab-item" >
                 	<ul class="goods-list clearfix">
                 		
                     	{foreach:items=$recommend}
                     	<li>
 	                         <a class="goods-img" target='blank' href="{url:/site/products/id/$item['id']}">
 	                            <img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}">
+								<div class="shine">&nbsp;</div>
 	                        </a>
 	                        <a class="goods-name" target='blank' href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
 	                            {$item['name']}<span class="txt-red"></span>
@@ -458,6 +465,7 @@
 					    	<li>
 					        <a class="goods-img" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}">
 					            <img class="jImg" alt="{$goods['name']}" src="{url:/pic/thumb/img/$goods[img]/w/180/h/180}">
+								<div class="shine">&nbsp;</div>
 					        </a>
 					        <a class="goods-name" href="http://www.#.com/item-5.html" title="{$goods['name']}">
 					          {$goods['name']}<span class="txt-red"></span>

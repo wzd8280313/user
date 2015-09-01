@@ -15,7 +15,7 @@
  */
 class Simple extends IController
 {
-    public $layout='site_reg';
+    public $layout='site_mini';
 
 	function init()
 	{
@@ -24,6 +24,7 @@ class Simple extends IController
 
 	function login()
 	{
+		$this->layout = 'site_reg';
 		//如果已经登录，就跳到ucenter页面
 		if( ISafe::get('user_id') != null  )
 		{
@@ -33,6 +34,11 @@ class Simple extends IController
 		{
 			$this->redirect('login');
 		}
+	}
+	
+	function reg(){
+		$this->layout = 'site_reg';
+		$this->redirect('reg');
 	}
 
 	//退出登录
@@ -132,14 +138,13 @@ class Simple extends IController
     					//邮箱激活帐号
     					if($type == 1)
     					{
-    						$data['sendRes']=$this->send_check_mail();
-    						ISafe::set('email',$email);
+    						//$data['sendRes']=$this->send_check_mail();
+    						
     					}
     					ISafe::set('phone',$phone);
-    					
+    					ISafe::set('email',$email);
     					ISafe::set('user_id',$user_id);
     					ISafe::set('user_pwd',$userArray['password']);
-    			
     				}else{
     					$data['errorCode']=13;
     				}
@@ -154,41 +159,43 @@ class Simple extends IController
     function login_act()
     {
     	$login_info = IFilter::act(IReq::get('login_info','post'));
-    	$password   = IReq::get('password','post');
-    	$remember   = IFilter::act(IReq::get('remember','post'));
-    	$autoLogin  = IFilter::act(IReq::get('autoLogin','post'));
-    	$callback   = IFilter::act(IReq::get('callback'),'text');
-		$message    = '';
-		$password   = md5($password);
-		$captcha = IFilter::act(IReq::get('captcha'),'str');
+    	$password   = IFilter::act(IReq::get('password','post'));
+    	//$remember   = IFilter::act(IReq::get('remember','post'));
+    	$autoLogin  = IFilter::act(IReq::get('isAutoLogin','post'));
 		
+		$password   = md5($password);
+		$captcha = IFilter::act(IReq::get('validCode'),'str');
+		
+		$data=array('errorCode'=>0);
     	if($login_info == '')
     	{
-    		$message = '请填写用户名或者邮箱';
+    		$data['errorCode'] = 1;
     	}
-		else if(!preg_match('|\S{6,32}|',$password))
-    	{
-    		$message = '密码格式不正确,请输入6-32个字符';
+    	else if($password==''){
+    		$data['errorCode'] = 2;
     	}
-    	else if($this->getErrTimes($login_info)>3 && ISafe::get('captcha')!=$captcha){//二次添加
-    			$message = '验证码错误';
-    		}
+    	else if(($errTimes = $this->getErrTimes($login_info))>5){//帐户锁定，打电话解冻
+    		$data['errorCode'] = 13;
+    	}
+    	else if($errTimes>3 && ISafe::get('captcha')!=$captcha){//二次添加
+    			$data['errorCode'] = 10;
+    	}
     	else
     	{
     		if($userRow = CheckRights::isValidUser($login_info,$password))
     		{	
     			$M = new IModel('user');
-    			$where = 'phone = "'.$login_info.'" OR email = "'.$login_info.'"';
+    			$where = 'phone = "'.$login_info.'" OR email = "'.$login_info.'" OR username = "'.$login_info.'"';
     			$M->setData(array('err_times'=>0));
     			$M->update($where);
     			
 				CheckRights::loginAfter($userRow);
 
-				//记住帐号
-				if($remember == 1)
-				{
-					ICookie::set('loginName',$login_info);
-				}
+// 				//记住帐号
+// 				if($remember == 1)
+// 				{
+// 					ICookie::set('loginName',$login_info);
+// 				}
 
 				//自动登录
 				if($autoLogin == 1)
@@ -196,51 +203,36 @@ class Simple extends IController
 					ICookie::set('autoLogin',$autoLogin);
 				}
 
-				//自定义跳转页面
-				if($callback && !strpos($callback,'reg') && !strpos($callback,'login'))
-				{
-					$this->redirect($callback);
-				}
-				else
-				{
-					$this->redirect('/ucenter/index');
-				}
 				
     		}
     		else
     		{
     			//邮箱未验证
     			$userDB = new IModel('user as u,member as m');
-    			$userRow= $userDB->getObj(" (u.email = '{$login_info}' or u.phone = '{$login_info}') and password = '{$password}' and u.id = m.user_id");
+    			$userRow= $userDB->getObj(" (u.username = '{$login_info}' or u.email = '{$login_info}' or u.phone = '{$login_info}') and password = '{$password}' and u.id = m.user_id");
 
 				if($userRow)
 				{
-					if($userRow['status']==4)
+					if($userRow['status']==4)//邮箱未验证
 					{
 						$message = "您的邮箱还未验证，请点击下面的链接发送您的邮箱验证邮件！";
-						$this->redirect('/site/success?message='.urlencode($message).'&email='.$userRow['email']);
+						$data['returnUrl'] = IUrl::creatUrl('/site/success?message='.urlencode($message).'&email='.$userRow['email']);
 					}
-					else if($userRow['status']==3)
-					{
-						$message = '您的账号已经被锁定';
+					else if($userRow['status']==3){//后台锁定
+						$data['errorCode'] = 9;
 					}
 				}
 				else
 				{
-					$M = new expImodel('user');
-					$M->addNum(array('username'=>$login_info),array('err_times'=>1));//zi
-					$message = '用户名和密码不匹配';
+					$M = new Imodel('user');
+					$M->addNum(array('username'=>$login_info,'phone'=>$login_info,'email'=>$login_info),array('err_times'=>1),0);//zi
+					$data['errorCode'] = 7;//密码账号不匹配
+					$data['errorTimes'] = $errTimes + 1;
 				}
     		}
     	}
-
-    	//错误信息
-    	if($message)
-    	{
-    		$this->message = $message;
-    		$_GET['callback'] = $callback;
-    		$this->redirect('login',false);
-    	}
+		echo JSON::encode($data);
+    	
     }
 
     //商品加入购物车[ajax]
@@ -1055,11 +1047,11 @@ class Simple extends IController
 	 */
     function find_password_email()
 	{
-		$username = IReq::get('username');
-		if($username === null || !Util::is_username($username)  )
-		{
-			IError::show(403,"请输入正确的用户名");
-		}
+// 		$username = IReq::get('username');
+// 		if($username === null || !Util::is_username($username)  )
+// 		{
+// 			IError::show(403,"请输入正确的用户名");
+// 		}
 
 		$email = IReq::get("email");
 		if($email === null || !IValidate::email($email ))
@@ -1068,9 +1060,9 @@ class Simple extends IController
 		}
 
 		$tb_user  = new IModel("user");
-		$username = IFilter::act($username);
+		//$username = IFilter::act($username);
 		$email    = IFilter::act($email);
-		$user     = $tb_user->getObj(" username='{$username}' AND email='{$email}' ");
+		$user     = $tb_user->getObj(" email='{$email}' ");
 		if(!$user)
 		{
 			IError::show(403,"对不起，用户不存在");
@@ -1105,11 +1097,11 @@ class Simple extends IController
 	//手机短信找回密码
 	function find_password_mobile()
 	{
-		$username = IReq::get('username');
-		if($username === null || !Util::is_username($username)  )
-		{
-			IError::show(403,"请输入正确的用户名");
-		}
+// 		$username = IReq::get('username');
+// 		if($username === null || !Util::is_username($username)  )
+// 		{
+// 			IError::show(403,"请输入正确的用户名");
+// 		}
 
 		$mobile = IReq::get("mobile");
 		if($mobile === null || !IValidate::mobi($mobile))
@@ -1123,12 +1115,12 @@ class Simple extends IController
 			IError::show(403,"请输入短信校验码");
 		}
 
-		$userDB = new IModel('user as u , member as m');
-		$userRow = $userDB->getObj('u.username = "'.$username.'" and m.mobile = "'.$mobile.'" and u.id = m.user_id');
+		$userDB = new IModel('user');
+		$userRow = $userDB->getObj('phone = "'.$mobile.'" ');
 		if($userRow)
 		{
 			$findPasswordDB = new IModel('find_password');
-			$dataRow = $findPasswordDB->getObj('user_id = '.$userRow['user_id'].' and hash = "'.$mobile_code.'"');
+			$dataRow = $findPasswordDB->getObj('user_id = '.$userRow['id'].' and hash = "'.$mobile_code.'"');
 			if($dataRow)
 			{
 				//短信验证码已经过期
@@ -1156,26 +1148,26 @@ class Simple extends IController
 	//发送手机验证码短信
 	function send_message_mobile()
 	{
-		$username = IFilter::act(IReq::get('username'));
+		//$username = IFilter::act(IReq::get('username'));
 		$mobile = IFilter::act(IReq::get('mobile'));
 
-		if($username === null || !Util::is_username($username))
-		{
-			die("请输入正确的用户名");
-		}
+// 		if($username === null || !Util::is_username($username))
+// 		{
+// 			die("请输入正确的用户名");
+// 		}
 
 		if($mobile === null || !IValidate::mobi($mobile))
 		{
 			die("请输入正确的手机号码");
 		}
 
-		$userDB = new IModel('user as u , member as m');
-		$userRow = $userDB->getObj('u.username = "'.$username.'" and m.mobile = "'.$mobile.'" and u.id = m.user_id');
+		$userDB = new IModel('user as u');
+		$userRow = $userDB->getObj(' phone = "'.$mobile.'" ');
 
 		if($userRow)
 		{
 			$findPasswordDB = new IModel('find_password');
-			$dataRow = $findPasswordDB->query('user_id = '.$userRow['user_id'],'*','addtime','desc');
+			$dataRow = $findPasswordDB->query('user_id = '.$userRow['id'],'*','addtime','desc');
 			$dataRow = current($dataRow);
 
 			//120秒是短信发送的间隔
@@ -1185,7 +1177,7 @@ class Simple extends IController
 			}
 			$mobile_code = rand(10000,99999);
 			$findPasswordDB->setData(array(
-				'user_id' => $userRow['user_id'],
+				'user_id' => $userRow['id'],
 				'hash'    => $mobile_code,
 				'addtime' => time(),
 			));
@@ -1202,7 +1194,7 @@ class Simple extends IController
 		}
 		else
 		{
-			die('手机号码与用户名不符合');
+			die('手机号码不存在');
 		}
 	}
 
@@ -1774,14 +1766,14 @@ class Simple extends IController
 	//获取用户密码错误次数
 	private function getErrTimes($username){
 		$M = new IModel('user');
-		$where = 'username = "'.$username.'" OR email = "'.$username.'"';
+		$where = 'phone = "'.$username.'" OR username = "'.$username.'" OR email = "'.$username.'"';
 		if($res = $M->getObj($where,'err_times'))return  $res['err_times'];
 	}
 	//验证用户密码错误次数ajax(zz)
 	public function checkErrTimes(){
 		$username = IFilter::act(IReq::get('username'),'str');
 		$M = new IModel('user');
-		$where = 'username = "'.$username.'" OR email = "'.$username.'"';
+		$where = 'phone = "'.$username.'" OR username = "'.$username.'" OR email = "'.$username.'"';
 		if($res = $M->getObj($where,'err_times'))echo $res['err_times'];
 		else echo 0;
 	}

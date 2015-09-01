@@ -526,7 +526,6 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
-		
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}

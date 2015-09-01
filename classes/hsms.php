@@ -67,7 +67,7 @@ class Hsms
 	public static function send($mobile,$content)
 	{
 		self::$smsInstance = self::getSmsInstance();
-		return self::$smsInstance->send($mobile,$content);
+		
 		if(IValidate::mobi($mobile) && $content)
 		{
 			$ip = IClient::getIp();
@@ -80,7 +80,7 @@ class Hsms
 					return false;
 				}
 				ISession::set($mobileKey,time());
-				
+				return self::$smsInstance->send($mobile,$content);
 			}
 		}
 		return false;
