@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file Simple.php
  * @brief
- * @author webning
+ * @author 
  * @date 2011-03-22
  * @version 0.6
  * @note

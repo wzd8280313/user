@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file paging_class.php
  * @brief 分页处理类
- * @author webning
  * @date 2011-04-09
  * @version 0.6
  * @note

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2015 aircheng.com
  * @file mysqli_class.php
  * @brief mysqli数据库应用
- * @author nswe
  * @date 2015/7/1 15:05:26
  * @version 3.5
  */

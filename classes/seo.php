@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea
  * @file seo.php
  * @brief seo处理
- * @author wula
+ * @author 
  * @date 2011-6-15 14:58:39
  * @version 0.6
  */

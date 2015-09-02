@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file payment.php
  * @brief 支付方式 操作类
- * @author kane
+ * @author 
  * @date 2011-01-20
  * @version 0.6
  * @note

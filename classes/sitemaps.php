@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file
  * @brief
- * @author webning
+ * @author 
  * @date 2011-01-21
  * @version 0.6
  * @note
@@ -17,14 +16,14 @@ class SiteMaps
 {
 	private $siteMapsFile;
     /**
-     * @brief 构造函数
+     * @brief 锟斤拷锟届函锟斤拷
      */
 	public function __construct()
 	{
 		$this->siteMapsFile = IWeb::$app->getBasePath().'sitemaps.xml';
 	}
     /**
-     * @brief 生成系统的siteMaps.xml文件
+     * @brief 锟斤拷锟较低筹拷锟絪iteMaps.xml锟侥硷拷
      * @param mixed $maps
      * @param string $xsl
      */
@@ -46,7 +45,7 @@ class SiteMaps
 		$siteMaps->save($this->siteMapsFile);
 	}
     /**
-     * @brief 创建系统的map文件
+     * @brief 锟斤拷锟斤拷系统锟斤拷map锟侥硷拷
      * @return String
      */
 	public static function create_map($items,$filename,$xsl)

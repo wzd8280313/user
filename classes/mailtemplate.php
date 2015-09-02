@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2014 aircheng.com
  * @file sendmail.php
  * @brief 邮件数据模板
- * @author chendeshan
+ * @author 
  * @date 2014/11/28 23:20:51
  * @version 2.9
  */

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file taobao.php
  * @brief taobao的oauth协议登录接口
- * @author chendeshan
  * @date 2011-7-18 9:34:18
  * @version 0.6
  */

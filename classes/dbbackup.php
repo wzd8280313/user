@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file DBBackup.php
  * @brief 数据库备份
- * @author chendeshan
  * @date 2015/5/6 13:45:17
  * @version 3.2
  */
@@ -22,9 +20,9 @@ class DBBackup
 	private $totalSize    = 0;                 //备份数据共占字节数
 	private $showMess     = false;             //展示状态信息
 	private $dir          = 'backup/database'; //备份路径
-	private $fPrefix      = 'iwebshop';        //备份文件名前缀
+	private $fPrefix      = 'sc';        //备份文件名前缀
 	private $fExtend      = '.sql';            //备份文件扩展名
-	private $tablePre     = 'iwebshop_';       //表前缀
+	private $tablePre     = 'shop_';       //表前缀
 
 	//构造函数
 	function __construct($ctrlRes = null)

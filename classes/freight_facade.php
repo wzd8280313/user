@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2014 aircheng.com
  * @file freight_facade.php
- * @author nswe
+ * @author 
  * @date 2014/4/18 16:22:33
  * @version 1.0.0
  */

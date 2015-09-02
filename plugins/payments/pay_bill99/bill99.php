@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file pay_99bill.php
  * @brief 快钱在线支付接口
- * @author chendeshan
  * @date 2011-01-27
  * @version 0.6
  * @note

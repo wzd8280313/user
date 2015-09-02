@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file countsum.php
  * @brief 计算购物车中的商品价格
- * @author chendeshan
  * @date 2011-02-24
  * @version 0.6
  */

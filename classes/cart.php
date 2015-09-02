@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file cart.php
  * @brief 购物车类库
- * @author chendeshan
  * @date 2011-04-12
  * @version 0.6
  */

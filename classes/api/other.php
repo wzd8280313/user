@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2014 aircheng.com
  * @file other.php
  * @brief 其他api方法
- * @author chendeshan
  * @date 2014/11/4 7:33:34
  * @version 2.8
  */

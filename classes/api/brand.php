@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file brand.php
  * @brief 品牌API
- * @author chendeshan
+ * @author 
  * @date 2014/10/12 13:59:44
  * @version 2.7
  */

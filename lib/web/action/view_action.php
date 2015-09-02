@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2009-2011 jooyea.cn
  * @file view_action.php
  * @brief 视图动作
- * @author Ben
  * @date 2010-12-16
  * @version 0.6
  */

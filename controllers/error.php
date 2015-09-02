@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file error.php
  * @brief 错误处理类
- * @author chendeshan
  * @date 2010-12-16
  * @version 0.6
  */

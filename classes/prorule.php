@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file ProRule.php
  * @brief 促销规则处理类
- * @author chendeshan
+ * @author 
  * @date 2011-03-10
  * @version 0.6
  */

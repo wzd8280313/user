@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2015 aircheng.com
  * @file wechat_facade.php
  * @brief 微信封装类库
- * @author nswe
+ * @author 
  * @date 2015/3/29 15:15:14
  * @version 3.1
  */

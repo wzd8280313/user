@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2015 aircheng.com
  * @file active.php
  * @brief 促销活动处理类
- * @author nswe
+ * @author 
  * @date 2015/5/18 9:08:53
  * @version 3.2
  */

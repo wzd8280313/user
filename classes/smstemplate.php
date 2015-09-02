@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 aircheng.com
  * @file smstemplate.php
  * @brief 短信发送模板
- * @author chendeshan
+ * @author 
  * @date 2014/8/11 9:51:51
  * @version 2.9
  */

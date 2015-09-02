@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2013 jooyea.cn
  * @file json_class.php
  * @brief 文件处理
- * @author chendeshan
+ * @author 
  * @date 2013-4-15
  * @version 1.0
  */

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2014 www.aircheng.com
  * @file CheckRight.php
  * @brief 权限校验类,包括admin(管理员),seller(商家),user(注册用户)
- * @author chendeshan
  * @date 2014/7/29 12:22:07
  * @version 2.7
  */

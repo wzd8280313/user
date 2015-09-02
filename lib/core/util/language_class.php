@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2009-2011 jooyea.cn
  * @file language_class.php
  * @brief 语言包类文件
- * @author Ben
+ * @author 
  * @date 2010-12-10
  * @version 0.6
  */

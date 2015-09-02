@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file trade_alipay.php
  * @brief 支付宝插件类[担保交易]
- * @author nswe
  * @date 2014/4/9 19:13:23
  * @version 1.0.0
  * @note

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2014 aircheng.com
  * @file offline.php
  * @brief 线下支付
- * @author nswe
  * @date 2014/9/1 9:09:28
  * @version 2.7
  */

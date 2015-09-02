@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2014 jooyea.cn
  * @file words_facade.php
  * @brief 分词类
- * @author dabao
+ * @author 
  * @date 2014/12/22 20:17:33
  * @version 0.1
  */

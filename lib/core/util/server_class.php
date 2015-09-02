@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file server_class.php
  * @brief 获取服务器环境信息
- * @author chendeshan
+ * @author 
  * @date 2010-12-2
  * @version 0.6
  */

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2015 www.aircheng.com
  * @file wap_alipay.php
  * @brief 支付宝插件类[手机网站支付]
- * @author dabao
  * @date 2015/01/13 03:25:16
  * @version 1.0.0
  * @note

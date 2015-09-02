@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file OauthBase.php
  * @brief oauth协议登录基础类
- * @author chendeshan
+ * @author 
  * @date 2011-7-18 9:34:18
  * @version 0.6
  */

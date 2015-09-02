@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file pic.php
  * @brief 图库处理
- * @author chendeshan
+ * @author 
  * @date 2010-12-16
  */
 class Pic extends IController

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2014 aircheng.com
  * @file sendgoods_alipay.php
  * @brief 支付宝发货接口
- * @author chendeshan
  * @date 2014/4/17 14:14:36
  * @version 1.0.0
  */

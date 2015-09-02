@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file upload_class.php
  * @brief 文件上传处理
- * @author nswe
+ * @author 
  * @date 2010-12-06
  * @version 0.6
  */

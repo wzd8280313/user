@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2014 aircheng
  * @file themeroute.php
  * @brief 视图布局选择路由类
- * @author nswe
+ * @author 
  * @date 2014/7/15 18:50:48
  * @version 2.6
  */

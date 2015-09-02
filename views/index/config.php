@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 return array(
-	'name'    => '锦绣前程',
+	'name'    => '',
 	'author'  => '',
 	'time'    => '2014/12/29 10:03:05',
 	'version' => '3.0',

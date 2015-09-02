@@ -1,16 +1,15 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea
  * @file share.php
- * @brief °Ù¶È·ÖÏí²å¼þ
- * @author chendeshan
+ * @brief ï¿½Ù¶È·ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @author 
  * @date 2013/7/15 7:33:25
  * @version 1.0.0
  */
 class Share
 {
 	/**
-	 * ¹¹Ôìº¯Êý
+	 * ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
 	 */
 	function __construct()
 	{
@@ -18,7 +17,7 @@ class Share
 	}
 
 	/**
-	 * Õ¹Ê¾²å¼þ
+	 * Õ¹Ê¾ï¿½ï¿½ï¿½
 	 */
 	function show()
 	{

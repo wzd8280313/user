@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file swfupload.php
  * @brief swfupload上传组件
- * @author nswe
+ * @author 
  * @date 2013/3/18 15:54:25
  */
 class Swfupload

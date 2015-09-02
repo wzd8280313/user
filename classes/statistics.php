@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2014 aircheng
  * @file statistics.php
  * @brief 统计分析类库
- * @author nswe
+ * @author 
  * @date 2014/7/27 11:09:43
  * @version 1.0.0
  */

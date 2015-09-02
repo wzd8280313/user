@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file menu.php
  * @brief 后台系统菜单管理
- * @author webning
+ * @author 
  * @date 2011-01-12
  * @version 0.6
  * @note

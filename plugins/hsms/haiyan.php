@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2015 aircheng.com
  * @file haiyan.php
  * @brief **短信发送接口
- * @author nswe
  * @date 2015/5/30 15:29:38
  * @version 3.3
  */

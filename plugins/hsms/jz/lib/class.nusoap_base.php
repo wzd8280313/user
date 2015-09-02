@@ -22,7 +22,6 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 The NuSOAP project home is:
-http://sourceforge.net/projects/nusoap/
 
 The primary support for NuSOAP is the mailing list:
 nusoap-general@lists.sourceforge.net
@@ -31,10 +30,8 @@ If you have any questions or comments, please email:
 
 Dietrich Ayala
 dietrich@ganx4.com
-http://dietrich.ganx4.com/nusoap
 
 NuSphere Corporation
-http://www.nusphere.com
 
 */
 

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file controller_class.php
  * @brief 控制器类,控制action动作,渲染页面
- * @author chendeshan
  * @date 2010-12-16
  * @version 0.6
  */

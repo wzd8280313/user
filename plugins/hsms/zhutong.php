@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 aircheng.com
  * @file zhutong.php
  * @brief **短信发送接口
- * @author nswe
  * @date 2015/5/30 15:46:38
  * @version 3.3
  */

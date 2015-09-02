@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file api.php
  * @brief api入口类
- * @author chendeshan
+ * @author 
  * @date 2011-9-29
  * @version 0.6
  */

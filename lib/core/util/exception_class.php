@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file exception_class.php
  * @brief 异常处理
- * @author walu
+ * @author 
  * @date 2011-07-22
  * @version 0.1
  */

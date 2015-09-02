@@ -2,7 +2,7 @@
 /**
  * @brief 商家模块
  * @class Seller
- * @author chendeshan
+ * @author 
  * @datetime 2014/7/19 15:18:56
  */
 class Seller extends IController

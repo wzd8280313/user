@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2014 aircheng.com
  * @file area.php
  * @brief 省市地区调用函数
- * @author nswe
+ * @author 
  * @date 2014/8/6 20:46:52
  * @version 2.6
  * @note

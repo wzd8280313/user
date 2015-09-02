@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file pay_balance.php
  * @brief 账户余额支付接口
- * @author chendeshan
  * @date 2011-01-27
  * @version 0.6
  * @note

@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2010 jooyea.cn
  * @file tag_class.php
  * @brief 标签解析类文件
- * @author webning
  * @date 2010-12-17
  * @version 0.6
  */

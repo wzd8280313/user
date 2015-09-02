@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file session_class.php
  * @brief session机制处理类
- * @author webning
  * @date 2011-02-24
  * @version 0.6
  */

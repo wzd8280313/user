@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file goods_class.php
  * @brief 商品管理类库
- * @author nswe
+ * @author 
  * @date 2014/8/18 11:53:43
  * @version 2.6
  */

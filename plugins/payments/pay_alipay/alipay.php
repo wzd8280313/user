@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file alipay.php
  * @brief 支付宝插件类[担保+即时到帐双接口]
- * @author nswe
  * @date 2011-01-27
  * @version 0.6
  * @note

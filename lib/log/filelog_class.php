@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file filelog_class.php
  * @brief 文本格式日志
- * @author RogueWolf
  * @date 2010-12-09
  * @version 0.6
  * @note

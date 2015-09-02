@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file notice.php
  * @brief 用户中心api方法
- * @author chendeshan
  * @date 2014/10/12 13:59:44
  * @version 2.7
  */

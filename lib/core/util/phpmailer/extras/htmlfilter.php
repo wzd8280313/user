@@ -23,8 +23,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  *
- * @Author	Konstantin Riabitsev <icon@linux.duke.edu>
- * @Author  Jim Jagielski <jim@jaguNET.com / jimjag@gmail.com>
  * @Version 1.1 ($Date$)
  */
 

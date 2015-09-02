@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2010 jooyea.cn
  * @file log_inte.php
  * @brief 日志接口文件
- * @author webning
  * @date 2010-12-09
  * @version 0.6
  */

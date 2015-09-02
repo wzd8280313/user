@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file util.php
  * @brief 公共函数类
- * @author kane
+ * @author 
  * @date 2011-01-13
  * @version 0.6
  * @note

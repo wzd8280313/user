@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2010 jooyea.cn
  * @file hash_class.php
  * @brief 实现系统中常用的散列
- * @author webning
+ * @author 
  * @date 2010-12-02
  * @version 0.6
  * @note

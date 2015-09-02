@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file image_class.php
  * @brief 图片处理类库
- * @author chendeshan
+ * @author 
  * @date 2011-03-18
  * @version 0.6
  */

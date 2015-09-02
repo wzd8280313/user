@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file paymentplugin.php
  * @brief 支付插件基类
- * @author chendeshan
+ * @author 
  * @date 2013/5/7 20:07:59
  * @version 1.0.0
  */

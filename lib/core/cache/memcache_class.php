@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file memcache_class.php
  * @brief memcached内存级缓存类
- * @author chendeshan
+ * @author 
  * @date 2011-7-8 16:02:31
  * @version 0.6
  */

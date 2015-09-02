@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2015 www.aircheng.com
  * @file  chinapay.php
  * @brief 银联在线支付接口
- * @author dabao
  * @date 2015-06-01
  * @version 0.1
  */

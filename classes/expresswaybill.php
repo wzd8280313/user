@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 [group]
  * @file expresswaybill.php
  * @brief 快递单处理类
- * @author chendeshan
+ * @author 
  * @date 2011-6-15 14:58:39
  * @version 0.6
  */

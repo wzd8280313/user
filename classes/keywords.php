@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file keywords.php
  * @brief 词库管理类
- * @author chendeshan
+ * @author 
  * @date 2013/5/9 13:17:33
  * @version 0.6
  */

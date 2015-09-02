@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2014 aircheng
  * @file report.php
  * @brief 导出excel类库
- * @author dabao
+ * @author 
  * @date 2014/11/28 22:09:43
  * @version 1.0.0
  */

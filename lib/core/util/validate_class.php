@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2010 jooyea.cn
  * @file
  * @brief 系统统验证类文件
- * @author webning
+ * @author 
  * @date 2010-12-02
  * @version 0.6
  * @note

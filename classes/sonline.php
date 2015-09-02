@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea
  * @file sonline.php
  * @brief 在线客服插件,此插件是基于jquery的
- * @author chendeshan
+ * @author 
  * @date 2013/7/15 0:29:17
  * @version 1.0.0
  */

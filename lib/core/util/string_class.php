@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file string_class.php
  * @brief 字符串处理库
- * @author chendeshan
  * @date 2010-12-2
  * @version 0.6
  */

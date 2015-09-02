@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file crypt_class.php
  * @brief 加密解密
- * @author RogueWolf
+ * @author 
  * @date 2010-12-2
  * @version 0.6
  * @note

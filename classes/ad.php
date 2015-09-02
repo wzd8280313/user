@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file ad.php
  * @brief 关于广告管理
- * @author chendeshan
+ * @author 
  * @date 2011-02-14
  * @version 0.6
  */

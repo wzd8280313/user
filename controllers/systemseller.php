@@ -2,7 +2,6 @@
 /**
  * @brief 商家登录控制器
  * @class Seller
- * @author chendeshan
  * @datetime 2014/7/19 15:18:56
  */
 class SystemSeller extends IController

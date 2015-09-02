@@ -1,9 +1,6 @@
 <?php
 /**
- * @copyright Copyright(c) 2010 jooyea.cn
- * @file iweb.php
  * @brief 引用内核入口文件
- * @author chendeshan
  * @date 2010-12-02
  * @version 1.4.1
  */

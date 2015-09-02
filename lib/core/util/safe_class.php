@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file safe_class.php
  * @brief 安全机制session或者cookie数据操作
- * @author chendeshan
+ * @author 
  * @date 2011-02-24
  * @version 0.6
  */

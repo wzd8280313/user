@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file urlmanager_class.php
  * @brief URL处理类
- * @author walu
+ * @author 
  * @date 2011-07-18
  * @version 0.7
  * @note

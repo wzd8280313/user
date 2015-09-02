@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file interceptor_class.php
  * @brief 内核拦截器
- * @author walu
  * @date 2011-07-15
  * @version 0.1
  */

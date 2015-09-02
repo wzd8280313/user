@@ -1,16 +1,13 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea
- * @file Proxy.php
  * @brief 代理处理
- * @author nswe
+ * @author
  * @date 2013/8/3 16:46:20
  * @version 1.0.0
  */
 class Proxy
 {
 	//升级URL
-	//const UPDATE_URL = 'http://product.aircheng.com/index.php?';
 
 	/**
 	 * 与远程服务器发送数据

@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright Copyright(c) 2011 jooyea.cn
  * @file model.php
  * @brief 模型表业务处理
- * @author kane
+ * @author 
  * @date 2011-01-12
  * @version 0.6
  * @note

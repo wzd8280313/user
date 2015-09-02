@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file controllerbase_class.php
  * @brief 控制器基础类
- * @author chendeshan
  * @date 2010-12-3
  * @version 0.6
  */

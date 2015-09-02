@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file article.php
  * @brief 订单中配送方式的计算
- * @author relay
  * @date 2011-02-24
  * @version 0.6
  */

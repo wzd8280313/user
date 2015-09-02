@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright Copyright(c) 2015 aircheng.com
  * @file bank_alipay.php
  * @brief 支付宝插件类[网银直连]
- * @author nswe
  * @date 2015/5/11 15:43:10
  * @version 0.6
  * @note

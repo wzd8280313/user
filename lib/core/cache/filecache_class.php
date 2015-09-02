@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file IFile_cache.php
  * @brief 文件级缓存类
- * @author chendeshan
+ * @author 
  * @date 2011-7-8 16:02:31
  * @version 0.6
  */

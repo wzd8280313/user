@@ -3,7 +3,7 @@
  * @copyright (c) 2011 [group]
  * @file pointlog.php
  * @brief 积分日志记录处理类
- * @author chendeshan
+ * @author 
  * @date 2011-6-15 14:58:39
  * @version 0.6
  */

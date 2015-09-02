@@ -1,10 +1,9 @@
 <?php
 /**
- * @copyright (c) 2015 aircheng.com
  * @file hookFinishAction.php
  * @brief 对action动作进行拦截，对部分需要钩子的action设置代码调用
  *        钩子名称为： function 控制器ID_动作ID,遇到此动作时优先调用钩子方法
- * @author nswe
+ * @author 
  * @date 2015/5/26 23:01:46
  * @version 3.2
  */

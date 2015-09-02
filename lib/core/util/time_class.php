@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file time_class.php
  * @brief 时间处理
- * @author RogueWolf
+ * @author 
  * @date 2010-12-02
  * @version 0.6
  */

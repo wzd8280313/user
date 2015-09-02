@@ -2,7 +2,6 @@
 /**
  * Russian PHPMailer language file: refer to English translation for definitive list
  * @package PHPMailer
- * @author Alexey Chumakov <alex@chumakov.ru>
  */
 
 $PHPMAILER_LANG['authenticate']         = 'Ошибка SMTP: ошибка авторизации.';

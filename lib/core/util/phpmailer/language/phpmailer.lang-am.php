@@ -2,7 +2,6 @@
 /**
  * Armenian PHPMailer language file: refer to English translation for definitive list
  * @package PHPMailer
- * @author Hrayr Grigoryan <hrayr@bits.am>
  */
  
 $PHPMAILER_LANG['authenticate']         = 'SMTP -ի սխալ: չհաջողվեց ստուգել իսկությունը.';

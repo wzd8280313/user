@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2015 aircheng.com
  * @file db_class.php
  * @brief 数据库抽象父类
- * @author chendeshan
  * @date 2015/7/1 15:09:49
  * @version 3.5
  */

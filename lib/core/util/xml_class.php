@@ -1,10 +1,9 @@
 <?php
 /**
- * @copyright Copyright(c) 2010 jooyea.cn
  * @file xml_class.php
  * @brief 封装XML操作类
  * 主要实现XML快速操作
- * @author webning
+ * @author 
  * @date 2010-12-03
  * @version 0.6
  */

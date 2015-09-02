@@ -1,9 +1,7 @@
 <?php
 /**
- * @copyright (c) 2011 jooyea.cn
  * @file dblog_class.php
  * @brief 数据库格式日志
- * @author chendeshan
  * @date 2010-12-3
  * @version 0.6
  */

@@ -1,9 +1,8 @@
 <?php
 /**
- * @copyright (c) 2015 www.aircheng.com
  * @file accountlog.php
  * @brief 账户日志管理
- * @author nswe
+ * @author 
  * @date 2015/1/26 11:11:50
  * @version 3.0.0
  */
