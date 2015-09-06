@@ -120,8 +120,8 @@
 <!--导航-->
 </div>	
 
-
-<!--下拉广告图
+{if:$this->isIndex}
+<!--下拉广告图-->
 
 <DIV class="advbox" >
 	<DIV style="display: none;" class="dt_small">
@@ -181,7 +181,8 @@ if($("#actionimg").length>0){
 }
 </SCRIPT>
 
-下拉广告图-->
+<!--下拉广告图-->
+{/if}
 <!--search-->
 <div class="search">
 	<!--w1190 clearfix-->
@@ -263,22 +264,26 @@ if($("#actionimg").length>0){
 			                    <!--cat-layer-->
 								<div class="cat-layer clearfix ">
 			                        <ul class="cat-col">
+			                        	{set:$hotCat[$valT['id']]=array();}
 			                        	{foreach:items=$secondCat key=$keyS item=$valS}
-										{if:$valS['hot']==1}
+										{if:$valS['hot']==1 && count($hotCat[$valT['id']])<=5}
 										{set:$hotCat[$valT['id']][] = $valS;}
 										{/if}
-			                     <li class="cat-item">
-			                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a></h3>
-			                   		 <p class="level-list clearfix">
-			                   		 	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id'])) key=$keyG item=$valG}
-											{if:$valG['hot']==1}
-												{set:$hotCat[$valT['id']][] = $valG;}
-											{/if}
-											<a href="{url:/site/pro_list/cat/$valG[id]}">{$valG['name']}</a>
-										{/foreach}
-								     </p>
-			                    </li>
-								{/foreach}
+					                     <li class="cat-item">
+					                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a></h3>
+					                   		 <p class="level-list clearfix">
+					                   		 	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id'])) key=$keyG item=$valG}
+													{if:$valG['hot']==1 && count($hotCat[$valT['id']])<=5}
+														{set:$hotCat[$valT['id']][] = $valG;}
+													{/if}
+													<a href="{url:/site/pro_list/cat/$valG[id]}">{$valG['name']}</a>
+												{/foreach}
+										     </p>
+					                    </li>
+										{if:($keyS+1)%3==0}
+											<div class='clear'></div>
+										{/if}
+									{/foreach}
 			                         </ul>
 								</div>
 								<!--cat-layer-->

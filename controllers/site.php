@@ -23,6 +23,7 @@ class Site extends IController
 
 	function index()
 	{ 
+		
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
 		$index_slide = isset($site_config['index_slide'])? unserialize($site_config['index_slide']) :array();
@@ -36,7 +37,7 @@ class Site extends IController
 			$categoryList[$key] = $v;
 			$categoryList[$key]['child'] = Api::run('getCategoryByParentid',array('#parent_id#',$v['id']),5);
 			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']),6);
-			$categoryList[$key]['seller']= Api::run('getSellerListByCat',array('#cat_id#',$v['id']));
+			$categoryList[$key]['seller']= Api::run('getSellerListByCat',array('#cat_id#',$v['id']),10);
 			
 		}
 		$this->categoryList = $categoryList;
@@ -528,6 +529,7 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
+			
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}

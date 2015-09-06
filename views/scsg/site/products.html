@@ -188,24 +188,32 @@
 			<a target="_blank" rel="nofollow" href="" >
 			<span class="ks-imagezoom-wrap">		
 			
-				<img id="J_ImgBooth"  name="bigpro"  src="{url:/pic/thumb/img/$photo[0]['img']/w/435/h/435}" style='cursor:crosshair;'>
+				<img id="J_ImgBooth"  name="bigpro"  src="" style='cursor:crosshair;'>
 				<span class="ks-imagezoom-lens" style="position: absolute; border:1px solid blue;left:1px;"></span>
 			</span>
 			</a>
 		</div>
 		<div id='detShow' class="ks-overlay ks-imagezoom-viewer" style="width: 435px; height: 435px; left: 480px; top: 20px;display:none;">
 			<div id="detPic" class="ks-overlay-content">
-				<img style="position: absolute; top: 0px; left: 0px;" src="{webroot:$photo[0]['img']}">
+				<img style="position: absolute; top: 0px; left: 0px;" src="">
 			</div>
 		</div>
 		<ul id="J_UlThumb" class="tb-thumb tm-clear">
+			{if:count($photo)!=0}
 			{foreach:items=$photo}
-						<li class="">
+			<li class="">
 				<a href="#" onmouseover='showBig("{url:/pic/thumb/img/$item[img]/w/435/h/435}","{webroot:$item[img]}")'>
 					<img src="{url:/pic/thumb/img/$item[img]/w/60/h/60}">
 				</a>
 			</li>
 			{/foreach}
+			{else:}
+				<li class="">
+					<a href="#" onclick='javascript:void(0)'>
+						<img src="{skin:images/front/nopic_435_435.gif}">
+					</a>
+				</li>
+			{/if}
 		</ul>
 		<div style="margin-top:10px;margin-left:50px;">			
 			<!-- JiaThis Button BEGIN -->
@@ -499,25 +507,8 @@ var goodsBigPic   = "{skin:images/front/nopic_435_435.gif}";
 goodsSmallPic = "{webroot:}{echo:Thumb::get($photo[0]['img'],435,435)}";
 goodsBigPic   = "{webroot:}{$photo[0]['img']}";
 {/if}
-
-//初始化商品轮换图
-var bxObj = $('#thumblist').bxSlider({
-	infiniteLoop: false,
-	hideControlOnEnd: true,
-	pager:false,
-	minSlides: 5,
-	maxSlides: 5,
-	slideWidth: 72,
-	slideMargin: 15,
-	controls:true,
-	onSliderLoad:function(currentIndex){
-		//设置图片
-		$('#smallPicBox').attr('src',goodsSmallPic);
-		$('#bigPicBox').attr('href',goodsBigPic);
-
-		
-	}
-});
+$('#J_ImgBooth').attr('src',goodsSmallPic);
+$('#detShow img').attr('src',goodsBigPic);
 
 //如果抢购或团购过期则不许立即购买
 {if:$promo!='' && !isset($promotion) && !isset($regiment)}

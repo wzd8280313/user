@@ -29,7 +29,7 @@
 			{foreach:items=$category item=$item}
 			<tr id="{$item['id']}" parent={$item['parent_id']}>
 				<td><input class="tiny" id="s{$item['id']}" size="2" type="text" onblur="toSort({$item['id']});" value="{$item['sort']}" /></td>
-				<td><img style='margin-left:{echo:$item['floor']*20}px' class="operator" src="{skin:images/admin/close.gif}" onclick="displayData(this);" alt="关闭" />{$item['name']}</td>
+				<td><img style='margin-left:{echo:$item['floor']*20}px' class="operator" src="{skin:images/admin/open.gif}" onclick="displayData(this);" alt="打开" />{$item['name']}</td>
 				<td>{if:$item['visibility']=='1'}<span class="green">是</span>{else:}<span class="brown">否</span>{/if}</td>
 				<td>{if:$item['hot']==1}
 						<a class='red2' href='javascript:void(0);' onclick='set_type("{$item['id']}","hot","category",this);'>是</a>
@@ -106,4 +106,7 @@ function toSort(id)
 		}
 	}
 }
+$(function(){
+	$('tr[parent!=0]').hide();
+})
 </script>

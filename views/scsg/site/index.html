@@ -431,7 +431,7 @@
 				<h2 class="t18">{$base['name']}</h2>
 				<ul class="fl-cat">
 					{foreach:items=$base['child'] item=$second}
-								<li><a href="site/pro_list/cat/{$second['id']}">{$second['name']}</a></li>
+								<li><a href="site/pro_list/cat/{$second['id']}">{$second['name']}</a>|</li>
 					{/foreach}
 								<li><a href="site/pro_list/cat/{$base['id']}" style="font-size: 12px;">更多</a></li>
 				</ul>
@@ -441,7 +441,8 @@
 					<div class="fl-rcmd-bg">
 						<div class="keyword">
 							{if:isset($hotCat[$base['id']])}
-							{foreach:items=$hotCat[$base['id']] item=$hot}
+							{foreach:items=$hotCat[$base['id']] item=$hot kHot=$key}
+							
 								<a href="{url:site/pro_list/cat/$hot[id]}" class="key">{$hot['name']}</a>
 							{/foreach}
 							{/if}

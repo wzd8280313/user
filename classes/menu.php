@@ -146,7 +146,6 @@ class Menu
     		),
         	'网站管理'=>array(
         		'/system/conf_base' => '网站设置',
-        		'/system/conf_ui'   => '主题设置',
         	),
         	'支付管理'=>array(
             	'/system/payment_list' => '支付方式'

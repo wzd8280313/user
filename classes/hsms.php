@@ -71,11 +71,12 @@ class Hsms
 		if(IValidate::mobi($mobile) && $content)
 		{
 			$ip = IClient::getIp();
+			return self::$smsInstance->send($mobile,$content);
 			if($ip)
 			{
 				$mobileKey = md5($mobile.$ip);
 				$sendTime  = ISession::get($mobileKey);
-				if($sendTime && time() - $sendTime < 60)
+				if($sendTime && (time() - $sendTime < 60))
 				{
 					return false;
 				}
