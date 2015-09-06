@@ -14,8 +14,8 @@
 					<dl class="clearfix">
 						<dt><strong>{$sellerRow['true_name']}</strong></dt>
 					</dl>
-
-					<p> 评分：<span class="grade"><i style="width:{echo:Common::gradeWidth(statistics::gradeSeller($sellerRow['id']))}px"></i></span></p>
+					{set:$ave = statistics::getSellerGrade($sellerRow['id']);$ave = $ave*70/5;}
+					<p> 评分：<span class="grade"><i style="width:{$ave}px"></i></span></p>
 					<p> 销量：{echo:statistics::sellCountSeller($sellerRow['id'])} 件</p>
 					<p> 官网：<a href="{$sellerRow['home_url']}" target="_blank" class="orange">点击进入</a></p>
 					<p> 联系电话：{$sellerRow['phone']}</p>
@@ -52,7 +52,7 @@
 
 	</div>
 
-	<div class="main f_r">
+	<div class="right f_r">
 		<div class="display_title">
 			<span class="l"></span>
 			<span class="r"></span>
@@ -80,11 +80,8 @@
 					<img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" title="{$item['name']}" />
 				</div>
 				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
-				<div class="handle">
-					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/shopping.gif}" width="15" height="15" /><input type="button" value="加入购物车" onclick="joinCart_list({$item['id']});"></label>
-					<label class="btn_gray_m"><img src="{skin:images/front/ucenter/favorites.gif}" width="15" height="14" /><input type="button" value="收藏" onclick="favorite_add_ajax('{url:/simple/favorite_add}','{$item['id']}',this);"></label>
-				</div>
-				<div class="price" style='margin-top:-108px;'>￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
+				
+				<div class="price" style='margin-top:-65px;'>￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
 			</li>
 			{/foreach}
 		</ul>

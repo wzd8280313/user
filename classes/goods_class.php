@@ -712,7 +712,6 @@ class goods_class
 			$data[$key]['product_id'] =  IFilter::act($v['product_id'],'int');
 			$data[$key]['store_nums'] =  'store_nums + '.$num;
 		}
-		$goodsDB->begin_trans();
 		foreach($data as $value){
 			$goodsDB->changeTable('goods');
 			$setData = array('store_nums'=>$value['store_nums']);

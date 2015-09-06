@@ -64,7 +64,8 @@
 						<li><a href="{url:/ucenter/order}">我的订单</a></li>
 						<li><a href="{url:/ucenter/address}">我的收货地址</a></li>
 						<li><a href="{url:/ucenter/integral}">我的积分</a></li>
-						<li><a href="{url:ucenter/account_log}">我的资金</a></li>
+						<li><a href="{url:/ucenter/account_log}">我的资金</a></li>
+						<li><a href="{url:/ucenter/favorite}">我的关注</a></li>
 					</ul>
 				</li>
 				<li>
@@ -77,7 +78,7 @@
 					</ul>
 				</li>
 				<li>
-					<a href="{url:/site/help_list}">使用帮助</a>
+					<a href="{url:/site/help_list}">帮助中心</a>
 					<ul>
 						<li><a href="#">常见问题</a></li>
 						<li><a href="#">支付帮助</a></li>
@@ -97,6 +98,9 @@
 				</li>
 				<li  class="erwei">
 					<a href="#" class="erwei" title="关注山城速购新浪微博"><img src="{skin:images/weixin1_01.png}"></a>
+					<ul>
+						<li style="height:160px;width:140px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
+					</ul>
 				</li>
 				<li class="erwei">
 					<a href="#" class="erwei" title="关注山城速购微信"><img src="{skin:images/weixin1_02.png}"></a>
@@ -135,7 +139,7 @@
 		<A href="{$adBig['name']}" target="_blank">
 			<IMG id="actionimg" alt="jquery广告图片大图" src="{url:$adBig['content']}" width="1190" ></A> 
 	</DIV>
-</DIV>-->
+</DIV>
 <SCRIPT type="text/javascript">
 function AdvClick(){
 	var a=1500;
@@ -177,7 +181,7 @@ if($("#actionimg").length>0){
 }
 </SCRIPT>
 
-<!--下拉广告图-->
+下拉广告图-->
 <!--search-->
 <div class="search">
 	<!--w1190 clearfix-->
@@ -239,51 +243,54 @@ if($("#actionimg").length>0){
 			<!--category-->
 			<div class="category " id="jCat">
 				<h2 class="cat-title"><a class="t14" href="">全部商品分类<b class="png"></b></a></h2>
-				<!--cat-list-->
 				{set:$hideCls='';}{if:!isset($this->isIndex)}{set:$hideCls='hide';}{/if}<!--非首页分类面板隐藏-->
 				<ul class="cat-list {$hideCls}">
-				{set:$hotCat=array();}
-				{foreach:items=$categoryTop key=$keyT item=$valT}
-				{set:$k=$keyT+1;}
-					<li class="list-item">
+					{set:$hotCat=array();}
+					{foreach:items=$categoryTop key=$keyT item=$valT}
+					
+					{set:$k=$keyT+1;}
+					<li class="list-item" style='position:static;'>
 						<h3 class="cat-type-{$k}">
 							<a href="{url:/site/pro_list/cat/$valT[id]}">{$valT['name']}</a>
 						</h3>
 						<p class="cat-rcmd">
 							{set:$secondCat=Api::run('getCategoryByParentid',array('#parent_id#',$valT['id']))}
 							{foreach:items=$secondCat key=$keyS item=$valS}
-							<a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a>
+								<a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a>
 							{/foreach}
 						</p>
-
-		                    <div class="cat-pop" style="display: none;">
+						<div class="cat-pop" style="display:none;top:0px;">
 			                    <!--cat-layer-->
 								<div class="cat-layer clearfix ">
 			                        <ul class="cat-col">
 			                        	{foreach:items=$secondCat key=$keyS item=$valS}
-											{if:$valS['hot']==1}
-											{set:$hotCat[$valT['id']][] = $valS;}
+										{if:$valS['hot']==1}
+										{set:$hotCat[$valT['id']][] = $valS;}
+										{/if}
+			                     <li class="cat-item">
+			                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a></h3>
+			                   		 <p class="level-list clearfix">
+			                   		 	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id'])) key=$keyG item=$valG}
+											{if:$valG['hot']==1}
+												{set:$hotCat[$valT['id']][] = $valG;}
 											{/if}
-										
-										<li class="cat-item">
-			                        		<h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a></h3>
-			                     			   <p class="level-list clearfix">
-			                     			   	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id'])) key=$keyG item=$valG}
-												{if:$valG['hot']==1}
-													{set:$hotCat[$valT['id']][] = $valG;}
-												{/if}	
-															<a href="{url:/site/pro_list/cat/$valG[id]}">{$valG['name']}</a>
-												{/foreach}
-									           </p>
-	                     				  </li>
-										  {/foreach}
-	                  				 </ul>
+											<a href="{url:/site/pro_list/cat/$valG[id]}">{$valG['name']}</a>
+										{/foreach}
+								     </p>
+			                    </li>
+								{/foreach}
+			                         </ul>
 								</div>
 								<!--cat-layer-->
-                   		 </div>
-			     	 </li>
-					 {/foreach}
-					</ul>
+								
+					
+	                    </div>
+					</li>
+					{/foreach}
+				
+					<div  id='nav-ad' style="float:right;display:none;">{echo:Ad::show("导航右侧")}</div>
+				</ul>
+				<!--cat-list-->
 	
 		  </div>
 			<!--category-->

@@ -48,7 +48,7 @@ color: #933232;
 
 .bn .limit {
 background-color: #fff;
-width:231px;
+padding-left:5px;
 }
 .bn .limit .limit-zero {
 height: 180px;
@@ -266,7 +266,6 @@ padding: 10px 0 0 0;
 height: 176px;
 }
 .notice .news-list a {
-width: 231px;
 display: block;
 height: 176px;
 line-height: 24px;

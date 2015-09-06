@@ -76,11 +76,11 @@ $(function()
 	
 	$("#jCat .list-item").hover(function(){
 	    $(this).addClass("cat-hover");
-	  	$(this).children(".cat-pop").show();
+	  	$(this).children(".cat-pop").show().append($('#nav-ad').clone().css('display','block'));
 	  },function(){
 		 $(this).removeClass("cat-hover");
-		 $(this).children(".cat-pop").hide();
-	  });
+		 $(this).children(".cat-pop").hide().find('#nav-ad').remove();
+	});
 
 	  $("#jSiteNavQuick li:first").hover(function(){
 	    $(this).children("a").addClass("menu-hd-hover");
@@ -255,12 +255,12 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 <!--楼层电梯 -->
 <div class="floor_left_box" id="floornav" data-tpa="YHD_HOMEPAGE_FLOORNAV" style="display:none;">
 
-<a href="#floor-0" data="#floor-0" rel="floor-0" class="cur">
+<a href="#floor-1" data="#floor-1" rel="floor-1" class="cur">
 <i class="left_iconfont ">猜你喜欢</i>
 <em class="two_line">猜你喜欢</em>
 </a>
 {foreach:items=$categoryTop}
-{set:$K=$key+1}
+{set:$K=$key+2}
 <a href="#floor-{$K}" data="#floor-{$K}" rel="floor-{$K}">
 <i class="left_iconfont ">{$item['name']}</i>
 <em class="two_line">{$item['name']}</em>

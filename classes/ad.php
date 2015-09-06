@@ -49,6 +49,24 @@ class Ad
 	}
 
 	/**
+	 * @获取广告数据
+	 * 
+	 */
+	public static function getAdData($position){
+		$positionObject = array();
+		$adList        = array();
+		
+		$positionObject = self::getPositionInfo($position);
+		if($positionObject)
+		{
+			$adList = self::getAdList($positionObject['id'],0);
+			$adList['width'] = $positionObject['width'];
+			$adList['height'] = $positionObject['height'];
+		}
+		return $adList;
+	}
+	
+	/**
 	 * @brief 展示制定广告位的广告内容
 	 * @param $position mixed 广告位ID 或者 广告位名称
 	 * @param $goods_cat_id 商品分类ID

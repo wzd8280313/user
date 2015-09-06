@@ -245,8 +245,8 @@
 			<div class="title"><a target='blank' href='{url:/site/home/id/$seller[id]}'>{$seller['true_name']}</a></div>
 			<div class="cont">
 				<ul class="list">
-					{set:$ave = $seller['num']==0?0:round($seller['point']/$seller['num'],1);$ave=$ave*70/5;}
-									<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
+					{set:$ave = statistics::getSellerGrade($seller['id']);$ave = $ave*70/5;}
+					<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
 					<li style='background:none;'>
 					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}">进入店铺</a>
 					</li>

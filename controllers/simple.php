@@ -50,7 +50,7 @@ class Simple extends IController
 	function getMobileValidateCode(){
 		
 		$phone = IFilter::act(IReq::get('phone'));
-		$res = array('errorCode'=>0);echo JSON::encode($res);exit();
+		$res = array('errorCode'=>0);
 		if($phone=='')$res['errorCode']==1;
 		if(!$phone)$res['errorCode']==15;
 		
@@ -64,9 +64,9 @@ class Simple extends IController
 		
 	}
 	//验证手机验证码
-	function checkMobileValidateCode($num){return 0;
+	function checkMobileValidateCode($num){
 		if($mobileValidateSess = Isafe::get('mobileValidate')){
-			if(time() - $mobileValidateSess['time']>=10){//session过期
+			if(time() - $mobileValidateSess['time']>=1800){//session过期
 				return 41;
 			}else if($mobileValidateSess['num']!=$num){
 				return 2;//错误

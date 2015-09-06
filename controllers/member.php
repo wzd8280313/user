@@ -48,7 +48,7 @@ class Member extends IController
 	function member_save()
 	{
 		$user_id    = IFilter::act(IReq::get('user_id'),'int');
-		//$user_name  = IFilter::act(IReq::get('username'));
+		$user_name  = IFilter::act(IReq::get('username'));
 		$email      = IFilter::act(IReq::get('email'));
 		$password   = IFilter::act(IReq::get('password'));
 		$repassword = IFilter::act(IReq::get('repassword'));
@@ -56,7 +56,7 @@ class Member extends IController
 		$truename   = IFilter::act(IReq::get('true_name'));
 		$sex        = IFilter::act(IReq::get('sex'),'int');
 		$telephone  = IFilter::act(IReq::get('telephone'));
-		$mobile     = IFilter::act(IReq::get('mobile'));
+		$mobile     = IFilter::act(IReq::get('phone'));
 		$province   = IFilter::act(IReq::get('province'),'int');
 		$city       = IFilter::act(IReq::get('city'),'int');
 		$area       = IFilter::act(IReq::get('area'),'int');
@@ -91,7 +91,6 @@ class Member extends IController
 		$member = array(
 			'true_name'    => $truename,
 			'telephone'    => $telephone,
-			'mobile'       => $mobile,
 			'area'         => $_POST['area'],
 			'contact_addr' => $contact_addr,
 			'qq'           => $qq,
@@ -114,7 +113,8 @@ class Member extends IController
 			$user = array(
 				'username' => $user_name,
 				'password' => md5($password),
-				'email'    => $email
+				'email'    => $email,
+				'phone'    => $mobile
 			);
 			$userDB->setData($user);
 			$user_id = $userDB->add();
@@ -128,12 +128,15 @@ class Member extends IController
 		//编辑会员
 		else
 		{
+			$userData = array('phone'=>$mobile);
 			//修改密码
 			if($password)
 			{
-				$userDB->setData(array('password' => md5($password)));
-				$userDB->update('id = '.$user_id);
+				$userData['password'] = md5($password);
+				
 			}
+			$userDB->setData($userData);
+			$userDB->update('id = '.$user_id);
 
 			$member_info = $memberDB->getObj('user_id='.$user_id);
 

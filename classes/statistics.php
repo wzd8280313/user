@@ -258,7 +258,18 @@ class statistics
 		$dataRow = $goodsDB->getObj("seller_id = {$seller_id}",'sum(grade)/sum(comments) as num');
 		return isset($dataRow['num']) ? floatval($dataRow['num']) : 0;
 	}
-
+	/**
+	 * @brief 获取商户平均评分:总评分/评价数
+	 * 
+	 * @param int $seller_id 商户id
+	 * @return int
+	 */
+	public static function getSellerGrade($seller_id){
+		$seller = new IModel('seller');
+		$data = $seller->getObj("id = {$seller_id}",'point,num');
+		if($data['num']==0)return 0;
+		return floatval($data['point']/$data['num']);
+	}
 	/**
 	 * @brief 统计用户待评论数据
 	 * @param int $user_id 用户ID

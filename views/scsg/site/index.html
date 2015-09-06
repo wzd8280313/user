@@ -260,7 +260,7 @@
 	<!--猜你喜欢-->
 	<div class="floor floor-1" data-tpa="YHD_NHOME_INDEX2_FLOOR1" >
 			<div class="fl-title clearfix">
-				<div  id="floor-0" class="item"></div>
+				<div  id="floor-1" class="item"></div>
 				<h2 class="t18">猜你喜欢</h2>
 			</div>
 	
@@ -425,8 +425,8 @@
 	<!--分类产品列表-->		
 	<!--floor1-->
 	{foreach:items=$this->categoryList item=$base}
-	{set:$K=$key+1}
-	<div class="floor floor-{$K}" id='floor-{$K}' name="showGoods">
+	{set:$K=$key+2}
+	<div class="floor floor-{$K} item" id='floor-{$K}' name="showGoods">
 			<div class="fl-title clearfix">
 				<h2 class="t18">{$base['name']}</h2>
 				<ul class="fl-cat">

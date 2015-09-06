@@ -106,7 +106,7 @@ class IModel
 	 * @param  array  $except 非普通数据形式(key值)
 	 * @return int or bool int:影响的条数; bool:false错误
 	 */
-	public function update($where,$except=array(),$print=0)
+	public function update($where,$except=array())
 	{
 		$except = is_array($except) ? $except : array($except);
 
@@ -124,8 +124,6 @@ class IModel
 				$updateStr.= '`'.$key.'` = '.$val;
 		}
 		$sql = 'UPDATE '.$this->tableName.' SET '.$updateStr.$where;
-		if($print)
-			echo $sql;
 		return $this->db->query($sql);
 	}
 

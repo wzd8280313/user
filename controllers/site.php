@@ -22,7 +22,6 @@ class Site extends IController
 	}
 
 	function index()
-	
 	{ 
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
