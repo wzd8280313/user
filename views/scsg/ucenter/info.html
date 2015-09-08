@@ -20,17 +20,39 @@
 					<col width="120px" />
 					<col />
 					<tr>
-						<th>登录名：</th><td>{$this->userRow['username']}</td>
-					</tr>
-					<tr>
-						<th>邮箱：</th>
-						<td>
-							{$this->userRow['email']}
+						<th>用户名：</th>
+						
+						<td>{if:$this->userRow['username']}
+								{$this->userRow['username']}
+							{else:}
+								<a class="blue" href="">[添加]</a>
+							{/if}
+						
 						</td>
 					</tr>
 					<tr>
-						<th>会员等级：</th><td>{$this->userGroupRow['group_name']}</td>
+						<th>邮箱：</th>
+						<td>{if:$this->userRow['email']}
+								{$this->userRow['email']}
+								<a class="blue" href="">[修改]</a>
+							{else:}
+								<a class="blue" href="">[绑定邮箱]</a>
+							{/if}
+							
+						</td>
 					</tr>
+					<tr>
+						<th>手机：</th>
+						<td>
+							{if:$this->userRow['phone']}
+								{$this->userRow['phone']}
+								<a class="blue" href="{url:/ucenter/phone_chg}">[修改]</a>
+							{else:}
+								<a class="blue" href="{url:/ucenter/phone_bind}">[绑定手机]</a>
+							{/if}
+						</td>
+					</tr>
+					
 				</table>
 			</dd>
 		</dl>
@@ -42,6 +64,9 @@
 			<table class="form_table" width="100%" cellpadding="0" cellspacing="0">
 				<col width="120px" />
 				<col />
+				<tr>
+						<th>会员等级：</th><td>{$this->userGroupRow['group_name']}</td>
+				</tr>
 				<tr>
 					<th><span class="red">*</span> 姓名：</th><td><input class="normal" type="text" name="true_name" pattern='required' alt='请填写真实姓名' /></td>
 				</tr>
@@ -71,10 +96,6 @@
 					<td><input type='text' class='normal' name='contact_addr' pattern='required' alt='请填写联系地址' /></td>
 				</tr>
 				<tr>
-					<th><span class="red">*</span> 手机号码：</th>
-					<td><input class="normal" type="text" name='mobile' pattern='mobi' alt='请填写正确的手机号码' /></td>
-				</tr>
-				<tr>
 					<th>邮编：</th>
 					<td><input type='text' class='normal' name='zip' pattern='zip' empty alt='请填写正确的邮政编码' /></td>
 				</tr>
@@ -85,10 +106,6 @@
 				<tr>
 					<th>QQ：</th>
 					<td><input class="normal" type="text" name='qq' pattern='qq' empty alt='请填写正确的QQ号' /></td>
-				</tr>
-				<tr>
-					<th>MSN：</th>
-					<td><input class="normal" type="text" name='msn' pattern='email' empty alt='请填写正确的MSN号' /></td>
 				</tr>
 				<tr><th></th><td><label class="btn"><input type="submit" value="保存基本信息" /></label></td></tr>
 			</table>

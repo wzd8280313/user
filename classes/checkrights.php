@@ -109,13 +109,22 @@ class CheckRights extends IInterceptorBase
 		);
 		if($user['email']!=''){
 			$loginInfo = $user['email'];
+			$pos = strpos($user['email'],'@');
+			$subPos = $pos>=3 ? 3 : $pos;
+			$show = substr($user['email'],0,$subPos).preg_replace('/[\w.-]*@/','****@',$user['email']);
 		}else if($user['phone']!=''){
 			$loginInfo = $user['phone'];
+			$show = substr_replace($user['phone'],'****',3,4);
 		}else 
+		{
 			$loginInfo = $user['username'];
+			$show = $user['username'];
+		}
+			
 		
 		if(self::isValidUser($loginInfo,$user['user_pwd']))
 		{
+			$user['show'] = $show;
 			return $user;
 		}
 		else

@@ -1,7 +1,7 @@
 {js:kindeditor}
 <div class="main f_r">
     <div class="uc_title">
-        <label class="current"><span>退款申请</span></label>
+        <label class="current"><span>退换货申请</span></label>
     </div>
 
 	<div class="box">
@@ -44,17 +44,17 @@
 				</tr>
 
 				<tr>
-					<th>退款理由：</th>
+					<th>退换货理由：</th>
 					<td>
 						<textarea name="content" id="content" style="width:95%;height:300px" pattern="required"></textarea>
-						<label>请写明退款理由，上传问题商品图片</label>
+						<label>请写明退换货理由，上传问题商品图片</label>
 					</td>
 				</tr>
 
 				<tr>
 					<th></th>
 					<td>
-						<label class="btn"><input type="submit" value="提交退款" /></label>
+						<label class="btn"><input type="submit" value="提交申请" /></label>
 						<label class="btn"><input type="reset" value="重置" /></label>
 					</td>
 				</tr>
@@ -78,13 +78,13 @@ function checkForm()
 {
 	if($('#content').val() == '')
 	{
-		alert('请填写退款原因');
+		alert('请填写退换货原因');
 		return false;
 	}
 
 	if($('[name="order_goods_id"]:checked').length == 0)
 	{
-		alert('请选择要退款的商品');
+		alert('请选择要退换货的商品');
 		return false;
 	}
 	return true;

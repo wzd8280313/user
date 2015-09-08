@@ -695,7 +695,7 @@ strong.result{ display:block;margin:0 0 5px;font-size:16px;color:#666;text-align
 	table.cart_table caption{padding:18px 0 8px 15px;text-align:left;font-size:14px;color:#4a4a4a;font-weight:bold}
 	table.cart_table thead th{height:34px;background:#f5f5f5;color:#555455;border-right:1px solid #ddd;border-bottom:1px solid #ddd}
 	table.cart_table thead th.last{border-right:1px solid #c5c5c5}
-	table.cart_table tbody td{height:86px;border-bottom:1px solid #dfdfdf;color:#6f6f6f}
+	table.cart_table tbody td{height:86px;border-bottom:1px solid #dfdfdf;color:#6f6f6f;text-align: center;}
 	table.cart_table img{width:66px;height:66px;border:1px solid #c2c2c2}
 	table.cart_table tr.stats td{height:54px;border-bottom:none;background-color:#f3f3f3;text-align:right;font-size:14px;font-weight:bold}
 		table.cart_table tr.stats td b{margin-right:10px;font-size:16px}
@@ -706,7 +706,7 @@ strong.result{ display:block;margin:0 0 5px;font-size:16px;color:#666;text-align
 	.num{position:relative;width:80px;}
 		.num a{ position:absolute;top:5px;left:12px;border:1px solid #919191;display:block;width:8px;height:8px;line-height:8px;overflow:hidden;text-align:center;text-decoration:none;font-weight:bold;color:#4b63a7;font-family:"Courier New", monospace}
 		.num a.add{left:58px;line-height:8px}
-		.num input{border:1px solid #7f9db9;height:18px;line-height:18px;margin-right:0;padding:0;text-align:center;width:30px}
+		.num input{border:1px solid #7f9db9;height:18px;margin-right:0;line-height:18px;padding:0;text-align:center;width:30px}
 	.second .parts{ position:relative;min-height:150px;height:auto;padding-left:18px;_height:150px}
 		.second .parts .prev,.second .parts .next{ position:absolute;top:35px;display:block;width:12px;height:90px;background:url(../images/front/sprites_2.gif) 0 -684px no-repeat}
 		.second .parts .prev{left:0}
@@ -820,14 +820,7 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 .book input.gray_m{margin:0 0 0 5px;height:18px;}
 .book label.btn_orange{margin:0}
 /* book style end*/
-/* help style start */
-.help{padding:6px 0 0 0;background:url(../images/front/help_bg.gif) repeat-x}
-	.help .cont{padding-bottom:20px;background:url(../images/front/help_cont_bg.gif) 0 bottom repeat-x}
-		.help dl{display:inline;float:left;width:180px;overflow:hidden;text-align:left;line-height:23px;padding:25px 0 10px 0px}
-			.help dl dt{border-bottom:1px solid #e1e1e1;padding:0 0 5px 2px;margin-bottom:5px;margin-left:52px}
-				.help dl dt a{font:bold 14px Arial, Helvetica, sans-serif;color:#888}
-			.help dl dd{padding-left:15px;background:url(../images/front/sprites.gif) -287px -292px no-repeat;margin-left:52px}
-/* help style end */
+
 /* service style start */
 /* service style end */
 /* foot style start */
@@ -947,3 +940,5 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
     box-shadow: 0 0 5px #ccc;
     transform: translateZ(0px);
 }
+/*更换账号导航条*/
+.chg-account{height:69px;background:#f7f6f6 ;}

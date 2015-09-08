@@ -304,11 +304,7 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 								<div class="jt-history-wrap">
 									
 									<ul>
-										{if:$this->user}
-										{set:	$m = new IModel('favorite');
-												$favorite_id_arr = $m->getFields(array('user_id'=>$this->user['user_id']),'rid');
-												$favorite_ids = implode(',',$favorite_id_arr);}
-										{/if}
+										
 										{if:$favorite_ids}
 										{foreach:items=Api::run('getGoodsInfoByIds',array('#ids#',$favorite_ids))}
 										

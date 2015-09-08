@@ -5,6 +5,11 @@
 	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
 	$categoryTop = Api::run('getCategoryListTop');
 }
+{if:$this->user}
+{set:$m = new IModel('favorite');
+$favorite_id_arr = $m->getFields(array('user_id'=>$this->user['user_id']),'rid');
+$favorite_ids = implode(',',$favorite_id_arr);}
+{/if}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -45,8 +50,9 @@
 		<div class="nav_z site-nav">
 
 			<ul  class="cl sn-login" style="float:left;">
-				<li style="width:242px;color:#fff;">
-					{if:$this->user}
+				<li style="width:502px;color:#fff;">
+					Hi,{if:$this->user}
+					{$this->user['show']}
 						欢迎您来到{echo:$siteConfig->name}！
 						[<a href="{url:/simple/logout}">安全退出</a>]
 					{else:}
@@ -57,7 +63,7 @@
 					{/if}
 				</li>
 			</ul>
-			<ul id="navul" class="cl" style="float:right;margin-left:430px;">
+			<ul id="navul" class="cl" style="float:right;margin-left:170px;">
 				<li>
 					<a href="{url:/ucenter/index}">个人中心</a>
 					<ul>

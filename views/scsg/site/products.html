@@ -6,10 +6,11 @@
 	$seo_data['description']=$description;
 	seo::set($seo_data);
 }
+
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
 {foreach:items=$promotion}
-	{if:$item['type']==6}
+	{if:$item['type']==6}<!--获取免配送费的信息-->
 	{set:$freightInfo=$item['info']}
 	{/if}
 {/foreach}
@@ -237,7 +238,8 @@
 			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
 <!-- JiaThis Button END -->
-				<div class='quguan' style="position:absolute; left:300px;bottom:1px; padding-left:17px; " id="gz"><a href='javascript:void(0)' onclick='favorite_add(this)'>我的关注：{$favorite}</a></div>
+			{set:$cls=isset($favorite_id_arr)&&in_array($id,$favorite_id_arr) ? 'guanzhu' : 'quguan'}
+				<div class='{$cls}' style="line-height:26px;position:absolute; left:300px;bottom:1px; padding-left:17px; " id="gz"><a href='javascript:void(0)' onclick='favorite_add(this)'>我的关注：({$favorite}人气)</a></div>
 		</div>
 	</div>
 
@@ -586,11 +588,6 @@ $('[name="showButton"]>label').click(function(){
 		}
 		break;
 
-		case 4:
-		{
-			discuss_ajax();
-		}
-		break;
 	}
 });
 
@@ -647,20 +644,7 @@ function getAddress()
 	}
 }
 
-//发表讨论
-function sendDiscuss()
-{
-	var userId = "{$this->user['user_id']}";
-	if(userId)
-	{
-		$('#discussTable').show('normal');
-		$('#discussContent').focus();
-	}
-	else
-	{
-		alert('请登陆后再发表讨论!');
-	}
-}
+
 
 /**
  * 根据省份获取运费信息
@@ -818,47 +802,7 @@ function discuss_ajax(page)
 	});
 }
 
-//发布讨论数据
-function sendDiscussData()
-{
-	var content = $('#discussContent').val();
-	var captcha = $('[name="captcha"]').val();
 
-	if($.trim(content)=='')
-	{
-		alert('请输入讨论内容!');
-		$('#discussContent').focus();
-		return false;
-	}
-	if($.trim(captcha)=='')
-	{
-		alert('请输入验证码!');
-		$('[name="captcha"]').focus();
-		return false;
-	}
-
-	var url = '{url:/site/discussUpdate/id/$id/captcha/@captcha@/random/@Math@}';
-	url = url.replace("@captcha@",captcha).replace("@Math@",Math.random);
-
-	$.getJSON(url,{'content':content},function(json)
-	{
-		if(json.isError == false)
-		{
-			var discussHtml = template.render('discussRowTemplate',json);
-			$('#discussBox').prepend(discussHtml);
-
-			//清除数据
-			$('#discussContent').val('');
-			$('[name="captcha"]').val('');
-			$('#discussTable').hide('normal');
-			changeCaptcha('{url:/site/getCaptcha}');
-		}
-		else
-		{
-			alert(json.message);
-		}
-	});
-}
 
 /**
  * 规格的选择

@@ -116,14 +116,14 @@ $seller_arr[0]='平台自营';
 		</div>
 
 			{if:$resultData}
-			{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')))}
+			{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')));$showType=search_goods::getListShow(IFilter::act(IReq::get('show_type')))}
 			<ul class="display_list clearfix m_10">
 				{foreach:items=$resultData}
-				<li class="clearfix win {echo:search_goods::getListShow(IFilter::act(IReq::get('show_type')))}">
+				<li class="clearfix  {$showType}">
 					<div class="pic">
 						<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" width="200" height="200" alt="{$item['name']}" title="{$item['name']}" /></a>
 					</div>
-					<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:0px'></i></span>
+					<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style="width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px"></i></span>
 					</h3>
 						<a  style='margin-left:5px;text-decoration:none;'>{$seller_arr[$item['seller_id']]}</a>
 					

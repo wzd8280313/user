@@ -580,7 +580,6 @@ class Ucenter extends IController
     		'msn'          => IFilter::act( IReq::get('msn') ,'string' ),
     		'qq'           => IFilter::act( IReq::get('qq') , 'string' ),
     		'contact_addr' => IFilter::act( IReq::get('contact_addr'), 'string'),
-    		'mobile'       => IFilter::act( IReq::get('mobile'), 'string'),
     		'telephone'    => IFilter::act( IReq::get('telephone'),'string'),
     		'area'         => $areaStr,
     	);
@@ -1117,5 +1116,21 @@ class Ucenter extends IController
 		    	}
 			}
     	}
+    }
+    
+    /**
+     * 修改手机号码
+     */
+    function chgPhone()
+    {
+    	$user_id = $this->user['user_id'];
+    
+    	$userObj       = new IModel('user');
+    	$where         = 'id = '.$user_id;
+    	$this->data = array('user_phone'=>$userObj->getField($where,'phone'));
+    	
+    	$this->setRenderData($this->data);
+    	$this->redirect('chgPhone');
+    	
     }
 }
