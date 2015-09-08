@@ -33,7 +33,7 @@
 	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
 	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
 	<script type="text/javascript"  src="{theme:javascript/nav.js}"></script>
-	{set:$sonline = new Sonline();$sonline->show($siteConfig->phone,$siteConfig->service_online);}
+	<!--{set:$sonline = new Sonline();$sonline->show($siteConfig->phone,$siteConfig->service_online);}-->
 	<meta name="keywords" content="{echo:$siteConfig->index_seo_keywords}">
 	<meta name="description" content="{echo:$siteConfig->index_seo_description}"></head>
 </head>
@@ -80,18 +80,20 @@
 				<li>
 					<a href="{url:/site/help_list}">帮助中心</a>
 					<ul>
-						<li><a href="#">常见问题</a></li>
-						<li><a href="#">支付帮助</a></li>
-						<li><a href="#">配送范围</a></li>
+						<li><a href="{url:/site/help_list/id/9}">常见问题</a></li>
+						<li><a href="{url:/site/help_list/id/4}">支付帮助</a></li>
+						<li><a href="{url:/site/help/id/61}">当天送达</a></li>
+						<li><a href="{url:/site/help/id/56}">积分说明</a></li>
+						<li><a href="{url:/site/help/id/63}">退换货说明</a></li>
 					</ul>
 				</li>
 				<li>
 					<a href="{url:/ucenter/index}">客户服务</a>
 					<ul>
 						<li><a href="#">在线客服</a></li>
-						<li><a href="#">意见建议</a></li>
-						<li><a href="#">售后服务</a></li>
-						<li><a href="#">订单状态</a></li>
+						<li><a href="{url:/ucenter/complain}">意见建议</a></li>
+						<li><a href="{url:/site/help_list/id/5}">售后服务</a></li>
+						<li><a href="{url:/ucenter/order}">订单状态</a></li>
 					</ul>
 				</li>
 				<li style="color:#fff;">关注我们:

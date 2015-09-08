@@ -259,14 +259,14 @@ img {
     text-align: right;
     display: none;
 }
-.tbar-panel-history div{
+.tbar-panel-follow div,.tbar-panel-history div{
 	 padding: 0px;
 }
 .jt-history-wrap {
     width: 235px;
     margin: 0px auto;
 }
-.tbar-panel-history ul {
+.tbar-panel-follow ul,.tbar-panel-history ul {
     overflow: hidden;
     margin-right: -15px;
     margin-top:0px;
@@ -286,7 +286,7 @@ img {
     margin-top: 11px;
     background-image:none;
 }
-.tbar-panel-history .jth-item {
+.tbar-panel-follow .jth-item,.tbar-panel-history .jth-item {
     float: left;
     position: relative;
     width: 100px;
@@ -304,7 +304,7 @@ img {
     margin-bottom: 5px;
 }
 
-.tbar-panel-history .jth-item .add-cart-button {
+.tbar-panel-follow .jth-item .add-cart-button ,.tbar-panel-history .jth-item .add-cart-button {
     height: 20px;
     line-height: 20px;
     overflow: hidden;
@@ -319,10 +319,10 @@ img {
     color: #FFF;
     background: rgba(28, 25, 28, 0.8) none repeat scroll 0% 0%;
 }
-.tbar-panel-history .jth-item .price {
+.tbar-panel-follow .jth-item .price ,.tbar-panel-history .jth-item .price {
     color: #F15A24;
 }
-.tbar-panel-history .history-bottom-more {
+.tbar-panel-follow .history-bottom-more,.tbar-panel-history .history-bottom-more {
     display: block;
     text-align: center;
     height: 40px;
@@ -520,6 +520,6 @@ img {
 	-o-transform:rotate(180deg);
 	-ms-transform:rotate(180deg);
 	}
-.tbar-panel-history .jth-item .add-cart-button:hover{
+.tbar-panel-follow .jth-item .add-cart-button:hover,.tbar-panel-history .jth-item .add-cart-button:hover{
 	background: rgb(200, 22, 35) none repeat scroll 0% 0%;
 	}

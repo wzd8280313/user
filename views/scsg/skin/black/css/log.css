@@ -936,3 +936,14 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 .slide_button{position:absolute;bottom:0px;left:0px;right:0px;height:30px;overflow:hidden;width:100%;background:#fff;}
 	.slide_button a{display:block;height:30px;line-height:30px;color:#333;float:left;background:#dddddd;}
 	.slide_button a.current,#slide_name a:hover{background:#a8a8a8;color:#fff; font-weight:bold}
+.cart-hot{
+	margin: 0px auto;
+	 padding: 0;
+    position: relative;
+}
+.cart-hot .cart-hot-box{
+	width: 100%; overflow: hidden; position: relative; height: 238px;
+	background: #fff none repeat scroll 0 0;
+    box-shadow: 0 0 5px #ccc;
+    transform: translateZ(0px);
+}

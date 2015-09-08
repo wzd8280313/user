@@ -213,5 +213,5 @@ jQuery(function()
 			$(this).children('.cat-list').addClass('hide');
 		});
 	}
-	
+
 });

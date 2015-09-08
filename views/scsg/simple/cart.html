@@ -87,11 +87,7 @@
 		<tfoot>
 			<tr>
 				<td colspan="2" class="t_l">
-					{if:$this->user['user_id']}
-					<a class="file" href="{url:/simple/deposit_cart_set}">寄存购物车</a>
-					<a class="file" href="javascript:deposit_cart_get();">取出购物车</a>
-					<a class="file" href="javascript:void(0)" onclick="delModel({msg:'确定要清空寄存购物车么？',link:'{url:/simple/deposit_cart_clear}'});">清空寄存购物车</a>
-					{/if}
+				
 					<a class="del" href="javascript:void(0);" onclick="delModel({msg:'确定要清空购物车么？',link:'{url:/simple/clearCart}'});">清空购物车</a>
 				</td>
 				<td colspan="6" class="t_r">
@@ -106,18 +102,29 @@
 	</table>
 
 	<div class="box"><div class="title">热门商品推荐</div></div>
-		<ul id="scrollpic" class="prolist">
-			{foreach:items=Api::run('getCommendHot',5)}
-			<li>
-				<a href="{url:/site/products/id/$item[id]}">
-					<img width="98px" height="106px" src="{url:/pic/thumb/img/$item[img]/w/98/h/106}" alt="{$item['name']}" title="{$item['name']}">
-				</a>
-				<p class="pro_title"><a href="{url:/site/products/id/$item[id]}">"{$item['name']}"</a></p>
-				<p class="brown"><b>￥{$item['sell_price']}</b></p>
-				<label class="btn_orange2"><input type="submit" onclick="window.location.href='{url:/simple/joinCart/link/cart/type/goods/goods_id/$item[id]}';" value="加入购物车"></label>
-			</li>
-			{/foreach}
-		</ul>
+	<div class='cart-hot'>
+		<div class='cart-hot-box'>
+			<ul id="scrollpic" class="prolist">
+				{foreach:items=Api::run('getCommendHot',5)}
+				
+				<li>
+					<a href="{url:/site/products/id/$item[id]}">
+						{if:$item['img']!=''}
+								<img width="98px" height="106px" src="{url:/pic/thumb/img/$item[img]/w/98/h/106}" alt="{$item['name']}" title="{$item['name']}">
+						{else:}
+								<img width="98px" height="106px" src="{skin:images/front/nopic_435_435.gif}" alt="{$item['name']}" title="{$item['name']}">
+						{/if}
+					</a>
+					<p class="pro_title"><a href="{url:/site/products/id/$item[id]}">"{$item['name']}"</a></p>
+					<p class="brown"><b>￥{$item['sell_price']}</b></p>
+					<label class="btn_orange2"><input type="submit" onclick="window.location.href='{url:/simple/joinCart/link/cart/type/goods/goods_id/$item[id]}';" value="加入购物车"></label>
+				</li>
+				{/foreach}
+			</ul>
+		</div>
+		
+	</div>
+		
 </div>
 
 <script type='text/javascript'>
@@ -331,13 +338,4 @@ function deposit_cart_get()
 		window.location.reload();
 	});
 }
-</script>
-
-<!--滑动门-->
-<link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />
-<script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
-<script type="text/javascript">
-jQuery(function(){
-	$('#scrollpic').bxSlider({controls:false,minSlides: 5,slideWidth: 180,maxSlides: 5,pager:false});
-});
 </script>

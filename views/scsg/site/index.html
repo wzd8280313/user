@@ -14,73 +14,81 @@
 <!--bn-->
 <div class="bn" style="height:490px;">
 		<!--轮播开始-->
-		<script type='text/javascript' >
-			var tId;
-			startScroll();
-			$(function(){
-			    $('.number li').each(function(){
-			        $(this).click(function(){
-			            slideHere($(this));
-			        }).mouseover(function(){
-			            stopHere($(this));
-			        }).mouseout(function(){
-			            startScroll();
-			        });
-			    });
-			});
-			function startScroll(){
-			    tId = setInterval(function(){
-			        var nextImg = $('.nonce').next('.initial');
-			        if(nextImg.length==0){
-			            nextImg = $($('.number li')[0]);
-			        }
-			        slideHere($(nextImg));
-			    }, 3000);
-			}
-			function stopScroll(){
-			    clearInterval(tId);
-			}
-			function slideHere(imgObj){
-			    $('.number li').removeClass('nonce');
-			    $('.number li').addClass('initial');
-			    imgObj.removeClass('initial');
-			    imgObj.addClass('nonce');
-			     if($('.ad_cycle img').length)
-				 {
-			        $('.ad_cycle img')
-			            .attr('src', imgObj.attr('target_src'))
-			            .css('display', 'none')
-			            .fadeIn('normal')
-			            .parent().attr('href', imgObj.attr('target_link'))
-			            .attr('target', '_blank');
-				 }
-			}
-			function stopHere(imgObj){
-			    slideHere(imgObj);
-			    stopScroll();
-			}
-		</script>
-		<div style="width: 100%; height: 486px; overflow: visible; position: relative; visibility: visible; display: block;">
-			{if:$this->index_slide}
+			<script type='text/javascript' >
+				var tId;
+				startScroll();
+				$(function(){
+				    $('.ad_cycle li').each(function(){
+				        $(this).click(function(){
+				            slideHere($(this));
+				        }).mouseover(function(){
+				            stopHere($(this));
+				        }).mouseout(function(){
+				            startScroll();
+				        });
+				    });
+				});
+				function startScroll(){
+				    tId = setInterval(function(){
+				        var nextImg = $('.nonce').next('.initial');
+				        if(nextImg.length==0){
+				            nextImg = $($('.ad_cycle li')[0]);
+				        }
+				        slideHere($(nextImg));
+				    }, 3000);
+				}
+				function stopScroll(){
+				    clearInterval(tId);
+				}
+				function slideHere(imgObj){
+				    $('.ad_cycle li').removeClass('nonce');
+				    $('.ad_cycle li').addClass('initial');
+				    imgObj.removeClass('initial');
+				    imgObj.addClass('nonce');
+				    if($('.ad_cycle img').length)
+				    {
+				        $('.ad_cycle .pic img')
+				            .attr('src', imgObj.attr('target_src'))
+				            .css('display', 'none')
+				            .fadeIn('normal')
+				            .parent().attr('href', imgObj.attr('target_link'))
+				            .attr('target', '_blank');
+						$('#scroll').css('background-color','#'+imgObj.attr('target_color'))
+				   }
+				}
+				function stopHere(imgObj){
+				    slideHere(imgObj);
+				    stopScroll();
+				}
+			</script>
+		{if:$this->index_slide}
+		<div id='scroll' style="background-color:#{$this->index_slide[0]['color']}" >
+			
+			<div class="ad_cycle">
 				<div class="number" >
-					<ul style='display:none;'>
+					<ul style=''>
 						{foreach:$items=$this->index_slide }
 							{set:$key=$key+1}
 							{if:$key==1}
 							{set:$fUrl=$item['url'];$fImg=$item['img'];}
-								<li class="nonce" alt="{$key}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}">{$key}</li>
+								<li class="nonce" alt="{$key}" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}">{$key}</li>
 							{else:}
-								<li class="initial" alt="1" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}">{$key}</li>
+								<li class="initial" alt="1" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}">{$key}</li>
 							{/if}
 						{/foreach}
 					</ul>
 					
 				</div>
-				<a href="{webroot:$fUrl}" target="_blank">
-					<img src="{webroot:$fImg}" style="width:100%;height:486px;">
-				</a>
-			{/if}
+				<div class='pic'>
+					<a href="{webroot:$fUrl}" target="_blank">
+						<img src="{webroot:$fImg}" style="width:100%;height:490px;">
+					</a>
+				</div>
+				
+			</div>
+			
 		</div>
+		{/if}
 		<!--轮播结束-->
 		
 		<!--轮播右侧-->
@@ -425,7 +433,7 @@
 	<!--分类产品列表-->		
 	<!--floor1-->
 	{foreach:items=$this->categoryList item=$base}
-	{set:$K=$key+2}
+	{set:$K=$key+2;$Kad=$key+1;}
 	<div class="floor floor-{$K} item" id='floor-{$K}' name="showGoods">
 			<div class="fl-title clearfix">
 				<h2 class="t18">{$base['name']}</h2>
@@ -448,14 +456,14 @@
 							{/if}
 						</div>
 									
-						{echo:Ad::show("首页分类产品小".$K)}
+						{echo:Ad::show("首页分类产品小".$Kad)}
 					</div>
 				</div>
 				<!--分层轮播广告-->
 				<div class="fl-rcmd1 f-l" >
 					<div class="fl-rcmd-bg1" >
 									
-						{echo:Ad::show("首页分类产品".$K)}
+						{echo:Ad::show("首页分类产品".$Kad)}
 					</div>
 				</div>
 				<!--分层轮播广告-->

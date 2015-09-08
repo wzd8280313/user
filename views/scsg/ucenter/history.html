@@ -28,9 +28,12 @@
 					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 					<td>
 						<dl>
-							
 							<dt><a href="{url:/site/products/id/$item['goods_id']}">
+								{if:$item['data']['img']!=''}
 								<img src="{url:/pic/thumb/img/$item['data']['img']/w/88/h/88}" width="88px" height="88px" alt="{$item['data']['name']}" />
+								{else:}
+								<img src="{skin:images/front/nopic_435_435.gif}" width="88px" height="88px" alt="{$item['data']['name']}" />
+								{/if}
 								</a>
 							</dt>
 							<dd><a class="blue" href="{url:/site/products/id/$item[goods_id]}">{$item['data']['name']}</a></dd>

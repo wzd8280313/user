@@ -891,3 +891,50 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 	background:url(../images/gz-11.png) no-repeat;
 }
 .right{width:960px;}
+.ad_cycle{
+	position:relative;
+	width:759px;
+	height:490px;
+	margin:0 auto;
+	right:15px;
+	
+}
+.ad_cycle .nonce {
+    background: rgba(0, 0, 0, 0) url("../images/FocusLiBg02.gif") repeat scroll 0 0;
+    border: 1px solid #ad1019;
+    font-weight: 100;
+}
+.ad_cycle .initial {
+    background: rgba(0, 0, 0, 0) url("../images/FocusLiBg01.gif") repeat scroll 0 0;
+    border: 1px solid #dedad9;
+    color: #ac2128;
+    font-weight: 100;
+}
+.ad_cycle ul {
+    float: right;
+    padding-right: 15px;
+}
+.ad_cycle li {
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    font-weight: bold;
+    height: 19px;
+    line-height: 19px;
+    margin-left: 4px;
+    text-align: center;
+    width: 19px;
+}
+.ad_cycle .number {
+    bottom: 8px;
+    position: absolute;
+    right: 50px;
+    z-index:9999;
+}
+#scroll{
+	z-index:0;
+	width: 100%; height: 490px; overflow: visible; position: relative; visibility: visible; display: block;
+}
+#scroll .pic{
+	
+}

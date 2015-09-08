@@ -300,12 +300,31 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 							<span class="close-panel J-close"></span>
 						</h3>
 						<div class="tbar-panel-main">
-							<div class="tbar-panel-content J-panel-content">
-								<div class="tbar-tipbox2">
-									<div class="tip-inner">
-										<i class="i-loading"></i>
+							<div style="height: 943px;" class="tbar-panel-content J-panel-content">
+								<div class="jt-history-wrap">
+									
+									<ul>
+										{if:$this->user}
+										{set:	$m = new IModel('favorite');
+												$favorite_id_arr = $m->getFields(array('user_id'=>$this->user['user_id']),'rid');
+												$favorite_ids = implode(',',$favorite_id_arr);}
+										{/if}
+										{if:$favorite_ids}
+										{foreach:items=Api::run('getGoodsInfoByIds',array('#ids#',$favorite_ids))}
 										
-									</div>
+										<li class="jth-item"><a href="{url:/site/products/id/$item[goods_id]}" class="img-wrap"
+											target="_blank"
+											title="{$item['name']}"> <img
+												src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"
+												height="100" width="100">
+										</a> <a class="add-cart-button" href="javascript:void(0)" onclick='joinCart_ajax({$item["goods_id"]},"{url:/simple/joinCart}","goods")'>加入购物车</a>
+											<a href="#" target="_blank" class="price">￥{$item['sell_price']}</a>
+										</li>
+										{/foreach}
+										{/if}
+									</ul>
+									<a href="{url:/ucenter/favorite}" class="history-bottom-more" target="_blank">查看更多关注商品
+										&gt;&gt;</a>
 								</div>
 							</div>
 						</div>
@@ -319,8 +338,7 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 							<span class="close-panel J-close"></span>
 						</h3>
 						<div class="tbar-panel-main">
-							<div style="height: 943px;"
-								class="tbar-panel-content J-panel-content">
+							<div style="height: 943px;" class="tbar-panel-content J-panel-content">
 								<div class="jt-history-wrap">
 									
 									<ul>
@@ -388,12 +406,12 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 							<i class="tab-ico"></i> 
 						</a>
 					</div>
-					<div class=" toolbar-tab tbar-tab-feedback">
-						<a href="{url:/ucenter/complain}" target="_blank"> 
+					<a href="{url:/ucenter/complain}" target="_blank"> 
+						<div class=" toolbar-tab tbar-tab-feedback">
 							<i class="tab-ico"></i> 
 							<em class="footer-tab-text ">反馈</em>
-						</a>
-					</div>
+						</div>
+					</a>
 				</div>
 				<div class="toolbar-mini"></div>
 			</div>

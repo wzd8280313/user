@@ -102,6 +102,7 @@ class ProRule
 		$allInfo  = array_merge($cashInfo,$giftInfo);
 		foreach($allInfo as $key => $val)
 		{
+			$explain[$key]['type'] = $val['award_type'];
 			$explain[$key]['plan'] = $val['name'];
 			$explain[$key]['info'] = $this->typeExplain($val['award_type'],$val['condition'],$val['award_value']);
 		}

@@ -45,6 +45,7 @@ class Site extends IController
 		unset($categoryList);
 		//获取用户喜好产品
 		$uid = $this->user ? $this->user['user_id'] : 0;
+
 		$this->user_like_goods = user_like::get_like_cate($uid);
 		$this->redirect('index');
 	}
@@ -529,7 +530,8 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
-			
+		
+		
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}
@@ -904,5 +906,9 @@ class Site extends IController
 		$this->redirect("groupon");
 	}
 
+	function ce(){
+		$_SESSION['aaa']=123;
+		print_r($_SESSION);
+	}
 	
 }

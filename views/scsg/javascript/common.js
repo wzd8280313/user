@@ -40,6 +40,8 @@ function getArray(nameVal,sort)
 	}
 	return jsonData;
 }
+window.siteUrl = location.host=='localhost' ? location.origin+'/iwebshop/' : location.origin+'/';
+window.noPicUrl = window.siteUrl+'views/scsg/skin/black/images/front/nopic_435_435.gif';
 window.loadding = function(message){var message = message ? message : '正在执行，请稍后...';art.dialog({"id":"loadding","lock":true,"fixed":true,"drag":false}).content(message);}
 window.unloadding = function(){art.dialog({"id":"loadding"}).close();}
 window.tips = function(mess){art.dialog.tips(mess);}

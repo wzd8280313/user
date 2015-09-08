@@ -339,6 +339,7 @@ class System extends IController
 					{
 						$config_slide[$key]['name'] = $value;
 						$config_slide[$key]['url']  = $_POST['slide_url'][$key];
+						$config_slide[$key]['color']  = $_POST['slide_color'][$key];
 						$config_slide[$key]['img']  = $_POST['slide_img'][$key];
 					}
 				}

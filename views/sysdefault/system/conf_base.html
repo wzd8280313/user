@@ -119,7 +119,7 @@
 							<script type='text/html' id='guideTrTemplate'>
 							<tr class='td_c'>
 								<td><input type='text' name='guide_name[]' class='small' value='<%=name%>'  alt='请填写导航名' /></td>
-								<td><input type='text' name='guide_link[]' class='middle' value='<%=link%>'  alt='请填写URL，如：http://www.jooyea.cn' /></td>
+								<td><input type='text' name='guide_link[]' class='middle' value='<%=link%>'  alt='请填写URL' /></td>
 								<td>
 									<img class='operator' src='{skin:images/admin/icon_asc.gif}' alt='向上' title='向上' />
 									<img class='operator' src='{skin:images/admin/icon_desc.gif}' alt='向下' title='向下' />
@@ -147,15 +147,15 @@
 					<th>首页幻灯设置：</th>
 					<td>
 
-						<table class='border_table' id='slide_box'>
-							<col width="150px" />
-							<col width="250px" />
-							<col width="250px" />
-							<col width="120px" />
+						<table class='border_table' id='slide_box' >
+							<col width="100px" />
+							<col width="200px" />
+							<col />
 							<thead>
 							<tr>
 								<th>名称</th>
 								<th>链接地址</th>
+								<th>颜色代码(不带#)</th>
 								<th>图片文件</th>
 								<th>操作</th>
 							</tr>
@@ -165,7 +165,7 @@
 
 							<tfoot>
 								<tr>
-									<td colspan='4'>
+									<td colspan='5'>
 										<button type='button' class='btn' onclick="add_slide();"><span>添加幻灯</span></button>
 									</td>
 								</tr>
@@ -173,8 +173,10 @@
 
 							<script type='text/html' id='slideTrTemplate'>
 							<tr class='td_c'>
-								<td><input type='text' name='slide_name[]' class='middle' value='<%=name%>' pattern='required' /></td>
+								<td><input type='text' name='slide_name[]' class='small' value='<%=name%>' pattern='required' /></td>
 								<td><input type='text' name='slide_url[]' class='middle' value='<%=url%>' pattern='required' /></td>
+								<td><input type='text' name='slide_color[]' class='small' value='<%=color%>' pattern='required' /></td>
+							
 								<td>
 									<%if(img){%>
 									<img src="{url:}<%=img%>" width="150px" /><br />
