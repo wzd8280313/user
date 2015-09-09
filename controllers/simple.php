@@ -220,6 +220,9 @@ class Simple extends IController
 					else if($userRow['status']==3){//后台锁定
 						$data['errorCode'] = 9;
 					}
+					else if($userRow['status']==2){
+						$data['errorCode'] = 15;
+					}
 				}
 				else
 				{

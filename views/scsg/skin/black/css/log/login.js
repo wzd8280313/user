@@ -9439,6 +9439,10 @@ function double_submit() {
 								showErrorInfo($("#un"), "您的账号已被锁定");
 								 break;
 							}
+							case 15 : {
+								showErrorInfo($("#un"), "您的账号已被删除");
+								 break;
+							}
 							case 7 : {
 								showErrorInfo($("#un"), "账号密码不匹配");
 								if(e.errorTimes>3){

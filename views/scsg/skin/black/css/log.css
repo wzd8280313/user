@@ -69,8 +69,8 @@ body.index{ background:url(../images/front/sprites.gif) 0 -341px repeat-x}
 .container,.container_2{width:960px;margin:0 auto}
 .tabs_menu .node{cursor:pointer}
 /* header style start */
-.header{height:63px;margin-top:19px;text-align:right;color:#848484}
-	.header .logo{float:left;width:250px;height:53px;overflow:hidden}
+.header{height:70px;margin-top:19px;text-align:right;color:#848484}
+	.header .logo{float:left;width:250px;height:68px;overflow:hidden}
 		.header .logo a{display:block;height:53px;line-height:53px;text-indent:9999px;background:url(../images/front/logo.gif) no-repeat}
 	.header .shortcut{display:inline-block;marign-top:3px}
 		.header .shortcut li{display:inline;margin-right:7px;padding-right:8px;background:url(../images/front/sprites.gif) right 2px no-repeat;_background-position:right 0}
