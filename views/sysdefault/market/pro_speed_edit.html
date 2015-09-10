@@ -25,8 +25,8 @@
 				<tr>
 					<th>是否开启：</th>
 					<td>
-						<label class='attr'><input type='radio' name='is_close' value='0' />是</label>
-						<label class='attr'><input type='radio' name='is_close' value='1' checked=checked />否</label>
+						<label class='attr' ><input type='radio' name='is_close' value='0' />是</label>
+						<label class='attr' ><input type='radio' name='is_close' value='1' checked=checked />否</label>
 					</td>
 				</tr>
 				<tr>
@@ -41,19 +41,27 @@
 						<label>* 此限时抢购允许参加的用户组</label>
 					</td>
 				</tr>
-
+				<tr>
+					<th>是否区分规格：</th>
+					<td>
+						<label class='attr' name='spec_diff'><input type='radio' name='spec' value='0' />是</label>
+						<label class='attr' name='spec_diff'><input type='radio' name='spec' value='1' checked=checked />否</label>
+					</td>
+				</tr>
 				<tr>
 					<th>设置闪购商品：</th>
 					<td>
-						<table class='border_table' style='width:65%'>
-							<col width="100px" />
-							<col width="200px" />
+						<table class='border_table' style='width:70%'>
+							<col width="150px" />
+							<col width="250px" />
+								<col width="100px" />
+									<col width="100px" />
 							<col />
-							<input type='hidden' name='condition' />
 							<thead>
 								<tr>
 									<th>图片</th>
 									<th>名称</th>
+									<th>规格</th>
 									<th>原价格</th>
 									<th>闪购价格</th>
 								</tr>
@@ -61,8 +69,8 @@
 							<tbody>
 								<tr id='speed_goods' class='td_c'></tr>
 								<tr>
-									<td colspan='4'>
-										<button type='button' onclick="searchGoods('{url:/block/search_goods/type/radio}',searchGoodsCallback);" class='btn'><span>选择商品</span></button>
+									<td colspan='5'>
+										<button type='button' class='btn'><span>选择商品</span></button>
 										<label>* 设置要闪购的商品，仅能设置一种商品</label>
 									</td>
 								</tr>
@@ -96,12 +104,22 @@
 		goodsList.each(function()
 		{
 			var temp = $.parseJSON($(this).attr('data'));
+			
+			if(!temp.product_id){
+				temp.product_id = 0;
+				var spec_str = '所有';
+			}else{
+				var spec_str = getSpec(temp.spec_array);
+			}
+			
 			var content = {
 				"data":
 				{
-					"id":temp.goods_id,
+					"goods_id":temp.goods_id,
+					"product_id":temp.product_id,
 					"name":temp.name,
 					"img":temp.img,
+					"spec":spec_str,
 					"sell_price":temp.sell_price
 				}
 			};
@@ -114,14 +132,16 @@
 	{
 		if(content)
 		{
-			$('[name="condition"]').val(content['data']['id']);
 			var imgUrl = "{webroot:@url@}";
 			imgUrl     = imgUrl.replace("@url@",content['data']['img']);
 
 			var html =   '<td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /></td>'
 						+'<td>'+content['data']['name']+'</td>'
+						+'<td>'+content['data']['spec']+'</td>'
 						+'<td>'+content['data']['sell_price']+'</td>'
-						+'<td><input text="text" class="small" name="award_value" pattern="float" alt="请填写一个数字" />元 </td>';
+						+'<td><input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
+							'<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/>'+
+						'<input text="text" class="small" style="width:50px;" name="award_value" pattern="float" alt="请填写一个数字" />元 </td>';
 
 			$('#speed_goods').html(html);
 		}
@@ -151,20 +171,49 @@
 		);
 	}
 
+	
 	//预定义商品绑定
-	relationCallBack({$this->promotionRow['goodsRow']});
-
-	//表单回填
-	var formObj = new Form('pro_edit');
-	formObj.init
-	({
-		'id':'{$this->promotionRow['id']}',
-		'name':'{$this->promotionRow['name']}',
-		'start_time':'{$this->promotionRow['start_time']}',
-		'end_time':'{$this->promotionRow['end_time']}',
-		'group_all':"{$this->promotionRow['user_group']}",
-		'is_close':'{$this->promotionRow['is_close']}',
-		'condition':'{$this->promotionRow['condition']}',
-		'award_value':'{$this->promotionRow['award_value']}'
-	});
+	{if:isset($this->promotionRow['goodsRow'])}
+		var goodsData = {$this->promotionRow['goodsRow']};
+		goodsData['data']['spec'] = getSpec(goodsData['data']['spec_array']);
+		relationCallBack(goodsData);
+		//表单回填
+		var formObj = new Form('pro_edit');
+		formObj.init
+		({
+			'id':'{$this->promotionRow['id']}',
+			'name':'{$this->promotionRow['name']}',
+			'start_time':'{$this->promotionRow['start_time']}',
+			'end_time':'{$this->promotionRow['end_time']}',
+			'group_all':"{$this->promotionRow['user_group']}",
+			'is_close':'{$this->promotionRow['is_close']}',
+			'condition':'{$this->promotionRow['condition']}',
+			'award_value':'{$this->promotionRow['award_value']}'
+		});
+		
+	{/if}
+	
+	//
+	$(function(){
+		$('label[name=spec_diff]').click(function(){
+			var is_spec = $(this).find('input[type=radio]').val();
+			$('button.btn').off('click');
+			if(is_spec==0){
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/is_products/1/seller_id/0}',searchGoodsCallback);})
+			}else{
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/seller_id/0}',searchGoodsCallback);})
+			}
+			
+		})
+		{if:$this->promotionRow['product_id']>0}
+			$('label[name=spec_diff]').eq(0).trigger('click');
+		{else:}
+			$('label[name=spec_diff]').eq(1).trigger('click');
+		{/if}
+		
+	})
+		
+				
+	
+	
 </script>

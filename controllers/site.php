@@ -433,6 +433,9 @@ class Site extends IController
 		$goods_info['promo']     = IReq::get('promo')     ? IReq::get('promo') : '';
 		$goods_info['active_id'] = IReq::get('active_id') ? IFilter::act(IReq::get('active_id'),'int') : '';
 		
+		//是否有闪购价格
+		$goods_info['shan'] = Api::run('getPromotionRowByGoodsId',array('#goods_id#',$goods_id));
+		
 		if($goods_info['promo'])
 		{
 			switch($goods_info['promo'])
@@ -445,11 +448,11 @@ class Site extends IController
 				break;
 
 				//抢购
-				case 'time':
-				{
-					$goods_info['promotion'] = Api::run("getPromotionRowById",array("#id#",$goods_info['active_id']));
-				}
-				break;
+// 				case 'time':
+// 				{
+// 					$goods_info['promotion'] = Api::run("getPromotionRowById",array("#id#",$goods_info['active_id']));
+// 				}
+// 				break;
 
 				default:
 				{

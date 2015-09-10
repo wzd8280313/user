@@ -37,6 +37,23 @@
 					<p> </p>
 				</div>
 				<div class="tm-fcs-panel">
+					{if:$shan}
+					<dl id="J_PromoPrice" class="tm-promo-panel"  >
+						<dt class="tb-metatit">价格</dt>
+						<dd><em class="tm-yen">¥</em>
+							<span class="tm-price" id='real_price' style='text-decoration:line-through;'>{$sell_price}</span>
+							<div class="staticPromoTip"> </div>
+						</dd>
+					</dl>
+					<dl id="J_StrPriceModBox" class="tm-price-panel tm-price-cur">
+						<dt class="tb-metatit">闪购价</dt>
+						<dd>
+							<em class="tm-yen">¥</em>
+							<span class="tm-price" id='shan_price'>{$shan['award_value']}</span>
+							<div class="staticPromoTip"> </div>
+						</dd>
+					</dl>
+					{else:}
 					<dl id="J_StrPriceModBox" class="tm-price-panel tm-price-cur">
 						<dt class="tb-metatit">价格</dt>
 						<dd>
@@ -45,10 +62,7 @@
 							<div class="staticPromoTip"> </div>
 						</dd>
 					</dl>
-					<dl id="J_PromoPrice" class="tm-promo-panel" data-label="促销" style="display: none;">
-						<dt class="tb-metatit">促销价</dt>
-						<dd></dd>
-					</dl>
+					{/if}
 				</div>
 				<div class="tb-meta">
 					<dl id="J_RSPostageCont" class="tm-delivery-panel">

@@ -90,6 +90,15 @@ return array(
 			'type'  => 'row',
 		)
 	),
+	//根据商品id限时抢购
+	'getPromotionRowByGoodsId'=>array(
+			'query' => array(
+				'name' => 'promotion',
+				'fields'=>'award_value,end_time,user_group',
+				'where' => 'type = 1 and `condition` = #goods_id# and NOW() between start_time and end_time',
+				'type'  => 'row'
+			)
+	),
 	//新品列表
 	'getCommendNew' => array(
 		'query' => array(

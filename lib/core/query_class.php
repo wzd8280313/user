@@ -167,6 +167,14 @@ class IQuery
         }
 	}
 	/**
+	 * @brief 取一条结果
+	 */
+	public function getObj(){
+		$this->limit = 1;
+		$res = $this->find();
+		return $res[0];
+	} 
+	/**
 	 * @brief 分页展示
 	 * @param string $url   URL地址
 	 * @param string $attrs URL后接参数

@@ -522,9 +522,24 @@ class Market extends IController
 				$this->redirect('pro_speed_list');
 			}
 
+			if($promotionRow['product_id'])//product模式
+			{
+					$goodsObj = new IQuery('products as p');
+					$goodsObj->join = ' left join goods as g on (p.goods_id = g.id)';
+					$goodsObj->where = 'p.id = '.$promotionRow['product_id'];
+					$goodsObj->fields = 'p.id as product_id,p.goods_id as goods_id,p.sell_price,p.spec_array,g.name,g.img';
+					$goodsRow = $goodsObj->getObj();
+				
+			}else//good模式
+			{
+					$goodsObj = new IModel('goods');
+					$goodsRow = $goodsObj->getObj('id = '.$promotionRow['condition'],'id,name,sell_price,img');
+					$goodsRow['spec_array'] = '';
+				
+				
+			}
 			//促销商品
-			$goodsObj = new IModel('goods');
-			$goodsRow = $goodsObj->getObj('id = '.$promotionRow['condition'],'id,name,sell_price,img');
+			
 			if($goodsRow)
 			{
 				$result = array(
@@ -550,10 +565,14 @@ class Market extends IController
 	function pro_speed_edit_act()
 	{	
 		$id = IFilter::act(IReq::get('id'),'int');
-
-		$condition    = IFilter::act(IReq::get('condition','post'));
+		
+		$goodsId = IFilter::act(IReq::get('goods_id','post'),'int');
+		$productId = IFilter::act(IReq::get('product_id','post'),'int');
+		
+		$condition = $goodsId;
 		$award_value  = IFilter::act(IReq::get('award_value','post'));
 		$group_all    = IFilter::act(IReq::get('group_all','post'));
+		
 		if($group_all == 'all')
 		{
 			$user_group_str = 'all';
@@ -573,6 +592,7 @@ class Market extends IController
 			'id'         => $id,
 			'name'       => IFilter::act(IReq::get('name','post')),
 			'condition'  => $condition,
+			'product_id'  => $productId,
 			'award_value'=> $award_value,
 			'is_close'   => IFilter::act(IReq::get('is_close','post')),
 			'start_time' => IFilter::act(IReq::get('start_time','post')),
@@ -583,7 +603,8 @@ class Market extends IController
 			'user_group' => $user_group_str,
 		);
 	
-		$dataArray['shan_img'] = uploadHandle('shan_img');
+		if(isset($_FILES['shan_img'])&&$_FILES['shan_img']['name']!='')
+			$dataArray['shan_img'] = uploadHandle('shan_img');
 
 		if(!$condition || !$award_value)
 		{
