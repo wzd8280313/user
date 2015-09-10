@@ -1,4 +1,5 @@
-<link href="{skin:css/shan/tm.css}" rel="stylesheet">
+<link href="{skin:css/tm.css}" rel="stylesheet">
+
 <div class="cnt w1190">
 
 <style type="text/css">
@@ -29,23 +30,13 @@
 
 	.pp_tm_show .pl{float:left;}
 	.pp_tm_show .pr{float:right;}
+	ul.shan_count li,b{display:inline;}
 
 </style>
 
 <link rel="stylesheet" type="text/css" href="{skin:css/base.css}">
 <link rel="stylesheet" type="text/css" href="{skin:css/index_sg.css}">
-<script type="text/javascript">
-	var webIndex = "shan";
-	var frontPath = "";
-	var mid = "0";
-	var cdvalue = "0"
-	var priceServer = "#"; 
-	var crossDomain = "index.html";
-	var picPrefix = "#";
-	var staticPrefix = "#";
-	var pidArr = [];
-</script>
-<script type="text/javascript" src="{theme:javascript/shan/base.js}"></script>
+<script type='text/javascript'>var shanUrl = '{url:/site/getMoreShan}'</script>
 <script type="text/javascript" src="{theme:javascript/shan/shan.js}"></script>
 
 		<div class="pp_tm_con">
@@ -56,200 +47,52 @@
 				<div class="pp_tm_con_se_l">
 				  <!--品牌特卖 -->
 	<div class="shan-brand width">
-		<ul class="shan-all-li">
-				<li style="margin-top:0;">
-					<dl>
-						<dt class="brand-img">
-							<a href="detail.html" target="_blank" title="归原限时特卖专场">
-								<img class="lazyload img" original="files/2015081209540227.jpg" src="files/2015081209540227.jpg" alt="">
-							</a>
-						</dt>
-						<dd>
-							<div class="fl">
-								<p class="name">
-									<a href="detail.html" title="归原限时特卖专场" target="_blank">归原限时特卖专场</a>
-								</p>
-										<p class="explain" title="&#160;">
-											<span class="gzmc_k"></span>
-											<span class="gzmc_z"></span>
-										</p>
-										<p class="prom" title="">
-												<span class="dazhe">8.6</span>折起
-										</p>
-							</div>
-							<div class="fr">
-								<p class="brand-logo">
-								</p>
-								<p class="surplus" id="timeRemaining_brand_1033410">剩余5天23小时 47分 54秒</p>
-							</div>
+		<input type='hidden' name='start' value='{$this->count}'/>
+		<ul class="shan-all-li" style='width:1000px;'>
+			{foreach:items=$this->shan_list}
+			{set:$end=strtotime($item['end_time'])}
+					<li  style="margin-top:0;float:left;">
+						<dl>
+							<dt class="brand-img">
+								<a href="{url:/site/products/id/$item['goods_id']}"  target="_blank" title="{$item['goods_name']}">
+									<img class="lazyload img"  src="{url:$item['shan_img']}" alt="">
+								</a>
+							</dt>
+							<dd>
+								<div class="fl" style='width:220px;'>
+									<p class="name">
+										<a style='text-decoration:none' href="{url:/site/products/id/$item['goods_id']}" title="{$item['goods_name']}" target="_blank">{$item['goods_name']}</a>
+									</p>
+											<p class="explain" title="&#160;">
+												<span class="gzmc_k"></span>
+												<span class="gzmc_z"></span>
+											</p>
+											<p class="prom" title="">
+												{set:$zhe = 10*round($item['award_value']/$item['sell_price'],2)}
+													<span class="dazhe">{$zhe}</span>折
+											</p>
+								</div>
+								<div class="fr">
+									<p class="brand-logo"></p>
+									<p class="surplus countdown" id="timeRemaining-{$key}">
+									剩余 
+										<span id='cd_day_{$key}'></span>天
+										<span id='cd_hour_{$key}'></span>小时
+										<span id='cd_minute_{$key}'></span>分
+										<span id='cd_second_{$key}'></span>秒	
+										<input name='endTime' type='hidden' value='{$end}' />
+									</p>
+								<div class="clear"></div>
+							</dd>
+						</dl>
+						<div class="brand-icon" id="brandsale_sold-out-_0">
 							<div class="clear"></div>
-						</dd>
-					</dl>
-					<div class="brand-icon" id="brandsale_sold-out-_0">
-						<div class="clear"></div>
-					</div>
-				</li>
-				<li class="none" style="margin-top:0;">
-					<dl>
-						<dt class="brand-img">
-							<a href="detail.html" target="_blank" title="进口糖果限时特卖专场">
-								<img class="lazyload img" original="files/20150812095513425.jpg" src="files/2015081209540227.jpg" alt="">
-							</a>
-						</dt>
-						<dd>
-							<div class="fl">
-								<p class="name">
-									<a href="detail.html" title="进口糖果限时特卖专场" target="_blank">进口糖果限时特卖专场</a>
-								</p>
-										<p class="explain" title="&#160;">
-											<span class="gzmc_k"></span>
-											<span class="gzmc_z"></span>
-										</p>
-										<p class="prom" title="">
-												<span class="dazhe">4.3</span>折起
-										</p>
-							</div>
-							<div class="fr">
-								<p class="brand-logo">
-								</p>
-								<p class="surplus" id="timeRemaining_brand_1033413">剩余5天23小时 47分 54秒</p>
-							</div>
-							<div class="clear"></div>
-						</dd>
-					</dl>
-					<div class="brand-icon" id="brandsale_sold-out-_1">
-						<div class="clear"></div>
-					</div>
-				</li><li>
-					<dl>
-						<dt class="brand-img">
-							<a href="detail.html" target="_blank" title="归原限时特卖专场">
-								<img class="lazyload img" original="files/2015081209540227.jpg" src="files/2015081209540227.jpg" alt="">
-							</a>
-						</dt>
-						<dd>
-							<div class="fl">
-								<p class="name">
-									<a href="detail.html" title="归原限时特卖专场" target="_blank">归原限时特卖专场</a>
-								</p>
-										<p class="explain" title="&#160;">
-											<span class="gzmc_k"></span>
-											<span class="gzmc_z"></span>
-										</p>
-										<p class="prom" title="">
-												<span class="dazhe">8.6</span>折起
-										</p>
-							</div>
-							<div class="fr">
-								<p class="brand-logo">
-								</p>
-								<p class="surplus" id="timeRemaining_brand_1033410">剩余5天23小时 47分 54秒</p>
-							</div>
-							<div class="clear"></div>
-						</dd>
-					</dl>
-					<div class="brand-icon" id="brandsale_sold-out-_0">
-						<div class="clear"></div>
-					</div>
-				</li>
-				<li class="none">
-					<dl>
-						<dt class="brand-img">
-							<a href="detail.html" target="_blank" title="进口糖果限时特卖专场">
-								<img class="lazyload img" original="files/20150812095513425.jpg" src="files/2015081209540227.jpg" alt="">
-							</a>
-						</dt>
-						<dd>
-							<div class="fl">
-								<p class="name">
-									<a href="detail.html" title="进口糖果限时特卖专场" target="_blank">进口糖果限时特卖专场</a>
-								</p>
-										<p class="explain" title="&#160;">
-											<span class="gzmc_k"></span>
-											<span class="gzmc_z"></span>
-										</p>
-										<p class="prom" title="">
-												<span class="dazhe">4.3</span>折起
-										</p>
-							</div>
-							<div class="fr">
-								<p class="brand-logo">
-								</p>
-								<p class="surplus" id="timeRemaining_brand_1033413">剩余5天23小时 47分 54秒</p>
-							</div>
-							<div class="clear"></div>
-						</dd>
-					</dl>
-					<div class="brand-icon" id="brandsale_sold-out-_1">
-						<div class="clear"></div>
-					</div>
-				</li><li>
-					<dl>
-						<dt class="brand-img">
-							<a href="detail.html" target="_blank" title="归原限时特卖专场">
-								<img class="lazyload img" original="files/2015081209540227.jpg" src="files/2015081209540227.jpg" alt="">
-							</a>
-						</dt>
-						<dd>
-							<div class="fl">
-								<p class="name">
-									<a href="detail.html" title="归原限时特卖专场" target="_blank">归原限时特卖专场</a>
-								</p>
-										<p class="explain" title="&#160;">
-											<span class="gzmc_k"></span>
-											<span class="gzmc_z"></span>
-										</p>
-										<p class="prom" title="">
-												<span class="dazhe">8.6</span>折起
-										</p>
-							</div>
-							<div class="fr">
-								<p class="brand-logo">
-								</p>
-								<p class="surplus" id="timeRemaining_brand_1033410">剩余5天23小时 47分 54秒</p>
-							</div>
-							<div class="clear"></div>
-						</dd>
-					</dl>
-					<div class="brand-icon" id="brandsale_sold-out-_0">
-						<div class="clear"></div>
-					</div>
-				</li>
-				<li class="none">
-					<dl>
-						<dt class="brand-img">
-							<a href="detail.html" target="_blank" title="进口糖果限时特卖专场">
-								<img class="lazyload img" original="files/20150812095513425.jpg" src="files/2015081209540227.jpg" alt="">
-							</a>
-						</dt>
-						<dd>
-							<div class="fl">
-								<p class="name">
-									<a href="detail.html" title="进口糖果限时特卖专场" target="_blank">进口糖果限时特卖专场</a>
-								</p>
-										<p class="explain" title="&#160;">
-											<span class="gzmc_k"></span>
-											<span class="gzmc_z"></span>
-										</p>
-										<p class="prom" title="">
-												<span class="dazhe">4.3</span>折起
-										</p>
-							</div>
-							<div class="fr">
-								<p class="brand-logo">
-								</p>
-								<p class="surplus" id="timeRemaining_brand_1033413">剩余5天23小时 47分 54秒</p>
-							</div>
-							<div class="clear"></div>
-						</dd>
-					</dl>
-					<div class="brand-icon" id="brandsale_sold-out-_1">
-						<div class="clear"></div>
-					</div>
-				</li>
+						</div>
+						
+					</li>
+					
+				{/foreach}
 		</ul>
-				
-
 
 <div class="clear"></div>
 		</div>
@@ -274,112 +117,62 @@
 	
 	</div>
 </div>
-
-
-
-
-			<div class="pp_tm_con"><br/>
-				  <div class="pp_tm_con_fr"><a name="floor-2"></a>
-					<h3>今日上新<i>NEW</i></h3>
-				  </div>
+		<div class="pp_tm_con"><br/>
+				  
 				  <div class="pp_tm_con_se">
 					<div class="pp_tm_con_se_l" id="brandlist">
-						<div class="pp_tm_con_show">
-							<a href="detail.html" target="_blank"><img src="files/kans720x210.jpg" width="720" height="210">
-								<div style="width:192px; height:210px; float:right;">
-									<h1>剩余</h1>
-									<div class="time-item">
-										<span id="day_show">0</span>天
-										<strong id="hour_show">0</strong>时
-										<strong id="minute_show">0</strong>分
-										<strong id="second_show">0</strong>秒
-									</div><!--倒计时模块-->
-								</div>
-							</a>
-							
-						</div>
-
-
-						<div class="pp_tm_con_show">
-							<a href="detail.html" target="_blank"><img src="files/baicaoji720x210.jpg" width="720" height="210">
-								<div style="width:192px; height:210px; float:right;">
-									<h1>剩余</h1>
-									<div class="time-item">
-										<span id="day_show">0</span>天
-										<strong id="hour_show">0</strong>时
-										<strong id="minute_show">0</strong>分
-										<strong id="second_show">0</strong>秒
-									</div><!--倒计时模块-->
-								</div>
-							</a>
-							
-						</div>
-						<div class="pp_tm_con_show">
-							<a href="detail.html" target="_blank"><img src="files/kans720x210.jpg" width="720" height="210">
-								<div style="width:192px; height:210px; float:right;">
-									<h1>剩余</h1>
-									<div class="time-item">
-										<span id="day_show">0</span>天
-										<strong id="hour_show">0</strong>时
-										<strong id="minute_show">0</strong>分
-										<strong id="second_show">0</strong>秒
-									</div><!--倒计时模块-->
-								</div>
-							</a>
-							
-						</div>
-
-
-						<div class="pp_tm_con_show">
-							<a href="detail.html" target="_blank"><img src="files/55c85960Na24deb79.jpg" width="924" height="210"></a>
-						</div>
-
-						<div class="pp_tm_con_show">
-							<a href="detail.html" target="_blank"><img src="files/baicaoji720x210.jpg" width="720" height="210">
-								<div style="width:192px; height:210px; float:right;">
-									<h1>剩余</h1>
-									<div class="time-item">
-										<span id="day_show">0</span>天
-										<strong id="hour_show">0</strong>时
-										<strong id="minute_show">0</strong>分
-										<strong id="second_show">0</strong>秒
-									</div><!--倒计时模块-->
-								</div>
-							</a>
-							
-						</div>
-
-						<div class="next_more"><span class="next_more_btn" id="nextgroup" onclick="LoadStartBrand(2);"><span class="next_more_text">查看下一组</span></span></div>        
+						
+						<div class="next_more" style='margin-top:20px;'>
+						
+							<span class="next_more_btn" id="nextgroup" onclick="loadPromotion();">
+								<span class="next_more_text">查看下一组</span>
+							</span>
+						</div>        
 					</div>
-				
-				
-			
-			
-					
-					
-			<div class="tm_yg">
-			<div class="tm_yg_top"><img src="files/tm_t2.jpg" width="246" height="40"></div>
-			<div class="tm_yg_con">
-			<ul class="clearfix">
-				<li><a href="list.html" target="_blank"><img src="files/kose.jpg" width="114" height="65"></a></li>
-				<li><a href="list.html" target="_blank"><img src="files/avene-logo.jpg" width="114" height="65"></a></li>
-				<li><a href="list.html" target="_blank"><img src="files/colif_07.jpg" width="114" height="65"></a></li>
-				<li><a href="list.html" target="_blank"><img src="files/olay.jpg" width="114" height="65"></a></li>
-				<li><a href="list.html" target="_blank"><img src="files/skinfood.jpg" width="114" height="65"></a></li>
-				<li><a href="list.html" target="_blank"><img src="files/meiji.jpg" width="114" height="65"></a></li>
-				<li><a href="list.html" target="_blank"><img src="files/elizabetharden.jpg" width="114" height="65"></a></li>
-				<li><a href="list.html" target="_blank"><img src="files/the-face-shop-logo.jpg" width="114" height="65"></a></li>
-			</ul>
-			</div>
-			</div>        
-					
-					
-					  
-					</div>
+				</div>
 					<div class="clear"></div>
 				  </div>
 				</div>
     
  
 </div>
-<!--cnt w1190-->
+<script type='text/html' id='promotion_box'>
+	<li  style="margin-top:0;float:left;">
+		<dl>
+			<dt class="brand-img">
+				<a href="{url:/site/products/id/}/<%=goods_id%>"  target="_blank" title="<%=goods_name%>">
+					<img class="lazyload img"  src="{url:<%=shan_img%>}" alt="">
+				</a>
+			</dt>
+			<dd>
+				<div class="fl" style='width:220px;'>
+					<p class="name">
+						<a style='text-decoration:none' href="{url:/site/products/id/}/<%=goods_id%>" title="<%=goods_name%>" target="_blank"><%=goods_name%></a>
+					</p>
+							<p class="explain" title="&#160;">
+								<span class="gzmc_k"></span>
+								<span class="gzmc_z"></span>
+							</p>
+							<p class="prom" title="">
+								
+									<span class="dazhe"><%=zhe%></span>折
+							</p>
+				</div>
+				<div class="fr">
+					<p class="brand-logo"></p>
+					<p class="surplus countdown" id="timeRemaining-<%=key%>">
+					剩余 
+						<span id='cd_day_<%=key%>'></span>天
+						<span id='cd_hour_<%=key%>'></span>小时
+						<span id='cd_minute_<%=key%>'></span>分
+						<span id='cd_second_<%=key%>'></span>秒	
+						<input name='endTime' type='hidden' value='<%=end%>' />
+					</p>
+				<div class="clear"></div>
+			</dd>
+		</dl>
+		<div class="brand-icon" id="brandsale_sold-out-_0">
+			<div class="clear"></div>
+		</div>
+	</li>
+</script>

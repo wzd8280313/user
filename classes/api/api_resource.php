@@ -75,7 +75,7 @@ return array(
 		'query' => array(
 			'name' => 'promotion as p',
 			'join' => 'left join goods as go on go.id = p.condition',
-			'fields'=>'p.end_time,go.img as img,p.name as name,p.award_value as award_value,go.id as goods_id,p.id as p_id,end_time',
+			'fields'=>'p.end_time,p.shan_img,go.img as img,go.name as goods_name,go.sell_price,p.name as name,p.award_value as award_value,go.id as goods_id,p.id as p_id,end_time',
 			'where'=>'p.type = 1 and p.is_close = 0 and go.is_del = 0 and NOW() between start_time and end_time AND go.id is not null',
 			'order'=>'p_id desc',
 			'limit'=>'1'

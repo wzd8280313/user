@@ -626,7 +626,7 @@ class Member extends IController
 	 * @brief 商户的增加动作
 	 */
 	public function seller_add()
-	{
+	{ 
 		$seller_id   = IFilter::act(IReq::get('id'),'int');
 		$seller_name = IFilter::act(IReq::get('seller_name'));
 		$email       = IFilter::act(IReq::get('email'));
@@ -666,7 +666,7 @@ class Member extends IController
 		}
 		else if($sellerDB->getObj("true_name = '{$truename}' and id != {$seller_id}"))
 		{
-			$errorMsg = "商户真实全程重复";
+			$errorMsg = "商户真实全称重复";
 		}
 
 		//操作失败表单回填

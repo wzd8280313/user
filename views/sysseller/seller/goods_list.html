@@ -9,7 +9,6 @@
 			<li><input type="button" class="alt_btn" onclick="filterResult();" value="检索" /></li>
 			<li><input type="button" class="alt_btn" onclick="window.location.href='{url:/seller/goods_edit}';" value="添加商品" /></li>
 			<li><input type="button" class="alt_btn" onclick="importCsvPacket();" value="CSV导入" /></li>
-			<li><input type="button" class="alt_btn" onclick="goodsCollect();" value="商品采集" /></li>
 			<li><input type="button" class="alt_btn" onclick="selectAll('id[]');" value="全选" /></li>
 			<li><input type="button" class="alt_btn" onclick="goods_del();" value="删除" /></li>
 			<li><input type="button" class="alt_btn" onclick="goods_status(2);" value="下架" /></li>
@@ -202,21 +201,7 @@ function jumpUrl(is_del,url)
 	is_del == 0 ? window.open(url) : alert("该商品没有上架无法查看");
 }
 
-//商品采集器界面
-function goodsCollect()
-{
-	art.dialog.open('{url:/goods/collect_import/seller_id/$seller_id}',{
-		id:'collect_import',
-	    title:'商品采集器',
-	    okVal:'开始采集',
-	    ok:function(iframeWin, topWin){
-	    	var formObject = iframeWin.document.forms[0];
-	    	formObject.submit();
-	    	loadding();
-	    	return false;
-	    }
-	});
-}
+
 
 //csv导入ui框
 function importCsvPacket()

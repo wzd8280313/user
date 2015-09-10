@@ -38,20 +38,7 @@ function favorite_add_ajax(urlVal,goods_id,obj)
 	});
 }
 
-//寄存购物车[ajax]
-function deposit_ajax(urlVal)
-{
-	$.getJSON(urlVal,{is_ajax:'1'},function(content){
-		if(content.isError == false)
-		{
-			alert(content.message);
-		}
-		else
-		{
-			alert(content.message);
-		}
-	});
-}
+
 
 //购物车展示
 function showCart(urlVal)
@@ -127,10 +114,41 @@ function checkInput(para,textVal)
 		inputObj.val('');
 	}
 }
+//倒计时函数
+//min_id 小于min_id的不做处理
+var countDown = function(min_id){
+		$('.countdown').each(function(){
+			var id = $(this).attr('id').split('-')[1];
+			if(min_id && id<min_id)return true;
+			var temp;
+			var endTime = $(this).find('input[name=endTime]').val();
+			var now = Date.parse(new Date())/1000;
+			var count = endTime - now;
+			var day = parseInt(count/(24*3600));
+			count=count%(24*3600);
+			var hour = (temp = parseInt(count/3600))<10 ? '0'+temp : temp;
+			count = count%3600;
+			var min = (temp=parseInt(count/60))<10 ? '0'+temp :temp ;
+			var sec = (temp=count%60)<10 ? '0' + temp : temp;
+			if(day==0){
+				$('.day').remove();
+			}else{
+				$('#cd_day_'+id).text(day);
+			}
+			
+			$('#cd_hour_'+id).text(hour);
+			$('#cd_minute_'+id).text(min);
+			$('#cd_second_'+id).text(sec);
+			
+			var count = new countdown();
+			count.add(id);
+		})
+	};
 
 //dom载入成功后开始操作
 jQuery(function()
 {
+	countDown();
 	var allsortLateCall = new lateCall(200,function(){$('#div_allsort').show();});
 	//商品分类
 	$('.allsort').hover(
@@ -176,35 +194,8 @@ jQuery(function()
 		blur :function(){checkInput($(this),defaultText);}
 	});
 	//自动倒计时
-	(function(){
-		$('ul.countdown').each(function(){
-			var id = $(this).attr('id').split('-')[1];
-			var temp;
-			var endTime = $(this).find('input[name=endTime]').val();
-			var now = Date.parse(new Date())/1000;
-			var count = endTime - now;
-			var day = parseInt(count/(24*3600));
-			count=count%(24*3600);
-			var hour = (temp = parseInt(count/3600))<10 ? '0'+temp : temp;
-			count = count%3600;
-			var min = (temp=parseInt(count/60))<10 ? '0'+temp :temp ;
-			var sec = (temp=count%60)<10 ? '0' + temp : temp;
-			if(day==0){
-				$(this).children('li').eq(1).remove();
-				$(this).children('li').eq(1).remove();
-				$(this).css('width','85%');
-			}else{
-				$('#cd_day_'+id).text(day);
-			}
-			
-			$('#cd_hour_'+id).text(hour);
-			$('#cd_minute_'+id).text(min);
-			$('#cd_second_'+id).text(sec);
-			
-			var count = new countdown();
-			count.add(id);
-		})
-	})()
+	
+	
 	//非首页分类面板展开收起
 	if($('.cat-list').css('display')=='none'){
 		$('#jCat').mouseover(function(){

@@ -3,7 +3,7 @@
 	$myCartInfo = $myCartObj->getMyCart();
 	$siteConfig = new Config("site_config");
 	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
-	$categoryTop = Api::run('getCategoryListTop');
+	$categoryTop = Api::run('getCategoryListTop',10);
 }
 {if:$this->user}
 {set:$m = new IModel('favorite');
@@ -19,11 +19,8 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	<link type="image/x-icon" href="http://www.#.com/site/favicon.ico" rel="icon">
 	<link rel="stylesheet" href="{skin:css/public.css}">
 	<link rel="stylesheet" href="{skin:css/index.css}">
-	<link rel="stylesheet" href="{skin:css/h1.css}">
 	<link rel="stylesheet" href="{skin:css/cssgrids-responsive.css}">
 	<link rel="stylesheet" type="text/css" href="{skin:css/style.css}">
-	<link rel="stylesheet" type="text/css" href="{skin:css/default.css}">
-	<link rel="stylesheet" href="{skin:css/red.css}">
 	<LINK rel="stylesheet" type="text/css" href="{skin:css/css.css}">
 	<link rel="stylesheet" href="{skin:css/PyoBeside.css}"/>
 	<link rel="stylesheet" href="{skin:css/index1.css}">
@@ -280,7 +277,7 @@ if($("#actionimg").length>0){
 					                     <li class="cat-item">
 					                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a></h3>
 					                   		 <p class="level-list clearfix">
-					                   		 	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id'])) key=$keyG item=$valG}
+					                   		 	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id']),30) key=$keyG item=$valG}
 													{if:$valG['hot']==1 && count($hotCat[$valT['id']])<=5}
 														{set:$hotCat[$valT['id']][] = $valG;}
 													{/if}

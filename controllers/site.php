@@ -22,7 +22,7 @@ class Site extends IController
 	}
 
 	function index()
-	{ 
+	{  
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
 		$index_slide = isset($site_config['index_slide'])? unserialize($site_config['index_slide']) :array();
@@ -48,11 +48,36 @@ class Site extends IController
 		$this->user_like_goods = user_like::get_like_cate($uid);
 		$this->redirect('index');
 	}
-
+	//闪购页面
 	function shangou(){
 		$this->logoUrl = 'images/sglogo.png';
+		$this->shangou = 1;
+		
+		$this->shan_list = Api::run('getPromotionList',2);
+		$this->count = count($this->shan_list);
 		$this->redirect('shangou');
 	}
+	//获取更多闪购信息，返回json
+	public function getMoreShan(){
+		$start = IFilter::act(IReq::get('start'),'int');
+		$limit = $start.',2';
+		
+		$prom = new IQuery('promotion as p');
+		$prom->join = 'left join goods as go on go.id = p.condition';
+		$prom->fields = 'p.end_time,p.shan_img,go.img as img,go.name as goods_name,go.sell_price,p.name as name,p.award_value as award_value,go.id as goods_id,p.id as p_id';
+		$prom->where = 'p.type = 1 and p.is_close = 0 and go.is_del = 0 and NOW() between start_time and end_time AND go.id is not null';
+		$prom->order = 'p_id desc';
+		$prom->limit = $limit;
+		$promData = $prom->find();
+		
+		foreach($promData as $key=>$val){
+			$promData[$key]['key'] = $key + $start;
+			$promData[$key]['end'] = strtotime($val['end_time']);
+			$promData[$key]['zhe'] = 10*round($val['award_value']/$val['sell_price'],2);
+		}
+		echo $promData ? JSON::encode($promData) : 0;
+	}
+	
 	//[首页]商品搜索
 	function search_list()
 	{

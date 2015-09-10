@@ -548,7 +548,7 @@ class Market extends IController
 
 	//[限时抢购]添加,修改[动作]
 	function pro_speed_edit_act()
-	{
+	{	
 		$id = IFilter::act(IReq::get('id'),'int');
 
 		$condition    = IFilter::act(IReq::get('condition','post'));
@@ -582,6 +582,8 @@ class Market extends IController
 			'award_type' => 0,
 			'user_group' => $user_group_str,
 		);
+	
+		$dataArray['shan_img'] = uploadHandle('shan_img');
 
 		if(!$condition || !$award_value)
 		{

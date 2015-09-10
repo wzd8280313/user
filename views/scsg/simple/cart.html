@@ -60,6 +60,7 @@
 								<td>
 									<div class="num">
 										{set:$item_json = JSON::encode($item)}
+									
 										<a class="reduce" href="javascript:void(0)" onclick='cart_reduce("{$type}",{$item_json});'>-</a>
 										<input class="tiny" value="{$item['count']}" onblur='cartCount("{$type}",{$item_json});' type="text" id="{$type}_count_{$item['id']}" />
 										<a class="add" href="javascript:void(0)" onclick='cart_increase("{$type}",{$item_json});'>+</a>
@@ -83,7 +84,6 @@
 				</td>
 			</tr>
 		</tbody>
-		
 		<tfoot>
 			<tr>
 				<td colspan="2" class="t_l">

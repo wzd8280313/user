@@ -17,3 +17,23 @@ function getSearchCondition($search){
 		return 1;
 	}
 }
+/**
+ * 图片上传处理函数
+ * @$img_name str 图片名
+ * @return str url路径
+ */
+function uploadHandle($img_name){
+
+	if(isset($_FILES[$img_name]['name']) && $_FILES[$img_name]['name'])
+	{
+		$uploadObj = new PhotoUpload();
+		$uploadObj->setIterance(false);
+		$photoInfo = $uploadObj->run();
+		if(isset($photoInfo[$img_name]['img']) && file_exists($photoInfo[$img_name]['img']))
+		{
+			return $photoInfo[$img_name]['img'];
+		}
+		return 0;
+	}
+	return 0;
+}

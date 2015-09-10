@@ -114,7 +114,7 @@ class Menu
         		'/market/pro_rule_list' => '促销活动列表'
         	),
         	'营销活动' => array(
-        		'/market/pro_speed_list' => '限时抢购',
+        		'/market/pro_speed_list' => '闪购',
         		'/market/regiment_list' => '团购',
         	),
         	'代金券管理'=>array(
