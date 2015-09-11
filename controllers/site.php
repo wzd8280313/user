@@ -438,44 +438,46 @@ class Site extends IController
 		
 		//是否有闪购价格
 		$prom = new IModel('promotion');
-		$promData = $prom->query('`condition` = '.$goods_id.' AND type = 1 AND is_close = 0 AND NOW() between start_time and end_time ','product_id,award_value,end_time,user_group');
+		$promData = $prom->query('`condition` = '.$goods_id.' AND type = 1 AND is_close = 0 AND NOW() between start_time and end_time ','id,product_id,award_value,end_time,user_group');
 		
 		$goods_info['shan'] = '';
-		if($promData){
-			foreach($promData as $prom){
-				if($prom['product_id']==0){
-					$goods_info['shan'] = $prom;
+		$goods_info['promo_data'] = array('promo_type'=>'','active_id'=>'');
+		if($promData){//存在闪购
+			foreach($promData as $v){
+				if($v['product_id']==0){
+					$goods_info['shan'] = $v;
+					$goods_info['promo_data'] = array('promo_type'=>'time','active_id'=>$goods_info['shan']['id']);//
 					break;
 				}
 			}
 			$promProductId = $promData[0]['product_id'];
 			
 		}
-		if($goods_info['promo'])
-		{
-			switch($goods_info['promo'])
-			{
-				//团购
-				case 'groupon':
-				{
-					$goods_info['regiment'] = Api::run("getRegimentRowById",array("#id#",$goods_info['active_id']));
-				}
-				break;
-
-				//抢购
-// 				case 'time':
+// 		if($goods_info['promo'])
+// 		{
+// 			switch($goods_info['promo'])
+// 			{
+// 				//团购
+// 				case 'groupon':
 // 				{
-// 					$goods_info['promotion'] = Api::run("getPromotionRowById",array("#id#",$goods_info['active_id']));
+// 					$goods_info['regiment'] = Api::run("getRegimentRowById",array("#id#",$goods_info['active_id']));
 // 				}
 // 				break;
 
-				default:
-				{
-					IError::show(403,"活动不存在或者已经过期");
-					exit;
-				}
-			}
-		}
+// 				//抢购
+// // 				case 'time':
+// // 				{
+// // 					$goods_info['promotion'] = Api::run("getPromotionRowById",array("#id#",$goods_info['active_id']));
+// // 				}
+// // 				break;
+
+// 				default:
+// 				{
+// 					IError::show(403,"活动不存在或者已经过期");
+// 					exit;
+// 				}
+// 			}
+// 		}
 
 		//获得扩展属性
 		$tb_attribute_goods = new IQuery('goods_attribute as g');
@@ -538,27 +540,25 @@ class Site extends IController
 		$goods_info['minSellPrice']   = '';
 		$goods_info['minMarketPrice'] = '';
 		$goods_info['maxMarketPrice'] = '';
-		if(isset($promProductId)&& $promProductId!=0){//获取闪购product的规格
-			$goods_info['product_spec'] = $tb_product->getField(' id='.$promProductId,'spec_array');
-			//$goods_info['product_spec'] = substr($goods_info['product_spec'] ,1);
-			//$goods_info['product_spec'] = substr($goods_info['product_spec'],0,-1);
-			$spec_array = explode('},',$goods_info['product_spec']);
-			$count = count($spec_array);
-			if($count==1){
-				$spec_array[0] = substr($spec_array[0],1);
-				$spec_array[0] = substr($spec_array[0],0,-1);
-			}else{
-				foreach($spec_array as $k=>$v){
-					if($k==0){
-						$spec_array[$k]=substr($v,1).'}';
-					}else if($k==$count-1){
-						$spec_array[$k]=substr($v,0,-1);
-					}else{
-						$spec_array[$k]=$v+'}';
+		if(isset($promProductId)&& $promProductId!=0 && $goods_info['product_spec'] = $tb_product->getField(' id='.$promProductId,'spec_array')){//获取闪购product的规格
+			//$goods_info['product_spec'] = $tb_product->getField(' id='.$promProductId,'spec_array');	
+				$spec_array = explode('},',$goods_info['product_spec']);
+				$count = count($spec_array);
+				if($count==1){
+					$spec_array[0] = substr($spec_array[0],1);
+					$spec_array[0] = substr($spec_array[0],0,-1);
+				}else{
+					foreach($spec_array as $k=>$v){
+						if($k==0){
+							$spec_array[$k]=substr($v,1).'}';
+						}else if($k==$count-1){
+							$spec_array[$k]=substr($v,0,-1);
+						}else{
+							$spec_array[$k]=$v+'}';
+						}
 					}
 				}
-			}
-			$goods_info['product_spec'] = $spec_array;
+				$goods_info['product_spec'] = $spec_array;
 		}else{
 			$product_info = $tb_product->getObj('goods_id='.$goods_id,'max(sell_price) as maxSellPrice ,min(sell_price) as minSellPrice,max(market_price) as maxMarketPrice,min(market_price) as minMarketPrice');
 			if($product_info)
@@ -675,10 +675,11 @@ class Site extends IController
 		//获取闪购价
 		$prom = new IModel('promotion');
 		$where = '`condition` = '.$goods_id.' AND NOW() between start_time and end_time AND (product_id = '.$procducts_info['id'].' OR product_id = 0)';
-		$shan_data = $prom->getObj($where,'award_value');
+		$shan_data = $prom->getObj($where,'id,award_value');
 		
 		if($shan_data){
 			$procducts_info['shan_price'] = $shan_data['award_value'];
+			$procducts_info['active_id'] = $shan_data['id'];
 		}
 		
 		//获得会员价

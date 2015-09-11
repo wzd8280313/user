@@ -245,7 +245,7 @@ class IModel
 	//获取一个字段的值
 	public function getField($where,$field){
 		$res = $this->getObj($where,$field);
-		return $res[$field];
+		return $res ? $res[$field] : array();
 	}
 	//获取单个字段多条数据，结果类似于array(1,2,3,)
 	//@where array 

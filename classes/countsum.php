@@ -264,6 +264,7 @@ class CountSum
 					'point'       => $typeRow['point']  * $buy_num,
 					'exp'         => $typeRow['exp']    * $buy_num,
 					'freeFreight' => false,
+					'tax'         => 0
 				);
 				return $result;
 	    	}

@@ -5,7 +5,9 @@
 	$seo_data['keywords']=$keywords;
 	$seo_data['description']=$description;
 	seo::set($seo_data);
+	
 }
+
 
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
@@ -26,7 +28,8 @@
 
 		<!--货品ID，当为商品时值为空-->
 		<input type='hidden' id='product_id' alt='货品ID' value='' />
-
+		<input type='hidden' name='promo_name' value="{$promo_data['promo_type']}"/><!--活动类型（闪购。。)-->
+		<input type='hidden' name='active_id' value="{$promo_data['active_id']}"/><!--活动id-->
 		<!--基本信息区域-->
 		<div id='detail'>
 			<div id="J_DetailMeta" class="tm-detail-meta tm-clear">
@@ -611,10 +614,7 @@ $('#detShow img').attr('src',goodsBigPic);
 //开启倒计时功能
 var cd_timer = new countdown();
 
-//限时抢购倒计时
-{if:isset($promotion)}
-cd_timer.add('promotiona');
-{/if}
+
 
 //团购倒计时
 {if:isset($regiment)}
@@ -931,6 +931,13 @@ function sele_spec(_self)
 			{
 				var priceHtml = template.render('priceTemplate',json.data);
 				$('#price_panel').html(priceHtml);
+				if(json.data.active_id){
+					$('input[name=active_id]').val(json.data.active_id);
+					$('input[name=promo_name]').val('time');
+				}else{
+					$('input[name=active_id]').val('');
+					$('input[name=promo_name]').val('');
+				}
 			
 				//普通货品数据渲染
 			//	$('#data_goodsNo').text(json.data.products_no);
@@ -1102,30 +1109,30 @@ function buy_now()
 		id = $('#product_id').val();
 		type = 'product';
 	}
-
-	{if:$promo}
-	//有促销活动（团购，抢购）
-	var url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@/promo/$promo/active_id/$active_id}';
-	url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
-	{else:}
-	//普通购买
+	var promo_type=$('input[name=promo_name]').val();
+	var active_id = $('input[name=active_id]').val();
+	//var url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@/promo/$promo/active_id/$active_id}';
+	//url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
+	
 	var url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
 	url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
-	{/if}
+	if(promo_type && active_id){
+		url += '/promo/'+promo_type+'/active_id/'+active_id; 
+	}
 
 	//页面跳转
 	window.location.href = url;
 }
 </script>
 </div>
-
+<!--区分规格的闪购价格显示并初始化规格选择-->
 {if:isset($product_spec)}
 	{foreach:items=$product_spec}
 		{set:$product_spec[$key] = JSON::decode($item);}
 		<input type='text' name='product_spec' value='{$product_spec[$key]["value"]}'/>
 	
 	{/foreach}
-{/if}
+
 <script type='text/javascript'>
 $(function(){
 	var spec_input = $('input[name=product_spec]');
@@ -1136,9 +1143,11 @@ $(function(){
 		$('a[value*='+spec[i]+']').trigger('click');
 	}
 })
-	
-	
 </script>
+{/if}
+	
+	
+
 
 	
 	

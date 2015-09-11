@@ -622,7 +622,7 @@ class Order_Class
 
 			case "2":
 			{
-				return '抢购订单';
+				return '闪购订单';
 			}
 			break;
 
