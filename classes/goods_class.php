@@ -91,7 +91,7 @@ class goods_class
 				}
 			}
 		}
-
+		
 		//上架或者下架处理
 		if(isset($goodsUpdateData['is_del']))
 		{
@@ -147,7 +147,8 @@ class goods_class
 		$goodsUpdateData['sell_price']   = isset($postData['_sell_price'])   ? current($postData['_sell_price'])   : 0;
 		$goodsUpdateData['cost_price']   = isset($postData['_cost_price'])   ? current($postData['_cost_price'])   : 0;
 		$goodsUpdateData['weight']       = isset($postData['_weight'])       ? current($postData['_weight'])       : 0;
-
+		
+		unset($goodsUpdateData['product_id']);
 		//处理商品
 		$goodsDB = new IModel('goods');
 		if($id)
@@ -160,11 +161,12 @@ class goods_class
 			{
 				$where .= " and seller_id = ".$this->seller_id;
 			}
-
+			
 			if($goodsDB->update($where) === false)
 			{
 				die("更新商品错误");
 			}
+		
 		}
 		else
 		{
@@ -193,11 +195,16 @@ class goods_class
 
 		//是否存在货品
 		$productsDB = new IModel('products');
-		$productsDB->del('goods_id = '.$id);
+		//$productsDB->del('goods_id = '.$id);
 		if(isset($postData['_spec_array']))
 		{
 			$productIdArray = array();
-
+			if($postData['product_id'][0]){
+				$product_ids = implode(',',$postData['product_id']);
+				$productsDB->del('goods_id = '.$id.' AND id not in ('.$product_ids.')');
+			}else{
+				$productsDB->del('goods_id = '.$id);
+			}
 			//创建货品信息
 			foreach($postData['_goods_no'] as $key => $rs)
 			{
@@ -211,8 +218,15 @@ class goods_class
 					'weight' => $postData['_weight'][$key],
 					'spec_array' => "[".join(',',$postData['_spec_array'][$key])."]"
 				);
-				$productsDB->setData($productsData);
-				$productIdArray[$key] = $productsDB->add();
+				if($postData['product_id'][$key]){
+					$where = 'goods_id = '.$id.' AND id = '.$postData['product_id'][$key];
+					$productIdArray[$key] = $postData['product_id'][$key];
+					$productsDB->setData($productsData);
+					$productsDB->update($where);
+				}else{
+					$productsDB->setData($productsData);
+					$productIdArray[$key] = $productsDB->add();
+				}
 			}
 		}
 

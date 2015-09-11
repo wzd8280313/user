@@ -687,7 +687,7 @@ class Site extends IController
 		$group_price = $countsumInstance->getGroupPrice($procducts_info['id'],'product');
 
 		//会员价格(与销售价相等则不显示）
-		if($group_price !== null && $group_price != $procducts_info['sell_price'])
+		if($group_price !== null && $group_price < $procducts_info['sell_price'])
 		{
 			$procducts_info['group_price'] = $group_price;
 		}

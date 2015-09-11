@@ -140,7 +140,8 @@
 									<%for(var item in templateData){%>
 									<%item = templateData[item]%>
 									<tr class='td_c'>
-										<td><input class="small" name="_goods_no[<%=i%>]" pattern="required" type="text" value="<%=item['goods_no'] ? item['goods_no'] : item['products_no']%>" /></td>
+										<td><input type='text' class='product_id' name='product_id[<%=i%>]' value="<%=item['id']%>"/>
+											<input class="small" name="_goods_no[<%=i%>]" pattern="required" type="text" value="<%=item['goods_no'] ? item['goods_no'] : item['products_no']%>" /></td>
 										<%var isProduct = false;%>
 										<%var specArrayList = parseJSON(item['spec_array'])%>
 										<%for(var result in specArrayList){%>
@@ -286,7 +287,7 @@
 					<col width="150px" />
 					<col />
 					<tr>
-						<th>产品描述：</th>
+						<th>一句话描述：</th>
 						<td><textarea  name="short_desc" style="width:500px;height:50px;"></textarea></td>
 					</tr>
 					<tr>
@@ -335,9 +336,10 @@ $(function()
 	//存在商品信息
 	{if:isset($form)}
 	var goods = {echo:JSON::encode($form)};
-
+	//window.realAlert(JSON.stringify(goods));
 	var goodsRowHtml = template.render('goodsRowTemplate',{'templateData':[goods]});
 	$('#goodsBaseBody').html(goodsRowHtml);
+	$('#goodsBaseBody').find('input.product_id').val(0);//商品的货品字段为0
 
 	formObj.init(goods);
 
