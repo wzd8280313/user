@@ -172,7 +172,7 @@ class IQuery
 	public function getObj(){
 		$this->limit = 1;
 		$res = $this->find();
-		return $res[0];
+		return count($res)>0 ? $res[0] : array();
 	} 
 	/**
 	 * @brief 分页展示

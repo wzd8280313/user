@@ -390,6 +390,9 @@ class Site extends IController
 		//使用商品id获得商品信息
 		$tb_goods = new IModel('goods');
 		$goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0");
+		
+		
+		//print_r($goods_info);
 		if(!$goods_info)
 		{
 			IError::show(403,"这件商品不存在或已下架");
@@ -434,8 +437,20 @@ class Site extends IController
 		$goods_info['active_id'] = IReq::get('active_id') ? IFilter::act(IReq::get('active_id'),'int') : '';
 		
 		//是否有闪购价格
-		$goods_info['shan'] = Api::run('getPromotionRowByGoodsId',array('#goods_id#',$goods_id));
+		$prom = new IModel('promotion');
+		$promData = $prom->query('`condition` = '.$goods_id.' AND type = 1 AND is_close = 0 AND NOW() between start_time and end_time ','product_id,award_value,end_time,user_group');
 		
+		$goods_info['shan'] = '';
+		if($promData){
+			foreach($promData as $prom){
+				if($prom['product_id']==0){
+					$goods_info['shan'] = $prom;
+					break;
+				}
+			}
+			$promProductId = $promData[0]['product_id'];
+			
+		}
 		if($goods_info['promo'])
 		{
 			switch($goods_info['promo'])
@@ -509,32 +524,60 @@ class Site extends IController
 		}
 
 		//网友讨论
-		$tb_discussion = new IModel('discussion');
-		$discussion_info = $tb_discussion->getObj('goods_id='.$goods_id,'count(*) as totalNum');
-		$goods_info['discussion'] = 0;
-		if($discussion_info)
-		{
-			$goods_info['discussion'] = $discussion_info['totalNum'];
-		}
+// 		$tb_discussion = new IModel('discussion');
+// 		$discussion_info = $tb_discussion->getObj('goods_id='.$goods_id,'count(*) as totalNum');
+// 		$goods_info['discussion'] = 0;
+// 		if($discussion_info)
+// 		{
+// 			$goods_info['discussion'] = $discussion_info['totalNum'];
+// 		}
 
 		//获得商品的价格区间
 		$tb_product = new IModel('products');
-		$product_info = $tb_product->getObj('goods_id='.$goods_id,'max(sell_price) as maxSellPrice ,min(sell_price) as minSellPrice,max(market_price) as maxMarketPrice,min(market_price) as minMarketPrice');
 		$goods_info['maxSellPrice']   = '';
 		$goods_info['minSellPrice']   = '';
 		$goods_info['minMarketPrice'] = '';
 		$goods_info['maxMarketPrice'] = '';
-		if($product_info)
-		{
-			$goods_info['maxSellPrice']   = $product_info['maxSellPrice'];
-			$goods_info['minSellPrice']   = $product_info['minSellPrice'];
-			$goods_info['minMarketPrice'] = $product_info['minMarketPrice'];
-			$goods_info['maxMarketPrice'] = $product_info['maxMarketPrice'];
+		if(isset($promProductId)&& $promProductId!=0){//获取闪购product的规格
+			$goods_info['product_spec'] = $tb_product->getField(' id='.$promProductId,'spec_array');
+			//$goods_info['product_spec'] = substr($goods_info['product_spec'] ,1);
+			//$goods_info['product_spec'] = substr($goods_info['product_spec'],0,-1);
+			$spec_array = explode('},',$goods_info['product_spec']);
+			$count = count($spec_array);
+			if($count==1){
+				$spec_array[0] = substr($spec_array[0],1);
+				$spec_array[0] = substr($spec_array[0],0,-1);
+			}else{
+				foreach($spec_array as $k=>$v){
+					if($k==0){
+						$spec_array[$k]=substr($v,1).'}';
+					}else if($k==$count-1){
+						$spec_array[$k]=substr($v,0,-1);
+					}else{
+						$spec_array[$k]=$v+'}';
+					}
+				}
+			}
+			$goods_info['product_spec'] = $spec_array;
+		}else{
+			$product_info = $tb_product->getObj('goods_id='.$goods_id,'max(sell_price) as maxSellPrice ,min(sell_price) as minSellPrice,max(market_price) as maxMarketPrice,min(market_price) as minMarketPrice');
+			if($product_info)
+			{
+				$goods_info['maxSellPrice']   = $product_info['maxSellPrice'];
+				$goods_info['minSellPrice']   = $product_info['minSellPrice'];
+				$goods_info['minMarketPrice'] = $product_info['minMarketPrice'];
+				$goods_info['maxMarketPrice'] = $product_info['maxMarketPrice'];
+			}
 		}
+		
 
 		//获得会员价
 		$countsumInstance = new countsum();
-		$goods_info['group_price'] = $countsumInstance->getGroupPrice($goods_id,'goods');
+		$group_price = $countsumInstance->getGroupPrice($goods_id,'goods');
+		if($group_price < $goods_info['sell_price']){
+			$goods_info['group_price'] = $group_price;
+		}
+		
 
 		//获取商家信息
 		if($goods_info['seller_id'])
@@ -560,6 +603,7 @@ class Site extends IController
 		
 		
 		$this->setRenderData($goods_info);
+		
 		$this->redirect('products');
 	}
 	//商品讨论更新
@@ -627,13 +671,22 @@ class Site extends IController
 			echo JSON::encode(array('flag' => 'fail','message' => '没有找到相关货品'));
 			exit;
 		}
-
+		
+		//获取闪购价
+		$prom = new IModel('promotion');
+		$where = '`condition` = '.$goods_id.' AND NOW() between start_time and end_time AND (product_id = '.$procducts_info['id'].' OR product_id = 0)';
+		$shan_data = $prom->getObj($where,'award_value');
+		
+		if($shan_data){
+			$procducts_info['shan_price'] = $shan_data['award_value'];
+		}
+		
 		//获得会员价
 		$countsumInstance = new countsum();
 		$group_price = $countsumInstance->getGroupPrice($procducts_info['id'],'product');
 
-		//会员价格
-		if($group_price !== null)
+		//会员价格(与销售价相等则不显示）
+		if($group_price !== null && $group_price != $procducts_info['sell_price'])
 		{
 			$procducts_info['group_price'] = $group_price;
 		}

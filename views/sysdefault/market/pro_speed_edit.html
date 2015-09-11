@@ -205,7 +205,7 @@
 			}
 			
 		})
-		{if:$this->promotionRow['product_id']>0}
+		{if:isset($this->promotionRow['product_id'])&&$this->promotionRow['product_id']>0}
 			$('label[name=spec_diff]').eq(0).trigger('click');
 		{else:}
 			$('label[name=spec_diff]').eq(1).trigger('click');

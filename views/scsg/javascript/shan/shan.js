@@ -12,7 +12,7 @@ function shan_bind_func(){
 function loadPromotion(){
 	
 	$('#nextgroup').addClass('loading');
-	var start = $('input[name=start]').val();
+	var start = parseInt($('input[name=start]').val());
 	var getUrl = shanUrl;
 	$.ajax({
 		type:'post',
@@ -31,7 +31,7 @@ function loadPromotion(){
 				}
 				shan_bind_func();
 				countDown(start);//绑定倒计时函数
-				$('input[name=start]').val(start+i+1);
+				$('input[name=start]').val(start+parseInt(i)+1);
 			}
 			
 			

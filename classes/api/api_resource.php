@@ -94,7 +94,7 @@ return array(
 	'getPromotionRowByGoodsId'=>array(
 			'query' => array(
 				'name' => 'promotion',
-				'fields'=>'award_value,end_time,user_group',
+				'fields'=>'award_value,end_time,user_group,product_id',
 				'where' => 'type = 1 and `condition` = #goods_id# and NOW() between start_time and end_time',
 				'type'  => 'row'
 			)
