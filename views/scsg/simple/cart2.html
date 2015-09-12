@@ -1,4 +1,4 @@
-{js:artTemplate}{$this->final_sum}
+{js:artTemplate}
 <script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 <script type='text/javascript' src='{theme:javascript/orderFormClass.js}'></script>
 <script type='text/javascript'>
@@ -133,6 +133,7 @@ function get_delivery()
 				{
 					var html = "活动免运费";
 					content.price = 0;
+					orderFormInstance.doAccount();
 				}
 				else
 				{
@@ -247,6 +248,7 @@ function selectTakeself(deliveryId)
 		}
 	});
 }
+
 </script>
 
 <div class="wrapper clearfix">
@@ -642,3 +644,4 @@ function selectTakeself(deliveryId)
 		</div>
 	</form>
 </div>
+
