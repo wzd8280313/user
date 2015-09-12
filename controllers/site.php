@@ -390,7 +390,7 @@ class Site extends IController
 		//使用商品id获得商品信息
 		$tb_goods = new IModel('goods');
 		$goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0");
-		
+		$sell_price = $goods_info['sell_price'];
 		
 		//print_r($goods_info);
 		if(!$goods_info)
@@ -442,16 +442,22 @@ class Site extends IController
 		
 		$goods_info['shan'] = '';
 		$goods_info['promo_data'] = array('promo_type'=>'','active_id'=>'');
-		if($promData){//存在闪购
+		if($promData){//存在闪购,优先显示公共闪购
+			$min = $goods_info['sell_price'];
 			foreach($promData as $v){
-				if($v['product_id']==0){
+				if($v['product_id']==0 && $v['award_value']<$min){
+					$min = $v['award_value'];
 					$goods_info['shan'] = $v;
 					$goods_info['promo_data'] = array('promo_type'=>'time','active_id'=>$goods_info['shan']['id']);//
-					break;
 				}
 			}
-			$promProductId = $promData[0]['product_id'];
-			
+			if(!$goods_info['shan']){//不存在公共闪购
+				foreach($promData as $v){
+					if($v['award_value']<$min){
+						$promProductId = $promData[0]['product_id'];//
+					}
+				}
+			}
 		}
 // 		if($goods_info['promo'])
 // 		{
@@ -573,7 +579,7 @@ class Site extends IController
 
 		//获得会员价
 		$countsumInstance = new countsum();
-		$group_price = $countsumInstance->getGroupPrice($goods_id,'goods');
+		$group_price = floatval($countsumInstance->getGroupPrice($goods_id,'goods'));
 		if($group_price < $goods_info['sell_price']){
 			$goods_info['group_price'] = $group_price;
 		}
@@ -664,7 +670,7 @@ class Site extends IController
 		//获取货品数据
 		$tb_products = new IModel('products');
 		$procducts_info = $tb_products->getObj("goods_id = ".$goods_id." and spec_array = '".$specJSON."'");
-
+		$procducts_info['sell_price'] = $procducts_info['sell_price'];
 		//匹配到货品数据
 		if(!$procducts_info)
 		{
@@ -678,8 +684,11 @@ class Site extends IController
 		$shan_data = $prom->getObj($where,'id,award_value');
 		
 		if($shan_data){
-			$procducts_info['shan_price'] = $shan_data['award_value'];
-			$procducts_info['active_id'] = $shan_data['id'];
+			$shan_price = $shan_data['award_value'];
+			if($shan_price<$procducts_info['sell_price']){
+				$procducts_info['shan_price'] = $shan_price;
+				$procducts_info['active_id'] = $shan_data['id'];
+			}
 		}
 		
 		//获得会员价
@@ -687,9 +696,9 @@ class Site extends IController
 		$group_price = $countsumInstance->getGroupPrice($procducts_info['id'],'product');
 
 		//会员价格(与销售价相等则不显示）
-		if($group_price !== null && $group_price < $procducts_info['sell_price'])
+		if($group_price !== null && floatval($group_price) < $procducts_info['sell_price'])
 		{
-			$procducts_info['group_price'] = $group_price;
+			$procducts_info['group_price'] = floatval($group_price);
 		}
 
 		echo JSON::encode(array('flag' => 'success','data' => $procducts_info));

@@ -51,7 +51,7 @@
 								<div class="staticPromoTip"> </div>
 							</dd>
 						</dl>
-						<%if(shan_price < group_price){%>
+						<%if(shan_price<=group_price){%>
 						<dl id="J_PromoPrice" class="tm-promo-panel"  >
 							<dt class="tb-metatit">会员价</dt>
 							<dd><em class="tm-yen">¥</em>
@@ -606,10 +606,8 @@ goodsBigPic   = "{webroot:}{$photo[0]['img']}";
 $('#J_ImgBooth').attr('src',goodsSmallPic);
 $('#detShow img').attr('src',goodsBigPic);
 
-//如果抢购或团购过期则不许立即购买
-{if:$promo!='' && !isset($promotion) && !isset($regiment)}
-	closeBuy();
-{/if}
+
+
 
 //开启倒计时功能
 var cd_timer = new countdown();
@@ -927,12 +925,15 @@ function sele_spec(_self)
 		//获取货品数据并进行渲染
 		$.getJSON('{url:/site/getProduct}',{"goods_id":"{$id}","specJSON":specJSON,"random":Math.random},function(json){
 			//window.realAlert(JSON.stringify(json.data));
+		//	window.realAlert(typeof(json.data.group_price));
+			var priceData = json.data;
 			if(json.flag == 'success')
 			{
-				var priceHtml = template.render('priceTemplate',json.data);
+				var priceHtml = template.render('priceTemplate',priceData);
 				$('#price_panel').html(priceHtml);
-				if(json.data.active_id){
-					$('input[name=active_id]').val(json.data.active_id);
+				if(!priceData.group_price)priceData.group_price = POSITIVE_INFINITY;
+				if(priceData.active_id && priceData.group_price>priceData.shan_price){
+					$('input[name=active_id]').val(priceData.active_id);
 					$('input[name=promo_name]').val('time');
 				}else{
 					$('input[name=active_id]').val('');
@@ -1100,7 +1101,7 @@ function buy_now()
 	}
 
 	//设置必要参数
-	var buyNums  = parseInt($.trim($('#buyNums').val()));
+	var buyNums  = parseFloat($.trim($('#buyNums').val()));
 	var id = {$id};
 	var type = 'goods';
 

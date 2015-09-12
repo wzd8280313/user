@@ -533,9 +533,9 @@ class Market extends IController
 			}else//good模式
 			{
 					$goodsObj = new IModel('goods');
-					$goodsRow = $goodsObj->getObj('id = '.$promotionRow['condition'],'id,name,sell_price,img');
+					$goodsRow = $goodsObj->getObj('id = '.$promotionRow['condition'],'id as goods_id,name,sell_price,img');
 					$goodsRow['spec_array'] = '';
-				
+					$goodsRow['product_id'] = 0;
 				
 			}
 			//促销商品
@@ -609,6 +609,7 @@ class Market extends IController
 		if(!$condition || !$award_value)
 		{
 			$this->promotionRow = $dataArray;
+		
 			$this->redirect('pro_speed_edit',false);
 			Util::showMessage('请添加促销的商品，并为商品填写价格');
 		}
