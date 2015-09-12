@@ -924,24 +924,33 @@ function sele_spec(_self)
 
 		//获取货品数据并进行渲染
 		$.getJSON('{url:/site/getProduct}',{"goods_id":"{$id}","specJSON":specJSON,"random":Math.random},function(json){
-			//window.realAlert(JSON.stringify(json.data));
+			//window.realAlert(JSON.stringify(json));
 		//	window.realAlert(typeof(json.data.group_price));
-			var priceData = json.data;
+			//var priceData = json.data;
+			
 			if(json.flag == 'success')
 			{
-				var priceHtml = template.render('priceTemplate',priceData);
+				var priceHtml = template.render('priceTemplate',json.data);
 				$('#price_panel').html(priceHtml);
-				if(!priceData.group_price)priceData.group_price = POSITIVE_INFINITY;
-				if(priceData.active_id && priceData.group_price>priceData.shan_price){
-					$('input[name=active_id]').val(priceData.active_id);
+				if(json.data.active_id && json.data.group_price){
+					if(json.data.group_price>json.data.shan_price){
+						$('input[name=active_id]').val(json.data.active_id);
+						$('input[name=promo_name]').val('time');
+					}else{
+						$('input[name=active_id]').val('');
+						$('input[name=promo_name]').val('');
+					}
+				}else if(json.data.active_id){
+					$('input[name=active_id]').val(json.data.active_id);
 					$('input[name=promo_name]').val('time');
-				}else{
+				}
+				else{
 					$('input[name=active_id]').val('');
 					$('input[name=promo_name]').val('');
 				}
 			
 				//普通货品数据渲染
-			//	$('#data_goodsNo').text(json.data.products_no);
+				$('#data_goodsNo').text(json.data.products_no);
 				$('#data_storeNums').text(json.data.store_nums);
 				$('#product_id').val(json.data.id);
 
