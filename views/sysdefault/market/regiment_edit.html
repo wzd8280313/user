@@ -6,7 +6,7 @@
 <div class="content_box">
 	<div class="content form_content">
 		<form action="{url:/market/regiment_edit_act}"  method="post" name='regiment_edit' enctype='multipart/form-data'>
-			<input type='hidden' name='id' />
+			
 			<table class="form_table">
 				<col width="150px" />
 				<col />
@@ -30,6 +30,13 @@
 					</td>
 				</tr>
 				<tr>
+					<th>是否区分规格：</th>
+					<td>
+						<label class='attr' name='spec_diff'><input type='radio' name='spec' value='0' />是</label>
+						<label class='attr' name='spec_diff'><input type='radio' name='spec' value='1' checked=checked />否</label>
+					</td>
+				</tr>
+				<tr>
 					<th>设置团购商品：</th>
 					<td>
 						<table class='border_table'>
@@ -40,7 +47,7 @@
 							<tbody id='regiment_box'>
 							</tbody>
 
-							<tr><td colspan=2><button type='button' class='btn' onclick='searchGoods("{url:/block/search_goods/type/radio}",searchGoodsCallback);'><span>添加商品</span></button><label>* 添加要团购的商品</label></td></tr>
+							<tr><td colspan=2><button type='button' class='btn' onclick=''><span>添加商品</span></button><label>* 添加要团购的商品</label></td></tr>
 						</table>
 					</td>
 				</tr>
@@ -69,14 +76,23 @@
 		goodsList.each(function()
 		{
 			var temp = $.parseJSON($(this).attr('data'));
+			
+			if (!temp.product_id) {
+				temp.product_id = 0;
+				var spec_str = '所有';
+			}else{
+				var spec_str = getSpec(temp.spec_array);
+			}
+			
 			var content = {
 				"data":
 				{
-					"id":temp.goods_id,
+					"goods_id":temp.goods_id,
+					"product_id":temp.product_id,
 					"name":temp.name,
 					"img":temp.img,
+					"spec":spec_str,
 					"sell_price":temp.sell_price,
-					"img":temp.img,
 					"store_nums":temp.store_nums
 				}
 			};
@@ -89,18 +105,20 @@
 	{
 		if(content)
 		{
-			$('[name="goods_id"]').val(content['data']['id']);
 			regimentImg = !regimentImg ? content['data']['img'] : regimentImg;
 
 			var imgUrl = "{webroot:@url@}";
 			imgUrl     = imgUrl.replace("@url@",regimentImg);
 
-			var html = '<tr><th>商品名称：</th><td>'+content['data']['name']+'</td></tr>'
-					  +'<tr><th>展示图片：</th><td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /><br /><input type="file" class="file" name="img" /></td></tr>'
-					  +'<tr><th>团购价格：</th><td><input type="text" class="small" name="regiment_price" pattern="float" alt="填写数字" />，  目前原价：'+content['data']['sell_price']+'<label>* 设置团购价格</label></td></tr>'
-					  +'<tr><th>团购库存量：</th><td><input type="text" class="small" name="store_nums" pattern="int" alt="填写数字" />，  目前库存：'+content['data']['store_nums']+'<label>* 团购出售的最大数量</label></td></tr>'
-					  +'<tr><th>每人团购最小量：</th><td><input type="text" class="small" name="limit_min_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最小数量，少于这个数量则无法购买，0表示不限制</label></td></tr>'
-					  +'<tr><th>每人团购最大量：</th><td><input type="text" class="small" name="limit_max_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最大数量，大于这个数量则无法购买，0表示不限制</label></td></tr>';
+			var html = '<input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
+							'<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/>'+
+						'<tr><th>商品名称：</th><td>'+content['data']['name']+'</td></tr>'
+						  +'<tr><th>展示图片：</th><td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /><br /><input type="file" class="file" name="img" /></td></tr>'
+					  	  +'<tr><th>商品规格：</th><td>'+content['data']['spec']+'<label></label></td></tr>'
+							+'<tr><th>团购价格：</th><td><input type="text" class="small" name="regiment_price" pattern="float" alt="填写数字" />，  目前原价：'+content['data']['sell_price']+'<label>* 设置团购价格</label></td></tr>'
+							 +'<tr><th>团购库存量：</th><td><input type="text" class="small" name="store_nums" pattern="int" alt="填写数字" />，  目前库存：'+content['data']['store_nums']+'<label>* 团购出售的最大数量</label></td></tr>'
+						  +'<tr><th>每人团购最小量：</th><td><input type="text" class="small" name="limit_min_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最小数量，少于这个数量则无法购买，0表示不限制</label></td></tr>'
+						  +'<tr><th>每人团购最大量：</th><td><input type="text" class="small" name="limit_max_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最大数量，大于这个数量则无法购买，0表示不限制</label></td></tr>';
 
 			$('#regiment_box').html(html);
 		}
@@ -108,10 +126,32 @@
 
 	//关联商品信息
 	{if:isset($this->regimentRow['goodsRow'])}
-	relationCallBack({$this->regimentRow['goodsRow']},"{$this->regimentRow['img']}");
+	var goodsRow = {$this->regimentRow['goodsRow']};
+	goodsRow['data']['spec'] = getSpec(goodsRow['data']['spec_array']);
+	goodsRow['data']['spec'] = goodsRow['data']['spec'] ? goodsRow['data']['spec'] : '所有';
+	relationCallBack(goodsRow,"{$this->regimentRow['img']}");
 	{/if}
 
 	//表单回填
 	var formObj = new Form('regiment_edit');
 	formObj.init({echo:JSON::encode($this->regimentRow)});
+	
+	$(function(){
+		$('label[name=spec_diff]').click(function(){
+			var is_spec = $(this).find('input[type=radio]').val();
+			$('button.btn').off('click');
+			if(is_spec==0){
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/is_products/1/seller_id/0}',searchGoodsCallback);})
+			}else{
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/seller_id/0}',searchGoodsCallback);})
+			}
+			
+		})
+		{if:isset($this->regimentRow['product_id'])&&$this->regimentRow['product_id']>0}
+			$('label[name=spec_diff]').eq(0).trigger('click');
+		{else:}
+			$('label[name=spec_diff]').eq(1).trigger('click');
+		{/if}
+		
+	})
 </script>

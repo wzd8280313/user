@@ -53,10 +53,11 @@ class Site extends IController
 		$this->logoUrl = 'images/sglogo.png';
 		$this->shangou = 1;
 		
-		$this->shan_list = Api::run('getPromotionList',2);
+		$this->shan_list = Api::run('getPromotionList',4);
 		$this->count = count($this->shan_list);
 		$this->redirect('shangou');
 	}
+	
 	//获取更多闪购信息，返回json
 	public function getMoreShan(){
 		$start = IFilter::act(IReq::get('start'),'int');
@@ -77,7 +78,40 @@ class Site extends IController
 		}
 		echo $promData ? JSON::encode($promData) : 0;
 	}
-	
+	//团购页面
+	public function tuangou(){
+		$this->logoUrl = 'images/tglogo.png';
+		$this->tuangou = 1;
+		$this->todayList = array();
+		$this->brandList = array();
+		$tuanList = Api::run('getRegimentList','5');
+		$this->count = count($tuanList);
+		if($this->count>2){
+			$this->todayList = array(array_shift($tuanList),array_shift($tuanList));
+			$this->brandList = $tuanList;
+		}else{
+			$this->todayList = $tuanList;
+		}
+		$this->redirect('tuangou');
+	}
+	//获取更多团购
+	public function getMoreTuan(){
+		$start = IFilter::act(IReq::get('start'),'int');
+		$limit = $start.',6';
+		$tuan = new IQuery('regiment as r');
+		$tuan->fields = '*';
+		$tuan->where = 'is_close = 0 AND NOW() between start_time and end_time ';
+		$tuan->order = 'id desc';
+		$tuan->limit = $limit;
+		$tuanData = $tuan->find();
+		
+		foreach($tuanData as $key=>$val){
+			$tuanData[$key]['key'] = $key + $start;
+			$tuanData[$key]['end'] = strtotime($val['end_time']);
+		}
+		echo $tuanData ? JSON::encode($tuanData) : 0;
+		
+	}
 	//[首页]商品搜索
 	function search_list()
 	{

@@ -669,9 +669,20 @@ class Market extends IController
 				$this->redirect('regiment_list');
 			}
 
+			if($regimentRow['product_id']){
+				$goodsObj = new IQuery('products as p');
+				$goodsObj->join = ' left join goods as g on (p.goods_id = g.id)';
+				$goodsObj->where = 'p.id = '.$regimentRow['product_id'];
+				$goodsObj->fields = 'p.id as product_id,p.spec_array,p.store_nums,p.sell_price,g.id as goods_id,g.name';
+				$goodsRow = $goodsObj->getObj();
+				
+			}else{
+				$goodsObj = new IModel('goods');
+				$goodsRow = $goodsObj->getObj('id = '.$regimentRow['goods_id'],'id as goods_id,name,store_nums,sell_price');
+				$goodsRow['spec_array'] = '';
+				$goodsRow['product_id'] = 0;
+			}
 			//促销商品
-			$goodsObj = new IModel('goods');
-			$goodsRow = $goodsObj->getObj('id = '.$regimentRow['goods_id']);
 
 			$result = array(
 				'isError' => false,
@@ -697,6 +708,7 @@ class Market extends IController
 			'is_close'      => IFilter::act(IReq::get('is_close','post')),
 			'intro'     	=> IFilter::act(IReq::get('intro','post')),
 			'goods_id'      => $goodsId,
+			'product_id'    => IFilter::act(IReq::get('product_id','post'),'int'),
 			'store_nums'    => IFilter::act(IReq::get('store_nums','post')),
 			'limit_min_count' => IFilter::act(IReq::get('limit_min_count','post'),'int'),
 			'limit_max_count' => IFilter::act(IReq::get('limit_max_count','post'),'int'),

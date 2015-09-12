@@ -9,11 +9,11 @@ function shan_bind_func(){
 		function(){$(this).removeClass('hover')}
 	)
 }
-function loadPromotion(){
-	
+function loadPromotion(toUrl){
 	$('#nextgroup').addClass('loading');
+	$('#next_more_text').text('');
 	var start = parseInt($('input[name=start]').val());
-	var getUrl = shanUrl;
+	var getUrl = toUrl;
 	$.ajax({
 		type:'post',
 		async:true,
@@ -38,7 +38,10 @@ function loadPromotion(){
 		},
 		complete:function(){
 			$('#nextgroup').removeClass('loading');
+			$('#next_more_text').text('查看下一组');
 		},
 		timeout:1000,
 	})
 }
+
+
