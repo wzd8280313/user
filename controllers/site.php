@@ -579,10 +579,14 @@ class Site extends IController
 
 		//获得会员价
 		$countsumInstance = new countsum();
-		$group_price = floatval($countsumInstance->getGroupPrice($goods_id,'goods'));
-		if($group_price < $goods_info['sell_price']){
-			$goods_info['group_price'] = $group_price;
+		$group_price = $countsumInstance->getGroupPrice($goods_id,'goods');
+		if($group_price !==null){
+			$group_price = floatval($group_price);
+			if($group_price < $goods_info['sell_price']){
+				$goods_info['group_price'] = $group_price;
+			}
 		}
+		
 		
 
 		//获取商家信息

@@ -128,7 +128,11 @@ class Member extends IController
 		//编辑会员
 		else
 		{
-			$userData = array('phone'=>$mobile);
+			$userData = array(
+					'phone'=>$mobile,
+					'username'=>$user_name
+			
+			);
 			//修改密码
 			if($password)
 			{

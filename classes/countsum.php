@@ -253,6 +253,7 @@ class CountSum
 	public function getShanPrice($goods_id,$product_id=0){
 		if($goods_id){
 			$promotion = new IModel('promotion as p');
+			if(!$this->group_id)$this->group_id = 0;
 			$where = 'type = 1 AND is_close = 0 AND `condition` = '.$goods_id . ' AND product_id = '.$product_id.' AND now() between start_time and end_time AND  (FIND_IN_SET('.$this->group_id.',user_group) OR user_group = "all")';
 			if($promoData = $promotion->getObj($where,'min(award_value) as shan_price,id,name'))
 				return $promoData['shan_price'];
