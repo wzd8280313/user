@@ -248,7 +248,7 @@ class Simple extends IController
 		//加入购物车
     	$cartObj   = new Cart();
     	$addResult = $cartObj->add($goods_id,$goods_num,$type);
-
+    
     	if($link != '')
     	{
     		if($addResult === false)
@@ -358,6 +358,7 @@ class Simple extends IController
     {
     	$cartObj  = new Cart();
     	$cartList = $cartObj->getMyCart();
+    	
     	$data['data'] = array_merge($cartList['goods']['data'],$cartList['product']['data']);
     	$data['count']= $cartList['count'];
     	$data['sum']  = $cartList['sum'];
@@ -710,12 +711,15 @@ class Simple extends IController
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
     	$where = array('id'=>array_keys($this->goodsList));
-    	foreach($sellerObj->select($where,'freight_collect') as $value){
-    		if($value['freight_collect']==0){
-    			$this->freight_collect=0;
-    			break;
+    	if($where['id']){
+    		foreach($sellerObj->select($where,'freight_collect') as $value){
+    			if($value['freight_collect']==0){
+    				$this->freight_collect=0;
+    				break;
+    			}
     		}
     	}
+    	
 		//收货地址列表
 		$this->addressList = $addressList;
 		//获取商品税金

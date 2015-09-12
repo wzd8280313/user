@@ -131,9 +131,19 @@ class CountSum
     			{
     				return "商品：".$val['name']."购买数量超出库存，请重新调整购买数量";
     			}
-
+				$shanPrice                 = $this->getShanPrice($val['goods_id']);
     			$groupPrice                = $this->getGroupPrice($val['goods_id'],'goods');
-    			$goodsList[$key]['reduce'] = $groupPrice === null ? 0 : $val['sell_price'] - $groupPrice;
+    			if($shanPrice && $groupPrice){
+    				$minPrice = min($shanPrice,$groupPrice);
+    			}else if($shanPrice){
+    				$minPrice = $shanPrice;
+    			}else if($groupPrice){
+    				$minPrice = $groupPrice;
+    			}else{
+    				$minPrice = $val['sell_price'];
+    			}
+    			$minPrice = min($minPrice,$val['sell_price']);
+    			$goodsList[$key]['reduce'] = $val['sell_price'] - $minPrice;
     			$goodsList[$key]['count']  = $buyInfo['goods']['data'][$val['goods_id']]['count'];
     			$current_sum_all           = $goodsList[$key]['sell_price'] * $goodsList[$key]['count'];
     			$current_reduce_all        = $goodsList[$key]['reduce']     * $goodsList[$key]['count'];
@@ -168,9 +178,22 @@ class CountSum
     			{
     				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
     			}
-
+    			$shanPrice                 = $this->getShanPrice($val['goods_id'],$val['product_id']);
+    			if(!$shanPrice)
+    				$shanPrice             = $this->getShanPrice($val['goods_id']);
     			$groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
-				$productList[$key]['reduce'] = $groupPrice === null ? 0 : $val['sell_price'] - $groupPrice;
+    			if($shanPrice && $groupPrice){
+    				$minPrice = min($shanPrice,$groupPrice);
+    			}else if($shanPrice){
+    				$minPrice = $shanPrice;
+    			}else if($groupPrice){
+    				$minPrice = $groupPrice;
+    			}else{
+    				$minPrice = $val['sell_price'];
+    			}
+    			$minPrice = min($minPrice,$val['sell_price']);
+    			
+				$productList[$key]['reduce'] = $val['sell_price'] - $minPrice;
     			$productList[$key]['count']  = $buyInfo['product']['data'][$val['product_id']]['count'];
     			$current_sum_all             = $productList[$key]['sell_price']  * $productList[$key]['count'];
     			$current_reduce_all          = $productList[$key]['reduce']      * $productList[$key]['count'];
@@ -221,7 +244,21 @@ class CountSum
     		'tax'        => $this->tax,
     	);
 	}
-
+	//获取闪购价
+	/*
+	 * @$goods_id int 商品id
+	 * @$product_id int 货品id,非货品为0
+	 * @return float 返回最低闪购价格
+	 */
+	public function getShanPrice($goods_id,$product_id=0){
+		if($goods_id){
+			$promotion = new IModel('promotion as p');
+			$where = 'type = 1 AND is_close = 0 AND `condition` = '.$goods_id . ' AND product_id = '.$product_id.' AND now() between start_time and end_time AND  (FIND_IN_SET('.$this->group_id.',user_group) OR user_group = "all")';
+			if($promoData = $promotion->getObj($where,'min(award_value) as shan_price,id,name'))
+				return $promoData['shan_price'];
+		}
+		return false;
+	}
 	//购物车计算
 	public function cart_count()
 	{

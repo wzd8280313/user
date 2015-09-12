@@ -997,7 +997,7 @@ class Site extends IController
 	}
 
 	function ce(){
-		$_SESSION['aaa']=123;
+		
 		print_r($_SESSION);
 	}
 	

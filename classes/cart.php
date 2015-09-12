@@ -239,6 +239,7 @@ class Cart extends IInterceptorBase
 		else
 		{
 			$cartValue = JSON::decode(str_replace(array('&','$'),array('"',','),$cartValue));
+			
 			if(is_array($cartValue))
 			{
 				return $this->cartFormat($cartValue);
