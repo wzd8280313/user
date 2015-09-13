@@ -745,6 +745,7 @@ class Ucenter extends IController
     	}
     	$historyObj->where = "user_id = ".$this->user['user_id'].$where;
     	$historyObj->page  = $page;
+    	$historyObj->order = "id DESC";
     	$items = $historyObj->find();
     
     	$goodsIdArray   = array();

@@ -491,6 +491,15 @@ return array(
 			'group'=> 'cat_id',
 		)
 	),
+	//根据分类id获取浏览记录
+	'getUcenterHistoryByCatid'=>array(
+			'query'=>array(
+					'name'=>'user_history as h,category as c ',
+					'where'=>'h.user_id = #user_id# and h.cat_id = c.id ',
+					'fields'=> 'count(*) as num,c.name,c.id ',
+					'group'=> 'cat_id',
+			)
+	),
 	//用户中心-个人资料
 	'getMemberInfo' => array(
 		'file' => 'ucenter.php','class' => 'APIUcenter'

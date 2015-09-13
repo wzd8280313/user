@@ -95,14 +95,22 @@ class user_like{
 		if(!$user_id){
 			ISession::add('user_history',array('goods_id'=>$goods_id,'time'=>ITime::getDateTime('Y-m-d')));
 		}else{
-			$history = new IModel('user_history');
+			$history = new IQuery('category_extend as ca');
 			$time = ITime::getDateTime('Y-m-d');
 			$data = array('user_id'=>$user_id,'goods_id'=>$goods_id,'time'=>$time);
-			$res=$history->getObj('user_id = '.$user_id. ' and goods_id = '.$goods_id.' and DATEDIFF(NOW(),time) < 1','id');
-			if(!$res){
+			$history->join = 'left join user_history as h on (h.goods_id = ca.goods_id and  h.user_id = '.$user_id. ' and DATEDIFF(NOW(),h.time) < 1)';
+			$history->fields = 'h.time,ca.category_id';
+			$history->where= ' ca.goods_id = '.$goods_id;
+			$history->limit = 1;
+			$hisData = $history->find()[0];
+			//print_r($hisData);
+			if(!$hisData['time']){//当天还未访问
+				$data['cat_id'] = isset($hisData['category_id'])?$hisData['category_id'] : 0;
+				$history = new IModel('user_history');
 				$history->setData($data);
 				$history->add();
 			}
+			
 		}
 	}
 	
