@@ -11,7 +11,6 @@ function shan_bind_func(){
 }
 function loadPromotion(toUrl){
 	$('#nextgroup').addClass('loading');
-	$('#next_more_text').text('');
 	var start = parseInt($('input[name=start]').val());
 	var getUrl = toUrl;
 	$.ajax({
@@ -38,7 +37,6 @@ function loadPromotion(toUrl){
 		},
 		complete:function(){
 			$('#nextgroup').removeClass('loading');
-			$('#next_more_text').text('查看下一组');
 		},
 		timeout:1000,
 	})

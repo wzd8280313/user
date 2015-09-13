@@ -66,8 +66,9 @@ return array(
 	'getRegimentRowById' => array(
 		'query' => array(
 			'name'  => 'regiment',
-			'where' => 'id = #id# and NOW() between start_time and end_time',
+			'where' => 'id = #id# and NOW() between start_time and end_time AND is_close = 0',
 			'type'  => 'row',
+			
 		)
 	),
 	//限时抢购列表

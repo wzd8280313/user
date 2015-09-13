@@ -18,7 +18,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="wrapper right f_r">
+	<div class="wrapper main f_r">
 		<div class="wrap_box">
 			<form action='{url:/site/consult_act}' method='post' name='consult'>
 				<input type='hidden' name='goods_id' value='' />

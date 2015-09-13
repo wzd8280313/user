@@ -1291,7 +1291,7 @@ class Simple extends IController
     		$goodsRow    = $favoriteObj->getObj('user_id = '.$this->user['user_id'].' and rid = '.$goods_id);
     		if($goodsRow)
     		{
-    			$message = '您已经收藏过此件商品';
+    			$message = '您已经关注过此件商品';
     		}
     		else
     		{
@@ -1309,7 +1309,7 @@ class Simple extends IController
 	    		$favoriteObj->add();
 	    		$goodsObj = new IModel('goods');
 	    		$goodsObj->addNum('id='.$goods_id,array('favorite'=>1));
-	    		$message = '收藏成功';
+	    		$message = '关注成功';
     		}
     	}
 		$result = array(

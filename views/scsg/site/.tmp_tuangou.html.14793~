@@ -52,7 +52,7 @@
 		{set:$zhe = 10*round($item['regiment_price']/$item['sell_price'],2)}
 	        <div class="today-deals-con">
 		        <div class="deal-img-wrap">
-		            <a title="" href="{url:/site/tuan_product/active/$item['id']}" target="_blank"><img src="{url:$item['img']}" alt=""  width="350" height="350"></a>
+		            <a title="" href="list.html" target="_blank"><img src="{url:$item['img']}" alt=""  width="350" height="350"></a>
 		            <div class="all_bicon_box"></div>
 		        </div>
 		        <div class="deal-summary"> 
@@ -64,7 +64,7 @@
 					<span id='cd_second_{$key}'></span>秒	
 					<input name='endTime' type='hidden' value='{$end}' />
 				</span>
-		            <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
+		            <a class="deal-summary-link" target="_blank" href="list.html">
 		                <p class="tit"> <em>{$zhe}折/</em>{$item['intro']}</p>
 		                <p class="price-wrap">
 		                    <span class="price"><em>¥</em>{$item['regiment_price']}</span>
@@ -115,14 +115,14 @@
 								<li style="margin-top:0;">
 									<dl>
 										<dt class="brand-img">
-											<a href="{url:/site/tuan_product/active/$item['id']}}" target="_blank" title="{$item['title']}">
+											<a href="detail.html" target="_blank" title="{$item['title']}">
 												<img class="lazyload img"  src="{url:$item['img']}" alt="{$item['title']}">
 											</a>
 										</dt>
 										<dd>
 											<div class="fl">
 												<p class="name">
-													<a href="{url:/site/tuan_product/active/$item['id']}}" title="{$item['title']}" target="_blank">{$item['title']}</a>
+													<a href="detail.html" title="{$item['title']}" target="_blank">{$item['title']}</a>
 												</p>
 														<p class="explain" title="&#160;">
 															<span class="gzmc_k"></span>

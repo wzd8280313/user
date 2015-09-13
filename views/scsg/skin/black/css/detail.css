@@ -1,6 +1,4 @@
 @CHARSET "UTF-8";
-
-
 #detail {
 }
 .tm-clear::after {
@@ -593,4 +591,18 @@ fieldset, img {
     margin: 0 10px 0 0;
     padding: 0 2px 0 0;
     white-space: nowrap;
+}
+.det_tuan{
+	 line-height: 18px;
+    padding: 9px 0;
+	color:#333;
+	font-size:16px;
+	font-weight:bold;
+}
+.det_tuan span{
+	color:#c40000;
+}
+.det_tuan span.sell_sum{
+	margin-left:120px;
+	color:#333;
 }
