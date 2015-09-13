@@ -150,8 +150,8 @@ overflow: hidden;
 float: left;
 }
 .buying .goods-list .xi {
-padding: 9px 3px 6px 3px;
-width:192px;
+margin:10px 0;
+width:180px;
 border:0px;
 }
 .buying .goods-list .xi a:hover{color:#d6272d;}

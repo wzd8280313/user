@@ -446,6 +446,142 @@ class Seller extends IController
 		$this->redirect('seller_edit');
 	}
 
+	//闪购编辑页面
+	public function shan_edit()
+	{
+		$id = IFilter::act(IReq::get('id'),'int');
+		if($id)
+		{
+			$promotionObj = new IModel('promotion');
+			$where = 'id = '.$id;
+			$promotionRow = $promotionObj->getObj($where);
+			if(empty($promotionRow) || $promotionRow['seller_id']!=$this->seller['seller_id'])
+			{
+				$this->redirect('shan_list');
+			}
+		
+			if($promotionRow['product_id'])//product模式
+			{
+				$goodsObj = new IQuery('products as p');
+				$goodsObj->join = ' left join goods as g on (p.goods_id = g.id)';
+				$goodsObj->where = 'p.id = '.$promotionRow['product_id'];
+				$goodsObj->fields = 'p.id as product_id,p.goods_id as goods_id,p.sell_price,p.spec_array,g.name,g.img';
+				$goodsRow = $goodsObj->getObj();
+		
+			}else//good模式
+			{
+				$goodsObj = new IModel('goods');
+				$goodsRow = $goodsObj->getObj('id = '.$promotionRow['condition'],'id as goods_id,name,sell_price,img');
+				$goodsRow['spec_array'] = '';
+				$goodsRow['product_id'] = 0;
+		
+			}
+			//促销商品
+				
+			if($goodsRow)
+			{
+				$result = array(
+						'isError' => false,
+						'data'    => $goodsRow,
+				);
+			}
+			else
+			{
+				$result = array(
+						'isError' => true,
+						'message' => '关联商品被删除，请重新选择要抢购的商品',
+				);
+			}
+		
+			$promotionRow['goodsRow'] = JSON::encode($result);
+			$this->promotionRow = $promotionRow;
+		}
+		$this->redirect('shan_edit');
+	}
+	//闪购删除
+	public function shan_del(){
+		$id = IFilter::act(IReq::get('id'),'int');
+		if($id)
+		{
+			$promObj     = new IModel('promotion');
+		
+			if(is_array($id))
+			{
+				$idStr = join(',',$id);
+				$where = ' id in ('.$idStr.')';
+			}
+			else
+			{
+				$where  = 'id = '.$id;
+			}
+			$where .= ' and seller_id = '.$this->seller['seller_id'];
+			$promObj->del($where);
+			$this->redirect('shan_list');
+		}
+		else
+		{
+			$this->redirect('shan_list',false);
+			Util::showMessage('请选择要删除的id值');
+		}
+	}
+	//闪购页面编辑提交
+	public function shan_edit_act(){
+		$id = IFilter::act(IReq::get('id'),'int');
+		
+		$goodsId = IFilter::act(IReq::get('goods_id','post'),'int');
+		$productId = IFilter::act(IReq::get('product_id','post'),'int');
+		
+		//判断商品是否是商户商品
+		$good = new IModel('goods');
+		$goodRow = $good->getObj('id='.$goodsId.' and seller_id = '.$this->seller['seller_id'],'id');
+		if(!$goodRow){
+			$this->redirect('shan_list');
+			exit();
+		}
+		$condition = $goodsId;
+		$award_value  = IFilter::act(IReq::get('award_value','post'));
+		$user_group_str    = 'all';
+		
+		$dataArray = array(
+				'id'         => $id,
+				'name'       => IFilter::act(IReq::get('name','post')),
+				'condition'  => $condition,
+				'product_id'  => $productId,
+				'award_value'=> $award_value,
+				'is_close'   => IFilter::act(IReq::get('is_close','post')),
+				'start_time' => IFilter::act(IReq::get('start_time','post')),
+				'end_time'   => IFilter::act(IReq::get('end_time','post')),
+				'intro'      => IFilter::act(IReq::get('intro','post')),
+				'type'       => 1,
+				'award_type' => 0,
+				'user_group' => $user_group_str,
+				'seller_id'  => $this->seller['seller_id']
+		);
+		
+		if(isset($_FILES['shan_img'])&&$_FILES['shan_img']['name']!='')
+			$dataArray['shan_img'] = uploadHandle('shan_img');
+		
+		if(!$condition || !$award_value)
+		{
+			$this->promotionRow = $dataArray;
+		
+			$this->redirect('shan_edit',false);
+			Util::showMessage('请添加促销的商品，并为商品填写价格');
+		}
+		
+		$proObj = new IModel('promotion');
+		$proObj->setData($dataArray);
+		if($id)
+		{
+			$where = 'id = '.$id;
+			$proObj->update($where);
+		}
+		else
+		{
+			$proObj->add();
+		}
+		$this->redirect('shan_list');
+	}
 	//[团购]添加修改[单页]
 	function regiment_edit()
 	{
@@ -456,14 +592,25 @@ class Seller extends IController
 			$regimentObj = new IModel('regiment');
 			$where       = 'id = '.$id;
 			$regimentRow = $regimentObj->getObj($where);
-			if(!$regimentRow)
+			if(!$regimentRow || $regimentRow['seller_id']!=$this->seller['seller_id'])
 			{
 				$this->redirect('regiment_list');
 			}
 
 			//促销商品
-			$goodsObj = new IModel('goods');
-			$goodsRow = $goodsObj->getObj('id = '.$regimentRow['goods_id']);
+			if($regimentRow['product_id']){
+				$goodsObj = new IQuery('products as p');
+				$goodsObj->join = ' left join goods as g on (p.goods_id = g.id)';
+				$goodsObj->where = 'p.id = '.$regimentRow['product_id'];
+				$goodsObj->fields = 'p.id as product_id,p.spec_array,p.store_nums,p.sell_price,g.id as goods_id,g.name';
+				$goodsRow = $goodsObj->getObj();
+				
+			}else{
+				$goodsObj = new IModel('goods');
+				$goodsRow = $goodsObj->getObj('id = '.$regimentRow['goods_id'],'id as goods_id,name,store_nums,sell_price');
+				$goodsRow['spec_array'] = '';
+				$goodsRow['product_id'] = 0;
+			}
 
 			$result = array(
 				'isError' => false,
@@ -494,6 +641,7 @@ class Seller extends IController
 				$where  = 'id = '.$id;
 				$uwhere = 'regiment_id = '.$id;
 			}
+			$where .= ' and seller_id = '.$this->seller['seller_id'];
 			$regObj->del($where);
 			$this->redirect('regiment_list');
 		}
@@ -510,18 +658,26 @@ class Seller extends IController
 		$id      = IFilter::act(IReq::get('id'),'int');
 		$goodsId = IFilter::act(IReq::get('goods_id'),'int');
 
+		$good = new IModel('goods');
+		$goodRow = $good->getObj('id='.$goodsId.' and seller_id = '.$this->seller['seller_id'],'id');
+		if(!$goodRow){
+			$this->redirect('regiment_list');
+			exit();
+		}
 		$dataArray = array(
 			'id'        	=> $id,
 			'title'     	=> IFilter::act(IReq::get('title','post')),
 			'start_time'	=> IFilter::act(IReq::get('start_time','post')),
 			'end_time'  	=> IFilter::act(IReq::get('end_time','post')),
-			'is_close'      => 1,
+			'is_close'      => IFilter::act(IReq::get('is_close','post'),'int'),
 			'intro'     	=> IFilter::act(IReq::get('intro','post')),
 			'goods_id'      => $goodsId,
+			'product_id'    => IFilter::act(IReq::get('product_id','post'),'int'),
 			'store_nums'    => IFilter::act(IReq::get('store_nums','post')),
 			'limit_min_count' => IFilter::act(IReq::get('limit_min_count','post'),'int'),
 			'limit_max_count' => IFilter::act(IReq::get('limit_max_count','post'),'int'),
 			'regiment_price'=> IFilter::act(IReq::get('regiment_price','post')),
+			'seller_id'     => $this->seller['seller_id']
 		);
 
 		if($goodsId)

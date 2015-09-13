@@ -75,7 +75,6 @@
 
 		<h3>营销模块</h3>
 		<ul class="toggle">
-			<li class="icn_view_users"><a href="{url:/seller/shan_list}">闪购</a></li>
 			<li class="icn_view_users"><a href="{url:/seller/regiment_list}">团购</a></li>
 		</ul>
 
