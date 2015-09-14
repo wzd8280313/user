@@ -376,7 +376,7 @@ margin-top: 4%;
 
 section#main {
 width: 85%;
-min-height: 500px;
+min-height: 680px;
 background: url(../images/main/sidebar_shadow.png) repeat-y left top;
 float: left;
 margin-top: -2px;
@@ -888,12 +888,12 @@ font-size: 14px;}
 	.pages_bar span{line-height:20px;}
 /* page style end */
 
-/*·ÖÀà¿ªÊ¼*/
+/*ï¿½ï¿½ï¿½à¿ªÊ¼*/
 ul.select{list-style:none;height:236px;overflow: scroll ;overflow-x:hidden;border:#CDCDCD solid 1px; float:left;min-width:180px;}
 	ul.select li{list-style:none;overflow:hidden;height:28px; float:left; clear:both;line-height:28px;border-bottom:#F1F1F1  dotted 1px;padding-right:6px;width:100%}
 	ul.select li:hover{background:#73B1E0;color:#FFF;}
 
-/*·ÖÀà½áÊø*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 
 .box{
 	clear:both;

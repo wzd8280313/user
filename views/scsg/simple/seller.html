@@ -20,10 +20,10 @@
 								<td><input class="normal" name="seller_name" type="text" value="" pattern="required" alt="用户名不能为空" /><label>* 用户名称（必填）</label></td>
 							</tr>
 							<tr>
-								<th>密码：</th><td><input class="normal" name="password" type="password" bind='repassword' pattern="required" /><label>* 登录密码</label></td>
+								<th>密码：</th><td><input class="normal" name="password" type="password" alt='请输入6-12位字符' bind='repassword' pattern="^[\S]{6,12}$" /><label>* 登录密码</label></td>
 							</tr>
 							<tr>
-								<th>确认密码：</th><td><input class="normal" name="repassword" type="password" bind='password' pattern="required" /><label>* 重复确认密码</label></td>
+								<th>确认密码：</th><td><input class="normal" name="repassword" alt='请输入6-12位字符' type="password" bind='password' pattern="/^[\S]{6,12}$/" /><label>* 重复确认密码</label></td>
 							</tr>
 							
 							<tr>

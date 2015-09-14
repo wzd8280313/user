@@ -2,7 +2,7 @@
 {set:$search = Util::search(IReq::get('search'));$where = $search ? " and ".$search : "";}
 <article class="module width_full">
 	<header>
-		<h3 class="tabs_involved">退款列表</h3>
+		<h3 class="tabs_involved">退货列表</h3>
 		<ul class="tabs">
 			<li><input type="button" class="alt_btn" onclick="filterResult();" value="检索" /></li>
 		</ul>
@@ -23,7 +23,7 @@
 				<th>订单号</th>
 				<th>商品金额</th>
 				<th>申请时间</th>
-				<th>退款商品名称</th>
+				<th>退货商品名称</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>

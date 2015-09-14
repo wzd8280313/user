@@ -255,7 +255,7 @@ label input{cursor:pointer}
 .form_table label{margin-right:5px;vertical-align:middle;color:#a6a6a6}
 .form_table label.attr{color:#1d1d1d}
 label.btn,label.btn_orange,label.btn_green,label.btn_gray,label.btn_gray_m,label.btn_gray_s,label.btn_orange2,label.btn_orange3{display:inline-block;cursor:pointer;margin:10px 10px 10px 0;padding-left:5px;overflow:hidden;cursor:pointer;background:url(../images/front/ucenter/btn_bg.gif) 0 -31px no-repeat;_padding-left:1px}
-	label.btn input,label.btn_orange input,label.btn_green input,label.btn_gray input,label.btn_gray_m input,label.btn_gray_s input,label.btn_orange2 input,label.btn_orange3 input{display:inline-block;border:none;padding-right:7px;height:31px;line-height:31px;font-weight:bold;font-size:14px;vertical-align:bottom;color:#838383;background:url(../images/front/ucenter/btn_bg.gif) right 0 no-repeat}
+	label.btn input,label.btn_orange input,label.btn_green input,label.btn_gray input,label.btn_gray_m input,label.btn_gray_s input,label.btn_orange2 input,label.btn_orange3 input{outline:none;display:inline-block;border:none;padding-right:7px;height:31px;line-height:31px;font-weight:bold;font-size:14px;vertical-align:bottom;color:#838383;background:url(../images/front/ucenter/btn_bg.gif) right 0 no-repeat}
 label.btn,label.btn_gray{margin-right:10px}
 label.btn_orange,label.btn_green{padding-left:8px;background-position:0 -216px}
 label.btn_green{background-position:0 -262px}

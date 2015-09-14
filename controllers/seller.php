@@ -1347,6 +1347,7 @@ class Seller extends IController
 		if($seller->getObj('id='.$sellerid.' AND password = "'.md5($old_pass).'"')){
 			$seller->setData(array('password'=>md5($new_pass)));
 			$seller->update('id='.$sellerid);
+			$this->redirect('seller_edit');
 		}else $errorMsg = '原密码不正确！';
 			
 		//操作失败表单回填

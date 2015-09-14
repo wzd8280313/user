@@ -107,7 +107,10 @@ class CheckRights extends IInterceptorBase
 			'head_ico' => ISafe::get('head_ico'),
 			'user_pwd' => ISafe::get('user_pwd'),
 		);
-		if($user['email']!=''){
+		if($user['username']!=''){
+			$loginInfo = $user['username'];
+			$show = $user['username'];
+		}else if($user['email']!=''){
 			$loginInfo = $user['email'];
 			$pos = strpos($user['email'],'@');
 			$subPos = $pos>=3 ? 3 : $pos;
@@ -115,10 +118,6 @@ class CheckRights extends IInterceptorBase
 		}else if($user['phone']!=''){
 			$loginInfo = $user['phone'];
 			$show = substr_replace($user['phone'],'****',3,4);
-		}else 
-		{
-			$loginInfo = $user['username'];
-			$show = $user['username'];
 		}
 			
 		

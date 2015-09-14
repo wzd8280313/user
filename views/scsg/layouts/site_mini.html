@@ -32,7 +32,7 @@
 
 			<p class="loginfo">
 			{if:$this->user}
-			{$this->user['username']}您好，欢迎您来到{echo:$siteConfig->name}购物！[<a href="{url:/simple/logout}" class="reg">安全退出</a>]
+			{$this->user['show']}您好，欢迎您来到{echo:$siteConfig->name}购物！[<a href="{url:/simple/logout}" class="reg">安全退出</a>]
 			{else:}
 			[<a href="{url:/simple/login?callback=$callback}">登录</a><a class="reg" href="{url:/simple/reg?callback=$callback}">免费注册</a>]
 			{/if}
