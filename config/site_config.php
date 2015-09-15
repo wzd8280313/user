@@ -12,7 +12,7 @@
   'auto_finish' => '1',
   'index_slide' => 'a:2:{i:0;a:4:{s:4:"name";s:4:"shan";s:3:"url";s:1:"/";s:5:"color";s:6:"475580";s:3:"img";s:39:"upload/2015/08/14/20150814014102974.jpg";}i:1;a:4:{s:4:"name";s:6:"山城";s:3:"url";s:1:"/";s:5:"color";s:6:"5C554F";s:3:"img";s:39:"upload/2015/08/14/20150814014102443.png";}}',
   'name' => '山城速购',
-  'url' => 'http://www.163.com/special/0077450P/login_frame.html',
+  'url' => 'http://www.baidu.com',
   'master' => '',
   'qq' => '',
   'email' => '',

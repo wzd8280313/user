@@ -637,7 +637,9 @@ class Site extends IController
 				$goods_info['brand'] = $brand_info['name'];
 			}
 		}
-
+		$commend = new IModel('commend_goods');
+		$goods_info['commend'] = $commend->getFields(array('goods_id'=>$goods_id),'commend_id');
+		
 		//获取商品分类
 		$categoryObj = new IModel('category_extend as ca,category as c');
 		$categoryRow = $categoryObj->getObj('ca.goods_id = '.$goods_id.' and ca.category_id = c.id','c.id,c.name');
@@ -838,7 +840,6 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
-		
 		
 		$this->setRenderData($goods_info);
 		

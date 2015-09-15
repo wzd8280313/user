@@ -59,6 +59,10 @@ class Menu
 				'/brand/category_list'  =>	'品牌分类',
 				'/brand/brand_list'		=>	'品牌列表'
 			),
+			'标签管理'=>array(
+				'/brand/tags_list'=>'标签列表',
+				'/brand/tags_edit'=> '标签添加'
+			),
 			'模型'=>array(
 				'/goods/model_list'=>'模型列表',
 				'/goods/spec_list'=>'规格列表',

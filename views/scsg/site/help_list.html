@@ -4,7 +4,7 @@
 {set:$seo_data['title']=$this->cat_row['name'].'_'.$seo_data['title'] }
 {set:seo::set($seo_data);}
 
-<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » {$this->cat_row['name']} </div>
+<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » 帮助中心 </div>
 <div class="wrapper clearfix">
 	<div class="help_c sidebar f_l">
 	{foreach:items=Api::run('getHelpCategoryLeft',10)}
@@ -21,7 +21,7 @@
 	{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
 	<div class="right f_r">
 		<div class="box m_10">
-			<div class="title2">{$this->cat_row['name']}</div>
+			<div class="title2">帮助中心</div>
 			<div class="cont">
 				<h5 class="list_title gray">
 					<span class="f_l">标题</span>发表时间

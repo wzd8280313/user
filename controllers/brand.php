@@ -217,4 +217,54 @@ class Brand extends IController
 	{
 		$this->redirect('brand_list');
 	}
+	/**
+	 * @标签管理 列表
+	 */
+	public function tags_list(){
+		$tb_tag = new IModel('commend_tags');
+		$this->tags = $tb_tag->query();
+		$this->redirect('tags_list');
+	}
+	//标签添加编辑页面
+	public function tags_edit(){
+		$id = IFilter::act(IReq::get('id'),'int');
+		if($id){
+			$tb_tag = new IModel('commend_tags');
+			$this->tags = $tb_tag->getObj('id='.$id);
+			
+		}
+	
+		$this->redirect('tags_edit');
+	}
+	//标签删除
+	public function tags_del(){
+		$id = IFilter::act(IReq::get('id'),'int');
+		$tb_tag = new IModel('commend_tags');
+		$tb_tag->del('id='.$id);
+		$this->redirect('tags_list');
+		
+	}
+	//标签保存
+	public function tags_save(){
+		$tags_id = IFilter::act(IReq::get('tags_id'),'int');
+		$name = IFilter::act(IReq::get('name'));
+		$sort = IFilter::act(IReq::get('sort'),'int');
+		$img = uploadHandle('img');
+		$intro = IFilter::act(IReq::get('intro'));
+		
+		$commend = new IModel('commend_tags');
+		$tags = array(
+			'name'=>$name,
+			'sort'=>$sort,
+			'intro'=>$intro
+		);
+		if($img)$tags['img']=$img;
+		$commend->setData($tags);
+		if($tags_id){
+			$commend->update('id='.$tags_id);
+		}else{
+			$commend->add();
+		}
+		$this->redirect('tags_list');
+	}
 }
