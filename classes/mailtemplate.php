@@ -42,4 +42,11 @@ class mailTemplate
 		$templateString = "尊敬的用户，您需要购买的 <{goodsName}> 现已全面到货，机不可失，从速购买！ <a href='{url}' target='_blank'>立即购买</a>";
 		return strtr($templateString,$param);
 	}
+	/**
+	 * @brief 邮件验证码模板
+	 */
+	public static function emailCode($param){
+		$templateString = "尊敬的用户，您修改邮箱的验证码 {code},该验证码30分钟有效";
+		return strtr($templateString,$param);
+	}
 }

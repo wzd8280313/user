@@ -129,6 +129,22 @@ class user_like{
 			return null;
 		}
 	} 
+	//获取隐藏的手机号
+	public static function getSecretPhone($phone){
+		if($phone)
+			return substr_replace($phone,'****',3,4);
+		return false;
+	}
 	
+	//获取隐藏的邮箱
+	public static function getSecretEmail($email){
+		if($email){
+			$pos = strpos($email,'@');
+			$subPos = $pos>=3 ? 3 : $pos;
+			return substr($email,0,$subPos).preg_replace('/[\w.-]*@/','****@',$email);
+		}
+		return false;
+	
+	}	
 	
 }

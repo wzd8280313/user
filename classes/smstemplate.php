@@ -39,7 +39,7 @@ class smsTemplate
 	 */
 	public static function checkCode($data = null)
 	{
-		$templateString = "您的验证码为:{mobile_code},请注意保管!";
+		$templateString = "尊敬的顾客，请输入手机动态验证码:{mobile_code}。该验证码有效期30分钟。";
 		return strtr($templateString,$data);
 	}
 

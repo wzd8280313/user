@@ -1229,6 +1229,7 @@ class Site extends IController
 	}
 
 	function ce(){
+		print_r($_SESSION);
 		user_like::set_user_history(13,1);
 	}
 	

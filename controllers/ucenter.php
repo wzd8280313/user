@@ -1134,4 +1134,220 @@ class Ucenter extends IController
     	$this->redirect('chgPhone');
     	
     }
+    /**
+     * 获取手机验证码
+     */
+    public function getMobileCode(){
+    	$phone = IFilter::act(IReq::get('phone'));
+    	if(!IValidate::phone($phone)){
+    		$res['errorCode']==1;
+    		$res['mess']='手机号码填写错误';
+    		echo JSON::encode($res);
+    		exit();
+    	}
+		$res = array('errorCode'=>0);
+		if($res['errorCode']==0){
+			$code = rand(000000,999999);
+			ISafe::set('mobileValidate',array('code'=>$code,'phone'=>$phone,'time'=>time()));
+			$text = smsTemplate::checkCode(array('{mobile_code}'=>$code));
+			if(!hsms::send($phone,$text)){
+				$res['errorCode']=-1;
+				$res['mess']='系统繁忙，请稍候再试';
+			}
+				
+		}
+		echo JSON::encode($res);
+    }
+    
+    
+    //初次校验验证码
+    public function checkMobile(){
+    	$res = array('errorCode'=>0);
+    	//$res['next']=IUrl::getHost().IUrl::creatUrl("/ucenter/toChgPhone2");
+    	//echo JSON::encode($res);exit();
+    	$phone = $this->user['phone'];
+    	$code = IFilter::act(IReq::get('code','post'));
+    	$nextUrl = IFilter::act(IReq::get('nextUrl','post'));
+    	if(!$code){
+    		$res['errorCode']=1;
+    		$res['mess']='验证码不能为空';
+    	}
+    	else if($codeData = ISafe::get('mobileValidate')){
+    		if(time() - $codeData['time']>=1800){
+    			$res['errorCode']=2;//验证码过期
+    			$res['mess']='验证码已过期，请重新获取';
+    		}else if($codeData['phone']!=$this->user['phone']){//非法操作
+    			$res['errorCode']=3;
+    			$res['mess']='操作非法';
+    		}else if($codeData['code'] !=$code){//验证码错误
+    			$res['errorCode'] = 4;
+    			$res['mess']='验证码错误';
+    		}else{//验证正确
+    			ISafe::clear('mobileValidate');
+    			ISafe::set('mobileValidRes',array('phone'=>$this->user['phone'],'time'=>time()));//session记录验证结果，和时间
+    			$res['next']=$nextUrl ? $nextUrl : IUrl::getHost().IUrl::creatUrl("/ucenter/toChgPhone2");
+    		}
+    	}else{
+    		$res['errorCode']=5;//没有验证码
+    		$res['mess']='请获取验证码';
+    	}
+    	echo JSON::encode($res);
+    	
+    		
+    }
+    /**
+     * 验证第一步是否成功
+     * @return bool 
+     */
+    private function checkFirstStep(){
+    	$checkRes = ISafe::get('mobileValidRes');
+    	if($checkRes && $this->user['phone']==$checkRes['phone'] &&time()- $checkRes['time']<1800 ){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    /**
+     * 修改手机号第二步
+     */
+    public function toChgPhone2(){
+    	$firstCheck = $this->checkFirstStep();
+    	if($firstCheck){
+    		$this->redirect('toChgPhone2');
+    	}else{
+    		$this->redirect('toChgPhone1');
+    	}
+    		
+    }
+    /**
+     * 修改邮箱第二步
+     */
+    public function toChgEmail2(){
+   		 $firstCheck = $this->checkFirstStep();
+    	if($firstCheck){
+    		$this->redirect('toChgEmail2');
+    	}else{
+    		$this->redirect('toChgEmail1');
+    	}
+    }
+    /**
+     * 第二步修改手机号提交
+     */
+    public function checkMobile2(){
+    	$newPhone = IFilter::act(IReq::get('newPhone','post'));
+    	$code =IFilter::act(IReq::get('code','post'));
+    	$res = array('errorCode'=>0);
+    	if(!IValidate::phone($newPhone)){
+    		$res['errorCode']=2;
+    		$res['mess']='请正确填写手机号码';
+    	}else if(!$code){
+    		$res['errorCode']=3;
+    		$res['mess']='请填写验证码';
+    	}else{
+    		$validData = ISafe::get('mobileValidate');
+    		$checkRes = ISafe::get('mobileValidRes');
+    		if($checkRes && $this->user['phone']==$checkRes['phone'] &&time()- $checkRes['time']<1800 ){
+    			if($validData['phone']==$newPhone && $validData['code']==$code && time()- $validData['time']<1800){//验证通过
+    				$user_id = $this->user['user_id'];
+    				$userObj       = new IModel('user');
+    				$where         = 'id = '.$user_id;
+    				$res['id'] = $user_id;
+    				$userObj->setData(array('phone'=>$newPhone));
+    				if($userObj->getObj('phone="'.$newPhone.'"')){
+    					$res['errorCode']=9;//没有验证码
+    					$res['mess']='该手机号码已注册';
+    				}
+    				else if($userObj->update($where)){
+    					ISafe::clear('mobileValidate');
+    					ISafe::clear('mobileValidRes');
+    					ISafe::set('phone',$newPhone);
+    					$res['next']=IUrl::getHost().IUrl::creatUrl("/ucenter/toChgPhone3");
+    				}else{
+    					$res['errorCode']=6;//更新失败
+    					$res['mess']='手机号码更新失败';
+    				}
+    				
+    			}else{
+    				$res['errorCode']=4;//没有验证码
+    				$res['mess']='验证码错误或已过期，请重新验证身份';
+    			}
+    		}else{
+    			$res['errorCode']=5;//没有验证码
+    			$res['mess']='验证码错误，请重新验证身份';
+    		}
+    	}
+    	
+    	echo JSON::encode($res);
+    }
+    //获取有效验证码
+    public function getEmailCode(){
+    	$newEmail = IFilter::act(IReq::get('newEmail','post'));
+    	$res = array('errorCode'=>0);
+    	if(!IValidate::email($newEmail)){
+    		$res['errorCode']=1;//邮箱格式错误
+    		$res['mess']='邮箱格式错误';
+    		echo JSON::encode($res);exit();
+    	}
+    	$code = rand(000000,999999);
+    	ISafe::set('emailValidate',array('code'=>$code,'email'=>$newEmail,'time'=>time()));
+    	$content = mailTemplate::emailCode(array("{code}" => $code));
+    	$smtp   = new SendMail();
+    	if(!$result = $smtp->send($newEmail,"山城速购用户修改邮箱验证",$content))
+    	{
+    		$res['errorCode']=3;//没有验证码
+    		$res['mess']='系统繁忙，请稍候再试';
+    	}
+    	echo JSON::encode($res);
+    }
+    //修改邮箱第二步提交
+    public function checkEmail2(){
+    	$newEmail = IFilter::act(IReq::get('newEmail','post'));
+    	$code =IFilter::act(IReq::get('code','post'));
+    	$res = array('errorCode'=>0);
+    	if(!IValidate::email($newEmail)){
+    		$res['errorCode']=1;//邮箱格式错误
+    		$res['mess']='邮箱格式错误';
+    		echo JSON::encode($res);exit();
+    	}
+    	if(!$code){
+    		$res['errorCode']=2;
+    		$res['mess']='请填写验证码';
+    		echo JSON::encode($res);exit();
+    	}
+    	$validData = ISafe::get('emailValidate');
+    	$checkRes = ISafe::get('mobileValidRes');
+    	
+    	if($checkRes && $this->user['phone']==$checkRes['phone'] &&time()- $checkRes['time']<1800 ){
+    		if($validData['email']==$newEmail && $validData['code']==$code && time()- $validData['time']<1800){//验证通过
+    			//ISafe::clear('emailValidate');
+    			$user_id = $this->user['user_id'];
+    			$userObj       = new IModel('user');
+    			$where         = 'id = '.$user_id;
+    			$res['id'] = $user_id;
+    			$userObj->setData(array('email'=>$newEmail));
+    			if($userObj->getObj('email="'.$newEmail.'"')){
+    				$res['errorCode']=9;
+    				$res['mess']='该邮箱已注册';
+    			}
+    			else if($userObj->update($where)){
+					ISafe::clear('mobileValidRes');
+    				ISafe::set('email',$newEmail);
+    				$res['next']=IUrl::getHost().IUrl::creatUrl("/ucenter/toChgEmail3");
+    			}else{
+    				echo JSON::encode($res);exit();
+    				$res['errorCode']=6;//更新失败
+    				$res['mess']='邮箱更新失败';
+    			}
+    	
+    		}else{
+    			$res['errorCode']=4;//没有验证码
+    			$res['mess']='验证码错误或已过期，请重新获取邮箱验证码';
+    		}
+    	}else{
+    		$res['errorCode']=5;//没有验证码
+    		$res['mess']='验证码错误或已过期，请重新验证身份';
+    	}
+    	echo JSON::encode($res);
+    }
+    
 }

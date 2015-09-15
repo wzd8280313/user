@@ -115,7 +115,7 @@ class CheckRights extends IInterceptorBase
 			$pos = strpos($user['email'],'@');
 			$subPos = $pos>=3 ? 3 : $pos;
 			$show = substr($user['email'],0,$subPos).preg_replace('/[\w.-]*@/','****@',$user['email']);
-		}else if($user['phone']!=''){
+		}else {
 			$loginInfo = $user['phone'];
 			$show = substr_replace($user['phone'],'****',3,4);
 		}
@@ -129,6 +129,8 @@ class CheckRights extends IInterceptorBase
 		else
 		{
 			ISafe::clear('user_id');
+			ISafe::clear('phone');
+			ISafe::clear('email');
 			ISafe::clear('username');
 			ISafe::clear('head_ico');
 			ISafe::clear('user_pwd');

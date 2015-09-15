@@ -53,12 +53,13 @@ class Simple extends IController
 		$res = array('errorCode'=>0);
 		if($phone=='')$res['errorCode']==1;
 		if(!$phone)$res['errorCode']==15;
-		
-		$text = rand(000000,999999);
-		ISafe::set('mobileValidate',array('num'=>$text,'time'=>time()));
-		$text = '山城速购的手机验证码'.$text;
-		if(!hsms::send($phone,$text))
-			$res['errorCode']=-1;
+		if($res['errorCode']==0){
+			$text = rand(000000,999999);
+			ISafe::set('mobileValidate',array('num'=>$text,'time'=>time()));
+			$text = smsTemplate::checkCode(array('{mobile_code}'=>$text));
+			if(!hsms::send($phone,$text))
+				$res['errorCode']=-1;
+		}
 		echo JSON::encode($res);
 		
 		

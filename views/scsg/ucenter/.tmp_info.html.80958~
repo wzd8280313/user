@@ -34,9 +34,9 @@
 						<th>邮箱：</th>
 						<td>{if:$this->userRow['email']}
 								{$this->userRow['email']}
-								<a class="blue" href="{url:/ucenter/toChgEmail1}">[修改]</a>
+								<a class="blue" href="">[修改]</a>
 							{else:}
-								<a class="blue" href="{url:/ucenter/toChgEmail1}">[绑定邮箱]</a>
+								<a class="blue" href="">[绑定邮箱]</a>
 							{/if}
 							
 						</td>
