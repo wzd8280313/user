@@ -31,9 +31,8 @@ function checkMobileNow(){
 	var code = $('input[name=code]').val();
 	var toUrl = checkMobileUrl;
 	$.post(toUrl,{code:code,nextUrl:nextUrl},function(data){
-		//window.realAlert(data.errorCode);
+		//window.realAlert(JSON.stringify(data));
 		if(data.errorCode==0){
-			//window.realAlert(data.next);
 			location.href=data.next;
 		}else{
 			alert(data.mess);

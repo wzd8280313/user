@@ -124,12 +124,16 @@ class Simple extends IController
     				$userObj->commit();
     				if($user_id)
     				{
+    					$group = new IModel('user_group');
+    					$group_id =$group->getField('is_default=1','id');
+    					
     					//member表
     					$memberArray = array(
     							'user_id' => $user_id,
     							'time'    => ITime::getDateTime(),
     							'status'  => 1,
     					);
+    					if($group_id)$memberArray['group_id']=$group_id;
     					if($type==1)$memberArray['status'] = 4;
     					$memberObj = new IModel('member');
     					$memberObj->setData($memberArray);

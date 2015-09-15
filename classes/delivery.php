@@ -72,7 +72,8 @@ class Delivery
 		$deliveryRow['if_delivery'] = '0';
 
  		//当配送方式是统一配置的时候，不进行区分地区价格
- 		if($deliveryRow['price_type'] == 0)
+		$area_groupid = unserialize($deliveryRow['area_groupid']);
+ 		if($deliveryRow['price_type'] == 0 || !is_array($area_groupid))
  		{
  			$deliveryRow['price'] = self::getFeeByWeight($weight,$deliveryRow['first_price'],$deliveryRow['second_price']);
  		}
@@ -83,7 +84,7 @@ class Delivery
 			$flag     = false;
 
 			//每项都是以';'隔开的省份ID
-			$area_groupid = unserialize($deliveryRow['area_groupid']);
+			//$area_groupid = unserialize($deliveryRow['area_groupid']);
 			foreach($area_groupid as $key => $result)
 			{
 				//匹配到了特殊的省份运费价格

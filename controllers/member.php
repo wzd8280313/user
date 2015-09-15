@@ -302,7 +302,8 @@ class Member extends IController
 					'group_name'=>	$info['group_name'],
 					'discount'	=>	$info['discount'],
 					'minexp'	=>	$info['minexp'],
-					'maxexp'	=>	$info['maxexp']
+					'maxexp'	=>	$info['maxexp'],
+					'is_default'=>  $info['is_default']
 				);
 			}
 			else
@@ -325,6 +326,7 @@ class Member extends IController
 		//$maxexp   = IFilter::act(IReq::get('maxexp'),'int');
 		//$minexp   = IFilter::act(IReq::get('minexp'),'int');
 		$discount = IFilter::act(IReq::get('discount'),'float');
+		$is_default = IFilter::act(IReq::get('is_default'),'int');
 		if($discount==0)$discount=100;
 		$group_name = IFilter::act(IReq::get('group_name'));
 
@@ -332,7 +334,8 @@ class Member extends IController
 			//'maxexp' => $maxexp,
 			//'minexp' => $minexp,
 			'discount' => $discount,
-			'group_name' => $group_name
+			'group_name' => $group_name,
+			'is_default'=>$is_default
 		);
 
 // 		if($maxexp <= $minexp)
@@ -351,8 +354,11 @@ class Member extends IController
 			exit;
 		}
 		$tb_user_group = new IModel("user_group");
+		if($is_default==1){
+			$tb_user_group->setData(array('is_default'=>0));
+			$tb_user_group->update('is_default=1');
+		}
 		$tb_user_group->setData($group);
-
 		if($group_id)
 		{
 			$affected_rows = $tb_user_group->update("id=".$group_id);
@@ -363,6 +369,8 @@ class Member extends IController
 			$tb_user_group->add();
 			$this->redirect('group_list');
 		}
+		
+		
 	}
 
 	/**

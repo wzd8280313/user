@@ -4,16 +4,23 @@
 </div>
 <div class="content_box">
 	<div class="content form_content">
-		<form action="{url:/member/group_save}" method="post">
-			<input type="hidden" name="group_id" value="{$group['group_id']}" />
+		<form action="{url:/member/group_save}" method="post" name='group'>
+			<input type="hidden" name="group_id" value="" />
 			<table class="form_table">
 				<col width="150px" />
 				<col />
 				<tr>
-					<th>用户组：</th><td><input class="normal" name="group_name" type="text" value="{$group['group_name']}" pattern="required" alt="名称不能为空" /><label>* 用户组名称</label></td>
+					<th>用户组：</th><td><input class="normal" name="group_name" type="text" value="" pattern="required" alt="名称不能为空" /><label>* 用户组名称</label></td>
 				</tr>
 				<tr>
-					<th>折扣率：</th><td><input class="normal" name="discount" type="text" value="{$group['discount']}"  alt="格式不正确（请输入数字，允许包含小数）" />%<label>折扣率，例如：如果输入90，表示该会员组可以以商品原价的90%购买（允许包含小数）,默认100%。</label></td>
+					<th>折扣率：</th><td><input class="normal" name="discount" type="text" value=""  alt="格式不正确（请输入数字，允许包含小数）" />%<label>折扣率，例如：如果输入90，表示该会员组可以以商品原价的90%购买（允许包含小数）,默认100%。</label></td>
+				</tr>
+				<tr>
+					<th>是否默认：</th>
+						<td>
+							<label><input type='radio' name='is_default' value='1' />是 </label>
+							<label><input type='radio' name='is_default' value='0' checked='checked'/>否</label>
+						</td>
 				</tr>
 				<!--
 				<tr>
@@ -57,4 +64,6 @@
 			$('[name="maxexp"]').removeClass('invalid-text');
 		}
 	}
+	var formObj = new Form('group');
+	formObj.init({echo:JSON::encode($group)});
 </script>

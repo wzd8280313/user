@@ -70,7 +70,7 @@ class Hsms
 		
 		if(IValidate::mobi($mobile) && $content)
 		{
-			$ip = IClient::getIp();
+			$ip = IClient::getIp();return 1;
 			return self::$smsInstance->send($mobile,$content);
 			if($ip)
 			{
