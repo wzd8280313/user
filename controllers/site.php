@@ -829,7 +829,7 @@ class Site extends IController
 		if($goods_info['seller_id'])
 		{
 			$sellerDB = new IModel('seller');
-			$goods_info['seller'] = $sellerDB->getObj('id = '.$goods_info['seller_id']);
+			$goods_info['seller'] = $sellerDB->getObj('id = '.$goods_info['seller_id'],'id,true_name,email,mobile,logo_img,server_num,point,num');
 		}
 
 		//增加浏览次数

@@ -10,8 +10,13 @@ class Sonline
 {
 	
 	private static $qqUrl = 'http://wpa.qq.com/msgrd?v=3&uin={$qqNum}&site=qq&menu=yes';
+	
+	//通过qq号获取临时会话url
+	public static function getChatUrl($qq){
+		return str_replace('{$qqNum}',$qq,self::$qqUrl);
+	}
 	/**
-	 * 获取客服数据
+	 * 获取平台客服数据
 	 * @return array 客服数据数组
 	 */
 	public static function getService()
@@ -33,7 +38,7 @@ class Sonline
 			}
 			$tempArray['qq'][$key]['num'] = $val['qq'];
 			$tempArray['qq'][$key]['name'] = $val['name'];
-			$tempArray['qq'][$key]['link'] = str_replace('{$qqNum}',$val['qq'],self::$qqUrl);
+			$tempArray['qq'][$key]['link'] = self::getChatUrl($val['qq']);
 		}
 		if(!$tempArray)
 		{

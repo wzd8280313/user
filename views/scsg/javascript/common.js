@@ -305,4 +305,6 @@ function searchGoods(url,callback)
 		location.href='#'+id;
 	}
 
-
+function showService(){
+	$('.tbar-tab-chat').trigger('click');
+}

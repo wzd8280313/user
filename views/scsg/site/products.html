@@ -8,7 +8,6 @@
 	
 }
 
-
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
 {foreach:items=$promotion}
@@ -357,6 +356,11 @@
 				<ul class="list">
 					{set:$ave = statistics::getSellerGrade($seller['id']);$ave = $ave*70/5;}
 					<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
+					<li style='background:none;'>客服QQ:
+						<a target="_blank" href="{echo:Sonline::getChatUrl($seller['server_num'])}" >
+							<img border="0"  src="{skin:images/qq.jpg}"/>
+						</a>
+					</li>
 					<li style='background:none;'>
 					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}">进入店铺</a>
 					</li>
