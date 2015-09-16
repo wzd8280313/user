@@ -816,7 +816,13 @@ class Site extends IController
 				$goods_info['group_price'] = $group_price;
 			}
 		}
-		
+		//获取标签
+		$tb_tag = new IQuery('commend_tags as t');
+		$tb_tag->join = 'left join commend_goods as go on t.id = go.commend_id';
+		$tb_tag->where = 'go.goods_id = '.$goods_id;
+		$tb_tag->fields = 't.name,t.img';
+		$tb_tag->limit = 5;
+		$goods_info['tag_data'] = $tb_tag->find();
 		
 
 		//获取商家信息

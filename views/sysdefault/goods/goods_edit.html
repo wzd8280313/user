@@ -236,10 +236,9 @@
 					<tr>
 						<th>商品推荐类型：</th>
 						<td>
-							<label class="attr"><input name="_goods_commend[]" type="checkbox" value="1" />最新商品</label>
-							<label class="attr"><input name="_goods_commend[]" type="checkbox" value="2" />特价商品</label>
-							<label class="attr"><input name="_goods_commend[]" type="checkbox" value="3" />热卖商品</label>
-							<label class="attr"><input name="_goods_commend[]" type="checkbox" value="4" />推荐商品</label>
+							{query: name=commend_tags where=is_close eq 0 order=sort asc}
+							<label class="attr"><input name="_goods_commend[]" type="checkbox" value="{$item['id']}" />{$item['name']}</label>
+							{/query}
 						</td>
 					</tr>
 					<tr>
@@ -287,7 +286,7 @@
 					<col width="150px" />
 					<col />
 					<tr>
-						<th>一句话描述：</th>
+						<th>产品简介：</th>
 						<td><textarea  name="short_desc" style="width:500px;height:50px;"></textarea></td>
 					</tr>
 					<tr>

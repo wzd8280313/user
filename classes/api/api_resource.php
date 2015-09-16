@@ -122,6 +122,17 @@ return array(
 			'order'=>'sort asc,id desc'
 		)
 	),
+	//根据标签id取商品列表
+	'getGoodsListByTags' => array(
+			'query' => array(
+					'name' => 'commend_goods as co',
+					'join' => 'left join goods as go on co.goods_id = go.id',
+					'where' => 'co.commend_id = #id# and go.is_del = 0 ',
+					'fields' => 'go.img,go.sell_price,go.name,go.id,go.market_price',
+					'limit'=>'10',
+					'order'=>'go.sort asc,go.id desc'
+			)
+	),
 	//热卖商品列表
 	'getCommendHot' => array(
 		'query' => array(

@@ -279,7 +279,13 @@
 		<!--图片放大器-->
 		<div class="tb-gallery">
 		<div class="tb-booth" id='bigPic'>
-				<img src="{skin:images/sign_3.png}" class="mark">
+			{if:$tag_data}
+				{foreach:items=$tag_data}
+				{set:$right=$key*60}
+			 		<img src="{webroot:$item['img']}" style='right:{$right}px' class="mark">
+				{/foreach}
+			{/if}
+				
 			<a target="_blank" rel="nofollow" href="" >
 			<span class="ks-imagezoom-wrap">		
 			

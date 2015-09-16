@@ -4,7 +4,7 @@
 </div>
 <div class="content_box">
 	<div class="content form_content">
-		<form action="{url:/brand/tags_save}" method="post" enctype='multipart/form-data'>
+		<form action="{url:/brand/tags_save}" method="post" name='tags' enctype='multipart/form-data'>
 			<table class="form_table" cellpadding="0" cellspacing="0">
 				<col width="150px" />
 				<col />
@@ -13,6 +13,13 @@
 					<td><input class="normal" name="name" type="text" value="{$tags['name']}" pattern="required" alt="标签名称不能为空" />
 						<label>*</label>
 						<input name="tags_id" value="{$tags['id']}" type="hidden" />
+					</td>
+				</tr>
+				<tr>
+					<th>是否开启：</th>
+					<td>
+						<label><input type='radio' name='is_close' value='0' checked='checked'/>开启</label>
+						<label><input type='radio' name='is_close' value='1'/>关闭</label>
 					</td>
 				</tr>
 				<tr>
@@ -31,3 +38,7 @@
 		</form>
 	</div>
 </div>
+<script type='text/javascript'>
+	var formObj = new Form('tags');
+	formObj.init({echo:JSON::encode($tags)});
+</script>	
