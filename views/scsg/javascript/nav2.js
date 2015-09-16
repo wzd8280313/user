@@ -55,6 +55,12 @@ $(document).ready(function(){
 					$('.tbar-tab-history').removeClass('tbar-tab-click-selected'); 
 					$('.tbar-panel-history').css({'visibility':"hidden","z-index":"-1"});
 				}
+				if(! $('.tbar-tab-chat').find('.tab-text').length > 0){
+					var info = "<em class='tab-text '>在线客服</em>";
+					$('.tbar-tab-chat').append(info);
+					$('.tbar-tab-chat').removeClass('tbar-tab-click-selected'); 
+					$('.tbar-panel-chat').css({'visibility':"hidden","z-index":"-1"});
+				}
 				$(this).addClass('tbar-tab-click-selected'); 
 				$(this).find('.tab-text').remove();
 				$('.tbar-panel-follow').css({'visibility':"visible","z-index":"1"});
@@ -77,6 +83,61 @@ $(document).ready(function(){
 			$('.toolbar-wrap').addClass('toolbar-open'); 
 		}
 	});
+	
+	$('.tbar-tab-chat').on('click',function(){
+		if ($('.toolbar-wrap').hasClass('toolbar-open')) {
+			if ($(this).find('.tab-text').length > 0) {
+				if (!$('.tbar-tab-follow').find('.tab-text').length > 0) {
+					var info = "<em class='tab-text '>我的关注</em>";
+					$('.tbar-tab-follow').append(info);
+					$('.tbar-tab-follow').removeClass('tbar-tab-click-selected');
+					$('.tbar-panel-follow').css({
+						'visibility': "hidden",
+						"z-index": "-1"
+					});
+				}
+				if (!$('.tbar-tab-cart').find('.tab-text').length > 0) {
+					var info = "<em class='tab-text '>个人中心</em>";
+					$('.tbar-tab-cart').append(info);
+					$('.tbar-tab-cart').removeClass('tbar-tab-click-selected');
+					$('.tbar-panel-cart').css({
+						'visibility': "hidden",
+						"z-index": "-1"
+					});
+				}
+				if(!$('.tbar-tab-history').find('.tab-text').length > 0){
+					var info = "<em class='tab-text '>我的足迹</em>";
+					$('.tbar-tab-history').append(info);
+					$('.tbar-tab-history').removeClass('tbar-tab-click-selected'); 
+					$('.tbar-panel-history').css({'visibility':"hidden","z-index":"-1"});
+				}
+				$(this).addClass('tbar-tab-click-selected');
+				$(this).find('.tab-text').remove();
+				$('.tbar-panel-chat').css({
+					'visibility': "visible",
+					"z-index": "1"
+				});
+				
+			}else{
+				var info = "<em class='tab-text '>在线客服</em>";
+				$('.toolbar-wrap').removeClass('toolbar-open');
+				$(this).append(info);
+				$(this).removeClass('tbar-tab-click-selected');
+				$('.tbar-panel-chat').css({'visibility':"hidden","z-index":"-1"});
+			}
+		}
+		else {
+			$(this).addClass('tbar-tab-click-selected');
+			$(this).find('.tab-text').remove();
+			$('.toolbar-panel').css('visibility', 'hidden');
+			$('.tbar-panel-chat').css({
+				'visibility': "visible",
+				"z-index": "1"
+			});
+			$('.toolbar-wrap').addClass('toolbar-open');
+		}
+	});
+	
 	$('.tbar-tab-history').click(function (){ 
 		if($('.toolbar-wrap').hasClass('toolbar-open')){
 			if($(this).find('.tab-text').length > 0){
@@ -91,6 +152,12 @@ $(document).ready(function(){
 					$('.tbar-tab-cart').append(info);
 					$('.tbar-tab-cart').removeClass('tbar-tab-click-selected'); 
 					$('.tbar-panel-cart').css({'visibility':"hidden","z-index":"-1"});
+				}
+				if(! $('.tbar-tab-chat').find('.tab-text').length > 0){
+					var info = "<em class='tab-text '>在线客服</em>";
+					$('.tbar-tab-chat').append(info);
+					$('.tbar-tab-chat').removeClass('tbar-tab-click-selected'); 
+					$('.tbar-panel-chat').css({'visibility':"hidden","z-index":"-1"});
 				}
 				$(this).addClass('tbar-tab-click-selected'); 
 				$(this).find('.tab-text').remove();
@@ -118,6 +185,7 @@ $(document).ready(function(){
 		$('.toolbar-wrap').removeClass('toolbar-open');
 		$('.tbar-tab-cart').removeClass('tbar-tab-click-selected'); 
 		$('.tbar-tab-follow').removeClass('tbar-tab-click-selected');
+		$('.tbar-tab-chat').removeClass('tbar-tab-click-selected');
 		$('.tbar-tab-history').removeClass('tbar-tab-click-selected');
 	});
 	

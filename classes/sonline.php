@@ -1,67 +1,48 @@
 <?php
 /**
  * @file sonline.php
- * @brief 在线客服插件,此插件是基于jquery的
- * @author 
- * @date 2013/7/15 0:29:17
+ * @brief 在线客服插件
+ * @author wplee
+ * @date 2015/9/16 11:45:17
  * @version 1.0.0
  */
 class Sonline
 {
-	//插件路径
-	public $path;
-
+	
+	private static $qqUrl = 'http://wpa.qq.com/msgrd?v=3&uin={$qqNum}&site=qq&menu=yes';
 	/**
-	 * 构造函数
-	 * @param string $style 风格
+	 * 获取客服数据
+	 * @return array 客服数据数组
 	 */
-	public function __construct($style = 'red')
+	public static function getService()
 	{
-		$this->path = IUrl::creatUrl().'plugins/sonline/';
-
-echo <<< OEF
-	<link rel="stylesheet" href="{$this->path}style/{$style}.css" />
-	<script type="text/javascript" src="{$this->path}js/jquery.Sonline.js"></script>
-OEF;
-	}
-
-	/**
-	 * 展示插件
-	 * @param string $tel 电话号码
-	 * @param string $qqSer 序列化的数据
-	 */
-	public function show($tel,$qqSer)
-	{
+		$siteConfig = new Config("site_config");
+		$tel = $siteConfig->phone;
+		$qqSer = $siteConfig->service_online;
 		if(!$qqSer)
 		{
 			return null;
 		}
 		$qqArray = unserialize($qqSer);
 		$tempArray = array();
-		foreach($qqArray as $val)
+		foreach($qqArray as $key=>$val)
 		{
 			if(!$val['qq'] || !$val['name'])
 			{
 				continue;
 			}
-			$tempArray[] = $val['qq']."|".$val['name'];
+			$tempArray['qq'][$key]['num'] = $val['qq'];
+			$tempArray['qq'][$key]['name'] = $val['name'];
+			$tempArray['qq'][$key]['link'] = str_replace('{$qqNum}',$val['qq'],self::$qqUrl);
 		}
 		if(!$tempArray)
 		{
 			return null;
 		}
-		$qqResult = join(',',$tempArray);
+		$tempArray['tel']=$tel;
+		return $tempArray;
 
-echo <<< OEF
-<script type='text/javascript'>
-$(function(){
-	$().Sonline({
-		"Tel":"{$tel}",
-		"Qqlist":"{$qqResult}"
-	});
-});
-</script>
-OEF;
+		
 	}
 
 	/**

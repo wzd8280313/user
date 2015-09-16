@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="{skin:css/qqkf.css}">
 <div class="service">
 		<ul class="w1190 clearfix">
 			<li class="item1">
@@ -365,6 +365,43 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 									</ul>
 									<a href="{url:/ucenter/history}" class="history-bottom-more" target="_blank">查看更多足迹商品
 										&gt;&gt;</a>
+								</div>
+							</div>
+						</div>
+						<div class="tbar-panel-footer J-panel-footer"></div>
+					</div>
+					<!--在线客服pannel-->
+					<div style="visibility: hidden;" class="J-content toolbar-panel tbar-panel-chat">
+						<h3 class="tbar-panel-header J-panel-header">
+							<a href="#" target="_blank" class="title"> 
+								<i></i> 
+								<em class="title">在线客服</em>
+							</a> 
+							<span class="close-panel J-close"></span>
+						</h3>
+						<div class="tbar-panel-main">
+							<div style="height: 943px;" class="tbar-panel-content J-panel-content">
+								<div class="jt-online-wrap">
+									<div class="n_bk">
+									{set:$service=Sonline::getService()}
+									{if:$service}
+										<table  width="100%" >
+											<col width="90px" />
+											<col />
+											{foreach:items=$service['qq']}
+											<tr height='35'>
+												<th align='right'>{$item['name']}：</th>
+												<td style='padding-left:10px;'>
+													<a target="_blank" href="{$item['link']}" >
+														<img border="0"  src="{skin:images/qq.jpg}"/>
+													</a>
+												</td>
+											</tr>
+											{/foreach}
+											
+										</table>
+										{/if}
+									</div>
 								</div>
 							</div>
 						</div>

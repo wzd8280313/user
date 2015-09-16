@@ -26,7 +26,7 @@
   'index_seo_keywords' => '山城速购',
   'index_seo_description' => '山城速购',
   'goods_no_pre' => 'SD',
-  'service_online' => 'a:1:{i:0;a:2:{s:4:"name";s:3:"123";s:2:"qq";s:9:"234234545";}}',
+  'service_online' => 'a:3:{i:0;a:2:{s:4:"name";s:3:"123";s:2:"qq";s:9:"234234545";}i:1;a:2:{s:4:"name";s:8:"qq客服";s:2:"qq";s:9:"353434343";}i:2;a:2:{s:4:"name";s:3:"234";s:2:"qq";s:9:"350245062";}}',
   'order_finish_time' => '',
   'order_cancel_time' => '',
   'refunds_limit_time' => '',
