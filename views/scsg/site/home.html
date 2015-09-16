@@ -83,7 +83,7 @@
 				</div>
 				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
 				
-				<div class="price" style='margin-top:-65px;'>￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
+				<div class="price" >￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
 			</li>
 			{/foreach}
 		</ul>

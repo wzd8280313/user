@@ -91,7 +91,8 @@
 					<%for(var item in templateData){%>
 					<%item = templateData[item]%>
 					<tr>
-						<td><input class="small" name="_goods_no[<%=i%>]" pattern="required" type="text" value="<%=item['goods_no'] ? item['goods_no'] : item['products_no']%>" /></td>
+						<td><input type='hidden' class='product_id' name='product_id[<%=i%>]' value="<%=item['id']%>"/>
+							<input class="small" name="_goods_no[<%=i%>]" pattern="required" type="text" value="<%=item['goods_no'] ? item['goods_no'] : item['products_no']%>" /></td>
 						<%var isProduct = false;%>
 						<%var specArrayList = parseJSON(item['spec_array'])%>
 						<%for(var result in specArrayList){%>

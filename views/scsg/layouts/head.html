@@ -247,8 +247,8 @@ if($("#actionimg").length>0){
 			<!--category-->
 			<div class="category " id="jCat">
 				<h2 class="cat-title"><a class="t14" href="">全部商品分类<b class="png"></b></a></h2>
-				{set:$hideCls='';}{if:!isset($this->isIndex)}{set:$hideCls='hide';}{/if}<!--非首页分类面板隐藏-->
-				<ul class="cat-list {$hideCls}">
+				
+				<ul class="cat-list" {if:!isset($this->isIndex)}style='display:none;'{/if}>
 					{set:$hotCat=array();}
 					{foreach:items=$categoryTop key=$keyT item=$valT}
 					

@@ -2,6 +2,7 @@
 {set:$goods_id=$this->comment['goods_id'];}
 {set:$id = $this->comment['id'];}
 {set:$item=Api::run('getGoodsInfo',array("#id#",$goods_id))}
+
 <div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/products/id/$goods_id}">{$item['name']}</a> </div>
 <div class="clearfix">
 	<div class="sidebar f_l">
@@ -65,6 +66,7 @@
 		</div>
 	</div>
 </div>
+
 
 <script language="javascript">
 function comment_add()

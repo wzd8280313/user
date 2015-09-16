@@ -618,7 +618,7 @@ class Site extends IController
 		//使用商品id获得商品信息
 		$tb_goods = new IModel('goods');
 		$goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0");
-		$sell_price = $goods_info['sell_price'];
+		//
 		
 		//print_r($goods_info);
 		if(!$goods_info)
@@ -626,7 +626,7 @@ class Site extends IController
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
-
+		$sell_price = $goods_info['sell_price'];
 		//品牌名称
 		if($goods_info['brand_id'])
 		{
@@ -1103,6 +1103,7 @@ class Site extends IController
 		$this->can_submit   = $can_submit[0]==1;//true值
 		$this->comment      = $can_submit[1]; //评论数据
 		$this->comment_info = Comment_Class::get_comment_info($this->comment['goods_id']);
+		//print_r($this->comment);
 		$this->redirect("comments");
 	}
 
@@ -1126,7 +1127,6 @@ class Site extends IController
 		$data['point']    = IFilter::act(IReq::get('point'),'float');
 		$data['contents'] = IFilter::act(IReq::get("contents"),'content');
 		$data['sellerid'] = IFilter::act(IReq::get('sellerid'),'int');
-		$data['sellerid']=1;
 		$data['status']   = 1;
 
 		if($data['point']==0)
