@@ -1032,7 +1032,6 @@ function buy_now()
 	}
 	var promo_type='groupon';
 	var active_id = $('input[name=active_id]').val();
-	
 	var url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
 	url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
 	

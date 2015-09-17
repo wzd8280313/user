@@ -395,7 +395,7 @@ function selectTakeself(deliveryId)
 						<col />
 
 						<tbody>
-							{set:$deliveryData = Api::run('getDeliveryList')}
+							{set:$deliveryData = $this->allDeliveryType}
 							{foreach:items = $deliveryData}
 							<tr>
 								<th><label><input type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>

@@ -572,6 +572,12 @@ class Ucenter extends IController
     	$area     = IFilter::act( IReq::get('area','post') ,'string' );
     	$areaStr  = ','.$province.','.$city.','.$area.',';
 
+    	$username = IFilter::act(IReq::get('username','post'));
+    	if($username){
+    		$user = new IModel('user');
+    		$user->setData(array('username'=>$username));
+    		$user->update('id='.$user_id);
+    	}
     	$dataArray       = array(
     		'true_name'    => IFilter::act( IReq::get('true_name') ,'string'),
     		'sex'          => IFilter::act( IReq::get('sex'),'int' ),

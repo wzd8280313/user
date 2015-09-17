@@ -716,13 +716,12 @@ class Simple extends IController
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
     	$where = array('id'=>array_keys($this->goodsList));
-    	if($where['id']){
-    		foreach($sellerObj->select($where,'freight_collect') as $value){
-    			if($value['freight_collect']==0){
-    				$this->freight_collect=0;
-    				break;
-    			}
-    		}
+    	$sellerStr = implode(',',$where['id']);//2,1,0
+    	//print_r($where);
+    	
+    	//判断是否支持货到付款
+    	if($sellerStr && $sellerObj->query('id in ('.$sellerStr.') and freight_collect = 0')){
+    		$this->freight_collect=0;
     	}
     	
 		//收货地址列表
@@ -730,7 +729,17 @@ class Simple extends IController
 		//获取商品税金
 		$this->goodsTax    = $result['tax'];
 		
-		//$deliveryData = Api::run('getSellerDelivery',array('#seller_id#',$this->goodsList['seller_id']))
+		//print_r($this->goodsList);
+		//获取配送方式列表（一个商家不支持则不显示）
+		$allDeliveryType = Api::run('getDeliveryList');
+		$deli_exe = new IModel('delivery_extend');
+		foreach($allDeliveryType as $key=>$val){
+			if($deli_exe->getObj(' delivery_id='.$val['id'].' and seller_id in ('.$sellerStr.') and is_open = 0','id')){
+				unset($allDeliveryType[$key]);
+			}
+		}
+		
+		$this->allDeliveryType = $allDeliveryType;
     	//渲染页面
     	$this->redirect('cart2');
     }
