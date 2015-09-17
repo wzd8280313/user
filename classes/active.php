@@ -120,7 +120,7 @@ class Active
 					{
 						if($this->buy_num > $regimentRow['limit_max_count'])
 						{
-							return "购买数量不能超过 ".$regimentRow['limit_min_count']." 件";
+							return "购买数量不能超过 ".$regimentRow['limit_max_count']." 件";
 						}
 
 						if(($hasBugNum + $this->buy_num) > $regimentRow['limit_max_count'])
