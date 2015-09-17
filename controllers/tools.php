@@ -592,8 +592,13 @@ class Tools extends IController
 			{
 				$where = 'id = '.$id;
 			}
-			$obj->del($where);
-			$this->redirect('ad_position_list');
+			$res = $obj->del($where);
+			if(!$res){
+				$this->redirect('ad_position_list',false);
+				Util::showMessage('请先删除对应的广告');
+			}else{
+				$this->redirect('ad_position_list');
+			}
 		}
 		else
 		{

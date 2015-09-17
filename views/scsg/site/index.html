@@ -10,6 +10,26 @@
 <script type="text/javascript" src="{theme:javascript/jquery.kinMaxShow-1.0.min.js}"></script>
 <script type"text/javascript" src="{theme:javascript/a.js}"></script>
 <link href="{skin:css/bm.css}" rel="stylesheet">
+
+<!--流量统计代码-->
+<script type="text/javascript">
+var _mvq = window._mvq || []; 
+window._mvq = _mvq;
+_mvq.push(['$setAccount', 'm-170377-0']);
+
+
+_mvq.push(['$logConversion']);
+(function() {
+	var mvl = document.createElement('script');
+	mvl.type = 'text/javascript'; mvl.async = true;
+	mvl.src = ('https:' == document.location.protocol ? 'https://static-ssl.mediav.com/mvl.js' : 'http://static.mediav.com/mvl.js');
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(mvl, s); 
+})();	
+
+</script>
+<!--流量统计代码-->
+
 {set:$recommend = Api::run('getCommendRecom')}
 <!--bn-->
 <div class="bn" style="height:490px;">

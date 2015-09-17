@@ -157,7 +157,12 @@ class IModel
 	{
 		$where = (strtolower($where) == 'all') ? '' : ' WHERE '.$where;
 		$sql   = 'DELETE FROM '.$this->tableName.$where;
-		return $this->db->query($sql);
+		try{
+			return $this->db->query($sql);
+		}
+		catch(Exception $e){
+			return 0;
+		}
 	}
 
 	/**

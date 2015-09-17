@@ -445,12 +445,16 @@ class Member extends IController
 
 				$tb_user = new IModel('user');
 				$where = "id in (".$ids.")";
-				$tb_user->del($where);
-				$logObj = new log('db');
-				$logObj->write('operation',array("管理员:".$this->admin['admin_name'],"删除了用户","被删除的用户ID为：".$ids));
+				if($tb_user->del($where)){
+					$logObj = new log('db');
+					$logObj->write('operation',array("管理员:".$this->admin['admin_name'],"删除了用户","被删除的用户ID为：".$ids));
+				}else{
+					$this->redirect('recycling');
+					Util::showMessage('请先删除该用户充值提现相关记录');
+				}
 			}
 		}
-		$this->redirect('member_list');
+		$this->redirect('recycling');
 	}
 
 	/**

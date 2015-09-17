@@ -1237,8 +1237,9 @@ class Site extends IController
 
 	function ce(){
 		$m = new IModel('user');
-		if($a = $m->del('id=43'))echo 4;else echo 0;
-		print_r($_SESSION);
+		
+		$res = $m->del('id=43');
+		echo $res;
 		//user_like::set_user_history(13,1);
 	}
 	
