@@ -305,7 +305,7 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 									
 									<ul>
 										
-										{if:isset($favorite_ids)}
+										{if:isset($favorite_ids)&&$favorite_ids}
 										{foreach:items=Api::run('getGoodsInfoByIds',array('#ids#',$favorite_ids))}
 										
 										<li class="jth-item"><a href="{url:/site/products/id/$item[goods_id]}" class="img-wrap"

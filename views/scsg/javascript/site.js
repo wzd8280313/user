@@ -199,9 +199,9 @@ jQuery(function()
 	//非首页分类面板展开收起
 	if($('.cat-list').css('display')=='none'){
 		$('#jCat').mouseover(function(){
-			$(this).children('.cat-list').removeClass('hide');
+			$(this).children('.cat-list').css('display','block');
 		}).mouseout(function(){
-			$(this).children('.cat-list').addClass('hide');
+			$(this).children('.cat-list').css('display','none');
 		});
 	}
 

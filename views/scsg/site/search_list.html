@@ -2,7 +2,11 @@
 {set:$seo_data['title']="商品搜索_".$site_config['name']}
 {set:seo::set($seo_data);}
 {set:$defaultWhere = array('search' => $this->word , 'category_extend' => $this->cat_id )}
-{set:$goodsObj = search_goods::find($defaultWhere);$resultData = $goodsObj->find();}
+{set:$goodsObj = search_goods::find($defaultWhere);$resultData = $goodsObj->find();
+$seller = new IModel('seller');
+$seller_arr = array();
+$seller_arr[0]='平台自营';
+}
 
 <div class="position"> <span>全部结果：</span> <a href="javascript:void(0)">{$this->word}</a> </div>
 <div class="wrapper clearfix container_2">
@@ -123,9 +127,23 @@
 				<div class="pic">
 					<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" title="{$item['name']}" /></a>
 				</div>
-				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{echo:str_replace($this->word,'<b class="red">'.$this->word.'</b>',$item['name'])}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
+				<h3 class="title">
+					<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">
+						{echo:str_replace($this->word,'<b class="red">'.$this->word.'</b>',$item['name'])}
+					</a>
+					<span>总销量：{$item['sale']}
+						<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a>
+					</span>
+					<span class='grade'>
+						<i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'>
+						</i>
+					</span>
+					<span style='margin-top:5px;'>
+						<a  style='margin-left:5px;text-decoration:none;'>{$seller_arr[$item['seller_id']]}</a>
+					</span>
+				</h3>
 				
-				<div class="price" style='margin-top:10px;'>￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
+				<div class="price" >￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
 			</li>
 			{/foreach}
 		</ul>

@@ -73,7 +73,7 @@
 		{set:$goodsObj = search_goods::find(array('seller_id' => $seller_id));$resultData = $goodsObj->find();}
 		{if:$resultData}
 		{set:$listSize = search_goods::getListSize(IFilter::act(IReq::get('show_type')))}
-		<ul class="display_list clearfix m_10">
+		<ul class="display_list clearfix m_10" id='home_list'>
 			{foreach:items=$resultData}
 			<li class="clearfix {echo:search_goods::getListShow(IFilter::act(IReq::get('show_type')))}">
 				<div class="pic">
@@ -83,7 +83,7 @@
 				</div>
 				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
 				
-				<div class="price" >￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
+				<div  class="price" >￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
 			</li>
 			{/foreach}
 		</ul>
@@ -96,3 +96,8 @@
 		{/if}
 	</div>
 </div>
+<style>
+	#home_list .win .price{
+		margin-top:-65px;
+	}
+</style>
