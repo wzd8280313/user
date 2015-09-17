@@ -445,7 +445,7 @@ class Member extends IController
 
 				$tb_user = new IModel('user');
 				$where = "id in (".$ids.")";
-				$aa = $tb_user->del($where);
+				$tb_user->del($where);
 				$logObj = new log('db');
 				$logObj->write('operation',array("管理员:".$this->admin['admin_name'],"删除了用户","被删除的用户ID为：".$ids));
 			}
