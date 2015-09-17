@@ -575,8 +575,10 @@ class Ucenter extends IController
     	$username = IFilter::act(IReq::get('username','post'));
     	if($username){
     		$user = new IModel('user');
-    		$user->setData(array('username'=>$username));
-    		$user->update('id='.$user_id);
+    		if(!$user->getObj('username="'.$username.'"','id')){
+    			$user->setData(array('username'=>$username));
+    			$user->update('id='.$user_id);
+    		}
     	}
     	$dataArray       = array(
     		'true_name'    => IFilter::act( IReq::get('true_name') ,'string'),
@@ -1354,6 +1356,16 @@ class Ucenter extends IController
     		$res['mess']='验证码错误或已过期，请重新验证身份';
     	}
     	echo JSON::encode($res);
+    }
+    
+    //验证用户名是否注册
+    public function checkUserIsOne(){
+    	$username = IFilter::act(IReq::get('username'),'post');
+    	$user = new IModel('user');
+    	if($user->getObj('username="'.$username.'"','id')){
+    		echo 1;
+    	}else echo 0;
+    	
     }
     
 }

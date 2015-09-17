@@ -66,7 +66,7 @@
 				</tr>
 				{if:!$this->userRow['username']}
 				<tr>
-					<th><span class="red">*</span> 用户名：</th><td><input class="normal" type="text" name="username" pattern='required' alt='请填写用户名' /><label>（注册后可用户登陆，注册后不可修改）</label></td>
+					<th><span class="red">*</span> 用户名：</th><td><input class="normal" type="text" name="username"  alt='请填写用户名' /><label>（注册后可用户登陆，注册后不可修改）</label></td>
 				</tr>
 				{/if}
 				<tr>
@@ -109,7 +109,7 @@
 					<th>QQ：</th>
 					<td><input class="normal" type="text" name='qq' pattern='qq' empty alt='请填写正确的QQ号' /></td>
 				</tr>
-				<tr><th></th><td><label class="btn"><input type="submit" value="保存基本信息" /></label></td></tr>
+				<tr><th></th><td><label class="btn"><input type="submit"  value="保存基本信息" /></label></td></tr>
 			</table>
 		</form>
 	</div>
@@ -132,8 +132,50 @@ $(function(){
 	{else:}
 	createAreaSelect('province',0,"");
 	{/if}
+	
+	//验证用户名
+	$('input[name=username]').on('blur',function(){
+		var value = $.trim($(this).val());
+		//window.realAlert(value);
+		if(value.length<2 || value.length>20){
+			$(this).next('label').removeClass('valid-msg').addClass('invalid-msg').text('用户名长度须在2-20位之间');
+			return false;
+		}
+		if(checkUsername(value)){
+			$(this).next('label').removeClass('valid-msg').addClass('invalid-msg').text('用户名已注册');
+			return false;
+		}
+			$(this).next('label').removeClass('invalid-msg').addClass('valid-msg').text('');
+			return false;
+		
+	})
+	$('input[type=submit]').on('click',function(){
+		var userSel = $('input[name=username]');
+		var username = $.trim($('input[name=username]').val());
+		if(checkUsername(username)){
+			userSel.next('label').removeClass('valid-msg').addClass('invalid-msg').text('用户名已注册');
+			return false;
+		}
+	})
 });
-
+/**
+ * 验证用户名唯一性
+ */
+function checkUsername(username){
+	var url = '{url:/ucenter/checkUserIsOne}';
+	var res = 0;//未占用
+	$.ajax({
+		type:'post',
+		async:false,
+		data:{username:username},
+		url:url,
+		success:function(data){
+			res = data==1?1:0;
+		},
+		timeout:1000,
+	})
+	return res;
+} 
 /**
  * 生成地域js联动下拉框
  * @param name
@@ -194,4 +236,6 @@ formObj.init({
 	'zip':'{$this->memberRow['zip']}',
 	'birthday':'{$this->memberRow['birthday']}',
 });
+
+
 </script>
