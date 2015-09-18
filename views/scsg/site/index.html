@@ -342,7 +342,7 @@ _mvq.push(['$logConversion']);
     	<!--tabs rcmd f-l-->
     	<div class="tabs rcmd f-l">
         	<!--tab-title-->
-			{query: name=commend_tags where=is_close eq 0 order=sort asc limit=5 items=$tags}
+			{query: name=commend_tags where=is_close eq 0 and show_index eq 1 order=sort asc limit=5 items=$tags}
 			{/query}
         	<div class="tab-title clearfix">
         		{foreach:items=$tags key=$k}

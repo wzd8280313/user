@@ -17,7 +17,7 @@
 			</form>
 		</div>
 		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="window.location.href='{url:/goods/goods_edit}'"><span class="addition">添加商品</span></button></a>
-		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="selectAll('id[]')"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0);" onclick='all_to_excel()'><button class="operating_btn" type="button" onclick="selectAll('id[]')" "><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="goods_del()"><span class="delete">删除</span></button></a>
 		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="goods_stats('up')"><span class="import">上架</span></button></a>
 		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="goods_stats('down')"><span class="export">下架</span></button></a>
@@ -32,6 +32,7 @@
 		<form action="{url:/}" method="get" name="searchListForm">
 			<input type='hidden' name='controller' value='goods' />
 			<input type='hidden' name='action' value='goods_list' />
+			<input type='hidden' name='ids' />
 			<select class="auto" name="search[seller_id]">
 				<option value="">选择商品所属</option>
 				<option value="=0">平台商品</option>
@@ -52,10 +53,9 @@
 			</select>
 			<select class="auto" name="search[commend_id]">
 				<option value="">选择商品标签</option>
-				<option value="1">最新商品</option>
-				<option value="2">特价商品</option>
-				<option value="3">热卖商品</option>
-				<option value="4">推荐商品</option>
+				{query:name=commend_tags where=is_close eq 0 fields=id,name }
+				<option value="{$item['id']}">{$item['name']}</option>
+				{/query}
 			</select>
 
 			<!--分类数据显示-->
@@ -68,7 +68,7 @@
 			</script>
 			<button class="btn" type="button" onclick="selectGoodsCategory('{url:/block/goods_category/type/radio}','search[category_id]')"><span class="add">设置分类</span></button>
 			<button class="btn" type="submit"  onclick='changeAction(false)'><span class="sel">筛 选</span></button>
-			<button class="btn" onclick='changeAction(true)'><span class="sel">导出Excel</span></button>
+			<button class="btn"  onclick='changeAction(true)'><span class="sel">导出Excel</span></button>
 		</form>
 	</div>
 
@@ -118,7 +118,7 @@
 			<tbody>
 				{foreach:items = $this->goodsHandle->find()}
 				<tr>
-					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
+					<td><input name="id[]" type="checkbox" value="{$item['id']}" onclick='to_excel(this)' /></td>
 					<td><img src='{url:/pic/thumb/img/$item[img]/w/100/h/100}' class='ico' /><a class="orange" href="javascript:jumpUrl('{$item['is_del']}','{url:/site/products/id/$item[id]}')" title="{$item['name']}">{$item['name']}</a></td>
 					<td>
 					{set:$catName = array()}
@@ -282,7 +282,45 @@ $(function(){
 		$('[name="search['+index+']"]').val(searchData[index]);
 	}
 	{/if}
+	
+	
 });
+//单个checkbox加入excel
+function to_excel(_this){
+	var check = $(_this).prop('checked');
+	var thisId = $(_this).val();
+	var toExcelIdInput = $('input[name=ids]');
+	var idsArr = toExcelIdInput.val().split(',');
+	
+	if(!check){
+		for (var i in idsArr){
+			if(idsArr[i]==thisId){
+				idsArr.splice(i,1);
+				i--;
+			}
+		}
+	}else{//选中
+		if(idsArr.indexOf(thisId)==-1){
+			idsArr[idsArr.length]=thisId;
+		}
+	}
+	var ids = idsArr.join(',');
+	toExcelIdInput.val(ids);
+}
+//全选按钮触发,将所有选中id放入input,用于excel下载
+function all_to_excel(){
+	var idCheckInput = $('input[type=checkbox]');
+	var toExcelIdInput = $('input[name=ids]');
+	var check = idCheckInput.eq(0).prop('checked');
+	var ids = '';
+	if(check){
+		idCheckInput.each(function(){
+			ids += $(this).val()+',';
+		})
+		ids = ids.substr(0,ids.length-1);
+	}
+	toExcelIdInput.val(ids);
+}
 
 //商品推荐标签
 function goodsCommend()

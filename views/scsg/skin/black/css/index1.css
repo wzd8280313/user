@@ -47,10 +47,11 @@ a.line{text-decoration:underline}
 .indent{text-indent:15px}
 .relative{position:relative}
 .img_border{border:1px solid #ddd;}
-a:hover {
+
+/*a:hover {
 	color:#d6272d;
 	text-decoration:none;
-}
+}*/
 /* common style end */
 /* clear style start */
 *html .clearfix{height:1%}/* ie6 */

@@ -252,13 +252,15 @@ class Brand extends IController
 		$img = uploadHandle('img');
 		$intro = IFilter::act(IReq::get('intro'));
 		$is_close = IFilter::act(IReq::get('is_close'),'int');
+		$show_index = IFilter::act(IReq::get('show_index'),'int');
 		
 		$commend = new IModel('commend_tags');
 		$tags = array(
 			'name'=>$name,
 			'sort'=>$sort,
 			'is_close'=>$is_close,
-			'intro'=>$intro
+			'intro'=>$intro,
+			'show_index'=>$show_index
 		);
 		if($img)$tags['img']=$img;
 		$commend->setData($tags);

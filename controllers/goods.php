@@ -397,10 +397,22 @@ class Goods extends IController
 	//商品导出 Excel
 	public function goods_report()
 	{
-		//搜索条件
+		$ids = IFilter::act(IReq::get('ids'));
+		
 		$search = IFilter::act(IReq::get('search'),'strict');
+		
+		//搜索条件
+		
 		//条件筛选处理
 		list($join,$where) = goods_class::getSearchCondition($search);
+		if($ids){
+			if(substr($ids,0,1)==','){
+				$ids = substr($ids,1);
+			}
+			$idArr = explode(',',$ids);
+			$ids = implode(',',$idArr);
+			$where = 'go.id in ('.$ids.')';
+		}
 		//拼接sql
 		$goodsHandle = new IQuery('goods as go');
 		$goodsHandle->order    = "go.sort asc,go.id desc";
