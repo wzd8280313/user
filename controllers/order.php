@@ -293,6 +293,7 @@ class Order extends IController
 				$refundsDB  = new IModel('refundment_doc');
 				$refundsRow = $refundsDB->getObj('id = '.$refundsId);
 				$data['refunds'] = $refundsRow;
+				
 			}
 			$this->setRenderData($data);
 			$this->redirect('order_refundment');

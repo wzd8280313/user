@@ -106,7 +106,7 @@ class CountSum
 		$user_id      = $this->user_id;
 		$group_id     = $this->group_id;
     	$goodsList    = array();
-    	$productList  = array();
+    	$productList  = array();//
 
 		/*开始计算goods和product的优惠信息 , 会根据条件分析出执行以下哪一种情况:
 		 *(1)查看此商品(货品)是否已经根据不同会员组设定了优惠价格;

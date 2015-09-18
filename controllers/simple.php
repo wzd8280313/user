@@ -824,6 +824,7 @@ class Simple extends IController
 			//清空购物车
 			IInterceptor::reg("cart@onFinishAction");
     	}
+    	//print_r($goodsResult);echo '</br>';
 
     	//判断商品商品是否存在
     	if(is_string($goodsResult) || empty($goodsResult['goodsList']))
@@ -867,6 +868,7 @@ class Simple extends IController
 
 		//最终订单金额计算
 		$orderData = $countSumObj->countOrderFee($goodsResult,$province,$delivery_id,$payment,$insured,$taxes);
+		//print_r($orderData);
 		if(is_string($orderData))
 		{
 			IError::show(403,$orderData);
@@ -898,8 +900,8 @@ class Simple extends IController
 			'prop'                => isset($dataArray['prop']) ? $dataArray['prop'] : null,
 
 			//商品价格
-			'payable_amount'      => $goodsResult['sum'],
-			'real_amount'         => $goodsResult['final_sum'],
+			'payable_amount'      => $goodsResult['sum'],//商品原总价
+			'real_amount'         => $goodsResult['final_sum'],//商品元总价-促销优惠-闪购/会员价优惠    （未减去红包金额）
 
 			//运费价格
 			'payable_freight'     => $orderData['deliveryOrigPrice'],
@@ -913,10 +915,14 @@ class Simple extends IController
 			'invoice_title'       => $tax_title,
 			'taxes'               => $orderData['taxPrice'],
 
-			//优惠价格
+			//优惠价格（包括闪购、会员价差价，红包，促销活动减价）
 			'promotions'          => $goodsResult['proReduce'] + $goodsResult['reduce'] + (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
 
-			//订单应付总额
+			//促销活动优惠
+			'pro_reduce'         => $goodsResult['proReduce'] ,
+			//红包见面金额
+			'ticket_reduce'      => isset($ticketRow['value']) ? $ticketRow['value'] : 0,
+			//订单应付总额（商品final_num加上，税金，运费，再减去红包）
 			'order_amount'        => $orderData['orderAmountPrice'] - (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
 
 			//订单保价

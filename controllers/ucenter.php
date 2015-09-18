@@ -308,14 +308,17 @@ class Ucenter extends IController
 					'order_id' => $order_id,
 					'user_id'  => $user_id,
         			'type'     => $type,
-					'amount'   => $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'] + $otherFee,
+					'amount'   => $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'],
 					'time'     => ITime::getDateTime(),
 					'content'  => $content,
 					'goods_id' => $goodsOrderRow['goods_id'],
 					'product_id' => $goodsOrderRow['product_id'],
 				);
+        		//退款额计算：将促销优惠和红包优惠平均分配
+				$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
+				$updateData['amount'] -= $updateData['amount'] * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
 
-        		$goodsDB  = new IModel('goods');
+				$goodsDB  = new IModel('goods');
         		$goodsRow = $goodsDB->getObj('id = '.$goodsOrderRow['goods_id']);
 
         		//属于商户的商品
