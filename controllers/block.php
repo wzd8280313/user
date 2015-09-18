@@ -39,7 +39,9 @@ class Block extends IController
 	function goods_list()
 	{
 		//商品检索条件
-		$show_num    = IFilter::act( IReq::get('show_num'),'int');
+		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+		$show_num    = IFilter::act( IReq::get('show_num'),'int') ;
+		$show_num = $show_num ? $show_num : 10;
 		$keywords    = IFilter::act( IReq::get('keywords') );
 		$cat_id      = IFilter::act( IReq::get('category_id'),'int');
 		$min_price   = IFilter::act( IReq::get('min_price'),'float');
@@ -49,10 +51,10 @@ class Block extends IController
 		$seller_id   = IFilter::act( IReq::get('seller_id'),'int');
 		$goods_id    = IFilter::act( IReq::get('goods_id'),'int');
 
+		//$tb_goods = new IQuery('goods as go');
+		
 		//查询条件
 		$table_name = 'goods as go';
-		$fields     = 'go.id as goods_id,go.name,go.img,go.store_nums,go.goods_no,go.sell_price,go.spec_array';
-
 		$where   = 'go.is_del = 0';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
 		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
@@ -67,10 +69,14 @@ class Block extends IController
 			$table_name .= ' ,category_extend as ca ';
 			$where      .= " and ca.category_id = {$cat_id} and go.id = ca.goods_id ";
 		}
-
+		$tb_goods = new IQuery($table_name);
+		$tb_goods->where = $where;
+		$tb_goods->fields     = 'go.id as goods_id,go.name,go.img,go.store_nums,go.goods_no,go.sell_price,go.spec_array';
+		$tb_goods->page = $page;
+		$tb_goods->pagesize = $show_num;
+		$tb_goods->order    = "go.sort asc,go.id desc";
 		//获取商品数据
-		$goodsDB = new IModel($table_name);
-		$data    = $goodsDB->query($where,$fields,'go.id','desc',$show_num);
+		$data   = $tb_goods->find();
 
 		//包含货品信息
 		if($is_products)
@@ -97,7 +103,7 @@ class Block extends IController
 				}
 			}
 		}
-
+		$this->tb_goods = $tb_goods;
 		$this->data = $data;
 		$this->type = IFilter::act(IReq::get('type'));//页面input的type类型，比如radio，checkbox
 		$this->redirect('goods_list');
