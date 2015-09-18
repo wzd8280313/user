@@ -404,14 +404,14 @@ class Goods extends IController
 		//搜索条件
 		
 		//条件筛选处理
-		list($join,$where) = goods_class::getSearchCondition($search);
+		
 		if($ids){
-			if(substr($ids,0,1)==','){
-				$ids = substr($ids,1);
-			}
+			list($join,$where) = goods_class::getSearchCondition(false);
 			$idArr = explode(',',$ids);
 			$ids = implode(',',$idArr);
 			$where = 'go.id in ('.$ids.')';
+		}else{
+			list($join,$where) = goods_class::getSearchCondition($search);
 		}
 		//拼接sql
 		$goodsHandle = new IQuery('goods as go');

@@ -290,7 +290,7 @@ function to_excel(_this){
 	var check = $(_this).prop('checked');
 	var thisId = $(_this).val();
 	var toExcelIdInput = $('input[name=ids]');
-	var idsArr = toExcelIdInput.val().split(',');
+	var idsArr = toExcelIdInput.val()==''? []:toExcelIdInput.val().split(',');
 	
 	if(!check){
 		for (var i in idsArr){

@@ -2,7 +2,7 @@
 	<div class="position">订单<span>></span><span>订单管理</span><span>></span><span>订单列表</span></div>
 	<div class="operating">
 		<a href="javascript:void(0);"><button class="operating_btn" type="button" onclick="window.location='{url:/order/order_edit}'"><span class="addition">添加订单</span></button></a>
-		<a href="javascript:void(0);" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
+		<a href="javascript:void(0);" onclick='all_to_excel()'><button class="operating_btn" onclick="selectAll('id[]')" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0);" onclick="delModel({form:'orderForm'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 		<a href="javascript:void(0);" onclick="$('#orderForm').attr('action','{url:/order/expresswaybill_template}');$('#orderForm').submit();"><button class="operating_btn"><span class="export">批量打印快递单</span></button></a>
 		<a href="javascript:void(0);"><button class="operating_btn" onclick="location.href='{url:/order/print_template}'"><span class="export">单据模板</span></button></a>
@@ -12,7 +12,7 @@
 		<form action="{url:/}" method="get" name="order_list">
 			<input type='hidden' name='controller' value='order' />
 			<input type='hidden' name='action' value='order_list' />
-
+			<input type='hidden' name='ids' />
 			<select name="search[pay_status]" class="auto">
 				<option value="">选择支付状态</option>
 				<option value="0">未支付</option>
@@ -93,7 +93,7 @@
 			<tbody>
 				{foreach:items = $this->orderHandle->find()}
 				<tr>
-					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
+					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" onclick='to_excel(this)' /></td>
 					<td title="{$item['order_no']}">{$item['order_no']}</td>
 					<td title="{$item['accept_name']}">{$item['accept_name']}</td>
 					<td><span name="payStatusColor{$item['pay_status']}">{echo:Order_Class::getOrderPayStatusText($item)}</span></td>
@@ -147,5 +147,42 @@ function changeAction(excel)
 		$("input[name=\"action\"]").val("order_list");
 		$("form[name=\"order_list\"]").attr("target", "_self");
 	}
+}
+
+//单个checkbox加入excel
+function to_excel(_this){
+	var check = $(_this).prop('checked');
+	var thisId = $(_this).val();
+	var toExcelIdInput = $('input[name=ids]');
+	var idsArr = toExcelIdInput.val()==''? []:toExcelIdInput.val().split(',');
+	
+	if(!check){
+		for (var i in idsArr){
+			if(idsArr[i]==thisId){
+				idsArr.splice(i,1);
+				i--;
+			}
+		}
+	}else{//选中
+		if(idsArr.indexOf(thisId)==-1){
+			idsArr[idsArr.length]=thisId;
+		}
+	}
+	var ids = idsArr.join(',');
+	toExcelIdInput.val(ids);
+}
+//全选按钮触发,将所有选中id放入input,用于excel下载
+function all_to_excel(){
+	var idCheckInput = $('input[type=checkbox]');
+	var toExcelIdInput = $('input[name=ids]');
+	var check = idCheckInput.eq(0).prop('checked');
+	var ids = '';
+	if(check){
+		idCheckInput.each(function(){
+			ids += $(this).val()+',';
+		})
+		ids = ids.substr(0,ids.length-1);
+	}
+	toExcelIdInput.val(ids);
 }
 </script>

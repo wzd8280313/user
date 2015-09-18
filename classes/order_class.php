@@ -900,7 +900,7 @@ class Order_Class
 	 * @param int $search 条件数组
 	 * @return array 查询条件（$join,$where）数据组
 	 */
-	public static function getSearchCondition($search)
+	public static function getSearchCondition($search=false)
 	{
 		$join  = "left join delivery as d on o.distribution = d.id left join payment as p on o.pay_type = p.id left join user as u on u.id = o.user_id";
 		$where = "if_del = 0";
