@@ -26,5 +26,6 @@ class report
 		header('Pragma:public');
 		echo $strTable;
 	}
+
 }
 ?>

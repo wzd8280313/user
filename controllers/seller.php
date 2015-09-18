@@ -95,10 +95,16 @@ class Seller extends IController
 	public function goods_report()
 	{
 		$seller_id = $this->seller['seller_id'];
-		$condition = Util::search(IFilter::act(IReq::get('search'),'strict'));
+		$idsArr = IFilter::act(IReq::get('id'));
+		
+		if(!$idsArr){
+			$this->redirect('goods_list',false);
+			Util::showMessage('请选择商品数据');
+		}
+		$ids = implode(',',$idsArr);
 
 		$where  = 'go.seller_id='.$seller_id;
-		$where .= $condition ? " and ".$condition : "";
+		$where .= ' and go.id in ('.$ids.')';
 
 		$goodHandle = new IQuery('goods as go');
 		$goodHandle->order  = "go.id desc";

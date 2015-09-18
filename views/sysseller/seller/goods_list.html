@@ -1,7 +1,14 @@
 {set:$seller_id = $this->seller['seller_id'];$searchArray = Util::getUrlParam('search')}
 {set:$searchParam = http_build_query($searchArray)}
-{set:$condition = Util::search(IReq::get('search'));$where = $condition ? " and ".$condition : "";$join = isset($searchArray['search']['ce.category_id=']) ? " left join category_extend as ce on ce.goods_id = go.id " : ""}
 
+{set:$condition = Util::search(IReq::get('search'));$where = $condition ? " and ".$condition : "";$join = isset($searchArray['search']['ce.category_id=']) ? " left join category_extend as ce on ce.goods_id = go.id " : ""}
+<script type='text/javascript' >
+	$(function(){
+		$('input[name=report]').on('click',function(){
+			$('form[name=goodsForm]').attr('action','{url:/seller/goods_report}').submit();
+		})
+	})
+</script>
 <article class="module width_full">
 	<header>
 		<h3 class="tabs_involved">商品列表</h3>
@@ -13,7 +20,7 @@
 			<li><input type="button" class="alt_btn" onclick="goods_del();" value="删除" /></li>
 			<li><input type="button" class="alt_btn" onclick="goods_status(2);" value="下架" /></li>
 			<li><input type="button" class="alt_btn" onclick="goods_status(3);" value="提交审核" /></li>
-			<li><input type="button" class="alt_btn" onclick="window.open('{url:/seller/goods_report/?$searchParam}');" value="导出Excel" /></li>
+			<li><input type="button" class="alt_btn" name='report' value="导出Excel" /></li>
 		</ul>
 	</header>
 
