@@ -632,8 +632,8 @@ class Simple extends IController
 		//计算商品
 		$countSumObj = new CountSum($user_id);
 
-		//判断是特定活动还是购物车
-		if($id && $type)
+		
+		if($id && $type)//立即购买
 		{
 			$result = $countSumObj->direct_count($id,$type,$buy_num,$promo,$active_id);
 			$this->gid       = $id;
@@ -642,14 +642,17 @@ class Simple extends IController
 			$this->promo     = $promo;
 			$this->active_id = $active_id;
 		}
-		else
+		else//购物车
 		{
 			//计算购物车中的商品价格
 			$result = $countSumObj->cart_count();
+			
 		}
-
+		if($result['sum']==0){
+			$this->redirect('cart');
+		}
 		//检查商品合法性或促销活动等有错误
-		if(is_string($result))
+		if( is_string($result))
 		{
 			IError::show(403,$result);
 			exit;

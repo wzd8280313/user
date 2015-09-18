@@ -85,6 +85,7 @@ class ProRule
 	{
 		//获取赠品奖励信息
 		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce);
+		
 		return $this->giftAction($giftInfo,$user_id);
 	}
 
@@ -338,6 +339,7 @@ class ProRule
 				break;
 			}
 		}
+		
 	}
 
 	/**

@@ -163,7 +163,7 @@ class Active
 				}
 				else
 				{
-					return "不存在此限时抢购活动";
+					return "不存在此闪购活动";
 				}
 				return true;
 			}

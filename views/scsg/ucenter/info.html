@@ -152,10 +152,13 @@ $(function(){
 	$('input[type=submit]').on('click',function(){
 		var userSel = $('input[name=username]');
 		var username = $.trim($('input[name=username]').val());
-		if(checkUsername(username)){
-			userSel.next('label').removeClass('valid-msg').addClass('invalid-msg').text('用户名已注册');
-			return false;
+		if(username){
+			if(checkUsername(username)){
+				userSel.next('label').removeClass('valid-msg').addClass('invalid-msg').text('用户名已注册');
+				return false;
+			}
 		}
+		
 	})
 });
 /**

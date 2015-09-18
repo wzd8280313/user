@@ -417,6 +417,12 @@ class Market extends IController
 	{
 		$ticketObj  = new IModel('ticket');
 		$ticketList = $ticketObj->query();
+		foreach($ticketList as $key=>$v){
+			$ticketList[$key]['expire'] = 0;
+			if(time()>strtotime($v['end_time'])){
+				$ticketList[$key]['expire'] = 1;
+			}
+		}
 		echo JSON::encode($ticketList);
 	}
 

@@ -146,7 +146,8 @@
 				$.getJSON('{url:/market/getTicketList}',function(content){
 					for(pro in content)
 					{
-						$('select[name="award_value"]').append('<option value="'+content[pro]['id']+'">'+content[pro]['name']+'   面值:'+content[pro]['value']+'元</option>');
+						var expire = content[pro]['expire'] ? '(已过期)' : '';
+						$('select[name="award_value"]').append('<option value="'+content[pro]['id']+'">'+content[pro]['name']+'   面值:'+content[pro]['value']+'元'+expire+'</option>');
 					}
 					//获取后设置默认的代金券选择
 					formObj.setValue('award_value',"{$this->promotionRow['award_value']}");
