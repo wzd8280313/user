@@ -11,6 +11,45 @@ outline: none;
 color: #333;
 text-decoration: none;
 }
+a{text-decoration:none;}
+
+button.hidefocus::-moz-focus-inner{border:none}
+.hide{display:none}
+.green{color:#8fc21d}
+.brown{color:#db054b}
+.gray{color:#4f4f4f}
+.normal_gray{color:#666}
+.dark_gray{#3f3f3f}
+.light_gray{color:#999}
+.black{color:#000}
+.orange{color:#d66b03}
+.red{color:#ff3200}
+a.red2,.red2{color:#db054b}
+a.orange,.orange{color:#626262}
+a.blue,.blue{color:#36c}
+a.line{text-decoration:underline}
+.normal,a.normal{font-weight:normal}
+.bold,a.bold{font-weight:bold}
+.f12{font-size:12px}
+.f14{font-size:14px}
+.f18{font-size:18px}
+.f30{font-size:30px}
+.c_l{float:left;width:48%}
+.c_r{float:left;width:48%;margin-left:1.5%}
+.f_l{float:left}
+.f_r{float:right}
+.t_l{text-align:left}
+.t_r{text-align:right}
+.t_c{text-align:center}
+.m_5{margin-bottom:5px}
+.m_10{margin-bottom:10px}
+.m_15{margin-bottom:15px}
+.mt_5{margin-top:5px}
+.mt_10{margin-top:10px}
+.mt_40{margin-top:40px}
+.mt_50{margin-top:50px}
+.mr_10{margin-right:10px;}
+.mr_20{margin-right:20px;}
 li{
 list-style: none;
 }
@@ -801,3 +840,69 @@ cursor: pointer;
 margin:0 5px;
 }
 .clear{clear:both;}
+
+/*按钮样式*/
+submit, .submit_buy, .submit_join, .submit_login, .submit_reg, .btn_red,  .submit_pay, .submit_cancel, a.reg_btn, .reply_btn, .btn_gray, .btn_brown,  a.comm_btn, a.btn_blue, .summary div.current input.disabled, .summary div.current  .shop_cart input.disabled, .next_step{*display:block;overflow:hidden;cursor:pointer;}
+.submit { font-size:20px;
+    border: none; 
+    color:#FFF;
+    border-radius:3px;
+    overflow: hidden;font-family:微软雅黑;
+    cursor: pointer;
+    width: 99px;
+    height: 38px;
+    margin-top: -15px;
+    background-color: #f15a25;
+	}
+
+a.btn_gray{
+	 text-decoration: none;
+     display: inline-block;
+     border:#b7b7b7 solid 1px;
+     border-radius:3px;
+     font-family:微软雅黑;
+     background: #f5f3f3;
+     text-align: center;
+    color:#666;
+}
+a.btn_brown{
+	text-decoration: none;
+           border-radius:3px;
+          display: inline-block;
+		  font-family:微软雅黑;
+          background: #DF680A;
+          text-align: center;
+          color: #fff;
+}
+a.btn_big{
+	  min-width: 110px;height: 37px;line-height: 37px; font-size: 18px;padding:1px 5px;
+}
+a.btn_small{
+	font-size:16px;min-width: 80px; height: 26px; line-height: 26px; padding:1px 5px;
+}
+input.btn_red{
+	font-family:微软雅黑;
+   border:none;
+   border-radius:5px;
+  background: #f34e14;
+   color: #fff;
+}
+input.btn_gray{
+	font-family:微软雅黑;
+    border:#b7b7b7 solid 1px;
+  background: #f5f3f3;
+   color:#666;
+}
+input.btn_brown{
+	font-family:微软雅黑;
+	border:none;
+   border-radius:5px;
+ background: #DF680A;
+   color:#fff;
+}
+input.btn_mini{font-size:14px;min-width: 60px; height: 22px; border-radius:3px;padding:1px 4px;}
+input.btn_small{font-size:16px;min-width: 80px; height: 26px; border-radius:3px;padding:1px 5px;}
+input.btn_order{
+	font-size: 18px;  width: 191px;height: 40px;
+}
+/*按钮结束*/

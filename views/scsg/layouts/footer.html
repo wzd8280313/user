@@ -31,7 +31,12 @@
 		<dl class="{$cls[$key]}">
 			<dt class="t14">{$helpCat['name']}</dt>
 			{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$helpCat['id']))}
-						<dd><a href="{url:/site/help/id/$item[id]}" style='color:#333;'>{$item['name']}</a></dd>
+			{if:$item['link']!=''}
+			<dd><a href="{url:$item['link']}" style='color:#333;'>{$item['name']}</a></dd>
+			{else:}
+			<dd><a href="{url:/site/help/id/$item[id]}" style='color:#333;'>{$item['name']}</a></dd>
+			{/if}
+						
 			{/foreach}
 		</dl>
 		{/foreach}

@@ -15,10 +15,7 @@ a {
 	color:#333;
 	text-decoration:none;
 }
-a:hover {
-	color:#d6272d;
-	text-decoration:none;
-}
+
 /* demo */
 .demo {
 	width:240px;

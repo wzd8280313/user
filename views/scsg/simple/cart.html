@@ -92,9 +92,9 @@
 				</td>
 				<td colspan="6" class="t_r">
 					{set:$callback = IFilter::act(IReq::get('callback'),'text');}
-					<a class="btn_continue" href="{url:$callback}">继续购物</a>
+					<a class="btn_gray btn_small mr_10" href="{url:$callback}">继续购物</a>
 					{if:$this->goodsList}
-					<a class="btn_pay" href="javascript:check_finish();">去结算</a>
+					<a class="btn_brown btn_big mr_20" href="javascript:check_finish();">去结算</a>
 					{/if}
 				</td>
 			</tr>
@@ -117,7 +117,7 @@
 					</a>
 					<p class="pro_title"><a href="{url:/site/products/id/$item[id]}">"{$item['name']}"</a></p>
 					<p class="brown"><b>￥{$item['sell_price']}</b></p>
-					<label class="btn_orange2"><input type="submit" onclick="window.location.href='{url:/simple/joinCart/link/cart/type/goods/goods_id/$item[id]}';" value="加入购物车"></label>
+					<label ><input type="submit" class='btn_gray btn_small' onclick="window.location.href='{url:/simple/joinCart/link/cart/type/goods/goods_id/$item[id]}';" value="加入购物车"></label>
 				</li>
 				{/foreach}
 			</ul>

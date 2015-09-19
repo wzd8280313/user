@@ -834,6 +834,7 @@ class Tools extends IController
 		$data['name'] = IReq::get('name');
 		$data['sort'] = IReq::get("sort");
 		$data['content'] = IReq::get("content");
+		$data['link'] = IReq::get('link');
 
 		$re = SiteHelp::help_edit($data);
 		if($re['flag']===true)

@@ -224,23 +224,7 @@ ul.logolist li.s{width:100px;height:35px;margin:5px 2px}
 label input{cursor:pointer}
 .form_table label{margin-right:5px;vertical-align:middle;color:#a6a6a6}
 .form_table label.attr{color:#1d1d1d}
-label.btn,label.btn_orange,label.btn_green,label.btn_gray,label.btn_gray_m,label.btn_gray_s,label.btn_orange2,label.btn_orange3{display:inline-block;cursor:pointer;margin:10px 10px 10px 0;padding-left:5px;overflow:hidden;cursor:pointer;background:url(../images/front/ucenter/btn_bg.gif) 0 -31px no-repeat;_padding-left:1px}
-	label.btn input,label.btn_orange input,label.btn_green input,label.btn_gray input,label.btn_gray_m input,label.btn_gray_s input,label.btn_orange2 input,label.btn_orange3 input{display:inline-block;border:none;padding-right:7px;height:31px;line-height:31px;font-weight:bold;font-size:14px;vertical-align:bottom;color:#838383;background:url(../images/front/ucenter/btn_bg.gif) right 0 no-repeat}
-label.btn,label.btn_gray{margin-right:10px}
-label.btn_orange,label.btn_green{padding-left:8px;background-position:0 -216px}
-label.btn_green{background-position:0 -262px}
-	label.btn_orange input,label.btn_green input{height:23px;line-height:23px;font-size:12px;padding-right:10px;background-position:right -239px}
-	label.btn_green input{background-position:right -285px}
-label.btn_gray{height:30px;margin-bottom:5px;padding-left:7px;background-position:0 -92px}
-	label.btn_gray input{color:#4f4f4f;background-position:right -62px}
-label.btn_gray_m{height:24px;padding-left:7px;vertical-align:middle;background-position:0 -146px}
-	label.btn_gray_m input{height:24px;line-height:24px;font-size:12px;color:#4f4f4f;background-position:right -122px}
-label.btn_gray_s{margin:0 5px;height:23px;padding-left:7px;vertical-align:middle;background-position:0 -170px}
-	label.btn_gray_s input{height:23px;line-height:24px;color:#000;font-size:12px;font-weight:normal;background-position:right -193px}
-label.btn_orange2{height:27px;margin-top:5px;background-position:0 -308px;*padding-left:2px;margin:6px 0}
-	label.btn_orange2 input{height:27px;line-height:29px;background-position:right -308px;font-weight:normal;font-size:12px;*padding-right:2px}
-label.btn_orange3{margin:15px 0 0;background-position:0 -386px}
-	label.btn_orange3 input{height:27px;line-height:27px;background-position:right -335px}
+
 input.normal,input.middle,input.small,input.tiny,input.mini{width:230px;height:27px;line-height:27px;border:1px solid #7f9db9;padding:0 5px;margin-right:14px;vertical-align:middle}
 input.middle{width:130px}input.small{width:90px}input.tiny{width:50px}
 input.mini{width:50px;height:21px;border:1px solid #ddd;margin:0 5px}
@@ -283,7 +267,7 @@ a.btn_continue{display:inline-block;width:86px;height:26px;margin-right:10px;bac
 a.btn_pay{display:inline-block;width:119px;height:37px;margin-right:20px;background-position:0 -342px}
 .summary div.current input.disabled{background-position:0 -599px}
 .summary div.current .shop_cart input.disabled{background-position:0 -555px}
-/*修改按钮图片结束*/
+
 /* form table style end */
 /* border table style start */
 .border_table {border-collapse:collapse;border:1px solid #ffc8a0}

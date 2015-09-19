@@ -56,8 +56,8 @@
 					<td>{$item['time']}</td>
 					<td><span class='red'>￥{$item['data']['sell_price']}</span></td>
 					<td>
-						<label class="btn_gray_s"><input type="button" value="加入购物车" onclick='joinCart_ajax({$item["goods_id"]},"{url:/simple/joinCart}","goods");' /></span></label><br />
-						<label class="btn_gray_s"><input type="button" value="删除" onclick="delModel({link:'{url:/ucenter/history_del/id/$item[id]}',msg:'是否删除？'});" /></span></label>
+						<label class="btn_gray_s"><input type="button" class='btn_gray btn_mini' value="加入购物车" onclick='joinCart_ajax({$item["goods_id"]},"{url:/simple/joinCart}","goods");' /></span></label><br />
+						<label class="btn_gray_s"><input type="button" class='btn_gray btn_mini mt_5' value="删除" onclick="delModel({link:'{url:/ucenter/history_del/id/$item[id]}',msg:'是否删除？'});" /></span></label>
 					</td>
 				</tr>
 				{/foreach}
@@ -68,7 +68,7 @@
 					<td colspan="5">
 						<div class="pages_bar f_r">{$historyObj->getPageBar()}</div>
 						<label><input class="radio" type="checkbox" onclick="selectAll('id[]');" />全选</label>
-						<label class="btn_gray_s"><input type="button" onclick="$('#history').attr('action','{url:/ucenter/history_del}');delModel({msg:'是否删除浏览历史？',form:'history'});" value="删除记录" /></span></label>
+						<label class="btn_gray_s"><input type="button" class='btn_gray btn_mini' onclick="$('#history').attr('action','{url:/ucenter/history_del}');delModel({msg:'是否删除浏览历史？',form:'history'});" value="删除记录" /></span></label>
 					</td>
 				</tr>
 			</tfoot>

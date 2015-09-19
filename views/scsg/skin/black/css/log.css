@@ -1,7 +1,6 @@
 @charset "utf-8";/* common style start */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{padding:0;margin:0;font-size:100%}
 label input{vertical-align:middle}
-a:link,a:visited{color:#333;text-decoration:none;}
 
 body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;}
 img{border:0;vertical-align: middle;}
@@ -10,40 +9,7 @@ ul li{list-style:none}
 hr{height:1px;border:none;border-top:1px solid #e4e4e4;overflow:hidden}
 hr.dashed{border-top:1px dashed #e4e4e4}
 a.hidefocus{outline:none}
-button.hidefocus::-moz-focus-inner{border:none}
-.hide{display:none}
-.green{color:#8fc21d}
-.brown{color:#db054b}
-.gray{color:#4f4f4f}
-.normal_gray{color:#666}
-.dark_gray{#3f3f3f}
-.light_gray{color:#999}
-.black{color:#000}
-.orange{color:#d66b03}
-.red{color:#ff3200}
-a.red2,.red2{color:#db054b}
-a.orange,.orange{color:#626262}
-a.blue,.blue{color:#36c}
-a.line{text-decoration:underline}
-.normal,a.normal{font-weight:normal}
-.bold,a.bold{font-weight:bold}
-.f12{font-size:12px}
-.f14{font-size:14px}
-.f18{font-size:18px}
-.f30{font-size:30px}
-.c_l{float:left;width:48%}
-.c_r{float:left;width:48%;margin-left:1.5%}
-.f_l{float:left}
-.f_r{float:right}
-.t_l{text-align:left}
-.t_r{text-align:right}
-.t_c{text-align:center}
-.m_10{margin-bottom:10px}
-.m_15{margin-bottom:15px}
-.mt_10{margin-top:10px}
-.mt_40{margin-top:40px}
-.mt_50{margin-top:50px}
-.hidden{display:none}
+
 .block{display:block;margin-top:5px}
 .indent{text-indent:15px}
 .relative{position:relative}
@@ -254,23 +220,7 @@ ul.logolist li.s{width:100px;height:35px;margin:5px 2px}
 label input{cursor:pointer}
 .form_table label{margin-right:5px;vertical-align:middle;color:#a6a6a6}
 .form_table label.attr{color:#1d1d1d}
-label.btn,label.btn_orange,label.btn_green,label.btn_gray,label.btn_gray_m,label.btn_gray_s,label.btn_orange2,label.btn_orange3{display:inline-block;cursor:pointer;margin:10px 10px 10px 0;padding-left:5px;overflow:hidden;cursor:pointer;background:url(../images/front/ucenter/btn_bg.gif) 0 -31px no-repeat;_padding-left:1px}
-	label.btn input,label.btn_orange input,label.btn_green input,label.btn_gray input,label.btn_gray_m input,label.btn_gray_s input,label.btn_orange2 input,label.btn_orange3 input{outline:none;display:inline-block;border:none;padding-right:7px;height:31px;line-height:31px;font-weight:bold;font-size:14px;vertical-align:bottom;color:#838383;background:url(../images/front/ucenter/btn_bg.gif) right 0 no-repeat}
-label.btn,label.btn_gray{margin-right:10px}
-label.btn_orange,label.btn_green{padding-left:8px;background-position:0 -216px}
-label.btn_green{background-position:0 -262px}
-	label.btn_orange input,label.btn_green input{height:23px;line-height:23px;font-size:12px;padding-right:10px;background-position:right -239px}
-	label.btn_green input{background-position:right -285px}
-label.btn_gray{height:30px;margin-bottom:5px;padding-left:7px;background-position:0 -92px}
-	label.btn_gray input{color:#4f4f4f;background-position:right -62px}
-label.btn_gray_m{height:24px;padding-left:7px;vertical-align:middle;background-position:0 -146px}
-	label.btn_gray_m input{height:24px;line-height:24px;font-size:12px;color:#4f4f4f;background-position:right -122px}
-label.btn_gray_s{margin:0 5px;height:23px;padding-left:7px;vertical-align:middle;background-position:0 -170px}
-	label.btn_gray_s input{height:23px;line-height:24px;color:#000;font-size:12px;font-weight:normal;background-position:right -193px}
-label.btn_orange2{height:27px;margin-top:5px;background-position:0 -308px;*padding-left:2px;margin:6px 0}
-	label.btn_orange2 input{height:27px;line-height:29px;background-position:right -308px;font-weight:normal;font-size:12px;*padding-right:2px}
-label.btn_orange3{margin:15px 0 0;background-position:0 -386px}
-	label.btn_orange3 input{height:27px;line-height:27px;background-position:right -335px}
+
 input.normal,input.middle,input.small,input.tiny,input.mini{width:230px;height:27px;line-height:27px;border:1px solid #7f9db9;padding:0 5px;margin-right:14px;vertical-align:middle}
 input.middle{width:130px}input.small{width:90px}input.tiny{width:50px}
 input.mini{width:50px;height:21px;border:1px solid #ddd;margin:0 5px}
@@ -288,24 +238,7 @@ textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;bor
 		.form_table td a{margin:0 5px}
 		.form_table td a.link{color:#005aa0;text-decoration:underline}
 		.form_table td a.pwd{padding:1px 0 1px 17px;background:url(../images/front/sprites_2.gif) -174px -342px no-repeat}
-.submit,.submit_buy,.submit_join,.submit_login,.submit_reg,.submit_order,.submit_pay,.submit_cancel,a.reg_btn,.reply_btn,a.btn_continue,a.btn_pay,a.comm_btn,a.btn_blue,.summary div.current input.disabled,.summary div.current .shop_cart input.disabled,.next_step{*display:block;height:44px;border:none;text-indent:-9999px;overflow:hidden;cursor:pointer;background:url(../images/front/submit_bg.gif);line-height: 120px;}
-.submit{width:99px;height:38px;margin-top:-15px}
-.submit_buy{width:169px;background-position:0 -82px}
-.submit_join{width:158px;height:40px;background-position:0 -126px}
-.submit_login{width:117px;background-position:0 -166px}
-.submit_reg{width:205px;background-position:0 -254px}
-.submit_order{width:191px;background-position:0 -433px}
-.submit_pay{width:148px;background-position:0 -477px;margin:30px 0}
-.submit_cancel{width:107px;height:34px;background-position:0 -521px}
-.shop_cart .submit_join{width:182px;height:44px;background-position:0 -298px}
-.next_step{display:block;width:159px;background-position:0 -643px;}
-.reply_btn{display:inline-block;width:49px;height:24px;line-height:24px;color:#444;text-indent:0;text-align:center;background-position:-99px 0}
-a.comm_btn,a.btn_blue{display:inline-block;width:73px;height:24px;margin:5px 0 0 10px;text-indent:0;background-position:-117px -166px;color:#fff;line-height:24px;text-align:center}
-a.comm_btn:link,a.comm_btn:visited,a.comm_btn:hover,a.comm_btn:active{color:#fff;text-decoration:none}
-a.btn_blue{width:92px;height:28px;margin:0 10px 0 0;line-height:26px;background-position:0 -405px;font-family:"宋体"}
-a.btn_blue:link,a.btn_blue:visited,a.btn_blue:hover,a.btn_blue:active{color:#fff}
-a.btn_continue{display:inline-block;width:86px;height:26px;margin-right:10px;background-position:0 -379px}
-a.btn_pay{display:inline-block;width:119px;height:37px;margin-right:20px;background-position:0 -342px}
+
 .summary div.current input.disabled{background-position:0 -599px}
 .summary div.current .shop_cart input.disabled{background-position:0 -555px}
 /* form table style end */
@@ -942,3 +875,4 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 }
 /*更换账号导航条*/
 .chg-account{height:69px;background:#f7f6f6 ;}
+
