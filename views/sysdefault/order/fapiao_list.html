@@ -1,5 +1,8 @@
+{set:$config = new config('site_config');
+$main_name = $config->name;
+}
 <div class="headbar">
-	<div class="position">订单<span>></span><span>单据管理</span><span>></span><span>补开发票历史列表</span></div>
+	<div class="position">订单<span>></span><span>单据管理</span><span>></span><span>补开发票申请列表</span></div>
 	<div class="operating">
 		<a href="javascript:void(0)" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel()"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
@@ -13,6 +16,7 @@
 				<col width="130px" />
 				<col width="160px" />
 				<col width="160px" />
+				<col width="160px" />
 				<col />
 			</colgroup>
 
@@ -24,6 +28,7 @@
 					<th>发票类型</th>
 					<th>发票抬头</th>
 					<th>状态</th>
+					<th>商户</th>
 					<th>申请人</th>
 				</tr>
 			</thead>
@@ -40,11 +45,12 @@
 				<col width="130px" />
 				<col width="160px" />
 				<col width="160px" />
+				<col width="160px" />
 				<col />
 			</colgroup>
 			<tbody>
 				{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query: name=order_fapiao as f join=left join order as o on o.id eq f.order_id left join user as u on u.id eq f.user_id  where=f.status eq 3   order=f.id desc page=$page fields=u.username,o.order_no,f.*}
+				{query: name=order_fapiao as f join=left join order as o on o.id eq f.order_id left join seller as s on s.id eq f.seller_id left join user as u on u.id eq f.user_id  where=f.status eq 1   order=f.id desc page=$page fields=s.true_name,u.username,o.order_no,f.*}
 				
 				<tr>
 					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
@@ -53,6 +59,11 @@
 					<td>{if:$item['type']==0}个人{else:}单位{/if}</td>
 					<td>{$item['taitou']}</td>
 					<td>{echo:Order_Class::getFapiaoStatus($item['status'])}</td>
+					
+					<td>
+						{if:$item['true_name']}{$item['true_name']}
+						{else:}{$main_name}{/if}
+					</td>
 					<td>
 						{$item['username']}
 					</td>

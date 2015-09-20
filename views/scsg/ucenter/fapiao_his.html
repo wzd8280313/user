@@ -32,11 +32,11 @@
 						{foreach:items=$this->fapiao_his}
 						<tr>
 							<td class="cotn">
-								<a  href="{url:/ucenter/order_detail/id/$item['id']}">{$item['order_no']}</a>
+								<a  href="{url:/ucenter/order_detail/id/$item['order_id']}">{$item['order_no']}</a>
 							</td>
 							<td class="cotn">{$item['create_time']}</td>
 							<td class="cotn"><span {if:$item['status']==0}class="wk"{else:}class="yk"{/if}>{echo:Order_class::getFapiaoStatus($item['status'])}</span></td>
-							<td class="cotn"><a class='blue' href="{url:/ucenter/piao_ask/order_id/$item['order_id']}"> 查看</a></td>
+							<td class="cotn"><a class='blue' href="{url:/ucenter/piao_ask/id/$item['id']}"> 查看</a></td>
 						</tr>
 						{/foreach}
 					</table>

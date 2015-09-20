@@ -1433,8 +1433,8 @@ class Seller extends IController
 		$seller_id = $this->seller['seller_id'];
 		$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
 		$fapiao_db = new IQuery('order_fapiao as f');
-		$fapiao_db->join = 'left join order as o on o.id = f.order_id left join user as u on u.id = f.user_id';
-		$fapiao_db->where = 'find_in_set('.$seller_id.',f.seller_id) AND f.status != 3';
+		$fapiao_db->join = 'left join order as o on o.id = f.order_id   left join user as u on u.id = f.user_id';
+		$fapiao_db->where = 'seller_id ='. $seller_id.' AND f.status = 0 '.$whereAdd;
 		
 		$fapiao_db->order = 'f.id DESC';
 		$fapiao_db->page = $page;
@@ -1444,7 +1444,53 @@ class Seller extends IController
 		$this->redirect('fapiao_apply');
 		//print_r($res);
 	}
-    
+	//发票列表
+	public function fapiao_list(){
+		$search = Util::search(IReq::get('search'));$whereAdd = $search ? " and ".$search : "";
+		$seller_id = $this->seller['seller_id'];
+		$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
+		$fapiao_db = new IQuery('order_fapiao as f');
+		$fapiao_db->join = 'left join order as o on o.id = f.order_id   left join user as u on u.id = f.user_id';
+		$fapiao_db->where = 'seller_id ='. $seller_id.' AND f.status = 1 '.$whereAdd;
+		
+		$fapiao_db->order = 'f.id DESC';
+		$fapiao_db->page = $page;
+		$fapiao_db->fields = 'f.*,o.order_no,u.username';
+		$this->fapiaoData = $fapiao_db->find();
+		$this->db = $fapiao_db;
+		$this->redirect('fapiao_list');
+	}
+    //显示发票详情
+	public function fapiao_show(){
+		$seller_id = $this->seller['seller_id'];
+		$id = IFilter::act(IReq::get('id'),'int');
+		$db_fa = new IQuery('order_fapiao as f');
+		$db_fa->join = 'left join order as o on o.id = f.order_id  left join user as u on u.id = f.user_id';
+		$db_fa->where = 'f.id ='. $id.' AND f.seller_id = '.$seller_id;
+		$db_fa->limit = 1;
+		$db_fa->fields = 'u.username,o.order_no,f.*';
+		$data = $db_fa->find()[0];
+		if($data['money']==0)$data['money']='';
+		
+		$this->setRenderData($data);
+		$this->redirect('fapiao_show');
+	}
+	//发票处理
+	public function fapiao_show_save(){
+		$id = IFilter::act(IReq::get('id'),'int');
+		$money = IFilter::act(IReq::get('money'),'float');
+		if(!$id || !$money){
+			$this->redirect('fapiao_apply');
+		}
+		$db_fa = new IModel('order_fapiao');
+		$data=array(
+				'money'=>$money,
+				'status'=>1
+		);
+		$db_fa->setData($data);
+		$db_fa->update('id='.$id);
+		$this->redirect('fapiao_apply');
+	}
     
     
 }

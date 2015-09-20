@@ -34,7 +34,7 @@
 				<td>{$item['order_no']}</td>
 				<td>{$item['type']}</td>
 				<td>{$item['create_time']}</td>
-				<td>{Order_Class::getFapiaoStatus($item['status'])}</td>
+				<td>{echo:Order_Class::getFapiaoStatus($item['status'])}</td>
 				<td>{$item['username']}</th>
 				<td><a href="{url:/seller/fapiao_show/id/$item[id]}"><img class="operator" src="{skin:images/main/icn_settings.png}" title="查看" /></a></td>
 			</tr>
@@ -47,24 +47,15 @@
 <script type="text/html" id="filterTemplate">
 <form action="{url:/}" method="get" name="filterForm">
 	<input type='hidden' name='controller' value='seller' />
-	<input type='hidden' name='action' value='refundment_list' />
+	<input type='hidden' name='action' value='fapiao_apply' />
 	<div class="module_content">
 		<fieldset>
 			<label>开始时间：</label>
-			<input type="text" name="search[rd.time>=]" onfocus="WdatePicker()" />
+			<input type="text" name="search[f.creat_time>=]" onfocus="WdatePicker()" />
 		</fieldset>
 		<fieldset>
 			<label>截止时间：</label>
-			<input type="text" name="search[rd.time<=]" onfocus="WdatePicker()" />
-		</fieldset>
-		<fieldset>
-			<label>回复状态：</label>
-			<select name="search[rd.pay_status=]">
-				<option value="">不限</option>
-				<option value="0">申请退款</option>
-				<option value="1">退款成功</option>
-				<option value="2">退款失败</option>
-			</select>
+			<input type="text" name="search[f.creat_time<=]" onfocus="WdatePicker()" />
 		</fieldset>
     </div>
 </form>

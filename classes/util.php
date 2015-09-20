@@ -112,7 +112,7 @@ class Util
 		{
 			$key = IFilter::act($key,'strict');
 			$val = IFilter::act($val,'strict');
-
+		
 			if($val === '' || $key === '')
 			{
 				continue;
@@ -127,6 +127,7 @@ class Util
 				$where[] = $key."'".$val."'";
 			}
 		}
+		
 		return join(" and ",$where);
 	}
 

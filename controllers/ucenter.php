@@ -1413,7 +1413,8 @@ class Ucenter extends IController
     	$db_fapiao->join = 'left join order as o on o.id = f.order_id';
     	$db_fapiao->page = $page;
     	$db_fapiao->pagesize = 15;
-    	$db_fapiao->fields = 'f.*,o.order_no';
+    	$db_fapiao->fields = 'f.*,o.id as order_id,o.order_no';
+    	$db_fapiao->order = 'id DESC';
     	$fapiao_his = $db_fapiao->find();
     	$this->fapiao_his = $fapiao_his;
     	$this->db_fapiao = $db_fapiao;unset($db_fapiao);
@@ -1443,9 +1444,9 @@ class Ucenter extends IController
     	
     	if($id || $id=$db_fapiao->getField('order_id='.$order_id,'id')){//后续编辑
     		$db_fapiao->setData($data);
-    		$db_fapiao->update('id='.$id);
+    		$db_fapiao->update('order_id='.$order_id);
     	}else{//第一次添加
-    		//更改订单索要发票字段
+    		//更改订单索要发票字段,订单更新为索要发票
     		$db_order->setData(array('invoice'=>1));
     		$db_order->update('id ='.$order_id);
     		
@@ -1456,19 +1457,14 @@ class Ucenter extends IController
     		$db_order_goods->distinct = 'distinct';
     		$db_order_goods->fields = 'g.seller_id';
     		$sellerId = $db_order_goods->find();
-    		$seller_id_arr=array();
-    		foreach($sellerId as $v){
-    			$seller_id_arr[$v['seller_id']] = 0;
-    		}
-    		//添加补开发票信息
-    		$data['seller_status'] = serialize($seller_id_arr);//初始化为0，没有开发票
     		$data['status']=0;
-    		$data['seller_id'] =implode(',',array_keys($seller_id_arr)) ;
-    		$db_fapiao->setData($data);
-    		$db_fapiao->add();
+    		foreach($sellerId as $key=>$v){
+    			$data['seller_id'] = $v['seller_id'];
+    			$db_fapiao->setData($data);
+    			$db_fapiao->add();
+    		}
     	}
     	$this->redirect('fapiao');
     	
     }
-    
 }

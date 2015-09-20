@@ -1305,14 +1305,6 @@ class Order_Class
 				break;
 			}
 			case 1 : {
-				$statusText = '平台已开，商家未开';
-				break;
-			}
-			case 2 : {
-				$statusText = '商家已开,平台未开';
-				break;
-			}
-			case 3 : {
 				$statusText = '已开票';
 				break;
 			}

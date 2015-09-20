@@ -51,7 +51,7 @@
 <script type="text/html" id="filterTemplate">
 <form action="{url:/}" method="get" name="filterForm">
 	<input type='hidden' name='controller' value='seller' />
-	<input type='hidden' name='action' value='refundment_list' />
+	<input type='hidden' name='action' value='refundment_chg_list_handled' />
 	<div class="module_content">
 		<fieldset>
 			<label>开始时间：</label>
@@ -65,9 +65,10 @@
 			<label>回复状态：</label>
 			<select name="search[rd.pay_status=]">
 				<option value="">不限</option>
-				<option value="0">申请退款</option>
-				<option value="1">退款成功</option>
-				<option value="2">退款失败</option>
+				<option value="2">换货成功</option>
+				<option value="1">换货失败(初审驳回)</option>
+				<option value="5">换货失败(验货未通过)</option>
+				<option value="6">换货失败(退货超期)</option>
 			</select>
 		</fieldset>
     </div>

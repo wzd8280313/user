@@ -1509,25 +1509,17 @@ class Order extends IController
 	public function fapiao_show(){
 		$id = IFilter::act(IReq::get('id'),'int');
 		$db_fa = new IQuery('order_fapiao as f');
-		$db_fa->join = 'left join order as o on o.id = f.order_id left join user as u on u.id = f.user_id';
+		$db_fa->join = 'left join order as o on o.id = f.order_id left join seller as s on f.seller_id = s.id left join user as u on u.id = f.user_id';
 		$db_fa->where = 'f.id ='. $id;
-		$db_fa->fields = 'u.username,o.order_no,f.*';
+		$db_fa->limit = 1;
+		$db_fa->fields = 's.true_name,u.username,o.order_no,f.*';
 		$data = $db_fa->find()[0];
-		//查找所有需要开票的商家信息
-		$seller_status = unserialize($data['seller_status']);
-		$seller_id_list = implode(',',array_keys($seller_status));
-		$seller = new IModel('seller');
-		$sellerInfo = $seller->query('id in ('.$seller_id_list.')','id,true_name');
-		if(isset($seller_status[0])){
+		if(!$data['true_name']){
 			$config = new config('site_config');
-			$sellerInfo[] = array('id'=>0,'true_name'=>$config->name);
+			$data['true_name'] = $config->name;
 		}
-		$seller_status_arr=array();
-		foreach($sellerInfo as $key=>$v){
-			$seller_status_arr[$v['id']]['true_name'] = $v['true_name'];
-			$seller_status_arr[$v['id']]['jine'] = $seller_status[$v['id']]; 
-		}
-		$data['seller_info'] = $seller_status_arr;
+		if($data['money']==0)$data['money']='';
+		
 		$this->fapiao =$data;
 		$this->redirect('fapiao_show');
 		
@@ -1540,21 +1532,16 @@ class Order extends IController
 	public function fapiao_show_save(){
 		$id = IFilter::act(IReq::get('id'),'int');
 		$seller_id = 0;
-		$jine = IFilter::act(IReq::get('jine'),'float');
-		if(!$id || !$jine){
+		$money = IFilter::act(IReq::get('money'),'float');
+		if(!$id || !$money){
 			$this->redirect('fapiao');
 		}
 		$db_fa = new IModel('order_fapiao');
-		$seller_status = $db_fa->getField('id='.$id,'seller_status');
-		$seller_status = unserialize($seller_status);
-		$seller_status[$seller_id] = $jine;
-		$status = 3;
-		foreach($seller_status as $v){
-			if($v ==0){
-				$status = 1;
-			}
-		}
-		$db_fa->setData(array('status'=>$status,'seller_status'=>serialize($seller_status)));
+		$data=array(
+			'money'=>$money,
+			'status'=>1
+		);
+		$db_fa->setData($data);
 		$db_fa->update('id='.$id);
 		$this->redirect('fapiao');
 	}
