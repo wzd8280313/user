@@ -1433,13 +1433,16 @@ class Seller extends IController
 		$seller_id = $this->seller['seller_id'];
 		$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
 		$fapiao_db = new IQuery('order_fapiao as f');
-		$fapiao_db->join = 'left join order_goods as og on f.order_id = og.order_id left join goods as g on og.goods_id = g.id';
-		$fapiao_db->where = 'g.seller_id='.$seller_id;
+		$fapiao_db->join = 'left join order as o on o.id = f.order_id left join user as u on u.id = f.user_id';
+		$fapiao_db->where = 'find_in_set('.$seller_id.',f.seller_id) AND f.status != 3';
+		
 		$fapiao_db->order = 'f.id DESC';
 		$fapiao_db->page = $page;
-		$fapiao_db->fields = 'f.*,og.order_no';
-		$res = $fapiao_db->find();
-		print_r($res);
+		$fapiao_db->fields = 'f.*,o.order_no,u.username';
+		$this->fapiaoData = $fapiao_db->find();
+		$this->db = $fapiao_db;
+		$this->redirect('fapiao_apply');
+		//print_r($res);
 	}
     
     

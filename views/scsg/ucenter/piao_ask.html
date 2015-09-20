@@ -25,7 +25,7 @@ $this->fapiaoRow = $fa->getObj('order_id='.$order_id);
 					<th><span class="red"></span> 发票抬头：</th>
 					<td>
 						
-						<input class="normal" type="text" name="taitou" {if:$this->fapiaoRow['status']==3}disabled {/if}alt='请填写发票抬头' /><label></label>
+						<input class="normal" type="text" name="taitou" {if:isset($this->fapiaoRow['status'])&&$this->fapiaoRow['status']==3}disabled {/if}alt='请填写发票抬头' /><label></label>
 					
 					</td>
 				</tr>

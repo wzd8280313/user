@@ -29,22 +29,19 @@
 		</thead>
 
 		<tbody>
-			{set:$seller_id = $this->seller['seller_id']}
-			{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=order_fapiao as f join=left join order as o on o.id eq f.order_id left join user as u on u.id eq f.user_id  where=f.status neq 3   order=f.id desc page=$page fields=u.username,o.order_no,f.*}
-			
+			{foreach:items=$this->fapiaoData}
 			<tr>
 				<td>{$item['order_no']}</td>
 				<td>{$item['type']}</td>
 				<td>{$item['create_time']}</td>
-				<td>{$item['status']}</td>
+				<td>{Order_Class::getFapiaoStatus($item['status'])}</td>
 				<td>{$item['username']}</th>
 				<td><a href="{url:/seller/fapiao_show/id/$item[id]}"><img class="operator" src="{skin:images/main/icn_settings.png}" title="查看" /></a></td>
 			</tr>
-			{/query}
+		{/foreach}
 		</tbody>
 	</table>
-	{$query->getPageBar()}
+	{$this->db->getPageBar()}
 </article>
 
 <script type="text/html" id="filterTemplate">

@@ -1463,6 +1463,7 @@ class Ucenter extends IController
     		//添加补开发票信息
     		$data['seller_status'] = serialize($seller_id_arr);//初始化为0，没有开发票
     		$data['status']=0;
+    		$data['seller_id'] =implode(',',array_keys($seller_id_arr)) ;
     		$db_fapiao->setData($data);
     		$db_fapiao->add();
     	}
