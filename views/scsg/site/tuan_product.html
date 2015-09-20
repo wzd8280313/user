@@ -167,7 +167,8 @@
 											</div>
 											<span class="mui-amount-unit">&nbsp;件</span>
 										<em id="J_EmStock" class="tb-hidden" style="display: inline;">库存量 <label id="data_storeNums">{$store_nums}</label>件</em>
-										<span id="J_StockTips"> </span>
+										<span id="J_StockTips" class='red'></span>
+										
 									</dd>
 								</dl>
 							</div>
@@ -525,7 +526,11 @@
 </div>
 
 <script type="text/javascript">
+var max_num = '{$this->tuanData["limit_max_count"]}';
+var min_num = '{$this->tuanData["limit_min_count"]}';
 $(function(){
+//初始化购买数量
+$('#buyNums').val(min_num);
 
 //图片初始化
 var goodsSmallPic = "{skin:images/front/nopic_435_435.gif}";
@@ -936,13 +941,24 @@ function modified(code)
 	{
 		case 1:
 		{
-			buyNums++;
+			if(buyNums>=max_num){
+				$('#J_StockTips').css('display','inline').text('(购买量不能超过'+max_num+'件)').fadeOut(3000);
+			}
+			if(max_num==0 || buyNums<max_num){
+				buyNums++;
+			}
+			
 		}
 		break;
 
 		case -1:
 		{
-			buyNums--;
+			if(min_num>=buyNums){
+				$('#J_StockTips').css('display','inline').text('(购买量不能少于'+min_num+'件)').fadeOut(3000);
+			}
+			if(min_num<buyNums)
+				buyNums--;
+			
 		}
 		break;
 	}
@@ -1022,6 +1038,11 @@ function buy_now()
 
 	//设置必要参数
 	var buyNums  = parseFloat($.trim($('#buyNums').val()));
+	if(buyNums>max_num || buyNums<min_num){
+		tips('商品数量不能超过'+max_num+',不能少于'+min_num);
+		return;
+	}
+	
 	var id = {$goods_id};
 	var type = 'goods';
 

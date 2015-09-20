@@ -102,15 +102,22 @@ class user_like{
 			$history->fields = 'h.time,ca.category_id';
 			$history->where= ' ca.goods_id = '.$goods_id;
 			$history->limit = 1;
-			$hisData = $history->find()[0];
+			$hisData = $history->find();
 			//print_r($hisData);
-			if(!$hisData['time']){//当天还未访问
-				$data['cat_id'] = isset($hisData['category_id'])?$hisData['category_id'] : 0;
-				$history = new IModel('user_history');
-				$history->setData($data);
-				$history->add();
+			if($hisData){//商品有分类
+				if(!$hisData[0]['time']){//当日未访问
+					$data['cat_id'] = isset($hisData['category_id'])?$hisData['category_id'] : 0;
+					$history = new IModel('user_history');
+					$history->setData($data);
+					$history->add();
+				}
+				return false;
 			}
-			
+			$his = new IModel('user_history');
+			if(!$his->getObj('goods_id='.$goods_id.' and user_id = '.$user_id.' and DATEDIFF(NOW(),time) < 1','id')){
+				$his->setData($data);
+				$his->add();
+			}
 		}
 	}
 	
@@ -123,8 +130,14 @@ class user_like{
 		if(!$user_id)
 			return ISession::get('user_history');
 		else{
-			$history = new IModel('user_history');
-			if($res = $history->query('user_id = '.$user_id,'goods_id,time','time'))
+			$history = new IQuery('user_history');
+			$history->where = 'user_id = '.$user_id;
+			$history->fields = 'goods_id,time';
+			$history->group = 'goods_id';
+			$history->order = 'id DESC';
+			$history->limit = 6;
+			$res = $history->find();
+			if($res)
 				return $res;
 			return null;
 		}
