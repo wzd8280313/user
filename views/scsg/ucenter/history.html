@@ -11,7 +11,7 @@
 			<a href="{url:/ucenter/history}" class='{if:IReq::get('cat_id') == ''}orange{/if}'>全部（<label id='historySum'></label>）</a>
 			{foreach:items=Api::run('getUcenterHistoryByCatid',array('#user_id#',$user_id))}
 			{set:$historySum+=$item['num']}
-			<a href="{url:/ucenter/favorite/cat_id/$item[id]}" class='{if:IReq::get('cat_id') == $item['id']}orange{/if}'>{$item['name']}（{$item['num']}）</a>
+			<a href="{url:/ucenter/history/cat_id/$item[id]}" class='{if:IReq::get('cat_id') == $item['id']}orange{/if}'>{$item['name']}（{$item['num']}）</a>
 			{/foreach}
 		</div>
 	</div>

@@ -1427,6 +1427,20 @@ class Seller extends IController
 		}
 	}
     
+	//发票申请列表
+	public function fapiao_apply(){
+		$search = Util::search(IReq::get('search'));$whereAdd = $search ? " and ".$search : "";
+		$seller_id = $this->seller['seller_id'];
+		$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
+		$fapiao_db = new IQuery('order_fapiao as f');
+		$fapiao_db->join = 'left join order_goods as og on f.order_id = og.order_id left join goods as g on og.goods_id = g.id';
+		$fapiao_db->where = 'g.seller_id='.$seller_id;
+		$fapiao_db->order = 'f.id DESC';
+		$fapiao_db->page = $page;
+		$fapiao_db->fields = 'f.*,og.order_no';
+		$res = $fapiao_db->find();
+		print_r($res);
+	}
     
     
     

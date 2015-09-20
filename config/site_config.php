@@ -37,4 +37,5 @@
   'sms_password' => '97273007',
   'sms_sign' => '【无线阳泉】',
   'test_address' => 'weiping.lee@163.com',
+	'date_fapiao'=> '5',//允许开发票的天数
 )?>

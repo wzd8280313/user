@@ -1,0 +1,61 @@
+{set:$fapiao = $this->fapiao;}
+
+<div class="headbar clearfix">
+	<div class="position"><span>订单</span><span>></span><span>单据管理</span><span>></span><span>补开发票信息</span></div>
+</div>
+
+<div class="content">
+	<form method="post" action="{url:/order/fapiao_show_save}">
+		<input type="hidden" name="id" value="{$fapiao['id']}"/>
+		<table class="border_table" width="100%" style="margin:10px auto">
+			<colgroup>
+				<col width="200px" />
+				<col />
+			</colgroup>
+
+			<tbody>
+				<tr><th>当前状态：</th><td  align="left">{echo:Order_Class::getFapiaoStatus($fapiao['status'])}<span class='red'></span></td></tr>
+				<tr>
+					<th>订单号：</th><td align="left">{$fapiao['order_no']}<a class='blue' style='margin-left:5px;' href="{url:/order/order_show/id/$fapiao['order_id']}">查看订单</a></td>
+				</tr>
+				<tr>
+					<th>需开票商家：</th><td align="left">
+						{foreach:items=$fapiao['seller_info']}
+							<a style='margin-right:10px;' class='blue'>{$item['true_name']}</a>
+						{/foreach}
+					</td>
+				</tr>
+				<tr>
+					<th>发票类型：</th>
+					<td align="left">
+						<label><input type="radio" name="type" value="0"  {if:$fapiao['type']==0}checked='checked'{/if} />个人</label>&nbsp;&nbsp;
+						<label><input type="radio" name="type" value="1" {if:$fapiao['type']==1}checked='checked'{/if} />单位</label>
+					</td>
+				</tr>
+				<tr>
+					<th>发票抬头：</th>
+					<td align="left">
+						{$fapiao['taitou']}
+					</td>
+				</tr>
+				<tr>
+					<th>申请人：</th>
+					<td align="left">
+						{$fapiao['username']}
+					</td>
+				</tr>
+				<tr>
+					<th>开票金额：</th>
+					<td align="left">
+						<input type='text' value="{$fapiao['seller_info'][0]['jine']}" pattern='^[0-9]+.?[0-9]{0,2}$' name='jine' alt='请正确填写金额'/>
+					</td>
+				</tr>
+		
+				<tr>
+					<td colspan="2"><button type="submit" class="submit" ><span>开票</span></button></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+

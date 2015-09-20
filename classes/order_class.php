@@ -1293,4 +1293,30 @@ class Order_Class
 		}
 		return true;
 	}
+	/**
+	 * 获取发票状态0:申请发票，1：审核通过，2：寄送
+	 * @$status int 总状态参数0：未开，1：
+	 */
+	public static function getFapiaoStatus($status){
+		$statusText = '';
+		switch($status){
+			case 0 : {
+				$statusText = '提交申请';
+				break;
+			}
+			case 1 : {
+				$statusText = '平台已开，商家未开';
+				break;
+			}
+			case 2 : {
+				$statusText = '商家已开,平台未开';
+				break;
+			}
+			case 3 : {
+				$statusText = '已开票';
+				break;
+			}
+		}
+		return $statusText;
+	}
 }

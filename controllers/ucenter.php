@@ -1371,4 +1371,103 @@ class Ucenter extends IController
     	
     }
     
+    //可以补开发票列表
+    public function fapiao(){
+    	$page = (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
+    	$siteConfig = new Config('site_config');
+    	$fapiao_date = $siteConfig->date_fapiao ? intval($siteConfig->date_fapiao): 30;
+    	$fapiaoSec = $fapiao_date * 24 * 3600;
+    	$user_id = $this->user['user_id'];
+    	$db_order = new IQuery('order');
+    	$db_order->where = 'user_id='.$user_id.' and pay_status = 1 AND invoice =0  AND TIMESTAMPDIFF(second,pay_time,NOW()) <= '.$fapiaoSec;
+		//计算总条数
+    	$db_order->fields = 'count(id) as num';
+    	$res = 	$db_order->getObj();
+    	$this->num = $res ? $res['num'] : 0;
+    	unset($res);
+    	
+    	$db_order->page = $page;
+    	$db_order->pagesize = 15;
+    	$db_order->fields = 'id,order_no,pay_time,create_time';
+    	$db_order->order  = 'id DESC';
+    	
+    	//计算允许开发票的订单，已付款且付款时间在规定时间
+    	$orderFapiao = $db_order->find();
+    	$this->num = count($orderFapiao);
+    	$this->orderFapiao = $orderFapiao;
+    	$this->db_order = $db_order;
+    	unset($db_order);
+    	$this->redirect('fapiao');
+    }
+    //已补开发票列表
+    public function fapiao_his(){
+    	$page = (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
+    	$db_fapiao = new IQuery('order_fapiao as f');
+    	$db_fapiao->where = 'f.user_id='.$this->user['user_id'];
+    	//计算总条数
+    	$db_fapiao->fields = 'count(f.id) as num';
+    	$res = 	$db_fapiao->getObj();
+    	$this->num = $res ? $res['num'] : 0;
+    	
+    	//获取数据
+    	$db_fapiao->join = 'left join order as o on o.id = f.order_id';
+    	$db_fapiao->page = $page;
+    	$db_fapiao->pagesize = 15;
+    	$db_fapiao->fields = 'f.*,o.order_no';
+    	$fapiao_his = $db_fapiao->find();
+    	$this->fapiao_his = $fapiao_his;
+    	$this->db_fapiao = $db_fapiao;unset($db_fapiao);
+    	$this->redirect('fapiao_his');
+    }
+    //
+    public function fapiao_add_act(){
+    	$id = IFilter::act(IReq::get('id'),'int');
+    	$order_id = IFilter::act(IReq::get('order_id'),'int');
+    	$type = IFilter::act(IReq::get('type'),'int');
+    	$taitou = IFilter::act(IReq::get('taitou'));
+    	$content = IFilter::act(IReq::get('content'),'int');
+    	$db_order = new IModel('order');
+    	if(!$db_order->getObj('id='.$order_id.' and user_id='.$this->user['user_id'])){
+    		$this->redirect('fapiao');
+    	}
+    	$db_fapiao = new IModel('order_fapiao');
+    	
+    	$data = array(
+    		'order_id'=> $order_id,
+    		'type'    => $type,
+    		'taitou'  => $taitou,
+    		'content' => $content,
+    		'create_time'=> ITime::getDateTime(),
+    		'user_id' => $this->user['user_id']
+    	);
+    	
+    	if($id || $id=$db_fapiao->getField('order_id='.$order_id,'id')){//后续编辑
+    		$db_fapiao->setData($data);
+    		$db_fapiao->update('id='.$id);
+    	}else{//第一次添加
+    		//更改订单索要发票字段
+    		$db_order->setData(array('invoice'=>1));
+    		$db_order->update('id ='.$order_id);
+    		
+    		//获取卖家id
+    		$db_order_goods = new IQuery('order_goods as og');
+    		$db_order_goods->join = 'left join goods as g on og.goods_id = g.id';
+    		$db_order_goods->where = ' og.order_id = '.$order_id;
+    		$db_order_goods->distinct = 'distinct';
+    		$db_order_goods->fields = 'g.seller_id';
+    		$sellerId = $db_order_goods->find();
+    		$seller_id_arr=array();
+    		foreach($sellerId as $v){
+    			$seller_id_arr[$v['seller_id']] = 0;
+    		}
+    		//添加补开发票信息
+    		$data['seller_status'] = serialize($seller_id_arr);//初始化为0，没有开发票
+    		$data['status']=0;
+    		$db_fapiao->setData($data);
+    		$db_fapiao->add();
+    	}
+    	$this->redirect('fapiao');
+    	
+    }
+    
 }
