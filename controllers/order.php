@@ -540,7 +540,15 @@ class Order extends IController
 		$goods_id   = IFilter::act(IReq::get('goods_id'));
 		$product_id = IFilter::act(IReq::get('product_id'));
 		$goods_nuns = IFilter::act(IReq::get('goods_nums'));
-
+		if(!$goods_id || !$dataArray['accept_name'] || !$dataArray['area'] || !$dataArray['address'] || !$dataArray['mobile']){
+			$this->orderRow = $dataArray;
+			$this->redirect('order_edit',false);
+			Util::showMessage('请完善订单信息');
+		}
+		foreach($goods_nuns as $v){
+			if($v==0)$this->redirect('order_edit');
+			Util::showMessage('商品数量不能为0');
+		}
 		//设置订单持有者
 		$username = IFilter::act(IReq::get('username'));
 		$userDB   = new IModel('user');
