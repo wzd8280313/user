@@ -1214,26 +1214,7 @@ class Site extends IController
 		$this->redirect("help_list");
 	}
 
-	//团购页面
-	function groupon()
-	{
-		$id = IFilter::act(IReq::get("id"),'int');
 
-		//指定某个团购
-		if($id)
-		{
-			$this->regiment_list = Api::run('getRegimentRowById',array('#id#',$id));
-			$this->regiment_list = $this->regiment_list ? array($this->regiment_list) : array();
-		}
-		else
-		{
-			$this->regiment_list = Api::run('getRegimentList');
-		}
-
-		//往期团购
-		$this->ever_list = Api::run('getEverRegimentList');
-		$this->redirect("groupon");
-	}
 
 	function ce(){
 		$m = new IModel('user');

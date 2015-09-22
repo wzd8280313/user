@@ -41,7 +41,7 @@
   'theme' => 
   array (
     'pc' => 'scsg',
-    'mobile' => 'default',
+    'mobile' => 'scsg',
   ),
   'skin' => 
   array (

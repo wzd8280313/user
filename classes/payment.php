@@ -107,11 +107,11 @@ class Payment
 
 		//初始化配置参数
 		$paymentInstance = Payment::createPaymentInstance($payment_id);
-		$configParam = $paymentInstance->configParam();
-		foreach($configParam as $key => $val)
-		{
-			$payment[$key] = '';
-		}
+// 		$configParam = $paymentInstance->configParam();
+// 		foreach($configParam as $key => $val)
+// 		{
+// 			$payment[$key] = '';
+// 		}
 
 		//获取公共信息
 		$paymentRow = self::getPaymentById($payment_id,'config_param');

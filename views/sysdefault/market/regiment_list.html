@@ -52,7 +52,7 @@
 				{query:name=regiment order=sort asc,id desc page=$page}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
-					<td><a href='{url:/site/groupon/id/$item[id]}' target='_blank' class="orange" title="{$item['title']}">{$item['title']}</a></td>
+					<td><a href='{url:/site/tuan_product/active/$item[id]}' target='_blank' class="orange" title="{$item['title']}">{$item['title']}</a></td>
 					<td>{$item['start_time']} ～ {$item['end_time']}</td>
 					<td>{$item['sort']}</td>
 					<td>{echo:($item['is_close']==1) ? '关闭':'开启'}</td>

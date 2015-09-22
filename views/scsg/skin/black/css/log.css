@@ -32,7 +32,7 @@ span.grade{display:inline-block;width:70px;height:15px;background:url(../images/
 	span.grade i{display:inline-block;height:15px;background:url(../images/front/grade_bg.gif) 0 2px no-repeat}
 /* grade style end */
 body.index{ background:url(../images/front/sprites.gif) 0 -341px repeat-x}
-.container,.container_2{width:960px;margin:0 auto}
+.container,.container_2{width:1190px;}
 .tabs_menu .node{cursor:pointer}
 /* header style start */
 .header{height:70px;margin-top:19px;text-align:right;color:#848484}
@@ -291,7 +291,7 @@ textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;bor
 /* gray_box style end */
 /* ucenter style start */
 .ucenter .sidebar{width:180px}
-.ucenter .main{width:770px;text-align:left}
+.ucenter .main{width:990px;}
 .ucenter .main .box .cont{overflow:visible}
 	.ucenter .main .box p.text{margin:10px 30px}
 .ucenter .sidebar .box{margin-top:-1px}
