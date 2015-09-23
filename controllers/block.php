@@ -234,8 +234,6 @@ class Block extends IController
 
 		//执行接口回调函数
 		$callbackData = array_merge($_POST,$_GET);
-		
-		
 		unset($callbackData['controller']);
 		unset($callbackData['action']);
 		unset($callbackData['_id']);
@@ -301,12 +299,14 @@ class Block extends IController
 		unset($callbackData['action']);
 		unset($callbackData['_id']);
 		$return = $paymentInstance->serverCallback($callbackData,$payment_id,$money,$message,$orderNo);
-
+ 
+		
 		//支付成功
 		if($return == 1)
 		{
+			
 			//充值方式
-			if(stripos($orderNo,'recharge_') !== false)
+			if(stripos($orderNo,'recharge') !== false)
 			{
 				$recharge_no = str_replace('recharge','',$orderNo);
 				if(payment::updateRecharge($recharge_no))
@@ -317,6 +317,7 @@ class Block extends IController
 			}
 			else
 			{
+				
 				$order_id = Order_Class::updateOrderStatus($orderNo);
 				if($order_id)
 				{
@@ -324,6 +325,7 @@ class Block extends IController
 					exit;
 				}
 			}
+			
 		}
 		//支付失败
 		else

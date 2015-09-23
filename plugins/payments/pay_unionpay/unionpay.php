@@ -40,6 +40,7 @@ class unionpay extends paymentPlugin
 	{
 		if (isset ( $callbackData['signature'] ))
 		{
+			
 			if (Common::verify ( $callbackData ))
 			{
 				$orderNo = $callbackData['orderId'];//订单号
@@ -64,11 +65,11 @@ class unionpay extends paymentPlugin
 	{
 		if ($this->callback($callbackData,$paymentId,$money,$message,$orderNo))
 		{
-			echo "验签成功";
+			return 1;
 		}
 		else
 		{
-			echo "验签失败";
+			return 0;
 		}
 	}
 
