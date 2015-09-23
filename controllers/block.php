@@ -234,6 +234,8 @@ class Block extends IController
 
 		//执行接口回调函数
 		$callbackData = array_merge($_POST,$_GET);
+		
+		
 		unset($callbackData['controller']);
 		unset($callbackData['action']);
 		unset($callbackData['_id']);
@@ -243,10 +245,9 @@ class Block extends IController
 		if($return == 1)
 		{
 			//充值方式
-			if(stripos($orderNo,'recharge_') !== false)
+			if(stripos($orderNo,'recharge') !== false)
 			{
-				$tradenoArray = explode('_',$orderNo);
-				$recharge_no  = isset($tradenoArray[1]) ? $tradenoArray[1] : 0;
+				$recharge_no = str_replace('recharge','',$orderNo);
 				if(payment::updateRecharge($recharge_no))
 				{
 					$this->redirect('/site/success/message/'.urlencode("充值成功").'/?callback=/ucenter/account_log');
@@ -307,8 +308,7 @@ class Block extends IController
 			//充值方式
 			if(stripos($orderNo,'recharge_') !== false)
 			{
-				$tradenoArray = explode('_',$orderNo);
-				$recharge_no  = isset($tradenoArray[1]) ? $tradenoArray[1] : 0;
+				$recharge_no = str_replace('recharge','',$orderNo);
 				if(payment::updateRecharge($recharge_no))
 				{
 					$paymentInstance->notifyStop();

@@ -208,7 +208,7 @@ return array(
 	    	'name'  => 'category_extend as ca',
 	    	'join'  => 'left join goods as go on ca.goods_id = go.id left join order_goods as ord on ord.goods_id = go.id',
 	    	'where' => 'ca.category_id in (#categroy_id#)  and go.is_del = 0 and ord.goods_nums > 0',
-	    	'fields'=> 'go.id,go.name,go.img,go.sell_price,SUM(ord.goods_nums) as sum',
+	    	'fields'=> 'go.id,go.name,go.img,go.sell_price,go.market_price,SUM(ord.goods_nums) as sum',
 		   	'order' => ' sum desc',
 		   	'group' => ' ord.goods_id',
 	    	'limit' => 10,

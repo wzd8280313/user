@@ -107,11 +107,11 @@ class Payment
 
 		//初始化配置参数
 		$paymentInstance = Payment::createPaymentInstance($payment_id);
-// 		$configParam = $paymentInstance->configParam();
-// 		foreach($configParam as $key => $val)
-// 		{
-// 			$payment[$key] = '';
-// 		}
+		$configParam = $paymentInstance->configParam();
+		foreach($configParam as $key => $val)
+		{
+			$payment[$key] = '';
+		}
 
 		//获取公共信息
 		$paymentRow = self::getPaymentById($payment_id,'config_param');
@@ -183,9 +183,10 @@ class Payment
 			$r_id = $rechargeObj->add();
 
 			//充值时用户id跟随交易号一起发送,以"_"分割
-			$payment['M_OrderNO'] = 'recharge_'.$reData['recharge_no'];
+			$payment['M_OrderNO'] = 'recharge'.$reData['recharge_no'];
 			$payment['M_OrderId'] = $r_id;
 			$payment['M_Amount']  = $reData['account'];
+			$payment['M_Remark']  = '';
 		}
 
 		$siteConfigObj = new Config("site_config");

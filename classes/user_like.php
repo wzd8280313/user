@@ -83,7 +83,7 @@ class user_like{
 	 */
 	public static function get_like_cate($userId){
 		$data = self::getData($userId);
-		$res = $data!='' ? Api::run('getCategoryExtendListByCategoryid',array('#categroy_id#',$data),2,5) : array();
+		$res = $data!='' ? Api::run('getCategoryExtendListByCategoryid',array('#categroy_id#',$data),2,6) : array();
 		return $res;
 	}
 	

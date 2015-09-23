@@ -11,12 +11,9 @@
  * @brief 银联在线支付接口
  */
 include_once(dirname(__FILE__)."/common.php");
-include_once(dirname(__FILE__)."/secureUtil.php");
-include_once(dirname(__FILE__)."/log.class.php");
 include_once(dirname(__FILE__)."/SDKConfig.php");
 class unionpay extends paymentPlugin
 {
-	private static $merId 		= '';//商户号
 	
     public $name 	= '银联在线支付';//插件名称
 
@@ -80,36 +77,33 @@ class unionpay extends paymentPlugin
 	 */
 	public function getSendData($payment)
 	{
-		//Common::setCertPwd($payment['M_certPwd']);
+		Common::setCertPwd($payment['M_certPwd']);
 		$return = array(
 			'version' => '5.0.0',				//版本号
 			'encoding' => 'utf-8',				//编码方式
-			'certId' => getSignCertId (),			//证书ID
+			'certId' => Common::getSignCertId (),			//证书ID
 			
 			'txnType' => '01',				//交易类型     //可能是活的
 			'txnSubType' => '01',				//交易子类 01消费
 			'bizType' => '000201',				//业务类型
-			
-				
 			'frontUrl' =>  $this->callbackUrl,//SDK_FRONT_NOTIFY_URL,  		//前台通知地址
 			'backUrl' => $this->serverCallbackUrl,//SDK_BACK_NOTIFY_URL,		//后台通知地址
 			'signMethod' => '01',		//签名方法
 			'channelType' => '07',		//渠道类型，07-PC，08-手机
 			'accessType' => '0',		//接入类型
-			'merId' => self::$merId,	//商户代码，请改自己的测试商户号
+			'merId' => $payment['M_merId'],	//商户代码，请改自己的测试商户号
 			'currencyCode' => '156',	//交易币种
 			'defaultPayType' => '0001',	//默认支付方式
 			'txnTime' => date('YmdHis')	//订单发送时间
 			//'orderDesc' => '订单描述',  //订单描述，网关支付和wap支付暂时不起作用
 		);
-
+	
 		$return['orderId'] = $payment['M_OrderNO'];	//商户订单号
 		$return['txnAmt'] = $payment['M_Amount']*100;		//交易金额，单位分
 		$return['reqReserved'] = $payment['M_OrderId'].":".$payment['M_Remark'];	//订单发送时间'透传信息'; //请求方保留域，透传字段，查询、通知、对账文件中均会原样出现
 		// 签名
-		print_r($return);
-		sign ( $return );print_r($return);
-		exit();
+		
+		Common::sign ( $return );
         return $return;
 	}
 
@@ -118,6 +112,10 @@ class unionpay extends paymentPlugin
 	 */
 	public function configParam()
 	{
-		return '';
+		$result = array(
+			'M_merId'  => '商户代码',
+			'M_certPwd' => '签名证书密码',
+		);
+		return $result;
 	}
 }
