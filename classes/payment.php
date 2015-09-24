@@ -228,12 +228,8 @@ class Payment
 		{
 			IError::show(403,'订单信息不正确，不能退款');
 		}
-		$tradeDB = new IModel('trade_record');
-		$tradeRow = $tradeDB->getObj('order_no='.$orderRow['order_no'] .' and trade_no = '.$orderRow['trade_no']);
-		
 		$payment['M_OrderNO'] = $orderRow['order_no'];
 		$payment['M_Trade_NO'] = $orderRow['trade_no'];
-		$payment['M_trade_Time']   = $tradeRow['txn_time'];
 		$payment['M_Amount']    = $money;
 		return $payment;
 		

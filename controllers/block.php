@@ -361,9 +361,33 @@ class Block extends IController
 	 * 退款异步回调
 	 */
 	public function server_callback_refund(){
-		$m = new IModel('ceshi');
-		$m->setData(array('value'=>'987654'));
-		$m->add();
+// 		$m = new IModel('ceshi');
+// 		$m->setData(array('value'=>'987654'));
+// 		$m->add();
+		//从URL中获取支付方式
+		$payment_id      = IFilter::act(IReq::get('_id'),'int');
+		$paymentInstance = Payment::createPaymentInstance($payment_id);
+		
+		if(!is_object($paymentInstance))
+		{
+			die('fail');
+		}
+		
+		//初始化参数
+		$money   = '';
+		$message = '退款失败';
+		$orderNo = '';
+		
+		//执行接口回调函数
+		$callbackData = array_merge($_POST,$_GET);
+		unset($callbackData['controller']);
+		unset($callbackData['action']);
+		unset($callbackData['_id']);
+		$return = $paymentInstance->serverCallback($callbackData,$payment_id,$money,$message,$orderNo);
+		
+		if($return==1){
+			
+		}
 	}
 	/**
     * @brief 根据省份名称查询相应的privice

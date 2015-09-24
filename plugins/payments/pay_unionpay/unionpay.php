@@ -73,14 +73,6 @@ class unionpay extends paymentPlugin
 	{
 		if ($this->callback($callbackData,$paymentId,$money,$message,$orderNo))
 		{
-			//记录交易记录到数据库
-			$data = array(
-					'trade_no' => $callbackData['queryId'],
-					'txn_time' => $callbackData['txnTime'],
-					'txn_amt'  => $callbackData['txnAmt'],
-					'pay_type' => $paymentId,
-			);
-			self::addTrade($data,$orderNo);
 			return 1;
 		}
 		else
@@ -168,4 +160,5 @@ class unionpay extends paymentPlugin
 		);
 		return $result;
 	}
+	
 }
