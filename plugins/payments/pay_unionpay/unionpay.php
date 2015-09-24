@@ -11,6 +11,7 @@
  * @brief 银联在线支付接口
  */
 include_once(dirname(__FILE__)."/common.php");
+include_once(dirname(__FILE__)."/httpClient.php");
 include_once(dirname(__FILE__)."/SDKConfig.php");
 class unionpay extends paymentPlugin
 {
@@ -24,7 +25,13 @@ class unionpay extends paymentPlugin
 	{
 		return SDK_FRONT_TRANS_URL; //前台提交地址
 	}
-
+	
+	/**
+	 * @see paymentplugin::getRefundUrl()
+	 */
+	public function getRefundUrl(){
+		return SDK_BACK_TRANS_URL;//后台提交地址
+	}
 	/**
 	 * @see paymentplugin::notifyStop()
 	 */
@@ -44,6 +51,7 @@ class unionpay extends paymentPlugin
 			if (Common::verify ( $callbackData ))
 			{
 				$orderNo = $callbackData['orderId'];//订单号
+				
 				return true;
 			}
 			else
@@ -65,6 +73,14 @@ class unionpay extends paymentPlugin
 	{
 		if ($this->callback($callbackData,$paymentId,$money,$message,$orderNo))
 		{
+			//记录交易记录到数据库
+			$data = array(
+					'trade_no' => $callbackData['queryId'],
+					'txn_time' => $callbackData['txnTime'],
+					'txn_amt'  => $callbackData['txnAmt'],
+					'pay_type' => $paymentId,
+			);
+			self::addTrade($data,$orderNo);
 			return 1;
 		}
 		else
@@ -105,10 +121,43 @@ class unionpay extends paymentPlugin
 		// 签名
 		
 		Common::sign ( $return );
+		
         return $return;
 	}
 
 	/**
+	 * 商品退款
+	 */
+	public function refund($payment)
+	{
+		Common::setCertPwd($payment['M_certPwd']);
+		$return = array(
+				'version' => '5.0.0',				//版本号
+				'encoding' => 'utf-8',				//编码方式
+				'certId' => Common::getSignCertId (),			//证书ID
+				'txnType' => '04',				//交易类型     //可能是活的
+				'txnSubType' => '00',				//交易子类 01消费
+				'bizType' => '000201',				//业务类型 		//前台通知地址
+				'backUrl' => $this->serverCallbackUrlForRefund,//SDK_BACK_NOTIFY_URL,		//后台通知地址
+				'signMethod' => '01',		//签名方法
+				'channelType' => '07',		//渠道类型，07-PC，08-手机
+				'accessType' => '0',		//接入类型
+				'merId' => $payment['M_merId'],	//商户代码，请改自己的测试商户号
+				'txnTime'=>date('YmdHis')
+				//'orderDesc' => '订单描述',  //订单描述，网关支付和wap支付暂时不起作用
+		);
+	
+		$return['orderId'] = $payment['M_OrderNO'];	//商户订单号
+	//	$return['txnTime'] = date('YmdHis',strtotime($payment['M_trade_Time']));
+		$return['txnAmt'] = $payment['M_Amount']*100;		//交易金额，单位分
+		$return['origQryId'] = $payment['M_Trade_NO'];
+
+		Common::sign ( $return );
+		$result = sendHttpRequest ( $return, SDK_BACK_TRANS_URL );
+		$result_arr = Common::coverStringToArray ( $result );
+		return Common::verify ( $result_arr ) ? 1 : 0;
+	}
+	/*
 	 * @param 获取配置参数
 	 */
 	public function configParam()

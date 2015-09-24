@@ -309,7 +309,7 @@ class Block extends IController
 			if(stripos($orderNo,'recharge') !== false)
 			{
 				$recharge_no = str_replace('recharge','',$orderNo);
-				if(payment::updateRecharge($recharge_no))
+				if(payment::updateRecharge($recharge_no,$callbackData['queryId']))
 				{
 					$paymentInstance->notifyStop();
 					exit;
@@ -318,7 +318,7 @@ class Block extends IController
 			else
 			{
 				
-				$order_id = Order_Class::updateOrderStatus($orderNo);
+				$order_id = Order_Class::updateOrderStatus($orderNo,'','',$callbackData['queryId']);
 				if($order_id)
 				{
 					$paymentInstance->notifyStop();
@@ -335,6 +335,21 @@ class Block extends IController
 		}
 	}
 
+	//测试用
+	public function refund(){
+		$pay_type = 3;
+		$order_id = 352;$amount = 20;
+		$paymentInstance = Payment::createPaymentInstance($pay_type);
+		
+		$paymentData = Payment::getPaymentInfoForRefund($pay_type,$order_id,$amount);
+			
+		$sendData = $paymentInstance->refund($paymentData);
+		if($sendData)echo 5;
+		else echo 0;
+		//print_r($sendData);
+		//$paymentInstance->refunds($sendData);
+		//$this->redirect('/site/index');
+	}
 	/**
      * @brief 【重要】支付中断处理
 	 */
@@ -342,7 +357,14 @@ class Block extends IController
 	{
 		$this->redirect('/site/index');
 	}
-
+	/**
+	 * 退款异步回调
+	 */
+	public function server_callback_refund(){
+		$m = new IModel('ceshi');
+		$m->setData(array('value'=>'987654'));
+		$m->add();
+	}
 	/**
     * @brief 根据省份名称查询相应的privice
     */

@@ -92,19 +92,14 @@ class Payment
 		}
 		return '';
 	}
-
 	/**
-	 * @brief 获取订单中的支付信息 M:必要信息; R表示店铺; P表示用户;
-	 * @param $payment_id int    支付方式ID
-	 * @param $type       string 信息获取方式 order:订单支付;recharge:在线充值;
-	 * @param $argument   mix    参数
-	 * @return array 支付提交信息
+	 * 获取支付参数（商户id，密码）
+	 * @param unknown $payment_id
 	 */
-	public static function getPaymentInfo($payment_id,$type,$argument)
-	{
+	private static function getPaymentParam($payment_id){
 		//最终返回值
 		$payment = array();
-
+		
 		//初始化配置参数
 		$paymentInstance = Payment::createPaymentInstance($payment_id);
 		$configParam = $paymentInstance->configParam();
@@ -112,7 +107,7 @@ class Payment
 		{
 			$payment[$key] = '';
 		}
-
+		
 		//获取公共信息
 		$paymentRow = self::getPaymentById($payment_id,'config_param');
 		if($paymentRow)
@@ -123,7 +118,19 @@ class Payment
 				$payment[$key] = $item;
 			}
 		}
-
+		return $payment;
+	}
+	/**
+	 * @brief 获取订单中的支付信息 M:必要信息; R表示店铺; P表示用户;
+	 * @param $payment_id int    支付方式ID
+	 * @param $type       string 信息获取方式 order:订单支付;recharge:在线充值;
+	 * @param $argument   mix    参数
+	 * @return array 支付提交信息
+	 */
+	public static function getPaymentInfo($payment_id,$type,$argument)
+	{
+		
+		$payment = self::getPaymentParam($payment_id);
 		if($type == 'order')
 		{
 			$order_id = $argument;
@@ -205,8 +212,34 @@ class Payment
 		return $payment;
 	}
 
+	/**
+	 * @获取退款需要订单数据
+	 * @$payment_id int 支付方式id
+	 * @$order_id  int 订单id
+	 * @return array
+	 */
+	public static function getPaymentInfoForRefund($payment_id,$order_id,$money){
+		$payment = self::getPaymentParam($payment_id);
+		
+		$orderObj = new IModel('order');
+		$orderRow = $orderObj->getObj('id = '.$order_id,'order_no,trade_no');
+		
+		if(empty($orderRow))
+		{
+			IError::show(403,'订单信息不正确，不能退款');
+		}
+		$tradeDB = new IModel('trade_record');
+		$tradeRow = $tradeDB->getObj('order_no='.$orderRow['order_no'] .' and trade_no = '.$orderRow['trade_no']);
+		
+		$payment['M_OrderNO'] = $orderRow['order_no'];
+		$payment['M_Trade_NO'] = $orderRow['trade_no'];
+		$payment['M_trade_Time']   = $tradeRow['txn_time'];
+		$payment['M_Amount']    = $money;
+		return $payment;
+		
+	}
 	//更新在线充值
-	public static function updateRecharge($recharge_no)
+	public static function updateRecharge($recharge_no,$trade_no)
 	{
 		$rechargeObj = new IModel('online_recharge');
 		$rechargeRow = $rechargeObj->getObj('recharge_no = "'.$recharge_no.'"');
@@ -221,7 +254,8 @@ class Payment
 		}
 
 		$dataArray = array(
-			'status' => 1
+			'status' => 1,
+			'trade_no'=>$trade_no
 		);
 
 		$rechargeObj->setData($dataArray);
@@ -255,4 +289,5 @@ class Payment
 		}
 		return $is_success;
 	}
+	
 }

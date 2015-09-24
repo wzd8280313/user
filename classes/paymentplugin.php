@@ -19,6 +19,7 @@ abstract class paymentPlugin
 	public $callbackUrl         = '';    //支付完成后，同步回调地址
 	public $serverCallbackUrl   = '';    //异步通知地址
 	public $merchantCallbackUrl ='';	 //支付中断返回
+	public $serverCallbackUrlForRefund = '';
 
 	/**
 	* @brief 构造函数
@@ -30,6 +31,8 @@ abstract class paymentPlugin
 		$this->callbackUrl         = IUrl::getHost().IUrl::creatUrl("/block/callback/_id/".$payment_id);
 		//回调业务处理地址
 		$this->serverCallbackUrl   = IUrl::getHost().IUrl::creatUrl("/block/server_callback/_id/".$payment_id);
+		//退款回调地址
+		$this->serverCallbackUrlForRefund = IUrl::getHost().IUrl::creatUrl("/block/server_callback_refund/_id/".$payment_id);
 		//中断支付返回
 		$this->merchantCallbackUrl = IUrl::getHost().IUrl::creatUrl("/block/merchant_callback/_id/".$payment_id);
 	}
@@ -77,6 +80,30 @@ OEF;
 	}
 
 	/**
+	 * @开始退款
+	 * @param array $sendData 上传报文
+	 */
+
+	/**
+	 * 添加一条交易记录
+	 * @$tradeData array 插入的记录
+	 * @$orderNo 订单号
+	 */
+	public static function addTrade($tradeData,$orderNo){
+		if(stripos($orderNo,'recharge') !== false){
+			$tradeData['order_type'] = 0;//充值
+			$tradeData['order_no']   = str_replace('recharge','',$orderNo);
+				
+		}else{
+			$tradeData['order_type'] = 1;//
+			$tradeData['order_no']   = $orderNo;
+		}
+		$tradeDB = new iModel('trade_record');
+		$tradeDB->setData($tradeData);
+		if($tradeDB->add())return true;
+		return false;
+	}
+	/**
 	 * @brief 返回配置参数
 	 */
 	public function configParam()
@@ -99,12 +126,23 @@ OEF;
 	abstract public function getSubmitUrl();
 
 	/**
+	 * 获取退款提交地址
+	 */
+	abstract public function getRefundUrl();
+	/**
 	 * 获取要发送的数据数组结构
 	 * @param $payment array 要传递的支付信息
 	 * @return array
 	 */
 	abstract public function getSendData($paymentInfo);
 
+	/**
+	 * 获取要退款的数据信息
+	 *  @param $payment array 要传递的支付信息
+	 * 	@return array
+	 */
+	//abstract public function getSendDataForRefund($payment);
+	
 	/**
 	 * 同步支付回调
 	 * @param $ExternalData array  支付接口回传的数据

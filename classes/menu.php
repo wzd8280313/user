@@ -228,6 +228,7 @@ class Menu
 		'/order/refundment_show' => '/order/order_refundment_list',
 		'/order/delivery_show' => '/order/order_delivery_list',
 		'/order/refundment_doc_show' => '/order/refundment_list',
+		'/order/refundment_chg_show' => '/order/refundment_chg_list',
 		'/order/print_template' => '/order/order_list',
 		'/order/collection_recycle_list' => '/order/order_collection_list',
 		'/order/delivery_recycle_list' => '/order/order_delivery_list',

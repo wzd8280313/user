@@ -54,7 +54,7 @@ class Order_Class
 	 * @param $note     string 收款的备注
 	 * @return false or int order_id
 	 */
-	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '')
+	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '',$queryId=NULL)
 	{
 		//获取订单信息
 		$orderObj  = new IModel('order');
@@ -75,6 +75,7 @@ class Order_Class
 				'status'     => ($orderRow['status'] == 5) ? 5 : 2,
 				'pay_time'   => ITime::getDateTime(),
 				'pay_status' => 1,
+				'trade_no'   => $queryId
 			);
 
 			$orderObj->setData($dataArray);
@@ -1052,15 +1053,8 @@ class Order_Class
 	{
 		$orderGoodsDB= new IModel('order_goods');
 		$refundDB    = new IModel('refundment_doc');
+		$orderDB     = new IModel('order');
 
-		//更新退款表
-		$updateData = array(
-			'pay_status'   => 2,
-			'dispose_time' => ITime::getDateTime(),
-		);
-		$refundDB->setData($updateData);
-		$refundDB->update('id = '.$refundId);
-		
 		//获取goods_id和product_id用于给用户减积分，经验
 		$refundsRow = $refundDB->getObj('id = '.$refundId);
 		$order_id   = $refundsRow['order_id'];
@@ -1068,6 +1062,25 @@ class Order_Class
 		$amount     = $refundsRow['amount'];
 		$user_id    = $refundsRow['user_id'];
 
+		//获取支付方式
+		$pay_type = $orderDB->getField('id='.$order_id,'pay_type');
+		
+		if($pay_type!=0 && $pay_type!=1){
+			$paymentInstance = Payment::createPaymentInstance($pay_type);
+			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$order_id,$amount);
+			$sendData = $paymentInstance->refund($paymentData);
+				
+			if(!$paymentInstance->refunds($sendData))return false;//验签失败
+		}
+		
+		//更新退款表
+		$updateData = array(
+				'pay_status'   => 2,
+				'dispose_time' => ITime::getDateTime(),
+		);
+		$refundDB->setData($updateData);
+		$refundDB->update('id = '.$refundId);
+		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
 		$order_goods_id = $orderGoodsRow['id'];
 
@@ -1077,7 +1090,7 @@ class Order_Class
 			self::updateStore($order_goods_id,'add');
 		}
 
-		//更新退款状态
+		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
 		//更新order表状态
@@ -1134,12 +1147,17 @@ class Order_Class
 		$memberObj = $obj->getObj('user_id = '.$user_id,'balance,exp,point');
 
 		$exp     = $memberObj['exp'] - $orderRow['exp'];
-		$balance = $memberObj['balance'] + $amount;
-
-		$obj->setData(array(
-			'balance' => $balance,
-			'exp'     => $exp   <= 0 ? 0 : $exp,
-		));
+		$point   = $memberObj['point'] - $orderRow['point'];
+		$setData = array(
+				'exp'  => $exp <= 0 ? 0 : $exp,
+				'point' => $point <=0 ? 0 : $point
+		);
+		if($pay_type==1 || $pay_type==0){//预存款付款和货到付款打入账户余额
+			$balance = $memberObj['balance'] + $amount;
+			$setData['balance'] = $balance;
+			
+		}
+		$obj->setData($setData);
 		$isSuccess = $obj->update('user_id = '.$user_id);
 
 		//积分记录日志
@@ -1176,7 +1194,7 @@ class Order_Class
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 退货不退款，订单中加入新商品
 	 * @$refundId int 退货单id
