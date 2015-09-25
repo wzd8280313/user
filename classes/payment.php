@@ -218,7 +218,7 @@ class Payment
 	 * @$order_id  int 订单id
 	 * @return array
 	 */
-	public static function getPaymentInfoForRefund($payment_id,$order_id,$money){
+	public static function getPaymentInfoForRefund($payment_id,$refundId,$order_id,$money){
 		$payment = self::getPaymentParam($payment_id);
 		
 		$orderObj = new IModel('order');
@@ -228,7 +228,7 @@ class Payment
 		{
 			IError::show(403,'订单信息不正确，不能退款');
 		}
-		$payment['M_OrderNO'] = $orderRow['order_no'];
+		$payment['M_OrderNO'] = md5($refundId);
 		$payment['M_Trade_NO'] = $orderRow['trade_no'];
 		$payment['M_Amount']    = $money;
 		return $payment;

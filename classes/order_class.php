@@ -1067,10 +1067,8 @@ class Order_Class
 		
 		if($pay_type!=0 && $pay_type!=1){
 			$paymentInstance = Payment::createPaymentInstance($pay_type);
-			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$order_id,$amount);
-			$sendData = $paymentInstance->refund($paymentData);
-				
-			if(!$paymentInstance->refunds($sendData))return false;//验签失败
+			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$refundId,$order_id,$amount);
+			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败
 		}
 		
 		//更新退款表
@@ -1157,8 +1155,13 @@ class Order_Class
 			$setData['balance'] = $balance;
 			
 		}
-		$obj->setData($setData);
-		$isSuccess = $obj->update('user_id = '.$user_id);
+		if($exp==$memberObj['exp'] && $point==$memberObj['point'])
+			$isSuccess=1;//如果积分、经验都不变，则不用更新
+		else{
+			$obj->setData($setData);
+			$isSuccess = $obj->update('user_id = '.$user_id);
+		}
+		
 
 		//积分记录日志
 		$pointConfig = array(

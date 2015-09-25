@@ -338,7 +338,7 @@ class Block extends IController
 	//测试用
 	public function refund(){
 		$pay_type = 3;
-		$order_id = 352;$amount = 20;
+		$order_id = 376;$amount = 20;
 		$paymentInstance = Payment::createPaymentInstance($pay_type);
 		
 		$paymentData = Payment::getPaymentInfoForRefund($pay_type,$order_id,$amount);
@@ -362,7 +362,7 @@ class Block extends IController
 	 */
 	public function server_callback_refund(){
 // 		$m = new IModel('ceshi');
-// 		$m->setData(array('value'=>'987654'));
+// 		$m->setData(array('value'=>'987654','time'=>ITime::getDateTime()));
 // 		$m->add();
 		//从URL中获取支付方式
 		$payment_id      = IFilter::act(IReq::get('_id'),'int');
@@ -384,10 +384,9 @@ class Block extends IController
 		unset($callbackData['action']);
 		unset($callbackData['_id']);
 		$return = $paymentInstance->serverCallback($callbackData,$payment_id,$money,$message,$orderNo);
+		$paymentInstance->notifyStop();
+		exit();
 		
-		if($return==1){
-			
-		}
 	}
 	/**
     * @brief 根据省份名称查询相应的privice

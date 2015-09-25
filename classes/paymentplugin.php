@@ -89,19 +89,47 @@ OEF;
 	 * @$tradeData array 插入的记录
 	 * @$orderNo 订单号
 	 */
-	public static function addTrade($tradeData,$orderNo){
+	public static function addTrade($tradeData){
+		$orderNo = $tradeData['order_no'];
 		if(stripos($orderNo,'recharge') !== false){
 			$tradeData['order_type'] = 0;//充值
 			$tradeData['order_no']   = str_replace('recharge','',$orderNo);
 				
 		}else{
-			$tradeData['order_type'] = 1;//
+			$tradeData['order_type'] = 1;//消费
 			$tradeData['order_no']   = $orderNo;
 		}
-		$tradeDB = new iModel('trade_record');
+		
+		$tradeDB = new IModel('trade_record');
 		$tradeDB->setData($tradeData);
+		if(!$tradeData['pay_type'] || !$tradeData['trade_no'])return false;
+		$where = 'pay_type='.$tradeData['pay_type'].' and trade_no = "'.$tradeData['trade_no'].'"';
+		if($tradeDB->getObj($where,'id')){
+			if($tradeData['trade_status']==1){
+				$tradeDB->update($where);
+			}
+			return true;
+		}
 		if($tradeDB->add())return true;
 		return false;
+	}
+	/**
+	 * 获取交易类型1：消费，2：退款
+	 * @$paymentId int  支付类型：银联，担保交易等
+	 * @$code str   交易类型码
+	 */
+	public static function getTradeType($paymentId,$code){
+		if($paymentId==3){//银联支付
+			switch($code){
+				case '01' : {
+					return 1;
+				}
+				case '04' : {
+					return 2;
+				}
+			}
+		}
+		return 0;
 	}
 	/**
 	 * @brief 返回配置参数

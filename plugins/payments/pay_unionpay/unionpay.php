@@ -47,12 +47,11 @@ class unionpay extends paymentPlugin
 	{
 		if (isset ( $callbackData['signature'] ))
 		{
-			
 			if (Common::verify ( $callbackData ))
 			{
 				$orderNo = $callbackData['orderId'];//订单号
-				
-				return true;
+				self::addTradeData($callbackData);//添加交易记录
+				return 1;
 			}
 			else
 			{
@@ -63,7 +62,7 @@ class unionpay extends paymentPlugin
 		{
 			$message = '签名为空';
 		}
-		return false;
+		return 0;
 	}
 
 	/**
@@ -71,14 +70,25 @@ class unionpay extends paymentPlugin
 	 */
 	public function serverCallback($callbackData,&$paymentId,&$money,&$message,&$orderNo)
 	{
-		if ($this->callback($callbackData,$paymentId,$money,$message,$orderNo))
+		if (isset ( $callbackData['signature'] ))
 		{
-			return 1;
+			if (Common::verify ( $callbackData ))
+			{
+				$orderNo = $callbackData['orderId'];//订单号
+				
+				self::addTradeData($callbackData,1);//添加交易记录
+				return 1;
+			}
+			else
+			{
+				$message = '签名不正确';
+			}
 		}
 		else
 		{
-			return 0;
+			$message = '签名为空';
 		}
+		return 0;
 	}
 
 	/**
@@ -140,14 +150,38 @@ class unionpay extends paymentPlugin
 		);
 	
 		$return['orderId'] = $payment['M_OrderNO'];	//商户订单号
-	//	$return['txnTime'] = date('YmdHis',strtotime($payment['M_trade_Time']));
 		$return['txnAmt'] = $payment['M_Amount']*100;		//交易金额，单位分
 		$return['origQryId'] = $payment['M_Trade_NO'];
 
 		Common::sign ( $return );
 		$result = sendHttpRequest ( $return, SDK_BACK_TRANS_URL );
 		$result_arr = Common::coverStringToArray ( $result );
-		return Common::verify ( $result_arr ) ? 1 : 0;
+		//print_r($result_arr);exit();
+		if(Common::verify ( $result_arr )){//
+			
+			self::addTradeData($result_arr);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * 添加交易记录
+	 * @param array $tradeData  返回的报文
+	 * @param int   $asyn  0:同步处理 1：异步回调
+	 */
+	private static function addTradeData($tradeData,$asyn=0){
+		$resArr = array(
+				'trade_no' 	   => $tradeData['queryId'],
+				'order_no'     => $tradeData['orderId'],
+				'money'        => $tradeData['txnAmt'],
+				'pay_type'     => 3,
+				'trade_type'   => self::getTradeType(3,$tradeData['txnType']),
+				'time'         => $tradeData['txnTime'],
+		);
+		$resArr['trade_status']=$asyn;
+		$resArr['orig_trade_no'] = isset($tradeData['origQryId']) ? $tradeData['origQryId'] : '';
+		self::addTrade($resArr);
+		
 	}
 	/*
 	 * @param 获取配置参数
@@ -160,5 +194,6 @@ class unionpay extends paymentPlugin
 		);
 		return $result;
 	}
+	
 	
 }
