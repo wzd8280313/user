@@ -4,23 +4,25 @@ class user_like{
 	/**
 	 * 通过商品ID获取商品二级分类ID
 	 *@$goodId  array 商品id
-	 *@return $allCat 商品所属的二级分类id
+	 *@return  商品所属最小分类id
 	 */
 	public static function getSecCategory($goodId){
-		$M = new IModel('category');
-		$where = array('goods_id'=>$goodId);
-		$catTopStr = '';
-		foreach(Api::run('getCategoryListTop') as $v){
-			$catTopStr .= $v['id'].',';
+		$categoryDB = new IQuery('category_extend as ce');
+		$categoryDB->join = 'left join category as ca on ce.category_id = ca.id';
+		$categoryDB->where = 'ce.goods_id = '.$goodId;
+		$categoryDB->fields = 'ce.category_id,ca.parent_id';
+		$res = $categoryDB->find();
+		$goodsCat=array();
+		if(!empty($res)){
+			foreach($res as $key=>$val){
+				$goodsCat[$val['parent_id']] = $val['category_id'];
+			}
+			foreach($goodsCat as $k=>$v){
+				if(!isset($goodsCat[$v]))
+					return $v;
+			}
 		}
-		$catTopStr = substr($catTopStr,0,-1);
-		$catSec = $M->getFields(array('parent_id'=>$catTopStr),'id');
-		$M->changeTable('category_extend');
-		$allCat = $M->getFields($where,'category_id');
-		foreach($allCat as $key=>$v){
-			if(!in_array($v,$catSec))unset($allCat[$key]);
-		}
-		return $allCat;
+		return 0;
 	}
 	/**把用户操作的分类写到数据库或者session
 	 * @$goodsId array 商品id
@@ -34,7 +36,6 @@ class user_like{
 			$data = $M->getField($where,'goods_like');
 			$data = self::handleData($data,$catId);
 			$M->setData(array('goods_like'=>$data));
-			//$sql = 'UPDATE '.$M->getTableName().' SET goods_like = CONCAT(goods_like,'.$catId.') WHERE '.$where;
 			$M->update($where);
 		}
 		else {
@@ -83,7 +84,13 @@ class user_like{
 	 */
 	public static function get_like_cate($userId){
 		$data = self::getData($userId);
-		$res = $data!='' ? Api::run('getCategoryExtendListByCategoryid',array('#categroy_id#',$data),2,6) : array();
+		if(!$data)return array();
+		$cateDB = new IQuery('category_extend as ca');
+		$cateDB->join =  'left join goods as go on ca.goods_id = go.id';
+		$cateDB->where = 'go.is_del = 0 and ca.category_id in ('.$data.')';
+		$cateDB->fields = 'go.name,go.img,go.id,go.sell_price,go.market_price';
+		$cateDB->limit = '6';
+		$res = $cateDB->find();
 		return $res;
 	}
 	
