@@ -220,10 +220,14 @@ if($("#actionimg").length>0){
 			<input type="hidden" name="controller" value="site">
 			<input type="hidden" name="action" value="search_list">
 			<div class="s-main">
-				<input class="ipt-key" type="text" name="word" autocomplete="off" value="输入关键字...">
+				<input class="ipt-key" type="text" name="word" onkeyup="getKeywords('{url:/block/getLikeWords}',$(this).val())" autocomplete="off" value="输入关键字...">
 				<input class="btn-search" type="submit" style='cursor:pointer;' value="搜索" onclick="checkInput(&#39;word&#39;,&#39;输入关键字...&#39;);">
+				
 			</div>
 			</form>
+			<div class='wordsLike' style='display:none;background-color:#fff;border:1px solid #aaa;width:402px;height:200px;position:absolute;'>
+				
+			</div>
 			<!--s-main-->
 			<!--kw-suggest-->
 			<div class="kw-suggest">

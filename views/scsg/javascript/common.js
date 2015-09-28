@@ -304,7 +304,45 @@ function searchGoods(url,callback)
 		$('#'+id).trigger('click');
 		location.href='#'+id;
 	}
-
+//显示客服qq
 function showService(){
 	$('.tbar-tab-chat').trigger('click');
+}
+
+/*异步获取联想关键词*/
+function getKeywords(url,word){
+	var showDiv = $('.wordsLike');
+	if (!word) {
+		showDiv.html('').css('display','none');
+		return false;
+	}
+	showDiv.css('display','block');
+	$.ajax({
+		type:'post',
+		async:true,
+		data:{word:word},
+		dataType:'json',
+		url:url,
+		success:function(data){
+			if(data.length>0){
+				//window.realAlert(JSON.stringify(data));
+				var appendHtml = '';
+				for(var i in data){
+					window.realAlert(data[i].keyword);
+					var div = '<div><span>'+data[i].keyword+'</span></div>';
+					appendHtml +=div;
+				}
+				showDiv.append(appendHtml);
+				
+				
+			}
+			
+		},
+		error:function(){
+			
+		},
+		complete: function(){
+		
+		}
+	})
 }

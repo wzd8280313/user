@@ -678,4 +678,13 @@ class Block extends IController
 	{
 		$result = wechat_facade::response();
 	}
+	/**获取联想关键字
+	 * 
+	 */
+	public function getLikeWords(){
+		$word = IFilter::act(IReq::get('word'),'strict');
+		$sear = new IModel('search');
+		$data = $sear->query('keyword like "'.$word.'%"','*','num', 'DESC',10);
+		echo JSON::encode($data);
+	}
 }
