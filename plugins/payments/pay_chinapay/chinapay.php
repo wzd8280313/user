@@ -29,7 +29,12 @@ class chinapay extends paymentPlugin
 		//return 'http://payment-test.ChinaPay.com/pay/TransGet'; //测试环境请求地址
 		return 'https://payment.chinaPay.com/pay/TransGet'; //生产环境
 	}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	/**
 	 * @see paymentplugin::notifyStop()
 	 */

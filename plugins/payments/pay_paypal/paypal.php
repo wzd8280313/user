@@ -23,7 +23,12 @@ class paypal extends paymentPlugin
 	{
 		return 'https://www.paypal.com/cgi-bin/webscr';
 	}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	//获取返回url
 	public function getCallbackUrl()
 	{

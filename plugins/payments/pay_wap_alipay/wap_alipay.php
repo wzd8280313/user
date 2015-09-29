@@ -27,7 +27,12 @@ class wap_alipay extends paymentPlugin
 	{
 		return 'http://wappaygw.alipay.com/service/rest.htm?_input_charset=' . $this->charset;
 	}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	/**
 	 * @see paymentplugin::notifyStop()
 	 */

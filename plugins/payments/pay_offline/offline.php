@@ -29,7 +29,12 @@ class offline extends paymentPlugin
 	 * @see paymentplugin::getSubmitUrl()
 	 */
 	public function getSubmitUrl(){}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	/**
 	 * @see paymentplugin::getSendData()
 	 */

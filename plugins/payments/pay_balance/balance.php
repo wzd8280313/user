@@ -24,6 +24,12 @@ class balance extends paymentPlugin
     	return IUrl::getHost() . IUrl::creatUrl('/ucenter/payment_balance');
     }
 
+    /**
+     * 获取退款提交地址
+     */
+    public function getRefundUrl(){
+    
+    }
 	/**
 	 * @see paymentplugin::getSendData()
 	 */

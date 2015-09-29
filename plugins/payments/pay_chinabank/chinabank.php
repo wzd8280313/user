@@ -23,7 +23,12 @@ class chinabank extends paymentPlugin
 	{
 		return 'https://Pay3.chinabank.com.cn/PayGate';
 	}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	/**
 	 * @see paymentplugin::notifyStop()
 	 */

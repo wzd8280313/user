@@ -31,7 +31,12 @@ class direct_alipay extends paymentPlugin
 	{
 		echo "success";
 	}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	/**
 	 * @see paymentplugin::callback()
 	 */

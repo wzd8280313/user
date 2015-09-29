@@ -309,7 +309,7 @@ class Block extends IController
 			if(stripos($orderNo,'recharge') !== false)
 			{
 				$recharge_no = str_replace('recharge','',$orderNo);
-				if(payment::updateRecharge($recharge_no,$callbackData['queryId']))
+				if(payment::updateRecharge($recharge_no))
 				{
 					$paymentInstance->notifyStop();
 					exit;
@@ -318,7 +318,7 @@ class Block extends IController
 			else
 			{
 				
-				$order_id = Order_Class::updateOrderStatus($orderNo,'','',$callbackData['queryId']);
+				$order_id = Order_Class::updateOrderStatus($orderNo);
 				if($order_id)
 				{
 					$paymentInstance->notifyStop();

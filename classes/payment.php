@@ -235,7 +235,7 @@ class Payment
 		
 	}
 	//更新在线充值
-	public static function updateRecharge($recharge_no,$trade_no)
+	public static function updateRecharge($recharge_no)
 	{
 		$rechargeObj = new IModel('online_recharge');
 		$rechargeRow = $rechargeObj->getObj('recharge_no = "'.$recharge_no.'"');
@@ -251,7 +251,6 @@ class Payment
 
 		$dataArray = array(
 			'status' => 1,
-			'trade_no'=>$trade_no
 		);
 
 		$rechargeObj->setData($dataArray);

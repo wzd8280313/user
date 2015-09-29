@@ -54,7 +54,7 @@ class Order_Class
 	 * @param $note     string 收款的备注
 	 * @return false or int order_id
 	 */
-	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '',$queryId=NULL)
+	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '')
 	{
 		//获取订单信息
 		$orderObj  = new IModel('order');
@@ -74,8 +74,7 @@ class Order_Class
 			$dataArray = array(
 				'status'     => ($orderRow['status'] == 5) ? 5 : 2,
 				'pay_time'   => ITime::getDateTime(),
-				'pay_status' => 1,
-				'trade_no'   => $queryId
+				'pay_status' => 1
 			);
 
 			$orderObj->setData($dataArray);

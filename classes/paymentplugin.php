@@ -45,9 +45,16 @@ abstract class paymentPlugin
 	 */
 	protected function recordTradeNo($orderNo,$tradeNo)
 	{
-		$orderDB  = new IModel('order');
-		$orderDB->setData(array('trade_no' => $tradeNo));
-		return $orderDB->update('order_no = "'.$orderNo.'"');
+		if(stripos($orderNo,'recharge') !== false){//充值
+			$orderDB = new IModel('online_recharge');
+			$orderDB->setData(array('trade_no' => $tradeNo));
+			return $orderDB->update('recharge_no = "'.$orderNo.'"');
+			
+		}else{
+			$orderDB  = new IModel('order');
+			$orderDB->setData(array('trade_no' => $tradeNo));
+			return $orderDB->update('order_no = "'.$orderNo.'"');
+		}
 	}
 
 	/**

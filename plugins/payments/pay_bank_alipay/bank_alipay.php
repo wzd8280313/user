@@ -23,7 +23,12 @@ class bank_alipay extends paymentPlugin
 	{
 		return 'https://mapi.alipay.com/gateway.do?_input_charset=utf-8';
 	}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	/**
 	 * @see paymentplugin::notifyStop()
 	 */

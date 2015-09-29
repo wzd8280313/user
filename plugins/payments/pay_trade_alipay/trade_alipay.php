@@ -33,6 +33,12 @@ class trade_alipay extends paymentPlugin
 	}
 
 	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+		
+	}
+	/**
 	 * @see paymentplugin::callback()
 	 */
 	public function callback($callbackData,&$paymentId,&$money,&$message,&$orderNo)

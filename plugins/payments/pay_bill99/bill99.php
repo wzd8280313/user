@@ -23,7 +23,12 @@ class bill99 extends paymentPlugin
 	{
 		return 'https://www.99bill.com/gateway/recvMerchantInfoAction.htm';
 	}
-
+	/**
+	 * 获取退款提交地址
+	 */
+	public function getRefundUrl(){
+	
+	}
 	/**
 	 * @see paymentplugin::notifyStop()
 	 */
