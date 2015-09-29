@@ -843,7 +843,7 @@ margin:0 5px;
 
 /*按钮样式*/
 submit, .submit_buy, .submit_join, .submit_login, .submit_reg, .btn_red,  .submit_pay, .submit_cancel, a.reg_btn, .reply_btn, .btn_gray, .btn_brown,  a.comm_btn, a.btn_blue, .summary div.current input.disabled, .summary div.current  .shop_cart input.disabled, .next_step{*display:block;overflow:hidden;cursor:pointer;}
-.submit { font-size:20px;
+.submit { font-size:16px;
     border: none; 
     color:#FFF;
     border-radius:3px;
@@ -875,10 +875,10 @@ a.btn_brown{
           color: #fff;
 }
 a.btn_big{
-	  min-width: 110px;height: 37px;line-height: 37px; font-size: 18px;padding:1px 5px;
+	  min-width: 110px;height: 37px;line-height: 37px; font-size: 16px;padding:1px 5px;
 }
 a.btn_small{
-	font-size:16px;min-width: 80px; height: 26px; line-height: 26px; padding:1px 5px;
+	font-size:14px;min-width:108px; height:37px; line-height: 37px; padding:0px 5px;
 }
 input.btn_red{
 	font-family:微软雅黑;
