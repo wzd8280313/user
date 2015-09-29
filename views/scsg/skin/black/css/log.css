@@ -218,7 +218,7 @@ ul.logolist li.s{width:100px;height:35px;margin:5px 2px}
 /* logolist style start */
 /* form table style start */
 label input{cursor:pointer height:30px;width:100px; background-color:#f60;border:solid 1px 
-#f30;color:#FFF; position:relative;top:-4px;}
+#f30;color:#FFF; position:relative;top:0px;}
 .form_table label{margin-right:5px;vertical-align:middle;color:#a6a6a6}
 .form_table label.attr{color:#1d1d1d}
 
@@ -296,7 +296,7 @@ textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;bor
 .ucenter .main .box .cont{overflow:visible}
 	.ucenter .main .box p.text{margin:10px 30px}
 .ucenter .sidebar .box{margin-top:-1px}
-.ucenter .sidebar .box .title{height:34px;background:url(../images/front/ucenter/uc_title_bg.gif) repeat-x}
+.ucenter .sidebar .box .title{height:32px;background:url(../images/front/ucenter/uc_title_bg.gif) repeat-x}
 	.ucenter .sidebar .box .title h2{line-height:34px;padding-left:22px;background:url(../images/front/ucenter/h2_bg.gif) 2px 8px no-repeat}
 	.ucenter .sidebar .box .title h2.bg2{background-position:2px -18px}
 	.ucenter .sidebar .box .title h2.bg3{background-position:2px -44px}
@@ -730,7 +730,7 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 /* login_box style end */
 /* pages_bar style start */
 .pages_bar{text-align:right;color:#444}
-	.pages_bar a,.pages_bar span{display:inline-block;height:18px;border:1px solid #d5d5d5;margin-right:6px;padding:2px 7px 1px;text-align:center;color:#1a66b3;font-weight:bold;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px}
+	.pages_bar a,.pages_bar span{display:inline-block;height:18px;line-height:18px;border:1px solid #d5d5d5;margin-right:6px;padding:2px 7px 1px;text-align:center;color:#1a66b3;font-weight:bold;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px}
 	.pages_bar a.current_page{border:1px solid #c30;background-color:#c30;color:#fff}
 	.pages_bar span{color:#878787}
 .box .pages_bar{margin:5px 20px 25px}

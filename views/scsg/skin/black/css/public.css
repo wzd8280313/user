@@ -813,6 +813,7 @@ cursor: pointer;
 .btn-bbg {
 display: inline-block;
 height: 24px;
+line-height: 24px;
 text-align: center;
 background-color: #cc0033;
 vertical-align: middle;
@@ -851,6 +852,7 @@ submit, .submit_buy, .submit_join, .submit_login, .submit_reg, .btn_red,  .submi
     cursor: pointer;
     width: 80px;
     height: 30px;
+    line-height: 30px;
     margin-top: -15px;
     background-color: #F60;
 	}
@@ -900,9 +902,9 @@ input.btn_brown{
  background: #DF680A;
    color:#fff;
 }
-input.btn_mini{font-size:14px;min-width: 60px; line-height: 25px; border-radius:3px;padding:1px 4px;}
+input.btn_mini{font-size:14px;min-width: 60px;height:25px; border-radius:3px;padding:1px 4px;}
 input.btn_small{font-size:14px;min-width: 80px;height:26px; border-radius:3px;padding:1px 5px;}
 input.btn_order{
-	font-size: 16px;  width: 191px;height: 40px;
+	font-size: 16px;  width: 191px;height: 40px;line-height: 40px;
 }
 /*按钮结束*/
