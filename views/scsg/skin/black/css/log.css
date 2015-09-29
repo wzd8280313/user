@@ -343,7 +343,7 @@ textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;bor
 .uc_title,.uc_title label,.uc_title label span{background:url(../images/front/ucenter/uc_titlebg.gif) no-repeat}
 .uc_title{height:32px;background-repeat:repeat-x}
 	.uc_title label{display:inline-block;float:left;margin:1px 3px 0 0;padding-left:15px;background-position:0 -88px;cursor:pointer}
-		.uc_title label span{display:inline-block;height:21px;padding:5px 10px 0 0;overflow:hidden;color:#4f4f4f;background-position:right -115px}
+		.uc_title label span{display:inline-block;height:21px;padding:5px 15px 0 0;overflow:hidden;color:#4f4f4f;background-position:right -115px}
 			.uc_title label span em{color:#c04e0b;font-style:normal;font-size:11px}
 			.uc_title label.current span em{color:#f77113}
 	.uc_title label.current{margin-top:1px;background-position:0 -32px}
