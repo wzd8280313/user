@@ -900,9 +900,9 @@ input.btn_brown{
  background: #DF680A;
    color:#fff;
 }
-input.btn_mini{font-size:14px;min-width: 60px; height: 22px; border-radius:3px;padding:1px 4px;}
-input.btn_small{font-size:16px;min-width: 80px; height: 26px; border-radius:3px;padding:1px 5px;}
+input.btn_mini{font-size:14px;min-width: 60px; line-height: 25px; border-radius:3px;padding:1px 4px;}
+input.btn_small{font-size:14px;min-width: 80px; border-radius:3px;padding:1px 5px;}
 input.btn_order{
-	font-size: 18px;  width: 191px;height: 40px;
+	font-size: 16px;  width: 191px;height: 40px;
 }
 /*按钮结束*/
