@@ -754,7 +754,7 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 /* login_box style end */
 /* pages_bar style start */
 .pages_bar{text-align:right;color:#444}
-	.pages_bar a,.pages_bar span{display:inline-block;height:17px;border:1px solid #d5d5d5;margin-right:6px;padding:2px 7px 1px;text-align:center;color:#1a66b3;font-weight:bold;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px}
+	.pages_bar a,.pages_bar span{display:inline-block;height:17px;line-height:17px;border:1px solid #d5d5d5;margin-right:6px;padding:2px 7px 1px;text-align:center;color:#1a66b3;font-weight:bold;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px}
 	.pages_bar a.current_page{border:1px solid #c30;background-color:#c30;color:#fff}
 	.pages_bar span{color:#878787}
 .box .pages_bar{margin:5px 20px 25px}
