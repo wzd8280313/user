@@ -117,7 +117,7 @@ body.index{ background:url(../images/front/sprites.gif) 0 -341px repeat-x}
 body.second .wrapper{border-top:2px solid #000}
 .main{width:750px}
 .sidebar{width:200px}
-	.wrapper .box{border:1px #e1e1e1 solid}
+	.wrapper .box{border:1px  solid #E1E1E1;margin-bottom: 10px; }
 		.wrapper .box .title{height:31px;border-bottom:1px #e1e1e1 solid;line-height:30px}
 		.wrapper .box .title2{height:36px;border-bottom:1px #e1e1e1 solid;line-height:36px}
 		.wrapper .box .title3{height:41px;margin-top:10px;border-bottom:0;overflow:hidden}
@@ -217,7 +217,8 @@ ul.logolist li{float:left;width:150px;height:40px;margin:7px;border:1px solid #c
 ul.logolist li.s{width:100px;height:35px;margin:5px 2px}
 /* logolist style start */
 /* form table style start */
-label input{cursor:pointer}
+label input{cursor:pointer height:30px;width:100px; background-color:#f60;border:solid 1px 
+#f30;color:#FFF; position:relative;top:-4px;}
 .form_table label{margin-right:5px;vertical-align:middle;color:#a6a6a6}
 .form_table label.attr{color:#1d1d1d}
 
@@ -243,7 +244,7 @@ textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;bor
 .summary div.current .shop_cart input.disabled{background-position:0 -555px}
 /* form table style end */
 /* border table style start */
-.border_table {border-collapse:collapse;border:1px solid #ffc8a0}
+.border_table {border-collapse:collapse;border:1px solid #ffc8a0;margin-bottom:10px;}
 	.border_table th,.border_table td{padding:6px 15px 5px 15px;border:1px solid #e0e0e0}
 	.border_table th,.dotted_table th{color:#666;background:#f7f7f7}
 	.border_table thead td{border:none;background:#fef6e3;font-weight:bold;color:#4d4d4d}
@@ -654,7 +655,7 @@ strong.result{ display:block;margin:0 0 5px;font-size:16px;color:#666;text-align
 				.cart_box .prompt_4{padding:0 12px;border:1px solid #feddc6;background-color:#fffcf2;color:#595959}
 					.cart_box .prompt_4 strong{display:block;margin:10px 0 0;padding:0 0 3px 10px;border-bottom:1px solid #ffcaa5}
 				.addr_list li{height:20px;line-height:20px;margin:8px 0;padding-left:10px}
-				.cart_box table.form_table{margin:0}
+				.cart_box table.form_table{margin:0;margin-bottom: 10px;}
 					.cart_box table.form_table input.tiny{height:16px;width:78px;margin:0 5px;text-align:center;color:#5b5b5b}
 					.cart_box table.form_table th,.cart_box table.form_table td{padding:0 0;font-size:12px;vertical-align:middle}
 					.cart_box .box table.form_table th,.cart_box .box table.form_table td{padding:9px 0}
