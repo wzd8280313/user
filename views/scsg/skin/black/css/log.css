@@ -230,7 +230,7 @@ input.gray_s{width:97px}input.gray_t{width:38px;height:17px;padding:3px 3px 0}in
 input.current{border-color:#000}
 input.search{width:240px;height:23px;padding-left:27px;border:1px solid #d2d2d2;margin:0 5px;vertical-align:middle;background:url(../images/front/ucenter/search_bg.gif) no-repeat}
 input.radio{vertical-align:middle;margin-right:5px}
-input.sbtn{width:37px;height:19px;margin:0 5px;border:none;color:#666;background:url(../images/front/ucenter/sbtn_bg.gif) no-repeat}
+input.sbtn{width:37px;height:19px;margin:0 5px;border:none;color:#666;background:url(../images/front/ucenter/sbtn_bg.gif) no-repeat;padding-bottom: 1px;}
 input.sreset{border:none;background:none;color:#aaa}
 textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;border:1px #7f9db9 solid;line-height:18px}
 .form_table{margin-bottom:20px;padding:20px 0 0;background-color:#fff}
