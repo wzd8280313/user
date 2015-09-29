@@ -157,7 +157,7 @@ img.operator{width:12px;height:12px;margin:0 6px;cursor:pointer; vertical-align:
 /* content_box style end */
 /* page style start */
 .pages_bar{margin-top:5px;padding:5px 0 5px 15px;border-top:1px #dddddd solid;border-bottom:1px #dddddd solid;color:#525252;text-align:left}
-	.pages_bar a{display:block;float:left;height:19px;margin-right:6px;padding:0 6px;border:1px #d5d5d5 solid;line-height:19px;color:#7e7e7e;text-align:center;background:url(../images/admin/admin_bg.gif) 0 -543px repeat-x; overflow:hidden}
+	.pages_bar a{display:block;float:left;height:18px;margin-right:6px;padding:0 6px;border:1px #d5d5d5 solid;line-height:18px;color:#7e7e7e;text-align:center;background:url(../images/admin/admin_bg.gif) 0 -543px repeat-x; overflow:hidden}
 	.pages_bar a.current_page{color:#6d7170;background-position:0 -525px}
 	.pages_bar .btn{color:#000;}
 	.pages_bar .inactive{cursor:auto;color:#aca899}
