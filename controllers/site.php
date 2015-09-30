@@ -1217,10 +1217,32 @@ class Site extends IController
 
 
 	function ce(){
-		$m = new IModel('user');
+// 		$m = new IModel('user');
+// 		$orderId = 310;
+// 		$orderDB         = new IQuery('order as o');
+// 		$orderDB->fields = 'p.class_name,o.trade_no,dd.delivery_code,fc.freight_type,o.pay_type';
+// 		$orderDB->join   = 'left join payment as p on o.pay_type = p.id 
+// 							left join delivery_doc as dd on o.id = dd.order_id 
+// 							left join delivery as d on d.id = o.distribution 
+// 							left join freight_company as fc on fc.id = dd.freight_id';
+// 		$orderDB->where  = 'o.id = '.$orderId;
+// 		$result          = $orderDB->find();
+// 		print_r($result);
 		
-		$res = $m->del('id=43');
-		echo $res;
+		$paramArray = array(
+				'order_id'      => 123,
+				'user_id'       => 12,
+				'name'          => 'wplee',
+				'time'          => ITime::getDateTime(),
+				'freight_id'    => 3,
+		);
+		$tb_delivery_doc = new IModel('delivery_doc');
+	 	$tb_delivery_doc->setData($paramArray);
+	 	$deliveryId = $tb_delivery_doc->add();
+	 	echo $deliveryId;
+	 	$tb_delivery_doc->commit();
+	 	$data = $tb_delivery_doc->getObj('id='.$deliveryId);
+	 	print_r($data);exit();
 		//user_like::set_user_history(13,1);
 	}
 	

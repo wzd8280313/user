@@ -17,11 +17,15 @@ class sendgoods
 	 * @brief 开始发货
 	 * @param $orderId int 订单ID号
 	 */
-	public static function run($orderId)
+	public static function run($paramArray)
 	{
-		$orderRow = self::getOrderInfo($orderId);
+		$orderRow = self::getOrderInfo($paramArray['order_id']);
+	
 		if($orderRow['trade_no'] && $sendObj = self::createObject($orderRow['class_name']))
 		{
+			$freight = new IModel('freight_company');
+			$orderRow['freight_type'] = $freight->getField('id='.$paramArray['freight_id'],'freight_type');
+			$orderRow = array_merge($orderRow,$paramArray);
 			$sendObj->send($orderRow);
 		}
 	}
@@ -34,8 +38,8 @@ class sendgoods
 	private static function getOrderInfo($orderId)
 	{
 		$orderDB         = new IQuery('order as o');
-		$orderDB->fields = 'p.class_name,o.trade_no,dd.delivery_code,fc.freight_type,o.pay_type';
-		$orderDB->join   = 'left join payment as p on o.pay_type = p.id left join delivery_doc as dd on o.id = dd.order_id left join delivery as d on d.id = o.distribution left join freight_company as fc on fc.id = dd.freight_id';
+		$orderDB->fields = 'p.class_name,o.trade_no,o.pay_type';
+		$orderDB->join   = 'left join payment as p on o.pay_type = p.id ';
 		$orderDB->where  = 'o.id = '.$orderId;
 		$result          = $orderDB->find();
 		return current($result);

@@ -742,7 +742,6 @@ class Order_Class
 	 		'time'          => ITime::getDateTime(),
 	 		'freight_id'    => IFilter::act(IReq::get('freight_id'),'int'),
 	 	);
-
 	 	switch($sendor)
 	 	{
 	 		case "admin":
@@ -772,7 +771,7 @@ class Order_Class
 	 	$tb_delivery_doc = new IModel('delivery_doc');
 	 	$tb_delivery_doc->setData($paramArray);
 	 	$deliveryId = $tb_delivery_doc->add();
-
+	 	
 		//订单对象
 		$tb_order   = new IModel('order');
 		$tbOrderRow = $tb_order->getObj('id = '.$order_id);
@@ -848,11 +847,11 @@ class Order_Class
     	);
     	$mobileMsg = smsTemplate::sendGoods($replaceData);
     	Hsms::send($paramArray['mobile'],$mobileMsg);
-
+    	
     	//同步发货接口，如支付宝担保交易等
     	if($sendResult && $sendStatus == 1)
     	{
-    		sendgoods::run($order_id);
+    		sendgoods::run($paramArray);
     	}
 	}
 
