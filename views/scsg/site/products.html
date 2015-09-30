@@ -385,7 +385,7 @@
 		{if:isset($buyer_id) && $buyer_id}
 				<div class="box m_10">
 			<div class="title">购买本商品的用户还购买过</div>
-			<div class="content" style='width:95%;'>
+			<div class="content" style='width:100%;'>
 				<ul class="ranklist">
 					{foreach:items=Api::run('getOrderGoodsByBuyerid',array('#buyer_id#',$buyer_id))}
 										<li class="current">
@@ -403,7 +403,7 @@
 		<!--热卖商品-->
 		<div class="box m_10">
 			<div class="title">热卖商品</div>
-			<div class="content" style='width:95%;'>
+			<div class="content" style='width:100%;'>
 				<ul class="ranklist">
 					{foreach:items=Api::run('getCommendHot')}
 									<li class="current">

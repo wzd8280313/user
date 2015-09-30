@@ -67,6 +67,10 @@ class Hsms
 	public static function send($mobile,$content)
 	{
 		self::$smsInstance = self::getSmsInstance();
+<<<<<<< HEAD
+=======
+		return self::$smsInstance->send($mobile,$content);exit();
+>>>>>>> jin
 		if(IValidate::mobi($mobile) && $content)
 		{
 			$ip = IClient::getIp();
