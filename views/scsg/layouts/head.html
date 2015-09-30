@@ -146,6 +146,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	</DIV>
 </DIV>
 <SCRIPT type="text/javascript">
+	var searchUrl = '{url:/site/search_list/word/}';
 function AdvClick(){
 	var a=1500;
 	var b=3*1000;
@@ -220,12 +221,12 @@ if($("#actionimg").length>0){
 			<input type="hidden" name="controller" value="site">
 			<input type="hidden" name="action" value="search_list">
 			<div class="s-main">
-				<input class="ipt-key" type="text" name="word" onkeyup="getKeywords('{url:/block/getLikeWords}',$(this).val())" autocomplete="off" value="输入关键字...">
+				<input class="ipt-key" type="text" name="word" onkeyup="getKeywords('{url:/block/getLikeWords}',$(this))" autocomplete="off" value="输入关键字...">
 				<input class="btn-search" type="submit" style='cursor:pointer;' value="搜索" onclick="checkInput(&#39;word&#39;,&#39;输入关键字...&#39;);">
 				
 			</div>
 			</form>
-			<div class='wordsLike' style='display:none;background-color:#fff;border:1px solid #aaa;width:402px;height:200px;position:absolute;'>
+			<div class='words-give' >
 				
 			</div>
 			<!--s-main-->

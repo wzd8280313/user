@@ -310,8 +310,9 @@ function showService(){
 }
 
 /*异步获取联想关键词*/
-function getKeywords(url,word){
-	var showDiv = $('.wordsLike');
+function getKeywords(url,_this){
+	var word = _this.val();
+	var showDiv = $('.words-give');
 	if (!word) {
 		showDiv.html('').css('display','none');
 		return false;
@@ -324,17 +325,21 @@ function getKeywords(url,word){
 		dataType:'json',
 		url:url,
 		success:function(data){
+			showDiv.html('');
 			if(data.length>0){
-				//window.realAlert(JSON.stringify(data));
 				var appendHtml = '';
 				for(var i in data){
-					window.realAlert(data[i].keyword);
-					var div = '<div><span>'+data[i].keyword+'</span></div>';
+					var div = '<p>'+data[i].keyword+'</p>';
 					appendHtml +=div;
 				}
 				showDiv.append(appendHtml);
-				
-				
+				showDiv.find('p').on('click',function(){
+					_this.val($(this).text());
+					showDiv.html('').css('display','none');
+					location.href = searchUrl+'/'+$(this).text();
+				})
+			}else{
+				showDiv.html('').css('display','none');
 			}
 			
 		},
