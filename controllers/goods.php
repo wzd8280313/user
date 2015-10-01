@@ -303,6 +303,10 @@ class Goods extends IController
 	    {
 	    	$updateData = array('is_del' => 3,'up_time' => null,'down_time' => null);
 	    }
+	    else if($type == 'presell')
+	    {
+	    	$updateData = array('is_del' => 4,'up_time' => null,'down_time' => null);
+	    }
 
 	    $tb_goods->setData($updateData);
 

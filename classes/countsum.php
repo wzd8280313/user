@@ -230,13 +230,13 @@ class CountSum
     	$this->final_sum = $final_sum - $this->proReduce;
 
     	return array(
-    		'final_sum'  => $this->final_sum,
-    		'promotion'  => $this->promotion,
-    		'proReduce'  => $this->proReduce,
-    		'sum'        => $this->sum,
+    		'final_sum'  => $this->final_sum,//减去会员减价和促销减价后的总价
+    		'promotion'  => $this->promotion,//促销信息
+    		'proReduce'  => $this->proReduce,//促销规则减价
+    		'sum'        => $this->sum,//原总价
     		'goodsList'  => array_merge($goodsList,$productList),
     		'count'      => $this->count,
-    		'reduce'     => $this->reduce,
+    		'reduce'     => $this->reduce,//会员价和闪购价减价
     		'weight'     => $this->weight,
     		'freeFreight'=> $this->isFreeFreight,
     		'point'      => $this->point,

@@ -920,7 +920,7 @@ class Simple extends IController
 
 			//促销活动优惠
 			'pro_reduce'         => $goodsResult['proReduce'] ,
-			//红包见面金额
+			//红包减免金额
 			'ticket_reduce'      => isset($ticketRow['value']) ? $ticketRow['value'] : 0,
 			//订单应付总额（商品final_num加上，税金，运费，再减去红包）
 			'order_amount'        => $orderData['orderAmountPrice'] - (isset($ticketRow['value']) ? $ticketRow['value'] : 0),

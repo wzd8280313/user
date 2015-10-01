@@ -689,31 +689,7 @@ class Site extends IController
 				}
 			}
 		}
-// 		if($goods_info['promo'])
-// 		{
-// 			switch($goods_info['promo'])
-// 			{
-// 				//团购
-// 				case 'groupon':
-// 				{
-// 					$goods_info['regiment'] = Api::run("getRegimentRowById",array("#id#",$goods_info['active_id']));
-// 				}
-// 				break;
 
-// 				//抢购
-// // 				case 'time':
-// // 				{
-// // 					$goods_info['promotion'] = Api::run("getPromotionRowById",array("#id#",$goods_info['active_id']));
-// // 				}
-// // 				break;
-
-// 				default:
-// 				{
-// 					IError::show(403,"活动不存在或者已经过期");
-// 					exit;
-// 				}
-// 			}
-// 		}
 
 		//获得扩展属性
 		$tb_attribute_goods = new IQuery('goods_attribute as g');
