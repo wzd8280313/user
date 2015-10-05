@@ -16,7 +16,7 @@
   'master' => '',
   'qq' => '',
   'email' => '',
-  'mobile' => '13232323232',
+  'mobile' => '13232323',
   'phone' => '',
   'address' => '',
   'site_footer_code' => '<div class=\\"footer\\" style=\\"text-align:center;\\">		<p class=\\"links\\">			<a href=\\"\\">关于我们</a>|			<a href=\\"\\">联系我们</a>|			<a href=\\"\\">商城公告</a>|			<a href=\\"\\">意见反馈</a>|			<a href=\\"\\">诚聘英才</a>|			<a href=\\"\\">友情链接</a>		</p>		<p>阳泉广电传媒电子商务有限公司 版权所有 经营许可证编号:XXXXXXXXXXX 备案许可证:XXXXXXX</p>		<p class=\\"copyright\\">Powered by <a href=\\"#\\">阳泉广电传媒电子商务有限公司</a></p>		Copyright © 2005-2014 <a class=\\"copyys\\" target=\\"_blank\\" href=\\"http://www.miibeian.gov.cn/\\">晋ICP备01000010号</a>	</div>',
@@ -38,4 +38,13 @@
   'sms_sign' => '【无线阳泉】',
   'test_address' => 'weiping.lee@163.com',
 	'date_fapiao'=> '5',//允许开发票的天数
+	
+	//闪购配置
+	'shan_open' => 0,//0:关闭
+	'tuan_prop' => 0,//是否可用代金券
+	'shan_prop' => 0,
+	'presell_prop'=> 0,
+	'pesell_promotion' => 0,
+	//预售配置
+	'pre_order_cancel_days' => 3,
 )?>

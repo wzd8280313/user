@@ -121,6 +121,62 @@ class Payment
 		return $payment;
 	}
 	/**
+	 * @brief 预售订单的支付
+	 * @param $payment_id int 支付方式id
+	 * @param $order_id  int  预售订单id
+	 * @return array 支付提交信息
+	 */
+	public static function getPaymentInfoPresell($payment_id,$order_id)
+	{
+		$payment = self::getPaymentParam($payment_id);
+		$order_obj = new IModel('order_presell as o');
+		$fields = 'o.order_no,o.status,o.pay_status,o.pay_type,o.pre_amount,o.order_amount,o.create_time';
+		$orderRow = $order_obj->getObj('o.id='.$order_id);
+	//	print_r($orderRow);exit();
+		if(empty($orderRow))
+		{
+			IError::show(403,'订单信息不正确，不能进行支付');
+		}
+		
+		$siteConfigObj = new Config('site_config');
+		$cancel_days = $siteConfigObj->pre_order_cancel_days;
+		if($orderRow['status']==1 && order_class::is_overdue($orderRow['create_time'],$cancel_days)){
+			$payment['M_Amount']    = $orderRow['pre_amount'];
+			$payment['M_OrderNO']   = 'pre'.$orderRow['order_no'];
+		}elseif($orderRow['status']==4 && order_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days'])){
+			$payment['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
+			$payment['M_OrderNO']   = 'wei'.$orderRow['order_no'];
+		}
+		else{
+			IError::show(403,'订单已过期，不能进行支付');
+		}
+		
+		$payment['M_Remark']    = $orderRow['postscript'];
+		$payment['M_OrderId']   = $orderRow['id'];
+		
+		//用户信息
+		$payment['P_Mobile']    = $orderRow['mobile'];
+		$payment['P_Name']      = $orderRow['accept_name'];
+		$payment['P_PostCode']  = $orderRow['postcode'];
+		$payment['P_Telephone'] = $orderRow['telphone'];
+		$payment['P_Address']   = $orderRow['address'];
+		
+		$site_config   = $siteConfigObj->getInfo();
+		
+		//交易信息
+		$payment['M_Time']      = time();
+		$payment['M_Paymentid'] = $payment_id;
+		
+		//店铺信息
+		$payment['R_Address']   = isset($site_config['address']) ? $site_config['address'] : '';
+		$payment['R_Name']      = isset($site_config['name'])    ? $site_config['name']    : '';
+		$payment['R_Mobile']    = isset($site_config['mobile'])  ? $site_config['mobile']  : '';
+		$payment['R_Telephone'] = isset($site_config['phone'])   ? $site_config['phone']   : '';
+		
+		return $payment;
+		
+	}
+	/**
 	 * @brief 获取订单中的支付信息 M:必要信息; R表示店铺; P表示用户;
 	 * @param $payment_id int    支付方式ID
 	 * @param $type       string 信息获取方式 order:订单支付;recharge:在线充值;

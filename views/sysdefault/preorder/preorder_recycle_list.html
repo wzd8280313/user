@@ -45,22 +45,19 @@
 		<col />
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=order as o join=left join delivery as d on o.distribution eq d.id left join payment as p on o.pay_type eq p.id left join user as u on u.id eq o.user_id fields=o.id as oid,d.name as dname,p.name as pname,o.order_no,o.accept_name,o.pay_status,o.distribution_status,u.username,o.create_time,o.status where=if_del eq 1 page=$page }
+			{query: name=order_presell as o join=left join delivery as d on o.distribution eq d.id left join payment as p on o.pay_type eq p.id left join user as u on u.id eq o.user_id fields=o.id as oid,d.name as dname,p.name as pname,o.order_no,o.accept_name,o.pay_status,o.distribution_status,u.username,o.create_time,o.status where=if_del eq 1 page=$page }
 			<tr>
 				<td class="t_c"><input name="id[]" type="checkbox" value="{$item['oid']}" /></td>
 				<td>{$item['order_no']}</td>
 				<td>{$item['accept_name']}</td>
-				<td>{if:$item['pay_status']==0}未付款{else:}已付款{/if}</td>
+				<td>{echo:Preorder_Class::getOrderPayStatusText($item)}</td>
 				<td>{if:$item['distribution_status']==0}未发货{else:}已发货{/if}</td>
 				<td>{$item['dname']}</td>
 				<td>{$item['pname']}</td>
 				<td>{echo:$item['username']=='' ? '游客' : $item['username']}</td>
 				<td>{$item['create_time']}</td>
 				<td>
-					{if:$item['status']<3}
-					<a href="{url:/order/order_edit/id/$item[oid]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
-					{/if}
-					<a href="javascript:void(0)" onclick="delModel({link:'{url:/order/order_recycle_del/id/$item[oid]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>
+					<a href="javascript:void(0)" onclick="delModel({link:'{url:/preorder/order_recycle_del/id/$item[oid]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>
 				</td>
 			</tr>
 			{/query}
@@ -73,12 +70,12 @@
 <script type="text/javascript">
 	function recycle_restore()
 	{
-		$("form[name='orderForm']").attr('action','{url:/order/order_recycle_restore}');
+		$("form[name='orderForm']").attr('action','{url:/preorder/order_recycle_restore}');
 		confirm('确定要还原所选中的信息吗？','formSubmit(\'orderForm\')');
 	}
 	function recycle_del()
 	{
-		$("form[name='orderForm']").attr('action','{url:/order/order_recycle_del}');
+		$("form[name='orderForm']").attr('action','{url:/preorder/order_recycle_del}');
 		confirm('确定要彻底删除所选中的信息吗？','formSubmit(\'orderForm\')');
 	}
 </script>

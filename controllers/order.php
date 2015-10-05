@@ -706,6 +706,7 @@ class Order extends IController
 
 		$this->redirect("order_list");
     }
+   
     /**
      * @brief 订单删除功能_删除到回收站
      */
@@ -713,7 +714,7 @@ class Order extends IController
     {
     	//post数据
     	$id = IFilter::act(IReq::get('id'),'int');
-
+	
     	//生成order对象
     	$tb_order = new IModel('order');
     	$tb_order->setData(array('if_del'=>1));
@@ -1075,8 +1076,9 @@ class Order extends IController
 		$this->layout='print';
 		$order_id = IFilter::act( IReq::get('id'),'int' );
 		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
+		$type     = IFilter::act(IReq::get('type'));
 
-		$tb_order = new IModel('order');
+		$tb_order = $type ? new IModel('order_presell') : new IModel('order');
 		$data     = $tb_order->getObj('id='.$order_id);
 
 		if($seller_id)
@@ -1112,7 +1114,9 @@ class Order extends IController
 		$order_id = IFilter::act( IReq::get('id'),'int' );
 		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
 
-		$tb_order = new IModel('order');
+		$type     = IFilter::act(IReq::get('type'));
+
+		$tb_order = $type ? new IModel('order_presell') : new IModel('order');
 		$data     = $tb_order->getObj('id='.$order_id);
 
  		//获取地区
@@ -1129,7 +1133,8 @@ class Order extends IController
 		$order_id = IFilter::act(IReq::get('id'),'int');
 		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
 
-		$tb_order = new IModel('order');
+		$type     = IFilter::act(IReq::get('type'));
+		$tb_order = $type ? new IModel('order_presell') : new IModel('order');
 		$data     = $tb_order->getObj('id='.$order_id);
 
 		if($seller_id)
@@ -1416,7 +1421,7 @@ class Order extends IController
 	{
 		$this->layout = 'print';
     	$data = array();
-
+		$type = IFilter::act(IReq::get('type'));
     	//获得order_id的值
 		$order_id = IFilter::act(IReq::get('id'),'int');
 		$order_id = is_array($order_id) ? join(',',$order_id) : $order_id;
@@ -1428,7 +1433,7 @@ class Order extends IController
 		}
 
 		$ord_class       = new Order_Class();
- 		$this->orderInfo = $ord_class->getOrderInfo($order_id);
+ 		$this->orderInfo = $ord_class->getOrderInfo($order_id,$type);
 
 		$this->redirect('expresswaybill_template');
 	}

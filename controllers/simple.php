@@ -636,6 +636,7 @@ class Simple extends IController
 		if($id && $type)//立即购买
 		{
 			$result = $countSumObj->direct_count($id,$type,$buy_num,$promo,$active_id);
+			
 			$this->gid       = $id;
 			$this->type      = $type;
 			$this->num       = $buy_num;
@@ -648,16 +649,17 @@ class Simple extends IController
 			$result = $countSumObj->cart_count();
 			
 		}
-		if($result['sum']==0){
-			$this->redirect('cart');
-		}
+		
+		
 		//检查商品合法性或促销活动等有错误
 		if( is_string($result))
 		{
 			IError::show(403,$result);
 			exit;
 		}
-
+		if($result['sum']==0){
+			$this->redirect('cart');
+		}
     	//获取收货地址
     	$addressObj  = new IModel('address');
     	$addressList = $addressObj->query('user_id = '.$user_id);
@@ -682,11 +684,16 @@ class Simple extends IController
 		$this->prop = array();
 		$memberObj = new IModel('member');
 		$memberRow = $memberObj->getObj('user_id = '.$user_id,'prop,custom');
-		if(isset($memberRow['prop']) && ($propId = trim($memberRow['prop'],',')))
-		{
-			$porpObj = new IModel('prop');
-			$this->prop = $porpObj->query('id in ('.$propId.') and NOW() between start_time and end_time and type = 0 and is_close = 0 and is_userd = 0 and is_send = 1','id,name,value,card_name');
+		if(Common::activeProp($promo)){//判断活动是否允许使用代金券
+			if(isset($memberRow['prop']) && ($propId = trim($memberRow['prop'],',')))
+			{
+				$porpObj = new IModel('prop');
+				$this->prop = $porpObj->query('id in ('.$propId.') and NOW() between start_time and end_time and type = 0 and is_close = 0 and is_userd = 0 and is_send = 1','id,name,value,card_name');
+			}
+		}else{
+			$this->prop_not = true;
 		}
+		
 
 		if(isset($memberRow['custom']) && $memberRow['custom'])
 		{
@@ -714,7 +721,7 @@ class Simple extends IController
     	
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
-    	
+    
     	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
@@ -1782,7 +1789,7 @@ class Simple extends IController
 
 			//执行insert
 			$model->setData($sqlData);
-			$model->add();
+			$sqlData['add_id']=$model->add();
 
 			$sqlData['province_val'] = $areaList[$province];
 			$sqlData['city_val']     = $areaList[$city];

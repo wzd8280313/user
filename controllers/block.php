@@ -149,6 +149,7 @@ class Block extends IController
     	$distribution = IFilter::act(IReq::get("distribution"),'int');
     	$num          = IReq::get("num") ? IFilter::act(IReq::get("num"),'int') : 1;
 		$data         = array();
+		
 		if($distribution)
 		{
 			$data = Delivery::getDelivery($province,$distribution,$goodsId,$productId,$num);
@@ -163,6 +164,26 @@ class Block extends IController
 			}
 		}
     	echo JSON::encode($data);
+    }
+    /**
+     * 预售订单支付
+     */
+    public function doPayPresell(){
+    	$order_id   = IFilter::act(IReq::get('order_id'),'int');
+    	//$siteConfigObj = new Config('site_config');
+    	//$cancel_days = $siteConfigObj->pre_order_cancel_days;
+    	$order_db   = new IModel('order_presell');
+    	$orderRow = $order_db->getObj('id='.$order_id,'order_no,pay_type,pre_amount');
+    	$payment_id = $orderRow['pay_type'];
+    	if(empty($orderRow))
+    	{
+    		IError::show(403,'要支付的订单信息不存在');
+    	}
+    	
+    	//获取支付方式类库
+    	$paymentInstance = Payment::createPaymentInstance($payment_id);
+    	$sendData = $paymentInstance->getSendData(Payment::getPaymentInfoPresell($payment_id,$order_id));
+    	$paymentInstance->doPay($sendData);
     }
 	/**
     * @brief 【重要】进行支付支付方法
@@ -253,8 +274,19 @@ class Block extends IController
 				}
 				IError::show(403,'充值失败');
 			}
-			else
+			else if(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false)
 			{
+				$order_id = Preorder_Class::updateOrderStatus($orderNo);
+				if($order_id)
+				{
+					$url  = '/site/success/message/'.urlencode("支付成功");
+					$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+					$this->redirect($url);
+					exit;
+				}
+				IError::show(403,'订单修改失败');
+			}
+			else{
 				$order_id = Order_Class::updateOrderStatus($orderNo);
 				if($order_id)
 				{
@@ -314,6 +346,19 @@ class Block extends IController
 					$paymentInstance->notifyStop();
 					exit;
 				}
+			}
+			else if(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false)
+			{
+				$order_id = Preorder_Class::updateOrderStatus($orderNo);
+				if($order_id)
+				{
+					$paymentInstance->notifyStop();
+					$url  = '/site/success/message/'.urlencode("支付成功");
+					$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+					$this->redirect($url);
+					exit;
+				}
+				IError::show(403,'订单修改失败');
 			}
 			else
 			{

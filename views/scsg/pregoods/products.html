@@ -25,8 +25,11 @@
 	
 	<div class="summary" style='margin-right:15px;'>
 
+		<input type='hidden' id='goods_id' alt='商品ID' value='{$id}' />
 		<!--货品ID，当为商品时值为空-->
 		<input type='hidden' id='product_id' alt='货品ID' value='' />
+		<input type='hidden' name='promo_name' value="presell"/>
+		<input type='hidden' name='active_id' value="{$preData['id']}"/>
 		<!--基本信息区域-->
 		<div id='detail'>
 			<div id="J_DetailMeta" class="tm-detail-meta tm-clear">
@@ -126,7 +129,7 @@
 										<p>
 											预付款:{$preData['money_rate']}%
 										</p>
-										<p class="tbc-presale-price red">
+										<p class="tbc-presale-price red" id='premoney'>
 											¥
 											{if:$maxSellPrice!=$minSellPrice}
 											<strong>{$minPresellPrice}-{$maxPresellPrice}</strong>
@@ -139,7 +142,7 @@
 										<p>
 											尾款:{echo:100-$preData['money_rate']}%
 										</p>
-										<p class="tbc-presale-price">
+										<p class="tbc-presale-price" id='weimoney'>
 											¥
 											{if:$maxSellPrice!=$minSellPrice}
 											<strong>{echo: number_format($minSellPrice - $minPresellPrice,2)}-{echo:number_format($maxSellPrice-$maxPresellPrice,2)}</strong>
@@ -371,16 +374,7 @@
 		</div>
 		{/if}
 				<!--促销规则-->
-		<div class="box m_10">
-			<div class="title">促销活动</div>
-			<div class="cont">
-				<ul class="list">
-				{foreach:items=$promotion}
-					<li>{$item['info']}</li>
-				{/foreach}
-				</ul>
-			</div>
-		</div>
+		
 		<!--促销规则-->
 
 		<!--购买推荐-->
@@ -901,6 +895,7 @@ function discuss_ajax(page)
  */
 function sele_spec(_self)
 {
+	var rate = {$preData['money_rate']};
 	var specObj = $.parseJSON($(_self).attr('value'));
 
 	
@@ -929,32 +924,15 @@ function sele_spec(_self)
 		var specJSON = '['+specArray.join(",")+']';
 
 		//获取货品数据并进行渲染
-		$.getJSON('{url:/site/getProduct}',{"goods_id":"{$id}","specJSON":specJSON,"random":Math.random},function(json){
+		$.getJSON('{url:/pregoods/getProduct}',{"goods_id":"{$id}","rate":rate,"specJSON":specJSON,"random":Math.random},function(json){
 			//window.realAlert(JSON.stringify(json));
-		//	window.realAlert(typeof(json.data.group_price));
-			//var priceData = json.data;
 			
 			if(json.flag == 'success')
 			{
 				var priceHtml = template.render('priceTemplate',json.data);
 				$('#price_panel').html(priceHtml);
-				if(json.data.active_id && json.data.group_price){
-					if(json.data.group_price>json.data.shan_price){
-						$('input[name=active_id]').val(json.data.active_id);
-						$('input[name=promo_name]').val('time');
-					}else{
-						$('input[name=active_id]').val('');
-						$('input[name=promo_name]').val('');
-					}
-				}else if(json.data.active_id){
-					$('input[name=active_id]').val(json.data.active_id);
-					$('input[name=promo_name]').val('time');
-				}
-				else{
-					$('input[name=active_id]').val('');
-					$('input[name=promo_name]').val('');
-				}
-			
+				$('#premoney').find('strong').html(json.data.prePrice);
+				$('#weimoney').find('strong').html(json.data.weiPrice);
 				//普通货品数据渲染
 				$('#data_goodsNo').text(json.data.products_no);
 				$('#data_storeNums').text(json.data.store_nums);
@@ -1079,7 +1057,7 @@ function buy_now()
 
 	//设置必要参数
 	var buyNums  = parseFloat($.trim($('#buyNums').val()));
-	var id = {$id};
+	var id = $('#goods_id').val();
 	var type = 'goods';
 
 	if($('#product_id').val())
@@ -1087,9 +1065,9 @@ function buy_now()
 		id = $('#product_id').val();
 		type = 'product';
 	}
-	
-	var url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
-	url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
+	var active_id = $('input[name=active_id]').val();
+	var url = '{url:/pregoods/cart2/id/@id@/num/@buyNums@/type/@type@/active_id/@active_id@}';
+	url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type).replace('@active_id@',active_id);
 
 
 	//页面跳转

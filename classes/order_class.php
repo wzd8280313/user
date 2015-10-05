@@ -419,10 +419,11 @@ class Order_Class
 	/**
 	 * 获取订单基本信息
 	 * @param $orderIdString string 订单ID序列
+	 * @param $type string 订单类型 预售时有效
 	 */
-	public function getOrderInfo($orderIdString)
+	public function getOrderInfo($orderIdString,$type)
 	{
-		$orderObj    = new IModel('order');
+		$orderObj    = $type ? new IModel('order_presell') : new IModel('order');
 		$areaIdArray = array();
 		$orderList   = $orderObj->query('id in ('.$orderIdString.')');
 
@@ -481,6 +482,37 @@ class Order_Class
 				$goodsArray['delivery_fee']= $val['deliveryPrice'];
 				$goodsArray['save_price']  = $val['insuredPrice'];
 				$goodsArray['tax']         = $val['taxPrice'];
+				$orderGoodsObj->setData($goodsArray);
+				$orderGoodsObj->add();
+			}
+		}
+	}
+	/**
+	 * @brief 把预售订单商品同步到order_goods_pre表中
+	 * @param $order_id 订单ID
+	 * @param $goodsInfo 商品和货品信息（购物车数据结构,countSum 最终生成的格式）
+	 */
+	public function insertOrderGoodsPresell($order_id,$goodsResult = array())
+	{
+		$orderGoodsObj = new IModel('order_goods_pre');
+	
+		//清理旧的关联数据
+		$orderGoodsObj->del('order_id = '.$order_id);
+	
+		$goodsArray = array(
+				'order_id' => $order_id
+		);
+	
+		if(isset($goodsResult['goodsList']))
+		{
+			foreach($goodsResult['goodsList'] as $key => $val)
+			{
+				
+	
+				$goodsArray['product_id']  = $val['product_id'];
+				$goodsArray['goods_id']    = $val['goods_id'];
+				$goodsArray['img']         = $val['img'];
+				$goodsArray['goods_nums']  = $val['count'];
 				$orderGoodsObj->setData($goodsArray);
 				$orderGoodsObj->add();
 			}
@@ -1329,5 +1361,17 @@ class Order_Class
 			}
 		}
 		return $statusText;
+	}
+	/**
+	 * 判断订单是否过期
+	 * @$start_time  开始时间
+	 * @$days int 超过此时间失效
+	 * @return bool
+	 */
+	public static function is_overdue($start_time,$days){
+		$start = strtotime($start_time);
+		if(time()-$start>$days*24*3600)
+			return false;
+		return true;
 	}
 }

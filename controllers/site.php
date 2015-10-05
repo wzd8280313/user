@@ -893,6 +893,7 @@ class Site extends IController
 			exit;
 		}
 		
+		
 		//获取闪购价
 		$prom = new IModel('promotion');
 		$where = '`condition` = '.$goods_id.' AND NOW() between start_time and end_time AND (product_id = '.$procducts_info['id'].' OR product_id = 0)';
@@ -1205,20 +1206,22 @@ class Site extends IController
 // 		$result          = $orderDB->find();
 // 		print_r($result);
 		
-		$paramArray = array(
-				'order_id'      => 123,
-				'user_id'       => 12,
-				'name'          => 'wplee',
-				'time'          => ITime::getDateTime(),
-				'freight_id'    => 3,
-		);
-		$tb_delivery_doc = new IModel('delivery_doc');
-	 	$tb_delivery_doc->setData($paramArray);
-	 	$deliveryId = $tb_delivery_doc->add();
-	 	echo $deliveryId;
-	 	$tb_delivery_doc->commit();
-	 	$data = $tb_delivery_doc->getObj('id='.$deliveryId);
-	 	print_r($data);exit();
+// 		$paramArray = array(
+// 				'order_id'      => 123,
+// 				'user_id'       => 12,
+// 				'name'          => 'wplee',
+// 				'time'          => ITime::getDateTime(),
+// 				'freight_id'    => 3,
+// 		);
+// 		$tb_delivery_doc = new IModel('delivery_doc');
+// 	 	$tb_delivery_doc->setData($paramArray);
+// 	 	$deliveryId = $tb_delivery_doc->add();
+// 	 	echo $deliveryId;
+// 	 	$tb_delivery_doc->commit();
+// 	 	$data = $tb_delivery_doc->getObj('id='.$deliveryId);
+// 	 	print_r($data);exit();
+
+		payment::getSendDataPresell(3,335);
 		//user_like::set_user_history(13,1);
 	}
 	

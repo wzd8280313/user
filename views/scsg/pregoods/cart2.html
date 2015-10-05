@@ -4,7 +4,7 @@
 <script type='text/javascript'>
 //创建订单表单实例
 orderFormInstance = new orderFormClass();
-
+orderFormInstance.presell = 1;
 //DOM加载完毕
 jQuery(function(){
 	//使用红包按钮
@@ -97,7 +97,7 @@ function address_save()
 			{
 				var addressLiHtml = template.render('addressLiTemplate',{"item":content.data});
 				$('.addr_list').prepend(addressLiHtml);
-				$('input:radio[name="radio_address"]:first').trigger('click');
+				$('input:radio[name="radio_address"]:first').trigger('click').val(content.data.add_id);
 			}
 			orderFormInstance.addressSave();
 		});
@@ -110,6 +110,7 @@ function get_delivery()
 	orderFormInstance.deliveryPrice = 0;
 	var province = $('[name="province"]').val();
 	var delivery = $('[name="delivery_id"]:checked').val();
+	
 	if(!province || !delivery)
 	{
 		return;
@@ -261,13 +262,12 @@ function selectTakeself(deliveryId)
 		</ul>
 	</div>
 
-	<form action='{url:/simple/cart3}' method='post' name='order_form' callback='orderFormInstance.isSubmit();'>
+	<form action='{url:/pregoods/cart3}' method='post' name='order_form' callback='orderFormInstance.isSubmit();'>
 
 		<input type='hidden' name='timeKey' value='{echo:time()}' />
 		<input type='hidden' name='direct_gid' value='{$this->gid}' />
 		<input type='hidden' name='direct_type' value='{$this->type}' />
 		<input type='hidden' name='direct_num' value='{$this->num}' />
-		<input type='hidden' name='direct_promo' value='{$this->promo}' />
 		<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
 		
 
@@ -502,14 +502,15 @@ function selectTakeself(deliveryId)
 				<div class="wrap_box">
 
 					<h3><span class="orange">购买的商品</span></h3>
-
-					<div class="cart_prompt f14 t_l m_10" {if:empty($this->promotion)}style="display:none"{/if}>
+					{if:!empty($this->promotion)}
+					<div class="cart_prompt f14 t_l m_10" >
 						<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
 						{foreach:items = $this->promotion}
 						<p class="indent blue">{$item['plan']}，{$item['info']}</p>
 						{/foreach}
 					</div>
-						{foreach:items=$this->goodsList item=$value}
+					{/if}
+						
 						
 						<table width="100%" class="cart_table t_c" >
 							<colgroup>
@@ -522,7 +523,7 @@ function selectTakeself(deliveryId)
 								<col width="80px" />
 								<col width="80px" />
 							</colgroup>
-							<caption>商家：{$value['seller_name']}</caption>
+							<caption>商家：{$this->seller_name}</caption>
 							<thead>
 								<tr>
 									<th>图片</th>
@@ -538,8 +539,8 @@ function selectTakeself(deliveryId)
 	
 							<tbody >
 								<!-- 商品展示 开始-->
-								{foreach:items = $value $key=$k}
-								{if:$k!=='seller_name'}
+								{foreach:items = $this->goodsList}
+								
 								<tr>
 									<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
 									<td class="t_l">
@@ -560,17 +561,14 @@ function selectTakeself(deliveryId)
 									<td>{$item['count']}</td>
 									<td><b class="red2">￥{$item['sum']}</b></td>
 								</tr>
-								{/if}
+								
 								{/foreach}
 								<!-- 商品展示 结束-->
 							</tbody>
 						</table>
-						{/foreach}
-					
 				</div>
 				
 				<!--购买清单 结束-->
-
 			</div>
 		</div>
 
@@ -579,7 +577,7 @@ function selectTakeself(deliveryId)
 			<div class="cont_2">
 				<strong>结算信息</strong>
 				<div class="pink_box">
-					<p class="f14 t_l">{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}：<b>{$this->final_sum}</b> - 代金券：<b name='ticket_value'>0</b> + 税金：<b id='tax_fee'>0</b> + 运费总计：<b id='delivery_fee_show'>0</b> + 保价：<b id='protect_price_value'>0</b> + 支付手续费：<b id='payment_value'>0</b></p>
+					<p class="f14 t_l">{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}：<b>{$this->final_sum}</b> {if:!isset($this->prop_not)}- 代金券：<b name='ticket_value'>0{/if}</b> + 税金：<b id='tax_fee'>0</b> + 运费总计：<b id='delivery_fee_show'>0</b> + 保价：<b id='protect_price_value'>0</b> + 支付手续费：<b id='payment_value'>0</b></p>
 					{if:!isset($this->prop_not)}
 					<a href="javascript:void(0)" id="ticket_a" class="fold" hidefocus>
 						<b class="orange">使用代金券</b>
@@ -635,7 +633,23 @@ function selectTakeself(deliveryId)
 						<tr>
 							<td>是否需要发票？(税金:￥{$this->goodsTax}) <input class="radio" onclick="orderFormInstance.doAccount();$('#tax_title').toggle();" name="taxes" type="checkbox" value="{$this->goodsTax}" /></td>
 							<td><label id="tax_title" class='attr' style='display:none'>发票抬头：<input type='text' class='normal' name='tax_title' /></label></td>
-							<td class="t_r"><b class="price f14">应付总额：<span class="red2">￥<b id='final_sum'>{$this->final_sum}</b></span>元</b></td>
+							<td class="t_r"><b class="price f14 gray">合计：<span >￥<b id='final_sum'>{$this->final_sum}</b></span>元</b></td>
+						</tr>
+					</table>
+				</div>
+				<strong>预售阶段信息</strong>
+				<div class="pink_box">
+					<p class="f14 t_l">阶段1   预付款：<b id='pre_sum'>{$this->pre_sum}</b>  (请在提交订单后3天内付款，超时订单将被关闭)</p>
+					<p class="f14 t_l">阶段2   尾款支付：<b id='wei_sum'>{echo:$this->final_sum-$this->pre_sum}</b> </p>
+				</div>
+				<hr class="dashed" />
+				<div class="pink_box gray m_10">
+					<table width="100%" class="form_table t_l">
+						<col width="220px" />
+						<col />
+						<col width="250px" />
+						<tr>
+						<td class="t_r"><b class="price f14">预付款：<span class="red2">￥<b id='final_sum'>{$this->pre_sum}</b></span>元</b></td>
 						</tr>
 					</table>
 				</div>
@@ -644,14 +658,4 @@ function selectTakeself(deliveryId)
 		</div>
 	</form>
 </div>
-<script type="text/javascript">
-var _mvq = window._mvq || []; 
-window._mvq = _mvq;
-_mvq.push(['$setAccount', 'm-170377-0']);
 
-_mvq.push(['$setGeneral', 'ordercreate', '', /*用户名*/ 'user', /*用户id*/ '21']);
-_mvq.push(['$logConversion']);
-_mvq.push(['$addOrder',/*订单号*/ '2341234234', /*订单金额*/ '222']);
-_mvq.push(['$addItem', /*订单号*/ '2341234234', /*商品id*/ '31', /*商品名称*/ '汾酒', /*商品价格*/ '400', /*商品数量*/ '1', /*商品页url*/ 'http://121.40.61.222/site/products/id/31', /*商品页图片url*/ 'http://121.40.61.222/site/products/id/31']);
-_mvq.push(['$logData']);
-</script>
