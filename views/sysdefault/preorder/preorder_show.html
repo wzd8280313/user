@@ -456,7 +456,7 @@
 
 <div class="pages_bar">
 	<div class="t_c" id="ctrlButtonArea">
-		<button type="button" class="submit" id="to_sure" onclick=";"><span>确认</span></button>
+		<button type="button" class="submit" id="to_sure" onclick="sure({$order_id});"><span>确认</span></button>
 		<button type="button" class="submit" id="to_deliver" onclick="deliver({$order_id});"><span>发货</span></button>
 		<button type="button" class="submit" id="to_refundment" onclick="refundment({$order_id});"><span>退款</span></button>
 		<button type="button" class="submit" id="to_finish" onclick="complete({$order_id},5)"><span>完成</span></button>
@@ -510,7 +510,19 @@ function initButton()
 	$('#to_refundment').removeClass('inactive');
 	{/if}
 }
-
+function sure(order_id){
+	$.post("{url:/preorder/make_sure}",{'order_id':order_id}, function(data)
+	{
+		if(data=='success')
+		{
+			actionCallback();
+		}
+		else
+		{
+			alert('确认失败');
+		}
+	});
+}
 //选择当前Tab
 function selectTab(curr_tab)
 {

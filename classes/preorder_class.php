@@ -381,4 +381,77 @@ class Preorder_Class extends Order_Class{
 		}
 		
 	}
+	/**
+	 * @breif 订单的流向
+	 * @param $orderRow array 订单数据
+	 * @return array('时间' => '事件')
+	 */
+	public static function orderStep($orderRow)
+	{
+		$result = array();
+	
+		//1,创建订单
+		$result[$orderRow['create_time']] = '订单创建';
+	
+		//2,订单支付
+		if($orderRow['pay_time'])
+		{
+			$result[$orderRow['pay_time']] = '支付预付款  '.$orderRow['pre_amount'];
+		}
+	
+		
+		if($orderRow['confirm_time'])
+		{
+			$result[$orderRow['confirm_time']] = '管理员确认订单';
+		}
+	
+		//4,订单完成
+		if($orderRow['pay_time2'])
+		{
+			$result[$orderRow['pay_time2']] = '支付尾款   '.(number_format($orderRow['order_amount']-$orderRow['pre_amount'],2));
+		}
+		if($orderRow['send_time'])
+		{
+			$result[$orderRow['send_time']] = '订单发货完成';
+		}
+		if($orderRow['completion_time'])
+		{
+			$result[$orderRow['completion_time']] = '订单完成';
+		}
+		ksort($result);
+		return $result;
+	}
+	
+	/**
+	 * 添加评论商品的机会
+	 * @param $order_id 订单ID
+	 */
+	public static function addGoodsCommentChange($order_id)
+	{
+		//获取订单对象
+		$orderDB  = new IModel('order_presell');
+		$orderRow = $orderDB->getObj('id = '.$order_id);
+	
+		//获取此订单中的商品种类
+		$orderGoodsDB        = new IQuery('order_goods');
+		$orderGoodsDB->where = 'order_id = '.$order_id;
+		$orderGoodsDB->group = 'goods_id';
+		$orderList           = $orderGoodsDB->find();
+	
+		//可以允许进行商品评论
+		$commentDB = new IModel('comment');
+	
+		//对每类商品进行评论开启
+		foreach($orderList as $val)
+		{
+			$attr = array(
+					'goods_id' => $val['goods_id'],
+					'order_no' => $orderRow['order_no'],
+					'user_id'  => $orderRow['user_id'],
+					'time'     => date('Y-m-d H:i:s')
+			);
+			$commentDB->setData($attr);
+			$commentDB->add();
+		}
+	}
 }

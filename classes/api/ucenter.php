@@ -103,6 +103,15 @@ class APIUcenter
 		$query->page  = $page;
 		return $query;
 	}
+	//用户中心-预售订单列表
+	public function getPreorderList($userid){
+		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+		$query = new IQuery('order_presell');
+		$query->where = "user_id =".$userid." and if_del= 0";
+		$query->order = "id desc";
+		$query->page  = $page;
+		return $query;
+	}
 	//用户中心-我的代金券
 	public function getPropList($ids){
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;

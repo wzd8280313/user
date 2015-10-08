@@ -28,10 +28,14 @@
 				</tr>
 				<tr>
 					<th>尾款支付时间：</th>
-					<td>
+					<!--<td>
 						<input type='text' name='wei_start_time' class='Wdate' pattern='datetime' readonly=true onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" onblur="FireEvent(this,'onchange');" alt='请填写一个日期' /> ～
 						<input type='text' name='wei_end_time' class='Wdate' pattern='datetime' readonly=true onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" onblur="FireEvent(this,'onchange');" alt='请填写一个日期' /> ～
 						<label>* 此时间段支付尾款</label>
+					</td>-->
+					<td>
+						<label>预付款支付后</label><input type='text' name='wei_days' class='small' pattern='int' alt='请填写一个数字'  /> 
+						天内支付尾款*<label></label>
 					</td>
 				</tr>
 				<tr>
@@ -147,8 +151,7 @@
 			'name':'{$this->presellRow['name']}',
 			'money_rate':'{$this->presellRow['money_rate']}',
 			'yu_end_time':'{$this->presellRow['yu_end_time']}',
-			'wei_start_time':"{$this->presellRow['wei_start_time']}",
-			'wei_end_time':"{$this->presellRow['wei_end_time']}",
+			'wei_days':'{$this->presellRow['wei_days']}',
 			'is_close':'{$this->presellRow['is_close']}',
 			'intro':'{$this->presellRow['intro']}',
 			'goods_id':'{$this->presellRow['goods_id']}'

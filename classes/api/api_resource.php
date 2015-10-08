@@ -560,6 +560,9 @@ return array(
 	'getOrderList' => array(
 		'file' => 'ucenter.php','class' => 'APIUcenter'
 	),
+	'getPreorderList'=>array(
+			'file' => 'ucenter.php','class' => 'APIUcenter'
+	),
 	//用户中心-订单中商品列表
 	'getOrderGoodsListByGoodsid'=>array(
 	 	 'query'=>array(

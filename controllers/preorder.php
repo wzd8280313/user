@@ -326,5 +326,14 @@ class Preorder extends IController
 		$reportObj->toDownload($strTable);
 		exit();
 	}
+	//订单确认
+	public function make_sure(){
+		$order_id = IFilter::act(IReq::get('order_id'),'int');
+		$preorder_db = new IModel('order_presell');
+		$preorder_db->setData(array('status'=>4,'confirm_time'=>ITime::getDateTime()));
+		if($preorder_db->update('id='.$order_id.' and status=3')){
+			echo 'success';
+		}else echo 'error';
+	}
 	
 }

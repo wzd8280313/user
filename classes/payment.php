@@ -129,9 +129,11 @@ class Payment
 	public static function getPaymentInfoPresell($payment_id,$order_id)
 	{
 		$payment = self::getPaymentParam($payment_id);
-		$order_obj = new IModel('order_presell as o');
-		$fields = 'o.order_no,o.status,o.pay_status,o.pay_type,o.pre_amount,o.order_amount,o.create_time';
-		$orderRow = $order_obj->getObj('o.id='.$order_id);
+		$order_obj = new IQuery('order_presell as o');
+		$order_obj->join = 'left join presell as p on o.active_id = p.id';
+		$order_obj->fields = 'o.order_no,o.status,o.pay_time,o.postscript,o.mobile,o.accept_name,o.postcode,o.telphone,o.address,o.pay_status,o.pay_type,o.pre_amount,o.order_amount,o.create_time,p.*';
+		$order_obj->where  = 'o.id='.$order_id;
+		$orderRow = $order_obj->getObj();
 	//	print_r($orderRow);exit();
 		if(empty($orderRow))
 		{
