@@ -373,28 +373,8 @@
 			</div>
 		</div>
 		{/if}
-				<!--促销规则-->
 		
-		<!--促销规则-->
-
-		<!--购买推荐-->
-		{if:isset($buyer_id) && $buyer_id}
-				<div class="box m_10">
-			<div class="title">购买本商品的用户还购买过</div>
-			<div class="content" style='width:100%;'>
-				<ul class="ranklist">
-					{foreach:items=Api::run('getOrderGoodsByBuyerid',array('#buyer_id#',$buyer_id))}
-										<li class="current">
-						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}"></a>
-						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
-						<b>￥{$item['price']}</b>
-					</li>
-					{/foreach}
-				</ul>
-			</div>
-		</div>
-		{/if}
-				<!--购买推荐-->
+	
 
 		<!--热卖商品-->
 		<div class="box m_10">

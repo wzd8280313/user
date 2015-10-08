@@ -290,6 +290,29 @@ class Payment
 		return $payment;
 		
 	}
+	/**
+	 * @获取预售退款需要订单数据
+	 * @$payment_id int 支付方式id
+	 * @$order_id  int 订单id
+	 * @return array
+	 */
+	public static function getPaymentInfoForPresellRefund($payment_id,$refundId,$order_id,$money){
+		$payment = self::getPaymentParam($payment_id);
+	
+		$orderObj = new IModel('order_presell');
+		
+		$orderRow = $orderObj->getObj('id='.$order_id,'order_no,trade_no');
+		
+		if(empty($orderRow))
+		{
+			IError::show(403,'订单信息不正确，不能退款');
+		}
+		$payment['M_OrderNO'] = md5($refundId);
+		$payment['M_Trade_NO'] = $orderRow['trade_no'];
+		$payment['M_Amount']    = $money;
+		return $payment;
+	
+	}
 	//更新在线充值
 	public static function updateRecharge($recharge_no)
 	{

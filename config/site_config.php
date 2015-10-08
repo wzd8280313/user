@@ -44,7 +44,7 @@
 	'tuan_prop' => 0,//是否可用代金券
 	'shan_prop' => 0,
 	'presell_prop'=> 0,
-	'pesell_promotion' => 0,
+	'presell_promotion' => 0,
 	//预售配置
 	'pre_order_cancel_days' => 3,
 )?>

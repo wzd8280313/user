@@ -1332,7 +1332,7 @@ class Order_Class
 	public static function is_cancle($order_id){
 		$orderM = new IModel('order');
 		$orderRow = $orderM->getObj('id='.$order_id);
-		$period = 6;//有效期6小时
+		$period = 48;//有效期6小时
 		$now = ITime::getNow();
 		$orderTime = ITime::getTime($orderRow['create_time']);
 		if($orderRow['pay_status']==1 && $orderRow['status']==6){//已付款、已退款可以作废

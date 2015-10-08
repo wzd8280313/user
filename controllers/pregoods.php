@@ -80,22 +80,7 @@ class Pregoods extends IController
 		$tb_attribute_goods->order = "g.id asc";
 		$goods_info['attribute'] = $tb_attribute_goods->find();
 	
-		//[数据挖掘]最终购买此商品的用户ID列表
-		$tb_good = new IQuery('order_goods as og');
-		$tb_good->join   = 'left join order as o on og.order_id=o.id ';
-		$tb_good->fields = 'DISTINCT o.user_id';
-		$tb_good->where  = 'og.goods_id = '.$goods_id;
-		$tb_good->limit  = 5;
-		$bugGoodInfo = $tb_good->find();
-		if($bugGoodInfo)
-		{
-			$shop_goods_array = array();
-			foreach($bugGoodInfo as $key => $val)
-			{
-				$shop_goods_array[] = $val['user_id'];
-			}
-			$goods_info['buyer_id'] = join(',',$shop_goods_array);
-		}
+		
 	
 		//购买记录
 		$tb_shop = new IQuery('order_goods as og');

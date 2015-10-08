@@ -1,10 +1,211 @@
 <?php
 class Preorder_Class extends Order_Class{
 	
+	/**
+	 * @brief 获取预售订单扩展数据资料
+	 * @param $order_id int 订单的id
+	 * @param $user_id int 用户id
+	 * @return array()
+	 */
+	public function getOrderShow($order_id,$user_id = 0)
+	{
+		$where = 'id = '.$order_id;
+		if($user_id !== 0)
+		{
+			$where .= ' and user_id = '.$user_id;
+		}
 	
+		$data = array();
+	
+		//获得对象
+		$tb_order = new IModel('order_presell');
+		$data = $tb_order->getObj($where);
+		if($data)
+		{
+			$data['order_id'] = $order_id;
+	
+			//获取配送方式
+			$tb_delivery = new IModel('delivery');
+			$delivery_info = $tb_delivery->getObj('id='.$data['distribution']);
+			if($delivery_info)
+			{
+				$data['delivery'] = $delivery_info['name'];
+	
+				//自提点读取
+				if($data['takeself'])
+				{
+					$data['takeself'] = self::getTakeselfInfo($data['takeself']);
+				}
+			}
+	
+			$areaData = area::name($data['province'],$data['city'],$data['area']);
+			$data['province_str'] = $areaData[$data['province']];
+			$data['city_str']     = $areaData[$data['city']];
+			$data['area_str']     = $areaData[$data['area']];
+	
+			//物流单号
+			$tb_delivery_doc = new IQuery('delivery_doc as dd');
+			$tb_delivery_doc->join   = 'left join freight_company as fc on dd.freight_id = fc.id';
+			$tb_delivery_doc->fields = 'dd.delivery_code,fc.freight_name';
+			$tb_delivery_doc->where  = 'order_id = '.$order_id;
+			$delivery_info = $tb_delivery_doc->find();
+			if($delivery_info)
+			{
+				$temp = array('freight_name' => array(),'delivery_code' => array());
+				foreach($delivery_info as $key => $val)
+				{
+					$temp['freight_name'][]  = $val['freight_name'];
+					$temp['delivery_code'][] = $val['delivery_code'];
+				}
+				$data['freight']['freight_name']  = join(",",$temp['freight_name']);
+				$data['freight']['delivery_code'] = join(",",$temp['delivery_code']);
+			}
+	
+			//获取支付方式
+			$tb_payment = new IModel('payment');
+			$payment_info = $tb_payment->getObj('id='.$data['pay_type']);
+			if($payment_info)
+			{
+				$data['payment'] = $payment_info['name'];
+				$data['paynote'] = $payment_info['note'];
+			}
+	
+			//获取商品总重量和总金额
+			$tb_order_goods = new IModel('order_goods');
+			$order_goods_info = $tb_order_goods->query('order_id='.$order_id);
+			$data['goods_amount'] = 0;
+			$data['goods_weight'] = 0;
+	
+			if($order_goods_info)
+			{
+				foreach ($order_goods_info as $value)
+				{
+					$data['goods_amount'] += $value['real_price']   * $value['goods_nums'];
+					$data['goods_weight'] += $value['goods_weight'] * $value['goods_nums'];
+				}
+			}
+	
+			//获取用户信息
+			$query = new IQuery('user as u');
+			$query->join = ' left join member as m on u.id=m.user_id ';
+			$query->fields = 'u.username,u.email,m.mobile,m.contact_addr,m.true_name';
+			$query->where = 'u.id='.$data['user_id'];
+			$user_info = $query->find();
+			if($user_info)
+			{
+				$user_info = current($user_info);
+				$data['username']     = $user_info['username'];
+				$data['email']        = $user_info['email'];
+				$data['u_mobile']     = $user_info['mobile'];
+				$data['contact_addr'] = $user_info['contact_addr'];
+				$data['true_name']    = $user_info['true_name'];
+			}
+		}
+		return $data;
+	}
+	/**
+	 * @brief 订单退款操作
+	 * @param int $refundId 退款单ID
+	 * @param int $authorId 操作人ID
+	 * @param string $type admin:管理员;seller:商家
+	 * @return
+	 */
+	public static function refund($refundId,$authorId,$type = 'admin')
+	{
+		$orderGoodsDB= new IModel('order_goods');
+		$refundDB    = new IModel('refundment_doc');
+		$orderDB     = new IModel('order_presell');
+	
+		
+		//获取goods_id和product_id用于给用户减积分，经验
+		$refundsRow = $refundDB->getObj('id = '.$refundId);
+		$order_id   = $refundsRow['order_id'];
+		$order_no   = $refundsRow['order_no'];
+		$amount     = $refundsRow['amount'];
+		$user_id    = $refundsRow['user_id'];
+	
+		//获取支付方式
+		$pay_type = $orderDB->getField('id='.$order_id,'pay_type');
+		if($pay_type==7){//担保交易不能在平台退款
+			return false;
+		}
+		else if($pay_type!=0 || $pay_type!=1){
+			$paymentInstance = Payment::createPaymentInstance($pay_type);
+			$paymentData = Payment::getPaymentInfoForPresellRefund($pay_type,$refundId,$order_id,$amount);
+			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败
+		}
+		else{//预存款付款和货到付款打入账户余额
+			$obj = new IModel('member');
+			$memberObj = $obj->getObj('user_id = '.$user_id,'balance');
+			$balance = $memberObj['balance'] + $amount;
+			$setData['balance'] = $balance;
+			$obj->setData($setData);
+			$isSuccess = $obj->update('user_id = '.$user_id);
+			if($isSuccess)
+			{
+				//用户余额进行的操作记入account_log表
+				$log = new AccountLog();
+				$config = array(
+						'user_id'  => $user_id,
+						'event'    => 'drawback', //withdraw:提现,pay:余额支付,recharge:充值,drawback:退款到余额
+						'num'      => $amount, //整形或者浮点，正为增加，负为减少
+						'order_no' => $order_no // drawback类型的log需要这个值
+				);
+					
+				if($type == 'admin')
+				{
+					$config['admin_id'] = $authorId;
+				}
+				else if($type == 'seller')
+				{
+					$config['seller_id'] = $authorId;
+				}
+					
+				$re = $log->write($config);
+			
+			}else return false;
+		}
+		
+		//更新退款表
+		$updateData = array(
+				'pay_status'   => 2,
+				'dispose_time' => ITime::getDateTime(),
+		);
+		$refundDB->setData($updateData);
+		$refundDB->update('id = '.$refundId);
+	
+		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
+		$order_goods_id = $orderGoodsRow['id'];
+	
+		
+		//更新退款状态，改为已退货
+		$orderGoodsDB->setData(array('is_send' => 2));
+		$orderGoodsDB->update('id = '.$order_goods_id);
+		//更新order表状态
+		$orderStatus = 10;//全部退款
+		
+		$orderDB->setData(array('status' => $orderStatus));
+		$orderDB->update('id='.$order_id);
+	
+	
+		//生成订单日志
+		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
+		if($type=='system')$authorName='系统自动';
+		$tb_order_log = new IModel('order_log');
+		$tb_order_log->setData(array(
+				'order_id' => $order_id,
+				'user'     => $authorName,
+				'action'   => '退款',
+				'result'   => '成功',
+				'note'     => '订单【'.$order_no.'】退款，退款金额：￥'.$amount,
+				'addtime'  => ITime::getDateTime(),
+		));
+		$tb_order_log->add();
+		return true;
+	}
 	//获取订单状态
-	public static function getOrderStatus($status){
-		switch($status){
+	public static function getOrderStatus($orderRow){
+		switch($orderRow['status']){
 			case 1 : {
 				return '提交订单';
 			}
@@ -39,8 +240,24 @@ class Preorder_Class extends Order_Class{
 			case 10 : {
 				return '已退款';
 			}
+			case 11 : {
+				return '已完成';
+			}
 		}
 		return '未知';
+	}
+	//获取发货状态
+	public static function getOrderDistributionStatusText($orderRow){
+		
+		 if($orderRow['distribution_status'] == 1)
+		{
+			return '已发货';
+		}
+		else if($orderRow['distribution_status'] == 0)
+		{
+			return '未发货';
+		}
+		
 	}
 	//获取订单支付状态
 	public static function getOrderPayStatusText($orderRow)

@@ -161,8 +161,9 @@ class unionpay extends paymentPlugin
 		Common::sign ( $return );
 		$result = sendHttpRequest ( $return, SDK_BACK_TRANS_URL );
 		$result_arr = Common::coverStringToArray ( $result );
+		print_r($result_arr);
 		//print_r($result_arr);exit();
-		if(Common::verify ( $result_arr )){//
+		if(Common::verify ( $result_arr )&&$result_arr['respCode']=='00'){//
 			
 			self::addTradeData($result_arr);
 			return true;

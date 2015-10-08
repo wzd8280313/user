@@ -50,7 +50,15 @@ abstract class paymentPlugin
 			$orderDB->setData(array('trade_no' => $tradeNo));
 			return $orderDB->update('recharge_no = "'.$orderNo.'"');
 			
-		}else{
+		}
+		else if(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false){
+			$orderDB  = new IModel('order_presell');
+			$orderDB->setData(array('trade_no' => $tradeNo));
+			$orderNo = str_replace('pre','',$orderNo);
+			$orderNo = str_replace('wei','',$orderNo);
+			return $orderDB->update('order_no = "'.$orderNo.'"');
+		}
+		else{
 			$orderDB  = new IModel('order');
 			$orderDB->setData(array('trade_no' => $tradeNo));
 			return $orderDB->update('order_no = "'.$orderNo.'"');
@@ -108,6 +116,7 @@ OEF;
 		}
 		
 		$tradeDB = new IModel('trade_record');
+		
 		$tradeDB->setData($tradeData);
 		if(!$tradeData['pay_type'] || !$tradeData['trade_no'])return false;
 		$where = 'pay_type='.$tradeData['pay_type'].' and trade_no = "'.$tradeData['trade_no'].'"';
