@@ -1220,9 +1220,7 @@ class Site extends IController
 // 	 	$tb_delivery_doc->commit();
 // 	 	$data = $tb_delivery_doc->getObj('id='.$deliveryId);
 // 	 	print_r($data);exit();
-
-		payment::getSendDataPresell(3,335);
-		//user_like::set_user_history(13,1);
+		echo ITime::getTime()-ITime::getTime('2015-10-08 23:09:47');
 	}
 	
 }

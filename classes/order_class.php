@@ -1369,9 +1369,9 @@ class Order_Class
 	 * @return bool
 	 */
 	public static function is_overdue($start_time,$days){
-		$start = strtotime($start_time);
-		if(time()-$start>$days*24*3600)
+		if(ITime::getTime()-ITime::getTime($start_time)>$days*24*3600){
 			return false;
+		}
 		return true;
 	}
 }

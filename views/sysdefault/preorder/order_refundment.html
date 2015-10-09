@@ -111,7 +111,11 @@
 				</tr>
 				<tr>
 					<th>说明:</th>
-					<td align="left"></td>
+					<td align="left">
+						{if:$pay_type==7}
+						付款方式为支付宝担保交易，请先到支付宝网站完成退款，再点击确定更改订单状态。
+						{/if}
+					</td>
 				</tr>
 			</tbody>
 		</table>

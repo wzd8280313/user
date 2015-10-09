@@ -126,15 +126,7 @@ class Preorder_Class extends Order_Class{
 	
 		//获取支付方式
 		$pay_type = $orderDB->getField('id='.$order_id,'pay_type');
-		if($pay_type==7){//担保交易不能在平台退款
-			return false;
-		}
-		else if($pay_type!=0 || $pay_type!=1){
-			$paymentInstance = Payment::createPaymentInstance($pay_type);
-			$paymentData = Payment::getPaymentInfoForPresellRefund($pay_type,$refundId,$order_id,$amount);
-			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败
-		}
-		else{//预存款付款和货到付款打入账户余额
+		if($pay_type==0 || $pay_type==1){//货到付款，余额支付退款到余额
 			$obj = new IModel('member');
 			$memberObj = $obj->getObj('user_id = '.$user_id,'balance');
 			$balance = $memberObj['balance'] + $amount;
@@ -162,9 +154,18 @@ class Preorder_Class extends Order_Class{
 				}
 					
 				$re = $log->write($config);
-			
+					
 			}else return false;
 		}
+		else if(in_array($pay_type,array(3))){
+			$paymentInstance = Payment::createPaymentInstance($pay_type);
+			$paymentData = Payment::getPaymentInfoForPresellRefund($pay_type,$refundId,$order_id,$amount);
+			
+			if(!$res=$paymentInstance->refund($paymentData[1])) return false;//验签失败
+			if(!$res=$paymentInstance->refund($paymentData[0])) return false;
+			
+		}
+		
 		
 		//更新退款表
 		$updateData = array(

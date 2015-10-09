@@ -131,7 +131,7 @@ class Payment
 		$payment = self::getPaymentParam($payment_id);
 		$order_obj = new IQuery('order_presell as o');
 		$order_obj->join = 'left join presell as p on o.active_id = p.id';
-		$order_obj->fields = 'o.order_no,o.status,o.pay_time,o.postscript,o.mobile,o.accept_name,o.postcode,o.telphone,o.address,o.pay_status,o.pay_type,o.pre_amount,o.order_amount,o.create_time,p.*';
+		$order_obj->fields = 'o.id,o.order_no,o.status,o.pay_time,o.postscript,o.mobile,o.accept_name,o.postcode,o.telphone,o.address,o.pay_status,o.pay_type,o.pre_amount,o.order_amount,o.create_time,p.wei_days';
 		$order_obj->where  = 'o.id='.$order_id;
 		$orderRow = $order_obj->getObj();
 	//	print_r($orderRow);exit();
@@ -299,19 +299,33 @@ class Payment
 	 * @return array
 	 */
 	public static function getPaymentInfoForPresellRefund($payment_id,$refundId,$order_id,$money){
-		$payment = self::getPaymentParam($payment_id);
-	
-		$orderObj = new IModel('order_presell');
 		
-		$orderRow = $orderObj->getObj('id='.$order_id,'order_no,trade_no');
+		$payment = array();
+		$orderObj = new IQuery('order_presell as o');
+		$orderObj->join = 'left join trade_record as t on CONCAT("pre",o.order_no) = t.order_no OR CONCAT("wei",o.order_no) = t.order_no';
+		$orderObj->where = 'o.id='.$order_id;
+		$orderObj->fields = 'o.order_no,o.pre_amount,t.trade_no,o.id';
+		$orderObj->limit = 2;
+		$orderData = $orderObj->find();
 		
-		if(empty($orderRow))
+		if(empty($orderData))
 		{
 			IError::show(403,'订单信息不正确，不能退款');
 		}
-		$payment['M_OrderNO'] = md5($refundId);
-		$payment['M_Trade_NO'] = $orderRow['trade_no'];
-		$payment['M_Amount']    = $money;
+		foreach($orderData as $key=>$v){
+			if($key==0){
+				$payment[$key]['M_OrderNO'] = 'pre'.md5($refundId);
+				$payment[$key]['M_Trade_NO'] = $v['trade_no'];
+				$payment[$key]['M_Amount']    = $v['pre_amount'];
+			}
+			if($key==1){
+				$payment[$key]['M_OrderNO'] = 'wei'.md5($refundId);
+				$payment[$key]['M_Trade_NO'] = $v['trade_no'];
+				$payment[$key]['M_Amount']    = $money - $v['pre_amount'];
+			}
+			$payment[$key] = array_merge($payment[$key],self::getPaymentParam($payment_id));
+		}
+	
 		return $payment;
 	
 	}

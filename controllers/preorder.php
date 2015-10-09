@@ -134,8 +134,9 @@ class Preorder extends IController
 		}
 	
 		$result = Preorder_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
-			
-		if($result)
+
+		
+		 if($result)
 		{
 			//记录操作日志
 			$logObj = new log('db');
@@ -144,7 +145,6 @@ class Preorder extends IController
 		}
 		else
 		{
-			$tb_refundment_doc->del('id='.$refunds_id);
 			die('<script text="text/javascript">parent.actionCallback("退货错误");</script>');
 		}
 	}
