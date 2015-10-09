@@ -113,7 +113,7 @@ class Preorder extends IController
 		$status    = $sure==1 ? 4 : 6;
 		$preorder_db = new IModel('order_presell');
 		$preorder_db->setData(array('status'=>$status,'confirm_time'=>ITime::getDateTime()));
-		if($preorder_db->update('id='.$orderId.' and status=3')){
+		if($preorder_db->update('id='.$order_id.' and status=3')){
 			if($status==6){//确认不通过，退款
 				if(!$user_id)
 				{
