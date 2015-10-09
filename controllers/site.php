@@ -1194,25 +1194,27 @@ class Site extends IController
 
 
 	function ce(){
-		$paramArray = array(
-				'order_id'      => 373,
-				'user_id'       => 29,
-				'name'          => '3453',
-				'postcode'      => '045000',
-				'telphone'      => '5068088',
-				'province'      => '110000',
-				'city'          => '110100',
-				'area'          => '110228',
-				'address'       => '大连西路',
-				'mobile'        => '13534563456',
-				'freight'       => 0.05,
-				'delivery_code' => '12345345345',
-				'delivery_type' => 5,
-				'note'          => '234234234',
-				'time'          => ITime::getDateTime(),
-				'freight_id'    => 1,
-		);
-		sendgoods::run_presell($paramArray);
+// 		$paramArray = array(
+// 				'order_id'      => 373,
+// 				'user_id'       => 29,
+// 				'name'          => '3453',
+// 				'postcode'      => '045000',
+// 				'telphone'      => '5068088',
+// 				'province'      => '110000',
+// 				'city'          => '110100',
+// 				'area'          => '110228',
+// 				'address'       => '大连西路',
+// 				'mobile'        => '13534563456',
+// 				'freight'       => 0.05,
+// 				'delivery_code' => '12345345345',
+// 				'delivery_type' => 5,
+// 				'note'          => '234234234',
+// 				'time'          => ITime::getDateTime(),
+// 				'freight_id'    => 1,
+// 		);
+// 		sendgoods::run_presell($paramArray);
+
+		echo 34545/100;
 	}
 	
 }

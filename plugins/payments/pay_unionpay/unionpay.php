@@ -179,7 +179,7 @@ class unionpay extends paymentPlugin
 		$resArr = array(
 				'trade_no' 	   => $tradeData['queryId'],
 				'order_no'     => $tradeData['orderId'],
-				'money'        => $tradeData['txnAmt'],
+				'money'        => $tradeData['txnAmt']/100,
 				'pay_type'     => 3,
 				'trade_type'   => self::getTradeType(3,$tradeData['txnType']),
 				'time'         => $tradeData['txnTime'],

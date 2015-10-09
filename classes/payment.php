@@ -304,30 +304,55 @@ class Payment
 		$orderObj = new IQuery('order_presell as o');
 		$orderObj->join = 'left join trade_record as t on CONCAT("pre",o.order_no) = t.order_no OR CONCAT("wei",o.order_no) = t.order_no';
 		$orderObj->where = 'o.id='.$order_id;
-		$orderObj->fields = 'o.order_no,o.pre_amount,t.trade_no,o.id';
+		$orderObj->fields = 'o.order_no,o.pre_amount,t.trade_no,t.money as trade_money,o.id';
 		$orderObj->limit = 2;
+		$orderObj->order = 't.id ASC';
 		$orderData = $orderObj->find();
 		
 		if(empty($orderData))
 		{
 			IError::show(403,'订单信息不正确，不能退款');
 		}
+		
+		
 		foreach($orderData as $key=>$v){
 			if($key==0){
+				$money1=0;
+				$reMoney = $v['trade_money'] - self::getOrigReMoney($v['trade_no']);
+				if($reMoney<=0){
+					continue;
+				}
 				$payment[$key]['M_OrderNO'] = 'pre'.md5($refundId);
 				$payment[$key]['M_Trade_NO'] = $v['trade_no'];
-				$payment[$key]['M_Amount']    = $v['pre_amount'];
+				if($reMoney >= $money){
+					$payment[$key]['M_Amount']    = $money;
+					break;
+				}else{
+					$payment[$key]['M_Amount']    = $reMoney;
+				}
+				$money1 = $reMoney;
 			}
 			if($key==1){
 				$payment[$key]['M_OrderNO'] = 'wei'.md5($refundId);
 				$payment[$key]['M_Trade_NO'] = $v['trade_no'];
-				$payment[$key]['M_Amount']    = $money - $v['pre_amount'];
+				$reMoney = self::getOrigReMoney($v['trade_no']);
+				$payment[$key]['M_Amount']    = ($money - $money1) <=$reMoney ? $money - $money1 : $reMoney;
 			}
 			$payment[$key] = array_merge($payment[$key],self::getPaymentParam($payment_id));
 		}
 	
 		return $payment;
 	
+	}
+	//获取交易已经退款的金额
+	public static function getOrigReMoney($trade_no){
+		$trade_obj = new IModel('trade_record');
+		$orig_data = $trade_obj->query('orig_trade_no='.$trade_no,'money');
+		$orig_money = 0;//该交易的已退款金额
+		foreach($orig_data as $key=>$v){
+			$orig_money += $v['money'];
+		}
+		return $orig_money;
 	}
 	//更新在线充值
 	public static function updateRecharge($recharge_no)
