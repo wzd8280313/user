@@ -55,7 +55,7 @@ class Block extends IController
 		
 		//查询条件
 		$table_name = 'goods as go';
-		$where   = 'go.is_del = 0';
+		$where   = ' (go.is_del = 0 or go.is_del = 4) ';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
 		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
 		$where  .= $goods_no  ? ' and go.goods_no     = "'.$goods_no.'"' : '';
