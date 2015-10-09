@@ -176,8 +176,9 @@ class Preorder_Class extends Order_Class{
 		);
 		$refundDB->setData($updateData);
 		$refundDB->update('id = '.$refundId);
-	
+		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
+	
 		$order_goods_id = $orderGoodsRow['id'];
 	
 		

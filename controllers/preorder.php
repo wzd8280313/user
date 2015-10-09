@@ -113,12 +113,13 @@ class Preorder extends IController
 		$status    = $sure==1 ? 4 : 6;
 		$preorder_db = new IModel('order_presell');
 		$preorder_db->setData(array('status'=>$status,'confirm_time'=>ITime::getDateTime()));
-		if($preorder_db->update('id='.$order_id.' and status=3')){
+		if(1 || $preorder_db->update('id='.$order_id.' and status=3')){
 			if($status==6){//确认不通过，退款
 				if(!$user_id)
 				{
 					die('<script text="text/javascript">parent.actionCallback("游客无法退款");</script>');
 				}
+				$amount = $preorder_db->getField('id='.$order_id,'pre_amount');
 				$updateData = array(
 						'order_no'     => $order_no,
 						'order_id'     => $order_id,
@@ -128,6 +129,7 @@ class Preorder extends IController
 						'amount'       => $amount,
 						'user_id'      => $user_id,
 				);
+				
 				$this->refundHandle(0,$goods_id,$updateData);
 			}
 			die('<script text="text/javascript">parent.actionCallback();</script>');
@@ -207,14 +209,14 @@ class Preorder extends IController
 	 * @$refunds_id int 退款单id
 	 * @$goods_id  int 商品id
 	 */
-	private function refundHandle($refunds_id,$goods_id,$updateData){
+	private function refundHandle($refunds_id,$ordergoods_id,$updateData){
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{
 			$orderGoodsDB      = new IModel('order_goods');
 			$tb_refundment_doc = new IModel('refundment_doc');
-			if(!$goods_id)return false;
-			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$goods_id);
+			if(!$ordergoods_id)return false;
+			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$ordergoods_id);
 		
 			//插入refundment_doc表
 			$updateData['time']       = ITime::getDateTime();
