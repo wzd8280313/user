@@ -320,8 +320,11 @@ class Preorder_Class extends Order_Class{
 		{
 			return $orderRow['id'];
 		}
-		else
+		if($type==1 && $orderRow['pay_status'] == 1)
 		{
+			return $orderRow['id'];
+		}
+		
 			$orderObj->setData($dataArray);
 			$is_success = $orderObj->update('order_no = "'.$orderNo.'"');
 			if($is_success == '')
@@ -381,7 +384,7 @@ class Preorder_Class extends Order_Class{
 			$collectionDocObj->add();
 	
 			return $orderRow['id'];
-		}
+	
 		
 	}
 	/**
