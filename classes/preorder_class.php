@@ -202,6 +202,7 @@ class Preorder_Class extends Order_Class{
 				'result'   => '成功',
 				'note'     => '订单【'.$order_no.'】退款，退款金额：￥'.$amount,
 				'addtime'  => ITime::getDateTime(),
+				'order_type'=> 1,
 		));
 		$tb_order_log->add();
 		return true;
@@ -577,7 +578,8 @@ class Preorder_Class extends Order_Class{
 				'action'   => '发货',
 				'result'   => '成功',
 				'note'     => '订单【'.$order_no.'】由【'.$sendorSort.'】'.$sendorName.'发货',
-				'addtime'  => date('Y-m-d H:i:s')
+				'addtime'  => date('Y-m-d H:i:s'),
+				'order_type'=> 1,
 		));
 		$sendResult = $tb_order_log->add();
 	
