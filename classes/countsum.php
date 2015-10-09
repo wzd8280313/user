@@ -101,6 +101,7 @@ class CountSum
 			return '该预售不存在';
 		}else{
 			$priceInfo['pre_sum'] = $priceInfo['final_sum']* $priceInfo['pre_rate'] /100;
+			$priceInfo['pre_sum'] = $priceInfo['pre_sum'] < 0.01 ? 0.01 : $priceInfo['pre_sum'];
 		}
 		
 		return $priceInfo;

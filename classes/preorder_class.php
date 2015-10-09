@@ -370,10 +370,10 @@ class Preorder_Class extends Order_Class{
 			);
 			if($type ==1){
 				$collectionData['amount'] = $orderRow['pre_amount'];
-				$collectionData['pay_status'] = 3;
+				$collectionData['pay_status'] = 1;
 			}else{
-				$collectionData['amount'] = $orderRow['pre_amount'];
-				$collectionData['pay_status'] = 3;
+				$collectionData['amount'] = $orderRow['order_amount'] - $orderRow['pre_amount'];
+				$collectionData['pay_status'] = 1;
 			}
 			$collectionDocObj->setData($collectionData);
 			$collectionDocObj->add();
@@ -453,6 +453,148 @@ class Preorder_Class extends Order_Class{
 			);
 			$commentDB->setData($attr);
 			$commentDB->add();
+		}
+	}
+	
+	/**
+	 * @brief 商品发货接口
+	 * @param string $order_id 订单id
+	 * @param array $order_goods_relation 订单与商品关联id
+	 * @param int $sendor_id 操作者id
+	 * @param string $sendor 操作者所属 admin,seller
+	 */
+	public static function sendDeliveryGoods($order_id,$order_goods_relation,$sendor_id,$sendor = 'admin')
+	{
+		$order_no = IFilter::act(IReq::get('order_no'));
+	
+		$paramArray = array(
+				'order_id'      => $order_id,
+				'user_id'       => IFilter::act(IReq::get('user_id'),'int'),
+				'name'          => IFilter::act(IReq::get('name')),
+				'postcode'      => IFilter::act(IReq::get('postcode'),'int'),
+				'telphone'      => IFilter::act(IReq::get('telphone')),
+				'province'      => IFilter::act(IReq::get('province'),'int'),
+				'city'          => IFilter::act(IReq::get('city'),'int'),
+				'area'          => IFilter::act(IReq::get('area'),'int'),
+				'address'       => IFilter::act(IReq::get('address')),
+				'mobile'        => IFilter::act(IReq::get('mobile')),
+				'freight'       => IFilter::act(IReq::get('freight'),'float'),
+				'delivery_code' => IFilter::act(IReq::get('delivery_code')),
+				'delivery_type' => IFilter::act(IReq::get('delivery_type')),
+				'note'          => IFilter::act(IReq::get('note'),'text'),
+				'time'          => ITime::getDateTime(),
+				'freight_id'    => IFilter::act(IReq::get('freight_id'),'int'),
+		);
+		switch($sendor)
+		{
+			case "admin":
+				{
+					$paramArray['admin_id'] = $sendor_id;
+	
+					$adminDB = new IModel('admin');
+					$sendorData = $adminDB->getObj('id = '.$sendor_id);
+					$sendorName = $sendorData['admin_name'];
+					$sendorSort = '管理员';
+				}
+				break;
+	
+			case "seller":
+				{
+					$paramArray['seller_id'] = $sendor_id;
+	
+					$sellerDB = new IModel('seller');
+					$sendorData = $sellerDB->getObj('id = '.$sendor_id);
+					$sendorName = $sendorData['true_name'];
+					$sendorSort = '加盟商户';
+				}
+				break;
+		}
+	
+		//获得delivery_doc表的对象
+		$tb_delivery_doc = new IModel('delivery_doc');
+		$tb_delivery_doc->setData($paramArray);
+		$deliveryId = $tb_delivery_doc->add();
+		 
+		//订单对象
+		$tb_order   = new IModel('order_presell');
+		$tbOrderRow = $tb_order->getObj('id = '.$order_id);
+	
+		//如果支付方式为货到付款，则减少库存
+		if($tbOrderRow['pay_type'] == 0)
+		{
+			//减少库存量
+			self::updateStore($order_goods_relation,'reduce');
+		}
+	
+		//更新发货状态
+		$orderGoodsDB = new IModel('order_goods');
+		$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$order_id,'count(*) as num');
+		$sendStatus = 2;//部分发货
+		if(count($order_goods_relation) >= $orderGoodsRow['num'])
+		{
+			$sendStatus = 1;//全部发货
+		}
+		foreach($order_goods_relation as $key => $val)
+		{
+			//商家发货检查商品所有权
+			if(isset($paramArray['seller_id']))
+			{
+				$orderGoodsData = $orderGoodsDB->getObj("id = ".$val);
+				$goodsDB = new IModel('goods');
+				$sellerResult = $goodsDB->getObj("id = ".$orderGoodsData['goods_id']." and seller_id = ".$paramArray['seller_id']);
+				if(!$sellerResult)
+				{
+					$goodsDB->rollback();
+					die('发货的商品信息与商家不符合');
+				}
+			}
+	
+			$orderGoodsDB->setData(array(
+					"is_send"     => 1,
+					"delivery_id" => $deliveryId,
+			));
+			$orderGoodsDB->update(" id = {$val} ");
+		}
+	
+		//更新发货状态
+		$tb_order->setData(array
+		 	(
+		 			'distribution_status' => $sendStatus,
+		 			'send_time'           => ITime::getDateTime(),
+		 	));
+		$tb_order->update('id='.$order_id);
+	
+		//生成订单日志
+		$tb_order_log = new IModel('order_log');
+		$tb_order_log->setData(array(
+				'order_id' => $order_id,
+				'user'     => $sendorName,
+				'action'   => '发货',
+				'result'   => '成功',
+				'note'     => '订单【'.$order_no.'】由【'.$sendorSort.'】'.$sendorName.'发货',
+				'addtime'  => date('Y-m-d H:i:s')
+		));
+		$sendResult = $tb_order_log->add();
+	
+		//获取货运公司
+		$freightDB  = new IModel('freight_company');
+		$freightRow = $freightDB->getObj('id = '.$paramArray['freight_id']);
+	
+		//发送短信
+		$replaceData = array(
+				'{user_name}'        => $paramArray['name'],
+				'{order_no}'         => $order_no,
+				'{sendor}'           => '['.$sendorSort.']'.$sendorName,
+				'{delivery_company}' => $freightRow['freight_name'],
+				'{delivery_no}'      => $paramArray['delivery_code'],
+		);
+		$mobileMsg = smsTemplate::sendGoods($replaceData);
+		Hsms::send($paramArray['mobile'],$mobileMsg);
+		 
+		//同步发货接口，如支付宝担保交易等
+		if($sendResult && $sendStatus == 1 && $tbOrderRow['pay_type'] == 7)
+		{
+			sendgoods::run_presell($paramArray);
 		}
 	}
 }

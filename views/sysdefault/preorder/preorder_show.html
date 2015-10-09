@@ -250,7 +250,9 @@
 				<tr><th colspan="2">收款单据</th></tr>
 			</thead>
 			<tbody>
-				{query: name=collection_doc as c join=left join payment as p on c.payment_id eq p.id where=c.order_id eq $order_id items=$collectionData fields=c.*,p.name}{/query}
+				
+				{query: name=collection_doc as c join=left join payment as p on c.payment_id eq p.id where=c.order_id eq $order_id items=$collectionData fields=c.*,p.name}
+			
 				{if:$collectionData}
 				<tr>
 					<th>时间：</th><td>{$item['time']}</td>
@@ -267,9 +269,12 @@
 				<tr>
 					<th>状态：</th><td>{if:$item['pay_status']==0}准备中{else:}支付完成{/if}</td>
 				</tr>
+				<tr><th colspan="2"></th></tr>
+				
 				{else:}
 				<tr><td colspan='2'>暂无数据</td></tr>
 				{/if}
+				{/query}
 			</tbody>
 		</table>
 
@@ -510,6 +515,7 @@ function initButton()
 	$('#to_refundment').removeClass('inactive');
 	{/if}
 }
+//确认订单
 function sure(order_id){
 	$.post("{url:/preorder/make_sure}",{'order_id':order_id}, function(data)
 	{
@@ -592,7 +598,7 @@ function pay(id)
 //发货
 function deliver(id)
 {
-	var tempUrl = '{url:/order/order_deliver/id/@id@}';
+	var tempUrl = '{url:/preorder/order_deliver/id/@id@}';
 	tempUrl     = tempUrl.replace('@id@',id);
 
 	var deliv = art.dialog.open(tempUrl,{

@@ -134,7 +134,7 @@ OEF;
 	 * @$paymentId int  支付类型：银联，担保交易等
 	 * @$code str   交易类型码
 	 */
-	public static function getTradeType($paymentId,$code){
+	public static function getTradeType($paymentId,$code='01'){
 		if($paymentId==3){//银联支付
 			switch($code){
 				case '01' : {
@@ -145,7 +145,8 @@ OEF;
 				}
 			}
 		}
-		return 0;
+		if($paymentId==7)return 1;
+		return 1;
 	}
 	/**
 	 * @brief 返回配置参数

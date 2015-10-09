@@ -84,6 +84,44 @@ class Preorder extends IController
 		}
 		die('订单数据不存在');
 	}
+	
+	/**
+	 * @brief 发货订单页面
+	 */
+	public function order_deliver()
+	{
+		//去掉左侧菜单和上部导航
+		$this->layout='';
+		$order_id = IFilter::act(IReq::get('id'),'int');
+		$data = array();
+		if($order_id)
+		{
+			$order_show = new Preorder_Class();
+			$data = $order_show->getOrderShow($order_id);
+		}
+		$this->setRenderData($data);
+		$this->redirect('order_deliver');
+	}
+	/**
+	 * @brief 发货操作
+	 */
+	public function order_delivery_doc()
+	{
+		//获得post变量参数
+		$order_id = IFilter::act(IReq::get('id'),'int');
+	
+		//发送的商品关联
+		$sendgoods = IFilter::act(IReq::get('sendgoods'));
+	
+		if(!$sendgoods)
+		{
+			die('<script type="text/javascript">parent.actionCallback("请选择要发货的商品");</script>');
+		}
+	
+		Preorder_Class::sendDeliveryGoods($order_id,$sendgoods,$this->admin['admin_id']);
+	
+		die('<script type="text/javascript">parent.actionCallback();</script>');
+	}
 	/**
 	 * @brief 保存退款单页面
 	 */

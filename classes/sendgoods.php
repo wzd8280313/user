@@ -29,7 +29,42 @@ class sendgoods
 			$sendObj->send($orderRow);
 		}
 	}
-
+	
+	/**
+	 * 预付订单发货
+	 */
+	public static function run_presell($paramArray)
+	{
+		$orderRow = self::getOrderInfoPresell($paramArray['order_id']);
+		$sendRow = array();
+		foreach($orderRow as $key=>$val){
+			if($val['trade_no'] )
+			{
+				if(!isset($sendObj))
+					$sendObj = self::createObject($val['class_name']);
+				$freight = new IModel('freight_company');
+				$sendRow = array_merge($val,$paramArray);
+				$sendRow['freight_type'] = $freight->getField('id='.$paramArray['freight_id'],'freight_type');
+				$sendObj->send($sendRow);
+			}
+		}
+		
+	}
+	/**
+	 * @brief 获取订单信息
+	 * @param $orderId int 订单ID
+	 * @return array 订单信息
+	 */
+	private static function getOrderInfoPresell($orderId)
+	{
+		$orderDB         = new IQuery('order_presell as o');
+		$orderDB->fields = 'p.class_name,o.pay_type,t.trade_no';
+		$orderDB->join   = 'left join trade_record as t on CONCAT("pre",o.order_no) = t.order_no OR CONCAT("wei",o.order_no) = t.order_no left join  payment as p on o.pay_type = p.id ';
+		$orderDB->where  = 'o.id = '.$orderId;
+		$result          = $orderDB->find();
+		
+		return $result;
+	}
 	/**
 	 * @brief 获取订单信息
 	 * @param $orderId int 订单ID

@@ -1194,33 +1194,25 @@ class Site extends IController
 
 
 	function ce(){
-// 		$m = new IModel('user');
-// 		$orderId = 310;
-// 		$orderDB         = new IQuery('order as o');
-// 		$orderDB->fields = 'p.class_name,o.trade_no,dd.delivery_code,fc.freight_type,o.pay_type';
-// 		$orderDB->join   = 'left join payment as p on o.pay_type = p.id 
-// 							left join delivery_doc as dd on o.id = dd.order_id 
-// 							left join delivery as d on d.id = o.distribution 
-// 							left join freight_company as fc on fc.id = dd.freight_id';
-// 		$orderDB->where  = 'o.id = '.$orderId;
-// 		$result          = $orderDB->find();
-// 		print_r($result);
-		
-// 		$paramArray = array(
-// 				'order_id'      => 123,
-// 				'user_id'       => 12,
-// 				'name'          => 'wplee',
-// 				'time'          => ITime::getDateTime(),
-// 				'freight_id'    => 3,
-// 		);
-// 		$tb_delivery_doc = new IModel('delivery_doc');
-// 	 	$tb_delivery_doc->setData($paramArray);
-// 	 	$deliveryId = $tb_delivery_doc->add();
-// 	 	echo $deliveryId;
-// 	 	$tb_delivery_doc->commit();
-// 	 	$data = $tb_delivery_doc->getObj('id='.$deliveryId);
-// 	 	print_r($data);exit();
-		echo ITime::getTime()-ITime::getTime('2015-10-08 23:09:47');
+		$paramArray = array(
+				'order_id'      => 373,
+				'user_id'       => 29,
+				'name'          => '3453',
+				'postcode'      => '045000',
+				'telphone'      => '5068088',
+				'province'      => '110000',
+				'city'          => '110100',
+				'area'          => '110228',
+				'address'       => '大连西路',
+				'mobile'        => '13534563456',
+				'freight'       => 0.05,
+				'delivery_code' => '12345345345',
+				'delivery_type' => 5,
+				'note'          => '234234234',
+				'time'          => ITime::getDateTime(),
+				'freight_id'    => 1,
+		);
+		sendgoods::run_presell($paramArray);
 	}
 	
 }

@@ -652,6 +652,7 @@ class Pregoods extends IController
 	
 	//获取预售价格，计算方式：原价*预付比例，再取整
 	public static function getPrePrice($price,$rate=1){
+		if($price<1)return $price;
 		return number_format(ceil($rate * $price),2);
 	}
 }
