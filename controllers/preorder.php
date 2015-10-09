@@ -105,7 +105,7 @@ class Preorder extends IController
 	 * 订单确认处理
 	 */
 	public function order_makesure_doc(){
-		$orderId   = IFilter::act(IReq::get('id'),'int');
+		$order_id   = IFilter::act(IReq::get('id'),'int');
 		$order_no = IFilter::act(IReq::get('order_no'));
 		$user_id  = IFilter::act(IReq::get('user_id'),'int');
 		$sure      = IFilter::act(IReq::get('sure'),'int');
