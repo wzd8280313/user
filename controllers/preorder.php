@@ -84,7 +84,55 @@ class Preorder extends IController
 		}
 		die('订单数据不存在');
 	}
-	
+	/**
+	 * 确认订单页面
+	 */
+	public function order_makesure(){
+		$this->layout='';
+		$orderId   = IFilter::act(IReq::get('id'),'int');
+		if($orderId)
+		{
+			$orderDB = new Preorder_Class();
+			$data    = $orderDB->getOrderShow($orderId);
+			$data['status'] = Preorder_Class::getOrderStatus($data);
+			$this->setRenderData($data);
+			$this->redirect('order_makesure');
+			exit;
+		}
+		die('订单数据不存在');
+	}
+	/**
+	 * 订单确认处理
+	 */
+	public function order_makesure_doc(){
+		$orderId   = IFilter::act(IReq::get('id'),'int');
+		$order_no = IFilter::act(IReq::get('order_no'));
+		$user_id  = IFilter::act(IReq::get('user_id'),'int');
+		$sure      = IFilter::act(IReq::get('sure'),'int');
+		$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
+		$status    = $sure==1 ? 4 : 6;
+		$preorder_db = new IModel('order_presell');
+		$preorder_db->setData(array('status'=>$status,'confirm_time'=>ITime::getDateTime()));
+		if($preorder_db->update('id='.$orderId.' and status=3')){
+			if($status==6){//确认不通过，退款
+				if(!$user_id)
+				{
+					die('<script text="text/javascript">parent.actionCallback("游客无法退款");</script>');
+				}
+				$updateData = array(
+						'order_no'     => $order_no,
+						'order_id'     => $order_id,
+						'admin_id'     => $this->admin['admin_id'],
+						'pay_status'   => 0,
+						'time' => ITime::getDateTime(),
+						'amount'       => $amount,
+						'user_id'      => $user_id,
+				);
+				$this->refundHandle(0,$goods_id,$updateData);
+			}
+			die('<script text="text/javascript">parent.actionCallback();</script>');
+		}else die('<script text="text/javascript">parent.actionCallback("确认失败");</script>');
+	}
 	/**
 	 * @brief 发货订单页面
 	 */
@@ -138,9 +186,6 @@ class Preorder extends IController
 		{
 			die('<script text="text/javascript">parent.actionCallback("游客无法退款");</script>');
 		}
-	
-		$orderGoodsDB      = new IModel('order_goods');
-		$tb_refundment_doc = new IModel('refundment_doc');
 		$updateData = array(
 				'order_no'     => $order_no,
 				'order_id'     => $order_id,
@@ -150,42 +195,56 @@ class Preorder extends IController
 				'amount'       => $amount,
 				'user_id'      => $user_id,
 		);
-	
+		$res = $this->refundHandle($refunds_id,$order_goods_id,$updateData);
+		if($res){
+			die('<script text="text/javascript">parent.actionCallback();</script>');
+		}else{
+			die('<script text="text/javascript">parent.actionCallback("退货错误");</script>');
+		}
+	}
+	/**
+	 * 退款操作
+	 * @$refunds_id int 退款单id
+	 * @$goods_id  int 商品id
+	 */
+	private function refundHandle($refunds_id,$goods_id,$updateData){
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{
-			if(!$order_goods_id)return false;
-			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
-	
+			$orderGoodsDB      = new IModel('order_goods');
+			$tb_refundment_doc = new IModel('refundment_doc');
+			if(!$goods_id)return false;
+			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$goods_id);
+		
 			//插入refundment_doc表
 			$updateData['time']       = ITime::getDateTime();
 			$updateData['goods_id']   = $orderGoodsRow['goods_id'];
 			$updateData['product_id'] = $orderGoodsRow['product_id'];
-	
+		
 			$goodsDB = new IModel('goods');
 			$goodsRow= $goodsDB->getObj('id = '.$orderGoodsRow['goods_id']);
 			$updateData['seller_id'] = $goodsRow['seller_id'];
-	
+		
 			$tb_refundment_doc->setData($updateData);
 			$refunds_id = $tb_refundment_doc->add();
 			$tb_refundment_doc->commit();
 		}
-	
-		$result = Preorder_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
-
 		
-		 if($result)
+		$result = Preorder_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
+		
+		
+		if($result)
 		{
 			//记录操作日志
 			$logObj = new log('db');
-			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"订单更新为退款",'订单号：'.$order_no));
-			die('<script text="text/javascript">parent.actionCallback();</script>');
+			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"订单更新为退款",'订单号：'.$updateData['order_no']));
+			return true;
 		}
 		else
 		{
-			die('<script text="text/javascript">parent.actionCallback("退货错误");</script>');
+			return false;
 		}
-	}
+	} 
 	/**
 	 * @brief 预售订单列表
 	 */
@@ -364,14 +423,6 @@ class Preorder extends IController
 		$reportObj->toDownload($strTable);
 		exit();
 	}
-	//订单确认
-	public function make_sure(){
-		$order_id = IFilter::act(IReq::get('order_id'),'int');
-		$preorder_db = new IModel('order_presell');
-		$preorder_db->setData(array('status'=>4,'confirm_time'=>ITime::getDateTime()));
-		if($preorder_db->update('id='.$order_id.' and status=3')){
-			echo 'success';
-		}else echo 'error';
-	}
+
 	
 }

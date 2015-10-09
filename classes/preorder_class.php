@@ -218,7 +218,7 @@ class Preorder_Class extends Order_Class{
 				
 			}
 			case 3 : {
-				return '支付预付款';
+				return '已支付预付款';
 			}
 			case 4 : {
 				return '订单确认';
@@ -231,7 +231,7 @@ class Preorder_Class extends Order_Class{
 				
 			}
 			case 7 : {
-				return '支付尾款';
+				return '已支付尾款';
 				
 			}
 			case 8 : {
