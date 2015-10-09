@@ -161,8 +161,10 @@ class Preorder_Class extends Order_Class{
 			$paymentInstance = Payment::createPaymentInstance($pay_type);
 			$paymentData = Payment::getPaymentInfoForPresellRefund($pay_type,$refundId,$order_id,$amount);
 			
-			if(!$res=$paymentInstance->refund($paymentData[1])) return false;//验签失败
-			if(!$res=$paymentInstance->refund($paymentData[0])) return false;
+			foreach($paymentData as $key=>$val){
+				if(!$res=$paymentInstance->refund($val)) return false;//验签失败
+			}
+			
 			
 		}
 		

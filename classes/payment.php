@@ -318,7 +318,9 @@ class Payment
 		foreach($orderData as $key=>$v){
 			if($key==0){
 				$money1=0;
-				$reMoney = $v['trade_money'] - self::getOrigReMoney($v['trade_no']);
+				if($v['trade_no'])
+					$reMoney = $v['trade_money'] - self::getOrigReMoney($v['trade_no']);
+				else continue;
 				if($reMoney<=0){
 					continue;
 				}
@@ -326,16 +328,19 @@ class Payment
 				$payment[$key]['M_Trade_NO'] = $v['trade_no'];
 				if($reMoney >= $money){
 					$payment[$key]['M_Amount']    = $money;
-					break;
+					
 				}else{
 					$payment[$key]['M_Amount']    = $reMoney;
 				}
-				$money1 = $reMoney;
+				$money1 = $payment[$key]['M_Amount'];
 			}
 			if($key==1){
+				$reMoney = $v['trade_money'] - self::getOrigReMoney($v['trade_no']);
+				if($reMoney<=0){
+					continue;
+				}
 				$payment[$key]['M_OrderNO'] = 'wei'.md5($refundId);
 				$payment[$key]['M_Trade_NO'] = $v['trade_no'];
-				$reMoney = self::getOrigReMoney($v['trade_no']);
 				$payment[$key]['M_Amount']    = ($money - $money1) <=$reMoney ? $money - $money1 : $reMoney;
 			}
 			$payment[$key] = array_merge($payment[$key],self::getPaymentParam($payment_id));
