@@ -40,7 +40,7 @@
 
 <link rel="stylesheet" type="text/css" href="{skin:css/base.css}">
 <link rel="stylesheet" type="text/css" href="{skin:css/index_sg.css}">
-<script type="text/javascript" src="{theme:javascript/shan/shan.js}"></script>
+<script type="text/javascript" src="{theme:javascript/presell/presell.js}"></script>
 
 		<div class="pp_tm_con">
 				  <div class="pp_tm_con_fr"><a name="floor-1"></a>
@@ -71,15 +71,14 @@
 												<span class="gzmc_z"></span>
 											</p>
 											<p class="prom" title="">
-												
-													<span class="dazhe">80.00</span>
+												<span class="dazhe">{$item['price']}</span>
 											</p>
 								</div>
 								<div class="fr">
 									<p class="brand-logo"></p>
 									<p class="surplus countdown">
 									剩余 
-										<span id=''>78</span>天
+										<span id=''>{$item['days']}</span>天
 									</p>
 								<div class="clear"></div>
 							</dd>
@@ -123,7 +122,7 @@
 						
 						<div class="next_more" style='margin-top:20px;'>
 						
-							<span class="next_more_btn" id="nextgroup" onclick="loadPromotion('{url:/site/getMoreShan}');">
+							<span class="next_more_btn" id="nextgroup" onclick="loadPresell('{url:/pregoods/getMorePresell}');">
 								<span class="next_more_text">查看下一组</span>
 							</span>
 						</div>        
@@ -135,18 +134,18 @@
     
  
 </div>
-<script type='text/html' id='promotion_box'>
+<script type='text/html' id='template'>
 	<li  style="margin-top:0;float:left;">
 		<dl>
 			<dt class="brand-img">
-				<a href="{url:/site/products/id/}/<%=goods_id%>"  target="_blank" title="<%=goods_name%>">
-					<img class="lazyload img"  src="{url:<%=shan_img%>}" alt="">
+				<a href="{url:/pregoods/products/id}/<%=id%>"  target="_blank" title="<%=name%>">
+					<img class="lazyload img"  src="{url:<%=presell_img%>}" alt="">
 				</a>
 			</dt>
 			<dd>
 				<div class="fl" style='width:220px;'>
 					<p class="name">
-						<a style='text-decoration:none' href="{url:/site/products/id/}/<%=goods_id%>" title="<%=goods_name%>" target="_blank"><%=goods_name%></a>
+						<a style='text-decoration:none' href="{url:/pregoods/products/id}/<%=id%>" title="<%=name%>" target="_blank"><%=name%></a>
 					</p>
 							<p class="explain" title="&#160;">
 								<span class="gzmc_k"></span>
@@ -154,18 +153,14 @@
 							</p>
 							<p class="prom" title="">
 								
-									<span class="dazhe"><%=zhe%></span>折
+									<span class="dazhe"><%=price%></span>
 							</p>
 				</div>
 				<div class="fr">
 					<p class="brand-logo"></p>
-					<p class="surplus countdown" id="timeRemaining-<%=key%>">
+					<p class="surplus countdown">
 					剩余 
-						<span id='cd_day_<%=key%>'></span>天
-						<span id='cd_hour_<%=key%>'></span>小时
-						<span id='cd_minute_<%=key%>'></span>分
-						<span id='cd_second_<%=key%>'></span>秒	
-						<input name='endTime' type='hidden' value='<%=end%>' />
+						<span id=''><%=days%></span>天
 					</p>
 				<div class="clear"></div>
 			</dd>
@@ -173,5 +168,7 @@
 		<div class="brand-icon" id="brandsale_sold-out-_0">
 			<div class="clear"></div>
 		</div>
+		
 	</li>
+
 </script>

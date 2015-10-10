@@ -14,11 +14,35 @@ class Pregoods extends IController
 	}
 	//预售列表
 	public function presell_list(){
-		$presell_db = new IModel('presell');
-		$this->pre_list = $presell_db->query('is_close=0 and TIMESTAMPDIFF(second,yu_end_time,NOW())<0');
-		//print_r($this->pre_list);
+		$presell_db = new IQuery('presell as p');
+		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
+		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
+		$presell_db->fields = 'p.*,g.sell_price as price,datediff(p.yu_end_time,now()) as days';
+		$presell_db->limit = 4;
+		$presell_db->order = 'p.id DESC';
+		$this->pre_list = $presell_db->find();
+		$this->count = count($this->pre_list);
+		
 		$this->redirect('presell_list');
 		
+	}
+	//获取更多列表
+	public function getMorePresell(){
+		$start = IFilter::act(IReq::get('start'),'int');
+		$limit = $start.',2';
+		
+		$presell_db = new IQuery('presell as p');
+		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
+		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
+		$presell_db->fields = 'p.*,g.sell_price as price,datediff(p.yu_end_time,now()) as days';
+		$presell_db->order = 'p.id DESC';
+		$presell_db->limit = $limit;
+		$presellData = $presell_db->find();
+		
+		foreach($presellData as $key=>$val){
+			$presellData[$key]['key'] = $key + $start;
+		}
+		echo $presellData ? JSON::encode($presellData) : 0;
 	}
 	//商品展示
 	function products()
