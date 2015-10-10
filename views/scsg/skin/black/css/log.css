@@ -25,6 +25,7 @@ a.more{color:#a2a2a2}a.zoom{padding-left:20px;background:url(../images/front/spr
 .close,.close_2{display:inline-block;width:13px;height:13px;line-height:100px;overflow:hidden;background:url(../images/front/ucenter/close.gif) no-repeat}
 .close_2{width:27px;height:21px;margin-right:8px;background:url(../images/front/sprites_2.gif) -24px -739px no-repeat}
 .countdown{margin:5px auto 5px;font:bold 12px "Microsoft YaHei",Arial, Tahoma;color:#999}
+.countdown span{color:red;}
 	.countdown b{margin:0 3px;font-size:20px;color:#c4000f}
 	.countdown li{display:inline;}
 /* grade style start */
