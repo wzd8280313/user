@@ -180,9 +180,10 @@ class Block extends IController
     		IError::show(403,'要支付的订单信息不存在');
     	}
     	
-    	//获取支付方式类库
+    	//获取支付方式类库exit;
     	$paymentInstance = Payment::createPaymentInstance($payment_id);
     	$sendData = $paymentInstance->getSendData(Payment::getPaymentInfoPresell($payment_id,$order_id));
+    	
     	$paymentInstance->doPay($sendData);
     }
 	/**
@@ -194,7 +195,7 @@ class Block extends IController
 		$order_id   = IFilter::act(IReq::get('order_id'),'int');
 		$recharge   = IReq::get('recharge');
 		$payment_id = IFilter::act(IReq::get('payment_id'),'int');
-
+		
 		if($order_id)
 		{
 			//获取订单信息

@@ -430,38 +430,7 @@ class Preorder_Class extends Order_Class{
 		return $result;
 	}
 	
-	/**
-	 * 添加评论商品的机会
-	 * @param $order_id 订单ID
-	 */
-	public static function addGoodsCommentChange($order_id)
-	{
-		//获取订单对象
-		$orderDB  = new IModel('order');
-		$orderRow = $orderDB->getObj('id = '.$order_id);
-	
-		//获取此订单中的商品种类
-		$orderGoodsDB        = new IQuery('order_goods');
-		$orderGoodsDB->where = 'order_id = '.$order_id;
-		$orderGoodsDB->group = 'goods_id';
-		$orderList           = $orderGoodsDB->find();
-	
-		//可以允许进行商品评论
-		$commentDB = new IModel('comment');
-	
-		//对每类商品进行评论开启
-		foreach($orderList as $val)
-		{
-			$attr = array(
-					'goods_id' => $val['goods_id'],
-					'order_no' => $orderRow['order_no'],
-					'user_id'  => $orderRow['user_id'],
-					'time'     => date('Y-m-d H:i:s')
-			);
-			$commentDB->setData($attr);
-			$commentDB->add();
-		}
-	}
+
 	
 	/**
 	 * @brief 商品发货接口
@@ -605,5 +574,17 @@ class Preorder_Class extends Order_Class{
 		{
 			sendgoods::run_presell($paramArray);
 		}
+	}
+	//去除预售订单前面 pre 、wei
+	public static function getTrueOrderNo($orderNo){
+		if(stripos($orderNo,'pre') !== false)
+		{
+			$orderNo = str_replace('pre','',$orderNo);
+		}
+		if(stripos($orderNo,'wei') !== false)
+		{
+			$orderNo = str_replace('wei','',$orderNo);
+		}
+		return $orderNo;
 	}
 }

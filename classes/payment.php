@@ -143,7 +143,7 @@ class Payment
 		}
 		
 		$siteConfigObj = new Config('site_config');
-		$cancel_days = $siteConfigObj->pre_order_cancel_days;
+		$cancel_days = $siteConfigObj->preorder_cancel_days;
 		if($orderRow['status']==1 && order_class::is_overdue($orderRow['create_time'],$cancel_days)){
 			$payment['M_Amount']    = $orderRow['pre_amount'];
 			$payment['M_OrderNO']   = 'pre'.$orderRow['order_no'];

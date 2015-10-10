@@ -43,5 +43,6 @@
   'shan_prop' => 0,
   'presell_prop' => 0,
   'presell_promotion' => 0,
-  'pre_order_cancel_days' => 3,
+  'preorder_cancel_days' => 3,
+  'preorder_finish_days' => 10,
 )?>
