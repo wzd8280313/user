@@ -125,22 +125,32 @@ class Ucenter extends IController
     	$this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
     	$presellData = $presell_db->getObj('id='.$this->order_info['active_id']);
     	$now = time();
-    	$start = strtotime($presellData['wei_start_time']);
-    	$end   = strtotime($presellData['wei_end_time']);
-    	if($now<$start)
-    		$this->wei_status = 0;//不可支付
-    	else if($now>=$start&&$now<=$end){
-    		$this->wei_status = 1;//可以支付
+    	
+    	if($presellData['wei_type']==1)
+    	{
+    		$start = strtotime($presellData['wei_start_time']);
+    		$end   = strtotime($presellData['wei_end_time']);
+    		if($now<$start)
+    			$this->wei_status = 0;//不可支付
+    		else if($now>=$start&&$now<=$end){
+    			$this->wei_status = 1;//可以支付
+    		}
+    		else{
+    			$this->wei_status = 2;//已过期
+    		}
+    		$this->start = $start;
+    		$this->end   = $end;
     	}
-    	else{
-    		$this->wei_status = 2;//已过期
+    	else {
+    		$this->end = strtotime($this->order_info['pay_time']) + $presellData['wei_days']*24*3600;
+    		$this->wei_status = $now>$this->end ? 2 : 1;
     	}
-    	$this->start = $start;
-    	$this->end   = $end;
+    	
     	if(!$this->order_info)
     	{
     		IError::show(403,'订单信息不存在');
     	}
+    	$this->setRenderData($presellData);
     	$this->redirect('preorder_detail');
     }
     
