@@ -48,6 +48,7 @@ class Presell extends IController
 		$id = IFilter::act(IReq::get('id'),'int');
 		$sure_type = IFilter::act(IReq::get('sure_type'),'int');
 		$wei_type  = IFilter::act(IReq::get('wei_type'),'int');
+		$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
 		$dataArray = array(
 			'name'  => IFilter::act(IReq::get('name')),
 			'money_rate' => IFilter::act(IReq::get('money_rate'),'float'),
@@ -55,7 +56,7 @@ class Presell extends IController
 			'wei_days'    => IFilter::act(IReq::get('wei_days'),'int'),
 			'is_close' => IFilter::act(IReq::get('is_close'),'int'),
 			'intro' => IFilter::act(IReq::get('intro')),
-			'goods_id' => IFilter::act(IReq::get('goods_id'),'int'),
+			'goods_id' => $goods_id,
 			'send_days'=> IFilter::act(IReq::get('send_days'),'int'),
 			'wei_type' => $wei_type,
 			'sure_type'=> $sure_type
@@ -88,6 +89,9 @@ class Presell extends IController
 			$presell_db->setData($dataArray);
 			$presell_db->add();
 		}
+		$goods_db = new IModel('goods');
+		$goods_db->setData(array('is_del'=>4));
+		$goods_db->update('id='.$goods_id);
 		$this->redirect('presell_list');
 	}
 	//删除
