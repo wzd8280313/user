@@ -1496,7 +1496,7 @@ class Ucenter extends IController
     {
     	$op    = IFilter::act(IReq::get('op'));
     	$id    = IFilter::act( IReq::get('order_id'),'int' );
-    	$model = new IModel('order_presell');
+    	$model = new IModel('order');
     
     	switch($op)
     	{
