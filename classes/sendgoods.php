@@ -57,7 +57,7 @@ class sendgoods
 	 */
 	private static function getOrderInfoPresell($orderId)
 	{
-		$orderDB         = new IQuery('order_presell as o');
+		$orderDB         = new IQuery('order as o');
 		$orderDB->fields = 'p.class_name,o.pay_type,t.trade_no';
 		$orderDB->join   = 'left join trade_record as t on CONCAT("pre",o.order_no) = t.order_no OR CONCAT("wei",o.order_no) = t.order_no left join  payment as p on o.pay_type = p.id ';
 		$orderDB->where  = 'o.id = '.$orderId;

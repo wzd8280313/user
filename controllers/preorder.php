@@ -111,9 +111,9 @@ class Preorder extends IController
 		$sure      = IFilter::act(IReq::get('sure'),'int');
 		$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
 		$status    = $sure==1 ? 4 : 6;
-		$preorder_db = new IModel('order_presell');
+		$preorder_db = new IModel('order');
 		$preorder_db->setData(array('status'=>$status,'confirm_time'=>ITime::getDateTime()));
-		if(1 || $preorder_db->update('id='.$order_id.' and status=3')){
+		if($preorder_db->update('id='.$order_id.' and status=3')){
 			if($status==6){//确认不通过，退款
 				if(!$user_id)
 				{
@@ -258,11 +258,11 @@ class Preorder extends IController
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
 		//拼接sql
-		$orderHandle = new IQuery('order_presell as o');
+		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
 		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
 		$orderHandle->page   = $page;
-		$orderHandle->where  = $where;
+		$orderHandle->where  = $where.' and o.type=4';
 		$orderHandle->join   = $join;
 	
 		$this->search      = $search;
@@ -279,7 +279,7 @@ class Preorder extends IController
 		$id = IFilter::act(IReq::get('id'),'int');
 	
 		//生成order对象
-		$tb_order = new IModel('order_presell');
+		$tb_order = new IModel('order');
 		$tb_order->setData(array('if_del'=>1));
 		if($id)
 		{
@@ -313,7 +313,7 @@ class Preorder extends IController
 		$id = IFilter::act(IReq::get('id'),'int');
 	
 		//生成order对象
-		$tb_order = new IModel('order_presell');
+		$tb_order = new IModel('order');
 	
 		if($id)
 		{
@@ -344,7 +344,7 @@ class Preorder extends IController
 		//post数据
 		$id = IFilter::act(IReq::get('id'),'int');
 		//生成order对象
-		$tb_order = new IModel('order_presell');
+		$tb_order = new IModel('order');
 		$tb_order->setData(array('if_del'=>0));
 		if(!empty($id))
 		{
@@ -373,7 +373,7 @@ class Preorder extends IController
 			list($join,$where) =order_class::getSearchCondition($search);
 		}
 		//拼接sql
-		$orderHandle = new IQuery('order_presell as o');
+		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
 		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
 		$orderHandle->join   = $join;

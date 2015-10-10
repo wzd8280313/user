@@ -11,11 +11,7 @@
 
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
-{foreach:items=$promotion}
-	{if:$item['type']==6}<!--获取免配送费的信息-->
-	{set:$freightInfo=$item['info']}
-	{/if}
-{/foreach}
+
 <link rel="stylesheet" type='text/css' href="{skin:css/detail.css}"/>
 <link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />
 <script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
@@ -106,13 +102,13 @@
 								<div>
 									<div class="tbc-presale-step-tip tbc-presale-step-tip2" >
 										<p>
-											{$preData['wei_start_time']}至{$preData['wei_end_time']}支付尾款
+											{$preData['wei_text']}
 										</p>
 										<i></i>
 									</div>
 									<div class="tbc-presale-step-tip tbc-presale-step-tip3">
 										<p>
-											尾款支付后3天内发货
+											尾款支付后{$preData['send_days']}天内发货
 										</p>
 										<i></i>
 									</div>
@@ -167,7 +163,7 @@
 						<dt class="tb-metatit">运费</dt>
 						<dd>
 							<div class="tb-postAge" style='color:#666;'>
-								{$freightInfo}
+								
 								<a href="{url:/site/help/id/73}" style='color:blue;'>配送说明</a>
 							</div>
 						</dd>

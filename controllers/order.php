@@ -698,7 +698,7 @@ class Order extends IController
 		$orderHandle->order  = "o.id desc";
 		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
 		$orderHandle->page   = $page;
-		$orderHandle->where  = $where;
+		$orderHandle->where  = $where.' and o.type !=4';
 		$orderHandle->join   = $join;
 
 		$this->search      = $search;
@@ -1078,8 +1078,9 @@ class Order extends IController
 		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
 		$type     = IFilter::act(IReq::get('type'));
 
-		$tb_order = $type ? new IModel('order_presell') : new IModel('order');
-		$data     = $tb_order->getObj('id='.$order_id);
+		$tb_order =  new IModel('order');
+		$where = $type ? ' and type=4' : ' and type !=4';
+		$data     = $tb_order->getObj('id='.$order_id.$where);
 
 		if($seller_id)
 		{
@@ -1116,8 +1117,9 @@ class Order extends IController
 
 		$type     = IFilter::act(IReq::get('type'));
 
-		$tb_order = $type ? new IModel('order_presell') : new IModel('order');
-		$data     = $tb_order->getObj('id='.$order_id);
+		$tb_order =  new IModel('order');
+		$where = $type ? ' and type=4' : ' and type !=4';
+		$data     = $tb_order->getObj('id='.$order_id.$where);
 
  		//获取地区
  		$data['address'] = join('&nbsp;',area::name($data['province'],$data['city'],$data['area']))."&nbsp;".$data['address'];
@@ -1134,8 +1136,9 @@ class Order extends IController
 		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
 
 		$type     = IFilter::act(IReq::get('type'));
-		$tb_order = $type ? new IModel('order_presell') : new IModel('order');
-		$data     = $tb_order->getObj('id='.$order_id);
+		$tb_order =  new IModel('order');
+		$where = $type ? ' and type=4' : ' and type !=4';
+		$data     = $tb_order->getObj('id='.$order_id.$where);
 
 		if($seller_id)
 		{

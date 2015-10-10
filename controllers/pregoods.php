@@ -1,4 +1,9 @@
 <?php
+/**
+ * 前台展示预售类
+ * @author lenovo
+ *
+ */
 class Pregoods extends IController
 {
 	public $layout='site';
@@ -7,7 +12,14 @@ class Pregoods extends IController
 	{
 		CheckRights::checkUserRights();
 	}
-	
+	//预售列表
+	public function presell_list(){
+		$presell_db = new IModel('presell');
+		$this->pre_list = $presell_db->query('is_close=0 and TIMESTAMPDIFF(second,yu_end_time,NOW())<0');
+		//print_r($this->pre_list);
+		$this->redirect('presell_list');
+		
+	}
 	//商品展示
 	function products()
 	{
@@ -135,8 +147,15 @@ class Pregoods extends IController
 		if($lastDay>0){
 			$preData['lastDay'] = ceil($lastDay/(24*3600));
 		}
-		$goods_info['preData'] = $preData;
 		
+		//获取尾款支付时间
+		if($preData['wei_type']==1){
+			$preData['wei_text'] = $preData['wei_start_time'].'至'.$preData['wei_end_time'].'支付尾款';
+			
+		}else{
+			$preData['wei_text'] = '预付款支付后'.$preData['wei_days'].'天内支付尾款';
+		}
+		$goods_info['preData'] = $preData;
 		//获取标签
 		$tb_tag = new IQuery('commend_tags as t');
 		$tb_tag->join = 'left join commend_goods as go on t.id = go.commend_id';
@@ -509,7 +528,7 @@ class Pregoods extends IController
 	
 		$dataArray['order_amount'] = $dataArray['order_amount'] <= 0 ? 0 : $dataArray['order_amount'];
 	
-		$orderObj  = new IModel('order_presell');
+		$orderObj  = new IModel('order');
 		$orderObj->setData($dataArray);
 	
 		$this->order_id = $orderObj->add();

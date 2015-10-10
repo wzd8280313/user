@@ -98,7 +98,7 @@ class APIUcenter
 	public function getOrderList($userid){
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		$query = new IQuery('order');
-		$query->where = "user_id =".$userid." and if_del= 0";
+		$query->where = "user_id =".$userid." and if_del= 0 and type !=4";
 		$query->order = "id desc";
 		$query->page  = $page;
 		return $query;
@@ -106,8 +106,8 @@ class APIUcenter
 	//用户中心-预售订单列表
 	public function getPreorderList($userid){
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
-		$query = new IQuery('order_presell');
-		$query->where = "user_id =".$userid." and if_del= 0";
+		$query = new IQuery('order');
+		$query->where = "user_id =".$userid." and if_del= 0 and type=4";
 		$query->order = "id desc";
 		$query->page  = $page;
 		return $query;

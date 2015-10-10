@@ -129,10 +129,12 @@ class Payment
 	public static function getPaymentInfoPresell($payment_id,$order_id)
 	{
 		$payment = self::getPaymentParam($payment_id);
-		$order_obj = new IQuery('order_presell as o');
+		$order_obj = new IQuery('order as o');
 		$order_obj->join = 'left join presell as p on o.active_id = p.id';
-		$order_obj->fields = 'o.id,o.order_no,o.status,o.pay_time,o.postscript,o.mobile,o.accept_name,o.postcode,o.telphone,o.address,o.pay_status,o.pay_type,o.pre_amount,o.order_amount,o.create_time,p.wei_days';
-		$order_obj->where  = 'o.id='.$order_id;
+		$order_obj->fields = 'o.id,o.order_no,o.status,o.pay_time,o.postscript,o.mobile,o.accept_name,o.postcode,
+				o.telphone,o.address,o.pay_status,o.pay_type,o.pre_amount,o.order_amount,o.create_time,
+				p.wei_type,p.wei_days,p.wei_start_time,p.wei_end_time';
+		$order_obj->where  = 'o.id='.$order_id.' and o.type=4';
 		$orderRow = $order_obj->getObj();
 	//	print_r($orderRow);exit();
 		if(empty($orderRow))
@@ -145,7 +147,16 @@ class Payment
 		if($orderRow['status']==1 && order_class::is_overdue($orderRow['create_time'],$cancel_days)){
 			$payment['M_Amount']    = $orderRow['pre_amount'];
 			$payment['M_OrderNO']   = 'pre'.$orderRow['order_no'];
-		}elseif($orderRow['status']==4 && order_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days'])){
+		}elseif($orderRow['status']==4 ){
+			if($orderRow['wei_type']==1){
+				if(time()<strtotime($orderRow['wei_start_time']))
+					IError::show(403,'未到支付时间，不能支付');
+				if(time()>strtotime($orderRow['wei_end_time']))
+					IError::show(403,'超期未支付尾款，订单已作废');
+			}else{
+				if(!preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days']))
+					IError::show(403,'超期未支付尾款，订单已作废');
+			}
 			$payment['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
 			$payment['M_OrderNO']   = 'wei'.$orderRow['order_no'];
 		}
@@ -301,7 +312,7 @@ class Payment
 	public static function getPaymentInfoForPresellRefund($payment_id,$refundId,$order_id,$money){
 		
 		$payment = array();
-		$orderObj = new IQuery('order_presell as o');
+		$orderObj = new IQuery('order as o');
 		$orderObj->join = 'left join trade_record as t on CONCAT("pre",o.order_no) = t.order_no OR CONCAT("wei",o.order_no) = t.order_no';
 		$orderObj->where = 'o.id='.$order_id;
 		$orderObj->fields = 'o.order_no,o.pre_amount,t.trade_no,t.money as trade_money,o.id';

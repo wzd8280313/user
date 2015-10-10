@@ -172,7 +172,7 @@ class Block extends IController
     	$order_id   = IFilter::act(IReq::get('order_id'),'int');
     	//$siteConfigObj = new Config('site_config');
     	//$cancel_days = $siteConfigObj->pre_order_cancel_days;
-    	$order_db   = new IModel('order_presell');
+    	$order_db   = new IModel('order');
     	$orderRow = $order_db->getObj('id='.$order_id,'order_no,pay_type,pre_amount');
     	$payment_id = $orderRow['pay_type'];
     	if(empty($orderRow))

@@ -46,7 +46,8 @@ class Presell extends IController
 	//预售提交处理
 	public function presell_edit_act(){
 		$id = IFilter::act(IReq::get('id'),'int');
-		
+		$sure_type = IFilter::act(IReq::get('sure_type'),'int');
+		$wei_type  = IFilter::act(IReq::get('wei_type'),'int');
 		$dataArray = array(
 			'name'  => IFilter::act(IReq::get('name')),
 			'money_rate' => IFilter::act(IReq::get('money_rate'),'float'),
@@ -55,7 +56,24 @@ class Presell extends IController
 			'is_close' => IFilter::act(IReq::get('is_close'),'int'),
 			'intro' => IFilter::act(IReq::get('intro')),
 			'goods_id' => IFilter::act(IReq::get('goods_id'),'int'),
+			'send_days'=> IFilter::act(IReq::get('send_days'),'int'),
+			'wei_type' => $wei_type,
+			'sure_type'=> $sure_type
 		);
+		
+		if($sure_type==1){//时间段
+			$dataArray['sure_start'] = IFilter::act(IReq::get('sure_start'));
+			$dataArray['sure_end'] = IFilter::act(IReq::get('sure_end'));
+		}else{//预付款支付后几天
+			$dataArray['sure_days']= IFilter::act(IReq::get('sure_days'),'int');
+		}
+		if($wei_type==1){
+			$dataArray['wei_start_time'] = IFilter::act(IReq::get('wei_start_time'));
+			$dataArray['wei_end_time'] = IFilter::act(IReq::get('wei_end_time'));
+		}
+		else {
+			$dataArray['wei_days']= IFilter::act(IReq::get('wei_days'),'int');
+		}
 		if(isset($_FILES['presell_img'])&&$_FILES['presell_img']['name']!='')
 			$dataArray['presell_img'] = uploadHandle('presell_img');
 		

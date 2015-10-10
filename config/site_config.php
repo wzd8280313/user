@@ -37,14 +37,11 @@
   'sms_password' => '97273007',
   'sms_sign' => '【无线阳泉】',
   'test_address' => 'weiping.lee@163.com',
-	'date_fapiao'=> '5',//允许开发票的天数
-	
-	//闪购配置
-	'shan_open' => 0,//0:关闭
-	'tuan_prop' => 0,//是否可用代金券
-	'shan_prop' => 0,
-	'presell_prop'=> 0,
-	'presell_promotion' => 0,
-	//预售配置
-	'pre_order_cancel_days' => 3,
+  'date_fapiao' => '5',
+  'shan_open' => 0,
+  'tuan_prop' => 0,
+  'shan_prop' => 0,
+  'presell_prop' => 0,
+  'presell_promotion' => 0,
+  'pre_order_cancel_days' => 3,
 )?>

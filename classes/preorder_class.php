@@ -18,7 +18,7 @@ class Preorder_Class extends Order_Class{
 		$data = array();
 	
 		//获得对象
-		$tb_order = new IModel('order_presell');
+		$tb_order = new IModel('order');
 		$data = $tb_order->getObj($where);
 		if($data)
 		{
@@ -114,7 +114,7 @@ class Preorder_Class extends Order_Class{
 	{
 		$orderGoodsDB= new IModel('order_goods');
 		$refundDB    = new IModel('refundment_doc');
-		$orderDB     = new IModel('order_presell');
+		$orderDB     = new IModel('order');
 	
 		
 		//获取goods_id和product_id用于给用户减积分，经验
@@ -310,7 +310,7 @@ class Preorder_Class extends Order_Class{
 		}
 		
 		//获取订单信息
-		$orderObj  = new IModel('order_presell');
+		$orderObj  = new IModel('order');
 		$orderRow  = $orderObj->getObj('order_no = "'.$orderNo.'"');
 	
 		if(empty($orderRow))
@@ -437,7 +437,7 @@ class Preorder_Class extends Order_Class{
 	public static function addGoodsCommentChange($order_id)
 	{
 		//获取订单对象
-		$orderDB  = new IModel('order_presell');
+		$orderDB  = new IModel('order');
 		$orderRow = $orderDB->getObj('id = '.$order_id);
 	
 		//获取此订单中的商品种类
@@ -523,7 +523,7 @@ class Preorder_Class extends Order_Class{
 		$deliveryId = $tb_delivery_doc->add();
 		 
 		//订单对象
-		$tb_order   = new IModel('order_presell');
+		$tb_order   = new IModel('order');
 		$tbOrderRow = $tb_order->getObj('id = '.$order_id);
 	
 		//如果支付方式为货到付款，则减少库存
@@ -568,6 +568,7 @@ class Preorder_Class extends Order_Class{
 		 	(
 		 			'distribution_status' => $sendStatus,
 		 			'send_time'           => ITime::getDateTime(),
+		 			'status'              => 9
 		 	));
 		$tb_order->update('id='.$order_id);
 	
