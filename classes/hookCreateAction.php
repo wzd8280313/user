@@ -177,7 +177,27 @@ class hookCreateAction extends IInterceptorBase
 		$orderCancelData  = $order_cancel_time > 0 ? $orderModel->query(" if_del = 0 and type=4 and status in(1) and TIMESTAMPDIFF(second,create_time,NOW()) >= {$order_cancel_second} ","id,order_no,2 as type_data") : array();
 		$orderCreateData  = $order_finish_time > 0 ? $orderModel->query(" if_del = 0 and type=4 and status in(9) and TIMESTAMPDIFF(second,send_time,NOW()) >= {$order_finish_second} ","id,order_no,11 as type_data") : array();
 			
-		$resultData = array_merge($orderCreateData,$orderCancelData);
+		//超期未支付尾款订单
+		$order_db = new IQuery('order as o');
+		$order_db->join = 'left join presell as p on o.active_id = p.id';
+		$where  = 'o.type=4 and o.if_del = 0 and o.status=4 ';
+		$where .= ' and (p.wei_type = 0 and TIMESTAMPDIFF(second,o.pay_time,NOW()) >= p.wei_days*24*3600 OR ';
+		$where .= ' p.wei_type=1 and TIMESTAMPDIFF(second,p.wei_end_time,NOW()) >0 )';
+		$order_db->where = $where;
+		$order_db->fields = 'o.id,o.order_no,8 as type_data';
+		$orderCancelDataWei = $order_db->find();
+		
+		//超期未确认订单
+		$order_db = new IQuery('order as o');
+		$order_db->join = 'left join presell as p on o.active_id = p.id left join order_goods as og on o.id = og.order_id ';
+		$where  = 'o.type=4 and o.if_del=0 and o.status = 3 ';
+		$where .= ' and (p.sure_type = 0 and TIMESTAMPDIFF(second,o.pay_time,NOW()) >= p.sure_days*24*3600 OR ';
+		$where .= ' p.sure_type = 1 and TIMESTAMPDIFF(second,p.sure_end,NOW()) > 0 )';
+		$order_db->where = $where;
+		$order_db->fields = 'o.id,o.order_no,o.pre_amount,o.user_id,og.id as order_goods_id,5 as type_data';
+		$orderCancelDataSure = $order_db->find();
+		$resultData = array_merge($orderCreateData,$orderCancelData,$orderCancelDataWei,$orderCancelDataSure);
+		
 		if($resultData)
 		{
 			$tb_order = new IModel('order');
@@ -207,7 +227,7 @@ class hookCreateAction extends IInterceptorBase
 					$note   = '订单【'.$order_no.'】完成成功';
 						
 					//完成订单并且进行支付
-					Order_Class::updateOrderStatus($order_no);
+				//	Order_Class::updateOrderStatus($order_no);
 						
 					//增加用户评论商品机会
 					Order_Class::addGoodsCommentChange($order_id);
@@ -215,10 +235,29 @@ class hookCreateAction extends IInterceptorBase
 					$logObj = new log('db');
 					$logObj->write('operation',array("系统自动","订单更新为完成",'订单号：'.$order_no));
 				}
-				else
+				else if($type=='2')
 				{
 					Order_class::resetOrderProp($order_id);
 						
+					$logObj = new log('db');
+					$logObj->write('operation',array("系统自动","订单更新为作废",'订单号：'.$order_no));
+				}
+				else if($type=='5'){
+					$updateData = array(
+							'order_no'     => $order_no,
+							'order_id'     => $order_id,
+							'admin_id'     => 0,
+							'pay_status'   => 0,
+							'time' => ITime::getDateTime(),
+							'amount'       => $val['pre_amount'],
+							'user_id'      => $val['user_id'],
+					);
+					Order_class::resetOrderProp($order_id);
+					Preorder_Class::refundHandle(0,$val['order_goods_id'],$updateData);
+					$logObj = new log('db');
+					$logObj->write('operation',array("系统自动","订单更新为作废",'订单号：'.$order_no));
+				}
+				else if($type=='8'){
 					$logObj = new log('db');
 					$logObj->write('operation',array("系统自动","订单更新为作废",'订单号：'.$order_no));
 				}

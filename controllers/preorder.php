@@ -197,56 +197,14 @@ class Preorder extends IController
 				'amount'       => $amount,
 				'user_id'      => $user_id,
 		);
-		$res = $this->refundHandle($refunds_id,$order_goods_id,$updateData);
+		$res = Preorder_Class::refundHandle($refunds_id,$order_goods_id,$updateData);
 		if($res){
 			die('<script text="text/javascript">parent.actionCallback();</script>');
 		}else{
 			die('<script text="text/javascript">parent.actionCallback("退货错误");</script>');
 		}
 	}
-	/**
-	 * 退款操作
-	 * @$refunds_id int 退款单id
-	 * @$goods_id  int 商品id
-	 */
-	private function refundHandle($refunds_id,$ordergoods_id,$updateData){
-		//无退款申请单，必须生成退款单
-		if(!$refunds_id)
-		{
-			$orderGoodsDB      = new IModel('order_goods');
-			$tb_refundment_doc = new IModel('refundment_doc');
-			if(!$ordergoods_id)return false;
-			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$ordergoods_id);
-		
-			//插入refundment_doc表
-			$updateData['time']       = ITime::getDateTime();
-			$updateData['goods_id']   = $orderGoodsRow['goods_id'];
-			$updateData['product_id'] = $orderGoodsRow['product_id'];
-		
-			$goodsDB = new IModel('goods');
-			$goodsRow= $goodsDB->getObj('id = '.$orderGoodsRow['goods_id']);
-			$updateData['seller_id'] = $goodsRow['seller_id'];
-		
-			$tb_refundment_doc->setData($updateData);
-			$refunds_id = $tb_refundment_doc->add();
-			$tb_refundment_doc->commit();
-		}
-		
-		$result = Preorder_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
-		
-		
-		if($result)
-		{
-			//记录操作日志
-			$logObj = new log('db');
-			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"订单更新为退款",'订单号：'.$updateData['order_no']));
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	} 
+
 	/**
 	 * @brief 预售订单列表
 	 */

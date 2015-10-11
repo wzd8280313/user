@@ -208,6 +208,56 @@ class Preorder_Class extends Order_Class{
 		$tb_order_log->add();
 		return true;
 	}
+	
+	/**
+	 * 退款操作
+	 * @$refunds_id int 退款单id
+	 * @$ordergoods_id  int 订单商品id
+	 * @$updateData 退款单数据
+	 */
+	public static function refundHandle($refunds_id,$ordergoods_id,$updateData){
+		//无退款申请单，必须生成退款单
+		if(!$refunds_id)
+		{
+			$orderGoodsDB      = new IModel('order_goods');
+			$tb_refundment_doc = new IModel('refundment_doc');
+			if(!$ordergoods_id)return false;
+			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$ordergoods_id);
+	
+			//插入refundment_doc表
+			$updateData['time']       = ITime::getDateTime();
+			$updateData['goods_id']   = $orderGoodsRow['goods_id'];
+			$updateData['product_id'] = $orderGoodsRow['product_id'];
+	
+			$goodsDB = new IModel('goods');
+			$goodsRow= $goodsDB->getObj('id = '.$orderGoodsRow['goods_id']);
+			$updateData['seller_id'] = $goodsRow['seller_id'];
+	
+			$tb_refundment_doc->setData($updateData);
+			$refunds_id = $tb_refundment_doc->add();
+			$tb_refundment_doc->commit();
+		}
+	
+		$result = self::refund($refunds_id,$updateData['admin_id'],'admin');
+	
+	
+		if($result)
+		{
+			//记录操作日志
+			$logObj = new log('db');
+			if($updateData['admin_id']){
+				$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"订单更新为退款",'订单号：'.$updateData['order_no']));
+					
+			}else
+				$logObj->write('operation',array("系统自动:","订单更新为退款",'订单号：'.$updateData['order_no']));
+	
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	//获取订单状态
 	public static function getOrderStatus($orderRow){
 		switch($orderRow['status']){
@@ -219,7 +269,7 @@ class Preorder_Class extends Order_Class{
 				
 			}
 			case 3 : {
-				return '已支付预付款';
+				return '等待后台确认';
 			}
 			case 4 : {
 				return '订单确认';
