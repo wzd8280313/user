@@ -33,7 +33,7 @@
 						<div style='margin-bottom:5px;'>
 						<input type='radio' name='sure_type' class='type' value='0' checked/>
 							<label>预付款支付后</label>
-							<input type='text' name='sure_days' class='small' alt='请填写一个数字'  /> 
+							<input type='text' name='sure_days' class='small'  alt='请填写一个数字'  /> 
 							天内确认*<label></label>
 						</div>
 						
@@ -52,7 +52,7 @@
 						<div style='margin-bottom:5px;'>
 						<input type='radio' name='wei_type' class='type' value='0' checked />
 							<label>预付款支付后</label>
-							<input type='text' name='wei_days' class='small'  alt='请填写一个数字'  /> 
+							<input type='text' name='wei_days' class='small' pattern='int' alt='请填写一个数字'  /> 
 							天内支付尾款*<label></label>
 						</div>
 						
@@ -216,8 +216,13 @@
 		
 		$('.type').on('click',function(){
 			var parentTd = $(this).parents('td');
-			parentTd.find('input[type=text]').attr('disabled','true');
-			$(this).parent('div').find('input[type=text]').removeAttr('disabled');
+			parentTd.find('input[type=text]').attr('disabled','true').removeAttr('pattern');
+			if($(this).val()==1){
+				$(this).parent('div').find('input[type=text]').removeAttr('disabled').attr('pattern','datetime');
+			}else{
+				$(this).parent('div').find('input[type=text]').removeAttr('disabled').attr('pattern','int');
+			}
+			
 		})
 		$('input[name=wei_type][value='+wei_type+']').trigger('click');
 		$('input[name=sure_type][value='+sure_type+']').trigger('click');

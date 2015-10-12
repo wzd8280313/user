@@ -163,6 +163,15 @@ class hookCreateAction extends IInterceptorBase
 		}
 		
 	}
+	public static function ucenter_preorder_detail(){
+		self::ucenter_preorder();
+	}
+	public static function preorder_preorder_list(){
+		self::ucenter_preorder();
+	}
+	public static function preorder_preorder_show(){
+		self::ucenter_preorder();
+	}
 	//用户中心预售订单
 	public static function ucenter_preorder(){
 		$siteConfig = new Config('site_config');
