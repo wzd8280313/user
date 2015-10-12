@@ -189,7 +189,7 @@ class hookCreateAction extends IInterceptorBase
 		//超期未支付尾款订单
 		$order_db = new IQuery('order as o');
 		$order_db->join = 'left join presell as p on o.active_id = p.id';
-		$where  = 'o.type=4 and o.if_del = 0 and o.status=4 ';
+		$where  = 'o.type=4 and o.if_del = 0 and o.status=4 and p.money_rate!=100 ';
 		$where .= ' and (p.wei_type = 0 and TIMESTAMPDIFF(second,o.pay_time,NOW()) >= p.wei_days*24*3600 OR ';
 		$where .= ' p.wei_type=1 and TIMESTAMPDIFF(second,p.wei_end_time,NOW()) >0 )';
 		$order_db->where = $where;
