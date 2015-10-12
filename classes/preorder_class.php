@@ -555,7 +555,7 @@ class Preorder_Class extends Order_Class{
 		//更新发货状态
 		$orderGoodsDB = new IModel('order_goods');
 		$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$order_id,'count(*) as num');
-		$sendStatus = 2;//部分发货
+		$sendStatus = 2;
 		if(count($order_goods_relation) >= $orderGoodsRow['num'])
 		{
 			$sendStatus = 1;//全部发货

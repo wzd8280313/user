@@ -1195,7 +1195,7 @@ class Site extends IController
 
 	function ce(){
 // 		$paramArray = array(
-// 				'order_id'      => 373,
+// 				'order_id'      => 429,
 // 				'user_id'       => 29,
 // 				'name'          => '3453',
 // 				'postcode'      => '045000',
@@ -1214,7 +1214,6 @@ class Site extends IController
 // 		);
 // 		sendgoods::run_presell($paramArray);
 
-		echo 34545/100;
 	}
 	
 }

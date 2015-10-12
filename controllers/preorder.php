@@ -105,13 +105,18 @@ class Preorder extends IController
 	 * 订单确认处理
 	 */
 	public function order_makesure_doc(){
+		$preorder_db = new IModel('order');
 		$order_id   = IFilter::act(IReq::get('id'),'int');
 		$order_no = IFilter::act(IReq::get('order_no'));
 		$user_id  = IFilter::act(IReq::get('user_id'),'int');
 		$sure      = IFilter::act(IReq::get('sure'),'int');
 		$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
-		$status    = $sure==1 ? 4 : 6;
-		$preorder_db = new IModel('order');
+		if($sure==1){//确认通过
+			$status=4;
+			$orderData = $preorder_db->getObj('id='.$order_id,'pre_amount,order_amount');
+			if($orderData['pre_amount']==$orderData['order_amount'])$status=7;
+		}else $status=6;
+		
 		$preorder_db->setData(array('status'=>$status,'confirm_time'=>ITime::getDateTime()));
 		if($preorder_db->update('id='.$order_id.' and status=3')){
 			if($status==6){//确认不通过，退款
