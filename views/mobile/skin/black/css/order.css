@@ -1,0 +1,117 @@
+select, input, option, textarea { font-size: 100%; -webkit-box-sizing: border-box; box-sizing: border-box; }
+select, textarea, input[type="email"], input[type="text"], input[type="tel"], input[type="number"], input[type="search"], input[type="submit"], input[type="button"], input[type="reset"] { -webkit-appearance: ; -webkit-box-shadow: none; box-shadow: none; -webkit-border-image: none; border-image: none; -webkit-border-radius: 0; border-radius: 0; }
+.pages{
+	
+}
+
+/*收货人地址*/
+.pages .qrdd{
+	background: #fff;
+}
+.pages .qrdd .dz{
+	display: block;
+	padding: 10px 10px;
+}
+
+
+.pages .qrdd .float_rt{
+	float:right;
+}
+/*收货人地址结束*/
+/* 商品详情 */
+.pages .qrdds{
+	margin-top:15px; 
+	
+}
+.pages .qrdds .qr_xq{
+	padding-top: 7px;
+/* 	display: inline-block; */
+	height:105px;
+}
+.pages .qrdds .tjxq_tit{
+	font-size:13px;
+	padding-right: 5px;
+	position: relative;
+	top: 5px;
+}
+.pages .qrdds .tjxq_tit .tjxq_ge{
+	color:#c0c0c0;
+}
+.pages .qrdds .qr_xq .tjxq_img{
+	float:left;
+	position: relative;
+	top: 6px;
+	padding: 0 10px;
+}
+.pages .qrdds .qr_xq .tjxq_img img{
+	widht:80px;
+	height:80px;
+}
+
+.pages .qrdds .qr_xq  .tjxq_sum{
+	/* float: right; */
+	position: relative;
+	top: 10px;
+	/* left: -10px; */
+}
+
+/* 支付方式 */
+.pages .qrdds .qrdds_zf{
+	margin-top: 0px;
+	border-top:1px solid #c0c0c0;
+	border-bottom:1px solid #c0c0c0;
+	padding-left:10px;
+	
+}
+.pages .qrdds .qrdds_zf h4{
+	line-height:35px;
+	height:35px;
+}
+.pages .qrdds .qrdds_zf select{
+	width:90%;
+	height:30px;
+	margin-bottom: 10px;
+	padding: 0 5px;
+}
+
+.pages .qrdds .qrdds_sum{
+	line-height: 35px;
+	text-align: right;
+	padding-right: 20px;
+	
+}
+.pages .qrdds .qrdds_sum b{
+	color:red;
+}
+.pages .qrdds .yhj{
+	height:40px;
+	line-height:40px;
+	padding-left:10px;
+}
+.pages .qrdds .yhj b{
+	color:red;
+}
+.pages .qrdds .yhj_check{
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	border: 1px solid #c0c0c0;
+	float: right;
+	position: relative;
+	top: 10px;
+	right: 10px;
+}
+.pages .qrdds .show_check{
+	background: url(../images/check.jpg) center no-repeat;
+}
+.anniu .but{
+	border: 0;
+	background: red;
+	color: #fff;
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	height: 50px;
+	font-size:20px;
+	
+}
