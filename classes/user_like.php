@@ -81,16 +81,21 @@ class user_like{
 	/**
 	 * 获取用户喜好产品
 	 * @$userId 用户登陆Id,未登陆为0
+	 * @ array  用户喜好产品列表，不足则添加系统推荐商品
 	 */
-	public static function get_like_cate($userId){
+	public static function get_like_cate($userId,$num=6){
 		$data = self::getData($userId);
 		if(!$data)return array();
 		$cateDB = new IQuery('category_extend as ca');
 		$cateDB->join =  'left join goods as go on ca.goods_id = go.id';
 		$cateDB->where = 'go.is_del = 0 and ca.category_id in ('.$data.')';
 		$cateDB->fields = 'go.name,go.img,go.id,go.sell_price,go.market_price';
-		$cateDB->limit = '6';
+		$cateDB->limit = $num;
 		$res = $cateDB->find();
+		if(count($res)<$num){
+			$recomGoods = Api::run('getCommendRecom',$num-count($res));
+			$res = array_merge($res,$recomGoods);
+		}
 		return $res;
 	}
 	

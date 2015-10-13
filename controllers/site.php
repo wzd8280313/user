@@ -27,11 +27,10 @@ class Site extends IController
 		$site_config   = $siteConfigObj->getInfo();
 		$index_slide = isset($site_config['index_slide'])? unserialize($site_config['index_slide']) :array();
 		$this->index_slide = $index_slide;
+		//print_r($this->index_slide);exit;
 		//获取商品分类
 		$categoryList = array();
-		//$M = new IModel();
-		//$sql = 'select b.id,b.name,b.logo from shop_brand_category as a right join shop_brand as b on a.id in (b.category_ids) where a.goods_category_id=';
-
+	
 		foreach( Api::run('getCategoryListTop') as $key=>$v){
 			$categoryList[$key] = $v;
 			$categoryList[$key]['child'] = Api::run('getCategoryByParentid',array('#parent_id#',$v['id']),5);
@@ -45,7 +44,8 @@ class Site extends IController
 		//获取用户喜好产品
 		$uid = $this->user ? $this->user['user_id'] : 0;
 
-		$this->user_like_goods = user_like::get_like_cate($uid);
+		$this->user_like_goods = user_like::get_like_cate($uid,4);
+		
 		$this->redirect('index');
 	}
 	//闪购页面

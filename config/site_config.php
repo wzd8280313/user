@@ -17,7 +17,7 @@
   'qq' => '',
   'email' => '',
   'mobile' => '13232323',
-  'phone' => '',
+  'phone' => '400-234-4564564',
   'address' => '',
   'site_footer_code' => '<div class=\\"footer\\" style=\\"text-align:center;\\">		<p class=\\"links\\">			<a href=\\"\\">关于我们</a>|			<a href=\\"\\">联系我们</a>|			<a href=\\"\\">商城公告</a>|			<a href=\\"\\">意见反馈</a>|			<a href=\\"\\">诚聘英才</a>|			<a href=\\"\\">友情链接</a>		</p>		<p>阳泉广电传媒电子商务有限公司 版权所有 经营许可证编号:XXXXXXXXXXX 备案许可证:XXXXXXX</p>		<p class=\\"copyright\\">Powered by <a href=\\"#\\">阳泉广电传媒电子商务有限公司</a></p>		Copyright © 2005-2014 <a class=\\"copyys\\" target=\\"_blank\\" href=\\"http://www.miibeian.gov.cn/\\">晋ICP备01000010号</a>	</div>',
   'tax' => '10',

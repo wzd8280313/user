@@ -507,6 +507,18 @@ class Goods extends IController
 			'title'     => $title,
 			'hot'       => $hot
 		);
+		
+		//商户资质上传
+		if(isset($_FILES['img']['name']) && $_FILES['img']['name'])
+		{
+			$uploadObj = new PhotoUpload();
+			$uploadObj->setIterance(false);
+			$photoInfo = $uploadObj->run();
+			if(isset($photoInfo['img']['img']) && file_exists($photoInfo['img']['img']))
+			{
+				$category_info['img'] = $photoInfo['img']['img'];
+			}
+		}
 		$tb_category->setData($category_info);
 		if($category_id)									//保存修改分类信息
 		{

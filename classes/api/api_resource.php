@@ -256,7 +256,7 @@ return array(
 	'getVipSellerList'=>array(
 	    'query'=>array(
 	    	'name'  => 'seller',
-	    	'order'=> ' sort acs ',
+	    	'order'=> ' sort asc ',
 	    	'limit' => 10,
 	    	'where' => 'is_del = 0 and is_vip = 1',
 	    )
@@ -264,6 +264,14 @@ return array(
 	//取得VIP商户列表
 	'getSellerList'=>array(
 	   'file' => 'seller.php','class' => 'APISeller'
+	),
+	'getSellerList2'=>array(
+			'query'=>array(
+					'name'  => 'seller',
+					'order'=> ' sort asc ',
+					'limit' => 4,
+					'where' => 'is_del = 0 ',
+			)
 	),
 	//按顶级分类取得推荐商户列表xin
 	'getSellerListByCat'=>array(

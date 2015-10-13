@@ -30,7 +30,6 @@ _mvq.push(['$logConversion']);
 </script>
 <!--流量统计代码-->
 
-{set:$recommend = Api::run('getCommendRecom')}
 <!--bn-->
 <div class="bn" style="height:490px;">
 		<!--轮播开始-->
@@ -257,24 +256,6 @@ _mvq.push(['$logConversion']);
 						<span class="p-del">￥{$item['market_price']}</span>
 					</div>
 				</li>
-				{/foreach}
-				{set:$len=count($this->user_like_goods)}
-				{foreach:items=$recommend}
-					{set:$len=$len+1;}
-					{if:$len<7}
-						<li class="xi">
-						 <a class="goods-img" href="{url:/site/products/id/$item['id']}">
-							<img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
-						</a>
-						<a class="goods-name" href="{url:/site/products/id/$item['id']}" title="{$item['name']}">
-							{$item['name']}<span class="txt-red"></span>
-						</a>
-						<div class="goods-price">
-							<span class="p-normal">￥{$item['sell_price']}</span>
-							<span class="p-del">￥{$item['market_price']}</span>
-						</div>
-					</li>
-					{/if}
 				{/foreach}
 					
 				
