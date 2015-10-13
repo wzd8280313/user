@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="{skin:css/common.css}" type="text/css" />
 		<link rel="stylesheet" href="{skin:css/search_list.css}" type="text/css">
 		<link rel="stylesheet" href="{skin:css/detail2.css}" type="text/css" />	
-		<link rel="stylesheet" href="{skin:css/wap/details.css}" type="text/css" />
+		<link rel="stylesheet" href="{skin:css/details.css}" type="text/css" />
 		<link rel="stylesheet" href="{skin:css/cart/spinner/jquery.spinner.css}" type="text/css" />
 		<script src="{theme:javascript/js/jquery.spinner.js}"></script>
 		<style>
@@ -33,10 +33,6 @@
                   
     </head>
 	
-
-
-
-
     <body>
                 
 	<header class="top">
@@ -49,7 +45,7 @@
 				<li><span class="ycnr"><span></span></span>
 					<ul style="display:none;">
 					<li><a href='javascript:location.reload()'><span class="sx">刷新</span></a></li>
-					<li><a href="../search.html"><span class="ss">搜索</span></a></li>
+					<li><a href="search"><span class="ss">搜索</span></a></li>
 					<li><a href="{url:/site/index?callback=}"><span class="sy">首页</span></a></li>
 					</ul>
 				</li>
@@ -181,7 +177,7 @@
         </div>
     </div>
 				<div style="width:99%;margin:0 auto;">
-				<span class="name"><a href="#" >追风筝的人（快乐大本营高圆圆感动推荐，奥巴马送给女儿的新年礼物。全球两千万读者口耳相传，最想与友人分享的终身五星小说。为你，千千万万遍！）</a></span>
+				<span class="name"><a href="" >追风筝的人（快乐大本营高圆圆感动推荐，奥巴马送给女儿的新年礼物。全球两千万读者口耳相传，最想与友人分享的终身五星小说。为你，千千万万遍！）</a></span>
 							
 				
 				<span onClick="toshare()" style="border:solid 1px #ddd;display:block;width:70px;text-align:center;float:right;margin-right:10px;margin-top:5px;cursor:pointer;height:30px;line-height:30px;">分享到</span>
@@ -431,7 +427,7 @@
 			<span class="yhname">t**9</span>
 		</div>
 		<p>宝贝真心不错，真心推荐，和实体店一模一样</p>
-		<a  href="../pingjia/pingjia_a.html">查看更多</a><!-- class="more" -->
+		<a  href="pingjia_a">查看更多</a><!-- class="more" -->
 	</div>
 	<!--<p><img src="images/li10.jpg" alt=""></p> -->
 </div>
@@ -472,7 +468,7 @@
 		</h3>
 			<ul>	
 					<li>
-						<a href="" title="">
+						<a href="detail" title="">
 							<img src="{skin:images/files/a939a6de91866ef8f90b027a2871_800_800.c6.jpg}" alt="">
 							<div class="bijia-title">春夏季韩版透气板鞋男鞋子英伦潮流行男士休闲运动鞋情侣帆布潮鞋</div>
 							<div class="price">￥58.00	</div>
@@ -527,7 +523,7 @@
               	</a>
             </div>
             <div class="s-btn s-cd" data="price">
-				<a href="../login.html">
+				<a href="{url:/simple/login?callback=}">
 	             	 <p><img src="{skin:images/detail_img/gz.png}"  alt="qq"/></p>
 	             	 <p>关&nbsp;注</p>
               	</a>
@@ -538,7 +534,7 @@
          
             
             <div class="s-btn s-an s-colos" data="default">
-				<a class="ljgm" href="{url:/simple/cart?callback=}">立即购买</a>
+				<a class="ljgm" onClick="toshop()"">立即购买</a>
             </div>
        </section>
         <!--点击加入购物车弹框 -->

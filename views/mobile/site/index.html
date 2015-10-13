@@ -37,7 +37,7 @@
       <section class="search_wrap ">
         <div class="search_title">
             <div class="logo">
-                <a href="{url:/site/search/category?}">
+                <a href="{url:/site/category?}">
 				<img src="{skin:css/wap/top_nav_order_icon.png}" style="width:25px;height:25px;"></a>
             </div>
             <div class="search_input_wrap">
@@ -48,7 +48,7 @@
                 </form>
 			</a>
             </div>
-            <a href="mail.html" class="search_nav_icon_none">
+            <a href="{url:/site/mail}" class="search_nav_icon_none">
 			<img src="{skin:css/wap/app_mail_nav.png}" style="width:35px;height:35px;"><i class="num">2</i></a>
 
         </div>
@@ -105,6 +105,7 @@
 <!--banner-->
 <section class="banner" style="overflow: hidden; visibility: visible; list-style: none; position: relative;">
      
+
 		<ul class="homebanner" id="pro-banner" style="position: relative; overflow: hidden; -webkit-transition: left 600ms ease; transition: left 600ms ease; width: 7420px; left: 0px;">
                {foreach:items=$this->index_slide}
 			   {set:$num=$key;}
@@ -115,6 +116,7 @@
                 </li>
 				{/foreach}
          </ul>
+
         <div class="slider-page">
                 <span class="cur"></span>
 				{for:from=1 upto=$num}
@@ -140,7 +142,7 @@
         </li>
 
         <li class="fl">
-            <a href="huiyuan.html">
+            <a href="{url:/site/huiyuan1}">
                 <i class="icon_3"></i>
                 <span>我的订单</span>
             </a>
@@ -148,35 +150,35 @@
 
 
         <li class="fl">
-            <a href="huiyuan.html">
+            <a href="{url:/site/focus}">
                 <i class="icon_7"></i>
                 <span>我的关注</span>
             </a>
         </li>
 
          <li class="fl">
-            <a href="tuan_art.html">
+            <a href="{url:/site/tuangou}">
                 <i class="icon_4_qwds"></i>
                 <span>山城团购</span>
             </a>
         </li>
 
          <li class="fl">
-            <a href="pre_art.html">
+            <a href="{url:/site/pre_art}">
                 <i class="icon_5"></i>
                 <span>山城预售</span>
             </a>
         </li>
 
          <li class="fl">
-            <a href="cart.html">
+            <a href="{url:/simple/cart?}">
                 <i class="icon_1"></i>
                 <span>购物车</span>
             </a>
         </li>
 
          <li class="fl">
-            <a href="search/category.html">
+            <a href="{url:/site/category}">
                 <i class="icon_6"></i>
                 <span>分类查询</span>
             </a>
@@ -218,6 +220,7 @@
 		{set:$seller=Api::run('getSellerList2');}
         <div class="first_floor clear-fix">
             <div class="left fl">
+
             	{for:from=0 upto=1}
                  <div class="top" style='border-bottom: 1px solid #eee;'>
                     <a href="{url:site/home/id/$seller[$i]['id']}"><img src="{url:$seller[$i]['logo_img']}"></a>
@@ -231,6 +234,7 @@
                	 </div>
 				 {/for}
              </div>
+
         </div>
 		<header class="title clear-fix">
             <h2 class="fl">特色市场</h2>
@@ -238,14 +242,14 @@
         <div class="first_floor clear-fix">		
             <div class="right fl">
                                     <div class="top">
-                        <a href="act.html"><img src="{skin:images/korea/korea_22.jpg}"></a>
+                        <a href="{url:/site/act}"><img src="{skin:images/korea/korea_22.jpg}"></a>
                     </div>
                     <div class="bottom">
-                        <a href="act.html"><img src="{skin:images/korea/korea_23.jpg}"></a>
+                        <a href="{url:/site/act}"><img src="{skin:images/korea/korea_23.jpg}"></a>
                     </div>
                             </div>
             <div class="left fl">
-                <a href="act.html"><img src="{skin:images/korea/korea_24.jpg}"></a>
+                <a href="{url:/site/act}"><img src="{skin:images/korea/korea_24.jpg}"></a>
             </div>
         </div>
 		<header class="title clear-fix">
@@ -253,14 +257,14 @@
         </header>
         <div class="first_floor clear-fix">
             <div class="left fl">
-                <a href="act.html"><img src="{skin:images/files/b5312c83b7f8e2450de914b378dda128.jpg}"></a>
+                <a href="{url:/site/act}"><img src="{skin:images/files/b5312c83b7f8e2450de914b378dda128.jpg}"></a>
             </div>
             <div class="right fl">
                                     <div class="top">
-                        <a href="act.html"><img src="{skin:images/files/8012fbf28c2a30f3fe641416e00e21b7.png}"></a>
+                        <a href="{url:/site/act}"><img src="{skin:images/files/8012fbf28c2a30f3fe641416e00e21b7.png}"></a>
                     </div>
                     <div class="bottom">
-                        <a href="act.html"><img src="{skin:images/files/e1d88e5e7eeede7a6cc442d141d02c9b.png}"></a>
+                        <a href="{url:/site/act}"><img src="{skin:images/files/e1d88e5e7eeede7a6cc442d141d02c9b.png}"></a>
                     </div>
                             </div>
         </div>
@@ -269,6 +273,7 @@
         </header>
         <div class="second_floor">
             <ul class="clear-fix">
+
             	{foreach:items=Api::run('getCategoryListTop',6)}
                 <li class="fl" style='width:33%;'>       
 					 <a href="{url:site/pro_list/cat/$item['id']}">
@@ -276,6 +281,7 @@
 					 </a>
 				</li>
 				{/foreach}
+
             </ul>
         </div>
     </section>
@@ -299,9 +305,11 @@
                                        </div>
                            	 </div>
                         </a>
+
                  </li>
 				 {/foreach}
              </ul>
+
         </div>
         <div class="loading-ctn loading-imgS">
             <p>下拉查看更多</p>
@@ -321,4 +329,3 @@
 		<img id="stat_image" src="{skin:images/files/__utm.gif}" style="display: none;">
 
     
-
