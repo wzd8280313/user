@@ -8,7 +8,7 @@
  <script src="{theme:javascript/js/show.js}"></script>
  <link rel="stylesheet" href="{skin:css/product.min.css}" />
 <link rel="stylesheet" href="{skin:css/common.css}" type="text/css" />
-<link rel="stylesheet" href="{skin:css/wap/details.css}" type="text/css" />
+<link rel="stylesheet" href="{skin:css/details.css}" type="text/css" />
 <link rel="stylesheet" href="{skin:css/cart/spinner/jquery.spinner.css}" type="text/css" />
 <script src="{theme:javascript/js/jquery.spinner.js}"></script>
 <script type="text/javascript" src="{theme:javascript/js/iscroll.js}"></script>
@@ -31,7 +31,7 @@
 				<li><span class="ycnr"><span></span></span>
 					<ul style="display:none;">
 					<li><a href='javascript:location.reload()'><span class="sx">刷新</span></a></li>
-					<li><a href="../search.html"><span class="ss">搜索</span></a></li>
+					<li><a href="search"><span class="ss">搜索</span></a></li>
 					<li><a href="{url:/site/index?callback=}"><span class="sy">首页</span></a></li>
 					</ul>
 				</li>
@@ -39,8 +39,7 @@
 		</div>
 	</header>
 	<div style="height:55px;"></div>
-	<section style="position: relative;
-bottom: 50px;">
+	<section style="position: relative;bottom: 50px;margin-top:50px;">
 		<div class="history">
 	<!--介绍内容-->
 		<div id="topPriceHistroyDiv">
@@ -90,18 +89,19 @@ bottom: 50px;">
 </div>
 
 	<div class="det baby">
-			<h3 class="tit">相关宝贝<span class="showHide"><font><!-- 关闭 --></font><span class="hideSpan"></span></span></h3>
+			<h3 class="tit">相关宝贝<span class="showHide">
+			<!--<font> 关闭</font><span class="hideSpan"></span> --></span></h3>
 			<ul>
 				<li>
-					<a href="detail.html" title=""><img src="{skin:images/files/T1UidsBX_s1RCvBVdK.jpg}" alt=""></a>
+					<a href="detail" title=""><img src="{skin:images/files/T1UidsBX_s1RCvBVdK.jpg}" alt=""></a>
 				</li>
 				
 				<li>
-					<a href="detail.html" title=""><img src="{skin:images/files/T1UidsBX_s1RCvBVdK.jpg}" alt=""></a>
+					<a href="detail" title=""><img src="{skin:images/files/T1UidsBX_s1RCvBVdK.jpg}" alt=""></a>
 				</li>
 				
 				<li>
-					<a href="detail.html" title=""><img src="{skin:images/files/T1UidsBX_s1RCvBVdK.jpg}" alt=""></a>
+					<a href="detail" title=""><img src="{skin:images/files/T1UidsBX_s1RCvBVdK.jpg}" alt=""></a>
 				</li>
 			</ul>
 	
@@ -119,7 +119,7 @@ bottom: 50px;">
               	</a>
             </div>
             <div class="s-btn s-cd" data="price">
-				<a href="../login.html">
+				<a href="{url:/simple/login?callback=}">
 	             	 <p><img src="{skin:images/detail_img/gz.png}"  alt="qq"/></p>
 	             	 <p>关&nbsp;注</p>
               	</a>
@@ -128,7 +128,7 @@ bottom: 50px;">
 				<a class="jrgwc" onClick="toshop()">加入购物车</a>
             </div>
             <div class="s-btn s-an s-colos" data="default">
-				<a class="ljgm" href="{url:/simple/cart?callback=}">立即购买</a>
+				<a class="ljgm" onClick="toshop()">立即购买</a>
             </div>
        </section>
                <!--点击加入购物车弹框 -->

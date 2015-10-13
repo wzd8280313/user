@@ -76,12 +76,12 @@
 .qq-login a{width:50%;float:left;text-align:center}
 .qq-login a i{height:50px;width:50px;display:inline-block;overflow:hidden;text-indent:-1000px;border-radius:50%}
 .qq-login p{color:#666}
-.qq-login .fw i{background-image: url(../../images/fw1.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}
+.qq-login .fw i{background-image: url(../images/fw1.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}
 .qq-login .fw p{font-size:1em}
-.qq-login .fh i{background-image: url(../../images/fw3.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}
+.qq-login .fh i{background-image: url(../images/fw3.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}
 .qq-login .fh p{font-size:1em}
-.qq-login .th i{background-image: url(../../images/fw2.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}.qq-login .th p{font-size:1em}
-.qq-login .pz i{background-image: url(../../images/fw4.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}
+.qq-login .th i{background-image: url(../images/fw2.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}.qq-login .th p{font-size:1em}
+.qq-login .pz i{background-image: url(../images/fw4.jpg);background-position:center;background-repeat:no-repeat;background-size:60px auto;}
 .qq-login .pz p{font-size:1em}
 		/*服务结束*/
 

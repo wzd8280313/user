@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="{skin:css/product.min.css}" />
 <link rel="stylesheet" href="{skin:css/common.css}" type="text/css" />
 <link rel="stylesheet" href="{skin:css/detail2.css}" type="text/css" />
-<link rel="stylesheet" href="{skin:css/wap/details.css}" type="text/css" />
+<link rel="stylesheet" href="{skin:css/details.css}" type="text/css" />
 <link rel="stylesheet"href="{skin:css/cart/spinner/jquery.spinner.css}"  type="text/css" />
 <script src="{theme:javascript/js/jquery.spinner.js}"></script>
 
@@ -28,7 +28,7 @@
 				<li><span class="ycnr"><span></span></span>
 					<ul style="display:none;">
 					<li><a href='javascript:location.reload()'><span class="sx">刷新</span></a></li>
-					<li><a href="../search.html"><span class="ss">搜索</span></a></li>
+					<li><a href="search"><span class="ss">搜索</span></a></li>
 					<li><a href="{url:/site/index?callback=}"><span class="sy">首页</span></a></li>
 					</ul>
 				</li>
@@ -84,7 +84,7 @@
               	</a>
             </div>
             <div class="s-btn s-cd" data="price">
-				<a href="../login.html">
+				<a href="{url:/simple/login?callback=}">
 	             	 <p><img src="{skin:images/detail_img/gz.png}"  alt="qq"/></p>
 	             	 <p>关&nbsp;注</p>
               	</a>
@@ -93,7 +93,7 @@
 				<a class="jrgwc"  onClick="toshop()">加入购物车</a>
             </div>
             <div class="s-btn s-an s-colos" data="default">
-				<a class="ljgm" href="{url:/simple/cart?callback=}">立即购买</a>
+				<a class="ljgm" onClick="toshop()">立即购买</a>
             </div>
        </section>
 
