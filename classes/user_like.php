@@ -85,15 +85,19 @@ class user_like{
 	 */
 	public static function get_like_cate($userId,$num=6){
 		$data = self::getData($userId);
-		if(!$data)return array();
-		$cateDB = new IQuery('category_extend as ca');
-		$cateDB->join =  'left join goods as go on ca.goods_id = go.id';
-		$cateDB->where = 'go.is_del = 0 and ca.category_id in ('.$data.')';
-		$cateDB->fields = 'go.name,go.img,go.id,go.sell_price,go.market_price';
-		$cateDB->limit = $num;
-		$res = $cateDB->find();
-		if(count($res)<$num){
-			$recomGoods = Api::run('getCommendRecom',$num-count($res));
+		$res=array();
+		if(!empty($data)){
+			$cateDB = new IQuery('category_extend as ca');
+			$cateDB->join =  'left join goods as go on ca.goods_id = go.id';
+			$cateDB->where = 'go.is_del = 0 and ca.category_id in ('.$data.')';
+			$cateDB->fields = 'go.name,go.img,go.id,go.sell_price,go.market_price';
+			$cateDB->limit = $num;
+			$res = $cateDB->find();
+			
+		}
+		$count=count($res);
+		if($count<$num){
+			$recomGoods = Api::run('getCommendRecom',$num-$count);
 			$res = array_merge($res,$recomGoods);
 		}
 		return $res;

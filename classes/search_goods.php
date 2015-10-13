@@ -211,7 +211,7 @@ class search_goods
 
 		//开始查询
 		$goodsObj = new IQuery("goods as go");
-		$goodsObj->page     = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$goodsObj->page     = IReq::get('page') ? intval(IReq::get('page')) : 1;
 		$goodsObj->fields   = ' go.id,go.name,go.comments,go.grade,go.goods_no,go.sell_price,go.market_price,go.store_nums,go.img,go.sale,go.seller_id ';
 		$goodsObj->pagesize = $limit;
 

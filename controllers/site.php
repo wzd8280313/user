@@ -44,8 +44,8 @@ class Site extends IController
 		//获取用户喜好产品
 		$uid = $this->user ? $this->user['user_id'] : 0;
 
-		$this->user_like_goods = user_like::get_like_cate($uid,4);
-		
+		$this->user_like_goods = user_like::get_like_cate($uid,6);
+
 		$this->redirect('index');
 	}
 	//闪购页面

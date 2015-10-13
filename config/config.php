@@ -15,7 +15,7 @@
         'host' => 'localhost:3306',
         'user' => 'root',
         'passwd' => '127890',
-        'name' => 'iweb',
+        'name' => 'shop',
       ),
     ),
     'write' => 
@@ -23,7 +23,7 @@
       'host' => 'localhost:3306',
       'user' => 'root',
       'passwd' => '127890',
-      'name' => 'iweb',
+      'name' => 'shop',
     ),
   ),
   'interceptor' => 
