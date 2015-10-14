@@ -44,12 +44,15 @@ class Pregoods extends IController
 		}
 		echo $presellData ? JSON::encode($presellData) : 0;
 	}
-	//商品展示
+	/**
+	 * 预售商品展示
+	 * 
+	 */
 	function products()
 	{
 		$id = IFilter::act(IReq::get('id'),'int');
 		$presell = new IModel('presell');
-		if(!$id || !$preData = $presell->getObj('id='.$id))
+		if(!$id || !$preData = $presell->getObj('goods_id='.$id))
 		{
 			IError::show(403,"预售商品不存在");
 			exit;

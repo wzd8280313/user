@@ -197,7 +197,7 @@ return array(
 	    'query'=>array(
 	    	'name'  => 'category_extend as ca',
 	    	'join'  => 'left join goods as go on go.id = ca.goods_id',
-	    	'where' => ' ca.category_id = #categroy_id# and go.is_del = 0',
+	    	'where' => ' ca.category_id = #categroy_id# and (go.is_del = 0 OR go.is_del = 4)',
 	    	'order' => ' go.sort asc,go.id desc',
 	    	'limit' => 10,
 	    )

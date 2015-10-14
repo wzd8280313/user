@@ -617,15 +617,15 @@ class Site extends IController
 		
 		//使用商品id获得商品信息
 		$tb_goods = new IModel('goods');
-		$goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0");
-		//
+		$goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)");
 		
-		//print_r($goods_info);
+		
 		if(!$goods_info)
 		{
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
+		if($goods_info['is_del']==4)header('location:'.IUrl::getHost().IUrl::creatUrl('pregoods/products/id/'.$goods_id));
 		$sell_price = $goods_info['sell_price'];
 		//品牌名称
 		if($goods_info['brand_id'])

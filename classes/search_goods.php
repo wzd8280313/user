@@ -217,7 +217,7 @@ class search_goods
 
 		/*where条件拼接*/
 		//(1),当前产品分类
-		$where = ' go.is_del = 0 ';
+		$where = '( go.is_del = 0 OR go.is_del = 4) ';
 
 		//(2),商品属性,规格筛选
 		$attrCond  = array();
@@ -363,7 +363,7 @@ class search_goods
 				$goodsDB = new IModel("goods as go");
 			}
 			
-			$goodsCondData = $goodsDB->query("go.id in (".join(',',$GoodsId).") and go.is_del = 0 ","id");
+			$goodsCondData = $goodsDB->query("go.id in (".join(',',$GoodsId).") and (go.is_del = 0 OR go.is_del = 4) ","id");
 			
 			$GoodsId = array();
 			foreach($goodsCondData as $key => $val)
@@ -499,7 +499,6 @@ class search_goods
 		//设置IQuery类的各个属性
 		$goodsObj->where = $where;
 		$goodsObj->order = join(',',$orderArray);
-		
 		return $goodsObj;
 	}
 }
