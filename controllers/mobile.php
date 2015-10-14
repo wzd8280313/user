@@ -12,8 +12,21 @@ class Mobile extends IController
 		$childCat = IFilter::act(IReq::get('childCat'));
 		$pagesize = 3;
 		$goodsObj = search_goods::find(array('category_extend' => $childCat),$pagesize);
-		$resultData = $goodsObj->find();
+		self::getGoodsList($goodsObj);
+	}
+	//获取更多搜索产品
+	function getMoreSearchList(){
+		$pagesize = 3;
+		$word = IFilter::act(IReq::get('word'));
+		$cat_id = IFilter::act(IReq::get('cat_id'),'int');
+		$defaultWhere = array('search' => $word , 'category_extend' => $cat_id );
+		$goodsObj = search_goods::find($defaultWhere,$pagesize);
+		self::getGoodsList($goodsObj);
 		
+	}
+	
+	function getGoodsList($goodsObj){
+		$resultData = $goodsObj->find();
 		if($goodsObj->page==0){
 			echo 0;exit;
 		}
@@ -26,7 +39,7 @@ class Mobile extends IController
 			}
 		}
 		
-		echo JSON::encode($resultData);
+		echo JSON::encode($resultData);exit;
 	}
 	
 }

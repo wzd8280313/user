@@ -1,13 +1,13 @@
-function showMorePro(){
+
+function getData(obj,url){
 	$('.loading-imgS img').show();
 	$('.loading-imgS p').hide();
-	var page = parseInt($('input[name=page]').val());
-	var childCat = $('input[name=childCat]').val();
-	var order = $('input[name=order]').val();
+	var getMoreUrl = url;
+	
 	$.ajax({
 		type:'post',
-		async:true,
-		data:{page:page,childCat:childCat,order:order},
+		async:false,
+		data:obj,
 		dataType:'json',
 		url:getMoreUrl,
 		beforeSend:function(){
@@ -21,7 +21,7 @@ function showMorePro(){
 					var newPro = template.render(temp,data[i]);
 					$('#dataList').append(newPro);
 				}
-				$('input[name=page]').val(page+1);
+				$('input[name=page]').val(obj.page+1);
 			}
 		},
 		complete:function(){
@@ -31,8 +31,35 @@ function showMorePro(){
 		timeout:1000,
 	})
 }
+//获取更多产品
+function showMorePro(){
+	
+	var page = parseInt($('input[name=page]').val());
+	var childCat = $('input[name=childCat]').val();
+	var order = $('input[name=order]').val();
+	var obj = {
+		page:page,childCat:childCat,order:order
+	};
+	getData(obj,getMoreUrl);
+}
+//获取更多搜索产品
+function showMoreSearch(){
+	var page = parseInt($('input[name=page]').val());
+	var word = $('input[name=word_ajax]').val();
+	var order = $('input[name=order]').val();
+	var cat_id = $('input[name=cat_id]').val();
+	var obj = {
+		page:page,word:word,order:order,cat_id:cat_id
+	};
+	getData(obj,getMoreUrl);
+}
 window.onscroll = function(){
 	 if ($(document).scrollTop() >= $(document).height() - $(window).height()){
-	 	showMorePro();
+	 	if(typeof(showMorePro)=='function'){
+			showMorePro();
+		}
+		if(typeof(showMoreSearch)=='function'){
+			showMoreSearch();
+		}
 	 }
 }

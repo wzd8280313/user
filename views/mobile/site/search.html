@@ -26,46 +26,31 @@
 		<script src="{theme:javascript/common.js}"></script>    
 		</head>
 
-    <body data-mps="PA4101">
-        <div id="page">
-            <header class="wap-header">
-    <div class="wap-topbar" style="">
-        <div class="h-left"><a href="javascript:history.go(-1);" title="返回">返回</a></div>
-        <div class="h-center">
-            <form method="get" action="{url:/}">
-				<input type="hidden" name="controller" value="site">
-				<input type="hidden" name="action" value="search_list">
-                <input type="text" name="word" id="keyword" value="" onkeyup="getKeywords('{url:/block/getLikeWords}',$(this))" class="h-search J-search-trigger" placeholder="输入关键词进行搜索">
-                <input type="submit" class="header-search-btn" value="">
-				<div class='words-give' >
-				
+<body data-mps="PA4101">
+   <div id="page">
+      <header class="wap-header">
+    	<div class="wap-topbar" style="">
+	        <div class="h-left"><a href="javascript:history.go(-1);" title="返回">返回</a></div>
+	        <div class="h-center">
+	            {include:layouts/search_head.html}
 			</div>
-            </form>
-			
-        </div>
-            <a href="{url:/site/mail}" class="search_nav_icon_none"><img src="{skin:css/wap/app_mail_nav.png}" style="width:35px;height:35px;"><i class="num">2</i></a>
-    </div>
-</header>
-<section id="contents">
-         
-        
-			<section class="s-list cf" id="dataList">
-					
-					<div class="search-conts">
-						<h5><i><img src="{skin:css/wap/hot-line.png}"></i>&nbsp;热门搜索<a href="huiyuan.html"><i style="float:right;"><img src="{skin:css/wap/watch.png}"></i></a></h5>
-						<ul>
-							{foreach:items=Api::run('getKeywordList')}
-							<li><a href="{url:/site/search_list/word/$item['word']}">{$item['word']}</a></li>
-							{/foreach}
-						</ul>
-					</div>
-												   
-			</section>
-          
-
-</section>
+	        <a href="{url:/site/mail}" class="search_nav_icon_none"><img src="{skin:css/wap/app_mail_nav.png}" style="width:35px;height:35px;"><i class="num">2</i></a>
+   		 </div>
+	</header>
+	<section id="contents">
+	         <section class="s-list cf" id="dataList">
+						
+						<div class="search-conts">
+							<h5><i><img src="{skin:css/wap/hot-line.png}"></i>&nbsp;热门搜索<a href="huiyuan.html"><i style="float:right;"><img src="{skin:css/wap/watch.png}"></i></a></h5>
+							<ul>
+								{foreach:items=Api::run('getKeywordList')}
+								<li><a href="{url:/site/search_list/word/$item['word']}">{$item['word']}</a></li>
+								{/foreach}
+							</ul>
+						</div>
+													   
+				</section>
+	</section>
   </div>
-        
-    
 </body>
 </html>
