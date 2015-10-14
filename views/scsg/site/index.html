@@ -315,7 +315,7 @@ _mvq.push(['$logConversion']);
     </div>
 	<!--推荐商品-->
 	<!--通栏广告1-->
-	<div  class="big-pro">
+	<div  class="big-pro ad-shine">
 		{echo:Ad::show("首页推荐层通栏")}
 	</div>
 	<!--通栏广告1-->
@@ -336,7 +336,7 @@ _mvq.push(['$logConversion']);
 			</div>
 			<div class="fl-cnt clearfix">
 				<div class="fl-rcmd f-l">
-					<div class="fl-rcmd-bg">
+					<div class="fl-rcmd-bg ad-shine">
 						<div class="keyword">
 							{if:isset($hotCat[$base['id']])}
 							{foreach:items=$hotCat[$base['id']] item=$hot kHot=$key}
@@ -351,7 +351,7 @@ _mvq.push(['$logConversion']);
 				</div>
 				<!--分层轮播广告-->
 				<div class="fl-rcmd1 f-l" >
-					<div class="fl-rcmd-bg1" >
+					<div class="fl-rcmd-bg1 ad-shine" >
 									
 						{echo:Ad::show("首页楼层".$Kad."-大广告")}
 					</div>
@@ -390,7 +390,7 @@ _mvq.push(['$logConversion']);
 		 <!--floor floor-1-->
 		 <div class="big-pro">
 		 	
-	        <div class="ad-pic" id="ad_pic_5713">
+	        <div class="ad-pic ad-shine" id="ad_pic_5713">
 	            	{echo:Ad::show("首页楼层".$Kad."-通栏")}		
 			</div>
 			

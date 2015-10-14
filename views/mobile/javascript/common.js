@@ -342,7 +342,7 @@ function showService(){
 }
 
 /*异步获取联想关键词*/
-function getKeywords(url,_this){
+function getKeywords(url,_this){ 
 	var word = _this.val();
 	var showDiv = $('.words-give');
 	if (!word) {
