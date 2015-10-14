@@ -385,7 +385,7 @@ padding:20px 0 0 25px;
 .ad-shine .admanage{
 clear:both;position:relative;
 }
-.ad-shine .admanage .shine{position:absolute; z-index: 3; position: absolute; top: 0; left: 0; background: url(../images/shine.png) no-repeat 0; opacity:0;filter:"alpha(opacity=0)";-ms-filter:"alpha(opacity=0)"; /* �ɰ�IE */}
+.ad-shine .admanage .shine{position:absolute; z-index: 3; position: absolute; top: 0; left: 0; background: url(../images/shine.png) repeat-x; opacity:0;filter:"alpha(opacity=0)";-ms-filter:"alpha(opacity=0)"; /* �ɰ�IE */}
 
 
 .floor .fl-cnt .f-r {
