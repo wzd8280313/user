@@ -202,7 +202,7 @@ class search_goods
 	 * @param bool $isCondition 是否筛选出商品的属性，价格等数据
 	 * @return IQuery
 	 */
-	public static function find($defaultWhere = '',$limit = 21,$isCondition = true)
+	public static function find($defaultWhere = '',$limit = 20,$isCondition = true)
 	{
 		//获取配置信息
 		$siteConfigObj = new Config("site_config");

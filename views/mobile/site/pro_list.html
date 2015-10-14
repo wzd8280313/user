@@ -5,8 +5,13 @@
 {set:$seo_data['description']=$this->catRow['descript']}
 {set:seo::set($seo_data);}
 {set:$breadGuide = goods_class::catRecursion($this->catId)}
-{set:$order=$_GET['order'];}
-
+{set:$order=isset($_GET['order'])?$_GET['order'] : 'new';}
+{set:$type=(isset($_GET['show_type'])&&$_GET['show_type']=='win')?'win' : 'list';}
+{if:$type=='win'}
+{set:$template='proWinBox';$class ='list';}
+{else:}
+{set:$class = '';$template='proListBox';}
+{/if}
 <!DOCTYPE html>
 <!-- saved from url=(0052)http://m.#.com/s/search?keyword=%E8%A1%A3%E6%9C%8D -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -30,7 +35,7 @@
         <meta name="keywords" content="山城速购">
         <meta name="description" content="山城速购">
         <link rel="stylesheet" href="{skin:css/common.css}" type="text/css">
-		<link rel="stylesheet" href="{skin:css/search_list.css}" type="text/css">       
+		<link rel="stylesheet" href="{skin:css/search_list.css}" type="text/css">   
 		<script src="{theme:javascript/jquery-1.9.1.min.js}"></script>
 		<script src="{theme:javascript/common.js}"></script>
 		<script src="{theme:javascript/scrollTop.js}"></script>   
@@ -56,7 +61,11 @@
             <input type="hidden" name="sourceValue" id="sourceValue" value="">
             <input type="hidden" name="metaSearch" id="metaSearch" value="0">
         </div>
-            <a href="{url:/site/list_l}" class="search_nav_icon_none"><img src="{skin:css/wap/app_mode_l.png}" style="width:35px;height:35px;"></a>
+		{if:$type=='win'}
+            <a href="{echo:search_goods::searchUrl('show_type','list')}" class="search_nav_icon_none"><img src="{skin:css/wap/app_mode_l.png}" style="width:35px;height:35px;"></a>
+   		{else:}
+		     <a href="{echo:search_goods::searchUrl('show_type','win')}" class="search_nav_icon_none"><img src="{skin:css/wap/app_mode.png}" style="width:35px;height:35px;"></a>
+   		{/if}
     </div>
 
  <div class="nav_top">
@@ -68,50 +77,66 @@
         	</ul>
         </div>
 </header>
-  
+   <script type='text/javascript'>
+    	var getMoreUrl = '{url:/mobile/getMoreProlist}';
+		var temp ='{$template}';
+		$(function(){
+			showMorePro();
+		})
+    </script> 
 <section id="contents">
-		
-   
-    <section class="s-list cf" id="dataList">
-    	 <div class="no-result-tip" style="display:none;">
+	<section class="s-list cf {$class}" id="dataList">
+    	<div class="no-result-tip" style="display:none;">
 			搜索“
 			<span></span>
 			”无结果
 		</div>
-		 
-    <script type='text/javascript'>
-    	var getMoreUrl = '{url:/mobile/getMoreProlist}';
-		$(function(){
-			showMorePro();
-		})
-    </script>                                       
-       </section>
+		</section>
 		   		<input type='hidden' name='order' value='{$order}'/>
 			   	<input name='page' type='hidden' value='1' />
 				<input name='childCat' type='hidden' value='{$this->childId}'/>
-		            <div class="loading-ctn loading-imgS">
-		            <p onclick='showMorePro();'>下拉查看更多</p>
-		            <img alt="" src="{skin:images/files/loading.gif}">
-				    </div>
+	            <div class="loading-ctn loading-imgS">
+	            <p onclick='showMorePro();'>下拉查看更多</p>
+	            <img alt="" src="{skin:images/files/loading.gif}">
+			    </div>
 		
-    </section>
-    <script type="text/javascript" src="{theme:javascript/searchlist.js}" charset="UTF-8"></script>
+   		 </section>
+    	<script type="text/javascript" src="{theme:javascript/searchlist.js}" charset="UTF-8"></script>
     
         </div>
-   <script  type='text/html' id='probox'>  
-   				<div class="s-item">
-                    <div>
-                    	<a href="{url:/site/detail}/<%=id%>" class="s-img">
-                            <div class="goods-one-img"><img src="{url:<%=img%>}" onerror="#"></div>
-						</a>
-					</div>
-                    <div>
-                    	<a href="{url:/site/detail?callback=}" class="s-text"><%=name%></a></div>
-                     
-                    <div class="am">
-                        <span class="price">¥ <%=sell_price%></span>
-                        <span class="sales">销量:<%=sale%></span>
-                    </div>
-                </div>
+
+   <script  type='text/html' id='proListBox'>  
+		<div class="s-item">
+	        <div>
+	        	<a href="{url:/site/detail}/<%=id%>" class="s-img">
+	                <div class="goods-one-img"><img src="{url:<%=img%>}" onerror="#"></div>
+				</a>
+			</div>
+	        <div>
+	        	<a href="{url:/site/detail?callback=}" class="s-text"><%=name%></a>
+			</div>
+         
+	        <div class="am">
+	            <span class="price">¥ <%=sell_price%></span>
+	            <span class="sales">销量:<%=sale%></span>
+	        </div>
+    	</div>
    </script>
-    
+
+	<script type='text/html' id='proWinBox'>
+			<div  >
+			  <figure>
+				<a href="detail" target="_blank"><img src="{url:<%=img%>}"/></a>
+			  </figure>
+			  <h2>
+				<span><a href="detail" target="_blank"><%=name%></a></span>
+				</h2>
+			  <aside>
+			  </aside>
+			  <p>
+			  <span>￥<i><%=sell_price%></i></span>
+			  <cite>销量<%=sale%></cite>
+				
+			  </p>
+			</div>
+	</script>

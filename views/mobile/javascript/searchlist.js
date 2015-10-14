@@ -15,10 +15,10 @@ function showMorePro(){
 		},
 		success:function(data){
 			if(data==0){
-				
+				$('.loading-imgS p').text('没有更多数据');
 			}else{
 				for(var i in data){
-					var newPro = template.render('probox',data[i]);
+					var newPro = template.render(temp,data[i]);
 					$('#dataList').append(newPro);
 				}
 				$('input[name=page]').val(page+1);

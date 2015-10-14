@@ -13,8 +13,9 @@ class Mobile extends IController
 		$pagesize = 3;
 		$goodsObj = search_goods::find(array('category_extend' => $childCat),$pagesize);
 		$resultData = $goodsObj->find();
+		
 		if($goodsObj->page==0){
-			echo 0;
+			echo 0;exit;
 		}
 		$seller = new IModel('seller');
 		$seller_arr = array();
