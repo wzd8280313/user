@@ -367,7 +367,7 @@ _mvq.push(['$logConversion']);
 								<div class="shine">&nbsp;</div>
 					        </a>
 					        <a class="goods-name" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}">
-					          {$goods['name']}<span class="txt-red"></span>
+					         <span class="txt-red">{if:$goods['is_del']==4}[预售]{/if}</span> {$goods['name']}
 					        </a>
 					        <div class="goods-price">
 					            <span class="p-normal">￥{$goods['sell_price']}</span>

@@ -2,14 +2,7 @@
 	  $(".ycnr").click(function(){
 	  $(".top-navs ul li ul").toggle();
 	  });
-	  
-	  //点击加入购物车后，弹出页面中的规格选项
-	  $(".tc_gg").click(function(){
-			 $(".tc_gg").removeClass("tc_backgr")
-			$(this).toggleClass('tc_backgr');
-		 });
-	  
-	});
+});
   
   
 //加入购物车弹出框

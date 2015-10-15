@@ -666,31 +666,6 @@ class Site extends IController
 		$goods_info['promo']     = IReq::get('promo')     ? IReq::get('promo') : '';
 		$goods_info['active_id'] = IReq::get('active_id') ? IFilter::act(IReq::get('active_id'),'int') : '';
 		
-		//是否有闪购价格
-		$prom = new IModel('promotion');
-		$promData = $prom->query('`condition` = '.$goods_id.' AND type = 1 AND is_close = 0 AND NOW() between start_time and end_time ','id,product_id,award_value,end_time,user_group');
-		
-		$goods_info['shan'] = '';
-		$goods_info['promo_data'] = array('promo_type'=>'','active_id'=>'');
-		if($promData){//存在闪购,优先显示公共闪购
-			$min = $goods_info['sell_price'];
-			foreach($promData as $v){
-				if($v['product_id']==0 && $v['award_value']<$min){
-					$min = $v['award_value'];
-					$goods_info['shan'] = $v;
-					$goods_info['promo_data'] = array('promo_type'=>'time','active_id'=>$goods_info['shan']['id']);//
-				}
-			}
-			if(!$goods_info['shan']){//不存在公共闪购
-				foreach($promData as $v){
-					if($v['award_value']<$min){
-						$promProductId = $promData[0]['product_id'];//
-					}
-				}
-			}
-		}
-
-
 		//获得扩展属性
 		$tb_attribute_goods = new IQuery('goods_attribute as g');
 		$tb_attribute_goods->join  = 'left join attribute as a on a.id=g.attribute_id ';
@@ -737,14 +712,6 @@ class Site extends IController
 			$goods_info['refer'] = $refeer_info['totalNum'];
 		}
 
-		//网友讨论
-// 		$tb_discussion = new IModel('discussion');
-// 		$discussion_info = $tb_discussion->getObj('goods_id='.$goods_id,'count(*) as totalNum');
-// 		$goods_info['discussion'] = 0;
-// 		if($discussion_info)
-// 		{
-// 			$goods_info['discussion'] = $discussion_info['totalNum'];
-// 		}
 
 		//获得商品的价格区间
 		$tb_product = new IModel('products');
@@ -752,35 +719,16 @@ class Site extends IController
 		$goods_info['minSellPrice']   = '';
 		$goods_info['minMarketPrice'] = '';
 		$goods_info['maxMarketPrice'] = '';
-		if(isset($promProductId)&& $promProductId!=0 && $goods_info['product_spec'] = $tb_product->getField(' id='.$promProductId,'spec_array')){//获取闪购product的规格
-			//$goods_info['product_spec'] = $tb_product->getField(' id='.$promProductId,'spec_array');	
-				$spec_array = explode('},',$goods_info['product_spec']);
-				$count = count($spec_array);
-				if($count==1){
-					$spec_array[0] = substr($spec_array[0],1);
-					$spec_array[0] = substr($spec_array[0],0,-1);
-				}else{
-					foreach($spec_array as $k=>$v){
-						if($k==0){
-							$spec_array[$k]=substr($v,1).'}';
-						}else if($k==$count-1){
-							$spec_array[$k]=substr($v,0,-1);
-						}else{
-							$spec_array[$k]=$v+'}';
-						}
-					}
-				}
-				$goods_info['product_spec'] = $spec_array;
-		}else{
-			$product_info = $tb_product->getObj('goods_id='.$goods_id,'max(sell_price) as maxSellPrice ,min(sell_price) as minSellPrice,max(market_price) as maxMarketPrice,min(market_price) as minMarketPrice');
-			if($product_info)
-			{
-				$goods_info['maxSellPrice']   = $product_info['maxSellPrice'];
-				$goods_info['minSellPrice']   = $product_info['minSellPrice'];
-				$goods_info['minMarketPrice'] = $product_info['minMarketPrice'];
-				$goods_info['maxMarketPrice'] = $product_info['maxMarketPrice'];
-			}
+	
+		$product_info = $tb_product->getObj('goods_id='.$goods_id,'max(sell_price) as maxSellPrice ,min(sell_price) as minSellPrice,max(market_price) as maxMarketPrice,min(market_price) as minMarketPrice');
+		if($product_info)
+		{
+			$goods_info['maxSellPrice']   = $product_info['maxSellPrice'];
+			$goods_info['minSellPrice']   = $product_info['minSellPrice'];
+			$goods_info['minMarketPrice'] = $product_info['minMarketPrice'];
+			$goods_info['maxMarketPrice'] = $product_info['maxMarketPrice'];
 		}
+		
 		
 
 		//获得会员价
@@ -824,7 +772,6 @@ class Site extends IController
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
 		
 		$this->setRenderData($goods_info);
-		
 		$this->redirect('products');
 	}
 	//商品讨论更新
@@ -925,7 +872,7 @@ class Site extends IController
 	{
 		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
 		$page     = IFilter::act(IReq::get('page'),'int') ? IReq::get('page') : 1;
-
+		
 		$commentDB = new IQuery('comment as c');
 		$commentDB->join   = 'left join goods as go on c.goods_id = go.id AND go.is_del = 0 left join user as u on u.id = c.user_id';
 		$commentDB->fields = 'u.head_ico,u.username,c.*';
@@ -936,6 +883,11 @@ class Site extends IController
 		$pageHtml = $commentDB->getPageBar("javascript:void(0);",'onclick="comment_ajax([page])"');
 
 		echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
+	}
+	function comment_ajax2(){
+		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
+		$type     = IFilter::act(IReq::get('type'));
+		echo JSON::encode(Comment_Class::get_comment_byid($goods_id,$type));
 	}
 
 	//购买记录ajax获取
@@ -997,62 +949,12 @@ class Site extends IController
 
 	//评论列表页
 	function comments_list()
-	{
+	{	
 		$id   = IFilter::act(IReq::get("id"),'int');
 		$type = IFilter::act(IReq::get("type"));
 
-		$type_config = array('bad'=>'1','middle'=>'2,3,4','good'=>'5');
+		$this->data=Comment_Class::get_comment_byid($id,$type,$this);
 
-		if(!isset($type_config[$type]))
-		{
-			$type = null;
-		}
-		else
-		{
-			$type=$type_config[$type];
-		}
-
-		$data['comment_list']=array();
-
-		$query = new IQuery("comment AS a");
-		$query->fields = "a.*,b.username,b.head_ico";
-		$query->join = "left join user AS b ON a.user_id=b.id";
-		$query->where = " a.goods_id = {$id} ";
-
-		if($type!==null)
-			$query->where = " a.goods_id={$id} AND a.status=1  AND a.point IN ($type)";
-		else
-			$query->where = "a.goods_id={$id} AND a.status=1 ";
-
-		$query->order    = "a.id DESC";
-		$query->page     = IReq::get('page') ? intval(IReq::get('page')):1;
-		$query->pagesize = 10;
-
-		$data['comment_list']= $query->find();
-		$this->comment_query = $query;
-
-		if($data['comment_list'])
-		{
-			$user_ids = array();
-			foreach($data['comment_list'] as $value)
-			{
-				$user_ids[]=$value['user_id'];
-			}
-			$user_ids = implode(",", array_unique( $user_ids ) );
-			$query = new IQuery("member AS a");
-			$query->join = "left join user_group AS b ON a.user_id IN ({$user_ids}) AND a.group_id=b.id";
-			$query->fields="a.user_id,b.group_name";
-			$user_info = $query->find();
-			$user_info = Util::array_rekey($user_info,'user_id');
-
-			foreach($data['comment_list'] as $key=>$value)
-			{
-				$data['comment_list'][$key]['user_group_name']=isset($user_info[$value['user_id']]['group_name']) ? $user_info[$value['user_id']]['group_name'] : '';
-			}
-		}
-
-		$data=array_merge($data, Comment_Class::get_comment_info($id) );
-		$this->data=$data;
 		$this->redirect('comments_list');
 	}
 
