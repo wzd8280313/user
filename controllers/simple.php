@@ -349,6 +349,27 @@ class Simple extends IController
 	    	echo JSON::encode($result);
     	}
     }
+    //购物车删除多个商品
+    function removeCartMany(){
+    	$data = IFilter::act(IReq::get('str'));
+    	if(!$data)return false;
+    	$arr = explode('|',$data);
+    	foreach($arr as $key=>$v){//echo $v;
+    		if($v==''){
+    			unset($arr[$key]);
+    			continue;
+    		}
+    		$arr[$key]=explode('_',$v);
+    	}
+    	
+    	$cartObj   = new Cart();
+    	$cartInfo  = $cartObj->getMyCart();
+    	$delResult = $cartObj->del_many($arr);
+    	if($delResult){
+    		echo 1;
+    	}
+    	else echo 0;
+    }
 
     //清空购物车
     function clearCart()

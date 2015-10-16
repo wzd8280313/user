@@ -260,44 +260,4 @@
 }
 /*点击购物车后出现弹框样式结束*/
 
-.spinner .increase {
-	background-position: 0 0;
-    cursor: pointer;
-    text-indent: -10000px;
-	
-}
-.spinner-sprite, .spinner .decrease, .spinner .decrease[disabled], .spinner .increase, .spinner .value, .spinner .value.passive {
-    background: url('../images/detail_img/spinner.png') no-repeat;
-}
-.spinner .decrease{
-	background-position: 0 -50px;
-    cursor: pointer;
-    text-indent: -10000px;
-}
-.spinner button {
-    border: none;
-    width: 23px;
-    color: #e5312a;
-    font: 22px Arial bold;
-    padding: 0;
-    outline: none;
-}.spinner button, .spinner .value {
-    border-radius: 0;
-    text-align: center;
-    display: block;
-    float: left;
-    height: 100%;
-    line-height: 25px;
-    margin: 0;
-}
-.spinner .value {
-    background-position: 0 -100px;
-    width: 24px;
-    height: 27px;
-    border: none;
-    font-family: Arial;
-    color: #ffffff;
-    padding: 0px;
-}
-
 

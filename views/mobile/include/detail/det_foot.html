@@ -22,12 +22,12 @@
               	</a>
             </div>
             <div class="s-btn s-an s-colo" data="hot">
-				<a class="jrgwc" onClick="toshop()">加入购物车</a>
+				<a class="jrgwc" name='toCart' onClick="toshop(joinCart)">加入购物车</a>
             </div>
          
             
             <div class="s-btn s-an s-colos" data="default">
-				<a class="ljgm" onClick="toshop()"">立即购买</a>
+				<a class="ljgm" name='buyNow' onClick="toshop(buy_now)"">立即购买</a>
             </div>
        </section>
         <!--点击加入购物车弹框 -->
@@ -70,10 +70,10 @@
 							<button type="button" class="increase" onclick='modified(1);'>+</button>
 						</div>
 					
-					</div>库存：<span id='data_storeNums' style='background:#fff;'></span>
+					</div>库存：<span id='data_storeNums' style='background:#fff;'>{$store_nums}</span>
 					
 				</div>
-				<div class="tc_le"><input class="submit" name='buyNowButton' type="submit" value="确定" onclick="window.open('{url:/simple/cart?callback=}')"/></div>
+				<div class="tc_le"><input class="submit" name='buyNowButton' type="button" value="确定" /></div>
 			</form>
 		</div>
 	

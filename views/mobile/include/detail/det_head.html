@@ -37,7 +37,6 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 		<link rel="stylesheet" href="{skin:css/search_list.css}" type="text/css">
 		<link rel="stylesheet" href="{skin:css/detail2.css}" type="text/css" />	
 		<link rel="stylesheet" href="{skin:css/details.css}" type="text/css" />
-		<link rel="stylesheet" href="{skin:css/cart/spinner/jquery.spinner.css}" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="{skin:css/pingjia.css}">
 		<script src='{theme:javascript/common.js}'></script>
 		<style>
@@ -54,7 +53,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 				<li><a href="javascript:history.go(-1);"><span class="fh">返回</span></a></li>
 				<li class="lin"><a href="javascript:void(0);" onclick='show_det1(this)'><span>商品</span></a></li>
 				<li ><a href="javascript:void(0);" onclick='show_det2(this);'><span>详情</span></a></li>
-				<li><a href="javascript:void(0);" onclick='show_comments_list(this);'><span>评价</span></a></li>
+				<li><a href="javascript:void(0);" name='pingjia' onclick='show_comments_list(this);'><span>评价</span></a></li>
 				<li><span class="ycnr"><span></span></span>
 					<ul style="display:none;">
 					<li><a href='javascript:location.reload()'><span class="sx">刷新</span></a></li>
@@ -70,4 +69,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 		var id = {$id};
 		var comments_url = '{url:/site/comment_ajax2/goods_id/$id}';
 		var product_url = '{url:/site/getProduct}';//点击规格获取货
+		var direct_buy_url  = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';//直接购买路径
+		var join_cart_url = '{url:/simple/joinCart}';
+		var cart_url = '{url:/simple/cart}';
 	</script>

@@ -102,7 +102,7 @@ class Comment_Class
 		$data['comment_list']=array();
 		
 		$query = new IQuery("comment AS a");
-		$query->fields = "a.*,b.username,b.head_ico";
+		$query->fields = "a.*,b.username,b.email,b.phone,b.head_ico";
 		$query->join = "left join user AS b ON a.user_id=b.id";
 		$query->where = " a.goods_id = {$id} ";
 		
@@ -123,9 +123,15 @@ class Comment_Class
 		if($data['comment_list'])
 		{
 			$user_ids = array();
-			foreach($data['comment_list'] as $value)
+			foreach($data['comment_list'] as $key=>$value)
 			{
 				$user_ids[]=$value['user_id'];
+				if($value['username']){
+					$data['comment_list'][$key]['user_show'] = $value['username'];
+				}else if($value['email']){
+					$data['comment_list'][$key]['user_show'] = user_like::getSecretEmail($value['email']);
+				}else 
+					$data['comment_list'][$key]['user_show'] = user_like::getSecretPhone($value['phone']);
 			}
 			$user_ids = implode(",", array_unique( $user_ids ) );
 			$query = new IQuery("member AS a");
