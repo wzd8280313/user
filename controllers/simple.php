@@ -686,6 +686,7 @@ class Simple extends IController
     	$addressList = $addressObj->query('user_id = '.$user_id);
 
 		//更新$addressList数据
+    	$this->defaultAddressId = -1;
     	foreach($addressList as $key => $val)
     	{
     		$temp = area::name($val['province'],$val['city'],$val['area']);

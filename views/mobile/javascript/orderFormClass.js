@@ -98,7 +98,7 @@ function orderFormClass()
 		var url = this.delivery_fee_url;
 		var province = $('input[name="province"]').val();
 		var delivery = $('select[name=delivery_id]').val();
-		if(!province || !delivery)
+		if(!province || !delivery )
 		{
 			return;
 		}
@@ -167,7 +167,7 @@ function orderFormClass()
 	 */
 	this.deliveryCheck = function()
 	{
-		if($('select[name=delivery_id]').val == -1)
+		if($('select[name=delivery_id]').val() == '-1')
 		{
 			return false;
 		}
