@@ -757,7 +757,7 @@ class Simple extends IController
     	
 		//收货地址列表
 		$this->addressList = $addressList;
-		print_r($this->addressList);
+		
 		//获取商品税金
 		$this->goodsTax    = $result['tax'];
 		
@@ -828,6 +828,7 @@ class Simple extends IController
     	$order_no      = Order_Class::createOrderNum();
     	$order_type    = 0;
     	$dataArray     = array();
+    
 		//防止表单重复提交
     	if(IReq::get('timeKey') != null)
     	{
