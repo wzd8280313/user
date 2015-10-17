@@ -57,7 +57,7 @@
 						<div class="shadow">
 						<table width="100%" border="0">
 							<tr>
-								<td width="10%"> <input type="checkbox" class="check_alls checkbox"  name="check_all" id="check_all" > </td>
+								<!--<td width="10%"> <input type="checkbox" class="check_alls checkbox"  name="check_all" id="check_all" > </td>-->
 								<td width="75%">
 								  <h5 class="fl">购物车中的产品</h5></li>
 								</td>
@@ -87,7 +87,8 @@
 												<button type="button" class="increase" onclick='cart_increase("{$type}",{$item_json});'>+</button>
 											</div>
 										</td>
-										<td width="10%"> <input type="checkbox" class="checkbox" name="check_item" typeId='{$type}_{$item['id']}'></td>
+										<!--<td width="10%"> <input type="checkbox" class="checkbox" name="check_item" typeId='{$type}_{$item['id']}'></td>-->
+										<td width='10%'><a href='{url:/simple/removeCart/link/cart/type/$type/goods_id/$item[id]}'>删除</a></td>
 									</tr>
 								</table>
 							  </li>
@@ -108,7 +109,7 @@
 				<table width="100%" border="0">
 					<tr>
 						<td width="3%"></td>
-						<td width="25%"><input type="checkbox" class="check_alls checkbox" id="box_all"> 全选</td>
+						<td width="25%" class='hidden'><input type="checkbox" class="check_alls checkbox " id="box_all"> 全选</td>
 						<td width="39%">
 							<p> <span class="ff6" >￥<b id='origin_price'>{$this->sum}</b>
 							<b id='discount_price' class='hide'>{$this->reduce}</b><b id='promotion_price' class='hide'>{$this->proReduce}</b>
@@ -118,8 +119,8 @@
 							</p>
 							<p> <span class="ff6" >总金额</span>   <span class="ff6">优惠金额</span>  <span class="ff6">最终金额</span></p>
 						</td>
-						<td width="10%"><button class="submit2" type='button' onclick='cart_del_many()' >删除</button></td>
-						<td width="20%"><button class="submit" onclick="window.open('{url:/site/cart2}')">去结算</button></td>
+						<td width="10%"><a href='{url:/}'><button class="submit2" type='button' style='width:100px;'>继续购物</button</a></td>
+						<td width="20%"><button class="submit" onclick="window.open('{url:/simple/cart2}')">去结算</button></td>
 						<td width="3%"></td>
 					</tr>
 				</table>
@@ -157,60 +158,16 @@
             <div class="brand_wrap swiper-container swiper-container-horizontal" >
 				<h5>猜你喜欢</h5>
 				<div class="brand_swiper_wrap swiper-wrapper ">
-										<ul class="swiper-slide clear-fix fl swiper-slide-active" style="width: 640px;">
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/6fa85be4a0292e4fc8e5beca4dea3480.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">adidas</span><span class="price">￥123.4</span></a></div>
-												</li>  
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/57fb948f17c6c5aa3dec0fcb7e1308aa.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">海信 </span><span class="price">￥123.4</span></a></div>
-												</li>   
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/T1EqVXB7hT1RCvBVdK.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">华为 </span><span class="price">￥123.4</span></a></div>
-												</li>    
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/6fa85be4a0292e4fc8e5beca4dea3480.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">adidas </span><span class="price">￥123.4</span></a></div>
-												</li>  
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/57fb948f17c6c5aa3dec0fcb7e1308aa.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">海信</span><span class="price">￥123.4</span></a></div>
-												</li>  
-										</ul>  
-										<ul class="swiper-slide clear-fix fl swiper-slide-next" style="width: 640px;">
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/6fa85be4a0292e4fc8e5beca4dea3480.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">adidas </span><span class="price">￥123.4</span></a></div>
-												</li>  
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/57fb948f17c6c5aa3dec0fcb7e1308aa.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">海信 </span><span class="price">￥123.4</span></a></div>
-												</li>   
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/T1EqVXB7hT1RCvBVdK.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">华为 </span><span class="price">￥123.4</span></a></div>
-												</li>    
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/6fa85be4a0292e4fc8e5beca4dea3480.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">adidas </span><span class="price">￥123.4</span></a></div>
-												</li>  
-																		<li class="fl">
-													<div class="brand_one_box" >
-														<a href="{url:/site/detail}"><img src="{skin:images/files/57fb948f17c6c5aa3dec0fcb7e1308aa.jpg}"/></a>
-													<a href="{url:/site/detail}"><span class="title">海信</span><span class="price">￥123.4</span></a></div>
-												</li>  
-										</ul>                                     
+					<ul class="swiper-slide clear-fix fl swiper-slide-active" style="width: 640px;">
+						{foreach:items=Api::run('getCommendHot',5)}
+							<li class="fl">
+								<div class="brand_one_box" >
+									<a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/98/h/106}" onerror='this.src="{skin:images/front/nopic_435_435.gif}"' /></a>
+								<a href="{url:/site/products/id/$item[id]}"><span class="title">{$item['name']}</span><span class="price">￥{$item['sell_price']}</span></a></div>
+							</li>  
+						{/foreach}
+					</ul>  
+                                 
 				</div>
 			</div>
         
@@ -230,4 +187,4 @@
 		var del_cart_url = '{url:/simple/removeCartMany/link/cart}';
 	</script>
         
-   
+   {include:layouts/footer.html}

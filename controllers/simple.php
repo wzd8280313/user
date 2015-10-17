@@ -450,7 +450,7 @@ class Simple extends IController
 	    	$proObj->setUserGroup($groupRow['id']);
 
 	    	$promotion = $proObj->getInfo();
-	    	$proReduce = $final_sum - $proObj->getSum();
+	    	$proReduce = number_format($final_sum - $proObj->getSum(),2);
     	}
 
 		$result = array(
@@ -757,6 +757,7 @@ class Simple extends IController
     	
 		//收货地址列表
 		$this->addressList = $addressList;
+		print_r($this->addressList);
 		//获取商品税金
 		$this->goodsTax    = $result['tax'];
 		
@@ -773,6 +774,28 @@ class Simple extends IController
 		$this->allDeliveryType = $allDeliveryType;
     	//渲染页面
     	$this->redirect('cart2');
+    }
+	//手机端选择收货地址
+    function address(){
+    	if($this->user['user_id']==null)$this->redirect('login');
+    	$user_id = $this->user['user_id'];
+    	//获取收货地址
+    	$addressObj  = new IModel('address');
+    	$addressList = $addressObj->query('user_id = '.$user_id);
+    	
+    	//更新$addressList数据
+    	foreach($addressList as $key => $val)
+    	{
+    		$temp = area::name($val['province'],$val['city'],$val['area']);
+    		if(isset($temp[$val['province']]) && isset($temp[$val['city']]) && isset($temp[$val['area']]))
+    		{
+    			$addressList[$key]['province_val'] = $temp[$val['province']];
+    			$addressList[$key]['city_val']     = $temp[$val['city']];
+    			$addressList[$key]['area_val']     = $temp[$val['area']];
+    		}
+    	}
+    	$this->addressList = $addressList;
+    	$this->redirect('address');
     }
 
 	/**

@@ -298,6 +298,23 @@ class Ucenter extends IController
         $this->redirect('address');
     }
     /**
+     * @brief 设置默认的收货地址(异步获取）
+     */
+    public function address_default_ajax()
+    {
+    	$id = IFilter::act( IReq::get('id'),'int' );
+    	$model = new IModel('address');
+    	
+    	$model->setData(array('default'=>0));
+    	$model->update("user_id = ".$this->user['user_id']);
+    	
+    	$model->setData(array('default'=>1));
+    	if($model->update("id = ".$id." and user_id = ".$this->user['user_id']))
+    		echo 1;
+    	else echo 0;
+    	
+    }
+    /**
      * @brief 退款申请页面,（包括换货）
      */
     public function refunds_update()
