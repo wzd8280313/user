@@ -1,6 +1,6 @@
-<input type='hidden' id='product_id' alt='货品ID' value='' />
-<input type='hidden' name='promo_name' value="{$promo_data['promo_type']}"/><!--活动类型（闪购。。)-->
-<input type='hidden' name='active_id' value="{$promo_data['active_id']}"/><!--活动id-->
+<input type='hidden' id='product_id' alt='货品ID' value='{$product_id}' />
+<input type='hidden' name='promo_name' value="groupon"/>
+<input type='hidden' name='active_id' value="{$active_id}"/><!--活动id-->
 <div id='det1' >
 <article class="cat_item"> 
     <div class="pic_detail">
@@ -63,19 +63,14 @@
 				<p class="shop"><span class="bg_shop">商家</span>{$seller['true_name']}</p>
 			{/if}
 			<p>
-			{if:isset($group_price)}
-				<span class="label">会&nbsp;员&nbsp;价:</span>
-				<span class="d_price">￥{$group_price}</span>
+				<span class="label">团&nbsp;购&nbsp;价:</span>
+				<span class="d_price">￥{$this->tuanData['regiment_price']}</span>
 				购买送积分:<span class="jifen">{$point}</span></p>   
 				<p>
 					<span class="label">山&nbsp;城&nbsp;价:</span>
 					<span class="m_price">￥{$sell_price}</span>
 				</p>
-				{else:}
-				<span class="label">山&nbsp;城&nbsp;价:</span>
-				<span class="d_price">￥{$sell_price}</span>
-				购买送积分:<span class="jifen">{$point}</span></p> 
-			{/if}
+	
 			<p>
 				<span class="label">顾客评分:</span>
 				<span class="starlevel star_4">{$grade}</span>(共有<a href="javascript:void(0)" onclick='show_comments()' class="all">{$comments}</a>次评分)
@@ -105,9 +100,7 @@
 					{/foreach}
 					{else:}
 						<li id="bigpic" class="one-img1">
-							<a href="#" onclick='javascript:void(0)'>
-								<img src="{skin:images/front/nopic_435_435.gif}">
-							</a>
+								<img data-src="{skin:images/front/nopic_435_435.gif}" height="200px" width="200px">
 						</li>
 					{/if}
                 </ul>

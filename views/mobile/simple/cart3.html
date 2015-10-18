@@ -14,22 +14,27 @@
 	<h4> <a href="javascript:history.go(-1);" title="返回">＜山城速购</a><b>订单信息</b></h4>
 	</div></div>
 	<div class="xinxi">
+		{if:$this->user['user_id']}
+			{set:$tmpId=$this->order_id;}
+		{/if}
 	<ul>
 	<!-- <li class="huise"><span>基本信息</span> </li> -->
-	<li><span>订单编号</span><a href="#">5815867595500</a> </li>
-	<li><span>下单时间</span><a href="#">2015-09-28 9:18:22</a></li>
-	<li><span>订单金额</span><a href="#"><i>￥200.00</i></a> </li>
-	<li><span>配送方式</span><a href="#">申通</a></li>
-	<li class="shouzhi"><span>收货地址</span>
-	<a href="">某某某</a><br>
-	<a href="">山西 太原 杏花岭区</a><br>
-	<a href="">山西 太原 杏花岭区某某街xx号</a><br>
-	<a href="">150******78</a></li>
-	<li><span>包裹数</span><a href="#">1个（含1件商品）</a> </li>
-	<li><span>网上支付</span><a href="#">支付宝 ></a> </li>
-	<li><span>还需支付</span><a href="#"><i>￥0.00</i> (免运费)</a> </li>
-	<li class="annu one"><a class="secsed" href="ddytj" style="width:94%;">立即支付</a></li>
-	
+	<li><span>订单编号</span><a href="#">{$this->order_num}</a> </li>
+	<li><span>下单时间</span><a href="#">{$create_time}</a></li>
+	<li><span>订单金额</span><a href="#"><i>￥{$this->final_sum}</i></a> </li>
+	<li><span>配送方式</span><a href="#">{$this->delivery}</a></li>
+	<li><span>支付方式</span><a href="#">{$this->payment}</a></li>
+	<li><span>收货人名：</span><a href="#">{$accept_name}</a></li>
+	<li><span>联系方式：</span><a href="#">{$mobile}</a></li>
+	{if:$this->tax_title!=''}
+	<li><span>发票抬头：</span><a href="#">{$this->tax_title}</a></li>
+	{/if}
+	{if:$this->deliveryType != 1 && $this->paymentType == 1}
+	{set:$tmpId=$this->order_id;}
+	<form action='{url:/block/doPay/order_id/$tmpId}' method='post' >
+		<li class="annu one"><input type='submit' class="secsed" href="javascript:void(0);" style="width:94%;" value='立即支付' ></li>
+	</form>
+	{/if}
 	</ul>
 	
 	</div>

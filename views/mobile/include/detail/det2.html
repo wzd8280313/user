@@ -17,13 +17,17 @@
 			</tr>
 			{/if}
 			{if:isset($unit) && $unit}
+			<tr>
 				<td width="20%">单位</td>
 				<td>{$unit}</td>
+			</tr>
 			{/if}
 			{if:($attribute)}
 				{foreach:items=$attribute}
+				<tr>
 				<td width="20%">{$item['name']}</td>
 				<td>{$item['attribute_value']}</td>
+				</tr>
 				{/foreach}
 			{/if}
 				</table>

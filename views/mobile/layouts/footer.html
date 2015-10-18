@@ -1,10 +1,12 @@
 <footer id="footer">
 	<div class="f-qk-tl">
+		{if:!isset($this->user)}
 		<div class="f-login">
-<a href="{url:/simple/login?callback=}">登录</a><span>|</span>
-<a href="{url:/simple/reg?callback=}">注册</a>
+			<a href="{url:/simple/login?callback=}">登录</a><span>|</span>
+			<a href="{url:/simple/reg?callback=}">注册</a>
 		<!--<div class="f-go-top" id="goTop"><a href="#">TOP</a></div>-->
 		</div>
+		{/if}
 	</div>
 	<div class="f-ch-cp">
 		<div class="item"><a href="{url:/site/index?callback=}>触屏版</a>

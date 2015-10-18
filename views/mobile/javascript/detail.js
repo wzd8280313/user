@@ -176,6 +176,8 @@ function comment_ajax_list(type,statics){
 			$('.anniu div').on('click',function(){
 				$('#comments .content ul').remove();
 				$('#comments .content hr').remove();
+				$('#comments .current').removeClass('current').addClass('other');
+				$(this).removeClass('other').addClass('current');
 				comment_ajax_list($(this).attr('type'));
 			})
 		}
