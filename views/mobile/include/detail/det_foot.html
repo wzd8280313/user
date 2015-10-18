@@ -21,7 +21,7 @@
 					 {/if}
               	</a>
             </div>
-			{if:!isset($_GET['active'])}
+			{if:isset($show_cart)&&$show_cart==1}
             <div class="s-btn s-an s-colo" data="hot">
 				<a class="jrgwc" name='toCart' onClick="toshop(joinCart)">加入购物车</a>
             </div>

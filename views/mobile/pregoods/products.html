@@ -7,14 +7,13 @@
 	$seo_data['description']=$description;
 	seo::set($seo_data);
 	$promotion=Api::run('getProrule');
-	$show_cart=0;
+	$show_cart = 0;
 }
 
 <!-- article begin -->
 <script type="text/javascript" src="{theme:javascript/iscroll.js}"></script>
 <script type="text/javascript" src="{theme:javascript/detail.js}"></script>
-
-{include:include/detail/tuan_det1.html}
+{include:include/detail/presell_det1.html}
 {include:include/detail/det2.html}
 {include:include/detail/comments_list.html}
 <div class="det baby" id='det_tuijian'>
@@ -34,8 +33,8 @@
 
 
 <div class="cl"></div>
+<!-- article end -->
 <script type='text/javascript'>
-
 //添加收藏夹
 function favorite_add(obj)
 {
@@ -57,9 +56,5 @@ function favorite_add(obj)
 		window.location.href="{url:/simple/login/?callback=/site/products/id/$id}";
 	{/if}
 }
-
-
-
-
 </script>
 {include: include/detail/det_foot.html}

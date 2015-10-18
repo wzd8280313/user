@@ -18,7 +18,7 @@ class Pregoods extends IController
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
 		$presell_db->fields = 'p.*,g.sell_price as price,datediff(p.yu_end_time,now()) as days';
-		$presell_db->limit = 4;
+		$presell_db->limit = 10;
 		$presell_db->order = 'p.id DESC';
 		$this->pre_list = $presell_db->find();
 		$this->count = count($this->pre_list);
@@ -29,7 +29,7 @@ class Pregoods extends IController
 	//获取更多列表
 	public function getMorePresell(){
 		$start = IFilter::act(IReq::get('start'),'int');
-		$limit = $start.',2';
+		$limit = $start.',10';
 		
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
@@ -159,15 +159,15 @@ class Pregoods extends IController
 		$goods_info['presellPrice'] = number_format(ceil($money_rate * $goods_info['sell_price']),2);
 	
 		//获得会员价
-// 		$countsumInstance = new countsum();
-// 		$group_price = $countsumInstance->getGroupPrice($goods_id,'goods');
-// 		if($group_price !==null){
-// 			$group_price = floatval($group_price);
-// 			if($group_price < $goods_info['sell_price']){
-// 				$goods_info['group_price'] = $group_price;
-// 				$goods_info['presellPrice'] = number_format(ceil($money_rate * $goods_info['group_price']),2);
-// 			}
-// 		}
+		$countsumInstance = new countsum();
+		$group_price = $countsumInstance->getGroupPrice($goods_id,'goods');
+		if($group_price !==null){
+			$group_price = floatval($group_price);
+			if($group_price < $goods_info['sell_price']){
+				$goods_info['group_price'] = $group_price;
+				$goods_info['presellPrice'] = number_format(ceil($money_rate * $goods_info['group_price']),2);
+			}
+		}
 		
 		//计算预售信息
 		$lastDay = strtotime($preData['yu_end_time']) - time() ;

@@ -13,7 +13,10 @@ function getMoreTuan(toUrl){
 			
 		},
 		success:function(data){
-			if(data){
+			if(data==0){
+						$('.loading-imgS p').text('没有更多数据');
+			}
+			else{
 				for(var i in data){
 					var newProm = template.render('tuan_box',data[i]);
 					$('#tuan_box2 ul').append(newProm);

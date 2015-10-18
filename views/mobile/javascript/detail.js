@@ -379,11 +379,20 @@ function buy_now()
 	//var url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@/promo/$promo/active_id/$active_id}';
 	//url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
 	
-	var url = direct_buy_url;
-	url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
-	if(promo_type && active_id){
-		url += '/promo/'+promo_type+'/active_id/'+active_id; 
+	if(promo_type!='presell'){
+		var url = direct_buy_url;
+		url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
+		if(promo_type && active_id){
+			url += '/promo/'+promo_type+'/active_id/'+active_id; 
+		}
+	}else{
+		var url = presell_buy_url;
+		url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
+		if( active_id){
+			url +='/active_id/'+active_id; 
+		}
 	}
+	
 
 	//页面跳转
 	window.location.href = url;
