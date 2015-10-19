@@ -629,10 +629,9 @@ class Simple extends IController
 		$promo     = IFilter::act(IReq::get('promo'));
 		$active_id = IFilter::act(IReq::get('active_id'),'int');
 		$buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
-		$tourist   = IReq::get('tourist');//游客方式购物
 
     	//必须为登录用户
-    	if($tourist === null && $this->user['user_id'] == null)
+    	if($this->user['user_id'] == null)
     	{
     		if($id == 0 || $type == '')
     		{
@@ -1884,5 +1883,27 @@ class Simple extends IController
 		$res['checkResult'] = $M->getObj($where,'id') ? 1 : 0;
 		
 		echo JSON::encode($res);
+	}
+	
+	//点击支付弹出页面
+	function payafter(){
+		$this->layout = '';
+		if($this->user['user_id'] == null)
+		{
+			$this->redirect('/simple/login');
+		}
+		
+		$order_id = intval(IReq::get('order_id'));
+		if(!$order_id)return false;
+		$order = new IModel('order');
+		if(!$order_data = $order->getObj('id='.$order_id.' and user_id = '.$this->user['user_id'],'create_time')){
+			IError::show(403,"订单不存在");
+		}
+		$config = new Config('site_config');
+		$cancle_days = $config->order_cancel_time;
+		$this->end_time = strtotime($order_data['create_time']) + $cancle_days*24*3600;
+		$this->order_id = $order_id;
+	
+		$this->redirect('payafter');
 	}
 }

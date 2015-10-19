@@ -14,6 +14,7 @@ class Pregoods extends IController
 	}
 	//预售列表
 	public function presell_list(){
+		$this->logoUrl = 'images/yulogo.png';
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
@@ -50,6 +51,7 @@ class Pregoods extends IController
 	 */
 	function products()
 	{
+		$this->logoUrl = 'images/yulogo.png';
 		$id = IFilter::act(IReq::get('id'),'int');
 		$presell = new IModel('presell');
 		if(!$id || !$preData = $presell->getObj('goods_id='.$id))

@@ -114,6 +114,7 @@ class Site extends IController
 	}
 	//团购详情页面
 	public function tuan_product(){
+		$this->logoUrl = 'images/tglogo.png';
 		$id = IFilter::act(IReq::get('active'),'int');
 		if(!$id){
 			IError::show(403,"传递的参数不正确");
@@ -1092,7 +1093,6 @@ class Site extends IController
 		}
 		$this->redirect("help_list");
 	}
-
 
 
 	function ce(){

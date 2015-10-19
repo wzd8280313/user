@@ -208,5 +208,5 @@ OEF;
 	 */
 	abstract public function serverCallback($ExternalData,&$paymentId,&$money,&$message,&$orderNo);
 	
-	public function refund(){}
+	public function refund($payment){}
 }

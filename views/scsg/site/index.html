@@ -175,25 +175,25 @@ _mvq.push(['$logConversion']);
 								<div class="tabcon" id="fadecon">
 									<div class="sublist">
 										<ul>
-											<li><a href="#" target="_blank">交话费</a></li>
+											<li><a href="#" target="_blank" class='red-a'>交话费</a></li>
 											
 										</ul>
 									</div><!--tabcon end-->
 									<div class="sublist">
 										<ul>
-											<li><a href="#" target="_blank">买彩票</a></li>
+											<li><a href="#" target="_blank" class='red-a'>买彩票</a></li>
 											
 										</ul>
 									</div><!--tabcon end-->
 									<div class="sublist">
 										<ul>
-											<li><a href="#" target="_blank">充点卡</a></li>
+											<li><a href="#" target="_blank" class='red-a'>充点卡</a></li>
 											
 										</ul>
 									</div><!--tabcon end-->
 									<div class="sublist">
 										<ul>
-											<li><a href="#" target="_blank">上保险</a></li>
+											<li><a href="#" target="_blank" class='red-a'>上保险</a></li>
 											
 										</ul>
 									</div><!--tabcon end-->
@@ -245,10 +245,10 @@ _mvq.push(['$logConversion']);
 				{foreach:items=$this->user_like_goods}
 				
 				<li class="xi">
-					 <a class="goods-img" href="{url:/site/products/id/$item['id']}">
+					 <a class="goods-img" href="{url:/site/products/id/$item['id']}" >
 						<img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
 					</a>
-					<a class="goods-name" href="{url:/site/products/id/$item['id']}" title="{$item['name']}">
+					<a class="goods-name" href="{url:/site/products/id/$item['id']}" title="{$item['name']}" >
 						{$item['name']}<span class="txt-red"></span>
 					</a>
 					<div class="goods-price">
@@ -291,7 +291,7 @@ _mvq.push(['$logConversion']);
 	                         <a class="goods-img" target='blank' href="{url:/site/products/id/$item['id']}">
 	                            <img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
 	                        </a>
-	                        <a class="goods-name" target='blank' href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
+	                        <a class="goods-name red-a" target='blank' href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
 	                            {$item['name']}<span class="txt-red"></span>
 	                        </a>
 	                        <div class="goods-price">
@@ -366,7 +366,7 @@ _mvq.push(['$logConversion']);
 					            <img class="jImg" alt="{$goods['name']}" src="{url:/pic/thumb/img/$goods[img]/w/180/h/180}">
 								<div class="shine">&nbsp;</div>
 					        </a>
-					        <a class="goods-name" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}">
+					        <a class="goods-name red-a" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}">
 					         <span class="txt-red">{if:$goods['is_del']==4}[预售]{/if}</span> {$goods['name']}
 					        </a>
 					        <div class="goods-price">

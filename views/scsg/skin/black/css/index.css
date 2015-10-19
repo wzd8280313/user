@@ -273,6 +273,11 @@ text-overflow: ellipsis;
 white-space: nowrap;
 overflow: hidden;
 }
+.notice .news-list a:hover{
+	color:#E71F19;
+}
+.red-a:hover{color:#E71F19;}
+.underline-a:hover{text-decoration:underline;}
 .notice .small-pro {
 width: 228px;
 height: 205px;

@@ -147,8 +147,41 @@ var countdown=function()
 		}
 	};
 };
-//时分秒倒计时
 
+//倒计时函数
+//min_id 小于min_id的不做处理
+var countDown = function(min_id){
+		$('.countdown').each(function(){
+			var id = $(this).attr('id').split('-')[1];
+			if(min_id && id<min_id)return true;
+			var temp;
+			var endTime = $(this).find('input[name=endTime]').val();
+			var now = Date.parse(new Date())/1000;
+			var count = endTime - now;
+			var day = parseInt(count/(24*3600));
+			count=count%(24*3600);
+			var hour = (temp = parseInt(count/3600))<10 ? '0'+temp : temp;
+			count = count%3600;
+			var min = (temp=parseInt(count/60))<10 ? '0'+temp :temp ;
+			var sec = (temp=count%60)<10 ? '0' + temp : temp;
+			if(day==0){
+				$('.day').remove();
+			}else{
+				$('#cd_day_'+id).text(day);
+			}
+			
+			$('#cd_hour_'+id).text(hour);
+			$('#cd_minute_'+id).text(min);
+			$('#cd_second_'+id).text(sec);
+			
+			var count = new countdown();
+			count.add(id);
+		})
+	};
+//时分秒倒计时
+$(function(){
+	countDown();
+})
 //切换验证码
 function changeCaptcha(urlVal)
 {

@@ -264,12 +264,12 @@ if($("#actionimg").length>0){
 					{set:$k=$keyT+1;}
 					<li class="list-item" style='position:static;'>
 						<h3 class="cat-type-{$k}">
-							<a href="{url:/site/pro_list/cat/$valT[id]}">{$valT['name']}</a>
+							<a href="{url:/site/pro_list/cat/$valT[id]}" class='underline-a'>{$valT['name']}</a>
 						</h3>
 						<p class="cat-rcmd">
 							{set:$secondCat=Api::run('getCategoryByParentid',array('#parent_id#',$valT['id']))}
 							{foreach:items=$secondCat key=$keyS item=$valS}
-								<a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a>
+								<a href="{url:/site/pro_list/cat/$valS[id]}" class='underline-a'>{$valS['name']}</a>
 							{/foreach}
 						</p>
 						<div class="cat-pop" style="display:none;top:0px;">
@@ -282,13 +282,13 @@ if($("#actionimg").length>0){
 										{set:$hotCat[$valT['id']][] = $valS;}
 										{/if}
 					                     <li class="cat-item">
-					                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}">{$valS['name']}</a></h3>
+					                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}" class='underline-a'>{$valS['name']}</a></h3>
 					                   		 <p class="level-list clearfix">
 					                   		 	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id']),30) key=$keyG item=$valG}
 													{if:$valG['hot']==1 && count($hotCat[$valT['id']])<=5}
 														{set:$hotCat[$valT['id']][] = $valG;}
 													{/if}
-													<a href="{url:/site/pro_list/cat/$valG[id]}">{$valG['name']}</a>
+													<a href="{url:/site/pro_list/cat/$valG[id]}" class='underline-a'>{$valG['name']}</a>
 												{/foreach}
 										     </p>
 					                    </li>
