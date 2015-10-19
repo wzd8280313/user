@@ -33,6 +33,12 @@ class trade_alipay extends paymentPlugin
 	}
 
 	/**
+	 * 退款借口
+	 */
+	public function refund($data){
+		return true;
+	}
+	/**
 	 * 获取退款提交地址
 	 */
 	public function getRefundUrl(){

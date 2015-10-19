@@ -899,7 +899,29 @@ class Ucenter extends IController
 		}
 		return $items;
     }
-
+    //[收藏夹]获取收藏夹数据
+    function get_favorite_ajax()
+    {
+    	//获取收藏夹信息
+    	$page = IReq::get('page') ? intval(IReq::get('page')) : 1;
+  
+    	$favoriteObj = new IQuery("favorite as f");
+    	$favoriteObj->join = 'left join goods as g on f.rid = g.id';
+    	$favoriteObj->fields = 'g.id,g.name,g.img,g.sell_price,f.id as fid';
+    	$cat_id = intval(IReq::get('cat_id'));
+    	$where = '';
+    	if($cat_id != 0)
+    	{
+    		$where = ' and f.cat_id = '.$cat_id;
+    	}
+    	
+    	$favoriteObj->where = "f.user_id = ".$this->user['user_id'].' and (g.is_del = 0 or g.is_del = 4 )'.$where;
+    	$favoriteObj->page  = $page;
+    	$items = $favoriteObj->find();
+ 
+    	if($favoriteObj->page==0){echo 0;exit;}
+    	echo JSON::encode($items);
+    }
     //[收藏夹]删除
     function favorite_del()
     {

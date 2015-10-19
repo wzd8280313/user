@@ -1110,6 +1110,7 @@ class Order_Class
 		$refundDB->update('id = '.$refundId);
 		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
+	
 		$order_goods_id = $orderGoodsRow['id'];
 
 		//未发货的情况下还原商品库存

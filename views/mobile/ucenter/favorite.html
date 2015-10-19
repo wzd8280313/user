@@ -44,40 +44,60 @@
     		 </header>
 	<section id="contents">
 	       <section class="s-list cf" id="dataList">
+	       	<input name='page' type='hidden' value='1' />
 				<section class="deals">
 	
 						
-						<div class="loading-ctn loading-imgS">
-							 <p onclick='showMorePro();'>下拉查看更多</p>
-		            		<img alt="" src="{skin:images/files/loading.gif}">
-				  	  	</div>
-				</section>                                  
+						
+				</section>    
+				<div class="loading-ctn loading-imgS">
+					 <p >下拉查看更多</p>
+            		<img alt="" src="{skin:images/files/loading.gif}">
+				</div>                              
 	                                           
 	    </section>
 	            
 	</section>
 
  </div>
-    <script type='text/html'>
+    <script type='text/html' id='favorite_product'>
     	<div>
 			  <figure>
 				<a href="{url:/site/products/id/}/<%=id%>" target="_blank">
-					<img src="{skin:images/files/wap_big_da9c97087b8d070e10f03ac9888ab02c.jpg}"/>
+					<img src="{url:<%=img%>}"/>
 				</a>
 			  </figure>
 			  <h2>
-				<span><a href="{url:/site/detail}" target="_blank">【今日上新】厨房多功能双层S型沥水置物架42*25*37CM 原价100元 折扣价36元多数地区包邮</a></span>
+				<span><a href="{url:/site/products/id/}/<%=id%>" target="_blank"><%=name%></a></span>
 			  </h2>
-			  <aside><!-- 
-				  <span class="i1"><i></i>返积分</span>
-				  <span class="i3"><i></i>包邮</span> -->
-			  </aside>
 			  <p>
-				  <span>￥<i>36.00</i></span>
-				  <cite>原价100.00&nbsp;&nbsp;3.6折</cite>
-					<p><sub><a href=""><img src="{skin:css/wap/del.png}" style="width:20px;height:20px;border:0;"></a></sub>
+				  <span>￥<i><%=sell_price%></i></span>
+					<p><sub><a name='cancle_favorite_<%=fid%>' href="javascript:void(0)"><img src="{skin:css/wap/del.png}" style="width:20px;height:20px;border:0;"></a></sub>
 					<sub><a href=""><img src="{skin:css/wap/cart.png}" style="width:20px;height:20px;border:0;"></a></sub>
 					</p>
 			 </p>
 		</div>
 	</script>
+<script type='text/javascript'>
+	var del_url = '{url:/ucenter/favorite_del/id/}/';
+		var obj = {
+			'url': '{url:/ucenter/get_favorite_ajax}',
+			'template_id': 'favorite_product',
+			'append_to': $('#dataList .deals'),
+			'trans_data': {},
+		};
+	 function bindEvent(json){
+	 	$('a[name=cancle_favorite_'+json.fid+']').on('click',function(){
+			window.location.href=del_url+json.fid;
+			//delModel({link:del_url+json.id,msg:'是否取消关注？'});
+		})
+	 }
+	ajax_get_data(obj);
+
+	window.onscroll = function(){
+	 if ($(document).scrollTop() >= $(document).height() - $(window).height()){
+	 	ajax_get_data(obj);
+	 }
+	
+}
+</script>

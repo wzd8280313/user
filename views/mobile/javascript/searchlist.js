@@ -2,14 +2,13 @@
 function getData(obj,url){
 	$('.loading-imgS img').show();
 	$('.loading-imgS p').hide();
-	var getMoreUrl = url;
 	
 	$.ajax({
 		type:'post',
 		async:false,
 		data:obj,
 		dataType:'json',
-		url:getMoreUrl,
+		url:url,
 		beforeSend:function(){
 			
 		},
@@ -40,6 +39,7 @@ function showMorePro(){
 	var obj = {
 		page:page,childCat:childCat,order:order
 	};
+	
 	getData(obj,getMoreUrl);
 }
 //获取更多搜索产品

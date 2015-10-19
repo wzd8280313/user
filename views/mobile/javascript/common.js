@@ -385,7 +385,7 @@ function getKeywords(url,_this){
 		}
 	})
 }
-
+//异步获取数据
 function ajax_get_data(obj){
 	
 	var url = obj.url ? obj.url : false;
@@ -393,7 +393,8 @@ function ajax_get_data(obj){
 	var template_id = obj.template_id ? obj.template_id : false;
 	var append_to = obj.append_to ? obj.append_to : false;
 	var append_after = obj.append_after ? obj.append_after : 1;
-	if(!obj.trans_data.page)obj.trans_data.page = parseInt($('input[name=page]').val());
+	if(!obj.trans_data)obj.trans_data={};
+	obj.trans_data.page = parseInt($('input[name=page]').val());
 	if(!url || !template_id || !append_to)
 		return false;
 	
@@ -417,13 +418,15 @@ function ajax_get_data(obj){
 				for(var i in data){
 					var newPro = template.render(template_id,data[i]);
 					append_to.append(newPro);
+					bindEvent(data[i]);
 				}
-				$('input[name=page]').val(obj.page+1);
+				$('input[name=page]').val(obj.trans_data.page+1);
 			}
 		},
 		complete:function(){
 			$('.loading-imgS img').hide();
 			$('.loading-imgS p').show();
+			
 		},
 		timeout:1000,
 	})

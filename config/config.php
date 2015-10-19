@@ -40,7 +40,7 @@
   'rewriteRule' => 'pathinfo',
   'theme' => 
   array (
-	'pc' => 'mobile',
+	'pc' => 'scsg',
     'mobile' => 'mobile',
 
   ),
