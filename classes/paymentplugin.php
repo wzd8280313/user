@@ -207,4 +207,6 @@ OEF;
 	 * @param $orderNo      string 订单号
 	 */
 	abstract public function serverCallback($ExternalData,&$paymentId,&$money,&$message,&$orderNo);
+	
+	public function refund(){}
 }
