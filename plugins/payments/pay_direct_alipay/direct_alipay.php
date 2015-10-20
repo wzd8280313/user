@@ -31,7 +31,7 @@ class direct_alipay extends paymentPlugin
 	{
 		echo "success";
 	}
-	public function refund(){
+	public function refund($payment){
 		
 	}
 	/**
