@@ -3,7 +3,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 label input{vertical-align:middle}
 a:link,a:visited{color:#333;text-decoration:none;}
 a:hover,a:active{text-decoration:none;}
-body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;width:1350px;}
+body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;}
 img{border:0;vertical-align: middle;}
 table{border-collapse:collapse}
 ul li{list-style:none}

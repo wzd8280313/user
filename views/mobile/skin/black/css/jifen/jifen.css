@@ -123,3 +123,8 @@ ul{ list-style-type:none;}
    .wrapper .main #con ul li font .geki{ line-height:1.8em;}.wrapper .main #con .on li font p a {
 	color: #666;
 }
+.loading-imgS{background:#fff;text-align:center;padding:10px 0;width:100%}
+
+.loading-imgS p{font-size:16px;color:#9A9A9A;text-align:center}
+
+.loading-imgS img{width:32px!important;height:32px!important;display:none}

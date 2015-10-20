@@ -402,7 +402,7 @@ function joinCart()
 {
 	if(!checkSpecSelected())
 	{
-		window.realAlert('请先选择商品的规格');
+		window.alt('请先选择商品的规格');
 		return;
 	}
 

@@ -386,50 +386,68 @@ function getKeywords(url,_this){
 	})
 }
 //异步获取数据
-function ajax_get_data(obj){
+function Ajax_Get_Data(){
+	this.obj = null;
 	
-	var url = obj.url ? obj.url : false;
-	var callback = obj.callback ? obj.callback : null;
-	var template_id = obj.template_id ? obj.template_id : false;
-	var append_to = obj.append_to ? obj.append_to : false;
-	var append_after = obj.append_after ? obj.append_after : 1;
-	if(!obj.trans_data)obj.trans_data={};
-	obj.trans_data.page = parseInt($('input[name=page]').val());
-	if(!url || !template_id || !append_to)
-		return false;
-	
-	$('.loading-imgS img').show();
-	$('.loading-imgS p').hide();
-
-	
-	$.ajax({
-		type:'post',
-		async:false,
-		data:obj.trans_data,
-		dataType:'json',
-		url:url,
-		beforeSend:function(){
-			
-		},
-		success:function(data){
-			if(data==0){
-				$('.loading-imgS p').text('没有更多数据');
-			}else{
-				for(var i in data){
-					var newPro = template.render(template_id,data[i]);
-					append_to.append(newPro);
-					bindEvent(data[i]);
-				}
-				$('input[name=page]').val(obj.trans_data.page+1);
+	this.init = function(obj){
+		this.obj = obj;
+		$('body').append("<input name='page' type='hidden' value='1' />");
+		$('<div class="loading-ctn loading-imgS"><p >下拉查看更多</p><img src=""></div> ') .insertAfter(this.obj.append_to);
+		$('.loading-imgS img').attr('src',this.obj.loading_img);
+		this.ajax_get_data(this.obj);
+		window.onscroll = function(){
+			if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+				this.ajax_get_data(this.obj);
 			}
-		},
-		complete:function(){
-			$('.loading-imgS img').hide();
-			$('.loading-imgS p').show();
+		}
+	}
+	this.ajax_get_data = function(obj){
+		var url = obj.url ? obj.url : false;
+		var callback = obj.callback ? obj.callback : null;
+		var template_id = obj.template_id ? obj.template_id : false;
+		var append_to = obj.append_to ? obj.append_to : false;
+		var append_after = obj.append_after ? obj.append_after : 1;
+		if (!obj.trans_data) 
+			obj.trans_data = {};
+		obj.trans_data.page = parseInt($('input[name=page]').val());
+		if (!url || !template_id || !append_to) 
+			return false;
+		
+		$('.loading-imgS img').show();
+		$('.loading-imgS p').hide();
+		
+		
+		$.ajax({
+			type: 'post',
+			async: false,
+			data: obj.trans_data,
+			dataType: 'json',
+			url: url,
+			beforeSend: function(){
 			
-		},
-		timeout:1000,
-	})
-	
-	
+			},
+			success: function(data){
+				if (data == 0) {
+					$('.loading-imgS p').text('没有更多数据');
+				}
+				else {
+					for (var i in data) {
+						var newPro = template.render(template_id, data[i]);
+						append_to.append(newPro);
+						if (callback != null) 
+							callback(data[i]);
+					}
+					$('input[name=page]').val(obj.trans_data.page + 1);
+				}
+			},
+			complete: function(){
+				$('.loading-imgS img').hide();
+				$('.loading-imgS p').show();
+				
+			},
+			timeout: 1000,
+		})
+	}
 }
+
+

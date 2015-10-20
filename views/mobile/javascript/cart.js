@@ -212,3 +212,17 @@ function cart_del_many(){
 	})
 	
 }
+//[ajax]加入购物车
+function joinCart_ajax(id,url,type)
+{
+	$.getJSON(url,{"goods_id":id,"type":type,"random":Math.random()},function(content){
+		if(content.isError == false)
+		{
+			alt(content.message);
+		}
+		else
+		{
+			alt(content.message);
+		}
+	});
+}

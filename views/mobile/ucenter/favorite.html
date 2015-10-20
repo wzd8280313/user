@@ -27,6 +27,7 @@
 		<script src="{theme:javascript/jquery-1.9.1.min.js}"></script>
 		{js:artTemplate}
 		<script src="{theme:javascript/common.js}"></script>
+		<script src="{theme:javascript/cart.js}"></script>
 		<script src="{theme:javascript/scrollTop.js}"></script>           
 
 	</head>
@@ -44,18 +45,8 @@
     		 </header>
 	<section id="contents">
 	       <section class="s-list cf" id="dataList">
-	       	<input name='page' type='hidden' value='1' />
-				<section class="deals">
-	
-						
-						
-				</section>    
-				<div class="loading-ctn loading-imgS">
-					 <p >下拉查看更多</p>
-            		<img alt="" src="{skin:images/files/loading.gif}">
-				</div>                              
-	                                           
-	    </section>
+	       		<section class="deals"></section>    
+			</section>
 	            
 	</section>
 
@@ -73,7 +64,7 @@
 			  <p>
 				  <span>￥<i><%=sell_price%></i></span>
 					<p><sub><a name='cancle_favorite_<%=fid%>' href="javascript:void(0)"><img src="{skin:css/wap/del.png}" style="width:20px;height:20px;border:0;"></a></sub>
-					<sub><a href=""><img src="{skin:css/wap/cart.png}" style="width:20px;height:20px;border:0;"></a></sub>
+					<sub><a name='favorite_to_cart_<%=id%>'href="javascript:void(0)"><img src="{skin:css/wap/cart.png}" style="width:20px;height:20px;border:0;"></a></sub>
 					</p>
 			 </p>
 		</div>
@@ -84,20 +75,21 @@
 			'url': '{url:/ucenter/get_favorite_ajax}',
 			'template_id': 'favorite_product',
 			'append_to': $('#dataList .deals'),
+			'loading_img': '{skin:images/files/loading.gif}',
 			'trans_data': {},
+			'callback' : bindEvent
 		};
 	 function bindEvent(json){
 	 	$('a[name=cancle_favorite_'+json.fid+']').on('click',function(){
 			window.location.href=del_url+json.fid;
-			//delModel({link:del_url+json.id,msg:'是否取消关注？'});
 		})
+		$('a[name=favorite_to_cart_'+json.id+']').on('click',function(){
+			joinCart_ajax(json.id,"{url:/simple/joinCart}","goods");
+		})
+		
 	 }
-	ajax_get_data(obj);
-
-	window.onscroll = function(){
-	 if ($(document).scrollTop() >= $(document).height() - $(window).height()){
-	 	ajax_get_data(obj);
-	 }
+	var ajax = new Ajax_Get_Data();
+	ajax.init(obj);
 	
-}
+
 </script>
