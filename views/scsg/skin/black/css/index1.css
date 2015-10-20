@@ -888,10 +888,10 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 .right{width:960px;}
 .ad_cycle{
 	position:relative;
-	width:759px;
+	width:1190px;
 	height:490px;
 	margin:0 auto;
-	right:15px;
+	/*right:15px;*/
 	
 }
 .ad_cycle .nonce {
@@ -931,5 +931,5 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 	width: 100%; height: 490px; overflow: visible; position: relative; visibility: visible; display: block;
 }
 #scroll .pic{
-	
+	width:759px;float:left;
 }
