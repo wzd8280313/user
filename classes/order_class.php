@@ -20,6 +20,7 @@ class Order_Class
 	 */
 	public static function addGoodsCommentChange($order_id)
 	{
+		$goodsDB = new IModel('goods');
 		//获取订单对象
 		$orderDB  = new IModel('order');
 		$orderRow = $orderDB->getObj('id = '.$order_id);
@@ -36,6 +37,7 @@ class Order_Class
 		//对每类商品进行评论开启
 		foreach($orderList as $val)
 		{
+			if(!$goodsDB->getObj('id='.$val['goods_id'],'id'))continue;
 			$attr = array(
 				'goods_id' => $val['goods_id'],
 				'order_no' => $orderRow['order_no'],
