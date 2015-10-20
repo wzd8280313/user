@@ -55,6 +55,8 @@ class Ucenter_ajax extends IController
 		foreach($order_data as $k=>$v){
 			$ids .=$v['id'].',';
 		}
+		$ids = substr($ids,0,-1);
+		
 		//$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join seller as s on g.seller_id=s.id';
 		$order_db->where = 'o.user_id='.$userid.' and o.if_del=0';
 		//$order_db->fields = 'o.*,og.goods_id,og.img,og.real_price,og.goods_array,og.is_send,og.delivery_id,og.delivery_fee,g.name,s.true_name';

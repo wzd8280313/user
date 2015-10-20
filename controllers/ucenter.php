@@ -843,6 +843,9 @@ class Ucenter extends IController
     			}
     		}
     	}
+    	foreach($items as $k=>$v){
+    		if(!isset($v['data']))unset($items[$k]);
+    	}
     	return $items;
     }
     //[收藏夹]获取收藏夹数据
