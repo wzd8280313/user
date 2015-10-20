@@ -1,3 +1,5 @@
+{set:$type=isset($_GET['type'])&&($_GET['type']=='plus' || $_GET['type']=='minus')?$_GET['type'] : 'all';}
+
 <!doctype html>
 <html>
 <head>
@@ -22,16 +24,13 @@
   <div class="main">
            
 		<h4 id="title">
-			<span class="on">全部</span>
-			<span>收入</span>
-			<span>支出</span>
+			<a href='{url:/ucenter/integral}'><span class="on">全部</span></a>
+			<a href='{url:/ucenter/integral/type/plus}'><span id='plus'>收入</span></a>
+			<a href='{url:/ucenter/integral/type/minus}'><span id='minus'>支出</span></a>
 		</h4>
 		<div id="con">
-				<ul class="on">
-					
-	        	 </ul>
-	          
-		</div>
+				<ul class="on"> </ul>
+	   </div>
 	</div>
 </div>
 <script type='text/html' id='jifen_box'>
@@ -42,34 +41,34 @@
 	      <h5><p><%=value%></p><p><a><%=datetime%></a></p></h5>
 	 </li>
 </script>
-<script src="{theme:javascript/jquery-1.9.1.min.js}">	
-</script>
+
 <script type="text/javascript">
-function tabsChange(opt){
-	var oTitle = opt.oTitle;
-	var oCon = opt.oCon;
-	oTitle.find('span').on('click',function(){
-		var index = $(this).index();
-		$(this).addClass('on').siblings().removeClass('on');
-		oCon.find('ul').eq(index).show().siblings().hide();
-	});
+var type = '{$type}';
+if (type == 'plus') {
+	$('span.on').removeClass('on');
+	$('#plus').addClass('on');
 }
-tabsChange({
-	oTitle : $('#title'),
-	oCon : $('#con')
-});
+else if(type=='minus'){
+	$('span.on').removeClass('on');
+$('#minus').addClass('on');
+}
 
 
-		var obj = {
-			'url': '{url:/ucenter_ajax/get_integral}',
-			'template_id': 'jifen_box',
-			'append_to': $('#con ul'),
-			'loading_img': '{skin:images/files/loading.gif}',
-			'trans_data': {},
-		};
-	
-		var ajax = new Ajax_Get_Data();
-		ajax.init(obj);
+
+//加载数据
+var obj = {
+	'url': '{url:/ucenter_ajax/get_integral}',
+	'template_id': 'jifen_box',
+	'append_to': $('#con ul'),
+	'loading_img': '{skin:images/files/loading.gif}',
+	'trans_data': {type:type},
+};
+
+var ajax = new Ajax_Get_Data();
+ajax.init(obj);
+
+
+
 </script>
        
 
