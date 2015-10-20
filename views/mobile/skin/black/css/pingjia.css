@@ -29,12 +29,12 @@ ul{ list-style-type:none;}
 .pingjia .anniu .other a{ color:#666;}
 
 .pingjia .content{ margin:0 auto; height:auto; overflow:hidden; margin-top:15px;font-size: 12px;}
-.pingjia .content ul{ padding:0 15px; font-size:1.3em; color:#646060; line-height:1.2em; margin-bottom:15px;}
+.pingjia .content ul{ padding:0 15px; font-size:14px; color:#646060; line-height:1.2em; margin-bottom:15px;}
 .pingjia .content ul li img{ width:3%; height:auto;}
 .pingjia .content ul li b{ font-weight:normal;  float:left; color:#333;}
 .pingjia .content ul li a{ color:#666;float:right; margin-right:10px; }
 .pingjia .content ul li i{ font-style:normal; line-height:30px; }
-.pingjia .content ul li span{ color:#908e8e; line-height:1.2px;}
+.pingjia .content ul li span{ color:#908e8e; line-height:1.2em;}
 .pingjia hr{ color:#CCC; width:100%; margin:10px 0; auto; size:1px; }
 .pingjia .content ul li em{ width:150px; height:100px;}
 .pingjia .content ul li .chongdb{ width:80px; height:80px;}

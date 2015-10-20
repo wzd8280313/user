@@ -230,7 +230,7 @@ cursor: pointer;
 
 #contents2 .swiper-pagination-bullet-active{background:#ff9f0f}
 
-#contents2 h3{padding:3px;font-size:1.4em;height:35px;line-height:35px}
+#contents2 h3{padding:3px;font-size:15px;height:35px;line-height:35px}
 
 #contents2 .checked{background:#ff9f0f;color:#fff}
 
@@ -278,7 +278,7 @@ cursor: pointer;
 
 .vip_tab{width:100%;position:relative}
 
-.vip_tab ul{font-size:1.3em}
+.vip_tab ul{font-size:14px}
 
 .vip_tab ul li{width:50%;text-align:center;height:2.2em;line-height:2.2em;display:block}
 
