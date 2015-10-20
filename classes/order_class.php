@@ -41,6 +41,7 @@ class Order_Class
 			$attr = array(
 				'goods_id' => $val['goods_id'],
 				'order_no' => $orderRow['order_no'],
+				'order_id' => $order_id,
 				'user_id'  => $orderRow['user_id'],
 				'time'     => date('Y-m-d H:i:s')
 			);
@@ -659,7 +660,11 @@ class Order_Class
 				return '闪购订单';
 			}
 			break;
-
+			case "4" : 
+			{
+				return '预售订单';	
+			}
+			break;
 			default:
 			{
 				return '普通订单';
@@ -1097,7 +1102,7 @@ class Order_Class
 		//获取支付方式
 		$pay_type = $orderDB->getField('id='.$order_id,'pay_type');
 		
-		if($pay_type!=0 && $pay_type!=1){
+		if(in_array($pay_type,array(3))){
 			$paymentInstance = Payment::createPaymentInstance($pay_type);
 			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$refundId,$order_id,$amount);
 			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败

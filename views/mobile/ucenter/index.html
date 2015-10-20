@@ -13,8 +13,6 @@
 	<meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1" />
         <link rel="apple-touch-icon" href="apple_logo" />
 	
-	
-	
 </head>
 <body>
 	<header>
@@ -27,7 +25,7 @@
 	</header>
 		
 		<div>
-	<a href="{url:/ucenter/}" class="profile menuitem" role="menuitem"><i>编辑</i>
+	<a href="{url:/ucenter/info}" class="profile menuitem" role="menuitem"><i>编辑</i>
 			<div class="avatar">
 				{set:$user_ico = $this->user['head_ico']}
 				<img src="{url:/pic/thumb/img/$user_ico/w/50/h/50}" width="50" height="50" alt="头像" onerror="this.src='{skin:images/front/user_ico.gif}'"/>
@@ -41,7 +39,7 @@
 		<ul>
 			<li><a href="" class="dfk"><p class="sj">{$propData['prop_num']} 张</p><p class="tex">抵用劵</p></a></li>
 			<li><a href="" class="dfh"><p class="sj">￥{$user['balance']}</p><p class="tex">账户余额</p></a></li>
-			<li><a href="jifen" class="dsh"><p class="sj">{$user['point']} </p><p class="tex">积分</p></a></li>
+			<li><a href="{url:/ucenter/integral}" class="dsh"><p class="sj">{$user['point']} </p><p class="tex">积分</p></a></li>
 			<li><a href="" class="dpl">
 				  <span class="qdjf">
 				</a>
@@ -57,10 +55,10 @@
 	
 			<div class="wa">
 				<ul>
-					<li><a href="{url:/ucenter/order}" class="dfk"><p>待付款</p></a></li>
-					<li><a href="{url:/site/huiyuan3}" class="dfh"><p>待发货</p></a></li>
-					<li><a href="{url:/ucenter/order}" class="dsh"><p>待收货</p></a></li>
-					<li><a href="{url:/ucenter/evaluation}" class="dpl"><p>待评论</p></a></li>
+					<li><a href="{url:/ucenter/order/status/1}" class="dfk"><p>待付款</p></a></li>
+					<li><a href="{url:/ucenter/order/status/2}" class="dfh"><p>待发货</p></a></li>
+					<li><a href="{url:/ucenter/order/status/3}" class="dsh"><p>待收货</p></a></li>
+					<li><a href="{url:/ucenter/order/status/4}" class="dpl"><p>待评论</p></a></li>
 				</ul>
 			</div>			
 		

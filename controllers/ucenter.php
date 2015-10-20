@@ -350,8 +350,8 @@ class Ucenter extends IController
         		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 '))
         		{
         			$message = '请不要重复提交申请';
-			        $this->redirect('refunds',false);
-			        Util::showMessage($message);
+			       IError::show(403,'请不要重复提交申请');
+			       // Util::showMessage($message);
         		}
 
         		//未发货的时候 退款运费和保价,税金
@@ -390,12 +390,13 @@ class Ucenter extends IController
         		$refundsDB->setData($updateData);
         		$refundsDB->add();
 
-        		$this->redirect('refunds');
+        		$this->redirect('order');
         		exit;
         	}
         	else
         	{
         		$message = '此商品已经做了退换货处理，请耐心等待';
+        		IError::show(403,$message);
         	}
         }
         else
@@ -403,7 +404,7 @@ class Ucenter extends IController
         	$message = '订单未付款';
         }
 
-        $this->redirect('refunds',false);
+        $this->redirect('order',false);
         Util::showMessage($message);
     }
     /**
@@ -593,7 +594,7 @@ class Ucenter extends IController
 	    	}
 		}
 
-    	$this->redirect('password',false);
+    	$this->redirect('info',false);
     	Util::showMessage($message);
     }
 
@@ -619,7 +620,22 @@ class Ucenter extends IController
 		}
     	$this->redirect('info');
     }
-
+	/**
+	 * 添加用户名
+	 */
+    function username_add(){
+    	$username = IFilter::act(IReq::get('username'));
+    	$user_id = $this->user['user_id'];
+    	$user_db = new IModel('user');
+    	if($user_db->getObj('username='.$username,'id')){
+    		$this->redirect('username',false);
+    		Util::showMessage('该用户名已注册');
+    	}
+    		
+    	$user_db->setData(array('username'=>$username));
+    	$user_db->update('id='.$user_id);
+    		$this->redirect('info');
+    }
     //[个人资料] 修改 [动作]
     function info_edit_act()
     {

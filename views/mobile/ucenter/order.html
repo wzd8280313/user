@@ -1,0 +1,195 @@
+{set:$status=isset($_GET['status'])?$_GET['status']:0;}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>我的山城</title>
+	<meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0, maximum-scale=1.0">    
+        <link rel="apple-touch-icon" href="apple_logo" />
+	<link rel="stylesheet" type="text/css" href="{skin:css/style/account-1.css}">
+    
+    <link rel="stylesheet" type="text/css" href="{skin:css/style/reset.css}">
+    <link rel="stylesheet" type="text/css" href="{skin:css/style/style.css}">
+	<script src="{theme:javascript/js/account-1.js/modernizr.js}"></script>
+	<script src="{theme:javascript/jquery-1.9.1.min.js}"></script>
+	{js:artTemplate}
+	<script src="{theme:javascript/common.js}"></script>
+<script src="{theme:javascript/js/account-1.js/main.js}"></script>  
+<style>
+	.loading-imgS{background:#fff;text-align:center;padding:10px 0;width:100%}
+
+.loading-imgS p{font-size:16px;color:#9A9A9A;text-align:center}
+
+.loading-imgS img{width:32px!important;height:32px!important;display:none}
+
+</style> 
+
+</head>
+<body>
+	<header>
+		<div class="logo" role="heading">
+			<a href="{url:/site/index?callback=}">山城速购</a><em class="nickname">我的山城</em>
+		</div>
+
+		<a href="{url:/simple/login?callback=}" class="login">注销</a>
+
+ <div class="caidan">
+  <ul>
+  <li {if:$status==0}class="qbys"{/if}><a href="{url:/ucenter/order}">全部</a></li>
+   <li {if:$status==1}class="qbys"{/if}><a href="{url:/ucenter/order/status/1}">待付款</a></li>
+    <li {if:$status==2}class="qbys"{/if}><a href="{url:/ucenter/order/status/2}">待发货</a></li>
+     <li {if:$status==3}class="qbys"{/if}><a href="{url:/ucenter/order/status/3}">待收货</a></li>
+      <li {if:$status==4}class="qbys"{/if}><a href="{url:/ucenter/order/status/4}">待评论</a></li>
+  </ul>
+     </div>  
+
+
+
+
+<div class="qijiandian" id='order_list'>
+
+</div>  
+<script type='text/html' id='order_box'>
+<ul>
+ 	<li>
+	 	<form action="" method="post">
+	  		<input type="checkbox" name="sub" />
+		 </form>
+	  
+	  	<h3><a href="#"><%=order_no%>>></a></h3><h4><%=order_status%></h4>
+ 	</li>
+	<% for(var i in goods_data){%>
+ 	<li class="chanpin">
+		 <a class="tupian"  href="{url:/site/products/id/}/<%=goods_data[i]['goods_id']%>"> <img src="{url:<%=goods_data[i]['img']%>}" ></a>
+		   
+		   <p><a href="{url:/site/products/id/}/<%=goods_data[i]['goods_id']%>"><%if(type==1){%>[团购]<%}%><%if(type==4){%>[预售]<%}%><%=goods_data[i]['name']%><br><b><%=goods_data[i]['spec']%></b>
+		     <br><span>七天退换</span></a></p> 
+		  <b>￥<%=goods_data[i]['real_price']%><br><span>×<%=goods_data[i]['goods_nums']%></span></b>
+		  <%if(goods_data[i]['cid']){%>
+		  <%if(goods_data[i]['point']==0){%>
+ 			<a class="hongzi wd-popup-trigger" href="{url:/site/comments/id}/<%=goods_data[i]['cid']%>" >评价</a>
+			<%}else{%>
+			<a class="hongzi wd-popup-trigger" href="javascript:void(0)" >已评价</a>
+			<%}%>
+		<%}%> 
+   
+   </li>
+   <%}%>
+  	<li class="heji">
+	  		<p>共<%=num%>商品 合计：￥<b><%=order_amount%></b></p>
+	 </li> 
+ 
+ 	<li>
+ 		<%if(type!=4&&status==1){%>
+ 		<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/block/doPay/order_id/}/<%=id%>' alt='你确定立即结算吗?'>立即结算</a>
+		<a href="" class="qd-popup-trigger xio pop" tourl='{url:/ucenter/order_status/op/cancel/order_id/}/<%=id%>' alt='你确定取消订单吗?'>取消交易</a>
+		<%}%>
+		<%if(type!=4&&(order_status_no==3||order_status_no==11||order_status_no==13)){%>
+ 		<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/ucenter/order_status/op/confirm/order_id/}/<%=id%>' alt='你确定确认收货吗?'>确认收货</a>
+	
+		<%}%>
+		<%if(can_refund){%>
+ 		<a class="hongzi wd-popup-trigger" href='{url:/ucenter/refunds_edit/order_id}/<%=id%>' >申请售后</a>
+	
+		<%}%>
+		<%if(type==4&&order_status_no==1){%>
+ 		<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/block/doPayPresell/order_id/}/<%=id%>' alt='你确定立即结算吗?'>支付预付款</a>
+		<a href="" class="qd-popup-trigger xio pop" tourl='{url:/ucenter/preorder_status/op/cancel/order_id/}/<%=id%>' alt='你确定取消订单吗?'>取消交易</a>
+		<%}%>
+		<%if(type==4&&order_status_no==4){%>
+ 		<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/block/doPayPresell/order_id/}/<%=id%>' alt='你确定立即结算吗?'>支付尾款</a>
+		<%}%>
+		<%if(type==4&&order_status_no==9){%>
+ 		<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/ucenter/preorder_status/op/confirm/order_id/}/<%=id%>' alt='你确定确认收货吗?'>确认收货</a>
+	
+		<%}%>
+		
+    </li>
+ 	 <li class="huise"><hr/></li>
+</ul>
+</script>
+<div class="wd-popup" role="alert">
+	<div class="wd-popup-container">
+		<p></p>
+		<ul class="wd-buttons">
+			<li><a name='todo' href="">是</a></li>
+			<li><a href="#" class="wd-popup-close image-repeat">否</a></li>
+		</ul>
+		<a href="#" class="wd-popup-close img-replace">关闭</a>
+	</div> 
+</div> 
+
+
+<footer id="footer">
+		<nav>
+			<a href="{url:/site/index?callback=}">首页</a>
+			<!-- <a href="http://wap.zol.com.cn/">分类</a> --><a href="category">分类</a>
+			<a class="badge" href="{url:/site/pro_lists?callback=}">搜索</a>
+			<!-- <a href="http://app.zol.com.cn/">应用</a> --><a href="#">应用</a>
+		</nav>
+
+	<div class="f-ch-cp">
+		<div class="item"><a href="{url:/site/index?callback=}">触屏版</a><a href="http://www.yqtvt.com/index.html">标准版</a></div>
+		<div class="item"><span class="copyright_1">Copyright</span> <span class="copyright_2">2012-2015</span><span class="copyright_3">NAI.COM</span><span class="copyright_4">版权所有</span></div></div>
+</footer>
+
+
+
+
+<div class="bottom">
+<div class="dibu"><form action="" method="post">
+    <input name="" type="checkbox" value="" id="ckAll" /><p>全选</p>
+
+
+             
+<button> 合并付款</button>
+</form>
+
+
+
+
+
+
+</div>
+
+</div>
+
+
+<script type='text/javascript'>
+	var status = '{$status}';
+		var obj = {
+			'url': '{url:/ucenter_ajax/get_orderlist}',
+			'template_id': 'order_box',
+			'append_to': $('#order_list'),
+			'loading_img': '{skin:images/files/loading.gif}',
+			'trans_data': {status:status},
+			'callback' : null
+		};
+	var ajax = new Ajax_Get_Data();
+	ajax.init(obj);
+
+ 
+</script>
+ 
+ <script type='text/javascript'>
+
+  $("#ckAll").click(function() {
+    $("input[name='sub']").prop("checked", this.checked);
+  });
+  
+  $("input[name='sub']").click(function() {
+    var $subs = $("input[name='sub']");
+    $("#ckAll").prop("checked" , $subs.length == $subs.filter(":checked").length ? true :false);
+  });
+
+
+	
+
+</script>
+
+ 
+    
+</body>
+</html>
+

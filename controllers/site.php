@@ -971,7 +971,7 @@ class Site extends IController
 
 		if(!isset($this->user['user_id']) || $this->user['user_id']==null )
 		{
-			IError::show(403,"登录后才允许评论");
+			$this->redirect('simple/login?callback=site/comments/id/'.$id);
 		}
 
 		$can_submit = Comment_Class::can_comment($id,$this->user['user_id']);

@@ -339,7 +339,7 @@ xpopup
 
 
 
-.qijiandian ul li .qd-popup .qd-popup-container .qd-buttons li .qd-popup-close.image-repeat{
+ .qd-popup .qd-popup-container .qd-buttons li .qd-popup-close.image-repeat{
 	width: 43%;
 	position: absolute;
 	top: 96px;
@@ -518,7 +518,7 @@ xpopup
   }
 }
 
-.qijiandian ul li .wd-popup .wd-popup-container .wd-buttons li .wd-popup-close.image-repeat{
+.wd-popup .wd-popup-container .wd-buttons li .wd-popup-close.image-repeat{
 	width: 43%;
 	position: absolute;
 	top: 96px;

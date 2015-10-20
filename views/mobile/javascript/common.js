@@ -391,17 +391,19 @@ function Ajax_Get_Data(){
 	
 	this.init = function(obj){
 		this.obj = obj;
+		var _this=this;
 		$('body').append("<input name='page' type='hidden' value='1' />");
 		$('<div class="loading-ctn loading-imgS"><p >下拉查看更多</p><img src=""></div> ') .insertAfter(this.obj.append_to);
 		$('.loading-imgS img').attr('src',this.obj.loading_img);
-		this.ajax_get_data(this.obj);
+		this.ajax_get_data();
 		window.onscroll = function(){
 			if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-				this.ajax_get_data(this.obj);
+				_this.ajax_get_data();
 			}
 		}
 	}
-	this.ajax_get_data = function(obj){
+	this.ajax_get_data = function(){
+		var obj = this.obj;
 		var url = obj.url ? obj.url : false;
 		var callback = obj.callback ? obj.callback : null;
 		var template_id = obj.template_id ? obj.template_id : false;
@@ -432,7 +434,7 @@ function Ajax_Get_Data(){
 				}
 				else {
 					for (var i in data) {
-						var newPro = template.render(template_id, data[i]);
+						var newPro = template.render(template_id,data[i]);
 						append_to.append(newPro);
 						if (callback != null) 
 							callback(data[i]);

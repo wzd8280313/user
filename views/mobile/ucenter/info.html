@@ -1,4 +1,4 @@
-
+{set:$prop_len = count(array_filter(explode(',',$this->memberRow['prop'])));}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <style>
@@ -19,16 +19,7 @@
 			<a href="{url:/site/index?callback=}">山城速购</a><em class="nickname">我的山城</em>
 		</div>
 
-<!-- 		<a href="login.html" class="login">注销</a>
 
-		<span class="nav"><a href="#">分类</a></span>
-
-		<ul class="menu" role="menu">
-			<li><a href="/">首页</a></li>
-			<li><a href="#">查报价</a></li>
-			<li><a href="/bbs/">论坛</a></li>
-			<li><a href="#">应用</a></li>
-		</ul> -->
 	</header>
 		
 		<div>
@@ -36,9 +27,13 @@
 			<div class="avatar">
 				<img src="{skin:css/wap/scer.jpg}" width="50" height="50" alt="头像" />
 			</div>
-			<em class="name">LPF8090Y</em>
-			<span class="rank">Lv.1</span></div>
-				<!-- <span class="rank"><a href="#"><img class="xximg" src="css/wap/app_mail_nav.png"/></a> </span>-->
+			{if:$this->userRow['username']}
+			<em class="name">{$this->userRow['username']}</em>
+			{else:}
+			<a href='{url:/ucenter/username}'>设置用户名</a>
+			{/if}
+			<span class="rank">{$this->userGroupRow['group_name']}</span></div>
+			
 		</div>
 	
 
@@ -49,7 +44,7 @@
 		
 		<a role="menuitem" class="menuitem" href="helps">
 			<i>抵用券使用规则</i>
-			<em class="comment">抵用劵：0</em>
+			<em class="comment">抵用劵：{$prop_len}张</em>
 		</a>
 		<!-- <a role="menuitem" class="menuitem" href="help.html">
 			<i>如何充值</i>
@@ -57,7 +52,7 @@
 		</a> -->
 		<a role="menuitem" class="menuitem" href="helps">
 			<i>如何获得</i> 
-			<em class="post">积分：148</em>
+			<em class="post">积分：{$this->memberRow['point']}</em>
 		</a>
 	
 	</div>
@@ -66,17 +61,17 @@
 	<div class="account-menu menu" role="menu">
 		
 		
-		
+		{if:!$this->userRow['username']}
 		<a role="menuitem" class="menuitem" href="username">
-			<i>lpf8090y</i>
-			<em class="fav">修改用户名</em>
+			<em class="fav">设置用户名</em>
 		</a>
-		<a role="menuitem" class="menuitem" href="userpass">
+		{/if}
+		<a role="menuitem" class="menuitem" href="{url:/ucenter/password}">
 			<!-- <i>暂无积分</i> -->
 			<em class="tuan">修改密码</em>
 		</a>
-		<a role="menuitem" class="menuitem" href="userphone">
-			<i>136****0985</i> 
+		<a role="menuitem" class="menuitem" href="{url:/ucenter/toChgPhone1}">
+			<i>{echo:user_like::getSecretPhone($this->userRow['phone'])}</i> 
 			<em class="ershou">换绑手机</em>
 		</a>
 	
@@ -84,14 +79,7 @@
 
 
 <footer id="footer">
-		
 
-	<div class="f-qk-tl">
-		<div class="f-login">
-			<a href="{url:/simple/login?callback=}">登录</a><span>|</span><a href="{url:/simple/reg?callback=}">注册</a>
-		<div class="f-go-top" id="goTop"><a href="#">TOP</a></div>
-		</div>
-	</div>
 	<div class="f-ch-cp">
 		<div class="item"><a href="{url:/site/index?callback=}">触屏版</a><a href="http://www.yqtvt.com/index.html">标准版</a></div>
 		<div class="item"><span class="copyright_1">Copyright</span> <span class="copyright_2">2012-2015</span><span class="copyright_3">NAI.COM</span><span class="copyright_4">版权所有</span></div></div>
