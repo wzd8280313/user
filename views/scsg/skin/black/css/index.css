@@ -383,6 +383,10 @@ height:15px;
 float:left;
 padding:20px 0 0 25px;
 }
+/*首页左侧楼层字体变红*/
+.floor .fl-cnt .fl-rcmd .fl-rcmd-bg  .key:hover {
+color: #E71F19;
+}
 .floor .fl-cnt .fl-rcmd .fl-rcmd-bg .admanage{
 clear:both;
 }
