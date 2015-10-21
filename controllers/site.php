@@ -749,14 +749,12 @@ class Site extends IController
 		$tb_tag->limit = 5;
 		$goods_info['tag_data'] = $tb_tag->find();
 		
-
 		//获取商家信息
 		if($goods_info['seller_id'])
 		{
 			$sellerDB = new IModel('seller');
 			$goods_info['seller'] = $sellerDB->getObj('id = '.$goods_info['seller_id'],'id,true_name,email,mobile,logo_img,server_num,point,num');
 		}
-
 		//增加浏览次数
 		$visit    = ISafe::get('visit');
 		$checkStr = "#".$goods_id."#";
