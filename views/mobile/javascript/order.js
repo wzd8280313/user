@@ -44,7 +44,7 @@ function address_select(_this){
 		},
 		success:function(data){
 			if(data==1)
-				location.href=last_url+'?radom='+Math.random();
+				location.href=last_url+'/radom/'+Math.random();
 			
 		},
 		error:function(){
