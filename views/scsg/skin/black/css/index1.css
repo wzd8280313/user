@@ -456,7 +456,7 @@ ul.ranklist{background:#fdfdfd}
 			.box_2 .content dl dd.current a{font-weight:bold}
 /* brand_list style end */
 /* sorting style end */
-dl.sorting{ position:relative;width:688px;border-bottom:1px solid #e5e5e5;padding:5px 60px 3px 0;text-align:left;overflow:hidden}
+dl.sorting{ position:relative;border-bottom:1px solid #e5e5e5;padding:5px 60px 3px 0;text-align:left;overflow:hidden}
 	dl.sorting dt{width:100px;float:left;text-align:right;color:#626262;font-weight:bold;line-height:25px;}
 		dl.sorting dd{padding-left:145px;}
 		dl.sorting dd a{display:inline-block;margin:2px 5px 0;padding:0 3px;_padding-top:2px}
@@ -490,9 +490,9 @@ dl.sorting{ position:relative;width:688px;border-bottom:1px solid #e5e5e5;paddin
 		.display_title ul li.current .l{background-position:-13px -179px}
 			.display_title ul li a{padding:0 6px 0 10px;font-size:14px;font-weight:bold;text-decoration:none}
 			.display_title a.hover{text-decoration:none}
-				.display_title ul li a span{margin:0 4px;padding:0 3px 0 0;padding:0 4px 0 0\9;}
-				.display_title ul li.current a span{background-position:-36px -180px}
-				.display_title ul li.current a span.desc{background-position:-41px -198px}
+				.display_title ul li a span{margin:0 4px;padding:0 4px 0 0;padding:0 4px 0 0\9;}
+				.display_title ul li.current a span{background-position:-38px -180px}
+				.display_title ul li.current a span.desc{background-position:-38px -180px}
 		.show_b,.show_s{display:block;float:left;width:16px;height:16px;margin:10px 6px 0 0;overflow:hidden}
 		.show_b span,.show_s span{display:block;width:16px;height:16px;overflow:hidden;text-indent:-9999px;background:url(../images/front/sprites_2.gif) -88px -183px no-repeat}
 		.show_s span{ background-position:-104px -183px}
