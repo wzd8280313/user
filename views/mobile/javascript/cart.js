@@ -100,7 +100,6 @@ function cartCount(type,obj,oldCount)
 					if(content.promotion.length > 0)
 					{
 						$('#cart_prompt .indent').remove();
-
 						for(var i = 0;i < content.promotion.length; i++)
 						{
 							$('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
@@ -130,7 +129,7 @@ function cartCount(type,obj,oldCount)
 		});
 	}
 }
-
+//
 //增加商品数量
 function cart_increase(type,obj)
 {

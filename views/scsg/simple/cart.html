@@ -222,7 +222,7 @@ function cartCount(type,obj,oldCount)
 				var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()));
 				var tmpUrl = '{url:/simple/promotionRuleAjax/random/@random@}';
 				tmpUrl = tmpUrl.replace("@random@",Math.random());
-				$.getJSON( tmpUrl ,{final_sum:final_sum},function(content){
+				$.getJSON( tmpUrl ,{final_sum:final_sum},function(content){ 
 					if(content.promotion.length > 0)
 					{
 						$('#cart_prompt .indent').remove();

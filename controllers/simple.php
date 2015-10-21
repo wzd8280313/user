@@ -413,7 +413,6 @@ class Simple extends IController
     	$this->weight    = $result['weight'];
     	
     	//将商品按商家分开
-    	
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
 		//渲染视图
     	$this->redirect('cart',$redirect);
@@ -435,24 +434,20 @@ class Simple extends IController
     {
     	$promotion = array();
     	$proReduce = 0;
-
+    	$final_sum = intval(IReq::get('final_sum'));
+    	$proObj = new ProRule($final_sum);
     	//总金额满足的促销规则
     	if($this->user['user_id'])
     	{
-    		$final_sum = intval(IReq::get('final_sum'));
-
     		//获取 user_group
 	    	$groupObj = new IModel('member as m,user_group as g');
 			$groupRow = $groupObj->getObj('m.user_id = '.$this->user['user_id'].' and m.group_id = g.id','g.*');
 			$groupRow['id'] = empty($groupRow) ? 0 : $groupRow['id'];
 
-	    	$proObj = new ProRule($final_sum);
 	    	$proObj->setUserGroup($groupRow['id']);
-
-	    	$promotion = $proObj->getInfo();
-	    	$proReduce = number_format($final_sum - $proObj->getSum(),2);
-    	}
-
+		}
+    	$promotion = $proObj->getInfo();
+    	$proReduce = number_format($final_sum - $proObj->getSum(),2);
 		$result = array(
     		'promotion' => $promotion,
     		'proReduce' => $proReduce,
@@ -460,7 +455,59 @@ class Simple extends IController
 
     	echo JSON::encode($result);
     }
-
+    /**
+     * @凑单功能
+     * 
+     */
+	function add_order()
+	{
+		$cart_sum = IFilter::act(IReq::get('sum'),'float');
+		$countObj = new CountSum();
+		$result   = $countObj->cart_count();
+		$cart_sum       = $result['sum'];
+		$prorule = new ProRule($cart_sum);
+		
+		if($this->user['user_id'])
+		{
+			//获取 user_group
+			$groupObj = new IModel('member as m,user_group as g');
+			$groupRow = $groupObj->getObj('m.user_id = '.$this->user['user_id'].' and m.group_id = g.id','g.*');
+			$groupRow['id'] = empty($groupRow) ? 0 : $groupRow['id'];
+			$prorule->setUserGroup($groupRow['id']);
+		}
+		
+		$prom_data = $prorule->notSatisfyPromotion();
+		if(!$prom_data){
+			$prom_data['gap_price'] = 0;
+			$prom_data['cou_price'] = 0;
+		}else{
+			$gap_price = $prom_data['condition']-$cart_sum;
+			$prom_data['gap_price'] = $gap_price;
+			$prom_data['cou_price'] = ceil($gap_price * 125/100);
+		}
+		
+		$this->setRenderData($prom_data);
+		$this->redirect('add_order');
+	}
+	/**
+	 * 异步获取凑单商品
+	 */
+	function ajax_coudan()
+	{
+		$price = IFilter::act(IReq::get('cou_price'),'int');
+		$page = IReq::get('page') ? IFilter::act(IReq::get('page')) : 1;
+		$goods_db = new IQuery('goods as g');
+		$goods_db->page = $page;
+		if($price>0){
+			$goods_db->where = 'is_del=0 and sell_price < '.$price;
+			$goods_db->order = 'sell_price DESC';
+		}else{
+			$goods_db->where = 'is_del=0';
+		}
+		$res = $goods_db->find();
+		if($goods_db->page==0){echo 0;exit;}
+		echo JSON::encode($res);
+	}
     //购物车寄存功能[写入]
     function deposit_cart_set()
     {

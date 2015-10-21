@@ -222,7 +222,41 @@ class ProRule
 		$proList = $proObj->query($where,'*','`condition`');
 		return $proList;
 	}
-
+	/**
+	 * @brief 获取商品金额不满足的促销规则
+	 * 
+	 */
+	public function notSatisfyPromotion($award_type = null)
+	{
+		$datetime = ITime::getDateTime();
+		$proObj   = new IModel('promotion');
+		$where    = '`condition` > '.$this->sum.' and type = 0 and is_close = 0 and start_time <= "'.$datetime.'" and end_time >= "'.$datetime.'"';
+		
+		//奖励类别分析
+		if($award_type != null)
+		{
+			$where.=' and award_type in ('.$award_type.')';
+		}
+		
+		//用户组
+		if($this->user_group != null)
+		{
+			$where.=' and (user_group = "all" or FIND_IN_SET('.$this->user_group.',user_group))';
+		}
+		else
+		{
+			$where.=' and user_group = "all" ';
+		}
+		
+		$proList = $proObj->getObj($where,'*','`condition`','ASC');
+		if(empty($proList))return false;
+		$explain['type'] = $proList['award_type'];
+		$explain['plan'] = $proList['name'];
+		$explain['condition'] = $proList['condition'];
+		$explain['info'] = $this->typeExplain($proList['award_type'],$proList['condition'],$proList['award_value']);
+	
+		return $explain;
+	}
 	/**
 	 * @brief 现金促销规则奖励操作
 	 * @param array 现金促销规则奖励信息

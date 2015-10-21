@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)http://m.#.com/s/search?keyword=%E8%A1%A3%E6%9C%8D -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">        
         <link rel="apple-touch-icon-precomposed" href="http://static-web.#.com/wap/img/collect-logo/#-collect-logo.png">
@@ -49,8 +48,9 @@
 
                   
     <section class="s-list cf" id="dataList">
+    	{if:$this->sum>0}
             <div class="wrap">
-
+				
 				<form> 
 				<div class="container">
 					<div class="cart clear">
@@ -61,7 +61,7 @@
 								<td width="75%">
 								  <h5 class="fl">购物车中的产品</h5></li>
 								</td>
-								<td width="10%"><a href="{url:/site/add_order}" class="goadd">去凑单&nbsp;&gt;</a></td>
+								<td width="10%" id='coudan'><a href="{url:/simple/add_order}" class="goadd">去凑单&nbsp;&gt;</a></td>
 							</tr>
 						</table>		   
 					   <div class="c_list cb" id="list">
@@ -104,7 +104,7 @@
 					</div>  
 					</div>
 				</div>
-
+				
 				<div class="cart_bg">
 				<table width="100%" border="0">
 					<tr>
@@ -125,15 +125,16 @@
 					</tr>
 				</table>
 				</div> 
-
+				
 
 				</form>
+			
 				<div id='cart_prompt'>
 					满足的优惠活动：
 				</div>
 			</div>
-
-                <div class="centerContent" style="display:none;">
+			{else:}
+                <div class="centerContent" >
                     <div class="centerContent-nothing">
                         <div class="centerContent-nothing-img">
                             <img src="{skin:images/nothing-bg.png}">
@@ -145,7 +146,7 @@
                         <a href="{url:/site/index?callback=}" class="shopping-btn">去逛逛</a>
                     </div>
                 </div>
-
+			{/if}
     </section>
                
  
@@ -185,10 +186,35 @@
 		var cart_url = '{url:/simple/cart}';
 		var promotion_url = '{url:/simple/promotionRuleAjax/random/@random@}';
 		var del_cart_url = '{url:/simple/removeCartMany/link/cart}';
+		
 		function to_buy(){
 			window.location.href='{url:/simple/cart2}';
 		}
-		
+		(function(){
+			var final_sum = {$this->final_sum};
+			var tmpUrl = promotion_url;
+			tmpUrl = tmpUrl.replace("@random@",Math.random());
+			$.getJSON( tmpUrl ,{final_sum:final_sum},function(content){
+				if(content.promotion.length > 0)
+				{
+					$('#cart_prompt .indent').remove();
+					for(var i = 0;i < content.promotion.length; i++)
+					{
+						$('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+					}
+					$('#cart_prompt').show();
+				}
+				else
+				{
+					$('#cart_prompt .indent').remove();
+					$('#cart_prompt').hide();
+				}
+				/*开始更新数据 (2)*/
+	
+				//促销活动
+				$('#promotion_price').html(content.proReduce);
+			})
+	})()
 	</script>
         
    {include:layouts/footer.html}
