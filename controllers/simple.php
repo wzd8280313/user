@@ -635,7 +635,7 @@ class Simple extends IController
     	{
     		if($id == 0 || $type == '')
     		{
-    			$this->redirect('/simple/login?tourist&callback=/simple/cart2');
+    			$this->redirect('/simple/login?callback=/simple/cart2');
     		}
     		else
     		{

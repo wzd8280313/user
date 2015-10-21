@@ -120,7 +120,7 @@
 							<p> <span class="ff6" >总金额</span>   <span class="ff6">优惠金额</span>  <span class="ff6">最终金额</span></p>
 						</td>
 						<td width="10%"><a href='{url:/}'><button class="submit2" type='button' style='width:100px;'>继续购物</button</a></td>
-						<td width="20%"><button class="submit" onclick="location.href='{url:/simple/cart2}'">去结算</button></td>
+						<td width="20%"><button class="submit" onclick="to_buy();" type='button'>去结算</button></td>
 						<td width="3%"></td>
 					</tr>
 				</table>
@@ -185,6 +185,10 @@
 		var cart_url = '{url:/simple/cart}';
 		var promotion_url = '{url:/simple/promotionRuleAjax/random/@random@}';
 		var del_cart_url = '{url:/simple/removeCartMany/link/cart}';
+		function to_buy(){
+			window.location.href='{url:/simple/cart2}';
+		}
+		
 	</script>
         
    {include:layouts/footer.html}
