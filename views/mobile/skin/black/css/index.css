@@ -21,7 +21,7 @@
 /* z-index:-1; */
 }
 
-.search_wrap .search_title .num{display:block;position:absolute;top:0;right:0;width:14px;height:16px;text-align:center;vertical-align:middle;background:red;color:#fff;border-radius:4px;/*box-shadow:2px 2px 4px #333;*/}
+.search_wrap .search_title .num{display:block;position:absolute;top:0;right:0;width:14px;height:16px;text-align:center;vertical-align:middle;background:red;color:#fff;border-radius:4px;/*box-shadow:2px 2px 4px #333;*/font-size:12px;}
 
 .search_wrap .search_suggest_wrap{background:#fff;display:none;position:relative}
 
