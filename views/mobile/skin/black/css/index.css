@@ -10,7 +10,7 @@
 
 .search_wrap .search_title .search_input_wrap{position:relative;margin:12px 35px 0 30px;background:#F0F0F0;border-radius:5px}
 
-.search_wrap .search_title .search_input_wrap .search_input{padding-left:.4em;width:90%;height:35px;outline:0;border:0;background:0 0;font-size:1.3em}
+.search_wrap .search_title .search_input_wrap .search_input{padding-left:.4em;width:90%;height:35px;outline:0;border:0;background:0 0;font-size:14px}
 
 .search_wrap .search_title .search_input_wrap .search_icon{width:20px;height:20px;vertical-align:middle;background:url(../css/wap/search-btn.png);background-size:100% 100%;border:0;outline:0;position:absolute;top:8px;right:5px}
 
@@ -27,7 +27,7 @@
 
 .search_wrap .search_suggest_wrap ul li{width:100%;display:block;padding:5px 15px;border-bottom:1px solid #E9E9E9}
 
-.search_wrap .search_suggest_wrap ul li span{max-width:50%;height:35px;line-height:35px;font-size:1.5em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search_wrap .search_suggest_wrap ul li span{max-width:50%;height:35px;line-height:35px;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 .search_wrap .search_suggest_wrap ul li span em{color:#FA7A00}
 
@@ -58,7 +58,7 @@
 
 .nav_wrap_new .top_nav_ul a .top_nav_li i{display:block;margin:8px auto 4px;width:25px;height:25px;background-repeat:no-repeat;background-size:contain;background-position:center}
 
-.nav_wrap_new .top_nav_ul a .top_nav_li .top_nav_li_span{display:block;font-size:1.3em;color:#898989}
+.nav_wrap_new .top_nav_ul a .top_nav_li .top_nav_li_span{display:block;font-size:14px;color:#898989}
 
 .nav_wrap_new .top_nav_ul a .top_nav_li .nav_home_icon{background-image:url(../css/wap/top_nav_home_icon.png)}
 
@@ -104,7 +104,7 @@ body{font-size:62.5%}
 
 #page .top_menu ul li i{display:block;width:40px;height:40px;margin:10px auto;background:url(../css/wap/index_nav_icons.png) no-repeat;background-size:160px auto}
 
-#page .top_menu ul li span{font-size:1.2em}
+#page .top_menu ul li span{font-size:12px}
 
 #page .top_menu ul li .icon_0{background-position:left top}
 
@@ -132,9 +132,9 @@ body{font-size:62.5%}
 
 #page .suggestion .title{border-bottom:1px solid #eee;height:40px;line-height:40px;padding:0 10px}
 
-#page .suggestion .title h2{font-size:1.6em}
+#page .suggestion .title h2{font-size:16px}
 
-#page .suggestion .title span{margin-left:16px;font-size:1.6em;}
+#page .suggestion .title span{margin-left:16px;font-size:16px;}
 
 #page .suggestion .title .arrow_icon{margin-top:16px;width:8px;height:8px;display:block;content:'';border:#999 solid;border-width:1px 1px 0 0;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);transform:rotate(45deg)}
 
@@ -152,7 +152,7 @@ body{font-size:62.5%}
 
 #page .suggestion .content ul li .price_wrap{width:100%;background:#e6e6e6;border-radius:10px;height:20px;margin:10px auto 0;text-align:center;line-height:20px}
 
-#page .suggestion .content ul li .price_wrap strong{font-size:1.2em;color:#d61818}
+#page .suggestion .content ul li .price_wrap strong{font-size:12px;color:#d61818}
 
 #page .suggestion .content ul li .price_wrap del{text-decoration-line:line-through;font-size:1em;color:#999}
 
@@ -162,7 +162,7 @@ body{font-size:62.5%}
 
 #page .activity_floor .title{border-bottom: 1px solid #eee;height: 40px;line-height: 40px;padding: 0 10px;}
 
-#page .activity_floor .title h2{font-size:1.6em;}
+#page .activity_floor .title h2{font-size:16px;}
 
 #page .activity_floor .first_floor{border-bottom:1px solid #eee}
 
@@ -186,9 +186,9 @@ body{font-size:62.5%}
 
 #page .guess_u_like .title{border-bottom:1px solid #eee;height:40px;line-height:40px;padding:0 10px}
 
-#page .guess_u_like .title h2{font-size:1.6em}
+#page .guess_u_like .title h2{font-size:16px}
 
-#page .guess_u_like .title span{font-size:1.2em}
+#page .guess_u_like .title span{font-size:12px}
 
 #page .guess_u_like .title .arrow_icon{margin-top:16px;width:8px;height:8px;display:block;content:'';border:#999 solid;border-width:1px 1px 0 0;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);transform:rotate(45deg)}
 
@@ -208,19 +208,19 @@ body{font-size:62.5%}
 
 #page .guess_u_like .content ul li .li-wrap .img_wrap .prefer_wrap .back_icon{position:absolute;left:0;bottom:0;display:block;width:35px;height:35px;background:url(../css/wap/back_icon.png?t=201508041429) no-repeat center;background-size:contain}
 
-#page .guess_u_like .content ul li .li-wrap .img_wrap .prefer_wrap span{position:absolute;left:0;bottom:0;width:100%;text-align:center;padding-left:35px;color:#fff;font-size:1.4em}
+#page .guess_u_like .content ul li .li-wrap .img_wrap .prefer_wrap span{position:absolute;left:0;bottom:0;width:100%;text-align:center;padding-left:35px;color:#fff;font-size:15px;}
 
-#page .guess_u_like .content ul li .li-wrap .img_wrap .prefer_wrap span em{font-size:1.2em;margin-right:10px}
+#page .guess_u_like .content ul li .li-wrap .img_wrap .prefer_wrap span em{font-size:12px;margin-right:10px}
 
-#page .guess_u_like .content ul li .li-wrap p{margin:0 10px 5px;font-size:1.3em;line-height:1.4em;height:2.6em;color:#333;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-wrap:break-word}
+#page .guess_u_like .content ul li .li-wrap p{margin:0 10px 5px;font-size:14px;line-height:1.4em;height:2.6em;color:#333;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-wrap:break-word}
 
 #page .guess_u_like .content ul li .li-wrap .price_wrap{padding:0 10px 8px}
 
-#page .guess_u_like .content ul li .li-wrap .price_wrap strong{width:70%;float:left;font-size:1.7em;font-weight:bolder;color:#ff5e00;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;word-wrap:break-word}
+#page .guess_u_like .content ul li .li-wrap .price_wrap strong{width:70%;float:left;font-size:17px;font-weight:bolder;color:#ff5e00;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;word-wrap:break-word}
 
-#page .guess_u_like .content ul li .li-wrap .price_wrap del{text-decoration-line:line-through;margin-left:4px;font-size:1.1em;color:#999}
+#page .guess_u_like .content ul li .li-wrap .price_wrap del{text-decoration-line:line-through;margin-left:4px;font-size:12px;color:#999}
 
-#page .guess_u_like .content ul li .li-wrap .price_wrap .discount{float:right;margin-top:3px;padding:1px 3px;font-size:1.3em;border-radius:2px;color:#fff;background:#d61818}
+#page .guess_u_like .content ul li .li-wrap .price_wrap .discount{float:right;margin-top:3px;padding:1px 3px;font-size:14px;border-radius:2px;color:#fff;background:#d61818}
 
 @-webkit-keyframes marquee{0%{left:100%}
 
@@ -256,4 +256,4 @@ body{font-size:62.5%}
 
 .banner_bottom p{display:block;width:300%;height:35px;line-height:35px;position:absolute;bottom:0;overflow:hidden;-webkit-animation:marquee 20s linear infinite;-moz-animation:marquee 20s linear infinite;-ms-animation:marquee 20s linear infinite;-o-animation:marquee 20s linear infinite;animation:marquee 20s linear infinite}
 
-.banner_bottom p span{width:300%;height:35px;color:#fff;font-size:1.3em}
+.banner_bottom p span{width:300%;height:35px;color:#fff;font-size:14px}
