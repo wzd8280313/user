@@ -46,22 +46,19 @@ orderFormInstance = new orderFormClass();
 jQuery(function(){
 	
 	//使用红包按钮
-	$('#ticket_a').click(function()
+	(function()
 	{
-		//第一次打开时生成缓存数据
-		if($.trim($('#ticket_show_box').text()) == '')
+		var ticketList = {echo:JSON::encode($this->prop)};
+		for(var index in ticketList)
 		{
-			var ticketList = {echo:JSON::encode($this->prop)};
-			for(var index in ticketList)
-			{
-				var ticketHtml = template.render('ticketTrTemplate',{item:ticketList[index]});
-				$('#ticket_show_box').append(ticketHtml);
-			}
-			var ticketHtml = template.render('ticketInputTemplate',{});
-				$('#ticket_show_box').append(ticketHtml);
+			var ticketHtml = template.render('ticketTrTemplate',{item:ticketList[index]});
+			$('#ticket_show_box').append(ticketHtml);
 		}
+		var ticketHtml = template.render('ticketInputTemplate',{});
+			$('#ticket_show_box').append(ticketHtml);
+	
 
-	});
+	})();
 	getTakeselfData('area','{$defaultAddress["area"]}');
 
 	//获取配送费用的url
