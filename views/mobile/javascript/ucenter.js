@@ -3,11 +3,9 @@ function getMobileCode(phone){
 	if(!phone)return false;
 	var btn = $('input[name=getMessCode]');
 	var toUrl = getCodeUrl;
-	
-	$.post(toUrl,{phone:phone},function(data){//window.realAlert(data.errorCode);
-		if(data.errorCode==0){
-			btnCount(btn);
-		}else{
+	btnCount(btn);
+	$.post(toUrl,{phone:phone},function(data){
+		if(data.errorCode!=0){
 			alt(data.mess);
 		}
 	},'json');
@@ -46,12 +44,12 @@ function checkMobileNew(){
 	var newPhone = $('input[name=newPhone]').val();
 	
 	$.post(checkMobileUrl2,{code:code,newPhone:newPhone},
-		function(data){window.realAlert(JSON.stringify(data));
+		function(data){window.alt(JSON.stringify(data));
 			if(data.errorCode==0){
 			//window.realAlert(data.next);
 			location.href=data.next;
 		}else{
-			alert(data.mess);
+			alt(data.mess);
 		}
 		},'json');
 }
@@ -83,7 +81,7 @@ function successTo(successToUrl){
 $(function(){
 	$('#getNew').on('click',function(){
 		var newPhone = $('input[name=newPhone]').val();
-		if(!newPhone)alert('请正确填写手机号');
+		if(!newPhone)alt('请正确填写手机号');
 		getMobileCode(newPhone);
 	})
 	//发送邮箱验证码

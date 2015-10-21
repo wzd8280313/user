@@ -1115,7 +1115,7 @@ class Site extends IController
 // 				'freight_id'    => 1,
 // 		);
 // 		sendgoods::run_presell($paramArray);
-
+print_r($_SESSION);
 	}
 	
 }

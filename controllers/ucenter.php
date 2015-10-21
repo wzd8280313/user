@@ -1259,16 +1259,15 @@ class Ucenter extends IController
     		exit();
     	}
 		$res = array('errorCode'=>0);
-		if($res['errorCode']==0){
-			$code = rand(000000,999999);
-			ISafe::set('mobileValidate',array('code'=>$code,'phone'=>$phone,'time'=>time()));
-			$text = smsTemplate::checkCode(array('{mobile_code}'=>$code));
-			if(!hsms::send($phone,$text)){
-				$res['errorCode']=-1;
-				$res['mess']='系统繁忙，请稍候再试';
-			}
-				
+		
+		$code = rand(000000,999999);
+		ISafe::set('mobileValidate',array('code'=>$code,'phone'=>$phone,'time'=>time()));
+		$text = smsTemplate::checkCode(array('{mobile_code}'=>$code)); 
+		if(!hsms::send($phone,$text)){
+			$res['errorCode']=-1;
+			$res['mess']='系统繁忙，请稍候再试';
 		}
+		
 		echo JSON::encode($res);
     }
     

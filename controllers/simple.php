@@ -1256,7 +1256,7 @@ class Simple extends IController
 			{
 				die("申请验证码的时间间隔过短，请稍候再试");
 			}
-			$mobile_code = rand(10000,99999);
+			$mobile_code = rand(000000,999999);
 			$findPasswordDB->setData(array(
 				'user_id' => $userRow['id'],
 				'hash'    => $mobile_code,

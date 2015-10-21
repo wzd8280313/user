@@ -61,7 +61,7 @@
 					  <option value="1">我要换货</option>
 					</select>
 				</p>
-				<p>退款商品<span class="red">*</span></p>
+				<p>选择商品<span class="red">*</span></p>
 				<p>
 					<select class="sel" name="order_goods_id">
 						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good}
@@ -72,7 +72,7 @@
 					  {/foreach}
 					</select>
 				</p>
-				<p>退款说明</p>
+				<p>说明</p>
 				<p><textarea type="text" class="text" style='height:70px;' name='content' required></textarea></p>
 				<p><input class="butt" type="submit" value="提交申请"/></p>
 			</div>

@@ -3,10 +3,11 @@ function getMobileCode(phone){
 	if(!phone)return false;
 	var btn = $('input[name=getMessCode]');
 	var toUrl = getCodeUrl;
+	btnCount(btn);
 	
-	$.post(toUrl,{phone:phone},function(data){//window.realAlert(data.errorCode);
+	$.post(toUrl,{phone:phone},function(data){
 		if(data.errorCode==0){
-			btnCount(btn);
+			
 		}else{
 			alert(data.mess);
 		}
@@ -46,7 +47,7 @@ function checkMobileNew(){
 	var newPhone = $('input[name=newPhone]').val();
 	
 	$.post(checkMobileUrl2,{code:code,newPhone:newPhone},
-		function(data){window.realAlert(JSON.stringify(data));
+		function(data){
 			if(data.errorCode==0){
 			//window.realAlert(data.next);
 			location.href=data.next;
