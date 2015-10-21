@@ -1,3 +1,6 @@
+{set:$config = new Config('site_config');$data = $config->getInfo();
+$server_num = unserialize($data['service_online']);
+}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -7,12 +10,12 @@
 <title>消息中心</title>
 
 <link rel="stylesheet" href="{skin:css/wap/index.css}" type="text/css" />
-<script type="text/javascript" src="{theme:javascript/js/jquery-1.9.1.min.js}"></script>
+<script type="text/javascript" src="{theme:javascript/jquery-1.9.1.min.js}"></script>
 <link rel="stylesheet" href="{skin:css/common.css}" type="text/css">               
-<script src="{theme:javascript/js/common.js}"></script>
+<script src="{theme:javascript/common.js}"></script>
 <link rel="stylesheet" href="{skin:css/details.css}" type="text/css" />
 <link rel="stylesheet" href="{skin:css/search_list.css}" type="text/css">
-</script><script src="{theme:javascript/js/scrollTop.js}"></script>
+</script><script src="{theme:javascript/scrollTop.js}"></script>
 
 </head>
 <body>
@@ -41,41 +44,7 @@
             <h1>消息中心</h1>
         </div>
     </div>
-    <!-- <nav class="nav_wrap_new">
-    <i class="top_nav_icon"></i>
-    <ul class="top_nav_ul clear-fix">
-        <a href="index.html">
-            <li class="top_nav_li top_nav_home fl">
-                <i class="nav_home_icon"></i>
-                <span class="top_nav_li_span">首页</span>
-            </li>
-        </a>
-        <a href="search/category.html">
-            <li class="top_nav_li top_nav_search fl">
-                <i class="nav_search_icon"></i>
-                <span class="top_nav_li_span">搜索</span>
-            </li>
-        </a>
-        <a href="cart.html">
-            <li class="top_nav_li top_nav_cart fl">
-                <i class="nav_cart_icon"></i>
-                <span class="top_nav_li_span">购物车</span>
-            </li>
-        </a>
-        <a href="huiyuan.html">
-            <li class="top_nav_li top_nav_order fl">
-                <i class="nav_order_icon"></i>
-                <span class="top_nav_li_span">订单</span>
-            </li>
-        </a>
-        <a href="huiyuan.html">
-            <li class="top_nav_li top_nav_user fl">
-                <i class="nav_user_icon"></i>
-                <span class="top_nav_li_span">我的</span>
-            </li>
-        </a>
-    </ul>
-</nav> --></header>
+ </header>
 
 	
 
@@ -84,9 +53,9 @@
 				<li>
 					<a class="click"><span><img src="{skin:images/cart_img.jpg}" style="width:25px;height:25px;"></span>在线客服</a>
 					<ul id="ul1">
-						
-							<li><a href="#">点击进入与QQ客服进行交流</a></li>
-						
+						{foreach:items=$server_num}
+							<li><a href="{echo:Sonline::getChatUrl($item['qq'])}">与QQ客服{echo:$key+1}进行交流</a></li>
+						{/foreach}
 					</ul>
 				</li>
 			
@@ -94,7 +63,7 @@
 					<a class="click"><span><img src="{skin:images/cart_img.jpg}" style="width:25px;height:25px;"></span>人工客服</a>
 					<ul>
 						
-							<li><a>客服电话：0353-2903xxx</a></li>
+							<li><a>客服电话：{$data['phone']}</a></li>
 												
 					</ul>
 				</li>
