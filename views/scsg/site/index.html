@@ -342,7 +342,7 @@ _mvq.push(['$logConversion']);
 							{if:isset($hotCat[$base['id']])}
 							{foreach:items=$hotCat[$base['id']] item=$hot kHot=$key}
 							
-								<a href="{url:site/pro_list/cat/$hot[id]}" class="key">{$hot['name']}</a>
+								<a href="{url:site/pro_list/cat/$hot[id]}" class="key red-a">{$hot['name']}</a>
 							{/foreach}
 							{/if}
 						</div>
