@@ -14,47 +14,16 @@ $this->fapiaoRow = $fa->getObj('id='.$id);}
 	</div>
 	<div class="form_content m_10">
 		<div class="uc_title2 m_10"><strong>填写发票内容</strong></div>
-		<!--<form action='{url:/ucenter/fapiao_add_act}' method='post' name='fapiao'>
-			<table class="form_table" width="100%" cellpadding="0" cellspacing="0">
-				<input type='hidden' name='order_id' value="{$order_id}"/>
-				<input type='hidden' name='id' value="{$id}"/>
-				<col width="120px" />
-				<col />
-				<tr>
-					<th><span class="red"></span> 发票类型：</th>
-					<td>
-						<label class='attr'><input type='radio' name='type' value='0' />个人</label>
-						<label class='attr'><input type='radio' name='type' value='1' checked=checked />单位</label>
-					</td>
-				</tr>
-				<tr>
-					<th><span class="red"></span> 发票抬头：</th>
-					<td>
-						
-						<input class="normal" type="text" name="taitou" {if:isset($this->fapiaoRow['status'])&&$this->fapiaoRow['status']==1}disabled {/if}alt='请填写发票抬头' /><label></label>
-					
-					</td>
-				</tr>
-				<!--<tr>
-					<th><span class="red"></span> 发票内容：</th>
-					<td><select class="small" name="content" style='width:100px;'>
-							<option value='0'>请选择</option>
-							<option value='1'>食品</option>
-							<option value='2'>饮料</option>
-						</select>
-					</td>
-				</tr>
-				<tr><th></th><td><label class="btn"><input type="submit"  class='btn_gray btn_small' value="申请发票" /></label></td></tr>
-			
-			</table>
-		</form>-->
+		
 		<div class="contfp">
-	<form action="" method="post">
+	<form action="{url:/ucenter/fapiao_add_act}" method="post" name='fapiao'>
+		<input type='hidden' name='order_id' value='{$order_id}' />
+		<input type='hidden' name='id' value='{$id}' />
 		<div class="tylx">
 			<span class="titles">发票类型：</span>
 			<span>
-				<input class="ptfps" type="radio" name="fp" value="radio1"/>普通发票
-				<input class="zzsfp" type="radio" name="fp" value="radio2"/>增值税发票
+				<input class="ptfps" type="radio" name="type" value="0" checked/>普通发票
+				<input class="zzsfp" type="radio" name="type" value="1"/>增值税发票
 			</span>
 		</div>
 		
@@ -64,19 +33,19 @@ $this->fapiaoRow = $fa->getObj('id='.$id);}
 		</div>-->
 		<div class="anniu show1">
 				<ul>
-					<li><i>&nbsp;</i><p style="width:85px;">发票抬头：</p><input class="tex" name="" type="text"></li>
+					<li><i>&nbsp;</i><p style="width:85px;">发票抬头：</p><input class="tex" name="taitou" type="text"></li>
 				</ul>
 		</div>
 		<!--普通发票结束-->
 		<!--增值税发票-->
 			<div class="anniu show2" style="display:none;">
 				<ul>
-					<li><i>*</i><p>单位名称：</p><input class="tex" name="" type="text"></li>
-					<li><i>*</i><p class="shibh">纳税人识别号：</p><input class="tex" name="" type="text"></li>
-					<li><i>*</i><p>注册地址：</p><input class="tex" name="" type="text"></li>
-					<li><i>*</i><p>注册电话：</p><input class="tex" name="" type="text"></li>
-					<li><i>*</i><p>开户银行：</p><input class="tex" name="" type="text"></li>
-					<li><i>*</i><p>银行账户：</p><input class="tex" name="" type="text"></li>
+					<li><i>*</i><p>单位名称：</p><input class="tex" name="com" type="text"></li>
+					<li><i>*</i><p class="shibh">纳税人识别号：</p><input class="tex" name="tax_no" type="text"></li>
+					<li><i>*</i><p>注册地址：</p><input class="tex" name="address" type="text"></li>
+					<li><i>*</i><p>注册电话：</p><input class="tex" name="telphone" type="text"></li>
+					<li><i>*</i><p>开户银行：</p><input class="tex" name="bank" type="text"></li>
+					<li><i>*</i><p>银行账户：</p><input class="tex" name="account" type="text"></li>
 				</ul>
 			</div>
 		
@@ -90,7 +59,7 @@ $this->fapiaoRow = $fa->getObj('id='.$id);}
 			</p>
 		</div>
 		<div class="tylx">
-			<input class="qer" type="button" value="确认发票信息"/>
+			<input class="qer" type="submit" value="确认发票信息"/>
 			<input class="qx" type="button" value="取消"/>
 		</div>
 		</form>
@@ -117,7 +86,18 @@ formObj.init({
 	'id':'{$this->fapiaoRow['id']}',
 	'type':'{$this->fapiaoRow['type']}',
 	'taitou':'{$this->fapiaoRow['taitou']}',
-	'content':'{$this->fapiaoRow['content']}',
+	'com':'{$this->fapiaoRow['com']}',
+	'tax_no':'{$this->fapiaoRow['tax_no']}',
+	'address':'{$this->fapiaoRow['address']}',
+	'telphone':'{$this->fapiaoRow['telphone']}',
+	'bank':'{$this->fapiaoRow['bank']}',
+	'account':'{$this->fapiaoRow['account']}',
 });
+{if:$this->fapiaoRow['type']!=0}
+$(function(){
+	$('input[type=radio][value=1]').trigger('click');
+})
+
+{/if}
 {/if}
 </script>

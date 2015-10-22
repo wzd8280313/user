@@ -1527,26 +1527,43 @@ class Ucenter extends IController
     	$order_id = IFilter::act(IReq::get('order_id'),'int');
     	$type = IFilter::act(IReq::get('type'),'int');
     	$taitou = IFilter::act(IReq::get('taitou'));
-    	$content = IFilter::act(IReq::get('content'),'int');
     	$db_order = new IModel('order');
     	if(!$db_order->getObj('id='.$order_id.' and user_id='.$this->user['user_id'])){
     		$this->redirect('fapiao');
     	}
     	$db_fapiao = new IModel('order_fapiao');
-    	
     	$data = array(
-    		'order_id'=> $order_id,
-    		'type'    => $type,
-    		'taitou'  => $taitou,
-    		'content' => $content,
-    		'create_time'=> ITime::getDateTime(),
-    		'user_id' => $this->user['user_id']
+    				'order_id'=> $order_id,
+    				'type'    => $type,
+    				'taitou'  => $taitou,
+    				'create_time'=> ITime::getDateTime(),
+    				'user_id' => $this->user['user_id']
     	);
-    	
-    	if($id || $id=$db_fapiao->getField('order_id='.$order_id,'id')){//后续编辑
-    		$db_fapiao->setData($data);
-    		$db_fapiao->update('order_id='.$order_id);
-    	}else{//第一次添加
+    
+    	if($type==1){
+    		$data1 = array(
+    				'com' => IFilter::act(IReq::get('com')),
+    				'tax_no'=> IFilter::act(IReq::get('tax_no')),
+    				'address' => IFilter::act(IReq::get('address')),
+    				'telphone' => IFilter::act(IReq::get('telphone')),
+    				'bank' => IFilter::act(IReq::get('bank')),
+    				'account' => IFilter::act(IReq::get('account')),
+    		);
+    		unset($data['taitou']);
+    		$data = array_merge($data,$data1);
+    	}
+    	$piao = $db_fapiao->getObj('order_id='.$order_id,'id,status');
+    	if($piao){
+    		if($piao['status']!=0){
+    			$this->redirect('piao_ask',false);
+    			Util::show('申请发票信息不能修改');exit;
+    		}
+    		else{
+    			$db_fapiao->setData($data);
+    			$db_fapiao->update('order_id='.$order_id);
+    		}
+    	}
+    	else{//第一次添加
     		//更改订单索要发票字段,订单更新为索要发票
     		$db_order->setData(array('invoice'=>1));
     		$db_order->update('id ='.$order_id);

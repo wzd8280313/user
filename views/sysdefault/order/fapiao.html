@@ -56,7 +56,7 @@ $main_name = $config->name;
 					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 					<td><a href="{url:/order/fapiao_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>
 					<td>{$item['order_no']}</td>
-					<td>{if:$item['type']==0}个人{else:}单位{/if}</td>
+					<td>{if:$item['type']==0}普通{else:}增值税{/if}</td>
 					<td>{$item['taitou']}</td>
 					<td>{echo:Order_Class::getFapiaoStatus($item['status'])}</td>
 					
