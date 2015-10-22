@@ -1000,7 +1000,7 @@ class Order_Class
 	public static function isRefundmentApply($orderRow)
 	{
 		//已经付款
-		if($orderRow['pay_status'] == 1 && $orderRow['status'] != 6)
+		if($orderRow['pay_status'] == 1 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
 		{
 			return true;
 		}

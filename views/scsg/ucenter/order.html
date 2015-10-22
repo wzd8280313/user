@@ -17,6 +17,7 @@
             {set:$user_id = $this->user['user_id']}
             {set:$queryOrderList = Api::run('getOrderList',$user_id)}
 			{foreach:items = $queryOrderList->find()}
+			{set:$status=Order_Class::getOrderStatus($item);}
             <tr>
                 <td>
                 	<a href="{url:/ucenter/order_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
@@ -25,8 +26,25 @@
                 <td>{$item['accept_name']}</td>
                 <td>{$this->payments[$item['pay_type']]['name']}</td>
                 <td>￥{echo:$item['order_amount']}</td>
-                <td>
-                	<b class="orange">{echo:Order_Class::orderStatusText(Order_Class::getOrderStatus($item))}</b>
+               
+				<td>
+					{if:$status==2}
+                	<a href='{url:/block/dopay/order_id/$item["id"]}' target=='blank'><input type="button" class='btn_gray btn_small' style='margin-bottom:5px;' value="立即支付" /></a>
+					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
+					{elseif:$status==1}
+					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
+					{elseif:in_array($status,array(4,8,9,10,11))}
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
+					{elseif:in_array($status,array(3,11))}
+					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"><input style='margin-bottom:5px;' type="button" class='btn_gray btn_small' value="确认收货" /></a>
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
+					
+					{elseif:$status==6}
+					<a href="{url:/ucenter/evaluation}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+					{else:}
+					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
+					{/if}
+					
                 </td>
             {/foreach}
             </tr>

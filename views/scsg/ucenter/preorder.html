@@ -17,6 +17,7 @@
 			{set:$user_id = $this->user['user_id']}
             {set:$queryOrderList = Api::run('getPreorderList',$user_id)}
 			{foreach:items = $queryOrderList->find()}
+			{set:$status=Preorder_Class::getOrderStatus($item)}
             <tr>
                 <td>
                 	<a href="{url:/ucenter/preorder_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
@@ -26,7 +27,20 @@
                 <td>{$this->payments[$item['pay_type']]['name']}</td>
                 <td>￥{echo:$item['order_amount']}</td>
                 <td>
-                	<b class="orange">{echo:Preorder_Class::getOrderStatus($item)}</b>
+                	{if:$item['status']==1}
+					<a href="{url:/ucenter/preorder_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
+					<a href="{url:/block/doPayPresell/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="支付预付款" /></a>
+					
+					{elseif:$item['status']==4}
+					<a href="{url:/block/doPayPresell/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="支付尾款" /></a>
+					{elseif:$item['status']==9}
+					<a href="{url:/ucenter/preorder_status/op/confirm/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="确认收货" /></a>
+					{elseif:$item['status']==11}
+					<a href="{url:/ucenter/evaluation}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+					
+					{else:}
+                	<b class="orange">{$status}</b>
+					{/if}
                 </td>
             {/foreach}
             </tr>
