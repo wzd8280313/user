@@ -91,7 +91,7 @@ function cartCount(type,obj,oldCount)
 
 				//优惠价
 				$('#discount_price').html(mathAdd(parseFloat($('#discount_price').text()),discountC));
-			
+		
 				//促销规则检测
 				var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()));
 				var tmpUrl = promotion_url;
@@ -117,9 +117,9 @@ function cartCount(type,obj,oldCount)
 					$('#promotion_price').html(content.proReduce);
 					
 					//总优惠金额计算
-					$('#youhui_price').html(mathAdd(parseFloat($('#discount_price').text()),parseFloat($('#promotion_price').text())));
+					$('#youhui_price').html(mathAdd(parseFloat($('#discount_price').text()),parseFloat($('#promotion_price').text()),2));
 					//最终金额
-					$('#sum_price').html(mathSub(mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text())),parseFloat($('#promotion_price').text())));
+					$('#sum_price').html(mathSub(mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()),2),parseFloat($('#promotion_price').text()),2));
 
 					//修改按钮状态
 					countInput.attr('disabled',false);
