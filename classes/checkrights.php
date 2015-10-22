@@ -124,7 +124,10 @@ class CheckRights extends IInterceptorBase
 		if(self::isValidUser($loginInfo,$user['user_pwd']))
 		{
 			$user['show'] = $show;
-			return $user;
+			$user_db = new IModel('member as m,user_group as g');
+			$data = $user_db->getObj('m.user_id='.$user['user_id'].' and m.group_id=g.id','m.point,m.exp,m.balance,g.group_name');
+			
+			return array_merge($user,$data);
 		}
 		else
 		{

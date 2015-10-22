@@ -15,6 +15,7 @@ class Pregoods extends IController
 	//预售列表
 	public function presell_list(){
 		$this->logoUrl = 'images/yulogo.png';
+		$this->yushou = 1;
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';

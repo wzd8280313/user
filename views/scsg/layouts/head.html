@@ -41,18 +41,21 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	
 </head>
 <body>
-
+<script type='text/javascript'>
+	$(function(){
+		$('#user_log,.hd_user_center').hover(function(){$('.hd_user_center').show();},function(){$('.hd_user_center').hide();})
+	})
+</script>
 <div style="background:#F15A24;">
 	<div class="top"><div id="toTop"></div>
 		<!--导航开始-->
 		<div class="nav_z site-nav">
 
-			<ul  class="cl sn-login" style="float:left;">
+			<ul  class="cl sn-login" style="float:left;" id='user_log'>
 				<li style="width:502px;color:#fff;">
 					Hi,{if:$this->user}
 					{$this->user['show']}
 						欢迎您来到{echo:$siteConfig->name}！
-						[<a href="{url:/simple/logout}">安全退出</a>]
 					{else:}
 						欢迎您来到{echo:$siteConfig->name}！
 					<a href="{url:/simple/login?callback=$callback}">登录</a>
@@ -61,6 +64,41 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 					{/if}
 				</li>
 			</ul>
+			{if:$this->user}
+				<div class="hd_user_center hide" >
+					<a href="{url:/simple/logout}" class="blue_link">退出登录</a>
+					<div class="clearfix">
+						<div class="fl">
+							<a class="hd_avata_box" href="{url:/ucenter/}"><img src="{url:$this->user['head_ico']}" style='width:62px;' onerror='this.src="{skin:images/front/user_ico.gif}"'/></a>
+							<a class="grzl" href="{url:/ucenter/}">个人资料</a>
+						</div>
+						<div class="yhname">
+							<p><a class="name">{$this->user['show']}</a><a class="hydj"><!--<b style="font-size:20px">V</b>0会员--></a></p>
+							<p><span>会员等级:</span><a class="hd_login" href="">{$this->user['group_name']}</a></p>
+							<div class="hy_line">
+								<p class="hy_line_bar"></p>
+							</div>
+						</div>
+					</div>
+					<div class="hy_message">
+						<a  href="">
+							<b>{$this->user['point']}</b>
+							<span>积分<em><img src="{skin:images/qiandao.gif}"/></em></span>
+							
+						</a>
+						<a  href="">
+							<b>{$this->user['balance']}</b>
+							<span>账户余额</span>
+							<span></span>
+						</a>
+						<a  href="">
+							<b>{$this->user['exp']}</b>
+							<span>成长值</span>
+							<span></span>
+						</a>
+					</div>
+				</div>
+				{/if}
 			<ul id="navul" class="cl" style="float:right;margin-left:170px;">
 				<li>
 					<a href="{url:/ucenter/index}">个人中心</a>

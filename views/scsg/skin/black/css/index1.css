@@ -934,3 +934,125 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 	width:759px;float:left;
 }
 .quicknav{display:none;}
+
+ol,ul{list-style:none}
+.hd_user_center{
+	/* display: none; */
+	position: absolute;
+	z-index: 500;
+	top: 26px;
+	left: 0;
+	width: 300px;
+	padding: 12px 0 0 0;
+	border: 1px solid #e6e6e6;
+	background: #FFF;
+	font-size:14px;
+}
+.hd_user_center .blue_link{
+	position: absolute;
+	top: 11px;
+	right: 10px;
+}
+.hd_user_center .blue_link:hover{
+	color:#F74611;
+}
+.clearfix{
+	
+}
+.hd_user_center .clearfix .fl{
+	margin: 0 10px;
+	text-align: center;
+	line-height: 26px;
+	float: left;
+}
+.hd_avata_box{
+	display: block;
+	width: 65px;
+	height: 65px;
+	overflow: hidden;
+	border: 1px solid #d9d9d9;
+	border-radius: 3px;
+	-moz-box-shadow: 0 0 3px #F2F2F2;
+	-webkit-box-shadow: 0 0 3px #F2F2F2;
+	box-shadow: 0 0 3px #F2F2F2;
+}
+.hd_avata_box img{
+	position: relative;
+	top: 1.4px;
+	left: -0.4px;
+}
+.yhname{
+	float: left;
+	line-height: 24px;
+}
+.yhname .name{
+	display: inline-block;
+	max-width: 96px;
+	height: 24px;
+	overflow: hidden;
+	background: none;
+	vertical-align: middle;
+	font-size: 14px;
+	font-family: "Microsoft YaHei";
+}
+.yhname .hydj{
+	display: inline-block;
+	width: 51px;
+	height: 23px;
+	background: url(../img/hy_tb.jpg) center no-repeat; 
+	vertical-align: middle;
+	margin-left: 2px;
+	/*-moz-border-radius: 10px; /* Firefox 
+	-webkit-border-radius: 10px; /* Safari 和 Chrome 
+	border-radius: 10px; Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 
+	background: #c0c0c0;
+	text-align: center;
+	color: #fff;*/
+}
+.yhname .hd_login{
+	padding-right: 13px;
+	background: url(../img/rjt.jpg) no-repeat 13px center;
+	font-weight: bold;
+	color: #333;
+	margin-left: 5px;
+}
+.hy_line {
+	width: 180px;
+	height: 13px;
+	margin: 5px 0 0 0;
+	background: url(../img/hy_line.jpg) no-repeat 0 0;
+}
+.clearfix:after {
+	display: block;
+	content: ".";
+	height: 0;
+	visibility: hidden;
+	clear: both;
+	font-size: 0;
+	line-height: 0;
+}
+.hy_message{
+	height: 64px;
+	border-top: 1px solid #e9e0db;
+	-moz-box-shadow: 0 2px 0 #f7eee9 inset;
+	-webkit-box-shadow: 0 2px 0 #f7eee9 inset;
+	box-shadow: 0 2px 0 #f7eee9 inset;
+}
+.hy_message a{
+	display: block;
+	height: 52px;
+	width: 100px;
+	float: left;
+	padding-top: 12px;
+	background: #fff5f0 url(../img/hy_cbx.jpg) 0 center no-repeat;
+	text-align: center;
+	line-height: 20px;
+	color: #333;
+}
+.hy_message b{
+	display: block;
+	color: #F13535;
+}
+.hy_message span em{
+	position:absolute;
+}

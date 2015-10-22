@@ -170,7 +170,7 @@
     </section>
 	
 	<section class="activity_floor">
-		<div><img src="{skin:images/ad.png}" ></div>
+		{echo:Ad::show("手机端首页")}
 	</section>
     <section class="activity_floor">
 		<header class="title clear-fix">
@@ -182,51 +182,20 @@
 
             	{for:from=0 upto=1}
                  <div class="top" style='border-bottom: 1px solid #eee;'>
-                    <a href="{url:site/home/id/$seller[$i]['id']}"><img src="{url:$seller[$i]['logo_img']}"></a>
+                    <a href="javascript:voie(0)"><img src="{url:$seller[$i]['logo_img']}"></a>
                	 </div>
                	{/for}
             </div>
             <div class="right fl">
             	{for:from=2 upto=3}
                  <div class="top">
-                    <a href="{url:site/home/id/$seller[$i]['id']}"><img src="{url:$seller[$i]['logo_img']}"></a>
+                    <a href="javascript:voie(0)"><img src="{url:$seller[$i]['logo_img']}"></a>
                	 </div>
 				 {/for}
              </div>
 
         </div>
-		<header class="title clear-fix">
-            <h2 class="fl">特色市场</h2>
-        </header>
-        <div class="first_floor clear-fix">		
-            <div class="right fl">
-                                    <div class="top">
-                        <a href="{url:/site/act}"><img src="{skin:images/korea/korea_22.jpg}"></a>
-                    </div>
-                    <div class="bottom">
-                        <a href="{url:/site/act}"><img src="{skin:images/korea/korea_23.jpg}"></a>
-                    </div>
-                            </div>
-            <div class="left fl">
-                <a href="{url:/site/act}"><img src="{skin:images/korea/korea_24.jpg}"></a>
-            </div>
-        </div>
-		<header class="title clear-fix">
-            <h2 class="fl">山城低价</h2>
-        </header>
-        <div class="first_floor clear-fix">
-            <div class="left fl">
-                <a href="{url:/site/act}"><img src="{skin:images/files/b5312c83b7f8e2450de914b378dda128.jpg}"></a>
-            </div>
-            <div class="right fl">
-                                    <div class="top">
-                        <a href="{url:/site/act}"><img src="{skin:images/files/8012fbf28c2a30f3fe641416e00e21b7.png}"></a>
-                    </div>
-                    <div class="bottom">
-                        <a href="{url:/site/act}"><img src="{skin:images/files/e1d88e5e7eeede7a6cc442d141d02c9b.png}"></a>
-                    </div>
-                            </div>
-        </div>
+		
 		<header class="title clear-fix">
             <h2 class="fl">商品分类</h2>
         </header>

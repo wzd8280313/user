@@ -6,7 +6,7 @@ $server_num = count($server_info)>0 ? $server_info[0]['qq'] : 0;
 
 }
 {else:}
-$server_num = $seller['server_num'];
+{set:$server_num = $seller['server_num'];}
 {/if}
 	<!-- 底部浮动 -->
  <div style="height:50px;"></div>       

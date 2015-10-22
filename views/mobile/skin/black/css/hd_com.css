@@ -105,7 +105,7 @@ html,body{height:100%;font-size:100%}
 
 .inner-section .modle_items2 .items li .img img{width:100%;display:block;border:1px #dcdcdc solid}
 
-.inner-section .modle_items2 .items li .tit{line-height:20px;height:40px;display:block;overflow:hidden;margin-top:4px}
+.inner-section .modle_items2 .items li .tit{line-height:20px;height:40px;display:block;overflow:hidden;margin-top:4px;font-size:14px;}
 
 .inner-section .modle_items2 .items li .price .n_price{color:#ea3434;font-size:18px}
 
@@ -150,7 +150,7 @@ background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px}
 input{
 	border-radius:0px;
 }
-/*Òâ¼û·´À¡*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .yj{
 	padding: 15px;
 	margin: 20px auto;
@@ -171,11 +171,11 @@ input{
 	line-height: 35px;
 	background: #FF5B0F;
 	color: #fff;
-	font-family: 'ËÎÌå';
+	font-family: 'ï¿½ï¿½ï¿½ï¿½';
 	margin:5px 5px;
 }
-/*Òâ¼û·´À¡½áÊø*/
-/*ÊÕ»õµØÖ··´À¡*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+/*ï¿½Õ»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½*/
 .mod_dres{
 			background: #fff;
 		}
@@ -189,7 +189,7 @@ input{
 			padding:5px 10px;
 		}
 		.dres .tex2{width: 97%;}
-		/*¶àÐÐÎÄ±¾ÓòÑùÊ½
+		/*ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
 		.dres .tare{
 			width: 69%;
 			height: 50px;
@@ -238,4 +238,4 @@ input{
 		.modle_items3 table .wid{
 			width:17%;
 		}
-/*ÊÕ»õµØÖ··´À¡½áÊø*/
+/*ï¿½Õ»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
