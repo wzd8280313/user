@@ -47,7 +47,7 @@ class APIUcenter
 		$query = new IQuery('comment as c');
 		$query->join   = "left join goods as go on c.goods_id = go.id ";
 		$query->where  = ($status === '') ? "c.user_id = ".$userid : "c.user_id = ".$userid." and c.status = ".$status;
-		$query->fields = "go.name,c.*";
+		$query->fields = "go.name,go.img,c.*";
 		$query->page   = $page;
 		$query->order = 'c.id desc';
 		return $query;

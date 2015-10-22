@@ -104,6 +104,19 @@ class Ucenter_ajax extends IController
 		
 		echo JSON::encode($order_data);
 	} 
+	/**
+	 * 获取评论列表
+	 */
+	public function pingjia_list(){
+		$user_id = $this->user['user_id'];
+		$status  = IFilter::act(IReq::get('status'),'int');//0:未评价，1：已评价
+		$query = Api::run('getUcenterEvaluation',$user_id,$status);
+		$pingjia = $query->find();
+		
+		if($query->page==0){echo 0;exit;}
+	
+		echo JSON::encode($pingjia);
+	}
 	
 	
 }
