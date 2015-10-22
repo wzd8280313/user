@@ -12,7 +12,7 @@
 	<title>我的山城</title>
 	<meta name="viewport" content="width=device-width,user-scalable=no,minimum-scale=1" />
         <link rel="apple-touch-icon" href="apple_logo" />
-	
+	<script src="{theme:javascript/jquery-1.9.1.min.js}"></script>
 </head>
 <body>
 	<header>
@@ -40,8 +40,8 @@
 			<li><a href="" class="dfk"><p class="sj">{$propData['prop_num']} 张</p><p class="tex">抵用劵</p></a></li>
 			<li><a href="" class="dfh"><p class="sj">￥{$user['balance']}</p><p class="tex">账户余额</p></a></li>
 			<li><a href="{url:/ucenter/integral}" class="dsh"><p class="sj">{$user['point']} </p><p class="tex">积分</p></a></li>
-			<li><a href="" class="dpl">
-				  <span class="qdjf">
+			<li><a href="javascript:void(0)" class="dpl">
+				  <span class="qdjf" onclick='sign_point()'>
 				</a>
 			</li>
 		</ul>
@@ -90,4 +90,29 @@
 		</a>
 		
 	</div>
+<script type='text/javascript'>
+	function sign_point(){
+		$.ajax({
+			type : 'post',
+			async:true,
+			data:{},
+			dataType:'json',
+			url:'{url:/ucenter_ajax/sign_add_point}',
+			beforeSend:function(){
+				
+			},
+			success:function(data){
+				if(data==1){
+					location.reload();
+				}
+			},
+			error:function(){
+				
+			},
+			complete:function(){
+			},
+			timeout:1000,
+		})
+	}
+</script>
 {include:include/uc_foot.html}

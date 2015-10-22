@@ -45,6 +45,29 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	$(function(){
 		$('#user_log,.hd_user_center').hover(function(){$('.hd_user_center').show();},function(){$('.hd_user_center').hide();})
 	})
+		function sign_point(){
+		$.ajax({
+			type : 'post',
+			async:true,
+			data:{},
+			dataType:'json',
+			url:'{url:/ucenter_ajax/sign_add_point}',
+			beforeSend:function(){
+				
+			},
+			success:function(data){
+				if(data==1){
+					alert('签到成功');
+				}
+			},
+			error:function(){
+				
+			},
+			complete:function(){
+			},
+			timeout:1000,
+		})
+	}
 </script>
 <div style="background:#F15A24;">
 	<div class="top"><div id="toTop"></div>
@@ -81,9 +104,9 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 						</div>
 					</div>
 					<div class="hy_message">
-						<a  href="">
+						<a  href="javascript:void(0)">
 							<b>{$this->user['point']}</b>
-							<span>积分<em><img src="{skin:images/qiandao.gif}"/></em></span>
+							<span>积分<em><img src="{skin:images/qiandao.gif}" onclick='sign_point()'/></em></span>
 							
 						</a>
 						<a  href="">

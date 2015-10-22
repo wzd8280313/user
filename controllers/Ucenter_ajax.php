@@ -117,6 +117,30 @@ class Ucenter_ajax extends IController
 	
 		echo JSON::encode($pingjia);
 	}
-	
+	/**
+	 * 签到送积分
+	 */
+	public function sign_add_point(){
+		$config = new Config('site_config');
+		$point = $config->sign_point;
+		$user_id = $this->user['user_id'];
+		$member_db = new IModel('member');
+		$member_db->setData(array('sign_date'=>ITime::getDateTime()));
+		if($member_db->update('user_id='.$user_id.' and (sign_date is null  or DATEDIFF(now(),sign_date)>=1)')){
+			$pointConfig = array(
+					'user_id' => $user_id,
+					'point'   => $point,
+					'log'     => '签到送'.$point.'积分',
+			);
+			$pointObj = new Point();
+			if($pointObj->update($pointConfig)){
+				echo 1;
+			}else echo 2;
+		}
+		else{
+			 echo 0;
+		}
+		
+	}
 	
 }
