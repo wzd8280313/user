@@ -1,3 +1,5 @@
+*{font-size:12px;}
+
 .search_placeholder{position:fixed;top:0;left:0;background:#fff;width:100%;height:60px;border-bottom:1px solid #DCDCDC}
 
 .search_wrap{font-family:"\5FAE\8F6F\96C5\9ED1",Helvetica;position:fixed;top:0;left:0;z-index:900;width:100%;margin:0 auto}
@@ -117,7 +119,7 @@ html,body{height:100%;font-size:100%}
 position: relative;
 left: -20px;
 top: 10px;
-background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px}
+background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px;font-size:14px;}
 
 .inner-section .modle_items3{background:#fff;margin:10px 0;border-bottom:1px #dcdcdc solid;border-top:1px #dcdcdc solid}
 
@@ -163,8 +165,7 @@ input{
 	
 }
 .yj p{
-	text-align:right;
-	
+	font-size:16px;	
 }
 .yj .butt{
 	width: 90px;
@@ -173,6 +174,7 @@ input{
 	color: #fff;
 	font-family: '宋体';
 	margin:5px 5px;
+	font-size:12px;
 }
 /*意见反馈结束*/
 /*收货地址反馈*/

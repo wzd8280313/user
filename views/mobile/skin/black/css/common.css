@@ -356,7 +356,7 @@ body{font-size:14px;font-family:'\5FAE\8F6F\96C5\9ED1';-webkit-overflow-scrollin
 
 #goTop_index{position:fixed;right:20px;bottom:80px;width:42px;height:42px;background-image:url(../css/wap/icon.png?t=201508142148);background-repeat:no-repeat;background-position:0 -195px;background-size:320px auto;-webkit-background-size:320px auto}
 
-.loading-imgS{background:#fff;text-align:center;padding:10px 0;width:100%}
+.loading-imgS{background:#fff;text-align:center;padding:10px 0;width:100%;font-size:13px;}
 
 .loading-imgS p{font-size:16px;color:#9A9A9A;text-align:center}
 
