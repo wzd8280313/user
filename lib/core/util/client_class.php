@@ -77,6 +77,14 @@ class IClient
 	 */
 	public static function getDevice()
 	{
+		if(isset($_GET['client'])){
+			$client =  $_GET['client']=='pc'? 'pc' : 'mobile';
+			ISession::set('client',$client);
+			return $client;
+		}
+		else if($client=ISafe::get('client','session')){
+			return $client;
+		}
 		$agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 		$mobileList = array('Android','iPhone','phone');
 
