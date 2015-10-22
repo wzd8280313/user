@@ -109,15 +109,14 @@
 				<table width="100%" border="0">
 					<tr>
 						<td width="3%"></td>
-						<td width="25%" class='hidden'><input type="checkbox" class="check_alls checkbox " id="box_all"> 全选</td>
-						<td width="39%">
-							<p> <span class="ff6" >￥<b id='origin_price'>{$this->sum}</b>
-							<b id='discount_price' class='hide'>{$this->reduce}</b><b id='promotion_price' class='hide'>{$this->proReduce}</b>
-							-￥<b id='youhui_price'>{echo:$this->reduce+$this->proReduce;}</b>
-							=￥<b id='sum_price'>{$this->final_sum}</b>
+						<td width="0" class='hidden'><input type="checkbox" class="check_alls checkbox " id="box_all"> 全选</td>
+						<td width="64%">
+							<p> <span class="ccc f12" >总价（不含运费）：</span> <span class="ff6 f16" >￥<b id='sum_price'>{$this->final_sum}</b> </p>
+							
+							<br/><p> <span class="ccc" >已优惠：</span> -￥<b id='youhui_price' class="ccc">{echo:$this->reduce+$this->proReduce;}</b></p>
+							=
 							</span>
 							</p>
-							<p> <span class="ff6" >总金额</span>   <span class="ff6">优惠金额</span>  <span class="ff6">最终金额</span></p>
 						</td>
 						<td width="10%"><a href='{url:/}'><button class="submit2" type='button' style='width:100px;'>继续购物</button</a></td>
 						<td width="20%"><button class="submit" onclick="to_buy();" type='button'>去结算</button></td>
