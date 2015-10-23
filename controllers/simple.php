@@ -751,7 +751,7 @@ class Simple extends IController
 		//获取用户的道具红包和用户的习惯方式
 		$this->prop = array();
 		$memberObj = new IModel('member');
-		$memberRow = $memberObj->getObj('user_id = '.$user_id,'prop,custom');
+		$memberRow = $memberObj->getObj('user_id = '.$user_id,'prop,custom,balance');
 		if(Common::activeProp($promo)){//判断活动是否允许使用代金券
 			if(isset($memberRow['prop']) && ($propId = trim($memberRow['prop'],',')))
 			{
