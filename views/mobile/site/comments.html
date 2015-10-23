@@ -41,7 +41,7 @@
         <div class="h-center">
             <h1>评价</h1>
         </div>
-            <a href="mail" class="search_nav_icon_none"><img src="{skin:css/wap/app_mail_nav.png}" style="width:35px;height:35px;"><i class="num">2</i></a>
+            <a href="mail" class="search_nav_icon_none"><img src="{skin:css/wap/app_mail_nav.png}" style="width:35px;height:35px;"></a>
 
     </div>
     </header>
@@ -77,7 +77,7 @@
 					<input type='hidden' name='sellerid' value="{$item['seller_id']}"/>
 					<textarea class="texts" name='contents'></textarea>
 					<p>
-						<input class="butt" type="reset" value="重置" />
+						<input class="butt" type="reset" value="重置" onclick="$('[name=contents]').val('');"/>
 						<input class="butt"  onclick="comment_add()" type="button" value="提交"/>
 					</p>
 	
@@ -101,7 +101,7 @@ function comment_add()
 		return;
 	}
 
-	var contents=$("#contents").val();
+	var contents=$("textarea[name=contents]").val();
 	var sellerid = $('input[name=sellerid]').val();
 	var data={'point':point,'contents':contents,'id':{$id},'sellerid':sellerid};
 	$.post("{url:/site/comment_add/id/$id}",data,function(c)
