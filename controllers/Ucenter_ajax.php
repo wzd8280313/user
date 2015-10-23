@@ -101,7 +101,6 @@ class Ucenter_ajax extends IController
 			}
 		}
 		unset($order_goods_data);
-		
 		echo JSON::encode($order_data);
 	} 
 	/**
