@@ -121,7 +121,7 @@
 					<th>介绍：</th>
 					<td><textarea class='textarea' name='intro'></textarea></td>
 				</tr>
-				<tr><td></td><td><button class="submit" type='submit'><span>确 定</span></button></td></tr>
+				<tr><td></td><td><button class="submit" type='submit'><span>确 定</span></button><span class='red'></span></td></tr>
 			</table>
 		</form>
 	</div>
@@ -138,7 +138,32 @@
 			if(!temp.product_id){
 				temp.product_id = 0;
 			}
-			
+			var goods_id = temp.goods_id;
+			var is_tuan = 0;
+			$.ajax({
+				type:'post',
+				async:false,
+				data:{'goods_id':goods_id},
+				url:'{url:/market/is_tuan}',
+				beforeSend:function(){
+					
+				},
+				success:function(data){
+					if(data==1){
+						$('.red').text('该商品已参加团购，不能参加预售');
+						is_tuan = 1;
+					}
+				},
+				error:function(){
+					
+				},
+				complete:function(){
+				
+				},
+				timeout:1000,
+				
+			})
+			if(is_tuan==1)return false;
 			var content = {
 				"data":
 				{

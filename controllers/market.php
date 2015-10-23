@@ -706,7 +706,7 @@ class Market extends IController
 	{
 		$id      = IFilter::act(IReq::get('id'),'int');
 		$goodsId = IFilter::act(IReq::get('goods_id'),'int');
-
+		
 		$dataArray = array(
 			'id'        	=> $id,
 			'title'     	=> IFilter::act(IReq::get('title','post')),
@@ -725,6 +725,11 @@ class Market extends IController
 
 		if($goodsId)
 		{
+			$presell_db = new IModel('presell');
+			if($presell_db->getObj('goods_id='.$goodsId,'id')){
+				$this->redirect('regiment_edit',false);
+				Util::showMessage('已参加预售商品不能参加团购');
+			}
 			$goodsObj = new IModel('goods');
 			$where    = 'id = '.$goodsId;
 			$goodsRow = $goodsObj->getObj($where);
@@ -1090,6 +1095,22 @@ class Market extends IController
 		$reportObj->setFileName('amount');
 		$reportObj->toDownload($strTable);
 		exit();
+	}
+	
+	//判断商品是否参加预售
+	public function is_presell(){
+		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
+		$presell_db = new IModel('presell');
+		if($presell_db->getObj('goods_id='.$goods_id,'id'))
+			echo 1;
+		else echo 0;
+	} 
+	public function is_tuan(){
+		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
+		$tuan_db = new IModel('regiment');
+		if($tuan_db->getObj('goods_id='.$goods_id,'id'))
+			echo 1;
+		else echo 0;
 	}
 
 }

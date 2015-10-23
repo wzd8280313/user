@@ -63,7 +63,7 @@
 						<textarea class='textarea' name='intro'>{$this->regimentRow['intro']}</textarea>
 					</td>
 				</tr>
-				<tr><td></td><td><button class="submit" type='submit'><span>确 定</span></button></td></tr>
+				<tr><td></td><td><button class="submit" type='submit'><span>确 定</span></button><span class='red'></span></td></tr>
 			</table>
 		</form>
 	</div>
@@ -83,7 +83,32 @@
 			}else{
 				var spec_str = getSpec(temp.spec_array);
 			}
-			
+			var goods_id = temp.goods_id;
+			var is_presell = 0;
+			$.ajax({
+				type:'post',
+				async:false,
+				data:{'goods_id':goods_id},
+				url:'{url:market/is_presell}',
+				beforeSend:function(){
+					
+				},
+				success:function(data){
+					if(data==1){
+						$('.red').text('该商品已参加预售，不能参加团购');
+						is_presell = 1;
+					}
+				},
+				error:function(){
+					
+				},
+				complete:function(){
+				
+				},
+				timeout:1000,
+				
+			})
+			if(is_presell==1)return false;
 			var content = {
 				"data":
 				{

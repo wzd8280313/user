@@ -49,6 +49,18 @@ class Presell extends IController
 		$sure_type = IFilter::act(IReq::get('sure_type'),'int');
 		$wei_type  = IFilter::act(IReq::get('wei_type'),'int');
 		$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
+		
+		if($goods_id){
+			$tuan_db = new IModel('regiment');
+			if($tuan_db->getObj('goods_id='.$goods_id,'id')){
+				$this->redirect('presell_edit',false);
+				Util::showMessage('已参加团购商品，不能参加预售');
+			}
+		}
+		else{
+			$this->redirect('presell_edit',false);
+			Util::showMessage('请选择要关联的商品');
+		}
 		$dataArray = array(
 			'name'  => IFilter::act(IReq::get('name')),
 			'money_rate' => IFilter::act(IReq::get('money_rate'),'float'),
