@@ -126,7 +126,7 @@ class Ucenter_ajax extends IController
 		$user_id = $this->user['user_id'];
 		$member_db = new IModel('member');
 		$member_db->setData(array('sign_date'=>ITime::getDateTime()));
-		if($member_db->update('user_id='.$user_id.' and (sign_date is null  or DATEDIFF(now(),sign_date)>=1)')){
+		if($member_db->update('user_id='.$user_id.' and (sign_date is NULL  or DATEDIFF(now(),sign_date)>=1)')){
 			$pointConfig = array(
 					'user_id' => $user_id,
 					'point'   => $point,
