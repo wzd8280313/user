@@ -32,6 +32,7 @@
 	<div id='flashContent'></div>
 
 	<div>
+		<p id='cover' style='background-color:#fff;width:120px;position:absolute;height:25px;top:0px;left:0px;z-index:9999;'></p>
 		<input type='button' class='btn_print noprint' onclick="printObj.printStart();" value='开始打印' /> &nbsp;&nbsp;
 		<input type='button' class='btn_print noprint' onclick='window.history.go(-1);' value='返回上一级' />
 	</div>
@@ -58,6 +59,7 @@
 		if(backgroundPic != '')
 		{
 			printObj.backgroundPic(backgroundPic);
+			$('#cover').css('background-image','url('+backgroundPic+')');
 		}
 	}
 </script>
