@@ -292,6 +292,7 @@ class Simple extends IController
     	$id           = IFilter::act(IReq::get('id'),'int');
     	$productObj   = new IModel('products');
     	$productsList = $productObj->query('goods_id = '.$id,'sell_price,id,spec_array,goods_id','store_nums','desc',7);
+    	
 		if($productsList)
 		{
 			foreach($productsList as $key => $val)

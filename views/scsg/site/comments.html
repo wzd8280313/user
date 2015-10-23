@@ -2,7 +2,6 @@
 {set:$goods_id=$this->comment['goods_id'];}
 {set:$id = $this->comment['id'];}
 {set:$item=Api::run('getGoodsInfo',array("#id#",$goods_id))}
-
 <div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/products/id/$goods_id}">{$item['name']}</a> </div>
 <div class="clearfix">
 	<div class="sidebar f_l">
@@ -17,7 +16,9 @@
 						<p>评价得分：<span class="grade"><i style="width:{echo:Common::gradeWidth($average_point)}px"></i></span>({$average_point}分)</p>
 						<p>评论数：{$this->comment_info['comment_total']}条</p>
 					</li>
+					{if:$item['is_del']!=4}
 					<input type="submit" onclick="joinCart_list({$goods_id});" value="加入购物车" class="submit_join m_10">
+					{/if}
 				</ul>
 			</div>
 		</div>

@@ -127,38 +127,55 @@ function joinCart_ajax(id,url,type)
 //列表页加入购物车统一接口
 function joinCart_list(id)
 {
-	$.getJSON('/simple/getProducts',{"id":id},function(content){
-		if(!content)
-		{
-			joinCart_ajax(id,'goods');
-		}
-		else
-		{
-			var url = "/block/goods_list/goods_id/@goods_id@/type/radio/is_products/1";
-			url = url.replace('@goods_id@',id);
-			artDialog.open(url,{
-				id:'selectProduct',
-				title:'选择货品到购物车',
-				okVal:'加入购物车',
-				ok:function(iframeWin, topWin)
-				{
-					var goodsList = $(iframeWin.document).find('input[name="id[]"]:checked');
-
-					//添加选中的商品
-					if(goodsList.length == 0)
+	$.ajax({
+		type:'post',
+		async:true,
+		data:{'id':id},
+		dataType:'json',
+		url:'{url:/simple/getProducts}',
+		success:function(content){
+			if(!content)
+			{
+				joinCart_ajax(id,'{url:/simple/joinCart}','goods');
+			}
+			else
+			{
+				var url = "{url:/block/goods_list/goods_id/@goods_id@/type/radio/is_products/1}";
+				
+				url = url.replace('@goods_id@',id);
+				artDialog.open(url,{
+					id:'selectProduct',
+					title:'选择货品到购物车',
+					okVal:'加入购物车',
+					ok:function(iframeWin, topWin)
 					{
-						alert('请选择要加入购物车的商品');
-						return false;
-					}
-					var temp = $.parseJSON(goodsList.attr('data'));
+						var goodsList = $(iframeWin.document).find('input[name="id[]"]:checked');
+				
+	
+						//添加选中的商品
+						if(goodsList.length == 0)
+						{
+							alert('请选择要加入购物车的商品');
+							return false;
+						}
+						var temp = $.parseJSON(goodsList.attr('data'));
 
-					//执行处理回调
-					joinCart_ajax(temp.product_id,'product');
-					return true;
-				}
-			})
+						//执行处理回调
+						joinCart_ajax(temp.product_id,'{url:/simple/joinCart}','product');
+						return true;
+					}
+				})
+			}
+			
+		},
+		error:function(){
+			
+		},
+		complete: function(){
+		
 		}
-	});
+	})
+
 }
 </script>
 

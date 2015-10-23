@@ -14,7 +14,7 @@ return array(
 		'query' => array(
 			'name'   => 'goods as go',
 			'where'  => 'id = #id# and (is_del = 0 or is_del = 4)',
-			'fields' => 'go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id',
+			'fields' => 'go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id,go.is_del',
 			'type'   => 'row',
 		)
 	),

@@ -90,7 +90,7 @@ class Cart extends IInterceptorBase
 		}
 		else
 		{
-			$this->error = '该商品库存不足';
+			$this->error = '该商品不能加入购物车';
 			return false;
 		}
 	}
