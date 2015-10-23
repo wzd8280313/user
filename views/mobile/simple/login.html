@@ -4,6 +4,7 @@
 	$site_config = $site_config->getInfo();
 	$seo_data['title'] = "用户登录_".$site_config['name'];
 	seo::set($seo_data);
+	$callback = IReq::get('callback')?IReq::get('callback') :'/ucenter/' ;
 }
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -52,18 +53,7 @@
 	var returnUrl = '{url:$callback}';
 	var servicePhone = '{$site_config["phone"]}';
 	
-	
-	var LOGIN_RESULT = {SUCCESS:0,FAIL:1};                  
-	var REGISTER_RESULT = {SUCCESS:10,FAIL:11};             
-	var DOMAIN_TYPE = {YHD:1,MALL:2,YW_111:3};              
-	var LOGIN_SOURCE={NORMAL:1,FRAME:2};  
-	var URLPrefix = {"mymall":"#","passport_statics":"#","yiwangauth":"#","yaowang":"#","tracker":"","passport":"#","my":"#","central":"#","validCodeShowUrl":"#","mall":"#","passportother":"#"}; 
-	var currSiteId = 1;                         
-	           
-	var autoLoginFlag= "1";        
-	var valid_code_service_flag="1"; 
-	var showValidCode = "0"; 
-	var mUrl = "#"; 
+
 </script>
 <section class="reg-main">
     <form id="login-form" class="reg-form" method="post" novalidate>

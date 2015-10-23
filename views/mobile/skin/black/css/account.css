@@ -492,7 +492,7 @@ float: left;
 	color:red;
 	
 }
-.yh ul li a .qdjf{
+.yh ul li a .qdjf,.yh ul li a .yqd{
 	/*display: block;
 	background: url(../images/jf.png) no-repeat 0 center;
 	background-size:45px;
@@ -500,10 +500,16 @@ float: left;
 	padding:0 0 0 30px;*/
 
 	display: block;
-	background: url(../images/qdjfs.png) no-repeat right center;
+	
 	background-size: 70px;
 	height: 50px;
 	position: relative;
+}
+.yh ul li a .qdjf{
+	background: url(../images/qdjfs.png) no-repeat right center;
+}
+.yh ul li a .yqd{
+	background: url(../images/yqd.gif) no-repeat right center;
 }
 /*.yh ul li a  .texs{
 	padding: 0 0 0 18px;

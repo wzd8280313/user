@@ -40,9 +40,15 @@
 			<li><a href="javascript:void(0)" class="dfk"><p class="sj">{$propData['prop_num']} 张</p><p class="tex">代金券</p></a></li>
 			<li><a href="javascript:void(0)" class="dfh"><p class="sj">￥{$user['balance']}</p><p class="tex">账户余额</p></a></li>
 			<li><a href="{url:/ucenter/integral}" class="dsh"><p class="sj">{$user['point']} </p><p class="tex">积分</p></a></li>
-			<li><a href="javascript:void(0)" class="dpl">
+			<li>{if:$user['sign']==0}
+				<a href="javascript:void(0)" class="dpl">
 				  <span class="qdjf" onclick='sign_point()'>
 				</a>
+				{else:}
+				<a href="javascript:void(0)" class="dpl">
+				  <span class="yqd" onclick='sign_point()'>
+				</a>
+				{/if}
 			</li>
 		</ul>
 	</div>		

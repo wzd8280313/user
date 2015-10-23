@@ -56,7 +56,7 @@ class APIUcenter
 	//用户中心-用户信息
 	public function getMemberInfo($userid){
 		$tb_member = new IModel('member');
-		$info = $tb_member->getObj("user_id=".$userid);
+		$info = $tb_member->getObj("user_id=".$userid,'*,IF(DATEDIFF(now(),sign_date)>=1,0,1) as sign');
 		return $info;
 	}
 	//用户中心-个人主页统计

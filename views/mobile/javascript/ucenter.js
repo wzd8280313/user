@@ -44,9 +44,8 @@ function checkMobileNew(){
 	var newPhone = $('input[name=newPhone]').val();
 	
 	$.post(checkMobileUrl2,{code:code,newPhone:newPhone},
-		function(data){window.alt(JSON.stringify(data));
+		function(data){
 			if(data.errorCode==0){
-			//window.realAlert(data.next);
 			location.href=data.next;
 		}else{
 			alt(data.mess);
