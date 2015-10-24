@@ -4,8 +4,6 @@ var showBig = false;
 var goods_id = id;
 var pnum = photo_num;
 function loaded() {
-	document.getElementById("scroller").style.width=200*2+'px';
-	document.getElementById("scroller1").style.width=300*2+'px';					 
 
     myScroll = new iScroll('wrapper', {
         snap: true,
@@ -16,7 +14,6 @@ function loaded() {
             if(num>pnum){
                 num = num%pnum;
             }
-            $('#indicatorBig').html(num);
         }
     });
 
@@ -53,7 +50,7 @@ setInterval(function(){
         myScroll.scrollToPage(0, 0);
     }else{
         myScroll.scrollToPage('next', 0);}
-},5000);
+},3000);
 function next_pic(){
     if(myScroll.currPageX==pnum-1){
         myScroll.scrollToPage(0, 0);

@@ -28,7 +28,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
         <link rel="stylesheet" href="{skin:css/mobile_hd_v1.0.min.css}" />
         <script src="{theme:javascript/jquery-1.9.1.min.js}" type="text/javascript"></script>
          <script type="text/javascript" src="{theme:javascript/show.js}"></script>
-		 <script type="text/javascript" src="{theme:javascript/detail.js}"></script>
+		
         <link rel="stylesheet" href="{skin:css/product.min.css}" />
 		<link rel="stylesheet" href="{skin:css/wap/index.css}" type="text/css" />
 		<script src="{theme:javascript/scrollTop.js}"></script>
@@ -73,4 +73,6 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 		var presell_buy_url = '{url:/pregoods/cart2/id/@id@/num/@buyNums@/type/@type@}';
 		var join_cart_url = '{url:/simple/joinCart}';
 		var cart_url = '{url:/simple/cart}';
+		var photo_num = {echo:count($photo)};
 	</script>
+ <script type="text/javascript" src="{theme:javascript/detail.js}"></script>
