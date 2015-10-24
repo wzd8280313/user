@@ -14,8 +14,7 @@ function loaded() {
             if(num>pnum){
                 num = num%pnum;
             }
-			  $('#indicator').html(num);
-
+			 
         }
     });
 
@@ -48,11 +47,11 @@ function loadedBig(count){
 }
 document.addEventListener('DOMContentLoaded', loaded, false);
 
-setInterval(function(){  
+setInterval(function(){ 
     if(myScroll.currPageX==pnum-1){
         myScroll.scrollToPage(0, 0);
     }else{
-        myScroll.scrollToPage(myScroll.currPageX+1, 0);}
+        myScroll.scrollToPage('next', 0);}
 },3000);
 function next_pic(){
     if(myScroll.currPageX==pnum-1){
