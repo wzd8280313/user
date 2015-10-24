@@ -10,14 +10,9 @@ function loaded() {
         momentum: false,
         hScrollbar: false,
         onScrollEnd: function () {
-            num = this.currPageX+1;
-            if(num>pnum){
-                num = num%pnum;
-            }
-			 
+          
         }
     });
-
 }
 //count int 图片数量
 function loadedBig(count){
@@ -44,15 +39,20 @@ function loadedBig(count){
             }
         }
     });
+
 }
 document.addEventListener('DOMContentLoaded', loaded, false);
+window.onload=function(){
+	setInterval(function(){ 
+      if(myScroll.currPageX==pnum-1){
+                myScroll.scrollToPage(0, 0);
+            }else{
+                myScroll.scrollToPage('next', 0);}
+        },5000);
+}
 
-setInterval(function(){ 
-    if(myScroll.currPageX==pnum-1){
-        myScroll.scrollToPage(0, 0);
-    }else{
-        myScroll.scrollToPage('next', 0);}
-},3000);
+
+
 function next_pic(){
     if(myScroll.currPageX==pnum-1){
         myScroll.scrollToPage(0, 0);
