@@ -14,6 +14,8 @@ function loaded() {
             if(num>pnum){
                 num = num%pnum;
             }
+			  $('#indicator').html(num);
+
         }
     });
 
@@ -23,6 +25,7 @@ function loadedBig(count){
     BicPicScroll = new iScroll('wrapper1', {
         snap: true,
         momentum: false,
+		zoom:true,
         hScrollbar: false,
         onScrollEnd: function () {
             num = this.currPageX+1;
@@ -49,7 +52,7 @@ setInterval(function(){
     if(myScroll.currPageX==pnum-1){
         myScroll.scrollToPage(0, 0);
     }else{
-        myScroll.scrollToPage('next', 0);}
+        myScroll.scrollToPage(myScroll.currPageX+1, 0);}
 },3000);
 function next_pic(){
     if(myScroll.currPageX==pnum-1){
