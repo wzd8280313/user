@@ -39,7 +39,43 @@ class unionpay extends paymentPlugin
 	{
 		echo "success";
 	}
-
+	/**
+	 * @see paymentplugin::callback()
+	 */
+	public function callbackMerge($callbackData,&$paymentId,&$money,&$message,&$orderNo,&$order_ids)
+	{
+		if (isset ( $callbackData['signature'] ))
+		{
+			if (Common::verify ( $callbackData ))
+			{
+				$orderNo = $callbackData['orderId'];//订单号
+				if(isset($callbackData['queryId'])){
+					$trade_no = $callbackData['queryId']; 
+					$merge_order_db = new IModel('merge_order');
+					$order_ids = $merge_order_db->getField('order_no='.$orderNo,'order_ids');
+					$this->recordTradeNoForMerge($order_ids,$callbackData['queryId'],$paymentId);
+					
+				}
+				return 1;
+			}
+			else
+			{
+				$message = '签名不正确';
+			}
+		}
+		else
+		{
+			$message = '签名为空';
+		}
+		return 0;
+	}
+	public function serverCallbackMerge($callbackData,&$paymentId,&$money,&$message,&$orderNo,&$order_ids)
+	{
+		if($this->callbackMerge($callbackData,$paymentId,$money,$message,$orderNo,$order_ids)){
+			return 1;
+		}
+		return 0;
+	}
 	/**
 	 * @see paymentplugin::callback()
 	 */
@@ -95,13 +131,45 @@ class unionpay extends paymentPlugin
 		}
 		return 0;
 	}
-
+	
+	public function getSendDataMerge($payment)
+	{
+		Common::setCertPwd($payment['M_certPwd']);
+		$return = array(
+				'version' => '5.0.0',				//版本号
+				'encoding' => 'utf-8',				//编码方式
+				'certId' => Common::getSignCertId (),			//证书ID
+					
+				'txnType' => '01',				//交易类型     //可能是活的
+				'txnSubType' => '01',				//交易子类 01消费
+				'bizType' => '000201',				//业务类型
+				'frontUrl' =>  $this->callbackUrlMerge,//SDK_FRONT_NOTIFY_URL,  		//前台通知地址
+				'backUrl' => $this->serverCallbackUrlMerge,//SDK_BACK_NOTIFY_URL,		//后台通知地址
+				'signMethod' => '01',		//签名方法
+				'channelType' => '07',		//渠道类型，07-PC，08-手机
+				'accessType' => '0',		//接入类型
+				'merId' => $payment['M_merId'],	//商户代码，请改自己的测试商户号
+				'currencyCode' => '156',	//交易币种
+				'defaultPayType' => '0001',	//默认支付方式
+				'txnTime' => date('YmdHis')	//订单发送时间
+				//'orderDesc' => '订单描述',  //订单描述，网关支付和wap支付暂时不起作用
+		);
+		if(IClient::getDevice()=='mobile'){
+			$return['channelType'] = '08';
+		}
+		$return['orderId'] = $payment['M_OrderNO'];	//商户订单号
+		$return['txnAmt'] = $payment['M_Amount']*100;		//交易金额，单位分
+		$return['reqReserved'] = $payment['M_OrderId'].":".$payment['M_Remark'];	//订单发送时间'透传信息'; //请求方保留域，透传字段，查询、通知、对账文件中均会原样出现
+		// 签名
+		Common::sign ( $return );
+		
+		return $return;
+	}
 	/**
 	 * @see paymentplugin::getSendData()
 	 */
 	public function getSendData($payment)
 	{
-		
 		Common::setCertPwd($payment['M_certPwd']);
 		$return = array(
 			'version' => '5.0.0',				//版本号
@@ -129,7 +197,6 @@ class unionpay extends paymentPlugin
 		$return['txnAmt'] = $payment['M_Amount']*100;		//交易金额，单位分
 		$return['reqReserved'] = $payment['M_OrderId'].":".$payment['M_Remark'];	//订单发送时间'透传信息'; //请求方保留域，透传字段，查询、通知、对账文件中均会原样出现
 		// 签名
-		
 		Common::sign ( $return );
 		
         return $return;

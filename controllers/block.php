@@ -166,6 +166,27 @@ class Block extends IController
     	echo JSON::encode($data);
     }
     /**
+     * 合并付款
+     */
+    public function dopaymerge(){
+    	//print_r($_POST);
+    	$order_id_arr = IFilter::act(IReq::get('sub'),'int');
+    	$order_ids = implode(',',$order_id_arr);
+    	$payment_id = IFilter::act(IReq::get('payment'),'int');
+    
+    	//获取支付方式类库
+    	$paymentInstance = Payment::createPaymentInstance($payment_id);
+    	$order_db = new IModel('order');
+    	$order_list = $order_db->query('id in ('.$order_ids.') and type!=4 and status=1 and pay_status=0','id');
+    	if(empty($order_list))
+    		IError::show(403,'要支付的订单信息不存在');
+    	
+    	$sendData = $paymentInstance->getSendDataMerge(Payment::getPaymentInfoMerge($payment_id,$order_ids),true);
+    	 
+    	$paymentInstance->doPay($sendData);
+    	//print_r($order_ids);
+    }
+    /**
      * 预售订单支付
      */
     public function doPayPresell(){
@@ -234,7 +255,98 @@ class Block extends IController
 
 		$paymentInstance->doPay($sendData);
 	}
-
+	/**
+	 * 合并支付同步回调
+	 * 
+	 */
+	public function callback_merge(){
+		//从URL中获取支付方式
+		$payment_id      = IFilter::act(IReq::get('_id'),'int');
+		$paymentInstance = Payment::createPaymentInstance($payment_id);
+		
+		if(!is_object($paymentInstance))
+		{
+			IError::show(403,'支付方式不存在');
+		}
+		
+		//初始化参数
+		$money   = '';
+		$message = '支付失败';
+		$orderNo = '';
+		$order_ids = '';
+		
+		//执行接口回调函数
+		$callbackData = array_merge($_POST,$_GET);
+		unset($callbackData['controller']);
+		unset($callbackData['action']);
+		unset($callbackData['_id']);
+		$return = $paymentInstance->callbackMerge($callbackData,$payment_id,$money,$message,$orderNo,$order_ids);
+		if($return==1){
+			$order = new IModel('order');
+			$order_list = $order->query('id in ('.$order_ids.')','order_no');
+			foreach($order_list as $k=>$v){
+				$order_id = Order_Class::updateOrderStatus($v['order_no']);
+			}
+			if($order_id)
+			{
+				$url  = '/site/success/message/'.urlencode("支付成功");
+				$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
+				$this->redirect($url);
+				exit;
+			}
+			else{
+				IError::show(403,'订单修改失败');
+			}
+		}
+		else
+		{
+			$message = $message ? $message : '支付失败';
+			IError::show(403,$message);
+		}
+	}
+	public function server_callback_merge(){
+		//从URL中获取支付方式
+		$payment_id      = IFilter::act(IReq::get('_id'),'int');
+		$paymentInstance = Payment::createPaymentInstance($payment_id);
+		
+		if(!is_object($paymentInstance))
+		{
+			IError::show(403,'支付方式不存在');
+		}
+		
+		//初始化参数
+		$money   = '';
+		$message = '支付失败';
+		$orderNo = '';
+		$order_ids = '';
+		
+		//执行接口回调函数
+		$callbackData = array_merge($_POST,$_GET);
+		unset($callbackData['controller']);
+		unset($callbackData['action']);
+		unset($callbackData['_id']);
+		$return = $paymentInstance->serverCallbackMerge($callbackData,$payment_id,$money,$message,$orderNo,$order_ids);
+		if($return==1){
+			$order = new IModel('order');
+			$order_list = $order->query('id in ('.$order_ids.')','order_no');
+			foreach($order_list as $k=>$v){
+				$order_id = Order_Class::updateOrderStatus($v['order_no']);
+			}
+			if($order_id)
+			{
+				$paymentInstance->notifyStop();
+					exit;
+			}
+			else{
+				IError::show(403,'订单修改失败');
+			}
+		}
+		else
+		{
+			$paymentInstance->notifyStop();
+			exit;
+		}
+	}
 	/**
      * @brief 【重要】支付回调[同步]
 	 */
@@ -354,9 +466,6 @@ class Block extends IController
 				if($order_id)
 				{
 					$paymentInstance->notifyStop();
-					$url  = '/site/success/message/'.urlencode("支付成功");
-					$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
-					$this->redirect($url);
 					exit;
 				}
 				IError::show(403,'订单修改失败');

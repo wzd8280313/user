@@ -35,6 +35,10 @@ abstract class paymentPlugin
 		$this->serverCallbackUrlForRefund = IUrl::getHost().IUrl::creatUrl("/block/server_callback_refund/_id/".$payment_id);
 		//中断支付返回
 		$this->merchantCallbackUrl = IUrl::getHost().IUrl::creatUrl("/block/merchant_callback/_id/".$payment_id);
+		//合并支付同步回调地址
+		$this->callbackUrlMerge = IUrl::getHost().IUrl::creatUrl("/block/callback_merge/_id/".$payment_id);
+		//合并支付异步回调地址
+		$this->serverCallbackUrlMerge = IUrl::getHost().IUrl::creatUrl("/block/server_callback_merge/_id/".$payment_id);
 	}
 
 	/**
@@ -64,7 +68,16 @@ abstract class paymentPlugin
 			return $orderDB->update('order_no = "'.$orderNo.'"');
 		}
 	}
-
+	/**
+	 * 合并付款记录订单交易号
+	 * @param str $ids  多个id值
+	 * @param str $tradeNo
+	 */
+	protected function recordTradeNoForMerge($ids,$tradeNo,$paymentId){
+		$orderDB  = new IModel('order');
+		$orderDB->setData(array('trade_no'=>$tradeNo,'pay_type'=>$paymentId));
+		$orderDB->update('id in ('.$ids.')');
+	}
 	/**
 	 * @brief 开始支付
 	 */

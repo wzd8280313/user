@@ -47,6 +47,52 @@ class trade_alipay extends paymentPlugin
 	/**
 	 * @see paymentplugin::callback()
 	 */
+	public function callbackMerge($callbackData,&$paymentId,&$money,&$message,&$orderNo,&$order_ids)
+	{
+		//除去待签名参数数组中的空值和签名参数
+		$para_filter = $this->paraFilter($callbackData);
+
+		//对待签名参数数组排序
+		$para_sort = $this->argSort($para_filter);
+
+		//生成签名结果
+		$mysign = $this->buildMysign($para_sort,Payment::getConfigParam($paymentId,'M_PartnerKey'));
+
+		if($callbackData['sign'] == $mysign)
+		{
+			//回传数据
+			$orderNo = $callbackData['out_trade_no'];
+			$money   = $callbackData['total_fee'];
+
+			//记录等待发货流水号
+			if($callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS' && isset($callbackData['trade_no']))
+			{
+				$merge_order_db = new IModel('merge_order');
+					$order_ids = $merge_order_db->getField('order_no='.$orderNo,'order_ids');
+					$this->recordTradeNoForMerge($order_ids,$callbackData['trade_no'],$paymentId);
+			}
+
+			if($callbackData['trade_status'] == 'TRADE_FINISHED' || $callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
+			{
+				return true;
+			}
+		}
+		else
+		{
+			$message = '签名不正确';
+		}
+		return false;
+	}
+	public function serverCallbackMerge($callbackData,&$paymentId,&$money,&$message,&$orderNo,&$order_ids)
+	{
+		if($this->callbackMerge($callbackData,$paymentId,$money,$message,$orderNo,$order_ids)){
+			return 1;
+		}
+		return 0;
+	}
+	/**
+	 * @see paymentplugin::callback()
+	 */
 	public function callback($callbackData,&$paymentId,&$money,&$message,&$orderNo)
 	{
 		//除去待签名参数数组中的空值和签名参数
@@ -139,6 +185,51 @@ class trade_alipay extends paymentPlugin
 		$resArr['orig_trade_no'] =  '';
 		self::addTrade($resArr);
 	
+	}
+	public function getSendDataMerge($payment){
+		$return = array();
+		
+		//基本参数
+		$return['service'] = 'create_partner_trade_by_buyer';
+		$return['partner'] = $payment['M_PartnerId'];
+		$return['seller_email'] = $payment['M_Email'];
+		$return['_input_charset'] = 'utf-8';
+		$return['payment_type'] = 1;
+		$return['return_url'] = $this->callbackUrlMerge;
+		$return['notify_url'] = $this->serverCallbackUrlMerge;
+		
+		//业务参数
+		$return['subject'] = $payment['R_Name'];
+		$return['out_trade_no'] = $payment['M_OrderNO'];
+		$return['price'] = number_format($payment['M_Amount'], 2, '.', '');
+		$return['quantity'] = 1;
+		$return['logistics_fee'] = "0.00";
+		$return['logistics_type'] = "EXPRESS";
+		$return['logistics_payment'] = "SELLER_PAY";
+		
+		if(isset($payment['P_Name']))
+		{
+			$return['receive_name'] = $payment['P_Name'];
+			$return['receive_address'] = $payment['P_Address'];
+			$return['receive_zip'] = $payment['P_PostCode'];
+			$return['receive_phone'] = $payment['P_Telephone'];
+			$return['receive_mobile'] = $payment['P_Mobile'];
+		}
+		
+		//除去待签名参数数组中的空值和签名参数
+		$para_filter = $this->paraFilter($return);
+		
+		//对待签名参数数组排序
+		$para_sort = $this->argSort($para_filter);
+		
+		//生成签名结果
+		$mysign = $this->buildMysign($para_sort, $payment['M_PartnerKey']);
+		
+		//签名结果与签名方式加入请求提交参数组中
+		$return['sign'] = $mysign;
+		$return['sign_type'] = 'MD5';
+		
+		return $return;
 	}
 	/**
 	 * @see paymentplugin::getSendData()

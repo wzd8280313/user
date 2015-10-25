@@ -280,7 +280,58 @@ class Payment
 
 		return $payment;
 	}
-
+	public static function getPaymentInfoMerge($payment_id,$order_ids){
+		$payment = self::getPaymentParam($payment_id);
+		//获取订单信息
+		$orderObj = new IModel('order');
+		$orderList = $orderObj->query('id in( '.$order_ids.') and type!=4 and status = 1');
+		if(empty($orderList))IError::show(403,'订单信息不存在，不能支付');
+		//判断商品库存
+		$orderGoodsDB   = new IModel('order_goods');
+		$orderGoodsList = $orderGoodsDB->query('order_id in( '.$order_ids.')');
+		foreach($orderGoodsList as $key => $val)
+		{
+			if(!goods_class::checkStore($val['goods_nums'],$val['goods_id'],$val['product_id']))
+			{
+				IError::show(403,'商品库存不足无法支付，请重新下单');
+			}
+		}
+		
+		$payment['M_Remark']    = $orderList[0]['postscript'];
+		$payment['M_OrderId']   = $orderList[0]['id'];
+		$payment['M_OrderNO']   = 'merge'.Order_Class::createOrderNum();
+		$payment['M_Amount']    = 0;
+		
+		//用户信息
+		$payment['P_Mobile']    = $orderList[0]['mobile'];
+		$payment['P_Name']      = $orderList[0]['accept_name'];
+		$payment['P_PostCode']  = $orderList[0]['postcode'];
+		$payment['P_Telephone'] = $orderList[0]['telphone'];
+		$payment['P_Address']   = $orderList[0]['address'];
+		foreach($orderList as $k=>$v){
+			$payment['M_Amount'] += $v['order_amount'];
+		}
+		
+		$siteConfigObj = new Config("site_config");
+		$site_config   = $siteConfigObj->getInfo();
+		
+		//交易信息
+		$payment['M_Time']      = time();
+		$payment['M_Paymentid'] = $payment_id;
+		
+		//店铺信息
+		$payment['R_Address']   = isset($site_config['address']) ? $site_config['address'] : '';
+		$payment['R_Name']      = isset($site_config['name'])    ? $site_config['name']    : '';
+		$payment['R_Mobile']    = isset($site_config['mobile'])  ? $site_config['mobile']  : '';
+		$payment['R_Telephone'] = isset($site_config['phone'])   ? $site_config['phone']   : '';
+		
+		$merge_order = new IModel('merge_order');
+		$merge_order->setData(array('order_ids'=>$order_ids,'order_no'=>$payment['M_OrderNO'],'pay_type'=>$payment_id,'time'=>ITime::getDateTime()));
+		$merge_order->add();
+		
+		return $payment;
+		
+	}
 	/**
 	 * @获取退款需要订单数据
 	 * @$payment_id int 支付方式id

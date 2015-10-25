@@ -893,7 +893,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 .qijiandian ul li .qd-popup-trigger.xio{ height:24px;line-height:16px; padding:2px;}
 
 
-.qijiandian ul li form input {
+.qijiandian ul li input {
 	color: #F00;
 	display: block;
 	float: left;
@@ -930,8 +930,8 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	margin-left: auto;
 	padding-left: 10px;
 }
- .bottom .dibu form button{ float:right; margin-right:10px; height:32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
-.bottom .dibu form input{
+ .bottom .dibu  button{ float:right; margin-right:10px; height:32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
+.bottom .dibu  input{
 	color: #F00;
 	float: left;
 	margin-right: 6px;
@@ -940,4 +940,4 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	width: 24px;
 	background-color: #ffffff;
 }
-.bottom .dibu form p{ float: left; line-height:32px; color:#555; font-size:13px; }
+.bottom .dibu  p{ float: left; line-height:32px; color:#555; font-size:13px; }
