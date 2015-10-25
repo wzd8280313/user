@@ -101,6 +101,7 @@ class unionpay extends paymentPlugin
 	 */
 	public function getSendData($payment)
 	{
+		
 		Common::setCertPwd($payment['M_certPwd']);
 		$return = array(
 			'version' => '5.0.0',				//版本号
@@ -121,7 +122,9 @@ class unionpay extends paymentPlugin
 			'txnTime' => date('YmdHis')	//订单发送时间
 			//'orderDesc' => '订单描述',  //订单描述，网关支付和wap支付暂时不起作用
 		);
-	
+		if(IClient::getDevice()=='mobile'){
+			$return['channelType'] = '08';
+		}
 		$return['orderId'] = $payment['M_OrderNO'];	//商户订单号
 		$return['txnAmt'] = $payment['M_Amount']*100;		//交易金额，单位分
 		$return['reqReserved'] = $payment['M_OrderId'].":".$payment['M_Remark'];	//订单发送时间'透传信息'; //请求方保留域，透传字段，查询、通知、对账文件中均会原样出现
