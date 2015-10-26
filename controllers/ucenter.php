@@ -1181,14 +1181,18 @@ class Ucenter extends IController
 		    	else
 		    	{
 		    		$orderObj = new IModel('order');
-		    		$trueOrderNo   = Preorder_Class::getTrueOrderNo($return['order_no']);
-		    		$orderRow = $orderObj->getObj('order_no  = "'.IFilter::act($trueOrderNo).'" and (pay_status = 0 and type!=4 || pay_status in (0,1) and type=4) and user_id = '.$user_id);
-		    		
-		    		if(empty($orderRow))
-		    		{
-		    			IError::show(403,'订单已经被处理过，请查看订单状态');
-		    			exit;
+		    		if(stripos($return['order_no'],'merge') === false){
+		    			$trueOrderNo   = Preorder_Class::getTrueOrderNo($return['order_no']);
+		    			$orderRow = $orderObj->getObj('order_no  = "'.IFilter::act($trueOrderNo).'" and (pay_status = 0 and type!=4 || pay_status in (0,1) and type=4) and user_id = '.$user_id);
+		    			
+		    			if(empty($orderRow))
+		    			{
+		    				IError::show(403,'订单已经被处理过，请查看订单状态');
+		    				exit;
+		    			}
+		    			
 		    		}
+		    		
 
 					$dataArray  = array('balance' => 'balance - '.IFilter::act($return['total_fee']));
 					$memberObj->setData($dataArray);

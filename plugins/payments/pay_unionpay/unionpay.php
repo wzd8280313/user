@@ -52,7 +52,7 @@ class unionpay extends paymentPlugin
 				if(isset($callbackData['queryId'])){
 					$trade_no = $callbackData['queryId']; 
 					$merge_order_db = new IModel('merge_order');
-					$order_ids = $merge_order_db->getField('order_no='.$orderNo,'order_ids');
+					$order_ids = $merge_order_db->getField('order_no="'.$orderNo.'"','order_ids');
 					$this->recordTradeNoForMerge($order_ids,$callbackData['queryId'],$paymentId);
 					
 				}
