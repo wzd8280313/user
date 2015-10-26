@@ -154,7 +154,7 @@ body{font-size:62.5%}
 
 #page .suggestion .content ul li .price_wrap strong{font-size:12px;color:#d61818}
 
-#page .suggestion .content ul li .price_wrap del{text-decoration-line:line-through;font-size:1em;color:#999}
+#page .suggestion .content ul li .price_wrap del{text-decoration-line:line-through;font-size:12px;color:#999}
 
 #page .activity_floor{margin-top:10px;border-top:1px solid #eee;border-bottom:1px solid #eee}
 
