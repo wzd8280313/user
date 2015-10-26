@@ -390,7 +390,7 @@ a.btn_pay{display:inline-block;width:119px;height:37px;margin-right:20px;backgro
 /* saleinfos style start */
 .saleinfos{padding:5px;border-bottom:1px solid #e8e8e8;background-color:#f9f9f9;color:#404040}
 	.saleinfos li{float:left;height:20px;line-height:20px;margin:3px 0;overflow:hidden;padding:0 4% 0 2%;width:44%;text-align:left}
-.salebox{padding:0 10px;color:#404040;line-height:20px}
+.salebox{padding:0 10px;color:#404040;line-height:20px;width:930px;}
 	.salebox .saletitle,.salebox .saledesc{padding:0 10px;text-align:left}
 	.salebox .saletitle{margin:3px 0 5px}
 /* saleinfos style end */
