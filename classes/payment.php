@@ -141,28 +141,9 @@ class Payment
 		{
 			IError::show(403,'订单信息不正确，不能进行支付');
 		}
-		
-		$siteConfigObj = new Config('site_config');
-		$cancel_days = $siteConfigObj->preorder_cancel_days;
-		if($orderRow['status']==1 && order_class::is_overdue($orderRow['create_time'],$cancel_days)){
-			$payment['M_Amount']    = $orderRow['pre_amount'];
-			$payment['M_OrderNO']   = 'pre'.$orderRow['order_no'];
-		}elseif($orderRow['status']==4 ){
-			if($orderRow['wei_type']==1){
-				if(time()<strtotime($orderRow['wei_start_time']))
-					IError::show(403,'未到支付时间，不能支付');
-				if(time()>strtotime($orderRow['wei_end_time']))
-					IError::show(403,'超期未支付尾款，订单已作废');
-			}else{
-				if(!preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days']))
-					IError::show(403,'超期未支付尾款，订单已作废');
-			}
-			$payment['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
-			$payment['M_OrderNO']   = 'wei'.$orderRow['order_no'];
-		}
-		else{
-			IError::show(403,'订单已过期，不能进行支付');
-		}
+		$payment_Data = Preorder_Class::get_pay_money($orderRow);//计算订单支付金额，如果不满足支付条件则显示错误
+		$payment['M_Amount']    = $payment_Data['M_Amount'];
+		$payment['M_OrderNO']   = $payment_Data['M_OrderNO'];
 		
 		$payment['M_Remark']    = $orderRow['postscript'];
 		$payment['M_OrderId']   = $orderRow['id'];
@@ -284,14 +265,18 @@ class Payment
 		$payment = self::getPaymentParam($payment_id);
 		//获取订单信息
 		$orderObj = new IModel('order');
-		$orderList = $orderObj->query('id in( '.$order_ids.') and type!=4 and status = 1');
+		$orderList = $orderObj->query('id in( '.$order_ids.') and (type!=4 and status = 1 or type=4)');
 		if(empty($orderList))IError::show(403,'订单信息不存在，不能支付');
 		//判断商品库存
-		$orderGoodsDB   = new IModel('order_goods');
-		$orderGoodsList = $orderGoodsDB->query('order_id in( '.$order_ids.')');
+		$orderGoodsDB   = new IQuery('order_goods as og');
+		$orderGoodsDB->join = 'left join order as o on o.id=og.order_id';
+		$orderGoodsDB->where = 'order_id in( '.$order_ids.')';
+		$orderGoodsDB->fields = 'og.*,o.type';
+		$orderGoodsList = $orderGoodsDB->find();
 		foreach($orderGoodsList as $key => $val)
 		{
-			if(!goods_class::checkStore($val['goods_nums'],$val['goods_id'],$val['product_id']))
+			
+			if($val['type']!=4 && !goods_class::checkStore($val['goods_nums'],$val['goods_id'],$val['product_id']))
 			{
 				IError::show(403,'商品库存不足无法支付，请重新下单');
 			}
@@ -309,7 +294,13 @@ class Payment
 		$payment['P_Telephone'] = $orderList[0]['telphone'];
 		$payment['P_Address']   = $orderList[0]['address'];
 		foreach($orderList as $k=>$v){
-			$payment['M_Amount'] += $v['order_amount'];
+			if($v['type']!=4){
+				$payment['M_Amount'] += $v['order_amount'];
+			}else{
+				$payment_Data = Preorder_Class::get_pay_money($v);//计算订单支付金额，如果不满足支付条件则显示错误
+				$payment['M_Amount'] += $payment_Data['M_Amount'];
+			}
+			
 		}
 		
 		$siteConfigObj = new Config("site_config");
@@ -364,10 +355,10 @@ class Payment
 		
 		$payment = array();
 		$orderObj = new IQuery('order as o');
-		$orderObj->join = 'left join trade_record as t on CONCAT("pre",o.order_no) = t.order_no OR CONCAT("wei",o.order_no) = t.order_no';
+		$orderObj->join = 'left join trade_record as t on CONCAT("pre",o.order_no) = t.order_no OR CONCAT("wei",o.order_no) = t.order_no OR find_in_set(o.id,t.order_ids)';
 		$orderObj->where = 'o.id='.$order_id;
 		$orderObj->fields = 'o.order_no,o.pre_amount,t.trade_no,t.money as trade_money,o.id';
-		$orderObj->limit = 2;
+		$orderObj->limit = 3;
 		$orderObj->order = 't.id ASC';
 		$orderData = $orderObj->find();
 		

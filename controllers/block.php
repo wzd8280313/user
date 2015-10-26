@@ -177,7 +177,7 @@ class Block extends IController
     	//获取支付方式类库
     	$paymentInstance = Payment::createPaymentInstance($payment_id);
     	$order_db = new IModel('order');
-    	$order_list = $order_db->query('id in ('.$order_ids.') and type!=4 and status=1 and pay_status=0','id');
+    	$order_list = $order_db->query('id in ('.$order_ids.')','id');
     	if(empty($order_list))
     		IError::show(403,'要支付的订单信息不存在');
     	
@@ -283,9 +283,16 @@ class Block extends IController
 		$return = $paymentInstance->callbackMerge($callbackData,$payment_id,$money,$message,$orderNo,$order_ids);
 		if($return==1){
 			$order = new IModel('order');
-			$order_list = $order->query('id in ('.$order_ids.')','order_no');
+			$order_list = $order->query('id in ('.$order_ids.')','order_no,type');
 			foreach($order_list as $k=>$v){
-				$order_id = Order_Class::updateOrderStatus($v['order_no']);
+				if($v['type']!=4){
+					$order_id = Order_Class::updateOrderStatus($v['order_no']);
+				}
+				
+				else {
+					$order_id = Preorder_Class::updateOrderStatus($v['order_no']);
+				}
+					
 			}
 			if($order_id)
 			{
@@ -328,9 +335,12 @@ class Block extends IController
 		$return = $paymentInstance->serverCallbackMerge($callbackData,$payment_id,$money,$message,$orderNo,$order_ids);
 		if($return==1){
 			$order = new IModel('order');
-			$order_list = $order->query('id in ('.$order_ids.')','order_no');
+			$order_list = $order->query('id in ('.$order_ids.')','order_no,type');
 			foreach($order_list as $k=>$v){
+				if($v['type']!=4)
 				$order_id = Order_Class::updateOrderStatus($v['order_no']);
+				else 
+					$order_id = Preorder_Class::updateOrderStatus($v['order_no']);
 			}
 			if($order_id)
 			{

@@ -53,8 +53,8 @@ class unionpay extends paymentPlugin
 					$trade_no = $callbackData['queryId']; 
 					$merge_order_db = new IModel('merge_order');
 					$order_ids = $merge_order_db->getField('order_no="'.$orderNo.'"','order_ids');
-					$this->recordTradeNoForMerge($order_ids,$callbackData['queryId'],$paymentId);
-					
+					$this->recordTradeNoForMerge($order_ids,$trade_no,$paymentId);
+					self::addTradeData($callbackData,0,$order_ids);//添加交易记录
 				}
 				return 1;
 			}
@@ -71,8 +71,28 @@ class unionpay extends paymentPlugin
 	}
 	public function serverCallbackMerge($callbackData,&$paymentId,&$money,&$message,&$orderNo,&$order_ids)
 	{
-		if($this->callbackMerge($callbackData,$paymentId,$money,$message,$orderNo,$order_ids)){
-			return 1;
+		if (isset ( $callbackData['signature'] ))
+		{
+			if (Common::verify ( $callbackData ))
+			{
+				$orderNo = $callbackData['orderId'];//订单号
+				if(isset($callbackData['queryId'])){
+					$trade_no = $callbackData['queryId']; 
+					$merge_order_db = new IModel('merge_order');
+					$order_ids = $merge_order_db->getField('order_no="'.$orderNo.'"','order_ids');
+					$this->recordTradeNoForMerge($order_ids,$trade_no,$paymentId);
+					self::addTradeData($callbackData,1,$order_ids);//添加交易记录
+				}
+				return 1;
+			}
+			else
+			{
+				$message = '签名不正确';
+			}
+		}
+		else
+		{
+			$message = '签名为空';
 		}
 		return 0;
 	}
@@ -245,7 +265,7 @@ class unionpay extends paymentPlugin
 	 * @param array $tradeData  返回的报文
 	 * @param int   $asyn  0:同步处理 1：异步回调
 	 */
-	private static function addTradeData($tradeData,$asyn=0){
+	private static function addTradeData($tradeData,$asyn=0,$ids=0){
 		$resArr = array(
 				'trade_no' 	   => $tradeData['queryId'],
 				'order_no'     => $tradeData['orderId'],
@@ -253,6 +273,7 @@ class unionpay extends paymentPlugin
 				'pay_type'     => 3,
 				'trade_type'   => self::getTradeType(3,$tradeData['txnType']),
 				'time'         => $tradeData['txnTime'],
+				'order_ids'    => $ids
 		);
 		$resArr['trade_status']=$asyn;
 		$resArr['orig_trade_no'] = isset($tradeData['origQryId']) ? $tradeData['origQryId'] : '';

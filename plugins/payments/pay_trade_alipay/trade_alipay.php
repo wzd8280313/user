@@ -70,6 +70,7 @@ class trade_alipay extends paymentPlugin
 				$merge_order_db = new IModel('merge_order');
 					$order_ids = $merge_order_db->getField('order_no='.$orderNo,'order_ids');
 					$this->recordTradeNoForMerge($order_ids,$callbackData['trade_no'],$paymentId);
+					self::addTradeData($callbackData,0,$order_ids);//添加交易记录
 			}
 
 			if($callbackData['trade_status'] == 'TRADE_FINISHED' || $callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
@@ -85,10 +86,40 @@ class trade_alipay extends paymentPlugin
 	}
 	public function serverCallbackMerge($callbackData,&$paymentId,&$money,&$message,&$orderNo,&$order_ids)
 	{
-		if($this->callbackMerge($callbackData,$paymentId,$money,$message,$orderNo,$order_ids)){
-			return 1;
+		//除去待签名参数数组中的空值和签名参数
+		$para_filter = $this->paraFilter($callbackData);
+
+		//对待签名参数数组排序
+		$para_sort = $this->argSort($para_filter);
+
+		//生成签名结果
+		$mysign = $this->buildMysign($para_sort,Payment::getConfigParam($paymentId,'M_PartnerKey'));
+
+		if($callbackData['sign'] == $mysign)
+		{
+			//回传数据
+			$orderNo = $callbackData['out_trade_no'];
+			$money   = $callbackData['total_fee'];
+
+			//记录等待发货流水号
+			if($callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS' && isset($callbackData['trade_no']))
+			{
+				$merge_order_db = new IModel('merge_order');
+					$order_ids = $merge_order_db->getField('order_no='.$orderNo,'order_ids');
+					$this->recordTradeNoForMerge($order_ids,$callbackData['trade_no'],$paymentId);
+					self::addTradeData($callbackData,1,$order_ids);//添加交易记录
+			}
+
+			if($callbackData['trade_status'] == 'TRADE_FINISHED' || $callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
+			{
+				return true;
+			}
 		}
-		return 0;
+		else
+		{
+			$message = '签名不正确';
+		}
+		return false;
 	}
 	/**
 	 * @see paymentplugin::callback()
@@ -172,13 +203,14 @@ class trade_alipay extends paymentPlugin
 	 * @param array $tradeData  返回的报文
 	 * @param int   $asyn  0:同步处理 1：异步回调
 	 */
-	private static function addTradeData($tradeData,$asyn=0){
+	private static function addTradeData($tradeData,$asyn=0,$ids){
 		$resArr = array(
 				'trade_no' 	   => $tradeData['trade_no'],
 				'order_no'     => $tradeData['out_trade_no'],
 				'money'        => $tradeData['total_fee'],
 				'pay_type'     => 7,
 				'trade_type'   => self::getTradeType(7),
+				'order_ids'    => $ids
 		);
 		$resArr['time'] = isset($tradeData['gmt_payment'])&&$tradeData['gmt_payment'] ? $tradeData['gmt_payment'] :ITime::getDateTime();
 		$resArr['trade_status']=$asyn;

@@ -341,31 +341,38 @@ class Preorder_Class extends Order_Class{
 	{
 		if(stripos($orderNo,'pre') !== false)
 		{
-			$type    = 1;
 			$orderNo = str_replace('pre','',$orderNo);
+			
+		}else if(stripos($orderNo,'wei') !== false){
+			
+			$orderNo = str_replace('wei','',$orderNo);
+			
+		}
+		
+		
+		//获取订单信息
+		$orderObj  = new IModel('order');
+		$orderRow  = $orderObj->getObj('order_no = "'.$orderNo.'"');
+		
+		
+		if(empty($orderRow))
+		{
+			return false;
+		}
+		if($orderRow['pay_status']==0){
+			$type    = 1;
 			$dataArray = array(
 					'status'     => 3,
 					'pay_time'   => ITime::getDateTime(),
 					'pay_status' => 1
 			);
-			
-		}else{
+		}else if($orderRow['pay_status']==1){
 			$type    = 0;
-			$orderNo = str_replace('wei','',$orderNo);
 			$dataArray = array(
 					'status'     => 7,
 					'pay_time2'   => ITime::getDateTime(),
 					'pay_status' => 2
 			);
-		}
-		
-		//获取订单信息
-		$orderObj  = new IModel('order');
-		$orderRow  = $orderObj->getObj('order_no = "'.$orderNo.'"');
-	
-		if(empty($orderRow))
-		{
-			return false;
 		}
 	
 		if($orderRow['pay_status'] == 2)
@@ -636,5 +643,34 @@ class Preorder_Class extends Order_Class{
 			$orderNo = str_replace('wei','',$orderNo);
 		}
 		return $orderNo;
+	}
+	/**
+	 * 计算预售订单是否可支付
+	 * @array $orderRow 订单信息
+	 */
+	public static function get_pay_money($orderRow){
+		$siteConfigObj = new Config('site_config');
+		$cancel_days = $siteConfigObj->preorder_cancel_days;
+		$return = array();
+		if($orderRow['status']==1 && order_class::is_overdue($orderRow['create_time'],$cancel_days)){
+			$return['M_Amount']    = $orderRow['pre_amount'];
+			$return['M_OrderNO']   = 'pre'.$orderRow['order_no'];
+		}elseif($orderRow['status']==4 ){
+			if($orderRow['wei_type']==1){
+				if(time()<strtotime($orderRow['wei_start_time']))
+					IError::show(403,'预售订单未到支付时间，不能支付');
+				if(time()>strtotime($orderRow['wei_end_time']))
+					IError::show(403,'预售订单超期未支付尾款，订单已作废');
+			}else{
+				if(!preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days']))
+					IError::show(403,'预售订单超期未支付尾款，订单已作废');
+			}
+			$payment['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
+			$payment['M_OrderNO']   = 'wei'.$orderRow['order_no'];
+		}
+		else{
+			IError::show(403,'订单已过期，不能进行支付');
+		}
+		return $return;
 	}
 }
