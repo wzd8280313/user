@@ -1,3 +1,12 @@
+{set:
+$search = IFilter::act(IReq::get('search'),'strict');
+
+}
+{if:isset($search['title'])&&$search['title']}
+{set:$where='title="'.$search['title'].'"'}
+{else:}
+{set:$where=1}
+{/if}
 <div class="headbar">
 	<div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>团购</span></div>
 	<div class="operating">
@@ -5,7 +14,15 @@
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 	</div>
-
+<div class="searchbar">
+		<form action="{url:/}" method="get" name="">
+			<input type='hidden' name='controller' value='market' />
+			<input type='hidden' name='action' value='regiment_list' />
+			
+			名称<input class="small" name="search[title]" type="text" value="" />
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
+	</div>
 	<div class="field">
 		<table class="list_table">
 			<colgroup>
@@ -49,7 +66,7 @@
 
 			<tbody>
 				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query:name=regiment order=sort asc,id desc page=$page}
+				{query:name=regiment order=sort asc,id desc page=$page where=$where}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
 					<td><a href='{url:/site/tuan_product/active/$item[id]}' target='_blank' class="orange" title="{$item['title']}">{$item['title']}</a></td>

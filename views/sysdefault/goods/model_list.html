@@ -1,3 +1,7 @@
+{set:
+$search = IFilter::act(IReq::get('search'),'strict');
+$where = getSearchCondition($search);
+}
 <div class="headbar">
 	<div class="position"><span>商品</span><span>></span><span>模型管理</span><span>></span><span>模型列表</span></div>
 
@@ -5,6 +9,19 @@
 		<a href="javascript:;"><button class="operating_btn" type="button" onclick="window.location='{url:/goods/model_edit}'"><span class="addition">添加模型</span></button></a>
 		<a href="javascript:void(0)"><button class="operating_btn" type="button"  onclick="selectAll('id[]')"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)"><button class="operating_btn" type="button" onclick="delModel()"><span class="delete">批量删除</span></button></a>
+	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="model_list">
+			<input type='hidden' name='controller' value='goods' />
+			<input type='hidden' name='action' value='model_list' />
+
+			<select class="auto" name="search[field]">
+				<option value="">选择筛选条件</option>
+				<option value="name">名称</option>
+			</select>
+			<input class="small" name="search[keywords]" type="text" value="" />
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
 	</div>
 	<div class="field">
 		<table class="list_table">
@@ -30,7 +47,7 @@
 			<col width="105px" />
 			<tbody>
 				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query: name=model order=id desc page=$page}
+				{query: name=model order=id desc page=$page where=$where}
 				<tr>
 					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 					<td>{$item['name']}</td>
@@ -45,3 +62,15 @@
 	</form>
 </div>
 {$query->getPageBar()}
+<script type='text/javascript'>
+$(function(){
+	{if:$search}
+	var searchData = {echo:JSON::encode($this->search)};
+	for(var index in searchData)
+	{
+		$('[name="search['+index+']"]').val(searchData[index]);
+	}
+	{/if}
+
+});
+</script>

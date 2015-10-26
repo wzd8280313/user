@@ -1,9 +1,27 @@
+{set:
+$search = IFilter::act(IReq::get('search'),'strict');
+
+}
+{if:isset($search['name'])&&$search['name']}
+{set:$where='name="'.$search['name'].'"'}
+{else:}
+{set:$where=1}
+{/if}
 <div class="headbar">
 	<div class="position"><span>营销</span><span>></span><span>代金券管理</span><span>></span><span>代金券列表</span></div>
 	<div class="operating">
 		<a href="javascript:;" onclick="event_link('{url:/market/ticket_edit}')"><button class="operating_btn" type="button"><span class="addition">添加代金券</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="document.forms[0].action='{url:/market/ticket_excel}';delModel({msg:'是否要生成excel表格'});"><button class="operating_btn" type="button"><span class="export">生成EXCEL</span></button></a>
+	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="">
+			<input type='hidden' name='controller' value='market' />
+			<input type='hidden' name='action' value='ticket_list' />
+			
+			名称<input class="small" name="search[name]" type="text" value="" />
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
 	</div>
 	<div class="field">
 		<table class="list_table">
@@ -38,7 +56,7 @@
 			<col />
 			<tbody>
 				{set:$propObj = new IModel('prop')}
-				{query: name=ticket}
+				{query: name=ticket where=$where}
 				{set:$ticket_num = $this->getTicketCount($propObj,$item['id'])}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
