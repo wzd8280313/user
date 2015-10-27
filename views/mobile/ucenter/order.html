@@ -15,7 +15,9 @@
 	<script src="{theme:javascript/js/account-1.js/modernizr.js}"></script>
 	{js:artTemplate}
 	<script src="{theme:javascript/common.js}"></script>
-<script src="{theme:javascript/js/account-1.js/main.js}"></script>  
+<script src="{theme:javascript/js/account-1.js/main.js}"></script> 
+<link rel="stylesheet" href="{skin:css/product.min.css}" type="text/css" />
+
 <style>
 	.loading-imgS{background:#fff;text-align:center;padding:10px 0;width:100%}
 
@@ -62,11 +64,17 @@
 <div class="bottom">
 	<div class="dibu">
 		<input name="" type="checkbox" value="" id="ckAll" /><p>全选</p>
-		<button> 合并付款</button>
+		<span class="button" onClick="toMethod()"> 合并付款</span>
 	</div>
 </div>
-<div >
-     <select name="payment"  pattern='int'>
+<!--增加付款方式（js控制在common.js中）-->
+<div id="ks_Method" class="fkfs">
+	<form method="" action="">
+	<div class="fkfs_txt">
+		<span>付款方式</span><span class="fkfs_money">金额：<b>￥2345</b></span>
+	</div>
+	<div class="fkfs_sele">
+		<select name="payment"  pattern='int'>
  				<option value='-1'>请选择支付方式</option>
 				{set:$paymentList=Api::run('getPaymentList')}
 				{foreach:items = $paymentList}
@@ -74,10 +82,14 @@
 						<option value="{$item['id']}" >{$item['name']}</option>
 					{/if}
 				{/foreach}
- 	</select>
-	<div class="tc_le"><input class="submit" name='buyNowButton' type="submit" onclick='if($("[name^=sub]:checked").length==0)return false;' value="确定" /></div>
-
+		</select>
+	</div>
+	<div class="tc_le">
+		<input class="submit" name='buyNowButton' type="submit" onclick='if($("[name^=sub]:checked").length==0)return false;' value="确定" />
+	</div>
+	</form>
 </div>
+<!--增加付款方式结束-->
 {/if}
 </form>
 <footer id="footer">

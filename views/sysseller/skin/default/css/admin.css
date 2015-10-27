@@ -350,7 +350,60 @@ background: url(../images/main/icn_security.png) no-repeat center left;
 #sidebar li.icn_jump_back a {
 background: url(../images/main/icn_jump_back.png) no-repeat center left;
 }
+/*新加商户后台左侧导航图标*/
+#sidebar li.icn_pc_list a{
+	background: url(../images/main/icon_pc_list.png) no-repeat center left;
+}
+#sidebar li.icn_pc_kc a{
+	background: url(../images/main/icon_pc_kc.png) no-repeat center left;
+}
+#sidebar li.icn_pc_edit a{
+	background: url(../images/main/icon_pc_edit.png) no-repeat center left;
+}
+#sidebar li.icon_pc_comment a{
+	background: url(../images/main/icon_pc_comment.png) no-repeat center left;
+}
+#sidebar li.icon_pc_th a{
+	background: url(../images/main/icon_pc_th.png) no-repeat center left;
+}
+#sidebar li.icon_pc_hh a{
+	background: url(../images/main/icon_pc_hh.png) no-repeat center left;
+}
+#sidebar li.icon_pc_thd a{
+	background: url(../images/main/icon_pc_thd.png) no-repeat center left;
+}
+#sidebar li.icon_pc_hhd a{
+	background: url(../images/main/icon_pc_hhd.png) no-repeat center left;
+}
+#sidebar li.icon_pc_bkfp a{
+	background: url(../images/main/icon_pc_bkfp.png) no-repeat center left;
+}
+#sidebar li.icon_pc_bfpdl a{
+	background: url(../images/main/icon_pc_bfpdl.png) no-repeat center left;
+}
+#sidebar li.icon_pc_sp a{
+	background: url(../images/main/icon_pc_sp.png) no-repeat center left;
+}
+#sidebar li.icon_pc_dd a{
+	background: url(../images/main/icon_pc_dd.png) no-repeat center left;
+}
+#sidebar li.icon_pc_tg a{
+	background: url(../images/main/icon_pc_tg.png) no-repeat center left;
+}
+#sidebar li.icon_pc_wl a{
+	background: url(../images/main/icon_pc_wl.png) no-repeat center left;
+}
+#sidebar li.icon_pc_fhdz a{
+	background: url(../images/main/icon_pc_fhdz.png) no-repeat center left;
+}
+#sidebar li.icon_pc_key a{
+	background: url(../images/main/icon_pc_key.png) no-repeat center left;
+}
+#sidebar li.icon_pc_gx a{
+	background: url(../images/main/icon_pc_gx.png) no-repeat center left;
+}
 
+/*新加商户后台左侧导航图标结束*/
 #sidebar p {
 color: #666666;
 padding-left: 6%;
