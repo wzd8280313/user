@@ -1,13 +1,38 @@
+
 <div class="main f_r">
     <div class="uc_title m_10">
         <label class="current"><span>我的订单</span></label>
     </div>
-
+	<!--新增搜索-->
+	<div class="sstj">
+	<form>
+		<input type="text" placeholder="输入商品标题或订单号进行搜索" class="ddss"><span class="dstxt">订单搜索</span>
+		<span class="showst">精简筛选条件</span>
+		
+		<div class="jsx">
+			<table>
+				<tr>
+					<td><span>订单类型</span><input type="text"/></td>
+					<td><span>成交时间</span><input  type="date"/><span>到</span><input  type="date"/></td>
+					<td><span>卖家昵称</span><input type="text"/></td>
+				</tr>
+				<tr>
+					<td><span>评价状态</span><select><option>请选择...</option></select></td>
+					<td><span>交易状态</span><select><option>请选择...</option></select></td>
+					<td><span>售后服务</span><select><option>请选择...</option></select></td>
+				</tr>
+			</table>
+		</div>
+		
+	</form>
+	</div>
+	<!--新增搜索结束-->
+<!--全选js和显示隐藏筛选条件的js写在nav.js中-->
     <div class="box m_10">
         <table class="list_table" width="100%" cellpadding="0" cellspacing="0">
         	<col width="140px" />
             <tr>
-                <th>订单编号</th>
+                <th><span class="checktet"><input id="ckAll" class="checks" type="checkbox"/>全部</span>订单编号</th>
                 <th>下单日期</th>
                 <th>收货人</th>
                 <th>支付方式</th>
@@ -19,7 +44,9 @@
 			{foreach:items = $queryOrderList->find()}
 			{set:$status=Order_Class::getOrderStatus($item);}
             <tr>
+				
                 <td>
+					<input  name="sub" class="checks" type="checkbox"/>
                 	<a href="{url:/ucenter/order_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
                 </td>
                 <td>{$item['create_time']}</td>
@@ -44,6 +71,7 @@
 					{else:}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 					{/if}
+					<img class="img_delt" src="{skin:images/front/ucenter/bin_closed.png}"/>
 					
                 </td>
             {/foreach}
