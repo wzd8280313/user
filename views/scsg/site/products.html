@@ -261,15 +261,12 @@
 				<dt class="tb-metatit">服务承诺</dt>
 				<dd class="tm-laysku-dd">
 				<ul class="tb-serPromise">
+					{set:$config = new Config('site_config');}
+					{foreach:items=unserialize(IFilter::stripSlash($config->product_page))}
 					<li>
-						<a target="_blank" title="按时发货" href=""> 按时发货 </a>
+						<a target="_blank"  href="{$item['link']}"> {$item['server_name']} </a>
 					</li>
-					<li>
-						<a target="_blank" title="七天无理由退还" href=""> 七天无理由退还 </a>
-					</li>
-					<li>
-						<a target="_blank" title="品质保障" href=""> 品质保障 </a>
-					</li>
+					{/foreach}
 				</ul>
 			</dl>
 		</div>

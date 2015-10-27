@@ -606,7 +606,6 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	margin-bottom: 2px;
 }
 .qijiandian ul li .hongzi {
-	width: 80px;
     height: 24px;
     line-height:16px;
 	color: #F00;
@@ -883,7 +882,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 }
 
 
-.qijiandian ul li .qd-popup-trigger.xio{ height:16px;line-height:16px; }
+.qijiandian ul li .qd-popup-trigger.xio{ height:24px;line-height:16px; }
 
 
 

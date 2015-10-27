@@ -1111,6 +1111,10 @@ class Site extends IController
 // 				'note'          => '234234234',
 // 				'time'          => ITime::getDateTime(),
 //
+	$config = new Config('site_config');
+	$ser = $config->product_page;
+	$ser_arr = unserialize(IFilter::stripSlash($ser));
+	print_r($ser_arr);
 	}
 	
 }

@@ -71,7 +71,7 @@
 <div id="ks_Method" class="fkfs">
 	<form method="" action="">
 	<div class="fkfs_txt">
-		<span>付款方式</span><span class="fkfs_money">金额：<b>￥2345</b></span>
+		<span>付款方式</span><span class="fkfs_money"><!--金额：<b>￥2345</b>--></span>
 	</div>
 	<div class="fkfs_sele">
 		<select name="payment"  pattern='int'>
@@ -85,7 +85,7 @@
 		</select>
 	</div>
 	<div class="tc_le">
-		<input class="submit" name='buyNowButton' type="submit" onclick='if($("[name^=sub]:checked").length==0)return false;' value="确定" />
+		<input class="submit" name='buyNowButton' type="submit" onclick='if($("[name^=sub]:checked").length==0 || $("[name=payment]").val()==-1)return false;' value="确定" />
 	</div>
 	</form>
 </div>
