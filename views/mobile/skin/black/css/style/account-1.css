@@ -8,7 +8,7 @@ ul, ol, li {
 	font-size: 14px;
 }
 em, i, var { font-style: normal; }
-a, a:visited { color: #487de3; }
+a, a:visited { color: #000; }
 a { text-decoration: none; }
 a img { border: 0 none; }
 img { max-width: 100%; }
@@ -874,10 +874,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 
 
 .qijiandian ul li .cd-popup-trigger{
-	border-top-color: #999;
-	border-right-color: #999;
-	border-bottom-color: #999;
-	border-left-color: #999;
+	border: #999;
 	width: 65px;
 	height: 16px;
 	font-size: 16px;
@@ -886,11 +883,8 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 }
 
 
-.qijiandian .dianxin li .qd-popup-trigger.xio{
-	height: 16px;
-	
-}
-.qijiandian ul li .qd-popup-trigger.xio{ height:24px;line-height:16px; padding:2px;}
+.qijiandian ul li .qd-popup-trigger.xio{ height:16px;line-height:16px; }
+
 
 
 .qijiandian ul li input {
