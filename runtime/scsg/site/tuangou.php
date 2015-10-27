@@ -414,7 +414,7 @@ if($("#actionimg").length>0){
 	.item-title .unit{background:none;line-height:49px;font-size:12px;padding:0 5px;float:left;}
 	
 	.pp_tm_show li{
-		position: relative;
+		position: relative; 
 		float: left;
 		width: 435px;
 		height: 300px;
@@ -626,7 +626,7 @@ if($("#actionimg").length>0){
 	.item-title .unit{background:none;line-height:49px;font-size:12px;padding:0 5px;float:left;}
 	
 	.pp_tm_show li{
-		position: relative;
+		position: relative; 
 		float: left;
 		width: 435px;
 		height: 300px;
