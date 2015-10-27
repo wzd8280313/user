@@ -1056,3 +1056,62 @@ ol,ul{list-style:none}
 .hy_message span em{
 	position:absolute;
 }
+
+/*增加搜索栏*/
+.sstj{
+	margin: 0 0 20px 0;
+}
+.sstj .ddss{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #BFBFBF;
+	width: 236px;
+	height: 17px;
+	padding: 4px 8px;
+}
+.sstj  .dstxt{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #BFBFBF;
+	width: 80px;
+	height: 25px;
+	line-height: 26px;
+	margin: 0 12px 0 -2px;
+	text-align: center;
+	background-color: #F5F5F5;
+	display: inline-block;
+}
+.sstj  .showst{
+	cursor: pointer;
+	background: url(../images/front/ucenter/xl.png) no-repeat center right;
+	display: inline-block;
+	width: 88px;
+}
+.sstj .jsx{
+	margin-top:15px;
+	display:none;
+}
+.sstj .jsx table tr{
+	height:30px;
+}
+.sstj .jsx table tr span{
+	padding:0 15px;
+}
+.sstj .jsx table tr select{
+	line-height: 22px;
+	height: 22px;
+	width: 143px;
+}
+.list_table .checktet{
+	position: relative;
+	left: -20px;
+}
+.list_table .checks{
+	position: relative;
+	top:3px;
+}
+/*删除图标*/
+.list_table  .img_delt{
+	position: absolute;
+	margin: 0px 20px;
+}
