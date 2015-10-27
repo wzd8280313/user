@@ -455,3 +455,24 @@ function Ajax_Get_Data(){
 }
 
 
+//代付款页面点击合并付款弹出支付方式
+	function toMethod(){
+	
+		$("#ks_Method").removeClass("fkfs").addClass("fk-modal-active");     
+	/* 	$(".tc_shop").addClass("tc-modal-active");	 */
+		if($(".sharebg").length>0){
+			$(".sharebg").addClass("sharebg-active");
+		}else{
+			//给整个body内增加div层
+			$("body").append('<div class="sharebg"></div>');
+			$(".sharebg").addClass("sharebg-active");
+		}
+		$(".sharebg-active,.share_btn").click(function(){
+			$("#ks_Method").removeClass("fk-modal-active").addClass("fkfs");	
+			setTimeout(function(){
+				$(".sharebg-active").removeClass("sharebg-active");	
+				$(".sharebg").remove();	
+			},300);
+		})
+	}	
+
