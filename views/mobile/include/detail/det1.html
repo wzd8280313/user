@@ -66,14 +66,17 @@
 			{if:isset($group_price)}
 				<span class="label">会&nbsp;员&nbsp;价:</span>
 				<span class="d_price">￥{$group_price}</span>
+				</p><p>
 				购买送积分:<span class="jifen">{$point}</span></p>   
 				<p>
 					<span class="label">山&nbsp;城&nbsp;价:</span>
 					<span class="m_price">￥{$sell_price}</span>
 				</p>
 				{else:}
+				<p>
 				<span class="label">山&nbsp;城&nbsp;价:</span>
 				<span class="d_price">￥{$sell_price}</span>
+				</p><p>
 				购买送积分:<span class="jifen">{$point}</span></p> 
 			{/if}
 			<p>

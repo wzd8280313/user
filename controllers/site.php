@@ -142,7 +142,7 @@ class Site extends IController
 		//使用商品id获得商品信息
 		$tb_goods = new IModel('goods');
 		$goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0");
-		$sell_price = $goods_info['sell_price'];
+		
 		
 		//print_r($goods_info);
 		if(!$goods_info)
@@ -150,7 +150,7 @@ class Site extends IController
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
-		
+		$sell_price = $goods_info['sell_price'];
 		//品牌名称
 		if($goods_info['brand_id'])
 		{

@@ -8,7 +8,7 @@ ul, ol, li {
 	font-size: 14px;
 }
 em, i, var { font-style: normal; }
-a, a:visited { color: #487de3; }
+a, a:visited { color: #000; }
 a { text-decoration: none; }
 a img { border: 0 none; }
 img { max-width: 100%; }
@@ -874,10 +874,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 
 
 .qijiandian ul li .cd-popup-trigger{
-	border-top-color: #999;
-	border-right-color: #999;
-	border-bottom-color: #999;
-	border-left-color: #999;
+	border: #999;
 	width: 65px;
 	height: 16px;
 	font-size: 16px;
@@ -886,11 +883,8 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 }
 
 
-.qijiandian .dianxin li .qd-popup-trigger.xio{
-	height: 16px;
-	
-}
-.qijiandian ul li .qd-popup-trigger.xio{ height:24px;line-height:16px; padding:2px;}
+.qijiandian ul li .qd-popup-trigger.xio{ height:16px;line-height:16px; }
+
 
 
 .qijiandian ul li input {
@@ -930,7 +924,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	margin-left: auto;
 	padding-left: 10px;
 }
- .bottom .dibu  button{ float:right; margin-right:10px; height:32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
+ .bottom .dibu  .button{ float:right; margin-right:10px; height:32px;line-height: 32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
 .bottom .dibu  input{
 	color: #F00;
 	float: left;
@@ -941,3 +935,73 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	background-color: #ffffff;
 }
 .bottom .dibu  p{ float: left; line-height:32px; color:#555; font-size:13px; }
+
+/*增加付款方式*/
+
+
+.fkfs_txt{
+	margin:10px 0px;
+}
+ .fkfs_txt span{
+	font-size:16px;
+	
+	
+}
+ .fkfs_txt .fkfs_money{
+	float: right;
+margin-right: 25px;
+}
+ .fkfs_txt .fkfs_money b{
+	color:red;
+}
+.fkfs_sele select{
+	float: none;
+width: 95%;
+border: 1px solid #000;
+height: 30px;
+line-height: 28px;
+background: none;
+color: #000;
+}
+.tc_le {
+	margin: 10px  0px;
+}
+.tc_le .submit{
+	width: 95%;
+	padding: 8px;
+	background: rgb(255, 112, 10);
+	color: #fff;
+
+}
+.fk-modal-active{
+	font-size: 14px;
+	border-radius: 0;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	transform: translateY(0px);
+	-webkit-transform: translateY(0);
+	-ms-transform: translateY(0);
+	transform: translateY(0);
+	width: 100%;
+	z-index: 1110;
+	background: #fff;
+	padding: 5px 20px;
+}
+.fkfs{
+	font-size: 14px;
+	border-radius: 0;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	/* text-align: center; */
+	-webkit-transform: translateY(500%);
+	-ms-transform: translateY(100%);
+	transform: translateY(500%);
+	-webkit-transition: -webkit-transform 300ms;
+	transition: transform 300ms;
+	width: 100%;
+	z-index: 1110;
+	background: #fff;
+	
+}
