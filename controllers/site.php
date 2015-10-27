@@ -1110,10 +1110,7 @@ class Site extends IController
 // 				'delivery_type' => 5,
 // 				'note'          => '234234234',
 // 				'time'          => ITime::getDateTime(),
-// 				'freight_id'    => 1,
-// 		);
-// 		sendgoods::run_presell($paramArray);
-print_r($_SESSION);
+//
 	}
 	
 }

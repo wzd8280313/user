@@ -67,11 +67,11 @@ $(document).ready(function(){
   
   /*全选复选框*/
   $("#ckAll").click(function() {
-    $("input[name='sub']").prop("checked", this.checked);
+    $("input[name^='sub']").prop("checked", this.checked);
   });
   
-  $("input[name='sub']").click(function() {
-    var $subs = $("input[name='sub']");
+  $("input[name^='sub']").click(function() {
+    var $subs = $("input[name^='sub']");
     $("#ckAll").prop("checked" , $subs.length == $subs.filter(":checked").length ? true :false);
   });
 });

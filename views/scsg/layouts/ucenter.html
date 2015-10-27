@@ -71,6 +71,28 @@
 {include:layouts/footer.html}
 
 <script type='text/javascript'>
+//合并付款提交
+function merge_pay_submit(){
+		if($('[name^=sub]:checked').length==0 || $('[name=payment]').val()==''){
+			return false;
+		}
+		$('form[name=merge_pay]').submit();
+}
+//展开收起合并付款
+function merge_pay_toggle(){
+	var select = $('#merge_pay').find('select');
+	var but    = $('#merge_pay').find('input[name=to_pay]');
+	var but_show = $('#merge_pay').find('input[name=merge_show]');
+	if(select.hasClass('hide')){
+		select.removeClass('hide');
+		but.removeClass('hide');
+		but_show.val('收起');
+	}else{
+		select.addClass('hide');
+		but.addClass('hide');
+		but_show.val('合并支付');
+	}
+}
 //DOM加载完毕后运行
 $(function()
 {
@@ -116,6 +138,8 @@ $(function()
 			$('#div_mycart').hide('slow');
 		}
 	);
+
+
 });
 </script>
 </body>

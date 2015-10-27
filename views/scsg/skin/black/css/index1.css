@@ -1061,6 +1061,14 @@ ol,ul{list-style:none}
 .sstj{
 	margin: 0 0 20px 0;
 }
+.sstj .order_time{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #BFBFBF;
+	width: 150px;
+	height: 17px;
+	padding: 4px 8px;
+}
 .sstj .ddss{
 	border-width: 1px;
 	border-style: solid;
@@ -1074,12 +1082,13 @@ ol,ul{list-style:none}
 	border-style: solid;
 	border-color: #BFBFBF;
 	width: 80px;
-	height: 25px;
+	height: 28px;
 	line-height: 26px;
 	margin: 0 12px 0 -2px;
 	text-align: center;
 	background-color: #F5F5F5;
 	display: inline-block;
+	cursor:pointer;
 }
 .sstj  .showst{
 	cursor: pointer;
@@ -1098,8 +1107,8 @@ ol,ul{list-style:none}
 	padding:0 15px;
 }
 .sstj .jsx table tr select{
-	line-height: 22px;
-	height: 22px;
+	line-height: 25px;
+	height: 25px;
 	width: 143px;
 }
 .list_table .checktet{

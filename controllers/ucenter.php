@@ -74,7 +74,90 @@ class Ucenter extends IController
      */
     public function order()
     {
+    	$userid = $this->user['user_id'];
+    	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+    	$status_array = array(
+    		'1' => array('status'=>'=1','pay_type'=>'!=1'),//等待付款
+    		'2' => array('status'=>'in (3,4) '),//取消订单
+    		'3' => array(//等待发货
+    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=0'),
+    				array('status'=>'=2','distribution_status'=>'=0')
+    		),
+    		'4' => array(//已发货
+    				array('status'=>'in (2,8) ','distribution_status'=>'=1'),
+    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=1'),
+    		),
+    		'5' => array(
+    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=2'),
+    				array('status'=>'=7','distribution_status'=>'in (0,2) ')
+    		),
+    		'6' => array(
+    			'status'=>'=5'
+    		),
+    		'7' => array(
+    			'status' => '=6'
+    		),
+    		'8' => array(
+    				'status'=>'=7','distribution_status'=>'=1'
+    		)
+    	);
+    	$status_str = $seller_str = '';
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$status = IFilter::act(IReq::get('status'),'int');
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$seller_id = IFilter::act(IReq::get('seller_id'),'int');
+    	if($seller_id){
+    		if($seller_id==2){
+    			$seller_str = ' g.seller_id=0 ';
+    		}else if($seller_id==1){
+    			$seller_str = ' g.seller_id!=0 ';
+    		}
+    	}
+    	if($status && isset($status_array[$status])){
+    		$status_arr = $status_array[$status];
+    		foreach($status_arr as $key=>$val){
+    			if(is_array($val)){
+    				foreach($val as $k=>$v){
+    					$status_str .= $k.' '.$v.' and ';
+    				}
+    				$status_str=substr($status_str,0,-4);
+    				$status_str .= ' OR  ';
+    				
+    			}else{
+    				$status_str .= $key.' '.$val.' and ';
+    			}
+    			
+    		}
+    		$status_str=' ('.substr($status_str,0,-4).') ';
+    	}
+    	$where = "user_id =".$userid." and if_del= 0 and type !=4 ";
+    	$where .= $status_str ? ' and '.$status_str : '';
+    	$where .= $seller_str ? ' and '.$seller_str : '';
+  		 if($beginTime)
+		{
+			$where .= ' and o.create_time > "'.$beginTime.'"';
+		}
+		if($endTime)
+		{
+			$where .= ' and o.create_time < "'.$endTime.'"';
+		}
+		if($order_no)$where .= ' and o.order_no='.$order_no;
+		$order_db = new IQuery('order as o');
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+		$order_db->group = 'og.order_id';
+		$order_db->where = $where?$where : 1;
+		$order_db->page  = $page;
+		$order_db->fields = 'o.*';
+		$this->order_db = $order_db;
         $this->initPayment();
+        
+        $data['s_beginTime'] = $beginTime;
+        $data['s_endTime'] = $endTime;
+        $data['s_order_no'] = $order_no;
+        $data['s_status'] = $status;
+        $data['s_seller_id'] = $seller_id;
+        $this->setRenderData($data);
         $this->redirect('order');
 
     }
