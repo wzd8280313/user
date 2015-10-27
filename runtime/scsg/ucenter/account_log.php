@@ -386,838 +386,117 @@ if($("#actionimg").length>0){
 	</div>
 	<!--w1190 nav-main-->
 </div>
+<link rel="stylesheet" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/log.css";?>">
+<div class="ucenter container">
 
-
-<?php if(!isset($this->isIndex)){?>
-<?php if($this->yushou){?>
-	<div class="bn" id='shan_ad'>
-			<?php echo Ad::show("预售top");?>
+	<div class="position">
+		您当前的位置： <a href="<?php echo IUrl::creatUrl("");?>">首页</a> » <a href="<?php echo IUrl::creatUrl("/ucenter/index");?>">我的账户</a>
 	</div>
-	<script type=text/javascript >$('#shan_ad').find('img').css('width','100%');</script>
-<?php }?>
-<?php if($this->tuangou){?>
-	<div class="bn" id='shan_ad'>
-			<?php echo Ad::show("团购top");?>
-	</div>
-	<script type=text/javascript >$('#shan_ad').find('img').css('width','100%');</script>
-<?php }?>
-<div style='width:1190px;margin:5px auto;'>
-	<?php 
-	$site_config=new Config('site_config');
-	$seo_data=array();
-	$seo_data['title']=$site_config->name;
-	$seo_data['title'].='-'.$site_config->index_seo_title;
-	$seo_data['keywords']=$site_config->index_seo_keywords;
-	$seo_data['description']=$site_config->index_seo_description;
-	seo::set($seo_data);
-?>		
-<script type="text/javascript" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/jquery.kinMaxShow-1.0.min.js";?>"></script>
-<script type"text/javascript" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/a.js";?>"></script>
-<link href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/bm.css";?>" rel="stylesheet">
-
-<!--流量统计代码-->
-<script type="text/javascript">
-var _mvq = window._mvq || []; 
-window._mvq = _mvq;
-_mvq.push(['$setAccount', 'm-170377-0']);
-
-
-_mvq.push(['$logConversion']);
-(function() {
-	var mvl = document.createElement('script');
-	mvl.type = 'text/javascript'; mvl.async = true;
-	mvl.src = ('https:' == document.location.protocol ? 'https://static-ssl.mediav.com/mvl.js' : 'http://static.mediav.com/mvl.js');
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(mvl, s); 
-})();	
-
-</script>
-<!--流量统计代码-->
-
-<!--bn-->
-<div class="bn" style="height:490px;">
-		<!--轮播开始-->
-			<script type='text/javascript' >
-				var tId;
-				startScroll();
-				$(function(){
-				    $('.ad_cycle li').each(function(){
-				        $(this).click(function(){
-				            slideHere($(this));
-				        }).mouseover(function(){
-				            stopHere($(this));
-				        }).mouseout(function(){
-				            startScroll();
-				        });
-				    });
-				});
-				function startScroll(){
-				    tId = setInterval(function(){
-				        var nextImg = $('.nonce').next('.initial');
-				        if(nextImg.length==0){
-				            nextImg = $($('.ad_cycle li')[0]);
-				        }
-				        slideHere($(nextImg));
-				    }, 3000);
-				}
-				function stopScroll(){
-				    clearInterval(tId);
-				}
-				function slideHere(imgObj){
-				    $('.ad_cycle li').removeClass('nonce');
-				    $('.ad_cycle li').addClass('initial');
-				    imgObj.removeClass('initial');
-				    imgObj.addClass('nonce');
-				    if($('.ad_cycle img').length)
-				    {
-				        $('.ad_cycle .pic img')
-				            .attr('src', imgObj.attr('target_src'))
-				            .css('display', 'none')
-				            .fadeIn('normal')
-				            .parent().attr('href', imgObj.attr('target_link'))
-				            .attr('target', '_blank');
-						$('#scroll').css('background-color','#'+imgObj.attr('target_color'))
-				   }
-				}
-				function stopHere(imgObj){
-				    slideHere(imgObj);
-				    stopScroll();
-				}
-			</script>
-		<?php if($this->index_slide){?>
-		<div id='scroll' style="background-color:#<?php echo isset($this->index_slide[0]['color'])?$this->index_slide[0]['color']:"";?>" >
-			
-			<div class="ad_cycle">
-				<div class="number" >
-					<ul style=''>
-						<?php foreach($this->index_slide as $key => $item){?>
-							<?php $key=$key+1?>
-							<?php if($key==1){?>
-							<?php $fUrl=$item['url'];$fImg=$item['img'];?>
-								<li class="nonce" alt="<?php echo isset($key)?$key:"";?>" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"><?php echo isset($key)?$key:"";?></li>
-							<?php }else{?>
-								<li class="initial" alt="1" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"><?php echo isset($key)?$key:"";?></li>
-							<?php }?>
-						<?php }?>
+	<div class="wrapper clearfix">
+		<div class="sidebar f_l">
+			<a href='<?php echo IUrl::creatUrl("ucenter/index");?>'><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/front/ucenter/ucenter.jpg";?>" width="180" height="40" /></a>
+			<div class="box">
+				<div class="title"><h2>交易记录</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/order");?>">我的订单</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/preorder");?>">预售订单</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/integral");?>">我的积分</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/redpacket");?>">我的代金券</a></li>
 					</ul>
-					
 				</div>
-				<div style="width:203px;float:left;height:10px;display:inline-block;"></div>
-				<div class='pic'>
-					<a href="<?php echo IUrl::creatUrl("")."".$fUrl."";?>" target="_blank">
-						<img src="<?php echo IUrl::creatUrl("")."".$fImg."";?>" style="width:100%;height:490px;">
-					</a>
-				</div>
-				<div style="width: 228px;float:right;height:10px;display:inline-block;"></div>
 			</div>
-			
-		</div>
-		<?php }?>
-		<!--轮播结束-->
-		
-		<!--轮播右侧-->
-		<div class="w1190">
-			<!--right-cnt-->
-			<div class="right-cnt">
-				  <!--promise-->
-				  <ul class="promise" id="promise">
-   					<li class="15day">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/index_icon_1.png";?>"></span> 15天退货</a>
-    				</li>
-    				<li class="baoyou">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/index_icon_2.png";?>"></span> 满79包邮</a>
-    				</li>
-    				<li class="cirida">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/index_icon_3.png";?>"></span> 郊区次日达</a>&nbsp;
-    				</li>
-				</ul>
-				 <script>
-					$("#promise").find("li").hover(function(){						
-						$(this).css("background-color","#e77b0d");
-						$(this).find("a").css("color","#fff");
-						},function(){
-						$(this).css("background-color","#f5c53a");
-						$(this).find("a").css("color","#933232");
-					});
-				 </script>
-					<!--promise-->
-				
-				<!--公告、抢购-->
-		        <div class="notice f-r">
-		        	  <!--tabs-->
-		        	<div class="tabs">
-							
-		    				<ul class="tab-title clearfix">
-		    					<li class="tab-title-hover"><h2 class="t14">商城公告</h2></li>
-								
-		    				</ul>
-		    				<div class="tab-cnt">
-		                        <div class="tab-item tab-item-hover" style="display: block;">
-								<ul class="news-list">
-									<?php foreach(Api::run('getAnnouncementList') as $key => $item){?>
-										<li><a style='height:22px;' href='<?php echo IUrl::creatUrl("/site/notice_detail/id/".$item["id"]."");?>' class="limit"><?php echo isset($item['title'])?$item['title']:"";?></a>
-										</li>
-									<?php }?>
-								</ul>
-								</div>
-							
-		                  
-		    				</div>
-						</div>
-						  <!--tabs-->
-		                <!--便民服务-->
-		                <div class="small-pro">
-		
-			                <div class="ad-pic" id="ad_pic_5712">
-			                     <div class="demo">	
-								
-								<ul class="tabbtn" id="fadetab">
-									<li class="current"><a href="#">话费</a></li>
-									<li><a href="#">彩票</a></li>
-									<li><a href="#">游戏</a></li>
-									<li><a href="#">保险</a></li>
-								</ul><!--tabbtn end-->
-								<div class="tabcon" id="fadecon">
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>交话费</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>买彩票</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>充点卡</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>上保险</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-								</div><!--tabcon end-->
-								
-								
-								
-							</div><!--tabbox end-->
-							<script type="text/javascript" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/jquery.tabso_yeso.js";?>"></script>
-							<script type="text/javascript">
-							$(document).ready(function($){
-								
-																
-								//淡隐淡现选项卡切换
-								$("#fadetab").tabso({
-									cntSelect:"#fadecon",
-									tabEvent:"mouseover",
-									tabStyle:"fade"
-								});
-								
-																
-							});
-							</script>
-						    </div>
-		
-						</div>
-		                  <!--便民服务-->
-		        </div>
-        <!--notice f-r-->
-		</div>
-			<!--right-cnt-->
-		</div>
-		<!--轮播右侧-->
-		
-</div>
-<!--bn-->
-<!--第二层-->
-<div class="cnt w1190" id="w1190">
-	<!--猜你喜欢-->
-	<div class="floor floor-1" data-tpa="YHD_NHOME_INDEX2_FLOOR1" >
-			<div class="fl-title clearfix">
-				<div  id="floor-1" class="item"></div>
-				<h2 class="t18">猜你喜欢</h2>
-			</div>
-	
-	<!--buying-->
-		<div class="buying clearfix">
-			<ul class="goods-list clearfix" style="width:1190px;margin-left:2px;">
-				<?php foreach($this->user_like_goods as $key => $item){?>
-				
-				<li class="xi">
-					 <a class="goods-img" href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>" >
-						<img class="jImg" src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$item['img']."/w/170/h/170");?>"><div class="shine">&nbsp;</div>
-					</a>
-					<a class="goods-name" href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>" title="<?php echo isset($item['name'])?$item['name']:"";?>" >
-						<?php echo isset($item['name'])?$item['name']:"";?><span class="txt-red"></span>
-					</a>
-					<div class="goods-price">
-						<span class="p-normal">￥<?php echo isset($item['sell_price'])?$item['sell_price']:"";?></span>
-						<span class="p-del">￥<?php echo isset($item['market_price'])?$item['market_price']:"";?></span>
-					</div>
-				</li>
-				<?php }?>
-					
-				
-			</ul>
-		</div>
-	</div>
-	<!--猜你喜欢-->
-
-	<!--推荐商品-->
-    <div class="clearfix">
-    	<!--tabs rcmd f-l-->
-    	<div class="tabs rcmd f-l">
-        	<!--tab-title-->
-			<?php $query = new IQuery("commend_tags");$query->where = "is_close = 0 and show_index = 1";$query->order = "sort asc";$query->limit = "5";$tags = $query->find(); foreach($tags as $key => $item){?>
-			<?php }?>
-        	<div class="tab-title clearfix">
-        		<?php foreach($tags as $k => $item){?>
-				<?php if($k==0){?>
-            	<li class="tab-title-hover"><h2 class="t14"><?php echo isset($item['name'])?$item['name']:"";?></h2></li>
-				<?php }else{?>
-				<li class=""><h2 class="t14"><?php echo isset($item['name'])?$item['name']:"";?></h2></li>
-				<?php }?>
-                <?php }?>
-            </div>
-			 <div class="tab-cnt">
-				<!--热卖商品列表 -->
-				<?php foreach($tags as $key => $tag){?>
-            	<div class="tab-item"  <?php if($key==0){?>style='display:block'<?php }?>>
-                	<ul class="goods-list clearfix">
-						
-                		<?php foreach(Api::run('getGoodsListByTags',array('#id#',$tag['id']),6) as $key => $item){?>
-                    	<li>
-	                         <a class="goods-img" target='blank' href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>">
-	                            <img class="jImg" src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$item['img']."/w/170/h/170");?>"><div class="shine">&nbsp;</div>
-	                        </a>
-	                        <a class="goods-name red-a" target='blank' href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>" title=" <?php echo isset($item['name'])?$item['name']:"";?>">
-	                            <?php echo isset($item['name'])?$item['name']:"";?><span class="txt-red"></span>
-	                        </a>
-	                        <div class="goods-price">
-	                            <span class="p-normal">￥<?php echo isset($item['sell_price'])?$item['sell_price']:"";?></span>
-	                            <span class="p-del">￥<?php echo isset($item['market_price'])?$item['market_price']:"";?></span>
-	                        </div>
-                  	 	 </li>
-						<?php }?>
+			<div class="box">
+				<div class="title"><h2 class='bg2'>服务中心</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/refunds");?>">退换货申请</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/consult");?>">商品咨询</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/evaluation");?>">商品评价</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/favorite");?>">我的关注</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/history");?>">我的足迹</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/fapiao");?>">补开发票</a></li>
 					</ul>
-                </div>	
-				<?php }?>
-				
-				<!--热卖商品列表 -->
-				
-				<!--推荐商品列表 -->
-			</div>
-             <!--tab-cnt-->
-        </div>
-        <!--tabs rcmd f-l-->
-         
-    </div>
-	<!--推荐商品-->
-	<!--通栏广告1-->
-	<div  class="big-pro ad-shine">
-		<?php echo Ad::show("首页推荐层通栏");?>
-	</div>
-	<!--通栏广告1-->
-	
-	<!--分类产品列表-->		
-	<!--floor1-->
-	<?php foreach($this->categoryList as $key => $base){?>
-	<?php $K=$key+2;$Kad=$key+1;?>
-	<div class="floor floor-<?php echo isset($K)?$K:"";?> item" id='floor-<?php echo isset($K)?$K:"";?>' name="showGoods">
-			<div class="fl-title clearfix">
-				<h2 class="t18"><?php echo isset($base['name'])?$base['name']:"";?></h2>
-				<ul class="fl-cat">
-					<?php foreach($base['child'] as $key => $second){?>
-								<li><a href="site/pro_list/cat/<?php echo isset($second['id'])?$second['id']:"";?>"><?php echo isset($second['name'])?$second['name']:"";?></a>|</li>
-					<?php }?>
-								<li><a href="site/pro_list/cat/<?php echo isset($base['id'])?$base['id']:"";?>" style="font-size: 12px;">更多</a></li>
-				</ul>
-			</div>
-			<div class="fl-cnt clearfix">
-				<div class="fl-rcmd f-l">
-					<div class="fl-rcmd-bg ad-shine">
-						<div class="keyword">
-							<?php if(isset($hotCat[$base['id']])){?>
-							<?php foreach($hotCat[$base['id']] as $key => $hot){?>
-							
-								<a href="<?php echo IUrl::creatUrl("site/pro_list/cat/".$hot['id']."");?>" class="key red-a"><?php echo isset($hot['name'])?$hot['name']:"";?></a>
-							<?php }?>
-							<?php }?>
-						</div>
-									
-						<?php echo Ad::show("首页楼层".$Kad."-小广告");?>
-					</div>
 				</div>
-				<!--分层轮播广告-->
-				<div class="fl-rcmd1 f-l" >
-					<div class="fl-rcmd-bg1 ad-shine" >
-									
-						<?php echo Ad::show("首页楼层".$Kad."-大广告");?>
-					</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg3'>应用</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/message");?>">短信息</a></li>
+						<li><a href="javascript:showService()">在线服务</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/complain");?>">意见反馈</a></li>
+					</ul>
 				</div>
-				<!--分层轮播广告-->
-				<!--分类产品列表-->
-                <div class="f-r">
-				    <ul class="goods-list clearfix">
-				    	<?php foreach($base['goods'] as $key => $goods){?>
-					    	<li>
-					        <a class="goods-img" href="<?php echo IUrl::creatUrl("/site/products/id/".$goods['id']."");?>" title="<?php echo isset($goods['name'])?$goods['name']:"";?>">
-					            <img class="jImg" alt="<?php echo isset($goods['name'])?$goods['name']:"";?>" src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$goods['img']."/w/180/h/180");?>">
-								<div class="shine">&nbsp;</div>
-					        </a>
-					        <a class="goods-name red-a" href="<?php echo IUrl::creatUrl("/site/products/id/".$goods['id']."");?>" title="<?php echo isset($goods['name'])?$goods['name']:"";?>">
-					         <span class="txt-red"><?php if($goods['is_del']==4){?>[预售]<?php }?></span> <?php echo isset($goods['name'])?$goods['name']:"";?>
-					        </a>
-					        <div class="goods-price">
-					            <span class="p-normal">￥<?php echo isset($goods['sell_price'])?$goods['sell_price']:"";?></span>
-					            <span class="p-del">￥<?php echo isset($goods['market_price'])?$goods['market_price']:"";?></span>
-					        </div>
-					    </li>
-						<?php }?>
-				    </ul>
-				 </div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg4'>账户资金</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/account_log");?>">帐户余额</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/online_recharge");?>">在线充值</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="box">
+				<div class="title"><h2 class='bg5'>个人设置</h2></div>
+				<div class="cont">
+					<ul class="list">
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/address");?>">地址管理</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/info");?>">个人资料</a></li>
+						<li><a href="<?php echo IUrl::creatUrl("/ucenter/password");?>">修改密码</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
-		
-		<div class="big-pro">
-	       <div class='seller_list'>
-		 		<?php foreach($base['seller'] as $key => $seller){?>
-					<a href="<?php echo IUrl::creatUrl("/site/home/id/".$seller['id']."");?>"><img src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$seller['logo_img']."/w/119/h/60");?>"/></a>
-				<?php }?>
-		 	</div>
-		</div>
-		 <!--floor floor-1-->
-		 <div class="big-pro">
-		 	
-	        <div class="ad-pic ad-shine" id="ad_pic_5713">
-	            	<?php echo Ad::show("首页楼层".$Kad."-通栏");?>		
-			</div>
-			
-		</div>
-	<?php }?>
-	
-	
-	
-	<!--分类产品列表-->
-</div>	
+		<div class="main f_r">
 
+	<div class="uc_title m_10">
+		<label class="current"><span><a href='<?php echo IUrl::creatUrl("/ucenter/account_log");?>'>交易记录</a></span></label>
+		<label><span><a href='<?php echo IUrl::creatUrl("/ucenter/withdraw");?>'>提现申请</a></span></label>
+	</div>
+
+	<div class="prompt m_10">
+		<p>账户余额：<b class="orange f14">￥<?php echo isset($this->memberRow['balance'])?$this->memberRow['balance']:"";?></b></p>
+	</div>
+
+	<div>
+		<table class='list_table m_10' width='100%' cellspacing='0' cellpadding='0'>
+			<col />
+			<col width="110px" />
+			<col width="110px" />
+			<col width="110px" />
+			<col width="145px" />
+			<thead>
+				<tr>
+					<th>事件</th><th>存入金额</th><th>支出金额</th><th>当前金额</th><th>时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php $page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;?>
+				<?php $user_id = $this->user['user_id']?>
+				<?php $queryAccountLogList = Api::run('getUcenterAccoutLog',$user_id)?>
+				<?php foreach($queryAccountLogList->find() as $key => $item){?>
+				<tr>
+					<td style="text-align:left;"><?php echo isset($item['note'])?$item['note']:"";?></td>
+					<td><?php echo $item['amount'] > 0 ? $item['amount'].'元' : '';?></td>
+					<td><?php echo $item['amount'] < 0 ? $item['amount'].'元' : '';?></td>
+					<td><span class="red"><?php echo isset($item['amount_log'])?$item['amount_log']:"";?> 元</span></td>
+					<td><?php echo isset($item['time'])?$item['time']:"";?></td>
+				</tr>
+				<?php }?>
+			</tbody>
+		</table>
+		<?php echo $queryAccountLogList->getPageBar();?>
+	</div>
 
 </div>
-<?php }else{?>
-	<?php 
-	$site_config=new Config('site_config');
-	$seo_data=array();
-	$seo_data['title']=$site_config->name;
-	$seo_data['title'].='-'.$site_config->index_seo_title;
-	$seo_data['keywords']=$site_config->index_seo_keywords;
-	$seo_data['description']=$site_config->index_seo_description;
-	seo::set($seo_data);
-?>		
-<script type="text/javascript" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/jquery.kinMaxShow-1.0.min.js";?>"></script>
-<script type"text/javascript" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/a.js";?>"></script>
-<link href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/bm.css";?>" rel="stylesheet">
 
-<!--流量统计代码-->
-<script type="text/javascript">
-var _mvq = window._mvq || []; 
-window._mvq = _mvq;
-_mvq.push(['$setAccount', 'm-170377-0']);
+	</div>
 
-
-_mvq.push(['$logConversion']);
-(function() {
-	var mvl = document.createElement('script');
-	mvl.type = 'text/javascript'; mvl.async = true;
-	mvl.src = ('https:' == document.location.protocol ? 'https://static-ssl.mediav.com/mvl.js' : 'http://static.mediav.com/mvl.js');
-	var s = document.getElementsByTagName('script')[0];
-	s.parentNode.insertBefore(mvl, s); 
-})();	
-
-</script>
-<!--流量统计代码-->
-
-<!--bn-->
-<div class="bn" style="height:490px;">
-		<!--轮播开始-->
-			<script type='text/javascript' >
-				var tId;
-				startScroll();
-				$(function(){
-				    $('.ad_cycle li').each(function(){
-				        $(this).click(function(){
-				            slideHere($(this));
-				        }).mouseover(function(){
-				            stopHere($(this));
-				        }).mouseout(function(){
-				            startScroll();
-				        });
-				    });
-				});
-				function startScroll(){
-				    tId = setInterval(function(){
-				        var nextImg = $('.nonce').next('.initial');
-				        if(nextImg.length==0){
-				            nextImg = $($('.ad_cycle li')[0]);
-				        }
-				        slideHere($(nextImg));
-				    }, 3000);
-				}
-				function stopScroll(){
-				    clearInterval(tId);
-				}
-				function slideHere(imgObj){
-				    $('.ad_cycle li').removeClass('nonce');
-				    $('.ad_cycle li').addClass('initial');
-				    imgObj.removeClass('initial');
-				    imgObj.addClass('nonce');
-				    if($('.ad_cycle img').length)
-				    {
-				        $('.ad_cycle .pic img')
-				            .attr('src', imgObj.attr('target_src'))
-				            .css('display', 'none')
-				            .fadeIn('normal')
-				            .parent().attr('href', imgObj.attr('target_link'))
-				            .attr('target', '_blank');
-						$('#scroll').css('background-color','#'+imgObj.attr('target_color'))
-				   }
-				}
-				function stopHere(imgObj){
-				    slideHere(imgObj);
-				    stopScroll();
-				}
-			</script>
-		<?php if($this->index_slide){?>
-		<div id='scroll' style="background-color:#<?php echo isset($this->index_slide[0]['color'])?$this->index_slide[0]['color']:"";?>" >
-			
-			<div class="ad_cycle">
-				<div class="number" >
-					<ul style=''>
-						<?php foreach($this->index_slide as $key => $item){?>
-							<?php $key=$key+1?>
-							<?php if($key==1){?>
-							<?php $fUrl=$item['url'];$fImg=$item['img'];?>
-								<li class="nonce" alt="<?php echo isset($key)?$key:"";?>" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"><?php echo isset($key)?$key:"";?></li>
-							<?php }else{?>
-								<li class="initial" alt="1" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"><?php echo isset($key)?$key:"";?></li>
-							<?php }?>
-						<?php }?>
-					</ul>
-					
-				</div>
-				<div style="width:203px;float:left;height:10px;display:inline-block;"></div>
-				<div class='pic'>
-					<a href="<?php echo IUrl::creatUrl("")."".$fUrl."";?>" target="_blank">
-						<img src="<?php echo IUrl::creatUrl("")."".$fImg."";?>" style="width:100%;height:490px;">
-					</a>
-				</div>
-				<div style="width: 228px;float:right;height:10px;display:inline-block;"></div>
-			</div>
-			
-		</div>
-		<?php }?>
-		<!--轮播结束-->
-		
-		<!--轮播右侧-->
-		<div class="w1190">
-			<!--right-cnt-->
-			<div class="right-cnt">
-				  <!--promise-->
-				  <ul class="promise" id="promise">
-   					<li class="15day">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/index_icon_1.png";?>"></span> 15天退货</a>
-    				</li>
-    				<li class="baoyou">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/index_icon_2.png";?>"></span> 满79包邮</a>
-    				</li>
-    				<li class="cirida">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/index_icon_3.png";?>"></span> 郊区次日达</a>&nbsp;
-    				</li>
-				</ul>
-				 <script>
-					$("#promise").find("li").hover(function(){						
-						$(this).css("background-color","#e77b0d");
-						$(this).find("a").css("color","#fff");
-						},function(){
-						$(this).css("background-color","#f5c53a");
-						$(this).find("a").css("color","#933232");
-					});
-				 </script>
-					<!--promise-->
-				
-				<!--公告、抢购-->
-		        <div class="notice f-r">
-		        	  <!--tabs-->
-		        	<div class="tabs">
-							
-		    				<ul class="tab-title clearfix">
-		    					<li class="tab-title-hover"><h2 class="t14">商城公告</h2></li>
-								
-		    				</ul>
-		    				<div class="tab-cnt">
-		                        <div class="tab-item tab-item-hover" style="display: block;">
-								<ul class="news-list">
-									<?php foreach(Api::run('getAnnouncementList') as $key => $item){?>
-										<li><a style='height:22px;' href='<?php echo IUrl::creatUrl("/site/notice_detail/id/".$item["id"]."");?>' class="limit"><?php echo isset($item['title'])?$item['title']:"";?></a>
-										</li>
-									<?php }?>
-								</ul>
-								</div>
-							
-		                  
-		    				</div>
-						</div>
-						  <!--tabs-->
-		                <!--便民服务-->
-		                <div class="small-pro">
-		
-			                <div class="ad-pic" id="ad_pic_5712">
-			                     <div class="demo">	
-								
-								<ul class="tabbtn" id="fadetab">
-									<li class="current"><a href="#">话费</a></li>
-									<li><a href="#">彩票</a></li>
-									<li><a href="#">游戏</a></li>
-									<li><a href="#">保险</a></li>
-								</ul><!--tabbtn end-->
-								<div class="tabcon" id="fadecon">
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>交话费</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>买彩票</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>充点卡</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-									<div class="sublist">
-										<ul>
-											<li><a href="#" target="_blank" class='red-a'>上保险</a></li>
-											
-										</ul>
-									</div><!--tabcon end-->
-								</div><!--tabcon end-->
-								
-								
-								
-							</div><!--tabbox end-->
-							<script type="text/javascript" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/jquery.tabso_yeso.js";?>"></script>
-							<script type="text/javascript">
-							$(document).ready(function($){
-								
-																
-								//淡隐淡现选项卡切换
-								$("#fadetab").tabso({
-									cntSelect:"#fadecon",
-									tabEvent:"mouseover",
-									tabStyle:"fade"
-								});
-								
-																
-							});
-							</script>
-						    </div>
-		
-						</div>
-		                  <!--便民服务-->
-		        </div>
-        <!--notice f-r-->
-		</div>
-			<!--right-cnt-->
-		</div>
-		<!--轮播右侧-->
-		
+	
+	
 </div>
-<!--bn-->
-<!--第二层-->
-<div class="cnt w1190" id="w1190">
-	<!--猜你喜欢-->
-	<div class="floor floor-1" data-tpa="YHD_NHOME_INDEX2_FLOOR1" >
-			<div class="fl-title clearfix">
-				<div  id="floor-1" class="item"></div>
-				<h2 class="t18">猜你喜欢</h2>
-			</div>
-	
-	<!--buying-->
-		<div class="buying clearfix">
-			<ul class="goods-list clearfix" style="width:1190px;margin-left:2px;">
-				<?php foreach($this->user_like_goods as $key => $item){?>
-				
-				<li class="xi">
-					 <a class="goods-img" href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>" >
-						<img class="jImg" src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$item['img']."/w/170/h/170");?>"><div class="shine">&nbsp;</div>
-					</a>
-					<a class="goods-name" href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>" title="<?php echo isset($item['name'])?$item['name']:"";?>" >
-						<?php echo isset($item['name'])?$item['name']:"";?><span class="txt-red"></span>
-					</a>
-					<div class="goods-price">
-						<span class="p-normal">￥<?php echo isset($item['sell_price'])?$item['sell_price']:"";?></span>
-						<span class="p-del">￥<?php echo isset($item['market_price'])?$item['market_price']:"";?></span>
-					</div>
-				</li>
-				<?php }?>
-					
-				
-			</ul>
-		</div>
-	</div>
-	<!--猜你喜欢-->
-
-	<!--推荐商品-->
-    <div class="clearfix">
-    	<!--tabs rcmd f-l-->
-    	<div class="tabs rcmd f-l">
-        	<!--tab-title-->
-			<?php $query = new IQuery("commend_tags");$query->where = "is_close = 0 and show_index = 1";$query->order = "sort asc";$query->limit = "5";$tags = $query->find(); foreach($tags as $key => $item){?>
-			<?php }?>
-        	<div class="tab-title clearfix">
-        		<?php foreach($tags as $k => $item){?>
-				<?php if($k==0){?>
-            	<li class="tab-title-hover"><h2 class="t14"><?php echo isset($item['name'])?$item['name']:"";?></h2></li>
-				<?php }else{?>
-				<li class=""><h2 class="t14"><?php echo isset($item['name'])?$item['name']:"";?></h2></li>
-				<?php }?>
-                <?php }?>
-            </div>
-			 <div class="tab-cnt">
-				<!--热卖商品列表 -->
-				<?php foreach($tags as $key => $tag){?>
-            	<div class="tab-item"  <?php if($key==0){?>style='display:block'<?php }?>>
-                	<ul class="goods-list clearfix">
-						
-                		<?php foreach(Api::run('getGoodsListByTags',array('#id#',$tag['id']),6) as $key => $item){?>
-                    	<li>
-	                         <a class="goods-img" target='blank' href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>">
-	                            <img class="jImg" src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$item['img']."/w/170/h/170");?>"><div class="shine">&nbsp;</div>
-	                        </a>
-	                        <a class="goods-name red-a" target='blank' href="<?php echo IUrl::creatUrl("/site/products/id/".$item['id']."");?>" title=" <?php echo isset($item['name'])?$item['name']:"";?>">
-	                            <?php echo isset($item['name'])?$item['name']:"";?><span class="txt-red"></span>
-	                        </a>
-	                        <div class="goods-price">
-	                            <span class="p-normal">￥<?php echo isset($item['sell_price'])?$item['sell_price']:"";?></span>
-	                            <span class="p-del">￥<?php echo isset($item['market_price'])?$item['market_price']:"";?></span>
-	                        </div>
-                  	 	 </li>
-						<?php }?>
-					</ul>
-                </div>	
-				<?php }?>
-				
-				<!--热卖商品列表 -->
-				
-				<!--推荐商品列表 -->
-			</div>
-             <!--tab-cnt-->
-        </div>
-        <!--tabs rcmd f-l-->
-         
-    </div>
-	<!--推荐商品-->
-	<!--通栏广告1-->
-	<div  class="big-pro ad-shine">
-		<?php echo Ad::show("首页推荐层通栏");?>
-	</div>
-	<!--通栏广告1-->
-	
-	<!--分类产品列表-->		
-	<!--floor1-->
-	<?php foreach($this->categoryList as $key => $base){?>
-	<?php $K=$key+2;$Kad=$key+1;?>
-	<div class="floor floor-<?php echo isset($K)?$K:"";?> item" id='floor-<?php echo isset($K)?$K:"";?>' name="showGoods">
-			<div class="fl-title clearfix">
-				<h2 class="t18"><?php echo isset($base['name'])?$base['name']:"";?></h2>
-				<ul class="fl-cat">
-					<?php foreach($base['child'] as $key => $second){?>
-								<li><a href="site/pro_list/cat/<?php echo isset($second['id'])?$second['id']:"";?>"><?php echo isset($second['name'])?$second['name']:"";?></a>|</li>
-					<?php }?>
-								<li><a href="site/pro_list/cat/<?php echo isset($base['id'])?$base['id']:"";?>" style="font-size: 12px;">更多</a></li>
-				</ul>
-			</div>
-			<div class="fl-cnt clearfix">
-				<div class="fl-rcmd f-l">
-					<div class="fl-rcmd-bg ad-shine">
-						<div class="keyword">
-							<?php if(isset($hotCat[$base['id']])){?>
-							<?php foreach($hotCat[$base['id']] as $key => $hot){?>
-							
-								<a href="<?php echo IUrl::creatUrl("site/pro_list/cat/".$hot['id']."");?>" class="key red-a"><?php echo isset($hot['name'])?$hot['name']:"";?></a>
-							<?php }?>
-							<?php }?>
-						</div>
-									
-						<?php echo Ad::show("首页楼层".$Kad."-小广告");?>
-					</div>
-				</div>
-				<!--分层轮播广告-->
-				<div class="fl-rcmd1 f-l" >
-					<div class="fl-rcmd-bg1 ad-shine" >
-									
-						<?php echo Ad::show("首页楼层".$Kad."-大广告");?>
-					</div>
-				</div>
-				<!--分层轮播广告-->
-				<!--分类产品列表-->
-                <div class="f-r">
-				    <ul class="goods-list clearfix">
-				    	<?php foreach($base['goods'] as $key => $goods){?>
-					    	<li>
-					        <a class="goods-img" href="<?php echo IUrl::creatUrl("/site/products/id/".$goods['id']."");?>" title="<?php echo isset($goods['name'])?$goods['name']:"";?>">
-					            <img class="jImg" alt="<?php echo isset($goods['name'])?$goods['name']:"";?>" src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$goods['img']."/w/180/h/180");?>">
-								<div class="shine">&nbsp;</div>
-					        </a>
-					        <a class="goods-name red-a" href="<?php echo IUrl::creatUrl("/site/products/id/".$goods['id']."");?>" title="<?php echo isset($goods['name'])?$goods['name']:"";?>">
-					         <span class="txt-red"><?php if($goods['is_del']==4){?>[预售]<?php }?></span> <?php echo isset($goods['name'])?$goods['name']:"";?>
-					        </a>
-					        <div class="goods-price">
-					            <span class="p-normal">￥<?php echo isset($goods['sell_price'])?$goods['sell_price']:"";?></span>
-					            <span class="p-del">￥<?php echo isset($goods['market_price'])?$goods['market_price']:"";?></span>
-					        </div>
-					    </li>
-						<?php }?>
-				    </ul>
-				 </div>
-			</div>
-		</div>
-		
-		<div class="big-pro">
-	       <div class='seller_list'>
-		 		<?php foreach($base['seller'] as $key => $seller){?>
-					<a href="<?php echo IUrl::creatUrl("/site/home/id/".$seller['id']."");?>"><img src="<?php echo IUrl::creatUrl("/pic/thumb/img/".$seller['logo_img']."/w/119/h/60");?>"/></a>
-				<?php }?>
-		 	</div>
-		</div>
-		 <!--floor floor-1-->
-		 <div class="big-pro">
-		 	
-	        <div class="ad-pic ad-shine" id="ad_pic_5713">
-	            	<?php echo Ad::show("首页楼层".$Kad."-通栏");?>		
-			</div>
-			
-		</div>
-	<?php }?>
-	
-	
-	
-	<!--分类产品列表-->
-</div>	
-
-
-<?php }?>
-
 <link rel="stylesheet" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/qqkf.css";?>">
 <div class="service">
 		<ul class="w1190 clearfix">
@@ -1721,4 +1000,79 @@ _mvq.push(['$logConversion']);
 </script>
 </body>
 
+</html>
+
+<script type='text/javascript'>
+//合并付款提交
+function merge_pay_submit(){
+		if($('[name^=sub]:checked').length==0 || $('[name=payment]').val()==''){
+			return false;
+		}
+		$('form[name=merge_pay]').submit();
+}
+//展开收起合并付款
+function merge_pay_toggle(){
+	var select = $('#merge_pay').find('select');
+	var but    = $('#merge_pay').find('input[name=to_pay]');
+	var but_show = $('#merge_pay').find('input[name=merge_show]');
+	if(select.hasClass('hide')){
+		select.removeClass('hide');
+		but.removeClass('hide');
+		but_show.val('收起');
+	}else{
+		select.addClass('hide');
+		but.addClass('hide');
+		but_show.val('合并支付');
+	}
+}
+//DOM加载完毕后运行
+$(function()
+{
+	$(".tabs").each(function(i){
+	    var parrent = $(this);
+		$('.tabs_menu .node',this).each(function(j){
+			var current=".node:eq("+j+")";
+			$(this).bind('click',function(event){
+				$('.tabs_menu .node',parrent).removeClass('current');
+				$(this).addClass('current');
+				$('.tabs_content>.node',parrent).css('display','none');
+				$('.tabs_content>.node:eq('+j+')',parrent).css('display','block');
+			});
+		});
+	});
+
+	//隔行换色
+	$(".list_table tr:nth-child(even)").addClass('even');
+	$(".list_table tr").hover(
+		function () {
+			$(this).addClass("sel");
+		},
+		function () {
+			$(this).removeClass("sel");
+		}
+	);
+
+	menu_current();
+
+	$('input:text[name="word"]').bind({
+		keyup:function(){autoComplete('<?php echo IUrl::creatUrl("/site/autoComplete");?>','<?php echo IUrl::creatUrl("/site/search_list/word/@word@");?>','<?php echo isset($siteConfig->auto_finish)?$siteConfig->auto_finish:"";?>');}
+	});
+
+	<?php $word = IReq::get('word') ? IFilter::act(IReq::get('word'),'text') : '输入关键字...'?>
+	$('input:text[name="word"]').val("<?php echo isset($word)?$word:"";?>");
+
+	//购物车div层
+	$('.mycart').hover(
+		function(){
+			showCart('<?php echo IUrl::creatUrl("/simple/showCart");?>');
+		},
+		function(){
+			$('#div_mycart').hide('slow');
+		}
+	);
+
+
+});
+</script>
+</body>
 </html>
