@@ -1,3 +1,4 @@
+{js:my97date}
 <div class="headbar">
 	<div class="position"><span>会员</span><span>></span><span>信息处理</span><span>></span><span>站内消息</span></div>
 	<div class="operating">
@@ -5,6 +6,15 @@
 		<a href="javascript:void(0)" onclick="selectAll('check[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel({form:'message_list',msg:'确定要删除选中的记录吗？'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 	</div>
+	<form name="filter_form" id="filter_form" method="get" action="{url:/}">
+		<input type='hidden' name='controller' value='comment' />
+		<input type='hidden' name='action' value='message_list' />
+		<div class="searchbar">
+			开始时间：<input class="small" type="text" name="beginTime" onfocus="WdatePicker()" value="{$beginTime}" />
+			截止时间：<input class="small" type="text" name="endTime" onfocus="WdatePicker()" value="{$endTime}" />
+			<button class="btn" type="submit"><span class="sel">筛 选</span></button>
+		</div>
+	</form>
 	<div class="field">
 		<table class="list_table">
 			<col width="40px" />
@@ -32,7 +42,7 @@
 		<col  />
 		<tbody>
 			{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=message page=$page}
+			{query: name=message page=$page where=$this->where}
 			<tr>
 				<td><input name="check[]" type="checkbox" value="{$item['id']}" /></td>
 				<td>{$item['title']}</td>

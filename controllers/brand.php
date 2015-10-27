@@ -215,14 +215,42 @@ class Brand extends IController
 	 */
 	function brand_list()
 	{
+		//搜索条件
+		$search = IFilter::act(IReq::get('search'),'strict');
+		$where = array();
+		$where_str = '';
+		if(isset($search['category_ids']) && $search['category_ids']){
+			$where[] = 'find_in_set('.$search["category_ids"].',category_ids)';
+		}
+		if(isset($search['name']) && $search['name'] && isset($search['keywords']) && $search['keywords']){
+			$where[] = $search['name'].' = "'.$search['keywords'].'"';
+		}
+		
+		foreach($where as $k=>$v){
+			$where_str .= $v.' and ';
+		}
+		$where_str .= '1';
+		
+		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+		$brand_db = new IQuery('brand');
+		$brand_db->page   = $page;
+		$brand_db->where  = $where_str;
+		$this->brand_db = $brand_db;
+		$this->search = $search;
 		$this->redirect('brand_list');
 	}
 	/**
 	 * @标签管理 列表
 	 */
 	public function tags_list(){
+		$search = IFilter::act(IReq::get('search'),'strict');
+		
+		$where='';
+		if(isset($search['show_index'])&& ($search['show_index']==0 || $search['show_index']==1))
+			$where = 'show_index='.$search['show_index'];
+		
 		$tb_tag = new IModel('commend_tags');
-		$this->tags = $tb_tag->query();
+		$this->tags = $tb_tag->query($where);
 		$this->redirect('tags_list');
 	}
 	//标签添加编辑页面

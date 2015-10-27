@@ -1,11 +1,29 @@
-<form name="ModelForm" action="{url:/system/delivery_operate}" method="post">
+{set:
+$search = IFilter::act(IReq::get('search'),'strict');
+
+}
+{if:isset($search['name'])&&$search['name']}
+{set:$where='name="'.$search['name'].'"'}
+{else:}
+{set:$where=1}
+{/if}
+
 <div class="headbar">
 	<div class="position"><span>系统</span><span>></span><span>配送管理</span><span>></span><span>配送方式</span></div>
 	<div class="operating">
 		<a href="javascript:void(0)" onclick="event_link('{url:/system/delivery_edit}')"><button class="operating_btn" type="button"><span class="addition">添加配送方式</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
-		<a href="javascript:void(0)" onclick="delModel()"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+		<a href="javascript:void(0)" onclick="delModel({form:'ModelForm'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 		<a href="javascript:;" onclick="event_link('{url:/system/delivery_recycle}')"><button class="operating_btn" type="button"><span class="recycle">回收站</span></button></a>
+	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="">
+			<input type='hidden' name='controller' value='system' />
+			<input type='hidden' name='action' value='delivery' />
+			
+			名称<input class="small" name="search[name]" type="text" value="" />
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
 	</div>
 	<div class="field">
 		<table class="list_table">
@@ -26,6 +44,7 @@
 		</table>
 	</div>
 </div>
+<form name="ModelForm" action="{url:/system/delivery_operate}" method="post">
 <div class="content">
 	<table class="list_table">
 		<col width="40px" />
@@ -33,7 +52,7 @@
 		<col />
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=delivery page=$page order=sort  where=is_delete eq 0}
+			{query: name=delivery page=$page order=sort  where=is_delete eq 0 and $where}
 			<tr>
 				<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 				<td>{$item['name']}</td>

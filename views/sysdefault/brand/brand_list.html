@@ -3,6 +3,27 @@
 	<div class="operating">
 		<a href="javascript:;"><button class="operating_btn" type="button" onclick="window.location='{url:/brand/brand_edit}'"><span class="addition">添加品牌</span></button></a>
 	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="brand_list">
+			<input type='hidden' name='controller' value='brand' />
+			<input type='hidden' name='action' value='brand_list' />
+			<input type='hidden' name='ids' />
+			<select name="search[category_ids]" class="auto">
+				<option value="0">选择品牌分类</option>
+				{query:name=brand_category}
+				<option value="{$item['id']}">{$item['name']}</option>
+				{/query}
+			</select>
+
+			<select class="auto" name="search[name]">
+				<option value="">选择筛选条件</option>
+				<option value="name">品牌名称</option>
+				<option value="url">网址</option>
+			</select>
+			<input class="small" name="search[keywords]" type="text" value="" />
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
+	</div>
 	<div class="field">
 		<table class="list_table">
 			<col width="100px" />
@@ -36,7 +57,7 @@
 				{set:$catAll[$item['id']] = $item['name']}
 			{/query}
 
-			{query: name=brand order=sort asc}
+			{foreach:items=$this->brand_db->find()}
 			<tr>
 				<td><input class="tiny" id="sort{$item['id']}" type="text" onblur="toSort({$item['id']});" value="{$item['sort']}" pattern='int' /></td>
 				<td>{$item['name']}</td>
@@ -48,9 +69,10 @@
 				</td>
 				<td><a href="{url:/brand/brand_edit/bid/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" /></a><a href="javascript:void(0)" onclick="delModel({link:'{url:/brand/brand_del/bid/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a></td>
 			</tr>
-			{/query}
+			{/foreach}
 		</tbody>
 	</table>
+	{$this->brand_db->getPageBar()}
 </div>
 
 <script language="javascript">
@@ -76,4 +98,5 @@ function toSort(id)
 		}
 	}
 }
+
 </script>

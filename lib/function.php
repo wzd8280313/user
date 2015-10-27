@@ -6,10 +6,16 @@
  */
 
 function getSearchCondition($search){
+	
 	if(is_array($search)){
 		$where='';
+		if(isset($search['field'])&&$search['field']&&isset($search['keywords'])&&$search['keywords']){
+			$where .= $search['field'] .'="'.$search['keywords'].'" AND ';
+		}
+		
 		foreach($search as $key =>$v){
-			if($v!='')$where .= $key.' = "'.$v.'" AND ';
+			if(!in_array($key,array('keywords','field')) && $v!='')
+			$where .= $key.' = "'.$v.'" AND ';
 		}
 		$where = substr($where,0,-4);
 		return $where != ''? $where : 1;

@@ -141,7 +141,7 @@ background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px;font-size:14px;}
 
 .inner-section .modle_items3 .items li .price .s_price{color:#999;text-decoration:line-through;font-size:12px}
 
-.inner-section .modle_items3 .items li .ms_btn{background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px;margin-top:5px;display:inline-block}
+.inner-section .modle_items3 .items li .ms_btn{font-size:12px;background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px;margin-top:5px;display:inline-block}
 
 .modle_section i{color:#ea3434;}
 
