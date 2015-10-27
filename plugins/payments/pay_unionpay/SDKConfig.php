@@ -61,11 +61,6 @@ const SDK_Card_Request_Url = 'https://gateway.95516.com/gateway/api/cardTransReq
 const SDK_App_Request_Url = 'https://gateway.95516.com/gateway/api/appTransReq.do';
 
 
-// 前台通知地址 (商户自行配置通知地址)
-//const SDK_FRONT_NOTIFY_URL = 'http://localhost:8085/upacp_sdk_php/demo/utf8/FrontReceive.php';
-// 后台通知地址 (商户自行配置通知地址)
-//const SDK_BACK_NOTIFY_URL = 'http://114.82.43.123/upacp_sdk_php/demo/utf8/BackReceive.php';
-
 //文件下载目录 
 const SDK_FILE_DOWN_PATH = 'd:/file/';
 
