@@ -128,11 +128,7 @@ class Preorder_Class extends Order_Class{
 		$pay_type = $orderDB->getField('id='.$order_id,'pay_type');
 		if($pay_type==0 || $pay_type==1){//货到付款，余额支付退款到余额
 			$obj = new IModel('member');
-			$memberObj = $obj->getObj('user_id = '.$user_id,'balance');
-			$balance = $memberObj['balance'] + $amount;
-			$setData['balance'] = $balance;
-			$obj->setData($setData);
-			$isSuccess = $obj->update('user_id = '.$user_id);
+			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
 			if($isSuccess)
 			{
 				//用户余额进行的操作记入account_log表
@@ -167,8 +163,6 @@ class Preorder_Class extends Order_Class{
 			
 			
 		}
-		
-		
 		//更新退款表
 		$updateData = array(
 				'pay_status'   => 2,

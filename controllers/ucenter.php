@@ -277,6 +277,9 @@ class Ucenter extends IController
 
 		    		//增加用户评论商品机会
 		    		Order_Class::addGoodsCommentChange($id);
+		    		
+		    		//经验值、积分、代金券发放
+		    		Order_Class::sendGift($id,$this->user['user_id']);
 
 		    		//确认收货以后直接跳转到评论页面
 		    		$this->redirect('evaluation');

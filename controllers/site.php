@@ -1081,27 +1081,7 @@ class Site extends IController
 
 
 	function ce(){
-// 		$paramArray = array(
-// 				'order_id'      => 429,
-// 				'user_id'       => 29,
-// 				'name'          => '3453',
-// 				'postcode'      => '045000',
-// 				'telphone'      => '5068088',
-// 				'province'      => '110000',
-// 				'city'          => '110100',
-// 				'area'          => '110228',
-// 				'address'       => '大连西路',
-// 				'mobile'        => '13534563456',
-// 				'freight'       => 0.05,
-// 				'delivery_code' => '12345345345',
-// 				'delivery_type' => 5,
-// 				'note'          => '234234234',
-// 				'time'          => ITime::getDateTime(),
-//
-	$config = new Config('site_config');
-	$ser = $config->product_page;
-	$ser_arr = unserialize(IFilter::stripSlash($ser));
-	print_r($ser_arr);
+			Order_Class::sendGift(441,29);
 	}
 	
 }
