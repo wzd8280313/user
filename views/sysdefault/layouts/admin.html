@@ -72,10 +72,10 @@
 <script type='text/javascript'>
 	//DOM加载结束
 $(function(){
-	{if:$this->search}
+	{if:isset($this->search)&&$this->search}
 	{set:$search=$this->search}
 	{/if}
-	{if:$search}
+	{if:isset($search)&&$search}
 	var searchData = {echo:JSON::encode($search)};
 	for(var index in searchData)
 	{

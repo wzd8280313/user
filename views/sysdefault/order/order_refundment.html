@@ -102,11 +102,13 @@
 						<a href="{url:/site/home/id/$refunds['seller_id']}" target="_blank"><img src="{skin:images/admin/seller_ico.png}" /></a>
 						{/if}
 					{else:}
+					{set:$order_db = new IModel('order');$order_row = $order_db->getObj('id='.$order_id)}
 						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$order_id)) item=$good}
+					
 						{set:$good_info = JSON::decode($good['goods_array'])}
 						{if:$good['is_send'] != 2}
 						<label>
-							<input type="radio" name="order_goods_id" value="{$good['id']}" onclick="countGoodsAmount({echo:$good['goods_nums']*$good['real_price']});" />
+							<input type="radio" name="order_goods_id" value="{$good['id']}" onclick="countGoodsAmount(this);" refund_fee='{echo:Order_Class::get_refund_fee($order_row,$good);}'/>
 							<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</a>
 						</label>
 						<br/>
@@ -129,9 +131,9 @@
 </body>
 <script type="text/javascript">
 //计算商品退款金额
-function countGoodsAmount(amount)
+function countGoodsAmount(_this)
 {
-	$('#amount').val(amount);
+	$('#amount').val($(_this).attr('refund_fee'));
 }
 </script>
 </html>

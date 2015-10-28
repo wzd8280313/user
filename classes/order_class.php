@@ -1382,4 +1382,23 @@ class Order_Class
 		}
 		return true;
 	}
+	/**
+	 * 计算退款金额
+	 * @$goodsOrderRow array order_goods信息
+	 * @$orderRow array  订单信息
+	 * @return float 退款金额
+	 */
+	public static function get_refund_fee($orderRow,$goodsOrderRow){
+		//未发货的时候 退款运费和保价,税金
+		$otherFee = 0;
+		if($goodsOrderRow['delivery_id'] == 0)
+		{
+			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
+		}
+		$amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
+		//退款额计算：将促销优惠和红包优惠平均分配
+		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
+		$amount -= $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
+		return number_format($amount,2);	
+	}
 }

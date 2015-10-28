@@ -148,6 +148,7 @@ class Ucenter extends IController
 		$order_db->group = 'og.order_id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
+		$order_db->order = 'o.id DESC';
 		$order_db->fields = 'o.*';
 		$this->order_db = $order_db;
         $this->initPayment();
@@ -433,32 +434,20 @@ class Ucenter extends IController
         		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 '))
         		{
         			$message = '请不要重复提交申请';
-			       IError::show(403,'请不要重复提交申请');
-			       // Util::showMessage($message);
+			       IError::show(403,$message);
         		}
-
-        		//未发货的时候 退款运费和保价,税金
-        		$otherFee = 0;
-        		if($goodsOrderRow['delivery_id'] == 0)
-        		{
-        			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
-        		}
-
-				//退款单数据
+        		//退款单数据
         		$updateData = array(
 					'order_no' => $orderRow['order_no'],
 					'order_id' => $order_id,
 					'user_id'  => $user_id,
         			'type'     => $type,
-					'amount'   => $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'],
+					'amount'   => Order_Class::get_refund_fee($orderRow,$goodsOrderRow),
 					'time'     => ITime::getDateTime(),
 					'content'  => $content,
 					'goods_id' => $goodsOrderRow['goods_id'],
 					'product_id' => $goodsOrderRow['product_id'],
 				);
-        		//退款额计算：将促销优惠和红包优惠平均分配
-				$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
-				$updateData['amount'] -= $updateData['amount'] * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
 
 				$goodsDB  = new IModel('goods');
         		$goodsRow = $goodsDB->getObj('id = '.$goodsOrderRow['goods_id']);

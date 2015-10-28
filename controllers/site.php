@@ -840,19 +840,6 @@ class Site extends IController
 		}
 		
 		
-		//获取闪购价
-		$prom = new IModel('promotion');
-		$where = '`condition` = '.$goods_id.' AND NOW() between start_time and end_time AND (product_id = '.$procducts_info['id'].' OR product_id = 0)';
-		$shan_data = $prom->getObj($where,'id,award_value');
-		
-		if($shan_data){
-			$shan_price = $shan_data['award_value'];
-			if($shan_price<$procducts_info['sell_price']){
-				$procducts_info['shan_price'] = $shan_price;
-				$procducts_info['active_id'] = $shan_data['id'];
-			}
-		}
-		
 		//获得会员价
 		$countsumInstance = new countsum();
 		$group_price = $countsumInstance->getGroupPrice($procducts_info['id'],'product');
