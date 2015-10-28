@@ -866,7 +866,6 @@ class Simple extends IController
     	$ticket_id     = IFilter::act(IReq::get('ticket_id'),'int');
     	$taxes         = IFilter::act(IReq::get('taxes'),'int');
     	$insured       = IFilter::act(IReq::get('insured'));
-    	$tax_title     = IFilter::act(IReq::get('tax_title'),'text');
     	$gid           = IFilter::act(IReq::get('direct_gid'),'int');
     	$num           = IFilter::act(IReq::get('direct_num'),'int');
     	$type          = IFilter::act(IReq::get('direct_type'));//商品或者货品
@@ -875,8 +874,9 @@ class Simple extends IController
     	$takeself      = IFilter::act(IReq::get('takeself'),'int');
     	$order_no      = Order_Class::createOrderNum();
     	$order_type    = 0;
+    	$invoice       = isset($_POST['taxes']) ? 1 : 0;
     	$dataArray     = array();
-    
+		
 		//防止表单重复提交
     	if(IReq::get('timeKey') != null)
     	{
@@ -1011,8 +1011,7 @@ class Simple extends IController
 			'pay_fee'             => $orderData['paymentPrice'],
 
 			//税金
-			'invoice'             => $taxes ? 1 : 0,
-			'invoice_title'       => $tax_title,
+			'invoice'             => $invoice,
 			'taxes'               => $orderData['taxPrice'],
 
 			//优惠价格（包括闪购、会员价差价，红包，促销活动减价）
@@ -1042,11 +1041,12 @@ class Simple extends IController
 		$orderObj->setData($dataArray);
 
 		$this->order_id = $orderObj->add();
-
+		
 		if($this->order_id == false)
 		{
 			IError::show(403,'订单生成错误');
 		}
+		
 
 		/*将订单中的商品插入到order_goods表*/
     	$orderInstance = new Order_Class();
@@ -1100,7 +1100,29 @@ class Simple extends IController
 				}
 			}
 		}
-
+		//填写开发票信息
+		if($invoice){
+			$db_fapiao = new IModel('order_fapiao');
+			$fapiao_data = array(
+					'order_id'=> $this->order_id,
+					'user_id' => $user_id,
+					'type'    => IFilter::act(IReq::get('type'),'int'),
+					'create_time'=> ITime::getDateTime(),
+			);
+			if($fapiao_data['type']==0){
+				$fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
+					
+			}else{
+				$fapiao_data['com'] = IFilter::act(IReq::get('com'));
+				$fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
+				$fapiao_data['address'] = IFilter::act(IReq::get('address'));
+				$fapiao_data['telphone'] = IFilter::act(IReq::get('telphone'));
+				$fapiao_data['bank'] = IFilter::act(IReq::get('bank'));
+				$fapiao_data['account'] = IFilter::act(IReq::get('account'));
+			}
+			$db_fapiao->setData($fapiao_data);
+			$db_fapiao->add();
+		}
 		//获取备货时间
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
@@ -1112,7 +1134,6 @@ class Simple extends IController
 		$this->payment     = $paymentName;
 		$this->paymentType = $paymentType;
 		$this->delivery    = $deliveryRow['name'];
-		$this->tax_title   = $tax_title;
 		$this->deliveryType= $deliveryRow['type'];
 
 		//订单金额为0时，订单自动完成

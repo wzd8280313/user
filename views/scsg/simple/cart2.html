@@ -658,12 +658,12 @@ function selectTakeself(deliveryId)
 					</table>
 					
 					<div id="tax_title"  style='display:none' class="attr contfp">
-							<form action="" method="post">
+						
 								<div class="tylx">
 									<span class="titles">发票类型：</span>
 									<span>
-										<input class="ptfps" type="radio" name="fp" value="radio1"/>普通发票
-										<input class="zzsfp" type="radio" name="fp" value="radio2"/>增值税发票
+										<input class="ptfps" type="radio" name="type" value="0"/>普通发票
+										<input class="zzsfp" type="radio" name="type" value="1"/>增值税发票
 									</span>
 								</div>
 								
@@ -673,19 +673,19 @@ function selectTakeself(deliveryId)
 								</div>-->
 								<div class="anniu show1">
 										<ul>
-											<li><i>&nbsp;</i><p style="width:85px;">发票抬头：</p><input class="tex" name="" type="text"></li>
+											<li><i>&nbsp;</i><p style="width:85px;">发票抬头：</p><input class="tex" name="taitou" type="text"></li>
 										</ul>
 								</div>
 								<!--普通发票结束-->
 								<!--增值税发票-->
 									<div class="anniu show2" style="display:none;">
 										<ul>
-											<li><i>*</i><p>单位名称：</p><input class="tex" name="" type="text"></li>
-											<li><i>*</i><p class="shibh">纳税人识别号：</p><input class="tex" name="" type="text"></li>
-											<li><i>*</i><p>注册地址：</p><input class="tex" name="" type="text"></li>
-											<li><i>*</i><p>注册电话：</p><input class="tex" name="" type="text"></li>
-											<li><i>*</i><p>开户银行：</p><input class="tex" name="" type="text"></li>
-											<li><i>*</i><p>银行账户：</p><input class="tex" name="" type="text"></li>
+											<li><i>*</i><p>单位名称：</p><input class="tex" name="com" type="text"></li>
+											<li><i>*</i><p class="shibh">纳税人识别号：</p><input class="tex" name="tax_no" type="text"></li>
+											<li><i>*</i><p>注册地址：</p><input class="tex" name="address" type="text"></li>
+											<li><i>*</i><p>注册电话：</p><input class="tex" name="telphone" type="text"></li>
+											<li><i>*</i><p>开户银行：</p><input class="tex" name="bank" type="text"></li>
+											<li><i>*</i><p>银行账户：</p><input class="tex" name="account" type="text"></li>
 										</ul>
 									</div>
 								
@@ -702,7 +702,7 @@ function selectTakeself(deliveryId)
 									<input class="qer" type="button" value="确认发票信息"/>
 									<input class="qx" type="button" value="取消"/>
 								</div>
-								</form>
+	
 							</div>
 					
 				</div>
