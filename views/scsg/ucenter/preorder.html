@@ -5,7 +5,7 @@
     </div>
 	<!--新增搜索-->
 	<div class="sstj">
-	<form action='{url:/ucenter/preorder}' method='post' name='search_order'>
+	<form action='{url:/ucenter/preorder}' method='get' name='search_order'>
 		<input type="text" placeholder="输入订单号进行搜索" class="ddss" name='order_no' ><input class="dstxt" value='订单搜索'  type='submit'>
 		<span class="showst">精简筛选条件</span>
 		<div class="jsx">
@@ -75,7 +75,9 @@
 			{set:$status=Preorder_Class::getOrderStatus($item)}
             <tr>
                 <td>
+                	{if:$item['can_pay']}
                 	<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
+					{/if}
                 	<a href="{url:/ucenter/preorder_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
                 </td>
                 <td>{$item['create_time']}</td>
@@ -87,7 +89,7 @@
 					<a href="{url:/ucenter/preorder_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
 					<a href="{url:/block/doPayPresell/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="支付预付款" /></a>
 					
-					{elseif:$item['status']==4}
+					{elseif:$item['status']==4 && $item['can_pay']}
 					<a href="{url:/block/doPayPresell/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="支付尾款" /></a>
 					{elseif:$item['status']==9}
 					<a href="{url:/ucenter/preorder_status/op/confirm/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="确认收货" /></a>
@@ -104,3 +106,17 @@
         </table>
     </div>
 </div>
+<script type='text/javascript'>
+	//表单回填
+var formObj = new Form('search_order');
+formObj.init({
+	'order_no':'{$s_order_no}',
+	'beginTime':'{$s_beginTime}',
+	'endTime':'{$s_endTime}',
+	'status':'{$s_status}',
+	'seller_id':'{$s_seller_id}',
+});
+{if:$s_beginTime||$s_endTime||$s_status||$s_seller_id}
+$('.jsx').show();
+{/if}
+</script>

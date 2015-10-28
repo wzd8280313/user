@@ -663,11 +663,14 @@ class Preorder_Class extends Order_Class{
 				if(time()>strtotime($orderRow['wei_end_time']))
 					IError::show(403,'预售订单超期未支付尾款，订单已作废');
 			}else{
-				if(!preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days']))
+				if(!preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days'])){
 					IError::show(403,'预售订单超期未支付尾款，订单已作废');
+				}
+					
 			}
-			$payment['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
-			$payment['M_OrderNO']   = 'wei'.$orderRow['order_no'];
+			
+			$return['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
+			$return['M_OrderNO']   = 'wei'.$orderRow['order_no'];
 		}
 		else{
 			IError::show(403,'订单已过期，不能进行支付');

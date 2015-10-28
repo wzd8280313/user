@@ -154,7 +154,7 @@ class Payment
 		$payment['P_PostCode']  = $orderRow['postcode'];
 		$payment['P_Telephone'] = $orderRow['telphone'];
 		$payment['P_Address']   = $orderRow['address'];
-		
+		$siteConfigObj = new Config('site_config');
 		$site_config   = $siteConfigObj->getInfo();
 		
 		//交易信息
