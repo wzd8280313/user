@@ -390,14 +390,13 @@ class Pregoods extends IController
 		$ticket_id     = IFilter::act(IReq::get('ticket_id'),'int');//预售禁止使用代金券则为空
 		$taxes         = IFilter::act(IReq::get('taxes'),'int');
 		$insured       = IFilter::act(IReq::get('insured'));
-		$tax_title     = IFilter::act(IReq::get('tax_title'),'text');
 		$gid           = IFilter::act(IReq::get('direct_gid'),'int');
 		$num           = IFilter::act(IReq::get('direct_num'),'int');
 		$type          = IFilter::act(IReq::get('direct_type'));//商品或者货品
 		$active_id     = IFilter::act(IReq::get('direct_active_id'),'int');
 		$takeself      = IFilter::act(IReq::get('takeself'),'int');
 		$order_no      = Order_Class::createOrderNum();
-		
+		$invoice       = isset($_POST['taxes']) ? 1 : 0;
 		$order_type    = 4;//预售订单
 		$dataArray     = array();
 		$prom          = 'presell';
@@ -528,8 +527,7 @@ class Pregoods extends IController
 		'pay_fee'             => $orderData['paymentPrice'],
 	
 		//税金
-		'invoice'             => $taxes ? 1 : 0,
-		'invoice_title'       => $tax_title,
+		'invoice'             => $invoice,
 		'taxes'               => $orderData['taxPrice'],
 	
 		//优惠价格（包括闪购、会员价差价，红包，促销活动减价）
@@ -620,7 +618,29 @@ class Pregoods extends IController
 				}
 			}
 		}
-	
+		//填写开发票信息
+		if($invoice){
+			$db_fapiao = new IModel('order_fapiao');
+			$fapiao_data = array(
+					'order_id'=> $this->order_id,
+					'user_id' => $user_id,
+					'type'    => IFilter::act(IReq::get('type'),'int'),
+					'create_time'=> ITime::getDateTime(),
+			);
+			if($fapiao_data['type']==0){
+				$fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
+					
+			}else{
+				$fapiao_data['com'] = IFilter::act(IReq::get('com'));
+				$fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
+				$fapiao_data['address'] = IFilter::act(IReq::get('address'));
+				$fapiao_data['telphone'] = IFilter::act(IReq::get('telphone'));
+				$fapiao_data['bank'] = IFilter::act(IReq::get('bank'));
+				$fapiao_data['account'] = IFilter::act(IReq::get('account'));
+			}
+			$db_fapiao->setData($fapiao_data);
+			$db_fapiao->add();
+		}
 		
 	
 		//数据渲染
@@ -629,7 +649,6 @@ class Pregoods extends IController
 		$this->payment     = $paymentName;
 		$this->paymentType = $paymentType;
 		$this->delivery    = $deliveryRow['name'];
-		$this->tax_title   = $tax_title;
 		$this->deliveryType= $deliveryRow['type'];
 		$this->pre_sum     = $goodsResult['pre_sum'];
 	
