@@ -1705,7 +1705,7 @@ class Ucenter extends IController
     	$order_db->where = $where?$where : 1;
     	$order_db->page  = $page;
     	$order_db->fields = 'o.*,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days';
-    	
+    	$order_db->order = 'o.id DESC';
     	$preorder_list = $order_db->find();
     	foreach($preorder_list as $key=>$val){
     		$preorder_list[$key]['can_pay'] = Preorder_Class::can_pay($val)? 1 : 0;
@@ -1761,7 +1761,9 @@ class Ucenter extends IController
     					
     					//增加用户评论商品机会
     					Preorder_Class::addGoodsCommentChange($id);
-    
+    					
+    					//经验值、积分、代金券发放
+    					Order_Class::sendGift($id,$this->user['user_id']);
     					//确认收货以后直接跳转到评论页面
     					$this->redirect('evaluation');
     				}
