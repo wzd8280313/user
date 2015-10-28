@@ -445,6 +445,7 @@ xpopup
 .wd-popup-container .wd-buttons li {
 	float: left;
 	width: 50%;
+	margin:0 5px;
 }
 .wd-popup-container .wd-buttons li a {    float:none;
   display: block;
