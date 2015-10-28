@@ -1081,7 +1081,7 @@ class Site extends IController
 
 
 	function ce(){
-			Order_Class::sendGift(441,29);
+			echo md5('123456');
 	}
 	
 }

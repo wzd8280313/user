@@ -640,8 +640,8 @@ class Order extends IController
 			Util::showMessage('请完善订单信息');
 		}
 		foreach($goods_nuns as $v){
-			if($v==0)$this->redirect('order_edit');
-			Util::showMessage('商品数量不能为0');
+			if($v==0){$this->redirect('order_edit');
+			Util::showMessage('商品数量不能为0');}
 		}
 		//设置订单持有者
 		$username = IFilter::act(IReq::get('username'));
@@ -655,6 +655,7 @@ class Order extends IController
 			'goods' => array('id' => array() , 'data' => array()),
 			'product' => array('id' => array() , 'data' => array())
 		);
+		
 		for($i = 0;$i < $length;$i++)
 		{
 			//货品数据

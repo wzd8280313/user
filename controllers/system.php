@@ -596,7 +596,10 @@ class System extends IController
 				{
 					//同步更新safe
 					ISafe::set('admin_name',$dataArray['admin_name']);
-					ISafe::set('admin_pwd',$dataArray['password']);
+					if(isset($dataArray['password'])){
+						ISafe::set('admin_pwd',$dataArray['password']);
+					}
+				
 				}
 			}
 		}
