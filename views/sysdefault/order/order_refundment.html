@@ -130,6 +130,9 @@
 </div>
 </body>
 <script type="text/javascript">
+	$(function(){
+		$('[name=order_goods_id]').eq(0).trigger('click');
+	})
 //计算商品退款金额
 function countGoodsAmount(_this)
 {
