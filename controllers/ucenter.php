@@ -1672,7 +1672,62 @@ class Ucenter extends IController
     	$this->redirect('fapiao');
     	
     }
-    public function preorder(){
+    public function preorder()
+    {
+    	$userid = $this->user['user_id'];
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$status = IFilter::act(IReq::get('status'),'int');
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$seller_id = IFilter::act(IReq::get('seller_id'),'int');
+    	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+    	
+    	$status_str = $seller_str = '';
+    	if($status){
+    		$status_str = $status==12 ? ' status in (2,5,6,8)' : ' status='.$status;
+    	}
+    
+    	if($seller_id){
+    		if($seller_id==2){
+    			$seller_str = ' g.seller_id=0 ';
+    		}else if($seller_id==1){
+    			$seller_str = ' g.seller_id!=0 ';
+    		}
+    	}
+
+    	$where = "user_id =".$userid." and if_del= 0 and type=4 ";
+    	$where .= $status_str ? ' and '.$status_str : '';
+    	$where .= $seller_str ? ' and '.$seller_str : '';
+    	if($beginTime)
+    	{
+    		$where .= ' and o.create_time > "'.$beginTime.'"';
+    	}
+    	if($endTime)
+    	{
+    		$where .= ' and o.create_time < "'.$endTime.'"';
+    	}
+    	if($order_no)$where = ' o.order_no='.$order_no;
+    	$order_db = new IQuery('order as o');
+    	$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+    	$order_db->group = 'og.order_id';
+    	$order_db->where = $where?$where : 1;
+    	$order_db->page  = $page;
+    	$order_db->fields = 'o.*';
+    	
+    	$preorder_list = $order_db->find();
+    	foreach($preorder_list as $key=>$val){
+    		$preorder_list[$key]['can_pay'] = Preorder_Class::can_pay($val)? 1 : 0;
+    	}
+    	$this->order_db = $order_db;
+    	$this->preorder_list = $preorder_list;
+    	$this->initPayment();
+    	
+    	$data['s_beginTime'] = $beginTime;
+    	$data['s_endTime'] = $endTime;
+    	$data['s_order_no'] = $order_no;
+    	$data['s_status'] = $status;
+    	$data['s_seller_id'] = $seller_id;
+    	$this->setRenderData($data);
     
         $this->initPayment();
         $this->redirect('preorder');

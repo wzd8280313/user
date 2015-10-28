@@ -262,11 +262,14 @@
 				<dd class="tm-laysku-dd">
 				<ul class="tb-serPromise">
 					{set:$config = new Config('site_config');}
-					{foreach:items=unserialize(IFilter::stripSlash($config->product_page))}
+					{set:$server_product = unserialize(IFilter::stripSlash($config->product_page))}
+					{if:!empty($server_product)}
+					{foreach:items=$server_product}
 					<li>
 						<a target="_blank"  href="{$item['link']}"> {$item['server_name']} </a>
 					</li>
 					{/foreach}
+					{/if}
 				</ul>
 			</dl>
 		</div>

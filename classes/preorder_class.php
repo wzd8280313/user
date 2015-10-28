@@ -647,6 +647,7 @@ class Preorder_Class extends Order_Class{
 	/**
 	 * 计算预售订单是否可支付
 	 * @array $orderRow 订单信息
+	 * @return 返回支付信息
 	 */
 	public static function get_pay_money($orderRow){
 		$siteConfigObj = new Config('site_config');
@@ -673,4 +674,27 @@ class Preorder_Class extends Order_Class{
 		}
 		return $return;
 	}
+	/**
+	 * 判断预售订单是否可支付
+	 * @return 
+	 */
+	public static function can_pay($orderRow){
+		$siteConfigObj = new Config('site_config');
+		$cancel_days = $siteConfigObj->preorder_cancel_days;
+		$return = array();
+		if($orderRow['status']==1 ){
+			return true;
+		}elseif($orderRow['status']==4 ){
+			if($orderRow['wei_type']==1){
+				if(time()>strtotime($orderRow['wei_start_time']) && time()<strtotime($orderRow['wei_end_time']))
+					return true;
+			}else{
+				if(preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days']))
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }
