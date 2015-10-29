@@ -1081,7 +1081,7 @@ class Site extends IController
 
 
 	function ce(){
-			echo md5('123456');
+			print_r($_SESSION);
 	}
 	
 }

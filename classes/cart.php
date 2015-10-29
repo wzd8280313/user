@@ -234,9 +234,10 @@ class Cart extends IInterceptorBase
 
 	/**
 	 * 获取当前购物车信息
+	 * @$cartData obj 购物车数据，如果没有传入，则为购物车全部商品
 	 * @return 获取cartExeStruct数据结构
 	 */
-	public function getMyCart()
+	public function getMyCart($cartData=null)
 	{
 		$cartName  = $this->getCartName();
 		if($this->saveType == 'session')
@@ -254,7 +255,13 @@ class Cart extends IInterceptorBase
 		}
 		else
 		{
-			$cartValue = JSON::decode(str_replace(array('&','$'),array('"',','),$cartValue));
+			if($cartData){
+				$cartValue = $cartData;
+			}
+			else{
+				$cartValue = JSON::decode(str_replace(array('&','$'),array('"',','),$cartValue));
+			}
+			//print_r($cartValue);
 			
 			if(is_array($cartValue))
 			{

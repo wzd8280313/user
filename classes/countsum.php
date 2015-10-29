@@ -151,11 +151,11 @@ class CountSum
     		//开始优惠情况判断
     		foreach($goodsList as $key => $val)
     		{
-    			//检查库存
-    			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
-    			{
-    				return "商品：".$val['name']."购买数量超出库存，请重新调整购买数量";
-    			}
+//     			//检查库存
+//     			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
+//     			{
+//     				return "商品：".$val['name']."购买数量超出库存，请重新调整购买数量";
+//     			}
 				
     			$groupPrice                = $this->getGroupPrice($val['goods_id'],'goods');
     			if($groupPrice){
@@ -195,10 +195,10 @@ class CountSum
     		foreach($productList as $key => $val)
     		{
     			//检查库存
-    			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
-    			{
-    				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
-    			}
+//     			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
+//     			{
+//     				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
+//     			}
     			
     			
     			$groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
@@ -277,11 +277,11 @@ class CountSum
 		return false;
 	}
 	//购物车计算
-	public function cart_count()
+	public function cart_count($cartData='')
 	{
 		//获取购物车中的商品和货品信息
     	$cartObj    = new Cart();
-    	$myCartInfo = $cartObj->getMyCart();
+    	$myCartInfo = $cartObj->getMyCart($cartData);
 
     	return $this->goodsCount($myCartInfo);
     }

@@ -404,17 +404,18 @@ class Simple extends IController
     	$result   = $countObj->cart_count();
 
     	//返回值
-    	$this->final_sum = $result['final_sum'];
-    	$this->promotion = $result['promotion'];
-    	$this->proReduce = $result['proReduce'];
-    	$this->sum       = $result['sum'];
-    	$this->goodsList = $result['goodsList'];
-    	$this->count     = $result['count'];
-    	$this->reduce    = $result['reduce'];
-    	$this->weight    = $result['weight'];
+//     	$this->final_sum = $result['final_sum'];
+//     	$this->promotion = $result['promotion'];
+//     	$this->proReduce = $result['proReduce'];
+//     	$this->sum       = $result['sum'];
+     	$this->goodsList = $result['goodsList'];
+//     	$this->count     = $result['count'];
+//     	$this->reduce    = $result['reduce'];
+//     	$this->weight    = $result['weight'];
     	
     	//将商品按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
+    	//print_r($this->goodsList);
 		//渲染视图
     	$this->redirect('cart',$redirect);
     }
@@ -713,8 +714,16 @@ class Simple extends IController
 		}
 		else//购物车
 		{
+			$goodsdata = $_POST;
+			$checked = IFilter::act(IReq::get('sub'));
+			$cartData = array();
+			foreach($checked as $key=>$val){//转换成购物车的数据结构
+				$tem = explode('-',$val);
+				$cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
+				
+			}
 			//计算购物车中的商品价格
-			$result = $countSumObj->cart_count();
+			$result = $countSumObj->cart_count($cartData);
 			
 		}
 		
@@ -790,7 +799,7 @@ class Simple extends IController
     	
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
-    
+  
     	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
@@ -851,6 +860,7 @@ class Simple extends IController
 	 */
     function cart3()
     {
+    	
     	$accept_name   = IFilter::act(IReq::get('accept_name'));
     	$province      = IFilter::act(IReq::get('province'),'int');
     	$city          = IFilter::act(IReq::get('city'),'int');
@@ -918,11 +928,21 @@ class Simple extends IController
     	}
     	else
     	{
+    		$goodsData     = IFilter::act(IReq::get('goods'));
+    		if(count($goodsData)==0){$this->redirect('cart');return false;}
+    		$cartData = array();
+    		$delCart = array();
+    		foreach($goodsData as $val){
+    			$tem =explode('-',$val);
+    			$cartData[$tem[0]][$tem[1]] = $tem[2];
+    			$delCart[] = array($tem[0],$tem[1]);
+    		}
 			//计算购物车中的商品价格$goodsResult
-			$goodsResult = $countSumObj->cart_count();
-
+			$goodsResult = $countSumObj->cart_count($cartData);
+			$cart = new Cart();
+			$cart->del_many($delCart);
 			//清空购物车
-			IInterceptor::reg("cart@onFinishAction");
+			//IInterceptor::reg("cart@onFinishAction");
     	}
     	//print_r($goodsResult);echo '</br>';
 

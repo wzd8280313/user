@@ -558,6 +558,12 @@ function selectTakeself(deliveryId)
 								<tr>
 									<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
 									<td class="t_l">
+										{if:$item['product_id']==0}
+											{set:$type= 'goods';$id=$item['goods_id']}
+										{else:}
+											{set:$type='product';$id=$item['product_id']}
+										{/if}
+										<input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
 										<a href="{url:/site/products/id/$item[goods_id]}" class="blue">{$item['name']}</a>
 										{if:isset($item['spec_array'])}
 										<p>

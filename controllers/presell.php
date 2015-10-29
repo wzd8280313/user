@@ -9,6 +9,10 @@ class Presell extends IController
 		IInterceptor::reg('CheckRights@onCreateAction');
 	}
 	
+	public function presell_list(){
+		$this->redirect('presell_list');
+	}
+	
 	public function presell_edit(){
 		$id = IFilter::act(IReq::get('id'),'int');
 		if($id){
