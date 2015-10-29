@@ -1,8 +1,34 @@
 $(function(){
-	$('input[name^=sub]').on('click',check_goods);
+	$('[type=checkbox]').prop('checked',false);
+	$('#ckAll').click(function(){
+		$("input[name^='sub']").prop("checked", this.checked);
+			if(!this.checked) {
+					 $('#origin_price').text(0);
+					 $('#discount_price').text(0);	
+			}else{
+					var total_price = total_discount = 0;
+					$("input[name^='sub']").each(function(i){
+						var json = JSON.parse($(this).attr('data-json'));
+						var num = $('#'+json.type+'_count_'+json.id).val();
+						total_price +=mathMul(parseFloat(json.sell_price),num);
+						total_discount += mathMul(parseFloat(json.reduce),num);
+					})
+					$('#origin_price').text(total_price);
+					 $('#discount_price').text(total_discount);	
+					
+			}
+			prom_ajax();
+	})
+	$('input[name^=sub]').click(function(){
+		var $subs = $("input[name^='sub']");
+		$('#ckAll').prop("checked" , $subs.length == $subs.filter(":checked").length ? true :false);
+		check_goods(this);
+	})
+  
+
 })
-function check_goods(){
-		var data = $(this).attr('data-json');
+function check_goods(_this){
+		var data = $(_this).attr('data-json');
 		var dataObj = JSON.parse(data);
 		
 		var weight_total = parseInt($('#weight').text());
@@ -13,7 +39,7 @@ function check_goods(){
 		var new_count = parseInt($('#'+dataObj.type+'_count_'+dataObj.id).val());
 		var goods_price = mathMul(parseFloat(dataObj.sell_price),new_count);//选中商品的价格*数量
 		var goods_reduce = mathMul(parseFloat(dataObj.reduce),new_count);
-		if($(this).prop('checked')){//
+		if($(_this).prop('checked')){//
 			$('#weight').text(mathAdd(weight_total,mathMul(parseInt(dataObj.weight),new_count)));
 			 $('#origin_price').text(mathAdd(origin_price,goods_price));
 			 $('#discount_price').text(mathAdd(discount_price,goods_reduce));
@@ -24,15 +50,16 @@ function check_goods(){
 		}
 		
 		//促销规则检测
-		var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()));
-		prom_ajax(final_sum);
+		
+		prom_ajax();
 		
 	}
 /*
  * 计算满足的促销规则
  * @finnal_sum 原商品总价减去会员折扣价
  */
-function prom_ajax(final_sum){
+function prom_ajax(){
+	var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()));
 	var tmpUrl = prom_url;
 		tmpUrl = tmpUrl.replace("@random@",Math.random());
 		$.getJSON( tmpUrl ,{final_sum:final_sum},function(content)
@@ -53,7 +80,7 @@ function prom_ajax(final_sum){
 						$('#cart_prompt').hide();
 					}
 					/*开始更新数据 (2)*/
-
+					content.proReduce = content.proReduce.replace(/,/,'');
 					//促销活动
 					$('#promotion_price').html(content.proReduce);
 
@@ -74,7 +101,7 @@ function cartCount(obj,oldCount)
 	{
 		alert('购买的数量必须大于1件');
 		countInput.val(1);
-		cartCount(type,obj,oldCount);
+		cartCount(obj,oldCount);
 	}
 
 	//商品数量大于库存量
@@ -82,7 +109,7 @@ function cartCount(obj,oldCount)
 	{
 		alert('购买的数量不能大于此商品的库存量');
 		countInput.val(parseInt(obj.store_nums));
-		cartCount(type,obj,oldCount);
+		cartCount(obj,oldCount);
 	}
 	else
 	{

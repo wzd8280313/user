@@ -404,17 +404,17 @@ class Simple extends IController
     	$result   = $countObj->cart_count();
 
     	//返回值
-//     	$this->final_sum = $result['final_sum'];
-//     	$this->promotion = $result['promotion'];
-//     	$this->proReduce = $result['proReduce'];
-//     	$this->sum       = $result['sum'];
+    	$this->final_sum = $result['final_sum'];
+    	$this->promotion = $result['promotion'];
+    	$this->proReduce = $result['proReduce'];
+    	$this->sum       = $result['sum'];
      	$this->goodsList = $result['goodsList'];
-//     	$this->count     = $result['count'];
-//     	$this->reduce    = $result['reduce'];
-//     	$this->weight    = $result['weight'];
-    	
+    	$this->count     = $result['count'];
+    	$this->reduce    = $result['reduce'];
+    	$this->weight    = $result['weight'];
+    
     	//将商品按商家分开
-    	$this->goodsList = $this->goodsListBySeller($this->goodsList);
+    	$this->goodsList = $this->goodsListBySeller($this->goodsList);	
     	//print_r($this->goodsList);
 		//渲染视图
     	$this->redirect('cart',$redirect);
@@ -857,6 +857,9 @@ class Simple extends IController
 
 	/**
 	 * 生成订单
+	 * 分为直接购买和购物车购买两种方式
+	 * 购物车购买需要额外传递上来商品数据，$_POST['goods'] array(type-goods_id-count,...)，
+	 * 购买成功后，删除在购物车中的相应数据
 	 */
     function cart3()
     {

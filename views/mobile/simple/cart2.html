@@ -240,6 +240,12 @@ function selectProtect(obj)
 				{foreach:items=$value key=$k}
 				{if:$k!=='seller_name'}
 		     		<div class="qr_xq">
+		     			{if:$item['product_id']==0}
+							{set:$type= 'goods';$id=$item['goods_id']}
+						{else:}
+							{set:$type='product';$id=$item['product_id']}
+						{/if}
+						<input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
 		     		<a href="{url:/site/products/id/$item['goods_id']}">
 		     			<div class="tjxq_img">
 		     				<img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}"/>

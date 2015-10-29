@@ -3,18 +3,11 @@
 //修改
 $(document).ready(function () {
 	//单独选择某一个
-	$("input[name='check_item']").click(function(){
-			var index=$("input[name='check_item']").index(this);
-			$("input[name='check_item']").eq(index).toggleClass("checked");//伪复选
+	$("input[name^='check_item']").click(function(){
+			$(this).toggleClass("checked");//伪复选
 				if ($("#list .checkbox").length == $("#list .checked").length){
 					$('.check_alls').addClass('checked');
-					if($("input[name=check_item]").hasClass(" ")){
-						$("#check_all,#box_all").addClass("checked");
-						//alert("ff");
-					}else if(!$("input[name=check_item]").hasClass("checked")){
-						//alert("dd");
-						$("#check_all,#box_all").removeClass("checked");
-					}	
+					
 				}else{
 				$("#check_all,#box_all").removeClass("checked");
 			}
@@ -22,7 +15,7 @@ $(document).ready(function () {
 	// 全选        
 	$(".check_alls").click(function () {
 		//prop()属性会随着选择改变checked的值，而attr()值不会随之改变。
-				if (!$(this).prop("checked")) {
+				if ($(this).prop("checked")) {
 					$('.checkbox').addClass("checked");
 				}else{
 					$('.checkbox').removeClass("checked");
