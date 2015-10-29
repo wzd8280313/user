@@ -270,7 +270,7 @@ function cart_del_many(){
 	var obj = $('#list .checked');
 	var str = '';
 	for(var i=0;i<obj.length;i++){
-		str += obj.eq(i).attr('typeId')+ '|';
+		str += obj.eq(i).val()+ '|';
 	}
 	
 	$.ajax({
@@ -284,7 +284,7 @@ function cart_del_many(){
 		},
 		success:function(data){
 			if(data==1){
-				window.reload();
+				window.location.reload();
 			}
 		},
 		error:function(){

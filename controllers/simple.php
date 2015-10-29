@@ -355,12 +355,12 @@ class Simple extends IController
     	$data = IFilter::act(IReq::get('str'));
     	if(!$data)return false;
     	$arr = explode('|',$data);
-    	foreach($arr as $key=>$v){//echo $v;
+    	foreach($arr as $key=>$v){
     		if($v==''){
     			unset($arr[$key]);
     			continue;
     		}
-    		$arr[$key]=explode('_',$v);
+    		$arr[$key]=explode('-',$v);
     	}
     	
     	$cartObj   = new Cart();
