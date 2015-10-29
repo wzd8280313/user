@@ -140,7 +140,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 				<li>
 					<a href="#">掌上山城</a>
 					<ul>
-						<li style="height:160px;width:140px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
+						<li style="height:160px;width:300px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
 					</ul>
 				</li>
 				<li>
@@ -262,7 +262,8 @@ if($("#actionimg").length>0){
 				{if:isset($this->logoUrl)}
 				<img src="{skin:$this->logoUrl}" alt="" class="png">
 				{else:}
-				<img src="{skin:images/logo.png}" alt="" class="png">
+				<img src="{skin:images/logo.png}" alt="" class="png">&nbsp;&nbsp;
+				<img src="{skin:images/yqbank.png}" alt="" class="png" style="border-left:1px solid #ccc;">
 				{/if}
 			</a>
 		</div>
