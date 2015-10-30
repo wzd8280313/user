@@ -43,17 +43,19 @@
 				{/if}
 			</div>
 			<!-- 商品详情 end -->
+			{if:($attribute)}
 			<div id='spec_box'>
 				<div>
 				<ul class="saleinfos m_10 clearfix">
-				{if:($attribute)}
+				
 					{foreach:items=$attribute}
 					<li>{$item['name']}：{$item['attribute_value']}</li>
 					{/foreach}
-					{/if}
+					
 				</ul>
 				</div>
 			</div>
+			{/if}
 			<!-- 顾客评论 start -->
 			<div class="hidden comment_list box">
 				<div class="title3">
