@@ -1,16 +1,21 @@
 	<!-- 底部浮动 -->
  <div style="height:50px;"></div>       
+ {if:isset($show_cart)&&$show_cart==1}
+{set:$width = 0;}
+{else:}
+{set:$width = 1;}
+ {/if}
 <!-- <link rel="stylesheet" href="../css/bottom_nav.css" type="text/css"/>  -->
  	<section class="sr-l">
  		{if:isset($seller['server_num'])&&$seller['server_num']}
-            <div class="s-btn s-cd" data="sales">
+            <div class="s-btn s-cd" data="sales" {if:$width==1}style="width:25%;"{/if}>
 				<a href="{echo:Sonline::getChatUrl($seller['server_num'])}">
 	             	 <p><img src="{skin:images/detail_img/qq.png}"  alt="qq"/></p>
 	             	 <p>客&nbsp;服</p>
               	</a>
             </div>
 		{/if}
-            <div class="s-btn s-cd" data="price">
+            <div class="s-btn s-cd" data="price"  {if:$width==1}style="width:25%;"{/if}>
 				<a href="javascript:void(0);" onclick='favorite_add(this)'>
 					{if:isset($favorite_id_arr)&&in_array($id,$favorite_id_arr)}
 					<p><img src="{skin:images/detail_img/ygz.png}"  /></p>
@@ -30,7 +35,7 @@
             </div>
             </div>
 			{else:}
-			<div class="s-btn s-an s-colos" data="default">
+			<div class="s-btn s-an s-colos" data="default" style="width:50%;">
 				<a class="ljgm" name='buyNow' onClick="toshop(buy_now)"">立即购买</a>
             </div>
          	{/if}
