@@ -705,7 +705,7 @@ class Simple extends IController
 		if($id && $type)//立即购买
 		{
 			$result = $countSumObj->direct_count($id,$type,$buy_num,$promo,$active_id);
-			
+		
 			$this->gid       = $id;
 			$this->type      = $type;
 			$this->num       = $buy_num;
@@ -1136,12 +1136,12 @@ class Simple extends IController
 				$fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
 					
 			}else{
-				$fapiao_data['com'] = IFilter::act(IReq::get('com'));
+				$fapiao_data['com'] = IFilter::act(IReq::get('tax_com'));
 				$fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
-				$fapiao_data['address'] = IFilter::act(IReq::get('address'));
-				$fapiao_data['telphone'] = IFilter::act(IReq::get('telphone'));
-				$fapiao_data['bank'] = IFilter::act(IReq::get('bank'));
-				$fapiao_data['account'] = IFilter::act(IReq::get('account'));
+				$fapiao_data['address'] = IFilter::act(IReq::get('tax_address'));
+				$fapiao_data['telphone'] = IFilter::act(IReq::get('tax_telphone'));
+				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
+				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
 			}
 			$db_fapiao->setData($fapiao_data);
 			$db_fapiao->add();

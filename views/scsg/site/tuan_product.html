@@ -7,8 +7,6 @@
 	seo::set($seo_data);
 	
 }
-
-
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
 {foreach:items=$promotion}
@@ -761,7 +759,7 @@ function modified(code)
 	{
 		case 1:
 		{
-			if(buyNums>=max_num){
+			if(buyNums>=max_num && max_num!=0){
 				$('#J_StockTips').css('display','inline').text('(购买量不能超过'+max_num+'件)').fadeOut(3000);
 			}
 			if(max_num==0 || buyNums<max_num){
@@ -773,7 +771,7 @@ function modified(code)
 
 		case -1:
 		{
-			if(min_num>=buyNums){
+			if(min_num>=buyNums && min_num!=0){
 				$('#J_StockTips').css('display','inline').text('(购买量不能少于'+min_num+'件)').fadeOut(3000);
 			}
 			if(min_num<buyNums)
@@ -858,7 +856,7 @@ function buy_now()
 
 	//设置必要参数
 	var buyNums  = parseFloat($.trim($('#buyNums').val()));
-	if(buyNums>max_num || buyNums<min_num){
+	if(min_num!=0 && buyNums<min_num || max_num!=0&&buyNums>max_num ){
 		tips('商品数量不能超过'+max_num+',不能少于'+min_num);
 		return;
 	}

@@ -372,7 +372,7 @@ function buy_now()
 	var id = goods_id;
 	var type = 'goods';
 
-	if($('#product_id').val())
+	if($('#product_id').val()!=0)
 	{
 		id = $('#product_id').val();
 		type = 'product';
