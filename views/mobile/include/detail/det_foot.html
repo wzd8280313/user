@@ -21,15 +21,19 @@
 					 {/if}
               	</a>
             </div>
+			
 			{if:isset($show_cart)&&$show_cart==1}
             <div class="s-btn s-an s-colo" data="hot">
 				<a class="jrgwc" name='toCart' onClick="toshop(joinCart)">加入购物车</a>
-            </div>
-         	{/if}
-            
-            <div class="s-btn s-an s-colos" data="default">
+				<div class="s-btn s-an s-colos" data="default">
 				<a class="ljgm" name='buyNow' onClick="toshop(buy_now)"">立即购买</a>
             </div>
+            </div>
+			{else:}
+			<div class="s-btn s-an s-colos" data="default">
+				<a class="ljgm" name='buyNow' onClick="toshop(buy_now)"">立即购买</a>
+            </div>
+         	{/if}
        </section>
         <!--点击加入购物车弹框 -->
           <div id="tc_shop" class="tc_shop">
@@ -93,3 +97,5 @@
 		<p><b>回复：</b><span class="red"><%=recontents%></span></p>
 	<%}%>
 </script>
+
+
