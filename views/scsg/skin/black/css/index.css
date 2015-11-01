@@ -295,6 +295,10 @@ margin-top:10px;
 width: 1190px;
 overflow: hidden;
 }
+.big-pro .seller_list img{
+width:116px;
+height:60px;
+}
 .big-shop {
 margin-top:10px;
 width: 1190px;
@@ -678,12 +682,12 @@ background-position: 0 5px;
 }
 .service li {
 float: left;
-width: 166px;
+width: 272px;
 height: 55px;
-padding-left: 70px;
+padding-left: 55px;
 padding-top:7px;
 }
-.service .item2 {
+/*.service .item2 {
 background-position: 0 -175px;
 }
 .service .item3 {
@@ -694,7 +698,8 @@ background-position: 0 -55px;
 }
 .service .item5 {
 background-position: 0 -235px;
-}
+}*/
+
 .help a:hover{
 color:#d6272d;
 }

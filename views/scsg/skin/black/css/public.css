@@ -420,8 +420,11 @@ font-size: 14px;
 font-family: 'Lucida Grande', 'Microsoft YaHei';
 font-weight: 700;
 }
-.t18{
-font-size:18px;
+.t18{font-size:18px;}
+.t36{
+font-size:36px;
+padding-top:10px;
+display:inline-block;
 }
 .nav .category .cat-title .t14 b {
 position: absolute;
