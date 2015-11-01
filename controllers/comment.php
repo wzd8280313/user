@@ -454,6 +454,23 @@ class Comment extends IController
 	 */
 	function message_list()
 	{
+		$where = ' 1 ';
+		//筛选、
+		$beginTime = IFilter::act(IReq::get('beginTime'));
+		$endTime = IFilter::act(IReq::get('endTime'));
+		$this->data['beginTime'] = $beginTime;
+		$this->data['endTime'] = $endTime;
+		if($beginTime)
+		{
+			$where .= ' and time > "'.$beginTime.'"';
+		}
+		if($endTime)
+		{
+			$where .= ' and time < "'.$endTime.'"';
+		}
+		
+		$this->where = $where;
+		$this->setRenderData($this->data);
 		$tb_user_group = new IModel('user_group');
 		$data_group = $tb_user_group->query();
 		$data_group = is_array($data_group) ? $data_group : array();

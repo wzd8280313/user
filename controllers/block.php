@@ -500,21 +500,6 @@ class Block extends IController
 		}
 	}
 
-	//测试用
-	public function refund(){
-		$pay_type = 3;
-		$order_id = 376;$amount = 20;
-		$paymentInstance = Payment::createPaymentInstance($pay_type);
-		
-		$paymentData = Payment::getPaymentInfoForRefund($pay_type,$order_id,$amount);
-			
-		$sendData = $paymentInstance->refund($paymentData);
-		if($sendData)echo 5;
-		else echo 0;
-		//print_r($sendData);
-		//$paymentInstance->refunds($sendData);
-		//$this->redirect('/site/index');
-	}
 	/**
      * @brief 【重要】支付中断处理
 	 */

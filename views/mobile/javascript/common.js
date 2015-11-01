@@ -3,18 +3,11 @@
 //修改
 $(document).ready(function () {
 	//单独选择某一个
-	$("input[name='check_item']").click(function(){
-			var index=$("input[name='check_item']").index(this);
-			$("input[name='check_item']").eq(index).toggleClass("checked");//伪复选
+	$("input[name^='check_item']").click(function(){
+			$(this).toggleClass("checked");//伪复选
 				if ($("#list .checkbox").length == $("#list .checked").length){
 					$('.check_alls').addClass('checked');
-					if($("input[name=check_item]").hasClass(" ")){
-						$("#check_all,#box_all").addClass("checked");
-						//alert("ff");
-					}else if(!$("input[name=check_item]").hasClass("checked")){
-						//alert("dd");
-						$("#check_all,#box_all").removeClass("checked");
-					}	
+					
 				}else{
 				$("#check_all,#box_all").removeClass("checked");
 			}
@@ -22,7 +15,7 @@ $(document).ready(function () {
 	// 全选        
 	$(".check_alls").click(function () {
 		//prop()属性会随着选择改变checked的值，而attr()值不会随之改变。
-				if (!$(this).prop("checked")) {
+				if ($(this).prop("checked")) {
 					$('.checkbox').addClass("checked");
 				}else{
 					$('.checkbox').removeClass("checked");
@@ -454,4 +447,25 @@ function Ajax_Get_Data(){
 	}
 }
 
+
+//代付款页面点击合并付款弹出支付方式
+	function toMethod(){
+	
+		$("#ks_Method").removeClass("fkfs").addClass("fk-modal-active");     
+	/* 	$(".tc_shop").addClass("tc-modal-active");	 */
+		if($(".sharebg").length>0){
+			$(".sharebg").addClass("sharebg-active");
+		}else{
+			//给整个body内增加div层
+			$("body").append('<div class="sharebg"></div>');
+			$(".sharebg").addClass("sharebg-active");
+		}
+		$(".sharebg-active,.share_btn").click(function(){
+			$("#ks_Method").removeClass("fk-modal-active").addClass("fkfs");	
+			setTimeout(function(){
+				$(".sharebg-active").removeClass("sharebg-active");	
+				$(".sharebg").remove();	
+			},300);
+		})
+	}	
 

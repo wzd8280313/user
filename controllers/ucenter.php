@@ -74,7 +74,91 @@ class Ucenter extends IController
      */
     public function order()
     {
+    	$userid = $this->user['user_id'];
+    	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+    	$status_array = array(
+    		'1' => array('status'=>'=1','pay_type'=>'!=1'),//等待付款
+    		'2' => array('status'=>'in (3,4) '),//取消订单
+    		'3' => array(//等待发货
+    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=0'),
+    				array('status'=>'=2','distribution_status'=>'=0')
+    		),
+    		'4' => array(//已发货
+    				array('status'=>'in (2,8) ','distribution_status'=>'=1'),
+    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=1'),
+    		),
+    		'5' => array(
+    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=2'),
+    				array('status'=>'=7','distribution_status'=>'in (0,2) ')
+    		),
+    		'6' => array(
+    			'status'=>'=5'
+    		),
+    		'7' => array(
+    			'status' => '=6'
+    		),
+    		'8' => array(
+    				'status'=>'=7','distribution_status'=>'=1'
+    		)
+    	);
+    	$status_str = $seller_str = '';
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$status = IFilter::act(IReq::get('status'),'int');
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$seller_id = IFilter::act(IReq::get('seller_id'),'int');
+    	if($seller_id){
+    		if($seller_id==2){
+    			$seller_str = ' g.seller_id=0 ';
+    		}else if($seller_id==1){
+    			$seller_str = ' g.seller_id!=0 ';
+    		}
+    	}
+    	if($status && isset($status_array[$status])){
+    		$status_arr = $status_array[$status];
+    		foreach($status_arr as $key=>$val){
+    			if(is_array($val)){
+    				foreach($val as $k=>$v){
+    					$status_str .= $k.' '.$v.' and ';
+    				}
+    				$status_str=substr($status_str,0,-4);
+    				$status_str .= ' OR  ';
+    				
+    			}else{
+    				$status_str .= $key.' '.$val.' and ';
+    			}
+    			
+    		}
+    		$status_str=' ('.substr($status_str,0,-4).') ';
+    	}
+    	$where = "user_id =".$userid." and if_del= 0 and type !=4 ";
+    	$where .= $status_str ? ' and '.$status_str : '';
+    	$where .= $seller_str ? ' and '.$seller_str : '';
+  		 if($beginTime)
+		{
+			$where .= ' and o.create_time > "'.$beginTime.'"';
+		}
+		if($endTime)
+		{
+			$where .= ' and o.create_time < "'.$endTime.'"';
+		}
+		if($order_no)$where .= ' and o.order_no='.$order_no;
+		$order_db = new IQuery('order as o');
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+		$order_db->group = 'og.order_id';
+		$order_db->where = $where?$where : 1;
+		$order_db->page  = $page;
+		$order_db->order = 'o.id DESC';
+		$order_db->fields = 'o.*';
+		$this->order_db = $order_db;
         $this->initPayment();
+        
+        $data['s_beginTime'] = $beginTime;
+        $data['s_endTime'] = $endTime;
+        $data['s_order_no'] = $order_no;
+        $data['s_status'] = $status;
+        $data['s_seller_id'] = $seller_id;
+        $this->setRenderData($data);
         $this->redirect('order');
 
     }
@@ -193,6 +277,9 @@ class Ucenter extends IController
 
 		    		//增加用户评论商品机会
 		    		Order_Class::addGoodsCommentChange($id);
+		    		
+		    		//经验值、积分、代金券发放
+		    		Order_Class::sendGift($id,$this->user['user_id']);
 
 		    		//确认收货以后直接跳转到评论页面
 		    		$this->redirect('evaluation');
@@ -350,32 +437,20 @@ class Ucenter extends IController
         		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 '))
         		{
         			$message = '请不要重复提交申请';
-			       IError::show(403,'请不要重复提交申请');
-			       // Util::showMessage($message);
+			       IError::show(403,$message);
         		}
-
-        		//未发货的时候 退款运费和保价,税金
-        		$otherFee = 0;
-        		if($goodsOrderRow['delivery_id'] == 0)
-        		{
-        			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
-        		}
-
-				//退款单数据
+        		//退款单数据
         		$updateData = array(
 					'order_no' => $orderRow['order_no'],
 					'order_id' => $order_id,
 					'user_id'  => $user_id,
         			'type'     => $type,
-					'amount'   => $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'],
+					'amount'   => Order_Class::get_refund_fee($orderRow,$goodsOrderRow),
 					'time'     => ITime::getDateTime(),
 					'content'  => $content,
 					'goods_id' => $goodsOrderRow['goods_id'],
 					'product_id' => $goodsOrderRow['product_id'],
 				);
-        		//退款额计算：将促销优惠和红包优惠平均分配
-				$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
-				$updateData['amount'] -= $updateData['amount'] * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
 
 				$goodsDB  = new IModel('goods');
         		$goodsRow = $goodsDB->getObj('id = '.$goodsOrderRow['goods_id']);
@@ -1589,7 +1664,62 @@ class Ucenter extends IController
     	$this->redirect('fapiao');
     	
     }
-    public function preorder(){
+    public function preorder()
+    {
+    	$userid = $this->user['user_id'];
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$status = IFilter::act(IReq::get('status'),'int');
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$seller_id = IFilter::act(IReq::get('seller_id'),'int');
+    	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+    	
+    	$status_str = $seller_str = '';
+    	if($status){
+    		$status_str = $status==12 ? ' status in (2,5,6,8)' : ' status='.$status;
+    	}
+    
+    	if($seller_id){
+    		if($seller_id==2){
+    			$seller_str = ' g.seller_id=0 ';
+    		}else if($seller_id==1){
+    			$seller_str = ' g.seller_id!=0 ';
+    		}
+    	}
+
+    	$where = "user_id =".$userid." and if_del= 0 and type=4 ";
+    	$where .= $status_str ? ' and '.$status_str : '';
+    	$where .= $seller_str ? ' and '.$seller_str : '';
+    	if($beginTime)
+    	{
+    		$where .= ' and o.create_time > "'.$beginTime.'"';
+    	}
+    	if($endTime)
+    	{
+    		$where .= ' and o.create_time < "'.$endTime.'"';
+    	}
+    	if($order_no)$where = ' o.order_no='.$order_no;
+    	$order_db = new IQuery('order as o');
+    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+    	$order_db->group = 'og.order_id';
+    	$order_db->where = $where?$where : 1;
+    	$order_db->page  = $page;
+    	$order_db->fields = 'o.*,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days';
+    	$order_db->order = 'o.id DESC';
+    	$preorder_list = $order_db->find();
+    	foreach($preorder_list as $key=>$val){
+    		$preorder_list[$key]['can_pay'] = Preorder_Class::can_pay($val)? 1 : 0;
+    	}
+    	$this->order_db = $order_db;
+    	$this->preorder_list = $preorder_list;
+    	$this->initPayment();
+    	
+    	$data['s_beginTime'] = $beginTime;
+    	$data['s_endTime'] = $endTime;
+    	$data['s_order_no'] = $order_no;
+    	$data['s_status'] = $status;
+    	$data['s_seller_id'] = $seller_id;
+    	$this->setRenderData($data);
     
         $this->initPayment();
         $this->redirect('preorder');
@@ -1631,7 +1761,9 @@ class Ucenter extends IController
     					
     					//增加用户评论商品机会
     					Preorder_Class::addGoodsCommentChange($id);
-    
+    					
+    					//经验值、积分、代金券发放
+    					Order_Class::sendGift($id,$this->user['user_id']);
     					//确认收货以后直接跳转到评论页面
     					$this->redirect('evaluation');
     				}

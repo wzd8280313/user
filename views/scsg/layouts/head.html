@@ -30,7 +30,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	{js:form}
 	{js:validate}
 	{js:artTemplate}
-	<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=default}' ></script>
+	<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=aero}' ></script>
 		<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/plugins/iframeTools.js}' ></script>
 	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
 	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
@@ -109,7 +109,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 							<span>积分<em><img src="{skin:images/qiandao.gif}" onclick='sign_point()'/></em></span>
 							
 						</a>
-						<a  href="">
+						<a  href="{url:/ucenter/account_log}">
 							<b>{$this->user['balance']}</b>
 							<span>账户余额</span>
 							<span></span>
@@ -140,7 +140,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 				<li>
 					<a href="#">掌上山城</a>
 					<ul>
-						<li style="height:160px;width:140px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
+						<li style="height:160px;width:300px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
 					</ul>
 				</li>
 				<li>
@@ -262,8 +262,9 @@ if($("#actionimg").length>0){
 				{if:isset($this->logoUrl)}
 				<img src="{skin:$this->logoUrl}" alt="" class="png">
 				{else:}
-				<img src="{skin:images/logo.png}" alt="" class="png">
+				<img src="{skin:images/logo.png}" alt="" class="png">&nbsp;&nbsp;
 				{/if}
+				<img src="{skin:images/yqbank.png}" alt="" class="png" style="border-left:1px solid #ccc;">
 			</a>
 		</div>
 		<!--logo-->

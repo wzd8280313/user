@@ -1,9 +1,27 @@
+{set:
+$search = IFilter::act(IReq::get('search'),'strict');
+
+}
+{if:isset($search['name'])&&$search['name']}
+{set:$where='p.name="'.$search['name'].'"'}
+{else:}
+{set:$where=1}
+{/if}
 <div class="headbar">
 	<div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>预售</span></div>
 	<div class="operating">
 		<a href="javascript:void(0)" onclick="event_link('{url:/presell/presell_edit}')"><button class="operating_btn" type="button"><span class="addition">添加预售</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="spec_list">
+			<input type='hidden' name='controller' value='presell' />
+			<input type='hidden' name='action' value='presell_list' />
+			
+			预售名称<input class="small" name="search[name]" type="text" value="" />
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
 	</div>
 	<div class="field">
 		<table class="list_table">
@@ -34,10 +52,10 @@
 			<col/>
 			<tbody>
 				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query:name=presell as p join = left join goods as go on p.goods_id eq go.id fields=p.*,go.id as goods_id,go.name as goods_name,go.is_del   page=$page}
+				{query:name=presell as p join = left join goods as go on p.goods_id eq go.id fields=p.*,go.id as goods_id,go.name as goods_name,go.is_del where=$where  page=$page}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
-					<td><a href='{url:/site/products/id/$item[id]}' target='_blank'>{$item['name']}</a></td>
+					<td><a href='{url:/pregoods/products/id/$item[goods_id]}' target='_blank'>{$item['name']}</a></td>
 					<td>{$item['yu_end_time']}</td>
 					<td>
 						{if:$item['is_del'] == null || $item['is_del'] == 1}

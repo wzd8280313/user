@@ -1,3 +1,7 @@
+{set:
+$search = IFilter::act(IReq::get('search'),'strict');
+$where = getSearchCondition($search);
+}
 <div class="headbar">
 	<div class="position"><span>工具</span><span>></span><span>关键词管理</span><span>></span><span>关键词列表</span></div>
 	<div class="operating">
@@ -5,6 +9,20 @@
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 		<a href="javascript:void(0)" onclick="window.document.forms[0].action='{url:/tools/keyword_account}';delModel({msg:'是否批量同步？'});"><button class="operating_btn" type="button"><span class="refresh">批量同步</span></button></a>
+	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="keyword_list">
+			<input type='hidden' name='controller' value='tools' />
+			<input type='hidden' name='action' value='keyword_list' />
+			<select name="search[hot]" class="auto">
+				<option value="">选择是否热门</option>
+				<option value="1">是</option>
+				<option value="0">否</option>
+			
+			</select>
+			关键词<input class="small" name="search[word]" type="text" value="" />
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
 	</div>
 	<div class="field">
 		<table class="list_table">
@@ -35,7 +53,7 @@
 			<col />
 			<tbody>
 				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query: name=keyword page=$page order=`order` asc}
+				{query: name=keyword page=$page order=`order` asc where=$where}
 				<tr>
 					<td class="t_c"><input type="checkbox" name="id[]" value="{$item['word']}" /></td>
 					<td>{$item['word']}</td>

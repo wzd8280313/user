@@ -281,7 +281,7 @@ class Member extends IController
 				$re = $log->write($config);
 			}
 		}
-		die(JSON::encode(array('flag' => 'success')));
+		//die(JSON::encode(array('flag' => 'success')));
     }
 	/**
 	 * @brief 用户组添加
@@ -612,7 +612,7 @@ class Member extends IController
 				$_GET['type']    = 'withdraw';
 				$this->member_recharge();
 			}
-
+			$this->redirect('withdraw_list',false);
 			Util::showMessage("更新成功");
 		}
 		else

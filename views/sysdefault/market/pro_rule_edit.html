@@ -124,7 +124,7 @@
 			{
 				html = "<th>优惠百分比：</th>"
 						+"<td><input type='text' name='award_value' class='small' pattern='float' alt='请填写一个数字' />%"
-						+"<label>* 优惠的百分比，从购物车总金额中的折扣百分比，如输入9则表示打9折</label></td>";
+						+"<label>* 优惠的百分比，从购物车总金额中的折扣百分比，如输入9则表示优惠9%</label></td>";
 			}
 			break;
 
@@ -150,7 +150,8 @@
 						$('select[name="award_value"]').append('<option value="'+content[pro]['id']+'">'+content[pro]['name']+'   面值:'+content[pro]['value']+'元'+expire+'</option>');
 					}
 					//获取后设置默认的代金券选择
-					formObj.setValue('award_value',"{$this->promotionRow['award_value']}");
+					{set:$value=intval($this->promotionRow["award_value"])}
+					formObj.setValue('award_value',"{$value}");
 				});
 			}
 			break;

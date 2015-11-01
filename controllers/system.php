@@ -370,7 +370,22 @@ class System extends IController
 				$_POST = array('index_slide' => serialize( $config_slide ));
 			}
 			break;
-
+			
+			case "products_page_conf" : 
+			{
+				$server_name = IFilter::act(IReq::get('server_name'));
+				$server_link   = IFilter::act(IReq::get('server_link'));
+				$data        = array();
+				if(is_array($server_name)!=0){
+					foreach($server_name as $key => $val)
+					{
+						$data[] = array('server_name' => $server_name[$key],'link' => $server_link[$key]);
+					}
+				}else $data=array();
+				
+				$_POST = array('product_page' => serialize( $data ));
+			}
+			break;
 			//导航写入数据库，不需要记录配置文件
 			case "guide_conf":
 			{
@@ -581,7 +596,10 @@ class System extends IController
 				{
 					//同步更新safe
 					ISafe::set('admin_name',$dataArray['admin_name']);
-					ISafe::set('admin_pwd',$dataArray['password']);
+					if(isset($dataArray['password'])){
+						ISafe::set('admin_pwd',$dataArray['password']);
+					}
+				
 				}
 			}
 		}

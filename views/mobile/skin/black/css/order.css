@@ -24,9 +24,10 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 	
 }
 .pages .qrdds .qr_xq{
-	padding-top: 7px;
-/* 	display: inline-block; */
-	height:105px;
+	padding: 7px 0 15px 0;
+	border-bottom: 1px solid #c0c0c0;
+/* 	display: inline-block; 
+	height:105px;*/
 }
 .pages .qrdds .tjxq_tit{
 	font-size:13px;
@@ -58,7 +59,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 /* ֧����ʽ */
 .pages .qrdds .qrdds_zf{
 	margin-top: 0px;
-	border-top:1px solid #c0c0c0;
+	/*border-top:1px solid #c0c0c0;*/
 	border-bottom:1px solid #c0c0c0;
 	padding-left:10px;
 	
@@ -119,6 +120,14 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 	width: 100%;
 	height: 50px;
 	font-size:20px;
+}
+/*订单页面中代金劵按钮*/
+.anniu  input{
+	width: 90%;
+	padding: 5px;
+	margin: 5px 0;
+	background: #FC9002;
+	color: #fff;
 }
 
 /*��Ʊ*/

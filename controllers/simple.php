@@ -355,12 +355,12 @@ class Simple extends IController
     	$data = IFilter::act(IReq::get('str'));
     	if(!$data)return false;
     	$arr = explode('|',$data);
-    	foreach($arr as $key=>$v){//echo $v;
+    	foreach($arr as $key=>$v){
     		if($v==''){
     			unset($arr[$key]);
     			continue;
     		}
-    		$arr[$key]=explode('_',$v);
+    		$arr[$key]=explode('-',$v);
     	}
     	
     	$cartObj   = new Cart();
@@ -408,13 +408,14 @@ class Simple extends IController
     	$this->promotion = $result['promotion'];
     	$this->proReduce = $result['proReduce'];
     	$this->sum       = $result['sum'];
-    	$this->goodsList = $result['goodsList'];
+     	$this->goodsList = $result['goodsList'];
     	$this->count     = $result['count'];
     	$this->reduce    = $result['reduce'];
     	$this->weight    = $result['weight'];
-    	
+    
     	//将商品按商家分开
-    	$this->goodsList = $this->goodsListBySeller($this->goodsList);
+    	$this->goodsList = $this->goodsListBySeller($this->goodsList);	
+    	//print_r($this->goodsList);
 		//渲染视图
     	$this->redirect('cart',$redirect);
     }
@@ -704,7 +705,7 @@ class Simple extends IController
 		if($id && $type)//立即购买
 		{
 			$result = $countSumObj->direct_count($id,$type,$buy_num,$promo,$active_id);
-			
+		
 			$this->gid       = $id;
 			$this->type      = $type;
 			$this->num       = $buy_num;
@@ -713,8 +714,16 @@ class Simple extends IController
 		}
 		else//购物车
 		{
+			$goodsdata = $_POST;
+			$checked = IFilter::act(IReq::get('sub'));
+			$cartData = array();
+			foreach($checked as $key=>$val){//转换成购物车的数据结构
+				$tem = explode('-',$val);
+				$cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
+				
+			}
 			//计算购物车中的商品价格
-			$result = $countSumObj->cart_count();
+			$result = $countSumObj->cart_count($cartData);
 			
 		}
 		
@@ -790,7 +799,7 @@ class Simple extends IController
     	
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
-    
+  
     	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
@@ -848,9 +857,13 @@ class Simple extends IController
 
 	/**
 	 * 生成订单
+	 * 分为直接购买和购物车购买两种方式
+	 * 购物车购买需要额外传递上来商品数据，$_POST['goods'] array(type-goods_id-count,...)，
+	 * 购买成功后，删除在购物车中的相应数据
 	 */
     function cart3()
     {
+    	
     	$accept_name   = IFilter::act(IReq::get('accept_name'));
     	$province      = IFilter::act(IReq::get('province'),'int');
     	$city          = IFilter::act(IReq::get('city'),'int');
@@ -866,7 +879,6 @@ class Simple extends IController
     	$ticket_id     = IFilter::act(IReq::get('ticket_id'),'int');
     	$taxes         = IFilter::act(IReq::get('taxes'),'int');
     	$insured       = IFilter::act(IReq::get('insured'));
-    	$tax_title     = IFilter::act(IReq::get('tax_title'),'text');
     	$gid           = IFilter::act(IReq::get('direct_gid'),'int');
     	$num           = IFilter::act(IReq::get('direct_num'),'int');
     	$type          = IFilter::act(IReq::get('direct_type'));//商品或者货品
@@ -875,8 +887,9 @@ class Simple extends IController
     	$takeself      = IFilter::act(IReq::get('takeself'),'int');
     	$order_no      = Order_Class::createOrderNum();
     	$order_type    = 0;
+    	$invoice       = isset($_POST['taxes']) ? 1 : 0;
     	$dataArray     = array();
-    
+		
 		//防止表单重复提交
     	if(IReq::get('timeKey') != null)
     	{
@@ -918,11 +931,21 @@ class Simple extends IController
     	}
     	else
     	{
+    		$goodsData     = IFilter::act(IReq::get('goods'));
+    		if(count($goodsData)==0){$this->redirect('cart');return false;}
+    		$cartData = array();
+    		$delCart = array();
+    		foreach($goodsData as $val){
+    			$tem =explode('-',$val);
+    			$cartData[$tem[0]][$tem[1]] = $tem[2];
+    			$delCart[] = array($tem[0],$tem[1]);
+    		}
 			//计算购物车中的商品价格$goodsResult
-			$goodsResult = $countSumObj->cart_count();
-
+			$goodsResult = $countSumObj->cart_count($cartData);
+			$cart = new Cart();
+			$cart->del_many($delCart);
 			//清空购物车
-			IInterceptor::reg("cart@onFinishAction");
+			//IInterceptor::reg("cart@onFinishAction");
     	}
     	//print_r($goodsResult);echo '</br>';
 
@@ -1011,8 +1034,7 @@ class Simple extends IController
 			'pay_fee'             => $orderData['paymentPrice'],
 
 			//税金
-			'invoice'             => $taxes ? 1 : 0,
-			'invoice_title'       => $tax_title,
+			'invoice'             => $invoice,
 			'taxes'               => $orderData['taxPrice'],
 
 			//优惠价格（包括闪购、会员价差价，红包，促销活动减价）
@@ -1042,11 +1064,12 @@ class Simple extends IController
 		$orderObj->setData($dataArray);
 
 		$this->order_id = $orderObj->add();
-
+		
 		if($this->order_id == false)
 		{
 			IError::show(403,'订单生成错误');
 		}
+		
 
 		/*将订单中的商品插入到order_goods表*/
     	$orderInstance = new Order_Class();
@@ -1100,7 +1123,29 @@ class Simple extends IController
 				}
 			}
 		}
-
+		//填写开发票信息
+		if($invoice){
+			$db_fapiao = new IModel('order_fapiao');
+			$fapiao_data = array(
+					'order_id'=> $this->order_id,
+					'user_id' => $user_id,
+					'type'    => IFilter::act(IReq::get('type'),'int'),
+					'create_time'=> ITime::getDateTime(),
+			);
+			if($fapiao_data['type']==0){
+				$fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
+					
+			}else{
+				$fapiao_data['com'] = IFilter::act(IReq::get('tax_com'));
+				$fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
+				$fapiao_data['address'] = IFilter::act(IReq::get('tax_address'));
+				$fapiao_data['telphone'] = IFilter::act(IReq::get('tax_telphone'));
+				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
+				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
+			}
+			$db_fapiao->setData($fapiao_data);
+			$db_fapiao->add();
+		}
 		//获取备货时间
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
@@ -1112,7 +1157,6 @@ class Simple extends IController
 		$this->payment     = $paymentName;
 		$this->paymentType = $paymentType;
 		$this->delivery    = $deliveryRow['name'];
-		$this->tax_title   = $tax_title;
 		$this->deliveryType= $deliveryRow['type'];
 
 		//订单金额为0时，订单自动完成

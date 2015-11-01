@@ -1100,8 +1100,8 @@ class Market extends IController
 	//判断商品是否参加预售
 	public function is_presell(){
 		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
-		$presell_db = new IModel('presell');
-		if($presell_db->getObj('goods_id='.$goods_id,'id'))
+		$goods_db = new IModel('goods');
+		if($goods_db->getObj('id='.$goods_id.' and is_del=4','id'))
 			echo 1;
 		else echo 0;
 	} 

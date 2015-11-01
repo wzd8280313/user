@@ -114,29 +114,7 @@ class Order_Class
 					$memberObj->update('user_id = '.$user_id);
 				}
 
-				if($memberRow)
-				{
-					//(2)进行促销活动奖励
-			    	$proObj = new ProRule($orderRow['real_amount']);
-			    	$proObj->setUserGroup($memberRow['group_id']);
-			    	$proObj->setAward($user_id);
 
-			    	//(3)增加经验值
-			    	$memberData = array(
-			    		'exp'   => 'exp + '.$orderRow['exp'],
-			    	);
-					$memberObj->setData($memberData);
-					$memberObj->update('user_id = '.$user_id,'exp');
-
-					//(4)增加积分
-					$pointConfig = array(
-						'user_id' => $user_id,
-						'point'   => $orderRow['point'],
-						'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励积分'.$orderRow['point'],
-					);
-					$pointObj = new Point();
-					$pointObj->update($pointConfig);
-				}
 			}
 
 			//插入收款单
@@ -1107,7 +1085,33 @@ class Order_Class
 			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$refundId,$order_id,$amount);
 			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败
 		}
-		
+		else if($pay_type==1 || $pay_type==0){//预存款付款和货到付款打入账户余额
+			$obj = new IModel('member');
+			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
+			if($isSuccess)
+			{
+				//用户余额进行的操作记入account_log表
+				$log = new AccountLog();
+				$config = array(
+						'user_id'  => $user_id,
+						'event'    => 'drawback', //withdraw:提现,pay:余额支付,recharge:充值,drawback:退款到余额
+						'num'      => $amount, //整形或者浮点，正为增加，负为减少
+						'order_no' => $order_no // drawback类型的log需要这个值
+				);
+			
+				if($type == 'admin')
+				{
+					$config['admin_id'] = $authorId;
+				}
+				else if($type == 'seller')
+				{
+					$config['seller_id'] = $authorId;
+				}
+			
+				$re = $log->write($config);
+			}else return false;
+			
+		}
 		//更新退款表
 		$updateData = array(
 				'pay_status'   => 2,
@@ -1117,15 +1121,15 @@ class Order_Class
 		$refundDB->update('id = '.$refundId);
 		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
-	
+		
 		$order_goods_id = $orderGoodsRow['id'];
-
+		
 		//未发货的情况下还原商品库存
 		if($orderGoodsRow['is_send'] == 0)
 		{
 			self::updateStore($order_goods_id,'add');
 		}
-
+		
 		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
@@ -1139,103 +1143,79 @@ class Order_Class
 		$tb_order = new IModel('order');
 		$tb_order->setData(array('status' => $orderStatus));
 		$tb_order->update('id='.$order_id);
-
+		
 		if($orderStatus == 6)
 		{
 			Order_class::resetOrderProp($order_id);
 		}
-
+		
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
 		if($type=='system')$authorName='系统自动';
 		$tb_order_log = new IModel('order_log');
 		$tb_order_log->setData(array(
-			'order_id' => $order_id,
-			'user'     => $authorName,
-			'action'   => '退款',
-			'result'   => '成功',
-			'note'     => '订单【'.$order_no.'】退款，退款金额：￥'.$amount,
-			'addtime'  => ITime::getDateTime(),
+				'order_id' => $order_id,
+				'user'     => $authorName,
+				'action'   => '退款',
+				'result'   => '成功',
+				'note'     => '订单【'.$order_no.'】退款，退款金额：￥'.$amount,
+				'addtime'  => ITime::getDateTime(),
 		));
 		$tb_order_log->add();
-
-		/**
-		 * 进行用户的余额增加操作,积分，经验的减少操作,
-		 * 1,当全部退款时候,减少订单中记录的积分和经验;
-		 * 2,当部分退款时候,查询商品表中积分和经验
-		 */
-		if($orderStatus == 6)
-		{
-			$orderRow = $tb_order->getObj('id = '.$order_id);
-		}
-		else
-		{
-			$goodsDB = new IModel('goods');
-			$goodsRow= $goodsDB->getObj('id = '.$orderGoodsRow['goods_id']);
-			$orderRow = array(
-				'exp'      => $goodsRow['exp'],
-				'point'    => $goodsRow['point'],
-				'order_no' => $order_no,
-			);
-		}
-
-		$obj = new IModel('member');
-		$memberObj = $obj->getObj('user_id = '.$user_id,'balance,exp,point');
-
-		$exp     = $memberObj['exp'] - $orderRow['exp'];
-		$point   = $memberObj['point'] - $orderRow['point'];
-		$setData = array(
-				'exp'  => $exp <= 0 ? 0 : $exp,
-				'point' => $point <=0 ? 0 : $point
-		);
-		if($pay_type==1 || $pay_type==0){//预存款付款和货到付款打入账户余额
-			$balance = $memberObj['balance'] + $amount;
-			$setData['balance'] = $balance;
-			
-		}
-		if($exp==$memberObj['exp'] && $point==$memberObj['point'])
-			$isSuccess=1;//如果积分、经验都不变，则不用更新
-		else{
-			$obj->setData($setData);
-			$isSuccess = $obj->update('user_id = '.$user_id);
-		}
-		
-
-		//积分记录日志
-		$pointConfig = array(
-			'user_id' => $user_id,
-			'point'   => '-'.$orderRow['point'],
-			'log'     => '退款订单号：'.$orderRow['order_no'].'中的商品,减掉积分 -'.$orderRow['point'],
-		);
-		$pointObj = new Point();
-		$pointObj->update($pointConfig);
-		
-		if($isSuccess)
-		{
-			//用户余额进行的操作记入account_log表
-			$log = new AccountLog();
-			$config = array(
-				'user_id'  => $user_id,
-				'event'    => 'drawback', //withdraw:提现,pay:余额支付,recharge:充值,drawback:退款到余额
-				'num'      => $amount, //整形或者浮点，正为增加，负为减少
-				'order_no' => $order_no // drawback类型的log需要这个值
-			);
-
-			if($type == 'admin')
-			{
-				$config['admin_id'] = $authorId;
-			}
-			else if($type == 'seller')
-			{
-				$config['seller_id'] = $authorId;
-			}
-
-			$re = $log->write($config);
-			return true;
-		}
-		return false;
+		return true;
 	}
+	/**
+	 * 积分、经验值、
+	 * @$order_id int 订单id
+	 * @$user_id int 用户id
+	 */
+	public static function sendGift($order_id,$user_id){
+			$order_db = new IModel('order');
+			$memberObj = new IModel('member');
+			$orderRow = $order_db->getObj('id='.$order_id,'point,exp,real_amount,order_no');
+			$memberRow=$memberObj->getObj('user_id='.$user_id);
+			$exp_add = $point_add = 0;
+			$real_amount = $orderRow['real_amount'];
+			
+			$order_goods_query = new IQuery('order_goods as og');
+			$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+			$order_goods_query->where = 'og.order_id='.$order_id.' and og.is_send=2';
+			$order_goods_query->fields = 'og.*,SUM(g.point) as point,SUM(g.exp) as exp ,SUM(og.real_price) as real_amount ';
+			$order_goods_query->group = 'og.order_id';
+			
+			if($order_goods_data = $order_goods_query ->find()){//存在退货
+				
+				$exp_add = $orderRow['exp'] - $order_goods_data[0]['exp'];
+				$exp_add = $exp_add<0 ? 0 :$exp_add;
+				$point_add = $orderRow['point'] - $order_goods_data[0]['point'];
+				$point_add = $point_add<0 ? 0 : $point_add;
+				$real_amount -= $order_goods_data[0]['real_amount'];
+			}else{
+				$exp_add = $orderRow['exp'];
+				$point_add = $orderRow['point'];
+			}
 
+		//(2)进行促销活动奖励
+			$proObj = new ProRule($real_amount);
+			$proObj->setUserGroup($memberRow['group_id']);
+			$proObj->setAward($user_id);
+		
+			//(3)增加经验值
+			$memberData = array(
+					'exp'   => $exp_add,
+			);
+			//$memberObj->setData($memberData);
+			$memberObj->addNum('user_id = '.$user_id,$memberData);
+		
+			//(4)增加积分
+			$pointConfig = array(
+					'user_id' => $user_id,
+					'point'   => $point_add,
+					'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励积分'.$point_add,
+			);
+			$pointObj = new Point();
+			$pointObj->update($pointConfig);
+	}
 	/**
 	 * 退货不退款，订单中加入新商品
 	 * @$refundId int 退货单id
@@ -1381,5 +1361,24 @@ class Order_Class
 			return false;
 		}
 		return true;
+	}
+	/**
+	 * 计算退款金额
+	 * @$goodsOrderRow array order_goods信息
+	 * @$orderRow array  订单信息
+	 * @return float 退款金额
+	 */
+	public static function get_refund_fee($orderRow,$goodsOrderRow){
+		//未发货的时候 退款运费和保价,税金
+		$otherFee = 0;
+		if($goodsOrderRow['delivery_id'] == 0)
+		{
+			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
+		}
+		$amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
+		//退款额计算：将促销优惠和红包优惠平均分配
+		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
+		$amount -= $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
+		return number_format($amount,2);	
 	}
 }

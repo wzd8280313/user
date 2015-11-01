@@ -742,3 +742,11 @@ fieldset, img {
 #J_TbcPresale{
 	width:670px;
 }
+	.allowed{
+		
+	}
+	.not-allowed{
+		color:#ccc !important;
+		cursor:not-allowed;
+		border:1px dashed #ccc !important;
+	}

@@ -2,7 +2,19 @@
 <script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 <script type='text/javascript' src='{theme:javascript/orderFormClass.js}'></script>
 <link rel="stylesheet" type="text/css" href="{skin:/css/log.css}">
+<link rel="stylesheet" type="text/css" href="{skin:/fap/css/zengzhi.css}">
 <script type='text/javascript'>
+	//更换增值发票和普通发票
+$(document).ready(function(){
+	$("input[class='zzsfp']").click(function(){
+		$(".show1").hide();
+		$(".show2").show();
+	})
+	$("input[class='ptfps']").click(function(){
+		$(".show2").hide();
+		$(".show1").show();
+	})
+})
 //创建订单表单实例
 orderFormInstance = new orderFormClass();
 orderFormInstance.presell = 1;
@@ -633,10 +645,10 @@ function selectTakeself(deliveryId)
 						<col width="250px" />
 						<tr>
 							<td>是否需要发票？(税金:￥{$this->goodsTax}) <input class="radio" onclick="orderFormInstance.doAccount();$('#tax_title').toggle();" name="taxes" type="checkbox" value="{$this->goodsTax}" /></td>
-							<td><label id="tax_title" class='attr' style='display:none'>发票抬头：<input type='text' class='normal' name='tax_title' /></label></td>
-							<td class="t_r"><b class="price f14 gray">合计：<span >￥<b id='final_sum'>{$this->final_sum}</b></span>元</b></td>
+						<td class="t_r"><b class="price f14 gray">合计：<span >￥<b id='final_sum'>{$this->final_sum}</b></span>元</b></td>
 						</tr>
 					</table>
+					{include:layouts/taxes.html}
 				</div>
 				<strong>预售阶段信息</strong>
 				<div class="pink_box">

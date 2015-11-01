@@ -69,6 +69,21 @@
 		</div>
 	</div>
 
-	
+<script type='text/javascript'>
+	//DOM加载结束
+$(function(){
+	{if:isset($this->search)&&$this->search}
+	{set:$search=$this->search}
+	{/if}
+	{if:isset($search)&&$search}
+	var searchData = {echo:JSON::encode($search)};
+	for(var index in searchData)
+	{
+		$('[name="search['+index+']"]').val(searchData[index]);
+	}
+	{/if}
+
+});
+</script>
 </body>
 </html>

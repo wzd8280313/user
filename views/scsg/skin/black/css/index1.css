@@ -390,7 +390,7 @@ a.btn_pay{display:inline-block;width:119px;height:37px;margin-right:20px;backgro
 /* saleinfos style start */
 .saleinfos{padding:5px;border-bottom:1px solid #e8e8e8;background-color:#f9f9f9;color:#404040}
 	.saleinfos li{float:left;height:20px;line-height:20px;margin:3px 0;overflow:hidden;padding:0 4% 0 2%;width:44%;text-align:left}
-.salebox{padding:0 10px;color:#404040;line-height:20px}
+.salebox{padding:0 10px;color:#404040;line-height:20px;width:930px;}
 	.salebox .saletitle,.salebox .saledesc{padding:0 10px;text-align:left}
 	.salebox .saletitle{margin:3px 0 5px}
 /* saleinfos style end */
@@ -1055,4 +1055,72 @@ ol,ul{list-style:none}
 }
 .hy_message span em{
 	position:absolute;
+}
+
+/*增加搜索栏*/
+.sstj{
+	margin: 0 0 20px 0;
+}
+.sstj .order_time{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #BFBFBF;
+	width: 150px;
+	height: 17px;
+	padding: 4px 8px;
+}
+.sstj .ddss{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #BFBFBF;
+	width: 236px;
+	height: 17px;
+	padding: 4px 8px;
+}
+.sstj  .dstxt{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #BFBFBF;
+	width: 80px;
+	height: 28px;
+	line-height: 26px;
+	margin: 0 12px 0 -2px;
+	text-align: center;
+	background-color: #F5F5F5;
+	display: inline-block;
+	cursor:pointer;
+}
+.sstj  .showst{
+	cursor: pointer;
+	background: url(../images/front/ucenter/xl.png) no-repeat center right;
+	display: inline-block;
+	width: 88px;
+}
+.sstj .jsx{
+	margin-top:15px;
+	display:none;
+}
+.sstj .jsx table tr{
+	height:30px;
+}
+.sstj .jsx table tr span{
+	padding:0 15px;
+}
+.sstj .jsx table tr select{
+	line-height: 25px;
+	height: 25px;
+	width: 143px;
+}
+.list_table .checktet{
+	position: relative;
+	left: -20px;
+}
+.list_table .checks{
+	position: relative;
+	top:3px;
+}
+/*删除图标*/
+.list_table  .img_delt{
+	position: absolute;
+	margin: 0px 20px;
 }

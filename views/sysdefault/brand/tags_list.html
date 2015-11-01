@@ -3,6 +3,19 @@
 	<div class="operating">
 		<a href="javascript:;"><button class="operating_btn" type="button" onclick="window.location='{url:/brand/tags_edit}'"><span class="addition">添加标签</span></button></a>
 	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="tags_list">
+			<input type='hidden' name='controller' value='brand' />
+			<input type='hidden' name='action' value='tags_list' />
+			<select name="search[show_index]" class="auto">
+				<option value="-1">是否在首页显示</option>
+				<option value="0">否</option>
+				<option value="1">是</option>
+			</select>
+
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
+	</div>
 	<div class="field">
 		<table class="list_table">
 			<col width="100px" />
@@ -36,7 +49,7 @@
 		<col width="150px" />
 		<tbody>
 			
-			{query: name=commend_tags order=sort asc}
+			{foreach:items=$this->tags}
 			<tr>
 				<td><input class="tiny" id="sort{$item['id']}" type="text" onblur="toSort({$item['id']});" value="{$item['sort']}" pattern='int' /></td>
 				<td>{$item['name']}</td>
@@ -51,7 +64,7 @@
 				</td>
 				<td><a href="{url:/brand/tags_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" /></a><a href="javascript:void(0)" onclick="delModel({link:'{url:/brand/tags_del/id/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a></td>
 			</tr>
-			{/query}
+			{/foreachS}
 		</tbody>
 	</table>
 </div>

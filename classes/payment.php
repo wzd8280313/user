@@ -154,7 +154,7 @@ class Payment
 		$payment['P_PostCode']  = $orderRow['postcode'];
 		$payment['P_Telephone'] = $orderRow['telphone'];
 		$payment['P_Address']   = $orderRow['address'];
-		
+		$siteConfigObj = new Config('site_config');
 		$site_config   = $siteConfigObj->getInfo();
 		
 		//交易信息
@@ -265,8 +265,14 @@ class Payment
 		$payment = self::getPaymentParam($payment_id);
 		//获取订单信息
 		$orderObj = new IModel('order');
-		$orderList = $orderObj->query('id in( '.$order_ids.') and (type!=4 and status = 1 or type=4)');
+		//筛选出符合支付条件的订单，并重置order_ids
+		$orderList = $orderObj->query('id in( '.$order_ids.') and (type!=4 and status = 1 or (type=4 and status in (1,4)))');
 		if(empty($orderList))IError::show(403,'订单信息不存在，不能支付');
+		$order_ids='';
+		foreach($orderList as $k=>$v){
+			$order_ids .= $v['id'].',';
+		}
+		$order_ids = substr($order_ids,0,-1);
 		//判断商品库存
 		$orderGoodsDB   = new IQuery('order_goods as og');
 		$orderGoodsDB->join = 'left join order as o on o.id=og.order_id';

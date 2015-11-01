@@ -57,3 +57,24 @@ $(function(){
         top:0
 	};
 })(jQuery);
+
+/*弹出筛选条件*/
+$(document).ready(function(){
+  $(".showst").click(function(){
+  $(".jsx").toggle();
+  });
+  
+  
+  /*全选复选框*/
+  $("#ckAll").click(function() {
+    $("input[name^='sub']").prop("checked", this.checked);
+  });
+  
+  $("input[name^='sub']").click(function() {
+    var $subs = $("input[name^='sub']");
+    $("#ckAll").prop("checked" , $subs.length == $subs.filter(":checked").length ? true :false);
+  });
+});
+
+
+

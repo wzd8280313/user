@@ -37,7 +37,9 @@
         </div>
     </div>
 				<div style="width:99%;margin:0 auto;">
-				<span class="name" style=" display:block; width:75%; margin-left:8px; float:left; line-height:20px;"><a href="" >{$name}{if:$short_desc}（{$short_desc}）{/if}</a></span>
+
+				<span class="name" style=" display:block; width:75%; margin-left:8px; float:left; line-height:20px;"><a href="" >{$name}</a></span>
+
 							
 				
 				<span onClick="toshare()" style="display:block;width:19%;text-align:center;float:right;margin-right:10px;cursor:pointer;height:60px;">
@@ -67,14 +69,17 @@
 			{if:isset($group_price)}
 				<span class="label">会&nbsp;员&nbsp;价:</span>
 				<span class="d_price">￥{$group_price}</span>
+				</p><p>
 				购买送积分:<span class="jifen">{$point}</span></p>   
 				<p>
 					<span class="label">山&nbsp;城&nbsp;价:</span>
 					<span class="m_price">￥{$sell_price}</span>
 				</p>
 				{else:}
+				<p>
 				<span class="label">山&nbsp;城&nbsp;价:</span>
 				<span class="d_price">￥{$sell_price}</span>
+				</p><p>
 				购买送积分:<span class="jifen">{$point}</span></p> 
 			{/if}
 			<p>
@@ -207,5 +212,19 @@
 	<div style="clear: both;"></div>
 	<!--<p><img src="images/li10.jpg" alt=""></p> -->
 </div>
+</div>
+<div class="det baby" id='det_tuijian'>
+		{if:isset($buyer_id) && $buyer_id}
+		<h3 class="tit">购买本商品的用户还购买过<span class="showHide"><font><!-- 关闭 --></font><span class="hideSpan"></span></span></h3>
+		
+		<ul>
+			{foreach:items=Api::run('getOrderGoodsByBuyerid',array('#buyer_id#',$buyer_id))}
+				<li>
+					<a href="{url:/site/products/id/$item[id]}" title=""><img src="{url:/pic/thumb/img/$item[img]/w/200/h/200}" alt=""></a>
+				</li>
+			{/foreach}
+		</ul>
+		{/if}
+	
 </div>
 </div>

@@ -100,6 +100,80 @@ class Order extends IController
 			$this->redirect('order_refundment_list');
 		}
 	}
+	public function refundment_list(){
+		$where = ' and  1 ';
+		$order_no = IFilter::act(IReq::get('order_no'));
+		//筛选、
+		$beginTime = IFilter::act(IReq::get('beginTime'));
+		$endTime = IFilter::act(IReq::get('endTime'));
+		$data['beginTime'] = $beginTime;
+		$data['endTime'] = $endTime;
+		$data['order_no'] = $order_no;
+		
+		if($beginTime)
+		{
+			$where .= ' and rd.time > "'.$beginTime.'"';
+		}
+		if($endTime)
+		{
+			$where .= ' and rd.time < "'.$endTime.'"';
+		}
+		if($order_no){
+			$where .= ' and rd.order_no = "'.$order_no.'"';
+		}
+		$this->setRenderData($data);
+		$this->where = $where;
+		$this->redirect('refundment_list');
+	}
+	public function refundment_chg_list(){
+		$where = ' and  1 ';
+		$order_no = IFilter::act(IReq::get('order_no'));
+		//筛选、
+		$beginTime = IFilter::act(IReq::get('beginTime'));
+		$endTime = IFilter::act(IReq::get('endTime'));
+		$data['beginTime'] = $beginTime;
+		$data['endTime'] = $endTime;
+		$data['order_no'] = $order_no;
+	
+		if($beginTime)
+		{
+			$where .= ' and rd.time > "'.$beginTime.'"';
+		}
+		if($endTime)
+		{
+			$where .= ' and rd.time < "'.$endTime.'"';
+		}
+		if($order_no){
+			$where .= ' and rd.order_no = "'.$order_no.'"';
+		}
+		$this->setRenderData($data);
+		$this->where = $where;
+		$this->redirect('refundment_chg_list');
+	}
+	public function fapiao_list(){
+		$where = ' and  1 ';
+		$order_no = IFilter::act(IReq::get('order_no'));
+		$data['order_no'] = $order_no;
+		
+		if($order_no){
+			$where .= ' and o.order_no = "'.$order_no.'"';
+		}
+		$this->setRenderData($data);
+		$this->where = $where;
+		$this->redirect('fapiao_list');
+	}
+	public function fapiao(){
+		$where = ' and  1 ';
+		$order_no = IFilter::act(IReq::get('order_no'));
+		$data['order_no'] = $order_no;
+		
+		if($order_no){
+			$where .= ' and o.order_no = "'.$order_no.'"';
+		}
+		$this->setRenderData($data);
+		$this->where = $where;
+		$this->redirect('fapiao');
+	}
 	/**
 	 * @brief查看申请退款单
 	 */
@@ -566,8 +640,8 @@ class Order extends IController
 			Util::showMessage('请完善订单信息');
 		}
 		foreach($goods_nuns as $v){
-			if($v==0)$this->redirect('order_edit');
-			Util::showMessage('商品数量不能为0');
+			if($v==0){$this->redirect('order_edit');
+			Util::showMessage('商品数量不能为0');}
 		}
 		//设置订单持有者
 		$username = IFilter::act(IReq::get('username'));
@@ -581,6 +655,7 @@ class Order extends IController
 			'goods' => array('id' => array() , 'data' => array()),
 			'product' => array('id' => array() , 'data' => array())
 		);
+		
 		for($i = 0;$i < $length;$i++)
 		{
 			//货品数据
@@ -766,6 +841,41 @@ class Order extends IController
 			Util::showMessage('请选择要删除的数据');
 		}
     }
+    /**
+     * 收款单列表
+     */
+    public function order_collection_list(){
+    	$where = ' and  1 ';
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$username = IFilter::act(IReq::get('username'));
+    
+    	
+    	//筛选、
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$data['beginTime'] = $beginTime;
+    	$data['endTime'] = $endTime;
+    	$data['order_no'] = $order_no;
+    	$data['username'] = $username;
+    	
+    	if($beginTime)
+    	{
+    		$where .= ' and c.time > "'.$beginTime.'"';
+    	}
+    	if($endTime)
+    	{
+    		$where .= ' and c.time < "'.$endTime.'"';
+    	}
+    	if($order_no){
+    		$where .= ' and o.order_no = "'.$order_no.'"';
+    	}
+    	if($username){
+    		$where .= ' and u.username = "'.$username.'"';
+    	}
+    	$this->setRenderData($data);
+    	$this->where = $where;
+    	$this->redirect('order_collection_list');
+    } 
 	/**
      * @brief 收款单删除功能_删除回收站中的数据，彻底删除
      */
@@ -814,6 +924,71 @@ class Order extends IController
 			$this->redirect('collection_recycle_list',false);
 			Util::showMessage('请选择要还原的数据');
 		}
+    }
+    public function order_refundment_list(){
+    	$where = ' and  1 ';
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$username = IFilter::act(IReq::get('username'));
+    	
+    	 
+    	//筛选、
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$data['beginTime'] = $beginTime;
+    	$data['endTime'] = $endTime;
+    	$data['order_no'] = $order_no;
+    	$data['username'] = $username;
+    	 
+    	if($beginTime)
+    	{
+    		$where .= ' and c.dispose_time > "'.$beginTime.'"';
+    	}
+    	if($endTime)
+    	{
+    		$where .= ' and c.dispose_time < "'.$endTime.'"';
+    	}
+    	if($order_no){
+    		$where .= ' and c.order_no = "'.$order_no.'"';
+    	}
+    	if($username){
+    		$where .= ' and u.username = "'.$username.'"';
+    	}
+    	$this->setRenderData($data);
+    	$this->where = $where;
+    	$this->redirect('order_refundment_list');
+    }
+    /**
+     * 换货单列表
+     */
+    public function order_refundment_chg_list(){
+    	$where = ' and  1 ';
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$username = IFilter::act(IReq::get('username'));
+    	 //筛选、
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$data['beginTime'] = $beginTime;
+    	$data['endTime'] = $endTime;
+    	$data['order_no'] = $order_no;
+    	$data['username'] = $username;
+    
+    	if($beginTime)
+    	{
+    		$where .= ' and c.dispose_time > "'.$beginTime.'"';
+    	}
+    	if($endTime)
+    	{
+    		$where .= ' and c.dispose_time < "'.$endTime.'"';
+    	}
+    	if($order_no){
+    		$where .= ' and c.order_no = "'.$order_no.'"';
+    	}
+    	if($username){
+    		$where .= ' and u.username = "'.$username.'"';
+    	}
+    	$this->setRenderData($data);
+    	$this->where = $where;
+    	$this->redirect('order_refundment_chg_list');
     }
 	/**
 	 * @brief 退款单删除功能_删除到回收站
@@ -913,6 +1088,36 @@ class Order extends IController
 			$this->redirect('order_delivery_list',false);
 			Util::showMessage('请选择要删除的数据');
 		}
+    }
+    public function order_delivery_list(){
+    	$where = ' and  1 ';
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$username = IFilter::act(IReq::get('username'));
+    	//筛选、
+    	$beginTime = IFilter::act(IReq::get('beginTime'));
+    	$endTime = IFilter::act(IReq::get('endTime'));
+    	$data['beginTime'] = $beginTime;
+    	$data['endTime'] = $endTime;
+    	$data['order_no'] = $order_no;
+    	$data['username'] = $username;
+    	
+    	if($beginTime)
+    	{
+    		$where .= ' and c.time > "'.$beginTime.'"';
+    	}
+    	if($endTime)
+    	{
+    		$where .= ' and c.time < "'.$endTime.'"';
+    	}
+    	if($order_no){
+    		$where .= ' and o.order_no = "'.$order_no.'"';
+    	}
+    	if($username){
+    		$where .= ' and m.username = "'.$username.'"';
+    	}
+    	$this->setRenderData($data);
+    	$this->where = $where;
+    	$this->redirect('order_delivery_list');
     }
 	/**
      * @brief 发货单删除功能_删除回收站中的数据，彻底删除

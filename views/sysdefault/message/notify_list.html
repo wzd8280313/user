@@ -1,10 +1,30 @@
-{js:my97date}
+{set:$search = IFilter::act(IReq::get('search'),'strict');
+
+}
+{if:is_array($search)&&$search['notify_status']==-1}
+{set:$where='notify_status='.$search['notify_status']}
+{else:}
+{set:$where=1}
+{/if}
 <div class="headbar">
 	<div class="position"><span>会员</span><span>></span><span>信息处理</span><span>></span><span>到货通知</span></div>
 	<div class="operating">
 		<a href="javascript:void(0)" onclick="sendMail()"><button class="operating_btn" type="button"><span class="send">发送通知</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('check[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel({form:'notify_list',msg:'确定要删除选中的记录吗？'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+	</div>
+	<div class="searchbar">
+		<form action="{url:/}" method="get" name="">
+			<input type='hidden' name='controller' value='message' />
+			<input type='hidden' name='action' value='notify_list' />
+			<select name="search[notify_status]" class="auto">
+				<option value="-1">选择通知状态</option>
+				<option value="0">未通知</option>
+				<option value="1">已通知</option>
+			
+			</select>
+			<button class="btn" type="submit"  ><span class="sel">筛 选</span></button>
+		</form>
 	</div>
 	<div class="field">
 		<table class="list_table">
@@ -50,7 +70,7 @@
 		</colgroup>
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=notify_registry as notify join=left join goods as goods on notify.goods_id eq goods.id left join user as u on notify.user_id eq u.id fields=notify.*,u.username,goods.name as goods_name,goods.store_nums page=$page}
+			{query: name=notify_registry as notify join=left join goods as goods on notify.goods_id eq goods.id left join user as u on notify.user_id eq u.id fields=notify.*,u.username,goods.name as goods_name,goods.store_nums page=$page where=$where}
 			<tr>
 				<td class="t_c"><input class="check_ids" name="check[]" type="checkbox" value="{$item['id']}" /></td>
 				<td><a href="{url:/goods/goods_edit/gid/$item[goods_id]}">{$item['goods_name']}</a></td>
