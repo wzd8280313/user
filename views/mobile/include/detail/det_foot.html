@@ -20,7 +20,7 @@ $server_num = count($server_info)>0 ? $server_info[0]['qq'] : 0;
 
  		{if:isset($server_num)&&$server_num}
             <div class="s-btn s-cd" data="sales" {if:$width==1}style="width:25%;"{/if}>
-				<a href="{echo:Sonline::getChatUrl($seller['server_num'])}">
+				<a href="{echo:Sonline::getChatUrl($server_num)}">
 	             	 <p><img src="{skin:images/detail_img/qq.png}"  alt="qq"/></p>
 	             	 <p>客&nbsp;服</p>
               	</a>
