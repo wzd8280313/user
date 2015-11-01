@@ -46,11 +46,11 @@
 
  <div class="caidan">
   <ul>
-  <li {if:$status==0}class="qbys"{/if}><a href="{url:/ucenter/order}">全部</a></li>
-   <li {if:$status==1}class="qbys"{/if}><a href="{url:/ucenter/order/status/1}">待付款</a></li>
-    <li {if:$status==2}class="qbys"{/if}><a href="{url:/ucenter/order/status/2}">待发货</a></li>
-     <li {if:$status==3}class="qbys"{/if}><a href="{url:/ucenter/order/status/3}">待收货</a></li>
-      <li {if:$status==4}class="qbys"{/if}><a href="{url:/ucenter/order/status/4}">待评论</a></li>
+  <li {if:$status==0}class="qbys"{/if}><a href="{url:/ucenter/morder}">全部</a></li>
+   <li {if:$status==1}class="qbys"{/if}><a href="{url:/ucenter/morder/status/1}">待付款</a></li>
+    <li {if:$status==2}class="qbys"{/if}><a href="{url:/ucenter/morder/status/2}">待发货</a></li>
+     <li {if:$status==3}class="qbys"{/if}><a href="{url:/ucenter/morder/status/3}">待收货</a></li>
+      <li {if:$status==4}class="qbys"{/if}><a href="{url:/ucenter/morder/status/4}">待评论</a></li>
   </ul>
      </div>  
 
@@ -167,13 +167,17 @@
 		<a href="" class="qd-popup-trigger xio pop" tourl='{url:/ucenter/preorder_status/op/cancel/order_id/}/<%=id%>' alt='你确定取消订单吗?'>取消交易</a>
 		<%}%>
 		<%if(type==4&&order_status_no==4){%>
- 		<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/block/doPayPresell/order_id/}/<%=id%>' alt='你确定立即结算吗?'>支付尾款</a>
+			<%if (can_pay==1) {%>
+ 			<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/block/doPayPresell/order_id/}/<%=id%>' alt='你确定立即结算吗?'>支付尾款</a>
+			<%}%>
+			<%if (can_pay!=1) {%>
+ 			<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' style='color:#ccc;border-color:#ccc;' >未到支付时间</a>
+			<%}%>
 		<%}%>
 		<%if(type==4&&order_status_no==9){%>
  		<a class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/ucenter/preorder_status/op/confirm/order_id/}/<%=id%>' alt='你确定确认收货吗?'>确认收货</a>
 	
 		<%}%>
-		
     </li>
  	 <li class="huise"><hr/></li>
 </ul>

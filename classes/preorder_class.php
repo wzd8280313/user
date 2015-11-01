@@ -679,6 +679,9 @@ class Preorder_Class extends Order_Class{
 		$siteConfigObj = new Config('site_config');
 		$cancel_days = $siteConfigObj->preorder_cancel_days;
 		$return = array();
+		$presell_db = new IModel('presell');
+		$presell_row = $presell_db->getObj('id='.$orderRow['active_id'],'wei_type,wei_start_time,wei_end_time,wei_days');
+		$orderRow = array_merge($presell_row,$orderRow);
 		if($orderRow['status']==1 ){
 			return true;
 		}elseif($orderRow['status']==4 ){

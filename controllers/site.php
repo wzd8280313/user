@@ -150,6 +150,8 @@ class Site extends IController
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
+		
+		
 		$sell_price = $goods_info['sell_price'];
 		//品牌名称
 		if($goods_info['brand_id'])
@@ -245,7 +247,8 @@ class Site extends IController
 			$goods_info = array_merge($goods_info,$proData);
 			$group_type = 'product';
 			$group_goods_id = $product_id;
-			
+			$goods_info['product'] = $tb_product->query('goods_id='.$goods_id.' and id='.$product_id,'id,spec_array,store_nums');
+			$goods_info['product'] = JSON::encode($goods_info['product']);
 			
 		}else{
 			//获得商品的价格区间
@@ -265,7 +268,8 @@ class Site extends IController
 			
 			$group_type = 'goods';
 			$group_goods_id = $goods_id;
-			
+			$goods_info['product'] = $tb_product->query('goods_id='.$goods_id,'id,spec_array,store_nums');
+			$goods_info['product'] = JSON::encode($goods_info['product']);
 			
 		}
 		//获得会员价
@@ -620,7 +624,9 @@ class Site extends IController
 		$tb_goods = new IModel('goods');
 		$goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)");
 		
-		
+ 		$product_db = new IModel('products');
+ 		$goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
+ 		$goods_info['product'] = JSON::encode($goods_info['product']);
 		if(!$goods_info)
 		{
 			IError::show(403,"这件商品不存在或已下架");
@@ -769,7 +775,8 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
-		
+	//	print_r($goods_info);
+	//	print_r($specArray);
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}

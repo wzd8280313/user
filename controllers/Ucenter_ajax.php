@@ -60,6 +60,7 @@ class Ucenter_ajax extends IController
 		else if($status==4){//待评价
 			$where .= ' and (type!=4 and status=5 OR type=4 and status=11)';
 		}
+		//$order_db->join = 'left join presell as p on p.'
 		$order_db->where = 'user_id='.$userid.' and if_del=0'.$where;
 		$order_db->fields = '*';
 		$order_db->order ='id DESC';
@@ -89,6 +90,7 @@ class Ucenter_ajax extends IController
 			}else{
 				$order_data[$k]['order_status_no'] = $v['status'];
 				$order_data[$k]['order_status'] = Preorder_Class::getOrderStatus($order_data[$k]);
+				$order_data[$k]['can_pay'] = Preorder_Class::can_pay($order_data[$k])? 1:0;
 			}
 			
 			$order_data[$k]['num']=0;
