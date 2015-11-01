@@ -295,6 +295,10 @@ margin-top:10px;
 width: 1190px;
 overflow: hidden;
 }
+.big-pro .seller_list img{
+width:116px;
+height:60px;
+}
 .big-shop {
 margin-top:10px;
 width: 1190px;
