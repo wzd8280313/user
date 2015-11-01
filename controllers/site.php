@@ -956,10 +956,17 @@ class Site extends IController
 	function comments()
 	{
 		$id = IFilter::act(IReq::get('id'),'int');
-
+		
 		if(!$id)
 		{
-			IError::show(403,"传递的参数不完整");
+			$goods_id = IFilter::act(IReq::get('goods_id'),'int');
+			$order_id = IFilter::act(IReq::get('order_id'),'int');
+			$comment_db = new IModel('comment');
+			$id = $comment_db->getField('goods_id='.$goods_id.' and order_id='.$order_id,'id');
+			if(!$id){
+				IError::show(403,"传递的参数不完整");
+			}
+			
 		}
 
 		if(!isset($this->user['user_id']) || $this->user['user_id']==null )

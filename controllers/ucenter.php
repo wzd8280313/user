@@ -19,6 +19,17 @@ class Ucenter extends IController
 	}
     public function index()
     {
+    	$userid = $this->user['user_id'];
+    	$where = "user_id =".$userid." and if_del= 0 and type !=4 ";
+    	
+    	$order_db = new IQuery('order as o');
+    	$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+    	$order_db->group = 'og.order_id';
+    	$order_db->where = $where?$where : 1;
+    	$order_db->limit  = 6;
+    	$order_db->order = 'o.id DESC';
+    	$order_db->fields = 'o.*';
+    	$this->order_db = $order_db;
         $this->initPayment();
         $this->redirect('index');
     }
@@ -149,7 +160,7 @@ class Ucenter extends IController
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*';
+		$order_db->fields = 'o.*,g.id as goods_id';
 		$this->order_db = $order_db;
         $this->initPayment();
         

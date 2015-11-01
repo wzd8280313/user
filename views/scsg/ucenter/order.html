@@ -103,7 +103,7 @@
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
 					
 					{elseif:$status==6}
-					<a href="{url:/ucenter/evaluation}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+					<a href="{url:/site/comments/goods_id/$item['goods_id']/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
 					{else:}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 					{/if}

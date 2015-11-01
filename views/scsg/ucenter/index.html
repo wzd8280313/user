@@ -51,9 +51,10 @@
 		<table class="list_table" width="100%" cellpadding="0" cellspacing="0">
 			<col width="140px" />
 			<tr>
-				<th>订单编号</th><th>下单日期</th><th>收货人</th><th>支付方式</th><th>总金额</th><th>订单状态</th>
+				<th>订单编号</th><th>下单日期</th><th width='50px'>收货人</th><th>支付方式</th><th>总金额</th><th>订单状态</th>
 			</tr>
-			{foreach:items=Api::run('getOrderListByUserid',array('#user_id#',$user['user_id']))}
+			{foreach:items=$this->order_db->find()}
+			{set:$status=Order_Class::getOrderStatus($item);}
 			<tr>
 				<td><a href="{url:/ucenter/order_detail/id/$item[id]}">{$item['order_no']}</a></td>
 				<td>{$item['create_time']}</td>
@@ -61,9 +62,22 @@
 				<td>{$this->payments[$item['pay_type']]['name']}</td>
 				<td>￥{echo:($item['order_amount'])}</td>
 				<td>
-					{set:$orderStatus = Order_Class::getOrderStatus($item)}
-					<b class="{if:$orderStatus >= 6}green{else:}orange{/if}">{echo:Order_Class::orderStatusText($orderStatus)}</b>
-				</td>
+					{if:$status==2}
+                	<a href='{url:/block/dopay/order_id/$item["id"]}' target=='blank'><input type="button" class='btn_gray btn_small' style='margin-bottom:5px;' value="立即支付" /></a>
+					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
+					{elseif:$status==1}
+					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
+					{elseif:in_array($status,array(4,8,9,10,11))}
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
+					{elseif:in_array($status,array(3,11))}
+					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"><input style='margin-bottom:5px;' type="button" class='btn_gray btn_small' value="确认收货" /></a>
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
+					
+					{elseif:$status==6}
+					<a href="{url:/ucenter/evaluation}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+					{else:}
+					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
+					{/if}</td>
 			</tr>
 			{/foreach}
 
