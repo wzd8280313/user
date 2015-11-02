@@ -25,10 +25,12 @@ function loadPresell(toUrl){
 		success:function(data){
 			if(data){
 				for(var i in data){
+					data[i]['key']=start+parseInt(i)+1;
 					var newProm = template.render('template',data[i]);
 					$('.shan-all-li').append(newProm);
 				}
 				shan_bind_func();
+				countDown(start);
 				$('input[name=start]').val(start+parseInt(i)+1);
 			}
 			
@@ -36,6 +38,7 @@ function loadPresell(toUrl){
 		},
 		complete:function(){
 			$('#nextgroup').removeClass('loading');
+			
 		},
 		timeout:1000,
 	})

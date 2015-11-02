@@ -90,10 +90,17 @@
 					<div class="tbc-presale-title">
 						<span class="tb-name tb-property-type">预售中</span>
 						<div class="tbc-presale-content tbc-presale-price-content">
-							<sapn>
-			还有
-							<em class="tbc-presale-time">{$preData['lastDay']}天</em>
-			结束
+							<sapn class='countdown det_tuan' id="timeRemaining-1" style='line-height:40px;'>
+							{if:$preData["end_time"]>0}
+									还有
+										<span id='cd_day_1'></span>天
+										<span id='cd_hour_1'></span>小时
+										<span id='cd_minute_1'></span>分
+										<span id='cd_second_1'></span>秒	  结束
+										<input name='endTime' type='hidden' value='{$preData["end_time"]}' />
+							{else:}
+								预售已结束
+							{/if}
 							</sapn>
 							<a class="tbc-presale-rule-trigger J_TbcPresaleRuleTrigger" target="_blank" href="">规则</a>
 							<div class="tbc-presale-rule-content J_TbcPresaleRule">

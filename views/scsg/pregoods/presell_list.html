@@ -76,10 +76,14 @@
 								</div>
 								<div class="fr">
 									<p class="brand-logo"></p>
-									<p class="surplus">
-									剩余 
-										<span id=''>{$item['days']}</span>天
-									</p>
+									<span class="bk-timeleft home_timer today_end_time countdown" id="timeRemaining-{$key}">
+										<span class="icon">距预售结束</span>
+										<span id='cd_day_{$key}'></span>天
+										<span id='cd_hour_{$key}'></span>小时
+										<span id='cd_minute_{$key}'></span>分
+										<span id='cd_second_{$key}'></span>秒	
+										<input name='endTime' type='hidden' value='{$item["end_timestamp"]}' />
+									</span>
 								</div>
 									<div class="clear"></div>
 							</dd>
@@ -159,10 +163,14 @@
 				</div>
 				<div class="fr">
 					<p class="brand-logo"></p>
-					<p class="surplus countdown">
-					剩余 
-						<span id=''><%=days%></span>天
-					</p>
+					<span class="bk-timeleft home_timer today_end_time countdown" id="timeRemaining-<%=key%>">
+										<span class="icon">距预售结束</span>
+										<span id='cd_day_<%=key%>'></span>天
+										<span id='cd_hour_<%=key%>'></span>小时
+										<span id='cd_minute_<%=key%>'></span>分
+										<span id='cd_second_<%=key%>'></span>秒	
+										<input name='endTime' type='hidden' value='<%=end_timestamp %>' />
+					</span>
 				<div class="clear"></div>
 			</dd>
 		</dl>
