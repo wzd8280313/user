@@ -19,7 +19,7 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,g.sell_price as price,datediff(p.yu_end_time,now()) as days';
+		$presell_db->fields = 'p.*,g.sell_price as price,datediff(p.yu_end_time,now()) as days,g.img';
 		$presell_db->limit = 10;
 		$presell_db->order = 'p.id DESC';
 		$this->pre_list = $presell_db->find();
@@ -630,12 +630,12 @@ class Pregoods extends IController
 				$fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
 					
 			}else{
-				$fapiao_data['com'] = IFilter::act(IReq::get('com'));
+				$fapiao_data['com'] = IFilter::act(IReq::get('tax_com'));
 				$fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
-				$fapiao_data['address'] = IFilter::act(IReq::get('address'));
-				$fapiao_data['telphone'] = IFilter::act(IReq::get('telphone'));
-				$fapiao_data['bank'] = IFilter::act(IReq::get('bank'));
-				$fapiao_data['account'] = IFilter::act(IReq::get('account'));
+				$fapiao_data['address'] = IFilter::act(IReq::get('tax_address'));
+				$fapiao_data['telphone'] = IFilter::act(IReq::get('tax_telphone'));
+				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
+				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
 			}
 			$db_fapiao->setData($fapiao_data);
 			$db_fapiao->add();

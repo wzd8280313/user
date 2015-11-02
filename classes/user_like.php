@@ -143,14 +143,21 @@ class user_like{
 	 * @return arr 浏览历史数据
 	 */
 	public static function get_user_history($user_id=false){
-		if(!$user_id)
-			return ISession::get('user_history');
-		else{
-			$history = new IQuery('user_history');
-			$history->where = 'user_id = '.$user_id;
-			$history->fields = 'goods_id,time';
-			$history->group = 'goods_id';
-			$history->order = 'id DESC';
+		if(!$user_id){
+			$history = ISession::get('user_history');
+			$ids = '';
+			foreach($history as $val){
+				$ids = $val['goods_id'].',';
+			}
+			$ids = substr($ids,0,-1);
+			$goods_db = new IModel('goods');
+			return $goods_db->query('id in ('.$ids.')','id as goods_id,name,sell_price,img,sell_price',false,'DESC',6);
+		}else{
+			$history = new IQuery('user_history as h');
+			$history->join = 'left join goods as g on h.goods_id=g.id';
+			$history->where = 'h.user_id = '.$user_id;
+			$history->fields = 'h.goods_id,g.img,g.name,g.sell_price';
+			$history->order = 'h.id DESC';
 			$history->limit = 6;
 			$res = $history->find();
 			if($res)

@@ -53,7 +53,7 @@
 		<input type='hidden' name='start' value='{$this->count}'/>
 		<ul class="shan-all-li" style='width:1000px;'>
 			{foreach:items=$this->pre_list}
-		
+			{if:!$item['presell_img']}{set:$item['presell_img']=$item['img']}{/if}
 					<li  style="margin-top:0;float:left;">
 						<dl>
 							<dt class="brand-img">

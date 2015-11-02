@@ -1096,9 +1096,7 @@ class Site extends IController
 
 
 	function ce(){
-		$orderInstance = new Order_Class();
-		$orderRow = $orderInstance->getOrderShow(470);
-		print_r($orderRow);
+		print_r($_SESSION);
 	}
 	
 }

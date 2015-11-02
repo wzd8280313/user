@@ -361,16 +361,9 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 										{else:}{set:$user_id = false;}
 										{/if}
 										{set:$history=user_like::get_user_history($user_id)}
-										{set:$ids='';}
-										{if:$history!=null}
+										
+										{if:$history}
 										{foreach:items=$history}
-											{set:$ids .=$item['goods_id'].',';}
-										{/foreach}
-										{set:$ids=substr($ids,0,-1);}
-										
-										
-										{foreach:items=Api::run('getGoodsInfoByIds',array('#ids#',$ids))}
-										
 										<li class="jth-item"><a href="{url:/site/products/id/$item[goods_id]}" class="img-wrap"
 											target="_blank"
 											title="{$item['name']}"> <img
