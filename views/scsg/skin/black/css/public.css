@@ -856,7 +856,7 @@ cursor: pointer;
   float: left;
 }
 .tabs .tab-cnt .news-list{
-margin:0 5px;
+margin:0 5px;text-align:left;
 }
 .clear{clear:both;}
 
