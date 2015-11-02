@@ -279,6 +279,7 @@ function Spec_show(){
 				//获取购物车信息
 				$.getJSON(_this.show_cart_url,{"random":Math.random},function(json)
 				{//window.realAlert(JSON.stringify(json));
+				$('#product_myCart').show();
 					$('[name="mycart_count"]').text(json.count);
 					$('[name="mycart_sum"]').text(json.sum);
 	
