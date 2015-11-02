@@ -252,10 +252,10 @@ background: url(../images/hd-and-btm.png) 0 0 no-repeat;
 _background: url(../images/hd-and-btm-8.png) 0 0 no-repeat;
 }
 
-.service li{
+/*.service li{
 background: url(../images/npbg_0.png) 0 0 no-repeat;
 _background: url(../images/npbg_0.png) 0 0 no-repeat;
-}
+}*/
 .search .cart .cart-count {
 position: absolute;
 top: -6px;

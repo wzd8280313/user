@@ -627,7 +627,7 @@ span.sel{padding-right:18px;background:url(../images/front/ucenter/sel.gif) righ
 	.resize{float:left;width:18px;height:22px}
 		.resize a{display:block;border:1px solid #b4b4b4;width:16px;height:7px;margin-bottom:4px;background:url(../images/front/sprites_2.gif) -25px -201px no-repeat;overflow:hidden}
 		.resize a.reduce{ background-position:-25px -207px}
-	.shop_cart{ position:relative;z-index:99;display:inline;width:182px;height:45px;margin-left:10px;*float:right;*margin:-45px 90px 0 0;_margin:-45px 30px 0 0}
+	.shop_cart{ display:inline;width:182px;height:45px;margin-left:10px;*float:right;*margin:-45px 90px 0 0;_margin:-45px 30px 0 0}
 		.shop_cart .shopping{left:0;top:27px;width:344px;padding:5px 5px 10px;border:1px solid #63b7f9}
 		dl.cart_stats dt{float:none;width:329px;margin:0;padding:5px 0 5px 15px;border-bottom:1px solid #63b7f9;text-align:left}
 			dl.cart_stats dt img{margin-right:8px;vertical-align:text-bottom}
