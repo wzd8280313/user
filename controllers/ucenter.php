@@ -204,6 +204,20 @@ class Ucenter extends IController
         {
         	IError::show(403,'订单信息不存在');
         }
+        $tb_refundment = new IModel('refundment_doc');
+      	 if($refund_data = $tb_refundment->getObj('order_id='.$id)){
+      	 	$order_goods_db = new IModel('order_goods');
+      	 	$this->order_goods = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
+			
+			
+			$siteConfig = new Config('site_config');
+			$refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
+			
+			$refunds_seller_second = $refunds_seller_time*24*3600;
+			$refund_data['endTime'] = strtotime($refund_data['time']) + $refunds_seller_second;
+			$this->refund_data = $refund_data;
+      	 }
+      	 
         $this->redirect('order_detail',false);
     }
 	
@@ -423,6 +437,8 @@ class Ucenter extends IController
         $type           = IFilter::act(IReq::get('type'),'int');
         $content        = IFilter::act(IReq::get('content'),'text');
         $message        = '请完整填写内容';
+        $delivery_com   = IFilter::act(IReq::get('delivery_com'));
+        $delivery_code  = IFilter::act(IReq::get('delivery_code'));
 
         if(!$content)
         {
@@ -465,7 +481,23 @@ class Ucenter extends IController
 					'goods_id' => $goodsOrderRow['goods_id'],
 					'product_id' => $goodsOrderRow['product_id'],
 				);
-
+        		if($goodsOrderRow['is_send']==1){
+        			$updateData['pay_status'] = 4;
+        			
+        		}else if($goodsOrderRow['is_send']==0){
+        			$updateData['pay_status'] = 0;
+        		}
+        		if(isset($_FILES['delivery_img']['name']) && $_FILES['delivery_img']['name'])
+        		{
+        			$uploadObj = new PhotoUpload();
+        			$uploadObj->setIterance(false);
+        			$photoInfo = $uploadObj->run();
+        			if(isset($photoInfo['delivery_img']['img']) && file_exists($photoInfo['delivery_img']['img']))
+        			{
+        				$updateData['delivery_img'] = $photoInfo['delivery_img']['img'];
+        			}
+        		
+        		}
 				$goodsDB  = new IModel('goods');
         		$goodsRow = $goodsDB->getObj('id = '.$goodsOrderRow['goods_id']);
 
@@ -517,7 +549,7 @@ class Ucenter extends IController
         $refundDB = new IModel("refundment_doc");
         $where = "id = ".$id." and user_id = ".$this->user['user_id'];
         $refundRow = $refundDB->getObj($where);
-        
+      
         if($refundRow)
         {
         	//获取商品信息

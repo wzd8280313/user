@@ -269,13 +269,7 @@ class Order extends IController
 		if($delivery_add)$setData['delivery_add']=$delivery_add;
 		
 		
-		if($type==1&&$pay_status==2){//换货类型且确认换货成功
-			$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
-			if(!$chgRes){
-				$this->redirect('refundment_chg_list');
-				return false;
-			}
-		}
+		
 		
 		if($refundment_id)
 		{
@@ -285,6 +279,14 @@ class Order extends IController
 			if($refund_data = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,pay_status,goods_id,product_id')){
 				$order_goods_db = new IModel('order_goods');
 				$order_goods_row = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
+				
+				if($type==1&&$pay_status==7){//换货类型且审核通过
+					$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
+					if(!$chgRes){
+						$this->redirect('refundment_chg_list');
+						return false;
+					}
+				}
 				Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
 			}
 			
@@ -439,12 +441,12 @@ class Order extends IController
 			'amount'       => $amount,
 			'user_id'      => $user_id,
 		);
-
+		$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{
 			if(!$order_goods_id)return false;
-			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
+			
 
 			//插入refundment_doc表
 			$updateData['time']       = ITime::getDateTime();
@@ -461,6 +463,14 @@ class Order extends IController
 		}
 		
 			$result = Order_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
+			if($orderGoodsRow['is_send']==1){
+				//增加用户评论商品机会
+				Order_Class::addGoodsCommentChange($order_id);
+					
+				//经验值、积分、代金券发放
+				Order_Class::sendGift($order_id,$user_id);
+			}
+			Order_Class::order_status_refunds(2,$orderGoodsRow);
 			
 		if($result)
 		{

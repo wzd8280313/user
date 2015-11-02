@@ -5,7 +5,7 @@
     </div>
 
 	<div class="box">
-		<form action="{url:/ucenter/refunds_update}" method="post" callback="checkForm();">
+		<form action="{url:/ucenter/refunds_update}" method="post" callback="checkForm();" enctype='multipart/form-data'>
 			<input type="hidden" name="order_id" value="{$this->orderRow['id']}" />
 			<table class="border_table" width="100%" cellpadding="0" cellspacing="0">
 				<colgroup>
@@ -42,7 +42,15 @@
 						{/foreach}
 					</td>
 				</tr>
-
+				 <tr>
+		            <th>快递公司：</th><td><input name="delivery_com" type="text"   class="normal" /><label >*</label></td>
+		        </tr>
+		        <tr>
+		            <th>快递单号：</th><td><input name='delivery_code'  class="normal"/><label>*</label></td>
+		        </tr>
+				<tr>
+		            <th>上传图片：</th><td><input type='file' name='delivery_img' /></td>
+		        </tr>
 				<tr>
 					<th>退换货理由：</th>
 					<td>

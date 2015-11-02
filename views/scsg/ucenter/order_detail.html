@@ -1,5 +1,6 @@
 {set:$orderStatus = Order_Class::getOrderStatus($this->order_info)}
 {js:artTemplate}
+
 <script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 
 <div class="main f_r">
@@ -39,14 +40,14 @@
 			</label>
 			{/if}
 
-			{if:in_array($orderStatus,array(11,3))}
+			{if:in_array($orderStatus,array(11,3,17))}
 	        <label >
 	        	<input type="hidden" name='op' value='confirm' />
 	        	<input type="submit" class='btn_gray btn_small' value="确认收货" />
 	        </label>
 			{/if}
 
-	        {if:Order_Class::isRefundmentApply($this->order_info)}
+	        {if:Order_Class::isRefundmentApply($this->order_info) && !$this->refund_data || $this->refund_data['type']==1}
 	        <label >
 	        	<input type="button"  class='btn_red btn_small' value="申请退换货" onclick='javascript:window.location.href="{url:/ucenter/refunds_edit/order_id/$this->order_info['order_id']}"' />
 	        </label>
@@ -54,7 +55,75 @@
 	    </p>
         </form>
 	</div>
+	{if:$this->refund_data}
+		{if:$this->refund_data['type']==0}
+		{set:$typeName = '退货';}
+		{else:}
+		{set:$typeName = '换货';}
+		{/if}
+	<div class="box m_10">
+		<div class="title">
+			<h2><span class="orange">退换货信息</span></h2>
+		</div>
 
+		<!--收获信息展示-->
+		<div class="cont clearfix" id="acceptShow">
+			<table class="dotted_table f_l" width="100%" cellpadding="0" cellspacing="0">
+				<col width="130px" />
+				<col />
+				{if:$this->refund_data['type']==0 && in_array($this->refund_data['pay_status'],array(0,4,7))}
+				<tr>
+					<th></th>
+					<td>
+						
+						<sapn class='countdown det_tuan' id="timeRemaining-1" style='line-height:40px;font-size:14px;'>
+							卖家还有
+										<span id='cd_day_1'></span>天
+										<span id='cd_hour_1'></span>小时
+										<span id='cd_minute_1'></span>分
+										<span id='cd_second_1'></span>秒	  来处理您的申请，逾期未处理则自动退款给您
+										<input name='endTime' type='hidden' value='{$this->refund_data["endTime"]}' />
+							
+							</sapn>
+					
+					</td>
+				</tr>
+				{/if}
+				<tr>
+					<th>{$typeName}编号：</th>
+					<td>{$this->refund_data['order_no']}</td>
+				</tr>
+				<tr>
+					<th>申请时间：</th>
+					<td>{$this->refund_data['time']}</td>
+				</tr>
+				<tr>
+					<th>{$typeName}类型：</th>
+					<td>{echo:Order_Class::refundmentType($this->order_goods['is_send'],$this->refund_data['type'])}</td>
+				</tr>
+				<tr>
+					<th>{$typeName}状态：</th>
+					<td>{echo:Order_Class::refundmentText($this->refund_data['pay_status'],$this->refund_data['type'])}</td>
+				</tr>
+				{if:$this->refund_data['type']==0}
+				<tr>
+					<th>{$typeName}金额：</th>
+					<td class="red2 bold">{$this->refund_data['amount']}</td>
+				</tr>
+				{/if}
+				<tr>
+				<th>{$typeName}商品：</th>
+					{set:$goodsInfo = JSON::decode($this->order_goods['goods_array'])}
+					<td><a class="blue" href="{url:/site/products/id/$this->refund_data['goods_id']}" href="_blank">{$goodsInfo['name']} {if:$goodsInfo['value']}{$goodsInfo['value']}{/if} X {$this->order_goods['goods_nums']}件</a></td>
+				</tr>
+				<tr>
+				<th>{$typeName}原因：</th>
+				<td>{$this->refund_data['content']}</td>
+			</tr>
+			</table>
+		</div>
+	</div>
+	{/if}
 	<div class="box m_10">
 		<div class="title">
 			<h2><span class="orange">收件人信息</span></h2>
