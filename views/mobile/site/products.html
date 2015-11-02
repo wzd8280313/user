@@ -18,8 +18,8 @@
 {include:include/detail/comments_list.html}
 
 <div class="det baby" id='det_tuijian' style="margin-bottom:260px;">
-		{if:isset($buyer_id) && $buyer_id}
-		<h3 class="tit">购买本商品的用户还购买过<span class="showHide"><font><!-- 关闭 --></font><span class="hideSpan"></span></span></h3>
+	<!--	{if:isset($buyer_id) && $buyer_id}
+		<h3 class="tit">购买本商品的用户还购买过<span class="showHide"><font>--><!-- 关闭 --><!--</font><span class="hideSpan"></span></span></h3>
 		
 		<ul>
 			{foreach:items=Api::run('getOrderGoodsByBuyerid',array('#buyer_id#',$buyer_id))}
@@ -28,7 +28,7 @@
 				</li>
 			{/foreach}
 		</ul>
-		{/if}
+		{/if}-->
 	
 </div>
 

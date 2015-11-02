@@ -48,7 +48,7 @@
 	
 			<div class="modle_items3">
 				<p class="bcdz">请选择收货地址</p>
-				<table width="100%" border="0">
+				<table width="100%" border="0"  style="line-height:25px;">
 					  <tr>
 						<th class="wid">收货人</th>
 						<th>详细地址</th>
@@ -69,30 +69,44 @@
 			<div  class="mod_dres">
 				<div class="dres">
 					<div style="margin:0 5px;border-bottom: 1px solid #ABADB3; padding-bottom:10px;">
-						<a href=""><span>+新增收货地址：</span></a>
-					</div>
-				</div>
-				<div class='dres'>
+						<a href=""><span style="float:left;margin-top:5px;">+新增收货地址：</span></a>
+                        
+                        
+                        
+                        <div class='dres'>
 					<span>
-						<select name="province" child="city,area" style='width:97%;height:30px;' onchange="areaChangeCallback(this);">
+						<select name="province" child="city,area" style='width:22%;height:35px;float:left;' onchange="areaChangeCallback(this);">
 						<option>请选择省份</option>
 						</select>
 					</span>					
 				</div>
 				<div class='dres'>
 					<span>
-						<select name="city" child="area" style='width:97%;height:30px;' parent="province" onchange="areaChangeCallback(this);">
+						<select name="city" child="area" style='width:22%;height:35px;float:left;margin-left:1%;' parent="province" onchange="areaChangeCallback(this);">
 						<option>请选择城市</option>
 						</select>
 					</span>					
 				</div>
 				<div class='dres'>
 					<span>
-						<select name="area" parent="city" style='width:97%;height:30px;' pattern="required" alt="请选择收货地区">
+						<select name="area" parent="city" style='width:22%;height:35px;margin-left:1%;' pattern="required" alt="请选择收货地区">
 						<option>请选择地区</option>
 						</select>
 					</span>					
 				</div>
+                
+                
+                        
+                        
+                        
+                        
+                        
+                        
+					</div>
+				</div>
+				
+                
+                
 				<div class="dres">
 			
 					<span><input class="texts tex2" placeholder="收货人姓名" type="text" name='accept_name'/></span>
