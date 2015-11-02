@@ -24,7 +24,6 @@ class Pregoods extends IController
 		$presell_db->order = 'p.id DESC';
 		$this->pre_list = $presell_db->find();
 		$this->count = count($this->pre_list);
-		
 		$this->redirect('presell_list');
 		
 	}
