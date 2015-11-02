@@ -1429,7 +1429,7 @@ class Order_Class
 		$amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
 		//退款额计算：将促销优惠和红包优惠平均分配
 		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
-		$amount -= $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
+		$amount = $amount - $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
 		return number_format($amount,2);	
 	}
 	/**
