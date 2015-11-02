@@ -197,8 +197,10 @@
 
 			<input class="submit_buy" type="button" id="buyNowButton" onclick="spec_show_obj.buy_now();" value="立即购买" />
 
-						<div class="shop_cart" style="z-index:1">
+
+						<div class="shop_cart" style="z-index:-1000">
 				<input class="submit_join" type="button" id="joinCarButton" onclick="spec_show_obj.joinCart();" value="加入购物车" />
+
 
 				<div class="shopping" id="product_myCart" style='display:none'>
 					<dl class="cart_stats">
@@ -214,7 +216,7 @@
 			{/if}
 		</div>
 		
-		<div class="tm-ser tm-clear">
+		<div class="tm-ser tm-clear" style="z-index:-1000">
 			<dl class="tm-clear">
 				<dt class="tb-metatit">服务承诺</dt>
 				<dd class="tm-laysku-dd">
