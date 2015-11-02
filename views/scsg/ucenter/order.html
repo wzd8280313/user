@@ -77,9 +77,10 @@
             {set:$queryOrderList=$this->order_db}
 			{foreach:items = $queryOrderList->find()}
 			{set:$status=Order_Class::getOrderStatus($item);}
+		
             <tr>
 				
-                <td>
+                <td>	
                 	{if:$status==2}
 					<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
 					{/if}
@@ -98,7 +99,7 @@
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
 					{elseif:in_array($status,array(4,8,9,10,11))}
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
-					{elseif:in_array($status,array(3,11))}
+					{elseif:in_array($status,array(3,11,17))}
 					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"><input style='margin-bottom:5px;' type="button" class='btn_gray btn_small' value="确认收货" /></a>
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
 					

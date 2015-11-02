@@ -34,7 +34,7 @@
 						{if:$good['is_send'] != 2}
 						<p>
 							<label>
-								<input type="radio" name="order_goods_id" value="{$good['id']}" />
+								<input type="radio" name="order_goods_id" value="{$good['id']}" is_send='{$good["is_send"]}'/>
 								<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</a>
 							</label>
 						</p>
@@ -89,4 +89,16 @@ function checkForm()
 	}
 	return true;
 }
+$(function(){
+	$('input[type=radio][name=order_goods_id]').on('click',function(){
+		var is_send = $(this).attr('is_send');
+		if(is_send==0){
+			$('input[type=radio][name=type][value=0]').attr('checked',true);
+			$('input[type=radio][name=type][value=1]').attr('disabled',true);
+		}
+		else{
+			$('input[type=radio][name=type][value=1]').attr('disabled',false);
+		}
+	})
+})
 </script>

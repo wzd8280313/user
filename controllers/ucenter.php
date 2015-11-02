@@ -437,15 +437,18 @@ class Ucenter extends IController
         //判断订单是否付款（已付款且非退款）
         if($orderRow && Order_Class::isRefundmentApply($orderRow))
         {
+        	
         	$goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id.' and order_id = '.$order_id);
-
+        	//更改订单状态
+        	Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
+        	
         	//判断商品是否已经退货
         	if($goodsOrderRow && $goodsOrderRow['is_send'] != 2)
         	{
         		$refundsDB = new IModel('refundment_doc');
 
         		//判断是否重复提交申请
-        		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 '))
+        		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 and type='.$type))
         		{
         			$message = '请不要重复提交申请';
 			       IError::show(403,$message);
@@ -535,6 +538,7 @@ class Ucenter extends IController
 	        	$this->redirect('refunds',false);
 	        	Util::showMessage("没有找到要退款的商品");
         	}
+        	
         	$this->redirect('refunds_detail');
         }
         else

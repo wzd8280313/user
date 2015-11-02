@@ -554,7 +554,10 @@ class Order_Class
 		//2,已经付款
 		else if($orderRow['status'] == 2)
 		{
-			if($orderRow['distribution_status'] == 0)
+			if($orderRow['distribution_status'] == 0 && $orderRow['pay_status'] == 3){
+				return 18;
+			}
+			elseif($orderRow['distribution_status'] == 0)
 			{
 				return 4;//已付款等待发货
 			}
@@ -565,6 +568,18 @@ class Order_Class
 			else if($orderRow['distribution_status'] == 2)
 			{
 				return 8;//部分发货
+			}
+			else if($orderRow['distribution_status'] == 3)
+			{
+				return 15;
+			}
+			else if($orderRow['distribution_status'] == 4 )
+			{
+				return 16;
+			}
+			else if($orderRow['distribution_status'] == 6 )
+			{
+				return 17;
 			}
 		}
 		//3,取消或者作废订单
@@ -619,6 +634,15 @@ class Order_Class
 		{
 			return '已付款';
 		}
+		else if($orderRow['pay_status']==3){
+			return '退款待审批';
+		}
+		else if($orderRow['pay_status']==4){
+			return '等待退款';
+		}
+		else if($orderRow['pay_status']==5){
+			return '退款成功';
+		}
 		return '未知';
 	}
 
@@ -653,8 +677,11 @@ class Order_Class
 	//获取订单配送状态
 	public static function getOrderDistributionStatusText($orderRow)
 	{
-		if($orderRow['status'] == 5)
+		if($orderRow['status'] == 5 && $orderRow['distribution_status']==5)
 		{
+			return '退货已收';
+		}
+		else if($orderRow['status'] == 5){
 			return '已收货';
 		}
 		else if($orderRow['distribution_status'] == 1)
@@ -668,6 +695,18 @@ class Order_Class
 		else if($orderRow['distribution_status'] == 2)
 		{
 			return '部分发货';
+		}
+		else if($orderRow['distribution_status'] == 3){
+			return '退货待审批';
+		}
+		else if($orderRow['distribution_status'] == 4){
+			return '退货已收';
+		}
+		else if($orderRow['distribution_status'] == 6){
+			return '换货待审批';
+		}
+		else if($orderRow['distribution_status'] == 7){
+			return '换货已收';
 		}
 	}
 
@@ -692,7 +731,11 @@ class Order_Class
 			10=> '部分退款',
 			11=> '已发货',
 			12=> '换货处理',
-			13=> '已发货'
+			13=> '已发货',
+			15=> '退款申请等待卖家确认',
+			16=> '审核通过，等待退款',
+			18=> '退款待审批'
+				
 		);
 		return isset($result[$statusCode]) ? $result[$statusCode] : '';
 	}
@@ -1005,13 +1048,27 @@ class Order_Class
 	public static function refundmentText($pay_status,$type)
 	{	
 		if($type==0){//退货
-			$result = array('0' => '申请退款', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）');
+			$result = array('0' => '退款申请,等待卖家确认中', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）','7'=>'审核通过，等待退款');
+			
 		}else{//换货
 			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'换货失败（超期未退货）');
 		}
 		return isset($result[$pay_status]) ? $result[$pay_status] : '';
 	}
-
+	/**
+	 * 退款类型
+	 * @param $is_send int 发货状态
+	 * @param $type int 0：退货，1：换货
+	 */
+	public static function refundmentType($is_send,$type){
+		if($type==0){
+			if($is_send==0)return '卖家未发货，要求退货';
+			if($is_send==1)return '买家收货，要求退货';
+			
+		}else{
+			return '';
+		}
+	}
 	/**
 	 * @brief 还原重置订单所使用的道具
 	 * @param int $order 订单ID
@@ -1135,19 +1192,15 @@ class Order_Class
 		$orderGoodsDB->update('id = '.$order_goods_id);
 		//更新order表状态
 		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and is_send != 2 and id != '.$order_goods_id);
-		$orderStatus = 6;//全部退款
-		if($isSendData)
-		{
-			$orderStatus = 7;//部分退款
-		}
+
 		$tb_order = new IModel('order');
-		$tb_order->setData(array('status' => $orderStatus));
-		$tb_order->update('id='.$order_id);
-		
-		if($orderStatus == 6)
-		{
-			Order_class::resetOrderProp($order_id);
+		$setData = array('status' => 5,'pay_status'=>5);
+		if($orderGoodsRow['is_send']==1){
+			$setData['distribution_status'] = 5;
 		}
+		$tb_order->setData($setData);
+		$tb_order->update('id='.$order_id);
+
 		
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
@@ -1294,10 +1347,8 @@ class Order_Class
 		//更新order表状态
 		$orderStatus=8;//换货
 		$tb_order = new IModel('order');
-		$tb_order->setData(array('status' => $orderStatus));
+		$tb_order->setData(array('status' => $orderStatus,'distribution_status' => 7));
 		$tb_order->update('id='.$order_id);
-		$tb_order->setData(array('distribution_status' => 2));
-		$tb_order->update('id='.$order_id.' AND distribution_status=1 ');
 		
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
@@ -1380,5 +1431,65 @@ class Order_Class
 		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
 		$amount -= $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
 		return number_format($amount,2);	
+	}
+	/**
+	 * 退款时修改订单状态
+	 * @param $refunds_status int 退款状态
+	 * @param $goodsOrderRow array  订单商品信息	 * 
+	 * @param $type int 售后类型 0 ：退货 1：换货
+	 */
+	public static function order_status_refunds($refunds_status,$goodsOrderRow,$type=0){
+		$order_db = new IModel('order');
+		$setData = array();
+		if($refunds_status==0){
+			if($goodsOrderRow['is_send']==0){//未发货
+				$setData = array('pay_status'=>3);//付款状态：退货待审批
+			}else if($goodsOrderRow['is_send']==1){
+				if($type==1){
+					$setData = array('distribution_status'=>6);//换货待审批
+				}else{
+					$setData = array('distribution_status'=>3);//发货状态：退货待审批
+				}
+			}
+		}
+		else if($refunds_status==7){
+			if($goodsOrderRow['is_send']==0){//未发货
+				$setData = array('pay_status'=>4);//等待退款
+			}else if($goodsOrderRow['is_send']==1){
+				if($type==1){
+					
+				}else{
+					$setData = array('distribution_status'=>4,'pay_status'=>4);//发货状态：退货已收
+				}
+				
+			}
+		}
+		else if(in_array($refunds_status,array(1,5))){
+			$order_goods_db = new IModel('order_goods');
+			
+			if($goodsOrderRow['is_send']==1){
+				$not_send_data = $order_goods_db->getObj('order_id='.$goodsOrderRow['order_id']. ' and is_send=0');
+				if($not_send_data){
+					$setData = array('distribution_status'=>2,'pay_status'=>1);
+				}else{
+					$setData = array('distribution_status'=>1,'pay_status'=>1);
+				}
+			}else{
+				$has_send_data = $order_goods_db->getObj('order_id='.$goodsOrderRow['order_id']. ' and is_send=1');
+				if($has_send_data){
+					$setData = array('distribution_status'=>2,'pay_status'=>1);
+				}else{
+					$setData = array('distribution_status'=>0,'pay_status'=>1);
+				}
+			}
+			
+			
+		}
+		else{
+			return false;
+		}
+		$order_db->setData($setData);
+		$order_db->update('id='.$goodsOrderRow['order_id']);
+		
 	}
 }

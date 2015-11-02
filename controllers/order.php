@@ -282,10 +282,17 @@ class Order extends IController
 			$tb_refundment_doc = new IModel('refundment_doc');
 			$tb_refundment_doc->setData($setData);
 			$tb_refundment_doc->update('id='.$refundment_id);
+			if($refund_data = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,pay_status,goods_id,product_id')){
+				$order_goods_db = new IModel('order_goods');
+				$order_goods_row = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
+				Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
+			}
+			
 			
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了换货单",'修改的ID：'.$refundment_id));
 		}
+		
 		$this->redirect('refundment_list');
 	}
 	/**
@@ -376,19 +383,25 @@ class Order extends IController
 		$this->layout='';
 		$orderId   = IFilter::act(IReq::get('id'),'int');
 		$refundsId = IFilter::act(IReq::get('refunds_id'),'int');
-
 		if($orderId)
 		{
 			$orderDB = new Order_Class();
 			$data    = $orderDB->getOrderShow($orderId);
-
+			$refundsDB  = new IModel('refundment_doc');
 			//已经存退款申请
 			if($refundsId)
 			{
-				$refundsDB  = new IModel('refundment_doc');
+				
 				$refundsRow = $refundsDB->getObj('id = '.$refundsId);
 				$data['refunds'] = $refundsRow;
 				
+			}else{
+				$order_goods_db = new IQuery('order_goods as og');
+				$order_goods_db->join = 'left join order as o on o.id=og.order_id left join refundment_doc as r on r.order_id=o.id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.type=0';
+				$order_goods_db->where = 'o.id='.$orderId;
+				$order_goods_db->fields = 'og.*,o.pro_reduce,o.ticket_reduce,o.real_amount,o.pro_reduce,r.id as refunds_id,r.amount';
+				$order_goods_data = $order_goods_db->find();
+				$data['order_goods_data'] = $order_goods_data;
 			}
 			$this->setRenderData($data);
 			$this->redirect('order_refundment');
@@ -451,6 +464,7 @@ class Order extends IController
 			
 		if($result)
 		{
+			
 			//记录操作日志
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"订单更新为退款",'订单号：'.$order_no));

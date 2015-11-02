@@ -3,6 +3,7 @@
 {else:}
 {set:$typeName = '换货';}
 {/if}
+
 <div class="main f_r">
 
     <div class="uc_title m_10">
@@ -17,37 +18,41 @@
 			</colgroup>
 
 			<tr>
-				<th>订单号：</th>
+				<th>{$typeName}编号：</th>
 				<td>{$order_no}</td>
 			</tr>
-
 			<tr>
-				<th>处理结果：</th>
+				<th>申请时间：</th>
+				<td>{$this->data['time']}</td>
+			</tr>
+			<tr>
+				<th>{$typeName}类型：</th>
+				<td>{echo:Order_Class::refundmentType($goods['is_send'],$type)}</td>
+			</tr>
+			<tr>
+				<th>{$typeName}状态：</th>
 				<td>{echo:Order_Class::refundmentText($pay_status,$type)}</td>
 			</tr>
-
+			{if:$type==0}
+			<tr>
+				<th>{$typeName}金额：</th>
+				<td class="red2 bold">{$this->data['amount']}</td>
+			</tr>
+			{/if}
 			<tr>
 				<th>{$typeName}商品：</th>
 				{set:$goodsInfo = JSON::decode($goods['goods_array'])}
 				<td><a class="blue" href="{url:/site/products/id/$goods_id}" href="_blank">{$goodsInfo['name']} {if:$goodsInfo['value']}{$goodsInfo['value']}{/if} X {$this->data['goods']['goods_nums']}件</a></td>
 			</tr>
-
-			{if:$this->data['seller_id']}
 			<tr>
-				<th>商家主页：</th>
-				<td><a href="{url:/site/home/id/$this->data['seller_id']}" target="_blank">进入主页</a></td>
+				<th>{$typeName}原因：</th>
+				<td>{$this->data['content']}</td>
 			</tr>
-			{/if}
+		
 
-			<tr>
-				<th>申请时间：</th>
-				<td>{$this->data['time']}</td>
-			</tr>
+			
 
-			<tr>
-				<th>商品金额：</th>
-				<td class="red2 bold">{$this->data['amount']}</td>
-			</tr>
+			
 
 			<tr>
 				<th>处理时间：</th>
@@ -59,10 +64,7 @@
 				<td>{echo:$this->data['dispose_idea']?$this->data['dispose_idea']:'未回复'}</td>
 			</tr>
 
-			<tr>
-				<th>{$typeName}原因：</th>
-				<td>{$this->data['content']}</td>
-			</tr>
+			
 			
 			{if:$this->data['delivery_time']}
 			<tr>
