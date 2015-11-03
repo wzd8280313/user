@@ -593,6 +593,12 @@ class Order_Class
 		{
 			return 5;
 		}
+		else if($orderRow['status'] == 5 && $orderRow['pay_status']==5 && $orderRow['distribution_status']==0){
+			return 21;
+		}
+		else if($orderRow['status'] == 5 && $orderRow['pay_status']==5 && $orderRow['distribution_status']==5){
+			return 21;
+		}
 		//4,完成订单
 		else if($orderRow['status'] == 5)
 		{
@@ -743,7 +749,9 @@ class Order_Class
 			16=> '审核通过，等待退款',
 			18=> '退款待审批',
 			19=> '审核通过，等待退款',
-			20=> '等待换货'
+			20=> '等待换货',
+			21=> '订单完成',
+			22=> '订单完成'
 				
 		);
 		return isset($result[$statusCode]) ? $result[$statusCode] : '';
