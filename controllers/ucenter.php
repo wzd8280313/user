@@ -204,19 +204,18 @@ class Ucenter extends IController
         {
         	IError::show(403,'订单信息不存在');
         }
-        $tb_refundment = new IModel('refundment_doc');
-      	 if($refund_data = $tb_refundment->getObj('order_id='.$id)){
-      	 	$order_goods_db = new IModel('order_goods');
-      	 	$this->order_goods = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
-			
-			
-			$siteConfig = new Config('site_config');
-			$refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
-			
-			$refunds_seller_second = $refunds_seller_time*24*3600;
-			$refund_data['endTime'] = strtotime($refund_data['time']) + $refunds_seller_second;
-			$this->refund_data = $refund_data;
-      	 }
+        
+        $siteConfig = new Config('site_config');
+        $refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
+        	
+        $refunds_seller_second = $refunds_seller_time*24*3600;
+        $tb_refundment = new IQuery('refundment_doc as r');
+        $tb_refundment->join = 'left join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id';
+        $tb_refundment->where = 'r.if_del=0 and r.order_id='.$id;
+        $tb_refundment->order = 'r.id DESC';
+        $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.' as end_time';
+        $this->refund_data = $tb_refundment->find();
+        
       	 
         $this->redirect('order_detail',false);
     }
@@ -464,11 +463,11 @@ class Ucenter extends IController
         		$refundsDB = new IModel('refundment_doc');
 
         		//判断是否重复提交申请
-        		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 and type='.$type))
-        		{
-        			$message = '请不要重复提交申请';
-			       IError::show(403,$message);
-        		}
+//         		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 and type='.$type))
+//         		{
+//         			$message = '请不要重复提交申请';
+// 			       IError::show(403,$message);
+//         		}
         		//退款单数据
         		$updateData = array(
 					'order_no' => $orderRow['order_no'],
