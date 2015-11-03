@@ -19,15 +19,15 @@
 		{/if}
 	<ul>
 	<!-- <li class="huise"><span>基本信息</span> </li> -->
-	<li><span>订单编号</span><a href="#">{$this->order_num}</a> </li>
-	<li><span>下单时间</span><a href="#">{$create_time}</a></li>
-	<li><span>订单金额</span><a href="#"><i>￥{$this->final_sum}</i></a> </li>
-	<li><span>配送方式</span><a href="#">{$this->delivery}</a></li>
-	<li><span>支付方式</span><a href="#">{$this->payment}</a></li>
-	<li><span>收货人名：</span><a href="#">{$accept_name}</a></li>
-	<li><span>联系方式：</span><a href="#">{$mobile}</a></li>
+	<li style="margin:7px;0px;"><span>订单编号</span><a href="#">{$this->order_num}</a> </li>
+	<li style="margin:7px;0px;"><span>下单时间</span><a href="#">{$create_time}</a></li>
+	<li style="margin:7px;0px;"><span>订单金额</span><a href="#"><i>￥{$this->final_sum}</i></a> </li>
+	<li style="margin:7px;0px;"><span>配送方式</span><a href="#">{$this->delivery}</a></li>
+	<li style="margin:7px;0px;"><span>支付方式</span><a href="#">{$this->payment}</a></li>
+	<li style="margin:7px;0px;"><span>收货人名：</span><a href="#">{$accept_name}</a></li>
+	<li style="margin:7px;0px;"><span>联系方式：</span><a href="#">{$mobile}</a></li>
 	{if:$this->tax_title!=''}
-	<li><span>发票抬头：</span><a href="#">{$this->tax_title}</a></li>
+	<li style="margin:7px;0px;"><span>发票抬头：</span><a href="#">{$this->tax_title}</a></li>
 	{/if}
 	{if:$this->deliveryType != 1 && $this->paymentType == 1}
 	{set:$tmpId=$this->order_id;}

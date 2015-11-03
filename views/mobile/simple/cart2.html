@@ -282,13 +282,13 @@ function selectProtect(obj)
      		<!-- 商品详情结束 -->
      		
      		<div class="qrdds_zf">
-     			<h4>代收点</h4>
-				<select name="takeself">
+     			<h4 style="float: left; margin-right:10px;margin-top:12px;">代收点</h4>
+				<select style="width:78%;margin-top:10px;margin-left:14px;height:33px;background-color: #F30; color:#fff;">
      				<option>请选择代收点（可空）</option>
      			</select>
-     			<h4>支付方式</h4>
+     			<h4 style="float: left; margin-right:10px; margin-top:2px;">支付方式</h4>
      			
-     			<select name="payment" onchange='orderFormInstance.paymentSave()' pattern='int'>
+     			<select style="width:78%;height:33px;background-color: #F30; color:#fff;" name="payment" onchange='orderFormInstance.paymentSave()' pattern='int'>
      				<option value='-1'>请选择支付方式</option>
 					{set:$paymentList=Api::run('getPaymentList')}
 					{foreach:items = $paymentList}
@@ -298,15 +298,15 @@ function selectProtect(obj)
 						{/if}
 					{/foreach}
      			</select>
-     			<p style="height: 25px;">配送方式</p>
-     			<select name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
+     			<p style="float: left; margin-right:10px; margin-top:7px;">配送方式</p>
+     			<select style="width:78%;height:33px; background-color: #F30; color:#fff; " name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
      				<option value='-1'>请选配送方式</option>
 					{set:$deliveryData = $this->allDeliveryType}
 					{foreach:items = $deliveryData}
      				<option value="{$item['id']}" >{$item['name']}</option>
 					{/foreach}
      			</select>
-     			<input class="xt" type="text" name='message' placeholder="买家留言"/>
+     			<input style="width:96%;height:33px;" class="xt" type="text" name='message' placeholder="买家留言"/>
      			
      		</div>
      	</div>
