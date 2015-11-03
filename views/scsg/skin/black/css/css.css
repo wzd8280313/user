@@ -61,7 +61,7 @@ img {
 #store-selector.hover .content,#store-selector.hover .close{display:block}
 #JD-stock{position:relative;margin-bottom:0}
 #JD-stock .tab{width:100%;height:25px;float:left;border-bottom:2px solid #edd28b;overflow:visible;*overflow:hidden}
-#JD-stock .tab li{float:left;clear:none;height:23px;padding:1px 1px 0;border:1px solid #ddd;border-bottom:0;margin-right:3px;background-color:#fff;line-height:22px;text-decoration:none}
+#JD-stock .tab li{float:left;clear:none;height:23px;padding:1px 1px 0;border:1px solid #ddd;border-bottom:0;margin-right:3px;background-color:#fff;line-height:22px;text-decoration:none;margin: 0;}
 #JD-stock .tab .curr{*position:relative;height:25px;padding:0;border:2px solid #edd28b;border-bottom:0}
 #JD-stock .tab a{position:relative;float:left;height:23px;padding:0 20px 1px 10px;line-height:23px;text-align:center;text-decoration:none;cursor:pointer;color:#005AA0;outline:0;*blr:expression(this.onFocus=this.blur())}
 #JD-stock .tab a:hover{background:0;color:#005AA0}
