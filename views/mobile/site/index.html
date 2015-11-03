@@ -30,15 +30,12 @@
 		<script src='{theme:javascript/common.js}'></script>
 		<script src='{theme:javascript/scrollTop.js}'></script>
 		<script src='{theme:javascript/dialog.js}'></script>  
-        
-         <link rel="stylesheet" href="{skin:css/common.css}" type="text/css">
         <link rel="stylesheet" href="{skin:css/guess.css}" type="text/css">
         <script src="{theme:javascript/cart.js}"></script>
 		<link rel="stylesheet" href="{skin:css/cart.css}" type="text/css">
         <link rel="stylesheet" href="{skin:css/swiper.min.css}" type="text/css">
 		<script src="{theme:javascript/filter.js}"></script>
 		<script src="{theme:javascript/swiper.jquery.min.js}"></script>
-		          
 		</head>
 
     <body data-mps="PA4101">
@@ -185,7 +182,7 @@
         </div>
     </section>
 	
-	<!--<section class="activity_floor">
+<!--<section class="activity_floor">
 		{echo:Ad::show("手机端首页")}
 	</section>-->
     <section class="activity_floor">
@@ -303,10 +300,11 @@
         
         
         
-		<header class="title clear-fix">
+	<!--<header class="title clear-fix">
+
             <h2 class="fl">商品分类</h2>
         </header>
-        <div class="second_floor">
+      <div class="second_floor">
             <ul class="clear-fix">
 
             	{foreach:items=Api::run('getCategoryListTop',6)}
@@ -318,10 +316,300 @@
 				{/foreach}
 
             </ul>
-        </div>
+        </div>-->
+		<!--更换商品分类内容-->
+
+    <!-- Swiper JS -->
+	<link rel="stylesheet" href="{skin:css/Swiper demo_files/swiper.min.css}">
+	<link rel="stylesheet" href="{skin:css/Swiper demo_files/fenlei.css}">
+	<script src="{theme:javascript/Swiper demo_files/zepto.min.js}"></script>
+	<script src="{theme:javascript/Swiper demo_files/touch.js}"></script>
+    <script src="{theme:javascript/Swiper demo_files/swiper.min.js}"></script>
+	 <script src="{theme:javascript/Swiper demo_files/hd.js}"></script>
+    <!-- Initialize Swiper -->
+
+		<!-- Swiper -->
+	<div>
+	    <div class="swiper-container swiper-container-horizontal head" id="box1" >
+	        <div class="swiper-wrapper">
+	            <div class="swiper-slide active swiper_bg">精选</div>
+	            <div class="swiper-slide swiper_bg">零食</div>
+	            <div class="swiper-slide swiper_bg">Slide 3</div>
+	            <div class="swiper-slide swiper_bg">Slide 4</div>
+	            <div class="swiper-slide swiper_bg">Slide 5</div>
+	        </div>
+	    </div>
+		<div class="swiper-container panel section_bg">
+			<section class="swiper-wrapper" style="background:#fff;">
+				<div class="swiper-slide" style="width:100%;">
+					<ul class="ul_conter">
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="swiper-slide">
+					<ul class="ul_conter">
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="swiper-slide">
+					<ul class="ul_conter">
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="swiper-slide">
+					<ul class="ul_conter">
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="swiper-slide">
+					<ul class="ul_conter">
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li><a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
+								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
+								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
+								<p><span class="ul_price">￥34</span>				
+								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
+
+							</a>
+						</li>
+					</ul>
+				</div>
+			</section>
+		</div>
+		
+	</div>
+		
+		<!--更换商品分类内容结束-->
     </section>
     <section class="guess_u_like">
-        <header class="title clear-fix">
+        <header class="title clear-fix" id="like_top" >
             <h2 class="fl">猜你喜欢</h2>
             <span class="fr"></span>
         </header>
