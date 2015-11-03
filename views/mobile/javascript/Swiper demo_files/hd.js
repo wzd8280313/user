@@ -19,24 +19,41 @@ $(document).ready(function(){
 	    	swiperHead.slideTo(swiperPanel.activeIndex);
 	    	$(".swiper-container.head").find(".swiper-slide").eq(swiperPanel.activeIndex).addClass("active").siblings().removeClass("active");
 	    });
+		
+		
+//头部悬浮
+
+
+
 });
-//头部滑动
+$(function(){
+	var head_top = ''; 
+	var like_tops='';
+	$(window).scroll(function(){  
+		var scroH = $(this).scrollTop();
+		if(head_top == ''){
+			head_top = $('#box1').offset().top-40;
+			
+		}
+		if(like_tops == ''){
+			like_tops = $('#like_top').offset().top-140;
+		}
+		console.log($('#box1').offset().top);
+		if(scroH>=head_top){  
+ 
+			$(".head").css({"position":"fixed","top":"60px"});
+			if(like_tops<=scroH){
+			$(".head").css({"position":"static"});  
+		}
+	 
+		}else if(scroH<head_top){  
+	 
+		$(".head").css({"position":"static"});  
+	 
+		}  
+	
+	})
+})
 
-alert(document.body.clientWidth);
-alert(document.body.clientHeight);
-alert(document.body.offsetWidth);
-alert(document.body.offsetHeight);
-
-alert(document.body.scrollWidth);
-alert(document.body.scrollHeight);
-
-alert(document.body.scrollTop);
-alert(document.body.scrollLeft);
-alert(window.screenTop);
-alert(window.screenLeft);
-alert(window.screen.height);
-alert(window.screen.width);
-alert(window.screen.availHeight);
-alert(window.screen.availWidth);
 	
 

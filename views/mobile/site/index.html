@@ -172,7 +172,7 @@
 	<section class="activity_floor">
 		{echo:Ad::show("手机端首页")}
 	</section>
-    <section class="activity_floor">
+     <!--<section class="activity_floor">
 		<header class="title clear-fix">
             <h2 class="fl">加盟商户</h2>
         </header>
@@ -196,10 +196,10 @@
 
         </div>
 		
-		<header class="title clear-fix">
+		 <header class="title clear-fix">
             <h2 class="fl">商品分类</h2>
         </header>
-       <!-- <div class="second_floor">
+      <div class="second_floor">
             <ul class="clear-fix">
 
             	{foreach:items=Api::run('getCategoryListTop',6)}
@@ -213,7 +213,6 @@
             </ul>
         </div>-->
 		<!--更换商品分类内容-->
-			</body>
 
     <!-- Swiper JS -->
 	<link rel="stylesheet" href="{skin:css/Swiper demo_files/swiper.min.css}">
@@ -223,9 +222,10 @@
     <script src="{theme:javascript/Swiper demo_files/swiper.min.js}"></script>
 	 <script src="{theme:javascript/Swiper demo_files/hd.js}"></script>
     <!-- Initialize Swiper -->
-    
+
 		<!-- Swiper -->
-	    <div class="swiper-container swiper-container-horizontal head" id="box1">
+	<div>
+	    <div class="swiper-container swiper-container-horizontal head" id="box1" >
 	        <div class="swiper-wrapper">
 	            <div class="swiper-slide active swiper_bg">精选</div>
 	            <div class="swiper-slide swiper_bg">零食</div>
@@ -499,10 +499,12 @@
 			</section>
 		</div>
 		
+	</div>
+		
 		<!--更换商品分类内容结束-->
     </section>
     <section class="guess_u_like">
-        <header class="title clear-fix">
+        <header class="title clear-fix" id="like_top" >
             <h2 class="fl">猜你喜欢</h2>
             <span class="fr"></span>
         </header>

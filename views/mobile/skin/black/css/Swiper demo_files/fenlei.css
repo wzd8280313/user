@@ -42,6 +42,8 @@
 	line-height: 40px;
 	border-bottom: 1px solid #c0c0c0;
 	background: #c0c0c0;
+	position: relative;
+	z-index: 10000;
 }
 .swiper-slide .ul_conter{
 	list-style-type: none;
