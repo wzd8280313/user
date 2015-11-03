@@ -29,6 +29,10 @@
 	var goods_id = {$id};
 	var show_cart_url = '{url:/simple/showCart}';
 	var spec_show_obj = new Spec_show();
+	
+	//获取地区
+	var area_url = '{url:/block/area_child}';
+	var delivery_fee_url = '{url:/block/order_delivery}';
 </script>
 
 <div class="position"><span>您当前的位置：</span><a href="{url:}">首页</a>{foreach:items=$breadGuide} » <a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a>{/foreach} » {$name}</div>
@@ -89,15 +93,13 @@
 								<ul id="list1">
 									<li id="summary-stock">
 										<div class="dd">
-											<div id="store-selector">
-												<div class="text"><div></div><b></b></div>                   
-												<div onclick="$('#store-selector').removeClass('hover')" class="close"></div>
+											<div id="store-selector" >
 											</div><!--store-selector end-->
 											<div id="store-prompt"><strong></strong></div><!--store-prompt end--->
 										</div>
 									</li>
 								</ul>
-<script type='text/javascript' src='{url:/lib/web/js/source/jq_location/location.js}' ></script>
+
 								<!-- 配送地址结束 -->
 
 
@@ -380,7 +382,7 @@
 
 	{include:layouts/goods_det.html}
 </div>
-
+<script type='text/javascript' src='{theme:javascript/area_show.js}'></script>
 <script type="text/javascript">
 
 $(function(){

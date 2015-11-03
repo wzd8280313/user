@@ -160,7 +160,7 @@ class Block extends IController
 			$deliveryList = $delivery->query('is_delete = 0 and status = 1');
 			foreach($deliveryList as $key => $item)
 			{
-				$data[$item['id']] = Delivery::getDelivery($province,$item['id'],$goodsId,$productId,$num);
+				$data[$item['id']] = Delivery::getDelivery($area,$item['id'],$goodsId,$productId,$num);
 			}
 		}
     	echo JSON::encode($data);
