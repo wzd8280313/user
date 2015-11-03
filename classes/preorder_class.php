@@ -128,11 +128,7 @@ class Preorder_Class extends Order_Class{
 		$pay_type = $orderDB->getField('id='.$order_id,'pay_type');
 		if($pay_type==0 || $pay_type==1){//货到付款，余额支付退款到余额
 			$obj = new IModel('member');
-			$memberObj = $obj->getObj('user_id = '.$user_id,'balance');
-			$balance = $memberObj['balance'] + $amount;
-			$setData['balance'] = $balance;
-			$obj->setData($setData);
-			$isSuccess = $obj->update('user_id = '.$user_id);
+			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
 			if($isSuccess)
 			{
 				//用户余额进行的操作记入account_log表
@@ -167,8 +163,6 @@ class Preorder_Class extends Order_Class{
 			
 			
 		}
-		
-		
 		//更新退款表
 		$updateData = array(
 				'pay_status'   => 2,
@@ -647,6 +641,7 @@ class Preorder_Class extends Order_Class{
 	/**
 	 * 计算预售订单是否可支付
 	 * @array $orderRow 订单信息
+	 * @return 返回支付信息
 	 */
 	public static function get_pay_money($orderRow){
 		$siteConfigObj = new Config('site_config');
@@ -662,15 +657,44 @@ class Preorder_Class extends Order_Class{
 				if(time()>strtotime($orderRow['wei_end_time']))
 					IError::show(403,'预售订单超期未支付尾款，订单已作废');
 			}else{
-				if(!preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days']))
+				if(!preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days'])){
 					IError::show(403,'预售订单超期未支付尾款，订单已作废');
+				}
+					
 			}
-			$payment['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
-			$payment['M_OrderNO']   = 'wei'.$orderRow['order_no'];
+			
+			$return['M_Amount']    = $orderRow['order_amount'] - $orderRow['pre_amount'];
+			$return['M_OrderNO']   = 'wei'.$orderRow['order_no'];
 		}
 		else{
 			IError::show(403,'订单已过期，不能进行支付');
 		}
 		return $return;
 	}
+	/**
+	 * 判断预售订单是否可支付
+	 * @return 
+	 */
+	public static function can_pay($orderRow){
+		$siteConfigObj = new Config('site_config');
+		$cancel_days = $siteConfigObj->preorder_cancel_days;
+		$return = array();
+		$presell_db = new IModel('presell');
+		$presell_row = $presell_db->getObj('id='.$orderRow['active_id'],'wei_type,wei_start_time,wei_end_time,wei_days');
+		$orderRow = array_merge($presell_row,$orderRow);
+		if($orderRow['status']==1 ){
+			return true;
+		}elseif($orderRow['status']==4 ){
+			if($orderRow['wei_type']==1){
+				if(time()>strtotime($orderRow['wei_start_time']) && time()<strtotime($orderRow['wei_end_time']))
+					return true;
+			}else{
+				if(preorder_class::is_overdue($orderRow['pay_time'],$orderRow['wei_days']))
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }

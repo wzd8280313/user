@@ -227,7 +227,8 @@ width: 100%;
 z-index: 70;
 }
 .search .logo {
-width: 330px;
+
+width: 400px;
 height: 75px;
 margin-top: 16px;
 position: absolute;
@@ -251,10 +252,10 @@ background: url(../images/hd-and-btm.png) 0 0 no-repeat;
 _background: url(../images/hd-and-btm-8.png) 0 0 no-repeat;
 }
 
-.service li{
+/*.service li{
 background: url(../images/npbg_0.png) 0 0 no-repeat;
 _background: url(../images/npbg_0.png) 0 0 no-repeat;
-}
+}*/
 .search .cart .cart-count {
 position: absolute;
 top: -6px;
@@ -420,8 +421,12 @@ font-size: 14px;
 font-family: 'Lucida Grande', 'Microsoft YaHei';
 font-weight: 700;
 }
-.t18{
-font-size:18px;
+.t18{font-size:18px;}
+.t36{
+font-size:30px;
+margin:15px 0 0 10px;
+display:inline-block;
+font-weight:bold;
 }
 .nav .category .cat-title .t14 b {
 position: absolute;
@@ -851,7 +856,7 @@ cursor: pointer;
   float: left;
 }
 .tabs .tab-cnt .news-list{
-margin:0 5px;
+margin:0 5px;text-align:left;
 }
 .clear{clear:both;}
 

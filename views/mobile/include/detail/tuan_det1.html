@@ -37,10 +37,11 @@
         </div>
     </div>
 				<div style="width:99%;margin:0 auto;">
-				<span class="name"><a href="" >{$name}{if:$short_desc}（{$short_desc}）{/if}</a></span>
+				<span class="name" style=" display:block; width:75%; margin-left:8px; float:left; line-height:20px;"><a href="" >{$name}{if:$short_desc}（{$short_desc}）{/if}</a></span>
 							
 				
-				<span onClick="toshare()" style="border:solid 1px #ddd;display:block;width:70px;text-align:center;float:right;margin-right:10px;margin-top:5px;cursor:pointer;height:30px;line-height:30px;">分享到</span>
+				<span onClick="toshare()" style="display:block;width:19%;text-align:center;float:right;margin-right:10px;cursor:pointer;height:60px;">
+                <img style="height:40px; width:40px;" src="{skin:images/detail_img/share.png}" width="459" height="459" alt="tupian" /><br />分享</span>
 
 				<div class="am-share">
 				  <h3 class="am-share-title">分享到</h3>
@@ -53,12 +54,12 @@
 				  <div class="am-share-footer"><button class="share_btn">取消</button></div>	
 
 				</div>
-			</div>
+	</div>
 	</section>
 	<!-- item_pic begin -->
 
 	<!-- infor beigin -->
-	<section class="infor book_infor">
+	<section class="infor book_infor"  style=" clear:both;">
 			{if:isset($seller)}
 				<p class="shop"><span class="bg_shop">商家</span>{$seller['true_name']}</p>
 			{/if}
@@ -173,7 +174,7 @@
 <div class="history">
 	<h3 class="tit">商品评价</h3>
 	<!--介绍内容-->
-	<div id="commentBox">
+	<div id="commentBox" style="margin-left:10px;">
 		<a  href="javascript:void(0)" onclick="show_comments_list($('[name=pingjia]'))">查看更多</a>
 	</div>
 

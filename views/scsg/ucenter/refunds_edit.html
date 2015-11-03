@@ -5,7 +5,7 @@
     </div>
 
 	<div class="box">
-		<form action="{url:/ucenter/refunds_update}" method="post" callback="checkForm();">
+		<form action="{url:/ucenter/refunds_update}" method="post" callback="checkForm();" enctype='multipart/form-data'>
 			<input type="hidden" name="order_id" value="{$this->orderRow['id']}" />
 			<table class="border_table" width="100%" cellpadding="0" cellspacing="0">
 				<colgroup>
@@ -34,7 +34,7 @@
 						{if:$good['is_send'] != 2}
 						<p>
 							<label>
-								<input type="radio" name="order_goods_id" value="{$good['id']}" />
+								<input type="radio" name="order_goods_id" value="{$good['id']}" is_send='{$good["is_send"]}'/>
 								<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</a>
 							</label>
 						</p>
@@ -42,7 +42,15 @@
 						{/foreach}
 					</td>
 				</tr>
-
+				 <tr name='delivery'>
+		            <th>快递公司：</th><td><input name="delivery_com" type="text"   class="normal" /><label >* </label></td>
+		        </tr>
+		        <tr name='delivery'>
+		            <th>快递单号：</th><td><input name='delivery_code'  class="normal"/><label>*</label></td>
+		        </tr>
+				<tr name='delivery'>
+		            <th>上传图片：</th><td><input type='file' name='delivery_img' /></td>
+		        </tr>
 				<tr>
 					<th>退换货理由：</th>
 					<td>
@@ -89,4 +97,21 @@ function checkForm()
 	}
 	return true;
 }
+$(function(){
+	$('input[type=radio][name=order_goods_id]').on('click',function(){
+		var is_send = $(this).attr('is_send');
+		if(is_send==0){
+			$('input[type=radio][name=type][value=0]').attr('checked',true);
+			$('input[type=radio][name=type][value=1]').attr('disabled',true);
+			$('tr[name=delivery]').hide();
+		}
+		else{
+			$('tr[name=delivery]').show();
+			$('input[type=radio][name=type][value=1]').attr('disabled',false);
+		}
+	})
+})
+$(function(){
+	$('input[type=radio][name=order_goods_id]').eq(0).trigger('click');
+})
 </script>

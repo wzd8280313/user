@@ -19,12 +19,11 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,g.sell_price as price,datediff(p.yu_end_time,now()) as days';
-		$presell_db->limit = 10;
+		$presell_db->fields = 'p.*,UNIX_TIMESTAMP(p.yu_end_time) as end_timestamp,g.sell_price as price,g.img';
+		$presell_db->limit = 6;
 		$presell_db->order = 'p.id DESC';
 		$this->pre_list = $presell_db->find();
 		$this->count = count($this->pre_list);
-		
 		$this->redirect('presell_list');
 		
 	}
@@ -36,7 +35,7 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,g.sell_price as price,datediff(p.yu_end_time,now()) as days';
+		$presell_db->fields = 'p.*,UNIX_TIMESTAMP(p.yu_end_time) as end_timestamp,g.sell_price as price';
 		$presell_db->order = 'p.id DESC';
 		$presell_db->limit = $limit;
 		$presellData = $presell_db->find();
@@ -55,7 +54,7 @@ class Pregoods extends IController
 		$this->logoUrl = 'images/yulogo.png';
 		$id = IFilter::act(IReq::get('id'),'int');
 		$presell = new IModel('presell');
-		if(!$id || !$preData = $presell->getObj('goods_id='.$id))
+		if(!$id || !$preData = $presell->getObj('goods_id='.$id.' and  TIMESTAMPDIFF(second,yu_end_time,NOW()) <0 ','*,unix_timestamp(yu_end_time) as end_time'))
 		{
 			IError::show(403,"预售商品不存在");
 			exit;
@@ -172,11 +171,6 @@ class Pregoods extends IController
 			}
 		}
 		
-		//计算预售信息
-		$lastDay = strtotime($preData['yu_end_time']) - time() ;
-		if($lastDay>0){
-			$preData['lastDay'] = ceil($lastDay/(24*3600));
-		}
 		
 		//获取尾款支付时间
 		if($preData['wei_type']==1){
@@ -390,14 +384,13 @@ class Pregoods extends IController
 		$ticket_id     = IFilter::act(IReq::get('ticket_id'),'int');//预售禁止使用代金券则为空
 		$taxes         = IFilter::act(IReq::get('taxes'),'int');
 		$insured       = IFilter::act(IReq::get('insured'));
-		$tax_title     = IFilter::act(IReq::get('tax_title'),'text');
 		$gid           = IFilter::act(IReq::get('direct_gid'),'int');
 		$num           = IFilter::act(IReq::get('direct_num'),'int');
 		$type          = IFilter::act(IReq::get('direct_type'));//商品或者货品
 		$active_id     = IFilter::act(IReq::get('direct_active_id'),'int');
 		$takeself      = IFilter::act(IReq::get('takeself'),'int');
 		$order_no      = Order_Class::createOrderNum();
-		
+		$invoice       = isset($_POST['taxes']) ? 1 : 0;
 		$order_type    = 4;//预售订单
 		$dataArray     = array();
 		$prom          = 'presell';
@@ -528,8 +521,7 @@ class Pregoods extends IController
 		'pay_fee'             => $orderData['paymentPrice'],
 	
 		//税金
-		'invoice'             => $taxes ? 1 : 0,
-		'invoice_title'       => $tax_title,
+		'invoice'             => $invoice,
 		'taxes'               => $orderData['taxPrice'],
 	
 		//优惠价格（包括闪购、会员价差价，红包，促销活动减价）
@@ -620,7 +612,29 @@ class Pregoods extends IController
 				}
 			}
 		}
-	
+		//填写开发票信息
+		if($invoice){
+			$db_fapiao = new IModel('order_fapiao');
+			$fapiao_data = array(
+					'order_id'=> $this->order_id,
+					'user_id' => $user_id,
+					'type'    => IFilter::act(IReq::get('type'),'int'),
+					'create_time'=> ITime::getDateTime(),
+			);
+			if($fapiao_data['type']==0){
+				$fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
+					
+			}else{
+				$fapiao_data['com'] = IFilter::act(IReq::get('tax_com'));
+				$fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
+				$fapiao_data['address'] = IFilter::act(IReq::get('tax_address'));
+				$fapiao_data['telphone'] = IFilter::act(IReq::get('tax_telphone'));
+				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
+				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
+			}
+			$db_fapiao->setData($fapiao_data);
+			$db_fapiao->add();
+		}
 		
 	
 		//数据渲染
@@ -629,7 +643,6 @@ class Pregoods extends IController
 		$this->payment     = $paymentName;
 		$this->paymentType = $paymentType;
 		$this->delivery    = $deliveryRow['name'];
-		$this->tax_title   = $tax_title;
 		$this->deliveryType= $deliveryRow['type'];
 		$this->pre_sum     = $goodsResult['pre_sum'];
 	

@@ -108,8 +108,8 @@ class Menu
         		'/order/order_delivery_list'    => '发货单',
         		'/order/refundment_list'        => '退货申请',
         		'/order/refundment_chg_list'    => '换货申请',
-        		'/order/fapiao_list'            => '已补开发票',
-        		'/order/fapiao'                 => '补开发票申请'
+        		'/order/fapiao_list'            => '已开发票',
+        		'/order/fapiao'                 => '发票申请'
         	),
         	'发货地址'=>array(
         		'/order/ship_info_list'         => '发货地址管理',

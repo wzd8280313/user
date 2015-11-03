@@ -9,6 +9,10 @@ class Presell extends IController
 		IInterceptor::reg('CheckRights@onCreateAction');
 	}
 	
+	public function presell_list(){
+		$this->redirect('presell_list');
+	}
+	
 	public function presell_edit(){
 		$id = IFilter::act(IReq::get('id'),'int');
 		if($id){
@@ -122,6 +126,15 @@ class Presell extends IController
 				$where = 'id = '.$id;
 			}
 			$presellObj->del($where);
+			$goods_ids = $presellObj->query($where,'goods_id');
+			$ids = '';
+			foreach($goods_ids as $key=>$val){
+				$ids .= $goods_ids[$key]['goods_id'].',';
+			}
+			$ids = substr($ids,0,-1);
+			$goodsObj = new IModel('goods');
+			$goodsObj->setData(array('is_del'=>0));
+			$goodsObj->update('id in ('.$ids.')');
 			$this->redirect('presell_list');
 		}
 		else

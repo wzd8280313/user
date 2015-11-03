@@ -1,4 +1,4 @@
-{set:$orderStatus = Order_class::getOrderStatus(array('status' => $status,'pay_type' => $pay_type,'distribution_status' => $distribution_status))}
+{set:$orderStatus = Order_class::getOrderStatus(array('status' => $status,'pay_status'=> $pay_status,'pay_type' => $pay_type,'distribution_status' => $distribution_status))}
 {set:$id=IFilter::act(IReq::get('id'),'int');}
 {set:$cancle = Order_Class::is_cancle($id);}
 
@@ -179,9 +179,7 @@
 				<tr>
 					<th>是否开票:</th><td>{if:$invoice==0}否{else:}是{/if}</td>
 				</tr>
-				<tr>
-					<th>发票抬头:</th><td>{$invoice_title}</td>
-				</tr>
+				
 				<tr>
 					<th>可得积分:</th><td>{$point}</td>
 				</tr>
@@ -214,6 +212,7 @@
 		</table>
 
 		{set:$orderInstance = new Order_Class();$orderRow = $orderInstance->getOrderShow($id)}
+		
 		<table style="width:300px;margin-right:20px;" class="border_table f_l">
 			<col width="80px" />
 			<col />
@@ -238,6 +237,45 @@
 				</tr>
 			</tbody>
 		</table>
+		{if:$invoice==1}
+					{set:$fapiao=new IModel('order_fapiao');$fapiao_data=$fapiao->getObj('order_id='.$id);}
+		
+		<table style="width:300px;margin-right:20px;" class="border_table f_l">
+			<col width="80px" />
+			<col />
+			<thead>
+				<tr><th colspan="2">发票信息</th></tr>
+			</thead>
+			<tbody>
+				{if:$fapiao_data }
+						{if:$fapiao_data['type']==1}
+							<tr>
+								<th>单位名称:</th><td>{$fapiao_data['com']}</td>
+							</tr>
+							<tr>
+								<th>纳税人识别号:</th><td>{$fapiao_data['tax_no']}</td>
+							</tr>
+							<tr>
+								<th>注册地址:</th><td>{$fapiao_data['address']}</td>
+							</tr>
+							<tr>
+								<th>注册电话:</th><td>{$fapiao_data['telphone']}</td>
+							</tr>
+							<tr>
+								<th>开户银行:</th><td>{$fapiao_data['bank']}</td>
+							</tr>
+							<tr>
+								<th>银行账户:</th><td>{$fapiao_data['account']}</td>
+							</tr>
+						{else:}
+							<tr>
+								<th>发票抬头:</th><td>{$fapiao_data['taitou']}</td>
+							</tr>
+						{/if}
+					{/if}
+			</tbody>
+		</table>
+		{/if}
 	</div>
 </div>
 
@@ -503,13 +541,13 @@ function initButton()
 	{/if}
 
 	//发货
-	{if:in_array($orderStatus,array(1,4,8,9,12))}
+	{if:in_array($orderStatus,array(1,4,8,9,12,20))}
 	$('#to_deliver').removeAttr('disabled');
 	$('#to_deliver').removeClass('inactive');
 	{/if}
 
 	//退款
-	{if:in_array($orderStatus,array(4,6,9,10,12,13))}
+	{if:in_array($orderStatus,array(4,6,9,10,12,13,15,16,19,20))}
 	$('#to_refundment').removeAttr('disabled');
 	$('#to_refundment').removeClass('inactive');
 	{/if}

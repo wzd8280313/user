@@ -47,7 +47,7 @@
 		<col />
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=refundment_doc as c join=left join user as u on u.id eq c.user_id fields=c.*,u.username order=c.id DESC where=c.if_del eq 0 and c.type eq 0 and c.pay_status in(1,2,5,6) $this->where page=$page}
+			{query: name=refundment_doc as c join=left join user as u on u.id eq c.user_id fields=c.*,u.username order=c.id DESC where=c.if_del eq 0 and c.type eq 0 and c.pay_status in(1,2,5,6,7) $this->where page=$page}
 			<tr>
 				<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 				<td><a href="{url:/order/refundment_doc_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>

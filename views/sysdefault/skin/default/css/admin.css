@@ -67,7 +67,7 @@ img.operator{width:12px;height:12px;margin:0 6px;cursor:pointer; vertical-align:
 /* arrows style end */
 .container{width:100%;margin:0 auto}
 /* header style start */
-#header{position:relative;height:67px;border-top:4px solid #ec6b10;border-bottom:1px solid #ff1e02;background:#fff url(../images/admin/header_bg.gif) no-repeat center 0}
+#header{position:relative;height:80px;border-top:4px solid #ec6b10;border-bottom:1px solid #ff1e02;background:#fff url(../images/admin/header_bg.gif) no-repeat center 0}
 	.logo{display:inline;float:left;width:303px;height:43px;margin:12px 0 0 25px}
 	#menu{position:absolute;left:355px;bottom:0;_bottom:-1px;z-index:22;background:url(../images/admin/admin_bg.gif) no-repeat right -387px;_background:none}
 		#menu ul{height:28px;padding:3px 2px 0 2px;background:none;background:url(../images/admin/admin_bg.gif) no-repeat 0 -356px;overflow:hidden}

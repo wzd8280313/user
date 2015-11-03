@@ -7,8 +7,6 @@
 	seo::set($seo_data);
 	
 }
-
-
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
 {foreach:items=$promotion}
@@ -21,6 +19,20 @@
 <link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />
 <script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
 <script type='text/javascript' src="{theme:javascript/piczoom.js}"></script>
+<script type='text/javascript' src="{theme:javascript/detail.js}" ></script>
+
+<script type='text/javascript' >
+	var product = {$product};
+	var buy_now_url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
+	var join_cart_url = '{url:/simple/joinCart}';
+	var goods_id = {$goods_id};
+	var show_cart_url = '{url:/simple/showCart}';
+	var product_id = {$product_id};
+	var max_num = '{$this->tuanData["limit_max_count"]}';
+	var min_num = '{$this->tuanData["limit_min_count"]}';
+</script>
+<script type='text/javascript' src="{theme:javascript/tuan_detail.js}" ></script>
+
 <div class="position"><span>您当前的位置：</span><a href="{url:}">首页</a>{foreach:items=$breadGuide} » <a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a>{/foreach} » {$name}</div>
 <div class="wrapper clearfix">
 	
@@ -147,9 +159,9 @@
 										{set:$specVal=explode(',',trim($item['value'],','))}
 										{foreach:items=$specVal item=$spec_value}
 										{if:$item['type'] == 1}
-										<div class="item w_27"><a href="javascript:void(0);" onclick="sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' >{$spec_value}<span></span></a></div>
+										<div class="item w_27"><a href="javascript:void(0);" onclick="tuan_spec_show.sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' >{$spec_value}<span></span></a></div>
 										{else:}
-										<div class="item"><a href="javascript:void(0);" onclick="sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' ><img src="{webroot:$spec_value}" width='30px' height='30px' /><span></span></a></div>
+										<div class="item"><a href="javascript:void(0);" onclick="tuan_spec_show.sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' ><img src="{webroot:$spec_value}" width='30px' height='30px' /><span></span></a></div>
 										{/if}
 										{/foreach}
 									</dd>
@@ -160,10 +172,10 @@
 								<dl class="tb-amount tm-clear">
 									<dt class="tb-metatit">数量</dt>
 									<dd id="J_Amount">
-										<input class="gray_t f_l" type="text" id="buyNums" onblur="checkBuyNums();" value="1" maxlength="5" />
+										<input class="gray_t f_l" type="text" id="buyNums" onblur="tuan_spec_show.checkBuyNums();" value="1" maxlength="5" />
 											<div class="resize">
-												<a class="add" href="javascript:modified(1);"></a>
-												<a class="reduce" href="javascript:modified(-1);"></a>
+												<a class="add" href="javascript:tuan_spec_show.modified(1);"></a>
+												<a class="reduce" href="javascript:tuan_spec_show.modified(-1);"></a>
 											</div>
 											<span class="mui-amount-unit">&nbsp;件</span>
 										<em id="J_EmStock" class="tb-hidden" style="display: inline;">库存量 <label id="data_storeNums">{$store_nums}</label>件</em>
@@ -186,7 +198,7 @@
 				该团购已结束，不能购买，您可以看看其它商品！
 			{else:}
 
-			<input class="submit_buy" type="button" id="buyNowButton" onclick="buy_now();" value="立即购买" />
+			<input class="submit_buy" type="button" id="buyNowButton" onclick="tuan_spec_show.buy_now();" value="立即购买" />
 
 			{/if}
 		</div>
@@ -196,15 +208,15 @@
 				<dt class="tb-metatit">服务承诺</dt>
 				<dd class="tm-laysku-dd">
 				<ul class="tb-serPromise">
+					{set:$config = new Config('site_config');}
+					{set:$server_product = unserialize(IFilter::stripSlash($config->product_page))}
+					{if:!empty($server_product)}
+					{foreach:items=$server_product}
 					<li>
-						<a target="_blank" title="按时发货" href=""> 按时发货 </a>
+						<a target="_blank"  href="{$item['link']}"> {$item['server_name']} </a>
 					</li>
-					<li>
-						<a target="_blank" title="七天无理由退还" href=""> 七天无理由退还 </a>
-					</li>
-					<li>
-						<a target="_blank" title="品质保障" href=""> 品质保障 </a>
-					</li>
+					{/foreach}
+					{/if}
 				</ul>
 			</dl>
 		</div>
@@ -342,192 +354,11 @@
 		<!--热卖商品-->
 	</div>
 
-	<!--滑动面tab标签-->
-	<div class="main f_r" style="overflow:hidden; width:950px;">
-
-		<div class="uc_title" name="showButton">
-			<label class="current"><span>商品详情</span></label>
-			<label id='point'><span>顾客评价({$comments})</span></label>
-			<label id='buyHistory'><span>购买记录({$buy_num})</span></label>
-			<label><span>购买前咨询({$refer})</span></label>
-		</div>
-
-		<div name="showBox">
-			<!-- 商品详情 start -->
-			<div>
-				<ul class="saleinfos m_10 clearfix">
-					<li>商品名称：{$name}</li>
-
-					{if:isset($brand) && $brand}
-					<li>品牌：{$brand}</li>
-					{/if}
-					
-					{if:isset($weight) && $weight}
-					<li>商品毛重：<label id="data_weight">{$weight}</label></li>
-					{/if}
-					
-					{if:isset($unit) && $unit}
-					<li>单位：{$unit}</li>
-					{/if}
-
-					{if:isset($up_time) && $up_time}
-					<li>上架时间：{$up_time}</li>
-					{/if}
-					{if:($attribute)}
-					{foreach:items=$attribute}
-					<li>{$item['name']}：{$item['attribute_value']}</li>
-					{/foreach}
-					{/if}
-					
-				</ul>
-				{if:isset($content) && $content}
-				<div class="salebox">
-					<strong class="saletitle block">产品描述：</strong>
-					<p class="saledesc">{$content}</p>
-				</div>
-				{/if}
-			</div>
-			<!-- 商品详情 end -->
-
-			<!-- 顾客评论 start -->
-			<div class="hidden comment_list box">
-				<div class="title3">
-					<span class="f_r f12 light_gray normal">
-						只有购买过该商品的用户才能进行评价
-						{if:isset($this->user['user_id']) && $user_id = $this->user['user_id']}
-						{foreach:items=Api::run('getCommentByGoodsid',array('#id#',$id),array('#user_id#',$user_id),1) }
-						<a class="comm_btn" href="{url:/site/comments/id/$item[id]}">我要评论</a>
-						{/foreach}
-						{/if}
-					</span>
-					<img src="{skin:images/front/comm.gif}" width="16px" height="16px" />商品评论<span class="f12 normal">（已有<b class="red2">{$comments}</b>条）</span>
-				</div>
-
-				<div id='commentBox'></div>
-
-				<!--评论JS模板-->
-				<script type='text/html' id='commentRowTemplate'>
-				<div class="item">
-					<div class="user">
-						<div class="ico">
-							<a href="javascript:void(0)">
-								<img src="{webroot:<%=head_ico%>}" width="70px" height="70px" onerror="this.src='{skin:images/front/user_ico.gif}'" />
-							</a>
-						</div>
-						<span class="blue"><%=username%></span>
-					</div>
-					<dl class="desc">
-						<%var widthPoint = 14 * point;%>
-						<p class="clearfix">
-							<b>评分：</b>
-							<span class="grade"><i style="width:<%=widthPoint%>px"></i></span>
-							<span class="light_gray"><%=comment_time%></span><label></label>
-						</p>
-						<hr />
-						<p><b>评价：</b><span class="gray"><%=contents%></span></p>
-						<%if(recontents){%>
-						<p><b>回复：</b><span class="red"><%=recontents%></span></p>
-						<%}%>
-					</dl>
-					<div class="corner b"></div>
-				</div>
-				<hr />
-				</script>
-			</div>
-			<!-- 顾客评论 end -->
-
-			<!-- 购买记录 start -->
-			<div class="hidden box" >
-				<div class="title3" >
-					<img src="{skin:images/front/cart.gif}" width="16" height="16" alt="" />
-					购买记录<span class="f12 normal">（已有<b class="red2">{$buy_num}</b>购买）</span>
-				</div>
-
-				<table width="100%" class="list_table m_10 mt_10">
-					<col width="150" />
-					<col width="120" />
-					<col width="120" />
-					<col width="150" />
-					<col />
-					<thead class="thead">
-						<tr>
-							<th>购买人</th>
-							<th>出价</th>
-							<th>数量</th>
-							<th>购买时间</th>
-							<th>状态</th>
-						</tr>
-					</thead>
-				</table>
-
-				<table width="100%" class="list_table m_10">
-					<col width="150" />
-					<col width="120" />
-					<col width="120" />
-					<col width="150" />
-					<col />
-					<tbody class="dashed" id="historyBox"></tbody>
-
-					<!--购买历史js模板-->
-					<script type='text/html' id='historyRowTemplate'>
-					<tr>
-						<td><%=username?username:'游客'%></td>
-						<td><%=goods_price%></td>
-						<td class="bold orange"><%=goods_nums%></td>
-						<td class="light_gray"><%=completion_time%></td>
-						<td class="bold blue">成交</td>
-					</tr>
-					</script>
-				</table>
-			</div>
-			<!-- 购买记录 end -->
-
-			<!-- 购买前咨询 start -->
-			<div class="hidden comment_list box">
-				<div class="title3">
-					<span class="f_r f12 normal"><a class="comm_btn" href="{url:/site/consult/id/$id}">我要咨询</a></span>
-					<img src="{skin:images/front/cart.gif}" width="16" height="16" />购买前咨询<span class="f12 normal">（共<b class="red2">{$refer}</b>记录）</span>
-				</div>
-
-				<div id='referBox'></div>
-
-				<!--购买咨询JS模板-->
-				<script type='text/html' id='referRowTemplate'>
-				<div class="item">
-					<div class="user">
-						<div class="ico"><img src="{webroot:<%=head_ico%>}" width="70px" height="70px" onerror="this.src='{skin:images/front/user_ico.gif}'" /></div>
-						<span class="blue"><%=username%></span>
-						<p class="gray"><%=rtime%></p>
-					</div>
-					<dl class="desc gray">
-						<p>
-							<img src="{skin:images/front/ask.gif}" width="16px" height="17px" />
-							<b>咨询内容：</b><span class="f_r"><%=time%></span>
-						</p>
-						<p class="indent"><%=question%></p>
-						<hr />
-						<%if(answer){%>
-						<p class="bg_gray"><img src="{skin:images/front/answer.gif}" width="16px" height="17px" />
-						<b class="orange">{echo:$siteConfig->name}回复：</b><span class="f_r"><%=reply_time%></span></p>
-						<p class="indent bg_gray"><%=answer%></p>
-						<%}%>
-					</dl>
-					<div class="corner b"></div>
-					<div class="corner tl"></div>
-				</div>
-				<hr />
-				</script>
-			</div>
-			<!-- 购买前咨询 end -->
-
-			
-		</div>
-	</div>
+	{include:layouts/goods_det.html}
 </div>
 
 <script type="text/javascript">
-var max_num = '{$this->tuanData["limit_max_count"]}';
-var min_num = '{$this->tuanData["limit_min_count"]}';
+
 $(function(){
 //初始化购买数量
 $('#buyNums').val(min_num);
@@ -606,38 +437,6 @@ $('[name="showButton"]>label').click(function(){
 });
 
 });
-
-//禁止购买
-function closeBuy()
-{
-	if($('#buyNowButton').length > 0)
-	{
-		$('#buyNowButton').attr('disabled','disabled');
-		$('#buyNowButton').addClass('disabled');
-	}
-
-	if($('#joinCarButton').length > 0)
-	{
-		$('#joinCarButton').attr('disabled','disabled');
-		$('#joinCarButton').addClass('disabled');
-	}
-}
-
-//开放购买
-function openBuy()
-{
-	if($('#buyNowButton').length > 0)
-	{
-		$('#buyNowButton').removeAttr('disabled');
-		$('#buyNowButton').removeClass('disabled');
-	}
-
-	if($('#joinCarButton').length > 0)
-	{
-		$('#joinCarButton').removeAttr('disabled');
-		$('#joinCarButton').removeClass('disabled');
-	}
-}
 
 //加载根据地域获取城市
 function getAddress()
@@ -822,189 +621,14 @@ function discuss_ajax(page)
  * 规格的选择
  * @param _self 规格本身
  */
-function sele_spec(_self)
-{
-	var specObj = $.parseJSON($(_self).attr('value'));
 
-	
 
-	//已经为选中状态时
-	if($(_self).attr('class') == 'current')
-	{
-		$(_self).removeClass('current');
-	}
-	else
-	{
-		//清除同行中其余规格选中状态
-		$('#specList'+specObj.id).find('a.current').removeClass('current');
 
-		$(_self).addClass('current');
-	}
-{if:!$product_id}
-	//检查规格是否选择符合标准
-	if(checkSpecSelected())
-	{
-		//整理规格值
-		var specArray = [];
-		$('[name="specCols"]').each(function(){
-			specArray.push($(this).find('a.current').attr('value'));
-		});
-		var specJSON = '['+specArray.join(",")+']';
 
-		//获取货品数据并进行渲染
-		$.getJSON('{url:/site/getProduct}',{"goods_id":"{$id}","specJSON":specJSON,"random":Math.random},function(json){
-			//window.realAlert(JSON.stringify(json));
-		//	window.realAlert(typeof(json.data.group_price));
-			//var priceData = json.data;
-			
-			if(json.flag == 'success')
-			{
-				var priceHtml = template.render('priceTemplate',json.data);
-				$('#price_panel').html(priceHtml);
-				
-			
-				//普通货品数据渲染
-				$('#data_goodsNo').text(json.data.products_no);
-				$('#data_storeNums').text(json.data.store_nums);
-				$('#product_id').val(json.data.id);
 
-				//库存监测
-				checkStoreNums();
-			}
-			else
-			{
-				alert(json.message);
-				closeBuy();
-			}
-		});
-	}
-{/if}
-}
 
-/**
- * 监测库存操作
- */
-function checkStoreNums()
-{
-	var storeNums = parseInt($.trim($('#data_storeNums').text()));
-	if(storeNums > 0)
-	{
-		openBuy();
-	}
-	else
-	{
-		closeBuy();
-	}
-}
 
-/**
- * 检查规格选择是否符合标准
- * @return boolen
- */
-function checkSpecSelected()
-{
-	if($('[name="specCols"]').length === $('[name="specCols"] .current').length)
-	{
-		return true;
-	}
-	return false;
-}
 
-//检查购买数量是否合法
-function checkBuyNums()
-{
-	//购买数量小于0
-	var buyNums = parseInt($.trim($('#buyNums').val()));
-	if(buyNums <= 0)
-	{
-		$('#buyNums').val(1);
-		return;
-	}
-
-	//购买数量大于库存
-	var storeNums = parseInt($.trim($('#data_storeNums').text()));
-	if(buyNums >= storeNums)
-	{
-		$('#buyNums').val(storeNums);
-		return;
-	}
-}
-
-/**
- * 购物车数量的加减
- * @param code 增加或者减少购买的商品数量
- */
-function modified(code)
-{
-	var buyNums = parseInt($.trim($('#buyNums').val()));
-	switch(code)
-	{
-		case 1:
-		{
-			if(buyNums>=max_num){
-				$('#J_StockTips').css('display','inline').text('(购买量不能超过'+max_num+'件)').fadeOut(3000);
-			}
-			if(max_num==0 || buyNums<max_num){
-				buyNums++;
-			}
-			
-		}
-		break;
-
-		case -1:
-		{
-			if(min_num>=buyNums){
-				$('#J_StockTips').css('display','inline').text('(购买量不能少于'+min_num+'件)').fadeOut(3000);
-			}
-			if(min_num<buyNums)
-				buyNums--;
-			
-		}
-		break;
-	}
-
-	$('#buyNums').val(buyNums);
-	checkBuyNums();
-}
-
-//商品加入购物车
-function joinCart()
-{
-	if(!checkSpecSelected())
-	{
-		tips('请先选择商品的规格');
-		return;
-	}
-
-	var buyNums   = parseInt($.trim($('#buyNums').val()));
-	var price     = parseFloat($.trim($('#real_price').text()));
-	var productId = $('#product_id').val();
-	var type      = productId ? 'product' : 'goods';
-	var goods_id  = (type == 'product') ? productId : {$id};
-
-	$.getJSON('{url:/simple/joinCart}',{"goods_id":goods_id,"type":type,"goods_num":buyNums,"random":Math.random},function(content){
-		
-		if(content.isError == false)
-		{
-			//获取购物车信息
-			$.getJSON('{url:/simple/showCart}',{"random":Math.random},function(json)
-			{//window.realAlert(JSON.stringify(json));
-				$('[name="mycart_count"]').text(json.count);
-				$('[name="mycart_sum"]').text(json.sum);
-
-				//展示购物车清单
-				$('#product_myCart').show();
-
-				//暂闭加入购物车按钮
-				$('#joinCarButton').attr('disabled','disabled');
-			});
-		}
-		else
-		{
-			alert(content.message);
-		}
-	});
-}
 
 //添加收藏夹
 function favorite_add(obj)
@@ -1026,62 +650,7 @@ function favorite_add(obj)
 	{/if}
 }
 
-//立即购买按钮
-function buy_now()
-{
-	//对规格的检查
-	if(!checkSpecSelected())
-	{
-		tips('请选择商品的规格');
-		return;
-	}
-
-	//设置必要参数
-	var buyNums  = parseFloat($.trim($('#buyNums').val()));
-	if(buyNums>max_num || buyNums<min_num){
-		tips('商品数量不能超过'+max_num+',不能少于'+min_num);
-		return;
-	}
-	
-	var id = {$goods_id};
-	var type = 'goods';
-
-	if($('#product_id').val()!=0)
-	{
-		id = $('#product_id').val();
-		type = 'product';
-	}
-	var promo_type='groupon';
-	var active_id = $('input[name=active_id]').val();
-	var url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
-	url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
-	
-		url += '/promo/'+promo_type+'/active_id/'+active_id; 
-	
-
-	//页面跳转
-	window.location.href = url;
-}
 </script>
 </div>
-<!--区分规格的闪购价格显示并初始化规格选择-->
-{if:isset($product_spec)}
-	{foreach:items=$product_spec}
-		{set:$product_spec[$key] = JSON::decode($item);}
-		<input type='text' name='product_spec' value='{$product_spec[$key]["value"]}'/>
-	
-	{/foreach}
 
-<script type='text/javascript'>
-$(function(){
-	var spec_input = $('input[name=product_spec]');
-	var spec_len = spec_input.length;
-	var spec = [];
-	for(var i=0;i<spec_len;i++){
-		spec[i] = spec_input.eq(i).val();
-		$('a[value*='+spec[i]+']').trigger('click');
-	}
-})
-</script>
-{/if}
 	

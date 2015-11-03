@@ -114,29 +114,7 @@ class Order_Class
 					$memberObj->update('user_id = '.$user_id);
 				}
 
-				if($memberRow)
-				{
-					//(2)进行促销活动奖励
-			    	$proObj = new ProRule($orderRow['real_amount']);
-			    	$proObj->setUserGroup($memberRow['group_id']);
-			    	$proObj->setAward($user_id);
 
-			    	//(3)增加经验值
-			    	$memberData = array(
-			    		'exp'   => 'exp + '.$orderRow['exp'],
-			    	);
-					$memberObj->setData($memberData);
-					$memberObj->update('user_id = '.$user_id,'exp');
-
-					//(4)增加积分
-					$pointConfig = array(
-						'user_id' => $user_id,
-						'point'   => $orderRow['point'],
-						'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励积分'.$orderRow['point'],
-					);
-					$pointObj = new Point();
-					$pointObj->update($pointConfig);
-				}
 			}
 
 			//插入收款单
@@ -576,7 +554,16 @@ class Order_Class
 		//2,已经付款
 		else if($orderRow['status'] == 2)
 		{
-			if($orderRow['distribution_status'] == 0)
+			if($orderRow['distribution_status'] == 7){
+				return 20;
+			}
+			else if($orderRow['distribution_status'] == 0 && $orderRow['pay_status'] == 3){
+				return 18;
+			}
+			else if($orderRow['distribution_status'] == 0 && $orderRow['pay_status'] == 4){
+				return 19;
+			}
+			elseif($orderRow['distribution_status'] == 0)
 			{
 				return 4;//已付款等待发货
 			}
@@ -588,11 +575,29 @@ class Order_Class
 			{
 				return 8;//部分发货
 			}
+			else if($orderRow['distribution_status'] == 3)
+			{
+				return 15;
+			}
+			else if($orderRow['distribution_status'] == 4 )
+			{
+				return 16;
+			}
+			else if($orderRow['distribution_status'] == 6 )
+			{
+				return 17;
+			}
 		}
 		//3,取消或者作废订单
 		else if($orderRow['status'] == 3 || $orderRow['status'] == 4)
 		{
 			return 5;
+		}
+		else if($orderRow['status'] == 5 && $orderRow['pay_status']==5 && $orderRow['distribution_status']==0){
+			return 21;
+		}
+		else if($orderRow['status'] == 5 && $orderRow['pay_status']==5 && $orderRow['distribution_status']==5){
+			return 21;
 		}
 		//4,完成订单
 		else if($orderRow['status'] == 5)
@@ -641,6 +646,15 @@ class Order_Class
 		{
 			return '已付款';
 		}
+		else if($orderRow['pay_status']==3){
+			return '退款待审批';
+		}
+		else if($orderRow['pay_status']==4){
+			return '等待退款';
+		}
+		else if($orderRow['pay_status']==5){
+			return '退款成功';
+		}
 		return '未知';
 	}
 
@@ -675,21 +689,37 @@ class Order_Class
 	//获取订单配送状态
 	public static function getOrderDistributionStatusText($orderRow)
 	{
-		if($orderRow['status'] == 5)
+		if($orderRow['status'] == 5 && $orderRow['distribution_status']==5)
 		{
+			return '退货已收';
+		}
+		else if($orderRow['distribution_status'] == 0)
+		{
+			return '未发货';
+		}
+		else if($orderRow['status'] == 5){
 			return '已收货';
 		}
 		else if($orderRow['distribution_status'] == 1)
 		{
 			return '已发货';
 		}
-		else if($orderRow['distribution_status'] == 0)
-		{
-			return '未发货';
-		}
+		
 		else if($orderRow['distribution_status'] == 2)
 		{
 			return '部分发货';
+		}
+		else if($orderRow['distribution_status'] == 3){
+			return '退货待审批';
+		}
+		else if($orderRow['distribution_status'] == 4){
+			return '退货已收';
+		}
+		else if($orderRow['distribution_status'] == 6){
+			return '换货待审批';
+		}
+		else if($orderRow['distribution_status'] == 7){
+			return '换货已收';
 		}
 	}
 
@@ -714,7 +744,15 @@ class Order_Class
 			10=> '部分退款',
 			11=> '已发货',
 			12=> '换货处理',
-			13=> '已发货'
+			13=> '已发货',
+			15=> '退款申请等待卖家确认',
+			16=> '审核通过，等待退款',
+			18=> '退款待审批',
+			19=> '审核通过，等待退款',
+			20=> '等待换货',
+			21=> '订单完成',
+			22=> '订单完成'
+				
 		);
 		return isset($result[$statusCode]) ? $result[$statusCode] : '';
 	}
@@ -829,6 +867,11 @@ class Order_Class
 	 	if(count($order_goods_relation) >= $orderGoodsRow['num'])
 	 	{
 	 		$sendStatus = 1;//全部发货
+	 		if($tbOrderRow['distribution_status']==7 && $tbOrderRow['pay_status']==1){
+	 			$refundment_db = new IModel('refundment_doc');
+	 			$refundment_db->setData(array('pay_status'=>2));
+	 			$refundment_db->update('order_id='.$order_id.' and type=1');
+	 		}
 	 	}
 	 	foreach($order_goods_relation as $key => $val)
 	 	{
@@ -1000,7 +1043,7 @@ class Order_Class
 	public static function isRefundmentApply($orderRow)
 	{
 		//已经付款
-		if($orderRow['pay_status'] == 1 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
+		if($orderRow['pay_status'] == 1 && $orderRow['status'] != 5 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
 		{
 			return true;
 		}
@@ -1027,13 +1070,27 @@ class Order_Class
 	public static function refundmentText($pay_status,$type)
 	{	
 		if($type==0){//退货
-			$result = array('0' => '申请退款', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）');
+			$result = array('0' => '退款申请,等待卖家确认中', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）','7'=>'审核通过，等待退款');
+			
 		}else{//换货
-			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'换货失败（超期未退货）');
+			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'换货失败（超期未退货）','7'=>'等待换货');
 		}
 		return isset($result[$pay_status]) ? $result[$pay_status] : '';
 	}
-
+	/**
+	 * 退款类型
+	 * @param $is_send int 发货状态
+	 * @param $type int 0：退货，1：换货
+	 */
+	public static function refundmentType($is_send,$type){
+		if($type==0){
+			if($is_send==0)return '卖家未发货，要求退货';
+			if($is_send==1)return '买家收货，要求退货';
+			
+		}else{
+			return '';
+		}
+	}
 	/**
 	 * @brief 还原重置订单所使用的道具
 	 * @param int $order 订单ID
@@ -1107,7 +1164,33 @@ class Order_Class
 			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$refundId,$order_id,$amount);
 			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败
 		}
-		
+		else if($pay_type==1 || $pay_type==0){//预存款付款和货到付款打入账户余额
+			$obj = new IModel('member');
+			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
+			if($isSuccess)
+			{
+				//用户余额进行的操作记入account_log表
+				$log = new AccountLog();
+				$config = array(
+						'user_id'  => $user_id,
+						'event'    => 'drawback', //withdraw:提现,pay:余额支付,recharge:充值,drawback:退款到余额
+						'num'      => $amount, //整形或者浮点，正为增加，负为减少
+						'order_no' => $order_no // drawback类型的log需要这个值
+				);
+			
+				if($type == 'admin')
+				{
+					$config['admin_id'] = $authorId;
+				}
+				else if($type == 'seller')
+				{
+					$config['seller_id'] = $authorId;
+				}
+			
+				$re = $log->write($config);
+			}else return false;
+			
+		}
 		//更新退款表
 		$updateData = array(
 				'pay_status'   => 2,
@@ -1117,125 +1200,88 @@ class Order_Class
 		$refundDB->update('id = '.$refundId);
 		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
-	
+		
 		$order_goods_id = $orderGoodsRow['id'];
-
+		
 		//未发货的情况下还原商品库存
 		if($orderGoodsRow['is_send'] == 0)
 		{
 			self::updateStore($order_goods_id,'add');
 		}
-
+		
 		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
-		//更新order表状态
-		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and is_send != 2 and id != '.$order_goods_id);
-		$orderStatus = 6;//全部退款
-		if($isSendData)
-		{
-			$orderStatus = 7;//部分退款
-		}
-		$tb_order = new IModel('order');
-		$tb_order->setData(array('status' => $orderStatus));
-		$tb_order->update('id='.$order_id);
+		
 
-		if($orderStatus == 6)
-		{
-			Order_class::resetOrderProp($order_id);
-		}
-
+		
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
 		if($type=='system')$authorName='系统自动';
 		$tb_order_log = new IModel('order_log');
 		$tb_order_log->setData(array(
-			'order_id' => $order_id,
-			'user'     => $authorName,
-			'action'   => '退款',
-			'result'   => '成功',
-			'note'     => '订单【'.$order_no.'】退款，退款金额：￥'.$amount,
-			'addtime'  => ITime::getDateTime(),
+				'order_id' => $order_id,
+				'user'     => $authorName,
+				'action'   => '退款',
+				'result'   => '成功',
+				'note'     => '订单【'.$order_no.'】退款，退款金额：￥'.$amount,
+				'addtime'  => ITime::getDateTime(),
 		));
 		$tb_order_log->add();
-
-		/**
-		 * 进行用户的余额增加操作,积分，经验的减少操作,
-		 * 1,当全部退款时候,减少订单中记录的积分和经验;
-		 * 2,当部分退款时候,查询商品表中积分和经验
-		 */
-		if($orderStatus == 6)
-		{
-			$orderRow = $tb_order->getObj('id = '.$order_id);
-		}
-		else
-		{
-			$goodsDB = new IModel('goods');
-			$goodsRow= $goodsDB->getObj('id = '.$orderGoodsRow['goods_id']);
-			$orderRow = array(
-				'exp'      => $goodsRow['exp'],
-				'point'    => $goodsRow['point'],
-				'order_no' => $order_no,
-			);
-		}
-
-		$obj = new IModel('member');
-		$memberObj = $obj->getObj('user_id = '.$user_id,'balance,exp,point');
-
-		$exp     = $memberObj['exp'] - $orderRow['exp'];
-		$point   = $memberObj['point'] - $orderRow['point'];
-		$setData = array(
-				'exp'  => $exp <= 0 ? 0 : $exp,
-				'point' => $point <=0 ? 0 : $point
-		);
-		if($pay_type==1 || $pay_type==0){//预存款付款和货到付款打入账户余额
-			$balance = $memberObj['balance'] + $amount;
-			$setData['balance'] = $balance;
-			
-		}
-		if($exp==$memberObj['exp'] && $point==$memberObj['point'])
-			$isSuccess=1;//如果积分、经验都不变，则不用更新
-		else{
-			$obj->setData($setData);
-			$isSuccess = $obj->update('user_id = '.$user_id);
-		}
-		
-
-		//积分记录日志
-		$pointConfig = array(
-			'user_id' => $user_id,
-			'point'   => '-'.$orderRow['point'],
-			'log'     => '退款订单号：'.$orderRow['order_no'].'中的商品,减掉积分 -'.$orderRow['point'],
-		);
-		$pointObj = new Point();
-		$pointObj->update($pointConfig);
-		
-		if($isSuccess)
-		{
-			//用户余额进行的操作记入account_log表
-			$log = new AccountLog();
-			$config = array(
-				'user_id'  => $user_id,
-				'event'    => 'drawback', //withdraw:提现,pay:余额支付,recharge:充值,drawback:退款到余额
-				'num'      => $amount, //整形或者浮点，正为增加，负为减少
-				'order_no' => $order_no // drawback类型的log需要这个值
-			);
-
-			if($type == 'admin')
-			{
-				$config['admin_id'] = $authorId;
-			}
-			else if($type == 'seller')
-			{
-				$config['seller_id'] = $authorId;
-			}
-
-			$re = $log->write($config);
-			return true;
-		}
-		return false;
+		return true;
 	}
+	/**
+	 * 积分、经验值、
+	 * @$order_id int 订单id
+	 * @$user_id int 用户id
+	 */
+	public static function sendGift($order_id,$user_id){
+			$order_db = new IModel('order');
+			$memberObj = new IModel('member');
+			$orderRow = $order_db->getObj('id='.$order_id,'point,exp,real_amount,order_no');
+			$memberRow=$memberObj->getObj('user_id='.$user_id);
+			$exp_add = $point_add = 0;
+			$real_amount = $orderRow['real_amount'];
+			
+			$order_goods_query = new IQuery('order_goods as og');
+			$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+			$order_goods_query->where = 'og.order_id='.$order_id.' and og.is_send=2';
+			$order_goods_query->fields = 'og.*,SUM(g.point) as point,SUM(g.exp) as exp ,SUM(og.real_price) as real_amount ';
+			$order_goods_query->group = 'og.order_id';
+			
+			if($order_goods_data = $order_goods_query ->find()){//存在退货
+				
+				$exp_add = $orderRow['exp'] - $order_goods_data[0]['exp'];
+				$exp_add = $exp_add<0 ? 0 :$exp_add;
+				$point_add = $orderRow['point'] - $order_goods_data[0]['point'];
+				$point_add = $point_add<0 ? 0 : $point_add;
+				$real_amount -= $order_goods_data[0]['real_amount'];
+			}else{
+				$exp_add = $orderRow['exp'];
+				$point_add = $orderRow['point'];
+			}
 
+		//(2)进行促销活动奖励
+			$proObj = new ProRule($real_amount);
+			$proObj->setUserGroup($memberRow['group_id']);
+			$proObj->setAward($user_id);
+		
+			//(3)增加经验值
+			$memberData = array(
+					'exp'   => $exp_add,
+			);
+			//$memberObj->setData($memberData);
+			$memberObj->addNum('user_id = '.$user_id,$memberData);
+		
+			//(4)增加积分
+			$pointConfig = array(
+					'user_id' => $user_id,
+					'point'   => $point_add,
+					'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励积分'.$point_add,
+			);
+			$pointObj = new Point();
+			$pointObj->update($pointConfig);
+	}
 	/**
 	 * 退货不退款，订单中加入新商品
 	 * @$refundId int 退货单id
@@ -1290,16 +1336,12 @@ class Order_Class
 			$goods_db ->changeTable('goods');
 			$resData = $goods_db->getObj('id='.$new_goods_id,'name,sell_price,spec_array,goods_no');
 		}
-// 		if($resData['sell_price']>$orderGoodsRow['goods_price'])//如果大于原商品价格
-// 			return false;
-// 		else{
-
 			$new_order_good['goods_price']=$resData['sell_price'];
 			$new_order_good['goods_array'] = self::order_goods_spec($resData);
-			
+		
 			$orderGoodsDB->setData($new_order_good);
 			$new_goods_id = $orderGoodsDB->add();
-			$orderGoodsDB->commit();
+			
 			self::updateStore($new_goods_id,'reduce');
 	//	}
 		//获取原商品货号
@@ -1310,14 +1352,6 @@ class Order_Class
 			$goods_db->changeTable('goods');
 			$old_good_no = $goods_db->getField('id='.$refundsRow['goods_id'],'goods_no');
 		}
-		
-		//更新order表状态
-		$orderStatus=8;//换货
-		$tb_order = new IModel('order');
-		$tb_order->setData(array('status' => $orderStatus));
-		$tb_order->update('id='.$order_id);
-		$tb_order->setData(array('distribution_status' => 2));
-		$tb_order->update('id='.$order_id.' AND distribution_status=1 ');
 		
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
@@ -1381,5 +1415,95 @@ class Order_Class
 			return false;
 		}
 		return true;
+	}
+	/**
+	 * 计算退款金额
+	 * @$goodsOrderRow array order_goods信息
+	 * @$orderRow array  订单信息
+	 * @return float 退款金额
+	 */
+	public static function get_refund_fee($orderRow,$goodsOrderRow){
+		//未发货的时候 退款运费和保价,税金
+		$otherFee = 0;
+		if($goodsOrderRow['delivery_id'] == 0)
+		{
+			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
+		}
+		$amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
+		//退款额计算：将促销优惠和红包优惠平均分配
+		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
+		$amount = $amount - $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
+		return number_format($amount,2);	
+	}
+	/**
+	 * 退款时修改订单状态
+	 * @param $refunds_status int 退款状态
+	 * @param $goodsOrderRow array  订单商品信息	 * 
+	 * @param $type int 售后类型 0 ：退货 1：换货
+	 */
+	public static function order_status_refunds($refunds_status,$goodsOrderRow,$type=0){
+		$order_db = new IModel('order');
+		$setData = array();
+		if($refunds_status==0){
+			if($goodsOrderRow['is_send']==0){//未发货
+				$setData = array('pay_status'=>3);//付款状态：退货待审批
+			}else if($goodsOrderRow['is_send']==1){
+				if($type==1){
+					$setData = array('distribution_status'=>6);//换货待审批
+				}else{
+					$setData = array('distribution_status'=>3);//发货状态：退货待审批
+				}
+			}
+		}
+		else if($refunds_status==7){
+			if($goodsOrderRow['is_send']==0){//未发货
+				$setData = array('pay_status'=>4);//等待退款
+			}else if($goodsOrderRow['is_send']==1){
+				if($type==1){
+					$setData = array('distribution_status'=>7,'pay_status'=>1);
+				}else{
+					$setData = array('distribution_status'=>4,'pay_status'=>4);//发货状态：退货已收
+				}
+				
+			}
+		}
+		else if(in_array($refunds_status,array(1,5))){
+			$order_goods_db = new IModel('order_goods');
+			
+			if($goodsOrderRow['is_send']==1){
+				$not_send_data = $order_goods_db->getObj('order_id='.$goodsOrderRow['order_id']. ' and is_send=0');
+				if($not_send_data){
+					$setData = array('distribution_status'=>2,'pay_status'=>1);
+				}else{
+					$setData = array('distribution_status'=>1,'pay_status'=>1);
+				}
+			}else{
+				$has_send_data = $order_goods_db->getObj('order_id='.$goodsOrderRow['order_id']. ' and is_send=1');
+				if($has_send_data){
+					$setData = array('distribution_status'=>2,'pay_status'=>1);
+				}else{
+					$setData = array('distribution_status'=>0,'pay_status'=>1);
+				}
+			}
+			
+			
+		}
+		else if($refunds_status==2){
+		
+			if($type==0){
+				if($goodsOrderRow['is_send']==0){//未发货退货
+					$setData = array('status' => 5,'pay_status'=>5,'distribution_status'=>0);
+				}
+				else{//已发货退货
+					$setData = array('status' => 5,'pay_status'=>5,'distribution_status'=>5);
+				}
+			}
+		}
+		else{
+			return false;
+		}
+		$order_db->setData($setData);
+		$order_db->update('id='.$goodsOrderRow['order_id']);
+		
 	}
 }

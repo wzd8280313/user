@@ -261,7 +261,7 @@
 /*点击购物车后出现弹框样式结束*/
 
 /*增加评价用户名和评价内容处的高度*/
-#topPriceHistroyDiv p , .yhname{
+#commentBox p , .yhname{
 	display:block;
 	height:20px;
 }

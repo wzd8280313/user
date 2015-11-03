@@ -65,11 +65,11 @@
 <!--全选js和显示隐藏筛选条件的js写在nav.js中-->
     <div class="box m_10">
         <table class="list_table" width="100%" cellpadding="0" cellspacing="0">
-        	<col width="140px" />
+        	<col width="200px" />
             <tr>
                 <th><span class="checktet"><input id="ckAll" class="checks" type="checkbox"/>全部</span>订单编号</th>
                 <th>下单日期</th>
-                <th>收货人</th>
+                <th width='50px'>收货人</th>
                 <th>支付方式</th>
                 <th>总金额</th>
                 <th>订单状态</th>
@@ -77,9 +77,10 @@
             {set:$queryOrderList=$this->order_db}
 			{foreach:items = $queryOrderList->find()}
 			{set:$status=Order_Class::getOrderStatus($item);}
+		
             <tr>
 				
-                <td>
+                <td>	
                 	{if:$status==2}
 					<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
 					{/if}
@@ -98,12 +99,12 @@
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
 					{elseif:in_array($status,array(4,8,9,10,11))}
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
-					{elseif:in_array($status,array(3,11))}
+					{elseif:in_array($status,array(3,11,17))}
 					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"><input style='margin-bottom:5px;' type="button" class='btn_gray btn_small' value="确认收货" /></a>
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
 					
 					{elseif:$status==6}
-					<a href="{url:/ucenter/evaluation}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+					<a href="{url:/site/comments/goods_id/$item['goods_id']/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
 					{else:}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 					{/if}

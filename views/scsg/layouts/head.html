@@ -30,7 +30,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	{js:form}
 	{js:validate}
 	{js:artTemplate}
-	<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=default}' ></script>
+	<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=aero}' ></script>
 		<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/plugins/iframeTools.js}' ></script>
 	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
 	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
@@ -109,7 +109,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 							<span>积分<em><img src="{skin:images/qiandao.gif}" onclick='sign_point()'/></em></span>
 							
 						</a>
-						<a  href="">
+						<a  href="{url:/ucenter/account_log}">
 							<b>{$this->user['balance']}</b>
 							<span>账户余额</span>
 							<span></span>
@@ -126,7 +126,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 				<li>
 					<a href="{url:/ucenter/index}">个人中心</a>
 					<ul>
-						<li><a href="{url:/ucenter/order}">我的订单</a></li>
+						<li><a target='blank' href="{url:/ucenter/order}">我的订单</a></li>
 						<li><a href="{url:/ucenter/address}">我的收货地址</a></li>
 						<li><a href="{url:/ucenter/integral}">我的积分</a></li>
 						<li><a href="{url:/ucenter/account_log}">我的资金</a></li>
@@ -138,9 +138,28 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 					<a href="{url:/simple/seller}">申请开店</a>
 				</li>
 				<li>
-					<a href="#">掌上山城</a>
-					<ul>
-						<li style="height:160px;width:140px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
+					<a href="#">山城速购APP</a>
+					<ul><li style="height:125px;width:251px;border:0;box-shadow: 0 1px 3px #ccc;background:#fff;">
+							<div>
+										<div class="hd_mobile_show">
+										
+										<div class="hd_mobile_content">
+										<img src="{skin:images/erweima.png}" alt=""/>
+										</div>
+										
+										<dl class="hd_mobile_tab">
+										<dt><b>山城速购APP</b></dt>
+										<dt><a href="#" target="_blank" class="blue_link">手机购物更优惠</a></dt>
+										<dt>
+											<a href="#" class="app_icons"><i class="app_icons_03"></i></a>
+											<a href="#" class="app_icons"><i class="app_icons_04"></i></a>
+											<a href="#" class="app_icons"><i class="app_icons_05"></i></a>
+										</dt>
+										</dl>
+
+										</div>
+							</div>
+						</li>
 					</ul>
 				</li>
 				<li>
@@ -166,9 +185,9 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 				</li>
 				<li  class="erwei">
 					<a href="#" class="erwei" title="关注山城速购新浪微博"><img src="{skin:images/weixin1_01.png}"></a>
-					<ul>
+					<!-- <ul>
 						<li style="height:160px;width:140px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
-					</ul>
+					</ul> -->
 				</li>
 				<li class="erwei">
 					<a href="#" class="erwei" title="关注山城速购微信"><img src="{skin:images/weixin1_02.png}"></a>
@@ -262,8 +281,11 @@ if($("#actionimg").length>0){
 				{if:isset($this->logoUrl)}
 				<img src="{skin:$this->logoUrl}" alt="" class="png">
 				{else:}
+
 				<img src="{skin:images/logo.png}" alt="" class="png">
+
 				{/if}
+				<img src="{skin:images/yqbank.png}" alt="" class="png" style="margin-left:10px;">
 			</a>
 		</div>
 		<!--logo-->

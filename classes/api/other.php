@@ -12,7 +12,7 @@ class APIOther
 	{
 		$proRuleObj = new ProRule(999999999);
 		$proRuleObj->isGiftOnce = false;
-		$proRuleObj->isCashOnce = true;
+		$proRuleObj->isCashOnce = false;
 		return $proRuleObj->getInfo();
 	}
 

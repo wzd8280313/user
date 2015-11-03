@@ -55,7 +55,7 @@ $search = IFilter::act(IReq::get('search'),'strict');
 				{query:name=presell as p join = left join goods as go on p.goods_id eq go.id fields=p.*,go.id as goods_id,go.name as goods_name,go.is_del where=$where  page=$page}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
-					<td><a href='{url:/site/products/id/$item[id]}' target='_blank'>{$item['name']}</a></td>
+					<td><a href='{url:/pregoods/products/id/$item[goods_id]}' target='_blank'>{$item['name']}</a></td>
 					<td>{$item['yu_end_time']}</td>
 					<td>
 						{if:$item['is_del'] == null || $item['is_del'] == 1}

@@ -75,11 +75,11 @@
 					<tr>
 						<th>处理：</th>
 						<td align="left">
-							{set:$agree_status=$is_send==1 ? 3:2}
+							{set:$agree_status=$is_send==1 ? 3:7}
 							<label><input type="radio" name="pay_status" value="{$agree_status}" checked='checked' />同意</label>&nbsp;&nbsp;
 							<label><input type="radio" name="pay_status" value="1" />拒绝</label>
 							{if:$is_send==0 && $type==0}
-								<span class='red'>该商品未发货，同意后把钱打入用户帐户</span>
+								<span class='red'></span>
 							{elseif:$is_send==0 && $type==1}
 								<span class='red'></span>
 							{elseif:$is_send==1}
@@ -110,14 +110,14 @@
 					</tr>
 					
 				<tr>
-					<td colspan="2"><button type="submit" class="submit" onclick="return checkForm({$is_send},{$type})"><span>确 定</span></button></td>
+					<td colspan="2"><button type="submit" class="submit" ><span>确 定</span></button></td>
 				</tr>
 				{/if}
 				{if:$pay_status==4}
 					<tr>
 						<th>处理：</th>
 						<td align="left">
-							<label><input type="radio" name="pay_status" value="2" checked='checked' />同意</label>&nbsp;&nbsp;
+							<label><input type="radio" name="pay_status" value="7" checked='checked' />同意</label>&nbsp;&nbsp;
 							<label><input type="radio" name="pay_status" value="5" />拒绝</label>
 							<span class='red'></span>
 						</td>
@@ -130,7 +130,7 @@
 					</td>
 				</tr>
 				
-					<td colspan="2"><button type="submit" class="submit" onclick="return checkForm({$is_send},{$type})"><span>确 定</span></button></td>
+					<td colspan="2"><button type="submit" class="submit" ><span>确 定</span></button></td>
 				</tr>
 				{/if}
 				<input type='hidden' name='status' value='{$pay_status}' />

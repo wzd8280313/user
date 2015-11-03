@@ -17,7 +17,10 @@
 				<td>{$item['order_no']}</td>
 				<td><a href="{url:/site/products/id/$item[goods_id]}" target='_block'>{$item['name']}</a></td>
 				<td>{$item['time']}</td>
-				<td><a class="orange bold" href="{url:/site/comments/id/$item[id]}">发表评价</a></td>
+				<td>
+				<a href="{url:/site/comments/id/$item[id]}">
+					<input type="button" class='btn_gray btn_small' value="发表评价" /></a>
+				</td>
 			</tr>
 			{/foreach}
 		</tbody>

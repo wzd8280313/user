@@ -282,4 +282,24 @@ class hookCreateAction extends IInterceptorBase
 				$tb_order_log->add();
 			}
 		}
-}}
+		
+	}
+	public static function site_index(){
+		self::pregoods_presell_list();
+	}
+	//自动将到期的预售产品改为下架
+	public static function pregoods_presell_list(){
+		$db_presell = new IModel('presell');
+		if($presell_list = $db_presell->query('TIMESTAMPDIFF(second,yu_end_time,NOW()) >0','goods_id')){
+			$ids = '';
+			foreach($presell_list as $val){
+				$ids .= $val['goods_id'].',';
+			}
+			$ids = substr($ids,0,-1);
+			$goods_db = new IModel('goods');
+			$goods_db->setData(array('is_del'=>2));
+			$goods_db->update('id in ('.$ids.')');
+		}
+			
+	}
+}

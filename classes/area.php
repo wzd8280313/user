@@ -50,4 +50,27 @@ class area
 		$result['area'] = $areaDB->getField('area_id = '.$paramStr,'area_name');
 		return $result;
 	}
+	/**
+	 * 获取省市区(将省市区连起来）
+	 */
+	public static function getNameStr(){
+		$paramStr = func_get_args();
+		$paramStr = $paramStr[0];
+		$areaDB = new IModel('areas');
+		if(strlen($paramStr)!=6)
+			return false;
+		$provinceCode = substr($paramStr,0,2).'0000';
+		$cityCode = substr($paramStr,0,4).'00';
+		if($provinceCode==$cityCode){
+			return $areaDB->getField('area_id = '.$provinceCode,'area_name');
+		}
+		else if($cityCode==$paramStr)
+		{
+			return $areaDB->getField('area_id = '.$provinceCode,'area_name').' '.$areaDB->getField('area_id = '.$cityCode,'area_name');
+		}
+		else{
+			return $areaDB->getField('area_id = '.$provinceCode,'area_name').' '.$areaDB->getField('area_id = '.$cityCode,'area_name').' '.$areaDB->getField('area_id = '.$paramStr,'area_name');
+		}
+		
+	}
 }

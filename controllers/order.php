@@ -269,23 +269,32 @@ class Order extends IController
 		if($delivery_add)$setData['delivery_add']=$delivery_add;
 		
 		
-		if($type==1&&$pay_status==2){//换货类型且确认换货成功
-			$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
-			if(!$chgRes){
-				$this->redirect('refundment_chg_list');
-				return false;
-			}
-		}
+		
 		
 		if($refundment_id)
 		{
 			$tb_refundment_doc = new IModel('refundment_doc');
 			$tb_refundment_doc->setData($setData);
 			$tb_refundment_doc->update('id='.$refundment_id);
+			if($refund_data = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,pay_status,goods_id,product_id')){
+				$order_goods_db = new IModel('order_goods');
+				$order_goods_row = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
+				
+				if($type==1&&$pay_status==7){//换货类型且审核通过
+					$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
+					if(!$chgRes){
+						$this->redirect('refundment_chg_list');
+						return false;
+					}
+				}
+				Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
+			}
+			
 			
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了换货单",'修改的ID：'.$refundment_id));
 		}
+		
 		$this->redirect('refundment_list');
 	}
 	/**
@@ -376,19 +385,25 @@ class Order extends IController
 		$this->layout='';
 		$orderId   = IFilter::act(IReq::get('id'),'int');
 		$refundsId = IFilter::act(IReq::get('refunds_id'),'int');
-
 		if($orderId)
 		{
 			$orderDB = new Order_Class();
 			$data    = $orderDB->getOrderShow($orderId);
-
+			$refundsDB  = new IModel('refundment_doc');
 			//已经存退款申请
 			if($refundsId)
 			{
-				$refundsDB  = new IModel('refundment_doc');
+				
 				$refundsRow = $refundsDB->getObj('id = '.$refundsId);
 				$data['refunds'] = $refundsRow;
 				
+			}else{
+				$order_goods_db = new IQuery('order_goods as og');
+				$order_goods_db->join = 'left join order as o on o.id=og.order_id left join refundment_doc as r on r.order_id=o.id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.type=0';
+				$order_goods_db->where = 'o.id='.$orderId;
+				$order_goods_db->fields = 'og.*,o.pro_reduce,o.ticket_reduce,o.real_amount,o.pro_reduce,r.id as refunds_id,r.amount';
+				$order_goods_data = $order_goods_db->find();
+				$data['order_goods_data'] = $order_goods_data;
 			}
 			$this->setRenderData($data);
 			$this->redirect('order_refundment');
@@ -426,12 +441,12 @@ class Order extends IController
 			'amount'       => $amount,
 			'user_id'      => $user_id,
 		);
-
+		$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{
 			if(!$order_goods_id)return false;
-			$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
+			
 
 			//插入refundment_doc表
 			$updateData['time']       = ITime::getDateTime();
@@ -448,9 +463,18 @@ class Order extends IController
 		}
 		
 			$result = Order_Class::refund($refunds_id,$this->admin['admin_id'],'admin');
+			if($orderGoodsRow['is_send']==1){
+				//增加用户评论商品机会
+				Order_Class::addGoodsCommentChange($order_id);
+					
+				//经验值、积分、代金券发放
+				Order_Class::sendGift($order_id,$user_id);
+			}
+			Order_Class::order_status_refunds(2,$orderGoodsRow);
 			
 		if($result)
 		{
+			
 			//记录操作日志
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"订单更新为退款",'订单号：'.$order_no));
@@ -640,8 +664,8 @@ class Order extends IController
 			Util::showMessage('请完善订单信息');
 		}
 		foreach($goods_nuns as $v){
-			if($v==0)$this->redirect('order_edit');
-			Util::showMessage('商品数量不能为0');
+			if($v==0){$this->redirect('order_edit');
+			Util::showMessage('商品数量不能为0');}
 		}
 		//设置订单持有者
 		$username = IFilter::act(IReq::get('username'));
@@ -655,6 +679,7 @@ class Order extends IController
 			'goods' => array('id' => array() , 'data' => array()),
 			'product' => array('id' => array() , 'data' => array())
 		);
+		
 		for($i = 0;$i < $length;$i++)
 		{
 			//货品数据

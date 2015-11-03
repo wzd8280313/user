@@ -89,12 +89,10 @@ class CountSum
 	 */
 	public function presell_count($id,$type,$buy_num,$active_id)
 	{
-		$config = new Config('site_config');
-		$not_prom = $config->pesell_promotion;//是否支持优惠活动
 		$buyInfo = array(
 				$type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num)),'count' => $buy_num)
 		);
-		$priceInfo = $this->goodsCount($buyInfo,$not_prom);
+		$priceInfo = $this->goodsCount($buyInfo);
 		$presell_db = new IModel('presell');
 		$priceInfo['pre_rate']=$presell_db->getField('id='.$active_id.' and TIMESTAMPDIFF(second,yu_end_time,NOW())<=0','money_rate');
 		if(!$priceInfo['pre_rate']){
@@ -112,6 +110,7 @@ class CountSum
 	 * @brief 计算商品价格
 	 * @param Array $buyInfo ,购物车格式
 	 * @param bool $prom 是否允许优惠
+	 * @param float $disPrice 商品的活动价格
 	 * @return array or bool
 	 */
 	public function goodsCount($buyInfo,$prom=true)
@@ -151,18 +150,23 @@ class CountSum
     		//开始优惠情况判断
     		foreach($goodsList as $key => $val)
     		{
-    			//检查库存
-    			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
-    			{
-    				return "商品：".$val['name']."购买数量超出库存，请重新调整购买数量";
-    			}
-				
-    			$groupPrice                = $this->getGroupPrice($val['goods_id'],'goods');
-    			if($groupPrice){
-    				$minPrice = $groupPrice;
-    			}else{
-    				$minPrice = $val['sell_price'];
-    			}
+//     			//检查库存
+//     			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
+//     			{
+//     				return "商品：".$val['name']."购买数量超出库存，请重新调整购买数量";
+//     			}
+				if(isset($buyInfo['goods']['data'][$val['goods_id']]['active_price']) && $buyInfo['goods']['data'][$val['goods_id']]['active_price']){//如果存在活动价格
+					$minPrice = $buyInfo['goods']['data'][$val['goods_id']]['active_price'];
+				}
+				else{
+					$groupPrice                = $this->getGroupPrice($val['goods_id'],'goods');
+					if($groupPrice){
+						$minPrice = $groupPrice;
+					}else{
+						$minPrice = $val['sell_price'];
+					}
+				}
+    			
     			$minPrice = min($minPrice,$val['sell_price']);
     			$goodsList[$key]['reduce'] = $val['sell_price'] - $minPrice;
     			$goodsList[$key]['count']  = $buyInfo['goods']['data'][$val['goods_id']]['count'];
@@ -195,18 +199,21 @@ class CountSum
     		foreach($productList as $key => $val)
     		{
     			//检查库存
-    			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
-    			{
-    				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
-    			}
+//     			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
+//     			{
+//     				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
+//     			}
     			
-    			
-    			$groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
-    			if($groupPrice){
-    				$minPrice = $groupPrice;
-    			}else{
-    				$minPrice = $val['sell_price'];
-    			}
+    			if(isset($buyInfo['product']['data'][$val['goods_id']]['active_price']) && $buyInfo['product']['data'][$val['goods_id']]['active_price']){//如果存在活动价格
+					$minPrice = $buyInfo['product']['data'][$val['goods_id']]['active_price'];
+				}else{
+	    			$groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
+	    			if($groupPrice){
+	    				$minPrice = $groupPrice;
+	    			}else{
+	    				$minPrice = $val['sell_price'];
+	    			}
+				}
     			$minPrice = min($minPrice,$val['sell_price']);
     			
 				$productList[$key]['reduce'] = $val['sell_price'] - $minPrice;
@@ -225,8 +232,8 @@ class CountSum
 		    	$this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id']);
 		    }
     	}
-
-    	$final_sum = $this->sum - $this->reduce;
+		
+		$final_sum = $this->sum - $this->reduce;
 
     	//总金额满足的促销规则
     	if($user_id&&$prom)
@@ -252,7 +259,7 @@ class CountSum
     		'sum'        => $this->sum,//原总价
     		'goodsList'  => array_merge($goodsList,$productList),
     		'count'      => $this->count,
-    		'reduce'     => $this->reduce,//会员价和闪购价减价
+    		'reduce'     => $this->reduce,//会员价减价
     		'weight'     => $this->weight,
     		'freeFreight'=> $this->isFreeFreight,
     		'point'      => $this->point,
@@ -277,11 +284,11 @@ class CountSum
 		return false;
 	}
 	//购物车计算
-	public function cart_count()
+	public function cart_count($cartData='')
 	{
 		//获取购物车中的商品和货品信息
     	$cartObj    = new Cart();
-    	$myCartInfo = $cartObj->getMyCart();
+    	$myCartInfo = $cartObj->getMyCart($cartData);
 
     	return $this->goodsCount($myCartInfo);
     }
@@ -293,6 +300,7 @@ class CountSum
     	/*开启促销活动*/
     	if($promo && $active_id)
     	{
+    		
 			//开启促销活动
 	    	$activeObject = new Active($promo,$active_id,$this->user_id,$id,$type,$buy_num);
 	    	$activeResult = $activeObject->checkValid();
@@ -300,27 +308,16 @@ class CountSum
 	    	{
 	    		$typeRow  = $activeObject->originalGoodsInfo;
 	    		$disPrice = $activeObject->activePrice;
-
+				
+	    		
+	    		$buyInfo = array(
+	    				$type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num,'active_price'=>$disPrice)),'count' => $buy_num)
+	    		);
+	    		
 				//设置优惠价格，如果不存在则优惠价等于商品原价
-				$typeRow['reduce'] = $typeRow['sell_price'] - $disPrice;
-				$typeRow['count']  = $buy_num;
-				$typeRow['sum']    = $disPrice * $buy_num;
-
-				//拼接返回数据
-				$result = array(
-					'final_sum'   => $typeRow['sum'],
-					'promotion'   => array(),
-					'proReduce'   => 0,
-					'sum'         => $typeRow['sell_price'] * $buy_num,
-					'goodsList'   => array($typeRow),
-					'count'       => $buy_num,
-					'reduce'      => $typeRow['reduce'] * $buy_num,
-					'weight'      => $typeRow['weight'] * $buy_num,
-					'point'       => $typeRow['point']  * $buy_num,
-					'exp'         => $typeRow['exp']    * $buy_num,
-					'freeFreight' => false,
-					'tax'         => 0
-				);
+				
+				$result = $this->goodsCount($buyInfo);
+				
 				return $result;
 	    	}
 	    	else

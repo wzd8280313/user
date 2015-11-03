@@ -84,7 +84,7 @@ class Site extends IController
 		$this->tuangou = 1;
 		$this->todayList = array();
 		$this->brandList = array();
-		$tuanList = Api::run('getRegimentList','3');
+		$tuanList = Api::run('getRegimentList','6');
 		$this->count = count($tuanList);
 		if($this->count>2){
 			$this->todayList = array(array_shift($tuanList),array_shift($tuanList));
@@ -150,6 +150,8 @@ class Site extends IController
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
+		
+		
 		$sell_price = $goods_info['sell_price'];
 		//品牌名称
 		if($goods_info['brand_id'])
@@ -245,7 +247,8 @@ class Site extends IController
 			$goods_info = array_merge($goods_info,$proData);
 			$group_type = 'product';
 			$group_goods_id = $product_id;
-			
+			$goods_info['product'] = $tb_product->query('goods_id='.$goods_id.' and id='.$product_id,'id,spec_array,store_nums');
+			$goods_info['product'] = JSON::encode($goods_info['product']);
 			
 		}else{
 			//获得商品的价格区间
@@ -265,7 +268,8 @@ class Site extends IController
 			
 			$group_type = 'goods';
 			$group_goods_id = $goods_id;
-			
+			$goods_info['product'] = $tb_product->query('goods_id='.$goods_id,'id,spec_array,store_nums');
+			$goods_info['product'] = JSON::encode($goods_info['product']);
 			
 		}
 		//获得会员价
@@ -620,12 +624,15 @@ class Site extends IController
 		$tb_goods = new IModel('goods');
 		$goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)");
 		
-		
+ 		
 		if(!$goods_info)
 		{
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
+		$product_db = new IModel('products');
+		$goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
+		$goods_info['product'] = JSON::encode($goods_info['product']);
 		if($goods_info['is_del']==4)header('location:'.IUrl::getHost().IUrl::creatUrl('pregoods/products/id/'.$goods_id));
 		$sell_price = $goods_info['sell_price'];
 		//品牌名称
@@ -769,7 +776,8 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
-		
+	//	print_r($goods_info);
+	//	print_r($specArray);
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}
@@ -839,19 +847,6 @@ class Site extends IController
 			exit;
 		}
 		
-		
-		//获取闪购价
-		$prom = new IModel('promotion');
-		$where = '`condition` = '.$goods_id.' AND NOW() between start_time and end_time AND (product_id = '.$procducts_info['id'].' OR product_id = 0)';
-		$shan_data = $prom->getObj($where,'id,award_value');
-		
-		if($shan_data){
-			$shan_price = $shan_data['award_value'];
-			if($shan_price<$procducts_info['sell_price']){
-				$procducts_info['shan_price'] = $shan_price;
-				$procducts_info['active_id'] = $shan_data['id'];
-			}
-		}
 		
 		//获得会员价
 		$countsumInstance = new countsum();
@@ -961,10 +956,17 @@ class Site extends IController
 	function comments()
 	{
 		$id = IFilter::act(IReq::get('id'),'int');
-
+		
 		if(!$id)
 		{
-			IError::show(403,"传递的参数不完整");
+			$goods_id = IFilter::act(IReq::get('goods_id'),'int');
+			$order_id = IFilter::act(IReq::get('order_id'),'int');
+			$comment_db = new IModel('comment');
+			$id = $comment_db->getField('goods_id='.$goods_id.' and order_id='.$order_id,'id');
+			if(!$id){
+				IError::show(403,"传递的参数不完整");
+			}
+			
 		}
 
 		if(!isset($this->user['user_id']) || $this->user['user_id']==null )
@@ -1094,23 +1096,7 @@ class Site extends IController
 
 
 	function ce(){
-// 		$paramArray = array(
-// 				'order_id'      => 429,
-// 				'user_id'       => 29,
-// 				'name'          => '3453',
-// 				'postcode'      => '045000',
-// 				'telphone'      => '5068088',
-// 				'province'      => '110000',
-// 				'city'          => '110100',
-// 				'area'          => '110228',
-// 				'address'       => '大连西路',
-// 				'mobile'        => '13534563456',
-// 				'freight'       => 0.05,
-// 				'delivery_code' => '12345345345',
-// 				'delivery_type' => 5,
-// 				'note'          => '234234234',
-// 				'time'          => ITime::getDateTime(),
-//
+		print_r($_SESSION);
 	}
 	
 }

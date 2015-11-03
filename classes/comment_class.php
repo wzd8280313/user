@@ -20,8 +20,12 @@ class Comment_Class
 		$comment_id = intval($comment_id);
 		$user_id = intval($user_id);
 
-		$tb_comment = new IModel("comment");
-		$comment = $tb_comment->getObj("id={$comment_id} AND user_id={$user_id}");
+		$tb_comment = new IQuery("comment as c");
+		$tb_comment->join = 'left join order_goods as og on c.order_id=og.order_id and c.goods_id=og.goods_id';
+		$tb_comment->where = 'c.id='.$comment_id.' AND c.user_id='.$user_id.' and og.is_send=1';
+		$tb_comment->fields = 'c.*';
+		$comment = $tb_comment->getObj();
+		
 		if(!$comment)
 		{
 			return array(-1,"没有这条数据");

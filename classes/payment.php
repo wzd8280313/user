@@ -190,7 +190,7 @@ class Payment
 			$orderRow = $orderObj->getObj('id = '.$order_id.' and status = 1');
 			if(empty($orderRow))
 			{
-				IError::show(403,'订单信息不正确，不能进行支付');
+				IError::show(403,'订单信息不正确，或已支付');
 			}
 
 			//判断商品库存

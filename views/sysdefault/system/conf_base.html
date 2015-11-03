@@ -9,6 +9,7 @@
 	<ul class='tab' name='conf_menu'>
 		<li class='selected'><a href="javascript:select_tab('base_conf');">网站设置</a></li>
 		<li><a href="javascript:select_tab('guide_conf');">导航设置</a></li>
+		<li><a href="javascript:select_tab('products_page_conf');">详情页设置</a></li>
 		<li><a href="javascript:select_tab('index_slide');">首页幻灯设置</a></li>
 		<li><a href="javascript:select_tab('site_footer_conf');">站点底部信息</a></li>
 		<li><a href="javascript:select_tab('other_conf');">其他设置</a></li>
@@ -137,16 +138,16 @@
 				</tr>
 			</table>
 		</form>
-		<form action='{url:/system/save_conf/form_index/products_page_conf}' method='post' name='guide_conf'>
+		<form action='{url:/system/save_conf/form_index/products_page_conf}' method='post' name='products_page_conf'>
 			<table class='form_table'>
 				<col width="150px" />
 				<col />
 
 				<tr>
-					<th>首页导航设置：</th>
+					<th>商品详情页服务：</th>
 					<td>
 
-						<table class='border_table' id='guide_box'>
+						<table class='border_table' id='product_page_box'>
 							<col width="150px" />
 							<col width="250px" />
 							<col width="120px" />
@@ -163,16 +164,16 @@
 							<tfoot>
 							<tr>
 								<td colspan='3'>
-									<button type='button' class='btn' onclick="add_guide();"><span>添加导航</span></button>
+									<button type='button' class='btn' onclick='add_product()'><span>添加链接</span></button>
 								</td>
 							</tr>
 							</tfoot>
 
 							<!--导航行模板-->
-							<script type='text/html' id='guideTrTemplate'>
+							<script type='text/html' id='productsPageTemplate'>
 							<tr class='td_c'>
-								<td><input type='text' name='guide_name[]' class='small' value='<%=name%>'  alt='请填写导航名' /></td>
-								<td><input type='text' name='guide_link[]' class='middle' value='<%=link%>'  alt='请填写URL' /></td>
+								<td><input type='text' name='server_name[]' class='small' value='<%=server_name%>'  alt='请填写名称' /></td>
+								<td><input type='text' name='server_link[]' class='middle' value='<%=link%>'  alt='请填写URL' /></td>
 								<td>
 									<img class='operator' src='{skin:images/admin/icon_asc.gif}' alt='向上' title='向上' />
 									<img class='operator' src='{skin:images/admin/icon_desc.gif}' alt='向下' title='向下' />
@@ -181,12 +182,12 @@
 							</tr>
 							</script>
 						</table>
-						<label>设置首页顶部导航条内容和链接地址</label>
+						<label>设置商品详情页服务内容和链接地址</label>
 					</td>
 				</tr>
 				<tr>
 					<th></th>
-					<td><button type='submit' class='submit'><span>保存导航栏配置</span></button></td>
+					<td><button type='submit' class='submit'><span>保存配置</span></button></td>
 				</tr>
 			</table>
 		</form>
@@ -570,6 +571,17 @@ $(function(){
 		add_slide();
 	{/if}
 
+	//详情页内容
+	{if:isset($this->confRow['product_page']) && $this->confRow['product_page'] }
+	{set:$product_info = unserialize(IFilter::stripSlash($this->confRow['product_page']))}
+	var product_info_List = {echo:JSON::encode($product_info)};
+	for(var index in product_info_List)
+	{
+		add_product(product_info_List[index]);
+	}
+	{else:}
+		add_product();
+	{/if}
 	//生成在线客服
 	{if:isset($this->confRow['service_online']) && $this->confRow['service_online'] && $serviceOnline = unserialize($this->confRow['service_online'])}
 	var serviceOnlineList = {echo:JSON::encode($serviceOnline)};
@@ -620,7 +632,14 @@ function test_mail(obj)
 		alert(content.message);
 	});
 }
-
+//添加详情页服务
+function add_product(data){
+	var data = data ? data : {};
+	var guideTrHtml = template.render('productsPageTemplate',data);
+	$('#product_page_box tbody').append(guideTrHtml);
+	var last_index = $('#product_page_box tbody tr').size()-1;
+	buttonInit(last_index,'#product_page_box');
+}
 //添加导航
 function add_guide(data)
 {

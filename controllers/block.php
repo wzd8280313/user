@@ -145,14 +145,14 @@ class Block extends IController
     {
     	$productId    = IFilter::act(IReq::get("productId"),'int');
     	$goodsId      = IFilter::act(IReq::get("goodsId"),'int');
-    	$province     = IFilter::act(IReq::get("province"),'int');
-    	$distribution = IFilter::act(IReq::get("distribution"),'int');
+    	$area     = IFilter::act(IReq::get("area"),'int');
+    	$distribution = IFilter::act(IReq::get("distribution"),'int');//配送方式
     	$num          = IReq::get("num") ? IFilter::act(IReq::get("num"),'int') : 1;
 		$data         = array();
 		
 		if($distribution)
 		{
-			$data = Delivery::getDelivery($province,$distribution,$goodsId,$productId,$num);
+			$data = Delivery::getDelivery($area,$distribution,$goodsId,$productId,$num);
 		}
 		else
 		{
@@ -500,21 +500,6 @@ class Block extends IController
 		}
 	}
 
-	//测试用
-	public function refund(){
-		$pay_type = 3;
-		$order_id = 376;$amount = 20;
-		$paymentInstance = Payment::createPaymentInstance($pay_type);
-		
-		$paymentData = Payment::getPaymentInfoForRefund($pay_type,$order_id,$amount);
-			
-		$sendData = $paymentInstance->refund($paymentData);
-		if($sendData)echo 5;
-		else echo 0;
-		//print_r($sendData);
-		//$paymentInstance->refunds($sendData);
-		//$this->redirect('/site/index');
-	}
 	/**
      * @brief 【重要】支付中断处理
 	 */

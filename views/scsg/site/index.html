@@ -98,13 +98,13 @@ _mvq.push(['$logConversion']);
 					</ul>
 					
 				</div>
-				<div style="width:203px;float:left;height:10px;display:inline-block;"></div>
+				<div style="width:200px;float:left;height:10px;display:inline-block;"></div>
 				<div class='pic'>
 					<a href="{webroot:$fUrl}" target="_blank">
 						<img src="{webroot:$fImg}" style="width:100%;height:490px;">
 					</a>
 				</div>
-				<div style="width: 228px;float:right;height:10px;display:inline-block;"></div>
+				<div style="width: 231px;float:right;height:10px;display:inline-block;"></div>
 			</div>
 			
 		</div>
@@ -118,13 +118,13 @@ _mvq.push(['$logConversion']);
 				  <!--promise-->
 				  <ul class="promise" id="promise">
    					<li class="15day">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_1.png}"></span> 15天退货</a>
+    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_1.png}"></span> 7天退货</a>
     				</li>
     				<li class="baoyou">
     					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_2.png}"></span> 满79包邮</a>
     				</li>
     				<li class="cirida">
-    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_3.png}"></span> 郊区次日达</a>&nbsp;
+    					<a style="cursor: pointer;" href="#"><span class="ic"><img src="{skin:images/index_icon_3.png}"></span> 同城当日达</a>&nbsp;
     				</li>
 				</ul>
 				 <script>
@@ -145,7 +145,7 @@ _mvq.push(['$logConversion']);
 							
 		    				<ul class="tab-title clearfix">
 		    					<li class="tab-title-hover"><h2 class="t14">商城公告</h2></li>
-								
+								<li class=""><h2 class="t14">山城推荐</h2></li>								
 		    				</ul>
 		    				<div class="tab-cnt">
 		                        <div class="tab-item tab-item-hover" style="display: block;">
@@ -156,6 +156,22 @@ _mvq.push(['$logConversion']);
 									{/foreach}
 								</ul>
 								</div>
+                        <div class="tab-item tab-item-hover" style="display: none;">
+						<ul class="news-list">
+								<li>
+											<!--limit-->
+											<div class="limit">
+												<!--limit-zero-->
+												<div class="limit-zero">																						
+													{echo:Ad::show("首页山城推荐")}
+												</div>
+												<!--limit-zero-->
+
+											</div>
+											<!--limit-->
+								</li>
+						</ul>
+   						</div>
 							
 		                  
 		    				</div>
@@ -163,63 +179,63 @@ _mvq.push(['$logConversion']);
 						  <!--tabs-->
 		                <!--便民服务-->
 		                <div class="small-pro">
-		
+		<!--便民服务
 			                <div class="ad-pic" id="ad_pic_5712">
-			                     <div class="demo">	
+			                  <div class="demo">	
 								
 								<ul class="tabbtn" id="fadetab">
 									<li class="current"><a href="#">话费</a></li>
 									<li><a href="#">彩票</a></li>
 									<li><a href="#">游戏</a></li>
 									<li><a href="#">保险</a></li>
-								</ul><!--tabbtn end-->
+								</ul>tabbtn end
 								<div class="tabcon" id="fadecon">
 									<div class="sublist">
 										<ul>
 											<li><a href="#" target="_blank" class='red-a'>交话费</a></li>
 											
 										</ul>
-									</div><!--tabcon end-->
+									</div>
 									<div class="sublist">
 										<ul>
 											<li><a href="#" target="_blank" class='red-a'>买彩票</a></li>
 											
 										</ul>
-									</div><!--tabcon end-->
+									</div>
 									<div class="sublist">
 										<ul>
 											<li><a href="#" target="_blank" class='red-a'>充点卡</a></li>
 											
 										</ul>
-									</div><!--tabcon end-->
+									</div>
 									<div class="sublist">
 										<ul>
 											<li><a href="#" target="_blank" class='red-a'>上保险</a></li>
 											
 										</ul>
-									</div><!--tabcon end-->
-								</div><!--tabcon end-->
+									</div>
+								</div>tabcon end
 								
 								
 								
-							</div><!--tabbox end-->
+							</div>tabbox end
 							<script type="text/javascript" src="{theme:javascript/jquery.tabso_yeso.js}"></script>
 							<script type="text/javascript">
-							$(document).ready(function($){
-								
-																
-								//淡隐淡现选项卡切换
-								$("#fadetab").tabso({
-									cntSelect:"#fadecon",
-									tabEvent:"mouseover",
-									tabStyle:"fade"
+								$(document).ready(function($){
+									
+																	
+									//淡隐淡现选项卡切换
+									$("#fadetab").tabso({
+										cntSelect:"#fadecon",
+										tabEvent:"mouseover",
+										tabStyle:"fade"
+									});
+									
+																	
 								});
-								
-																
-							});
 							</script>
 						    </div>
-		
+		便民服务--><a href="{url:/simple/seller}"><img src="{skin:images/bianmin.png}" style="width:228px;height:200px;margin-top:5px;"></a>
 						</div>
 		                  <!--便民服务-->
 		        </div>
