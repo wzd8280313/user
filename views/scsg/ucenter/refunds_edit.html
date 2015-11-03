@@ -42,13 +42,13 @@
 						{/foreach}
 					</td>
 				</tr>
-				 <tr>
-		            <th>快递公司：</th><td><input name="delivery_com" type="text"   class="normal" /><label >*</label></td>
+				 <tr name='delivery'>
+		            <th>快递公司：</th><td><input name="delivery_com" type="text"   class="normal" /><label >* </label></td>
 		        </tr>
-		        <tr>
+		        <tr name='delivery'>
 		            <th>快递单号：</th><td><input name='delivery_code'  class="normal"/><label>*</label></td>
 		        </tr>
-				<tr>
+				<tr name='delivery'>
 		            <th>上传图片：</th><td><input type='file' name='delivery_img' /></td>
 		        </tr>
 				<tr>
@@ -103,10 +103,15 @@ $(function(){
 		if(is_send==0){
 			$('input[type=radio][name=type][value=0]').attr('checked',true);
 			$('input[type=radio][name=type][value=1]').attr('disabled',true);
+			$('tr[name=delivery]').hide();
 		}
 		else{
+			$('tr[name=delivery]').show();
 			$('input[type=radio][name=type][value=1]').attr('disabled',false);
 		}
 	})
+})
+$(function(){
+	$('input[type=radio][name=order_goods_id]').eq(0).trigger('click');
 })
 </script>
