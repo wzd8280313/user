@@ -4016,7 +4016,7 @@ function checkValidCodeOnBlur() {
         if (b.length != 4) {
             jQuery("#code_right").hide();
             jQuery("#code_wrong").show();
-            $("#error_tips").text("请输入4位验证码");
+            $("#error_tips").text("请输入5位验证码");
             $("#error_tips").show()
         }
     }
