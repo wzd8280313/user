@@ -218,11 +218,11 @@ ul.logolist li{float:left;width:150px;height:40px;margin:7px;border:1px solid #c
 ul.logolist li.s{width:100px;height:35px;margin:5px 2px}
 /* logolist style start */
 /* form table style start */
-label input{cursor:pointer;background-color:#f60;width:125px;border:solid 1px 
-#f30;color:#FFF; position:relative;top:0px;font-size: 16px;}
-label input[type='radio']{
-    width: 20px;
-}
+
+
+label input{cursor:pointer height:30px;width:100px; /*background-color:#f60;border:solid 1px 
+#f30;color:#FFF;*/ position:relative;top:0px;}
+
 .form_table label{margin-right:5px;vertical-align:middle;color:#a6a6a6}
 .form_table label.attr{color:#1d1d1d}
 
