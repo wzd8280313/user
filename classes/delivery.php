@@ -34,14 +34,14 @@ class Delivery
 
 	/**
 	 * @brief 配送方式计算管理模块
-	 * @param $province    int 省份的ID
+	 * @param $area    int 区域的ID
 	 * @param $delivery_id int 配送方式ID
 	 * @param $goods_id    int 商品ID
 	 * @param $product_id  int 货品ID
 	 * @param $num         int 商品数量
 	 * @return array(if_delivery => 0:支持配送;1:不支持配送; price => 运费;protect_price => 保价;)
 	 */
-	public static function getDelivery($province,$delivery_id,$goods_id,$product_id = 0,$num = 1)
+	public static function getDelivery($area,$delivery_id,$goods_id,$product_id = 0,$num = 1)
 	{
 		$goodsRow = $product_id > 0 ? Api::run("getProductInfo",array('#id#',$product_id)) : Api::run("getGoodsInfo",array('#id#',$goods_id));
 
@@ -88,7 +88,19 @@ class Delivery
 			foreach($area_groupid as $key => $result)
 			{
 				//匹配到了特殊的省份运费价格
-				if(strpos($result,';'.$province.';') !== false)
+				if(strpos($result,';'.$area.';') !== false)
+				{
+					$matchKey = $key;
+					$flag     = true;
+					break;
+				}
+				else if(strpos($result,';'.substr($area,0,4).'00;') !== false){
+					$matchKey = $key;
+					$flag     = true;
+					break;
+					
+				}
+				else if(strpos($result,';'.substr($area,0,2).'0000;') !== false)
 				{
 					$matchKey = $key;
 					$flag     = true;

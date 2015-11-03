@@ -90,19 +90,24 @@ class System extends IController
         {
             $delivery = new IModel('delivery');
             $data = $delivery->getObj('id = '.$id);
+            $data['area_groupid'] = unserialize($data['area_groupid']) ;
+            $area = array();
+            if( $data['area_groupid']){
+            		
+            	foreach($data['area_groupid'] as $key=>$val){
+            		$tem_arr = explode(';',$val);
+            		foreach($tem_arr as $v){
+            			if($v!='')
+            				$area[$v] = area::getNameStr($v);
+            		}
+            	}
+            }
+            $this->data_info = $data;
+            $this->area = $area;
 		}
 
 		//获取省份
-		$areaData = array();
-		$areaDB = new IModel('areas');
-		$areaList = $areaDB->query('parent_id = 0');
-		foreach($areaList as $val)
-		{
-			$areaData[$val['area_id']] = $val['area_name'];
-		}
-		$this->areaList  = $areaList;
-		$this->data_info = $data;
-		$this->area      = $areaData;
+		
         $this->redirect('delivery_edit');
 	}
 

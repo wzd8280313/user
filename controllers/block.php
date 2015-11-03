@@ -145,14 +145,14 @@ class Block extends IController
     {
     	$productId    = IFilter::act(IReq::get("productId"),'int');
     	$goodsId      = IFilter::act(IReq::get("goodsId"),'int');
-    	$province     = IFilter::act(IReq::get("province"),'int');
-    	$distribution = IFilter::act(IReq::get("distribution"),'int');
+    	$area     = IFilter::act(IReq::get("area"),'int');
+    	$distribution = IFilter::act(IReq::get("distribution"),'int');//配送方式
     	$num          = IReq::get("num") ? IFilter::act(IReq::get("num"),'int') : 1;
 		$data         = array();
 		
 		if($distribution)
 		{
-			$data = Delivery::getDelivery($province,$distribution,$goodsId,$productId,$num);
+			$data = Delivery::getDelivery($area,$distribution,$goodsId,$productId,$num);
 		}
 		else
 		{

@@ -121,10 +121,10 @@ function address_save()
 function get_delivery()
 {
 	orderFormInstance.deliveryPrice = 0;
-	var province = $('[name="province"]').val();
+	var area     = $('[name=area]').val();
 	var delivery = $('[name="delivery_id"]:checked').val();
 	
-	if(!province || !delivery)
+	if(!area || !delivery)
 	{
 		return;
 	}
@@ -133,7 +133,7 @@ function get_delivery()
 	{
 		var idValue = $(this).attr('id');
 		var dataArray = idValue.split("_");
-		$.getJSON("{url:/block/order_delivery}",{"province":province,"distribution":delivery,"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},function(content){
+		$.getJSON("{url:/block/order_delivery}",{"area":area,"distribution":delivery,"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},function(content){
 			//地区无法送达
 			if(content.if_delivery == 1)
 			{
