@@ -459,6 +459,12 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 
 <script type="text/javascript">
 $('a').attr('target','_blank');
+var anchors = document.getElementById("floornav").getElementsByTagName("a"); 
+for(i=0;i<anchors.length;i++){ 
+var anchor_item = anchors[i]; 
+anchor_item.target="_self"; 
+} 
+
 var _mvq = window._mvq || []; 
 window._mvq = _mvq;
 _mvq.push(['$setAccount', 'm-183213-0']);
