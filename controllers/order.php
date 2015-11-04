@@ -278,6 +278,10 @@ class Order extends IController
 				$order_goods_row = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
 				
 				if($type==1&&$pay_status==7){//换货类型且审核通过
+					if(!$chg_goods_id){
+						$chg_goods_id = $refund_data['goods_id'];
+						$chg_product_id = $refund_data['product_id'];
+					}
 					$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
 					if(!$chgRes){
 						$this->redirect('refundment_chg_list');

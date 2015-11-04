@@ -178,9 +178,9 @@ class Simple extends IController
     	else if($password==''){
     		$data['errorCode'] = 2;
     	}
-    	else if(($errTimes = $this->getErrTimes($login_info))>7){//帐户锁定，打电话解冻
-    		$data['errorCode'] = 13;
-    	}
+//     	else if(($errTimes = $this->getErrTimes($login_info))>7){//帐户锁定，打电话解冻
+//     		$data['errorCode'] = 13;
+//     	}
     	else if($errTimes>3 && ISafe::get('captcha')!=$captcha){//二次添加
     			$data['errorCode'] = 10;
     	}
