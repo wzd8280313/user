@@ -5,6 +5,10 @@ $(document).ready(function(){
 	        paginationClickable: true,
 	        spaceBetween:2,
 	        slideToClickedSlide: true,
+			//loop : true,
+			//slidesPerView : 'auto',
+			//loopedSlides :6,
+			
 	    });
 	    swiperHead.on('click', function(evt){
 	    	swiperPanel.slideTo(swiperHead.clickedIndex);
@@ -13,10 +17,13 @@ $(document).ready(function(){
 		
 //ÄÚÈÝ»¬¶¯
 		var swiperPanel = new Swiper('.swiper-container.panel', {
-	        slidesPerView: 1
+	        slidesPerView: 1,
+			//loop : true,
+			//slidesPerView : 'auto',
+			//loopedSlides :6,
 	    });
 	    swiperPanel.on('slideChangeEnd', function(evt){
-	    	swiperHead.slideTo(swiperPanel.activeIndex);
+	    	swiperHead.slideTo(swiperPanel.activeIndex-1);
 	    	$(".swiper-container.head").find(".swiper-slide").eq(swiperPanel.activeIndex).addClass("active").siblings().removeClass("active");
 	    });
 		
