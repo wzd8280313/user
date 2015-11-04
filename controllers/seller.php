@@ -970,7 +970,7 @@ class Seller extends IController
 		//商户处理退款
 		if($refundment_id && Order_Class::isSellerRefund($refundment_id,$this->seller['seller_id']) == 2)
 		{
-			if($type==1&&$pay_status==2){//换货类型且确认换货成功
+			if($type==1&&$pay_status==7){//换货类型且确认换货成功
 				$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
 				if(!$chgRes){
 					$this->redirect('refundment_chg_list');
@@ -979,6 +979,12 @@ class Seller extends IController
 			}
 			
 			$tb_refundment_doc = new IModel('refundment_doc');
+			if($refund_data = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,user_id,pay_status,goods_id,product_id')){
+				$order_id = $refund_data['order_id'];
+				$user_id = $refund_data['user_id'];
+				$order_goods_db = new IModel('order_goods');
+				$order_goods_row = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
+			}
 			$dispose_time_name = !$status ? 'dispose_time' : 'dispose_time2';
 			$setData=array(
 					'pay_status'   => $pay_status,
@@ -990,6 +996,15 @@ class Seller extends IController
 			if($delivery_add)$setData['delivery_add']=$delivery_add;
 			$tb_refundment_doc->setData($setData);
 			$tb_refundment_doc->update('id = '.$refundment_id);
+			if($order_goods_row['is_send']==1){
+				//增加用户评论商品机会
+				Order_Class::addGoodsCommentChange($order_id);
+					
+				//经验值、积分、代金券发放
+			}
+		
+			Order_Class::sendGift($order_id,$user_id);
+			Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
 		}
 		$type==1 ? $this->redirect('refundment_chg_list') : $this->redirect('refundment_list');
 		

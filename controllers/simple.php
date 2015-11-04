@@ -169,7 +169,7 @@ class Simple extends IController
 		
 		$password   = md5($password);
 		$captcha = IFilter::act(IReq::get('validCode'),'str');
-		
+		$errTimes = $this->getErrTimes($login_info);
 		$data=array('errorCode'=>0);
     	if($login_info == '')
     	{

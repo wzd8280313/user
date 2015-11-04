@@ -109,7 +109,7 @@
 					<fieldset>
 						<label>处理：</label>
 						<div  class="box">
-							<label><input type="radio" name="pay_status" value="2" checked='checked' />同意</label>&nbsp;&nbsp;
+							<label><input type="radio" name="pay_status" value="7" checked='checked' />同意</label>&nbsp;&nbsp;
 							<label><input type="radio" name="pay_status" value="5" />拒绝</label>
 							<span class='red'>同意后将钱打入用户帐户</span>
 						</div>
@@ -185,7 +185,7 @@ function refundment(id,refundsId)
 		id:'refundment',
 		cancelVal:'关闭',
 		okVal:'退款',
-	    title: '订单号:{$order_no}【退款到余额账户】',
+	    title: '订单号:{$order_no}',
 	    ok:function(iframeWin, topWin){
 	    	iframeWin.document.forms[0].submit();
 	    	return false;

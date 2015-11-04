@@ -1509,6 +1509,9 @@ class Order_Class
 					$setData = array('status' => 5,'pay_status'=>5,'distribution_status'=>5);
 				}
 			}
+			else{
+				
+			}
 		}
 		else{
 			return false;
