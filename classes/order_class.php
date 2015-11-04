@@ -1253,13 +1253,18 @@ class Order_Class
 				$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
 				$order_goods_query->fields = 'SUM(g.point) as point ,SUM(g.exp) as exp,SUM(og.real_price*og.goods_nums) as real_amount';
 				$order_goods_query->where  = 'og.order_id='.$order_id.' and og.is_send!=2';
-				$order_goods_add = $order_goods_query->find();
+				
+				if($order_goods_add = $order_goods_query->find()){
+					$exp_add = $order_goods_add[0]['exp'];
+					$exp_add = $exp_add<0 ? 0 :$exp_add;
+					$point_add = $order_goods_add[0]['point'];
+					$point_add = $point_add<0 ? 0 : $point_add;
+					$real_amount = $order_goods_add[0]['real_amount'];
+				}else{
+					return false;
+				}
 				//print_r($order_goods_add);exit;
-				$exp_add = $order_goods_add[0]['exp'];
-				$exp_add = $exp_add<0 ? 0 :$exp_add;
-				$point_add = $order_goods_add[0]['point'];
-				$point_add = $point_add<0 ? 0 : $point_add;
-				$real_amount = $order_goods_add[0]['real_amount'];
+				
 			}else{
 				$exp_add = $orderRow['exp'];
 				$point_add = $orderRow['point'];

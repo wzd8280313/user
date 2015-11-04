@@ -1358,9 +1358,9 @@ class Simple extends IController
 			{
 				$content = smsTemplate::findPassword(array('{mobile_code}' => $mobile_code));
 				$result = Hsms::send($mobile,$content);
-				if($result == 'success')
+				if($result)
 				{
-					die('success');
+					die('success');exit;
 				}
 				die('短信发送失败');
 			}
