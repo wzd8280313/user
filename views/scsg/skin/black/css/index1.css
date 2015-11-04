@@ -897,35 +897,30 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 	
 }
 .ad_cycle .nonce {
-    background: rgba(0, 0, 0, 0) url("../images/FocusLiBg02.gif") repeat scroll 0 0;
-    border: 1px solid #ad1019;
-    font-weight: 100;
+    BACKGROUND: #347e0d;
 }
 .ad_cycle .initial {
-    background: rgba(0, 0, 0, 0) url("../images/FocusLiBg01.gif") repeat scroll 0 0;
-    border: 1px solid #dedad9;
-    color: #ac2128;
-    font-weight: 100;
+   DISPLAY: block; FLOAT: left; WIDTH: 32px; CURSOR: pointer; HEIGHT: 8px; TEXT-ALIGN: center; margin-left: 1px; background: #aaa; color: #fff; 
 }
 .ad_cycle ul {
     float: right;
     padding-right: 15px;
 }
 .ad_cycle li {
-    color: #fff;
-    cursor: pointer;
-    float: left;
-    font-weight: bold;
-    height: 19px;
-    line-height: 19px;
-    margin-left: 4px;
-    text-align: center;
-    width: 19px;
+   DISPLAY: block;
+FLOAT: left;
+WIDTH: 32px;
+CURSOR: pointer;
+HEIGHT: 8px;
+TEXT-ALIGN: center;
+margin-left: 1px;
+background: #aaa;
+color: #fff;
 }
 .ad_cycle .number {
     bottom: 8px;
     position: absolute;
-    right: 50px;
+    right: 300px;
     z-index:9999;
 }
 #scroll{

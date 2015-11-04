@@ -1810,4 +1810,7 @@ class Order extends IController
 		$db_fa->update('id='.$id);
 		$this->redirect('fapiao');
 	}
+	public function ship_info_list(){
+		$this->redirect('ship_info_list');
+	}
 }

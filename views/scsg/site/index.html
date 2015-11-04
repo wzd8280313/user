@@ -90,9 +90,9 @@ _mvq.push(['$logConversion']);
 							{set:$key=$key+1}
 							{if:$key==1}
 							{set:$fUrl=$item['url'];$fImg=$item['img'];}
-								<li class="nonce" alt="{$key}" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}">{$key}</li>
+								<li class="nonce" alt="{$key}" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}"></li>
 							{else:}
-								<li class="initial" alt="1" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}">{$key}</li>
+								<li class="initial" alt="1" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}"></li>
 							{/if}
 						{/foreach}
 					</ul>
@@ -369,7 +369,7 @@ _mvq.push(['$logConversion']);
 				<!--分层轮播广告-->
 				<div class="fl-rcmd1 f-l" >
 					<div class="fl-rcmd-bg1 ad-shine" >
-									
+					
 						{echo:Ad::show("首页楼层".$Kad."-大广告")}
 					</div>
 				</div>
