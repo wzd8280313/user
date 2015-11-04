@@ -557,10 +557,10 @@ class Order_Class
 			if($orderRow['distribution_status'] == 7){
 				return 20;
 			}
-			else if($orderRow['distribution_status'] == 0 && $orderRow['pay_status'] == 3){
+			else if($orderRow['pay_status'] == 3){
 				return 18;
 			}
-			else if($orderRow['distribution_status'] == 0 && $orderRow['pay_status'] == 4){
+			else if( $orderRow['pay_status'] == 4){
 				return 19;
 			}
 			elseif($orderRow['distribution_status'] == 0)
@@ -597,7 +597,7 @@ class Order_Class
 			return 21;
 		}
 		else if($orderRow['status'] == 5 && $orderRow['pay_status']==5 && $orderRow['distribution_status']==5){
-			return 21;
+			return 22;//已发货退款完成
 		}
 		//4,完成订单
 		else if($orderRow['status'] == 5)
@@ -737,7 +737,7 @@ class Order_Class
 			3 => '已发货',
 			4 => '等待发货',
 			5 => '已取消',
-			6 => '已完成',
+			6 => '订单完成',
 			7 => '已退款',
 			8 => '部分发货',
 			9 => '部分发货',
@@ -751,7 +751,7 @@ class Order_Class
 			19=> '审核通过，等待退款',
 			20=> '等待换货',
 			21=> '订单完成',
-			22=> '订单完成'
+			22=> '订单完成',
 				
 		);
 		return isset($result[$statusCode]) ? $result[$statusCode] : '';
@@ -1043,7 +1043,7 @@ class Order_Class
 	public static function isRefundmentApply($orderRow)
 	{
 		//已经付款
-		if($orderRow['pay_status'] == 1 && $orderRow['status'] != 5 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
+		if($orderRow['distribution_status']!=3 && $orderRow['pay_status'] == 1 && $orderRow['status'] != 5 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
 		{
 			return true;
 		}

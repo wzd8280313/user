@@ -22,7 +22,7 @@ class Comment_Class
 
 		$tb_comment = new IQuery("comment as c");
 		$tb_comment->join = 'left join order_goods as og on c.order_id=og.order_id and c.goods_id=og.goods_id';
-		$tb_comment->where = 'c.id='.$comment_id.' AND c.user_id='.$user_id.' and og.is_send=1';
+		$tb_comment->where = 'c.id='.$comment_id.' AND c.user_id='.$user_id;
 		$tb_comment->fields = 'c.*';
 		$comment = $tb_comment->getObj();
 		

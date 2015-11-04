@@ -160,10 +160,9 @@ class Ucenter extends IController
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,g.id as goods_id,c.status as comment_status';
+		$order_db->fields = 'o.*,g.id as goods_id,c.status as comment_status,c.id as comment_id';
 		$this->order_db = $order_db;
         $this->initPayment();
-        
         $data['s_beginTime'] = $beginTime;
         $data['s_endTime'] = $endTime;
         $data['s_order_no'] = $order_no;

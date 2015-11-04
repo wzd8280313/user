@@ -1,7 +1,7 @@
 {set:$orderStatus = Order_class::getOrderStatus(array('status' => $status,'pay_status'=> $pay_status,'pay_type' => $pay_type,'distribution_status' => $distribution_status))}
 {set:$id=IFilter::act(IReq::get('id'),'int');}
 {set:$cancle = Order_Class::is_cancle($id);}
-
+{$orderStatus}
 <div class="headbar clearfix">
 	<div class="position">订单<span>></span><span>订单管理</span><span>></span><span>订单查看</span></div>
 	<ul class="tab" name="menu1">
@@ -541,13 +541,13 @@ function initButton()
 	{/if}
 
 	//发货
-	{if:in_array($orderStatus,array(1,4,8,9,12,20))}
+	{if:in_array($orderStatus,array(1,4,8,9,12,20,18,19))}
 	$('#to_deliver').removeAttr('disabled');
 	$('#to_deliver').removeClass('inactive');
 	{/if}
 
 	//退款
-	{if:in_array($orderStatus,array(4,6,9,10,12,13,15,16,19,20))}
+	{if:in_array($orderStatus,array(4,6,9,10,12,13,15,16,18,19,20))}
 	$('#to_refundment').removeAttr('disabled');
 	$('#to_refundment').removeClass('inactive');
 	{/if}
