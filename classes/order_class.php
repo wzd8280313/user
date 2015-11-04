@@ -1212,7 +1212,7 @@ class Order_Class
 		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
-		
+		$orderGoodsDB->commit();
 
 		
 		//生成订单日志
@@ -1244,18 +1244,22 @@ class Order_Class
 			$real_amount = $orderRow['real_amount'];
 			
 			$order_goods_query = new IQuery('order_goods as og');
-			$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+			
 			$order_goods_query->where = 'og.order_id='.$order_id.' and og.is_send=2';
-			$order_goods_query->fields = 'og.*,SUM(g.point) as point,SUM(g.exp) as exp ,SUM(og.real_price) as real_amount ';
+			$order_goods_query->fields = 'og.id';
 			$order_goods_query->group = 'og.order_id';
 			
 			if($order_goods_data = $order_goods_query ->find()){//存在退货
-				
-				$exp_add = $orderRow['exp'] - $order_goods_data[0]['exp'];
+				$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+				$order_goods_query->fields = 'SUM(g.point) as point ,SUM(g.exp) as exp,SUM(og.real_price*og.goods_nums) as real_amount';
+				$order_goods_query->where  = 'og.order_id='.$order_id.' and og.is_send!=2';
+				$order_goods_add = $order_goods_query->find();
+				//print_r($order_goods_add);exit;
+				$exp_add = $order_goods_add[0]['exp'];
 				$exp_add = $exp_add<0 ? 0 :$exp_add;
-				$point_add = $orderRow['point'] - $order_goods_data[0]['point'];
+				$point_add = $order_goods_add[0]['point'];
 				$point_add = $point_add<0 ? 0 : $point_add;
-				$real_amount -= $order_goods_data[0]['real_amount'];
+				$real_amount = $order_goods_add[0]['real_amount'];
 			}else{
 				$exp_add = $orderRow['exp'];
 				$point_add = $orderRow['point'];
@@ -1433,7 +1437,9 @@ class Order_Class
 		//退款额计算：将促销优惠和红包优惠平均分配
 		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
 		$amount = $amount - $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
-		return number_format($amount,2);	
+		//rturn$amount = str_replace(',','',$amount);
+		$amount = number_format(floatval($amount),2);
+		return str_replace(',','',$amount);	
 	}
 	/**
 	 * 退款时修改订单状态

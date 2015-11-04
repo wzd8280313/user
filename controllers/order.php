@@ -268,9 +268,6 @@ class Order extends IController
 		);
 		if($delivery_add)$setData['delivery_add']=$delivery_add;
 		
-		
-		
-		
 		if($refundment_id)
 		{
 			$tb_refundment_doc = new IModel('refundment_doc');
@@ -468,8 +465,8 @@ class Order extends IController
 				Order_Class::addGoodsCommentChange($order_id);
 					
 				//经验值、积分、代金券发放
-				Order_Class::sendGift($order_id,$user_id);
 			}
+			Order_Class::sendGift($order_id,$user_id);
 			Order_Class::order_status_refunds(2,$orderGoodsRow);
 			
 		if($result)

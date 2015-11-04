@@ -1111,7 +1111,15 @@ class Site extends IController
 
 
 	function ce(){
-		print_r($_SESSION);
+		$order_id = 554;
+		$order_goods_query = new IQuery('order_goods as og');
+		//$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+				$order_goods_query->fields = 'og.*';
+				$order_goods_query->where  = 'og.order_id='.$order_id.' and og.is_send=0';
+				$order_goods_add = $order_goods_query->find();
+				print_r($order_goods_add);exit;
+		
+		
 	}
 	
 }
