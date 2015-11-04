@@ -1506,4 +1506,6 @@ class Order_Class
 		$order_db->update('id='.$goodsOrderRow['order_id']);
 		
 	}
+
+	
 }

@@ -292,7 +292,7 @@ class Ucenter extends IController
 			case "confirm":
 			{
 				$model->setData(array('status' => 5,'completion_time' => date('Y-m-d h:i:s')));
-				if($model->update("id = ".$id." and distribution_status = 1 and user_id = ".$this->user['user_id']))
+				if($model->update("id = ".$id."  and user_id = ".$this->user['user_id']))
 				{
 					$orderRow = $model->getObj('id = '.$id);
 
