@@ -20,15 +20,15 @@ class Ucenter extends IController
     public function index()
     {
     	$userid = $this->user['user_id'];
-    	$where = "user_id =".$userid." and if_del= 0 and type !=4 ";
+    	$where = "o.user_id =".$userid." and if_del= 0 and o.type !=4 ";
     	
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+    	$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on c.order_id=o.id';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->limit  = 6;
     	$order_db->order = 'o.id DESC';
-    	$order_db->fields = 'o.*';
+    	$order_db->fields = 'o.*,c.status as comment_status';
     	$this->order_db = $order_db;
         $this->initPayment();
         $this->redirect('index');
@@ -142,7 +142,7 @@ class Ucenter extends IController
     		}
     		$status_str=' ('.substr($status_str,0,-4).') ';
     	}
-    	$where = "user_id =".$userid." and if_del= 0 and type !=4 ";
+    	$where = "o.user_id =".$userid." and if_del= 0 and type !=4 ";
     	$where .= $status_str ? ' and '.$status_str : '';
     	$where .= $seller_str ? ' and '.$seller_str : '';
   		 if($beginTime)
@@ -155,12 +155,12 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on c.order_id=o.id';
 		$order_db->group = 'og.order_id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,g.id as goods_id';
+		$order_db->fields = 'o.*,g.id as goods_id,c.status as comment_status';
 		$this->order_db = $order_db;
         $this->initPayment();
         
@@ -1733,7 +1733,7 @@ class Ucenter extends IController
     		}
     	}
 
-    	$where = "user_id =".$userid." and if_del= 0 and type=4 ";
+    	$where = "o.user_id =".$userid." and if_del= 0 and o.type=4 ";
     	$where .= $status_str ? ' and '.$status_str : '';
     	$where .= $seller_str ? ' and '.$seller_str : '';
     	if($beginTime)
@@ -1746,11 +1746,11 @@ class Ucenter extends IController
     	}
     	if($order_no)$where = ' o.order_no='.$order_no;
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id';
+    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on c.order_id=o.id';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->page  = $page;
-    	$order_db->fields = 'o.*,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days';
+    	$order_db->fields = 'o.*,og.goods_id,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days,c.status as comment_status';
     	$order_db->order = 'o.id DESC';
     	$preorder_list = $order_db->find();
     	foreach($preorder_list as $key=>$val){

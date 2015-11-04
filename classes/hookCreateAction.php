@@ -302,4 +302,10 @@ class hookCreateAction extends IInterceptorBase
 		}
 			
 	}
+	public static function site_search_list(){
+		self::pregoods_presell_list();
+	}
+	public static function site_products(){
+		self::pregoods_presell_list();
+	}
 }

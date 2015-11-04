@@ -969,12 +969,16 @@ class Site extends IController
 		{
 			$goods_id = IFilter::act(IReq::get('goods_id'),'int');
 			$order_id = IFilter::act(IReq::get('order_id'),'int');
-			$comment_db = new IModel('comment');
-			$id = $comment_db->getField('goods_id='.$goods_id.' and order_id='.$order_id,'id');
-			if(!$id){
+			$comment_db = new IQuery('comment as c');
+			$comment_db->join = 'left join order_goods as og on c.order_id=og.order_id and c.goods_id=og.goods_id';
+			$comment_db->where = 'c.order_id='.$order_id.' and og.is_send=1';
+			$comment_db->fields = 'c.id';
+			$comment_data = $comment_db->getObj();
+		
+			if(!$comment_data){
 				IError::show(403,"传递的参数不完整");
 			}
-			
+			$id = $comment_data['id'];
 		}
 
 		if(!isset($this->user['user_id']) || $this->user['user_id']==null )
@@ -991,6 +995,9 @@ class Site extends IController
 		$this->can_submit   = $can_submit[0]==1;//true值
 		$this->comment      = $can_submit[1]; //评论数据
 		$this->comment_info = Comment_Class::get_comment_info($this->comment['goods_id']);
+		$goods_id=$this->comment['goods_id'];
+		$goods_db = new IModel('goods');
+		$this->goodsRow = $goods_db->getObj('id='.$goods_id);
 		//print_r($this->comment);
 		$this->redirect("comments");
 	}

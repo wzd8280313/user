@@ -94,7 +94,12 @@
 					{elseif:$item['status']==9}
 					<a href="{url:/ucenter/preorder_status/op/confirm/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="确认收货" /></a>
 					{elseif:$item['status']==11}
-					<a href="{url:/ucenter/evaluation}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+					{if:$item['comment_status']==1}
+					<b class="orange">已评价</b>
+					{else:}
+					<a href="{url:/site/comments/goods_id/$item['goods_id']/order_id/$item['id']}}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+					
+					{/if}
 					
 					{else:}
                 	<b class="orange">{$status}</b>
