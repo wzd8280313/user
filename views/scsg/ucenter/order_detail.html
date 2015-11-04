@@ -69,17 +69,17 @@
 			<table class="dotted_table f_l" width="100%" cellpadding="0" cellspacing="0">
 				<col width="130px" />
 				<col />
-				{if:in_array($item['pay_status'],array(0,4,7))}
+				{if:$itme['type']==0 && in_array($item['pay_status'],array(0,4,7)) || $itme['type']==1 && in_array($item['pay_status'],array(0,4))}
 				<tr>
 					<th></th>
 					<td>
 						
-						<sapn class='countdown det_tuan' id="timeRemaining-1" style='line-height:40px;font-size:14px;'>
+						<sapn class='countdown det_tuan' id="timeRemaining-{$key}" style='line-height:40px;font-size:14px;'>
 							卖家还有
-										<span id='cd_day_1'></span>天
-										<span id='cd_hour_1'></span>小时
-										<span id='cd_minute_1'></span>分
-										<span id='cd_second_1'></span>秒	  来处理您的申请，逾期未处理则{if:$item['type']==0}自动退款给您{else:}自动通过审核{/if}
+										<span id='cd_day_{$key}'></span>天
+										<span id='cd_hour_{$key}'></span>小时
+										<span id='cd_minute_{$key}'></span>分
+										<span id='cd_second_{$key}'></span>秒	  来处理您的申请，逾期未处理则{if:$item['type']==0}自动退款给您{else:}自动通过审核{/if}
 										<input name='endTime' type='hidden' value='{$item["end_time"]}' />
 							
 							</sapn>
