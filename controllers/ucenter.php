@@ -510,7 +510,7 @@ class Ucenter extends IController
         		$refundsDB->setData($updateData);
         		$refundsDB->add();
 
-        		$this->redirect('morder');
+        		$this->redirect('order');
         		exit;
         	}
         	else
@@ -524,7 +524,7 @@ class Ucenter extends IController
         	$message = '订单未付款';
         }
 
-        $this->redirect('morder',false);
+        $this->redirect('order',false);
         Util::showMessage($message);
     }
     /**
