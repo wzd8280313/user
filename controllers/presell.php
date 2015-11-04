@@ -133,7 +133,7 @@ class Presell extends IController
 			}
 			$ids = substr($ids,0,-1);
 			$goodsObj = new IModel('goods');
-			$goodsObj->setData(array('is_del'=>0));
+			$goodsObj->setData(array('is_del'=>1));
 			$goodsObj->update('id in ('.$ids.')');
 			$this->redirect('presell_list');
 		}

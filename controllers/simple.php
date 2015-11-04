@@ -990,7 +990,7 @@ class Simple extends IController
 		$paymentType= $paymentRow['type'];
 
 		//最终订单金额计算
-		$orderData = $countSumObj->countOrderFee($goodsResult,$province,$delivery_id,$payment,$insured,$taxes);
+		$orderData = $countSumObj->countOrderFee($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
 		//print_r($orderData);
 		if(is_string($orderData))
 		{

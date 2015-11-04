@@ -88,7 +88,7 @@ class Ucenter extends IController
     	$userid = $this->user['user_id'];
     	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
     	$status_array = array(
-    		'1' => array('status'=>'=1','pay_type'=>'!=1'),//等待付款
+    		'1' => array('status'=>'=1','pay_status'=>'=0'),//等待付款
     		'2' => array('status'=>'in (3,4) '),//取消订单
     		'3' => array(//等待发货
     				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=0'),
@@ -100,17 +100,17 @@ class Ucenter extends IController
     		),
     		'5' => array(
     				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=2'),
-    				array('status'=>'=7','distribution_status'=>'in (0,2) ')
+    				//array('status'=>'=7','distribution_status'=>'in (0,2) ')
     		),
     		'6' => array(
     			'status'=>'=5'
     		),
-    		'7' => array(
-    			'status' => '=6'
-    		),
-    		'8' => array(
-    				'status'=>'=7','distribution_status'=>'=1'
-    		)
+//     		'7' => array(
+//     			'status' => '=6'
+//     		),
+//     		'8' => array(
+//     				'status'=>'=7','distribution_status'=>'=1'
+//     		)
     	);
     	$status_str = $seller_str = '';
     	$order_no = IFilter::act(IReq::get('order_no'));
@@ -510,7 +510,7 @@ class Ucenter extends IController
         		$refundsDB->setData($updateData);
         		$refundsDB->add();
 
-        		$this->redirect('order');
+        		$this->redirect('morder');
         		exit;
         	}
         	else
@@ -524,7 +524,7 @@ class Ucenter extends IController
         	$message = '订单未付款';
         }
 
-        $this->redirect('order',false);
+        $this->redirect('morder',false);
         Util::showMessage($message);
     }
     /**

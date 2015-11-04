@@ -80,7 +80,7 @@ class Delivery
  		//当配送方式为指定区域和价格的时候
  		else
  		{
-			$matchKey = '';
+			$matchKey = $matchKeyArea = $matchKeyCity = $matchKeyProvince = '';
 			$flag     = false;
 
 			//每项都是以';'隔开的省份ID
@@ -88,29 +88,27 @@ class Delivery
 			foreach($area_groupid as $key => $result)
 			{
 				//匹配到了特殊的省份运费价格
-				if(strpos($result,';'.$area.';') !== false)
+				if(strpos($result,';'.$area.';') !== false && $matchKeyArea=='')
 				{
-					$matchKey = $key;
+					$matchKeyArea = $key;
 					$flag     = true;
-					break;
 				}
-				else if(strpos($result,';'.substr($area,0,4).'00;') !== false){
-					$matchKey = $key;
+				else if(strpos($result,';'.substr($area,0,4).'00;') !== false && $matchKeyCity==''){
+					$matchKeyCity = $key;
 					$flag     = true;
-					break;
 					
 				}
-				else if(strpos($result,';'.substr($area,0,2).'0000;') !== false)
+				else if(strpos($result,';'.substr($area,0,2).'0000;') !== false && $matchKeyProvince='')
 				{
-					$matchKey = $key;
+					$matchKeyProvince = $key;
 					$flag     = true;
-					break;
 				}
 			}
 
 			//匹配到了特殊的省份运费价格
 			if($flag)
 			{
+				$matchKey = $matchKeyArea || $matchKeyCity || $matchKeyProvince;
 				//获取当前省份特殊的运费价格
 				$firstprice  = unserialize($deliveryRow['firstprice']);
 				$secondprice = unserialize($deliveryRow['secondprice']);

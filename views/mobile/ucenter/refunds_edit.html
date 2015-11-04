@@ -67,10 +67,18 @@
 						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good}
 						{set:$good_info = JSON::decode($good['goods_array'])}
 						{if:$good['is_send'] != 2}
-					  	<option  value="{$good['id']}">{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</option>
+					  	<option  is_send='{$good["is_send"]}' value="{$good['id']}">{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</option>
 					  {/if}
 					  {/foreach}
 					</select>
+				</p>
+				<p>快递公司<span class="red">(*未发货不填)</span></p>
+				<p>
+					<input type='text' class="text" name='delivery_com'/>
+				</p>
+				<p>快递单号<span class="red">(*未发货不填)</span></p>
+				<p>
+					<input type='text' class="text" name='delivery_code'/>
 				</p>
 				<p>说明</p>
 				<p><textarea type="text" class="text" style='height:70px;' name='content' required></textarea></p>

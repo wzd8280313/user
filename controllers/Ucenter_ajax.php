@@ -49,10 +49,10 @@ class Ucenter_ajax extends IController
 		$order_db = new IQuery('order as o');
 		$where = '';
 		if($status==1){//待付款
-			$where .= ' and (type!=4 and status=1 and pay_type != 0 OR type=4 and status in (1,4) )';
+			$where .= ' and (o.type!=4 and o.status=1 and o.pay_type!=0  or o.type=4 and o.status in (1,4) )';
 			
 		}else if($status==2){//待发货
-			$where .= ' and (type!=4 and status=2 and distribution_status!=1 OR type=4 and status=7)';
+			$where .= ' and (o.type!=4 and o.status=2 and o.distribution_status=0 OR o.type=4 and o.status=7)';
 		}
 		else if($status==3){//待收货
 			$where .= ' and (type!=4 and status!=5 and distribution_status = 1 OR type=4 and status=9)';
