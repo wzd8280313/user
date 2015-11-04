@@ -30,6 +30,17 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	{js:form}
 	{js:validate}
 	{js:artTemplate}
+	<!--[if IE 8]>
+	 <script type="text/javascript">
+	window.location="{url:/site/}";
+	</script>
+	<![endif]-->
+	
+	<!--[if lte IE 7]>
+	 <script type="text/javascript">
+	window.location="{url:/simple/upbrower}";
+	</script>
+	<![endif]-->
 	<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=aero}' ></script>
 		<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/plugins/iframeTools.js}' ></script>
 	<script type='text/javascript' src="{theme:javascript/common.js}"></script>

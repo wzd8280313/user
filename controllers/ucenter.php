@@ -88,22 +88,22 @@ class Ucenter extends IController
     	$userid = $this->user['user_id'];
     	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
     	$status_array = array(
-    		'1' => array('status'=>'=1','pay_status'=>'=0'),//等待付款
-    		'2' => array('status'=>'in (3,4) '),//取消订单
+    		'1' => array('o.status'=>'=1','pay_status'=>'=0'),//等待付款
+    		'2' => array('o.status'=>'in (3,4) '),//取消订单
     		'3' => array(//等待发货
-    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=0'),
-    				array('status'=>'=2','distribution_status'=>'=0')
+    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=0'),
+    				array('o.status'=>'=2','distribution_status'=>'=0')
     		),
     		'4' => array(//已发货
-    				array('status'=>'in (2,8) ','distribution_status'=>'=1'),
-    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=1'),
+    				array('o.status'=>'in (2,8) ','distribution_status'=>'=1'),
+    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=1'),
     		),
     		'5' => array(
-    				array('status'=>'=1','pay_type'=>'=0','distribution_status'=>'=2'),
+    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=2'),
     				//array('status'=>'=7','distribution_status'=>'in (0,2) ')
     		),
     		'6' => array(
-    			'status'=>'=5'
+    			'o.status'=>'=5'
     		),
 //     		'7' => array(
 //     			'status' => '=6'
@@ -510,7 +510,7 @@ class Ucenter extends IController
         		$refundsDB->setData($updateData);
         		$refundsDB->add();
 
-        		$this->redirect('morder');
+        		$this->redirect('order');
         		exit;
         	}
         	else
@@ -524,7 +524,7 @@ class Ucenter extends IController
         	$message = '订单未付款';
         }
 
-        $this->redirect('morder',false);
+        $this->redirect('order',false);
         Util::showMessage($message);
     }
     /**
@@ -1722,7 +1722,7 @@ class Ucenter extends IController
     	
     	$status_str = $seller_str = '';
     	if($status){
-    		$status_str = $status==12 ? ' status in (2,5,6,8)' : ' status='.$status;
+    		$status_str = $status==12 ? ' o.status in (2,5,6,8)' : ' o.status='.$status;
     	}
     
     	if($seller_id){

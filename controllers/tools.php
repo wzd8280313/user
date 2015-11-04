@@ -1076,4 +1076,10 @@ class Tools extends IController
 		}
 		$this->redirect("search_list");
 	}
+	function keyword_list(){
+		$this->redirect('keyword_list');
+	}
+	function search_list(){
+		$this->redirect('search_list');
+	}
 }
