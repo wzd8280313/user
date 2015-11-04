@@ -103,7 +103,7 @@ class Ucenter extends IController
     				//array('status'=>'=7','distribution_status'=>'in (0,2) ')
     		),
     		'6' => array(
-    			'status'=>'=5'
+    			'o.status'=>'=5'
     		),
 //     		'7' => array(
 //     			'status' => '=6'
