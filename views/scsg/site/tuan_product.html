@@ -28,6 +28,7 @@
 	var goods_id = {$goods_id};
 	var show_cart_url = '{url:/simple/showCart}';
 	var product_id = {$product_id};
+	var get_product_url = '{url:/site/getProduct}';
 	var max_num = '{$this->tuanData["limit_max_count"]}';
 	var min_num = '{$this->tuanData["limit_min_count"]}';
 	
@@ -341,6 +342,7 @@
 		<!--促销规则-->
 
 		<!--购买推荐-->
+		
 		{if:isset($buyer_id) && $buyer_id}
 				<div class="box m_10">
 			<div class="title">购买本商品的用户还购买过</div>

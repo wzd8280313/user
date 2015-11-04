@@ -202,7 +202,7 @@ class Site extends IController
 		
 		//[数据挖掘]最终购买此商品的用户ID列表
 		$tb_good = new IQuery('order_goods as og');
-		$tb_good->join   = 'left join order as o on og.order_id=o.id ';
+		$tb_good->join   = 'right join order as o on og.order_id=o.id ';
 		$tb_good->fields = 'DISTINCT o.user_id';
 		$tb_good->where  = 'og.goods_id = '.$goods_id;
 		$tb_good->limit  = 5;
@@ -692,7 +692,7 @@ class Site extends IController
 
 		//[数据挖掘]最终购买此商品的用户ID列表
 		$tb_good = new IQuery('order_goods as og');
-		$tb_good->join   = 'left join order as o on og.order_id=o.id ';
+		$tb_good->join   = 'right join order as o on og.order_id=o.id ';
 		$tb_good->fields = 'DISTINCT o.user_id';
 		$tb_good->where  = 'og.goods_id = '.$goods_id;
 		$tb_good->limit  = 5;

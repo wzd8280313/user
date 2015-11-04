@@ -5,6 +5,7 @@ function Spec_show(){
 	this.join_cart_url = join_cart_url;
 	this.goods_id    = goods_id;
 	this.show_cart_url = show_cart_url;
+	this.get_product_url = get_product_url;
 	//
 	this.init = function(product){
 		this.product = product;
@@ -118,9 +119,24 @@ function Spec_show(){
 				if(new_product[i]['spec_array']==specJSON){
 					$('#data_storeNums').text(new_product[i].store_nums);
 					this.checkStoreNums();
-					return ;
+					
 				}
 			}
+			specJSON = specArray.join(",");
+			var specJSON = '['+specArray.join(",")+']';
+
+		//获取货品数据并进行渲染
+		$.getJSON(this.get_product_url,{"goods_id":this.goods_id,"specJSON":specJSON,"random":Math.random},function(json){
+			if(json.flag == 'success')
+			{
+				var priceHtml = template.render('priceTemplate',json.data);
+				$('#price_panel').html(priceHtml);
+				//普通货品数据渲染
+				$('#product_id').val(json.data.id);
+
+			}
+			
+		});
 	
 		}
 	}

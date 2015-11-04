@@ -203,9 +203,9 @@ class CountSum
 //     			{
 //     				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
 //     			}
-    			
-    			if(isset($buyInfo['product']['data'][$val['goods_id']]['active_price']) && $buyInfo['product']['data'][$val['goods_id']]['active_price']){//如果存在活动价格
-					$minPrice = $buyInfo['product']['data'][$val['goods_id']]['active_price'];
+
+    			if(isset($buyInfo['product']['data'][$val['product_id']]['active_price']) && $buyInfo['product']['data'][$val['product_id']]['active_price']){//如果存在活动价格
+					$minPrice = $buyInfo['product']['data'][$val['product_id']]['active_price'];
 				}else{
 	    			$groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
 	    			if($groupPrice){
@@ -232,9 +232,8 @@ class CountSum
 		    	$this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id']);
 		    }
     	}
-		
 		$final_sum = $this->sum - $this->reduce;
-
+		
     	//总金额满足的促销规则
     	if($user_id&&$prom)
     	{
@@ -308,7 +307,6 @@ class CountSum
 	    	{
 	    		$typeRow  = $activeObject->originalGoodsInfo;
 	    		$disPrice = $activeObject->activePrice;
-				
 	    		
 	    		$buyInfo = array(
 	    				$type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num,'active_price'=>$disPrice)),'count' => $buy_num)

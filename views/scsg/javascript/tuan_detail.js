@@ -12,7 +12,7 @@ tuan_spec_show.sele_spec = function(_self)
 {
 	var new_product = this.new_product;
 	var specObj = $.parseJSON($(_self).attr('value'));
-
+	if($(_self).hasClass('not-allowed'))return false;
 	//已经为选中状态时
 	if($(_self).attr('class') == 'current')
 	{
@@ -39,9 +39,23 @@ tuan_spec_show.sele_spec = function(_self)
 				if(new_product[i]['spec_array']==specJSON){
 					$('#data_storeNums').text(new_product[i].store_nums);
 					//this.checkStoreNums();
-					return ;
 				}
 			}
+			specJSON = specArray.join(",");
+			var specJSON = '['+specArray.join(",")+']';
+
+		//获取货品数据并进行渲染
+		$.getJSON(this.get_product_url,{"goods_id":this.goods_id,"specJSON":specJSON,"random":Math.random},function(json){
+			if(json.flag == 'success')
+			{
+				var priceHtml = template.render('priceTemplate',json.data);
+				$('#price_panel').html(priceHtml);
+				//普通货品数据渲染
+				$('#product_id').val(json.data.id);
+
+			}
+			
+		});
 		
 	}
 
