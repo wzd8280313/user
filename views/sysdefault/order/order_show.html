@@ -541,7 +541,7 @@ function initButton()
 	{/if}
 
 	//发货
-	{if:in_array($orderStatus,array(1,4,8,9,12,20,18,19))}
+	{if:in_array($orderStatus,array(1,4,8,9,12,20,21,22,18,19))}
 	$('#to_deliver').removeAttr('disabled');
 	$('#to_deliver').removeClass('inactive');
 	{/if}
