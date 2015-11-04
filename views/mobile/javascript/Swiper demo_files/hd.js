@@ -1,7 +1,7 @@
 //Í·²¿»¬¶¯
 $(document).ready(function(){
 	    var swiperHead = new Swiper('.swiper-container.head', {
-	        slidesPerView: 4,
+	        slidesPerView: 5,
 	        paginationClickable: true,
 	        spaceBetween:2,
 	        slideToClickedSlide: true,
