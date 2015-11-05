@@ -5,6 +5,9 @@
 <title>javascript</title>
 {js:jquery}
 <link rel="stylesheet" href="{skin:css/afterpay.css}" type="text/css">
+<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=aero}' ></script>
+		<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/plugins/iframeTools.js}' ></script>
+<script type='text/javascript' src="{theme:javascript/common.js}"></script>
 </head>
 <body >
 
@@ -37,7 +40,7 @@
 				window.parent.location.href="{url:/block/doPay/order_id/$this->order_id}";
 			}else{
 				alert('已支付成功');
-				window.parent.location.href="{url:/ucenter/order_detail/id/$this->order_id}"
+				//window.parent.location.href="{url:/ucenter/order_detail/id/$this->order_id}"
 			}
 		}
 	);
