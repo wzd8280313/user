@@ -858,6 +858,9 @@ cursor: pointer;
 .tabs .tab-cnt .news-list{
 margin:0 5px;text-align:left;
 }
+.tabs .tab-cnt .news-list li{
+width:220px;
+}
 .clear{clear:both;}
 
 /*按钮样式*/

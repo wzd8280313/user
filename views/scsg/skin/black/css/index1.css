@@ -920,7 +920,8 @@ color: #fff;
 .ad_cycle .number {
     bottom: 8px;
     position: absolute;
-    right: 300px;
+
+    right: 500px;
     z-index:9999;
 }
 #scroll{
