@@ -10,7 +10,7 @@
 .pp_tm_con_fr i { font-weight:normal; font-style:normal}
 .pp_tm_con_se {width:1190px; float:left;}
 .pp_tm_con_se_l { width:922px; float:left; overflow:hidden;}
-.pp_tm_con_se_r {width:247px;float:right;overflow:hidden;}
+.pp_tm_con_se_r {width:248px;float:right;overflow:hidden;}
 .pp_tm_con_show { border:1px solid #e1e1e1; width:920px; height:210px; position:relative; margin-bottom:20px;}
 .pp_tm_con_show .time{width:192px; height:210px; float:right;}
 .pp_tm_con_show a:hover{color:#c71c60;}
