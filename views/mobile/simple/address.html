@@ -69,27 +69,27 @@
 			<div  class="mod_dres">
 				<div class="dres">
 					<div style="margin:0 5px;border-bottom: 1px solid #ABADB3; padding-bottom:10px;">
-						<a href=""><span style="float:left;margin-top:5px;">+新增收货地址：</span></a>
+						<a href=""><span style="float:left;margin-top:8px;">+新增收货地址：</span></a>
                         
                         
                         
                         <div class='dres'>
 					<span>
-						<select name="province" child="city,area" style='width:22%;height:35px;float:left;' onchange="areaChangeCallback(this);">
+						<select name="province" child="city,area" style='width:23%;height:35px;float:left;' onchange="areaChangeCallback(this);">
 						<option>请选择省份</option>
 						</select>
 					</span>					
 				</div>
 				<div class='dres'>
 					<span>
-						<select name="city" child="area" style='width:22%;height:35px;float:left;margin-left:1%;' parent="province" onchange="areaChangeCallback(this);">
+						<select name="city" child="area" style='width:23%;height:35px;float:left;margin-left:1%;' parent="province" onchange="areaChangeCallback(this);">
 						<option>请选择城市</option>
 						</select>
 					</span>					
 				</div>
 				<div class='dres'>
 					<span>
-						<select name="area" parent="city" style='width:22%;height:35px;margin-left:1%;' pattern="required" alt="请选择收货地区">
+						<select name="area" parent="city" style='width:23%;height:35px;margin-left:1%;' pattern="required" alt="请选择收货地区">
 						<option>请选择地区</option>
 						</select>
 					</span>					
@@ -109,19 +109,19 @@
                 
 				<div class="dres">
 			
-					<span><input class="texts tex2" placeholder="收货人姓名" type="text" name='accept_name'/></span>
+					<span><input style="height:30px;" class="texts tex2" placeholder="收货人姓名" type="text" name='accept_name'/></span>
 				</div>
 				<div class="dres">
 					<span>
-						<input class="texts tex2" placeholder="详细地址" type="text" name='address'/>
+						<input style="height:30px;" class="texts tex2" placeholder="详细地址" type="text" name='address'/>
 					</span>
 				</div>
 				<div class="dres">
-					<span><input class="texts tex2" name='zip' placeholder="邮政编码" type="text"/></span>
+					<span><input style="height:30px;" class="texts tex2" name='zip' placeholder="邮政编码" type="text"/></span>
 				</div>
 				
 				<div class="dres">
-					<span><input class="texts tex2" placeholder="手机号" type="text" name='mobile' /></span>
+					<span><input style="height:30px;" class="texts tex2" placeholder="手机号" type="text" name='mobile' /></span>
 				</div>
 				<div class="dres">
 					<span><input class="chbox" type="checkbox" name='default' value='1'/></span>

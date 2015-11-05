@@ -158,7 +158,7 @@
         <header class="title clear-fix">
             <h2 class="fl">掌上团购</h2>
             <a href="{url:/pregoods/presell_hot}">
-            <img src="{skin:css/wap/saojiao.png}" style="float:right;height: 15px; width: 15px;margin-top:12px;"> 
+            <img src="{skin:css/wap/saojiao.png}" style="float:right;height: 15px; width: 15px;margin-top:11px;"> 
 
           <p style=" float:right; font-size:14px;">更多</p>
 
@@ -171,8 +171,9 @@
             	{foreach:items=Api::run('getRegimentList','3')}
                      <li class="fl">
                         <a href="{url:/site/tuan_product/active/$item['id']}}">
-                            <div class="img_wrap">
-                                <img src="{url:$item['img']}" >
+
+                            <div class="img_wrap" style="width:80px;height:90px;">
+                                <img src="{url:$item['img']}">
                             </div>
                             <div class="price_wrap">
                                 <strong>￥{$item['regiment_price']}</strong>
@@ -214,7 +215,7 @@
         <header class="title clear-fix">
            <h2 class="fl">特价商品</h2>
             <a href="{url:/pregoods/presell_hot}">
-            <img src="{skin:css/wap/saojiao.png}" style="float:right;height: 15px; width: 15px;margin-top:12px;"> 
+            <img src="{skin:css/wap/saojiao.png}" style="float:right;height: 15px; width: 15px;margin-top:11px;"> 
 
           <p style=" float:right; font-size:14px;">更多</p>
 
@@ -231,20 +232,19 @@
 					<ul class="swiper-slide clear-fix fl swiper-slide-active" style="width: 640px;">
 						{foreach:items=Api::run('getCommendHot',5)}
 							<li class="fl">
-								<div class="brand_one_box" style="height:110px;" >
+								<div class="brand_one_box" style="height:109px;" >
 									<a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/98/h/106}" onerror='this.src="{skin:images/front/nopic_435_435.gif}"' /></a>
-								<a href="{url:/site/products/id/$item[id]}"><span style="margin-top:-10px;" class="title">{$item['name']}</span><span class="price">￥{$item['sell_price']}</span></a></div>
+								<a href="{url:/site/products/id/$item[id]}"><span style="margin-top:-6px;border:none;" class="title">{$item['name']}</span><span class="price" style="line-height:30px;">￥{$item['sell_price']}</span></a></div>
 							</li>  
 						{/foreach}
 					</ul>  
                                  
 				</div>
 			</div>
-            
-            <section class="activity_floor">
-		{echo:Ad::show("手机端首页")}
-	</section>
-     
+          <!--下双线-->  
+     <div style="width:100%; height:12px; border-top:solid #EEE 1px;
+	border-bottom:solid #EEE 1px;">
+			</div>
       
 		<script type="text/javascript">
 		   
