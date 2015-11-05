@@ -4013,7 +4013,7 @@ function checkValidCodeOnBlur() {
         $("#error_tips").text("请输入验证码");
         $("#error_tips").show()
     } else {
-        if (b.length != 4) {
+        if (b.length != 5) {
             jQuery("#code_right").hide();
             jQuery("#code_wrong").show();
             $("#error_tips").text("请输入5位验证码");
@@ -4024,7 +4024,7 @@ function checkValidCodeOnBlur() {
 var vcdPCLogin;
 function login_param_validate() {
     var d = $("#vcd").val();
-    if (d.length != 4 || d == vcdPCLogin) {
+    if (d.length != 5 || d == vcdPCLogin) {
         return
     }
     vcdPCLogin = d;
@@ -4170,7 +4170,7 @@ function double_submit() {
 								 break;
 							}
 							case 7 : {
-								showErrorInfo($("#un"), "账号密码不匹配");
+								showErrorInfo($("#un"), "账号密码不匹配");return ;
 								if(e.errorTimes>3){
 									showValidCode = '1';
 									isShowValidCode();
