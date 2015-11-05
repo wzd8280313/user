@@ -1998,4 +1998,9 @@ class Simple extends IController
 	
 		$this->redirect('payafter');
 	}
+	//弹出ie6页面
+	function upbrower(){
+		$this->layout = '';
+		$this->redirect('upbrower');
+	}
 }
