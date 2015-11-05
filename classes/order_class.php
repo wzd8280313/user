@@ -557,10 +557,10 @@ class Order_Class
 			if($orderRow['distribution_status'] == 7){
 				return 20;
 			}
-			else if($orderRow['distribution_status'] == 0 && $orderRow['pay_status'] == 3){
+			else if($orderRow['pay_status'] == 3){
 				return 18;
 			}
-			else if($orderRow['distribution_status'] == 0 && $orderRow['pay_status'] == 4){
+			else if( $orderRow['pay_status'] == 4){
 				return 19;
 			}
 			elseif($orderRow['distribution_status'] == 0)
@@ -597,7 +597,7 @@ class Order_Class
 			return 21;
 		}
 		else if($orderRow['status'] == 5 && $orderRow['pay_status']==5 && $orderRow['distribution_status']==5){
-			return 21;
+			return 22;//已发货退款完成
 		}
 		//4,完成订单
 		else if($orderRow['status'] == 5)
@@ -737,7 +737,7 @@ class Order_Class
 			3 => '已发货',
 			4 => '等待发货',
 			5 => '已取消',
-			6 => '已完成',
+			6 => '订单完成',
 			7 => '已退款',
 			8 => '部分发货',
 			9 => '部分发货',
@@ -751,7 +751,7 @@ class Order_Class
 			19=> '审核通过，等待退款',
 			20=> '等待换货',
 			21=> '订单完成',
-			22=> '订单完成'
+			22=> '订单完成',
 				
 		);
 		return isset($result[$statusCode]) ? $result[$statusCode] : '';
@@ -1043,7 +1043,7 @@ class Order_Class
 	public static function isRefundmentApply($orderRow)
 	{
 		//已经付款
-		if($orderRow['pay_status'] == 1 && $orderRow['status'] != 5 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
+		if($orderRow['distribution_status']!=3 && $orderRow['pay_status'] == 1 && $orderRow['status'] != 5 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
 		{
 			return true;
 		}
@@ -1212,7 +1212,7 @@ class Order_Class
 		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
-		
+		$orderGoodsDB->commit();
 
 		
 		//生成订单日志
@@ -1244,18 +1244,27 @@ class Order_Class
 			$real_amount = $orderRow['real_amount'];
 			
 			$order_goods_query = new IQuery('order_goods as og');
-			$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+			
 			$order_goods_query->where = 'og.order_id='.$order_id.' and og.is_send=2';
-			$order_goods_query->fields = 'og.*,SUM(g.point) as point,SUM(g.exp) as exp ,SUM(og.real_price) as real_amount ';
+			$order_goods_query->fields = 'og.id';
 			$order_goods_query->group = 'og.order_id';
 			
 			if($order_goods_data = $order_goods_query ->find()){//存在退货
+				$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+				$order_goods_query->fields = 'SUM(g.point) as point ,SUM(g.exp) as exp,SUM(og.real_price*og.goods_nums) as real_amount';
+				$order_goods_query->where  = 'og.order_id='.$order_id.' and og.is_send!=2';
 				
-				$exp_add = $orderRow['exp'] - $order_goods_data[0]['exp'];
-				$exp_add = $exp_add<0 ? 0 :$exp_add;
-				$point_add = $orderRow['point'] - $order_goods_data[0]['point'];
-				$point_add = $point_add<0 ? 0 : $point_add;
-				$real_amount -= $order_goods_data[0]['real_amount'];
+				if($order_goods_add = $order_goods_query->find()){
+					$exp_add = $order_goods_add[0]['exp'];
+					$exp_add = $exp_add<0 ? 0 :$exp_add;
+					$point_add = $order_goods_add[0]['point'];
+					$point_add = $point_add<0 ? 0 : $point_add;
+					$real_amount = $order_goods_add[0]['real_amount'];
+				}else{
+					return false;
+				}
+				//print_r($order_goods_add);exit;
+				
 			}else{
 				$exp_add = $orderRow['exp'];
 				$point_add = $orderRow['point'];
@@ -1433,7 +1442,9 @@ class Order_Class
 		//退款额计算：将促销优惠和红包优惠平均分配
 		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
 		$amount = $amount - $amount * $order_reduce/($orderRow['real_amount']+$orderRow['pro_reduce'])+ $otherFee;
-		return number_format($amount,2);	
+		//rturn$amount = str_replace(',','',$amount);
+		$amount = number_format(floatval($amount),2);
+		return str_replace(',','',$amount);	
 	}
 	/**
 	 * 退款时修改订单状态
@@ -1498,6 +1509,9 @@ class Order_Class
 					$setData = array('status' => 5,'pay_status'=>5,'distribution_status'=>5);
 				}
 			}
+			else{
+				
+			}
 		}
 		else{
 			return false;
@@ -1506,4 +1520,6 @@ class Order_Class
 		$order_db->update('id='.$goodsOrderRow['order_id']);
 		
 	}
+
+	
 }

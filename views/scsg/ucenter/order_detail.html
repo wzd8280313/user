@@ -47,7 +47,7 @@
 	        </label>
 			{/if}
 
-	        {if:Order_Class::isRefundmentApply($this->order_info) }
+	        {if:in_array($orderStatus,array(3,4,8,9,10,11,17)) }
 	        <label >
 	        	<input type="button"  class='btn_red btn_small' value="申请退换货" onclick='javascript:window.location.href="{url:/ucenter/refunds_edit/order_id/$this->order_info['order_id']}"' />
 	        </label>
@@ -69,7 +69,7 @@
 			<table class="dotted_table f_l" width="100%" cellpadding="0" cellspacing="0">
 				<col width="130px" />
 				<col />
-				{if:$itme['type']==0 && in_array($item['pay_status'],array(0,4,7)) || $itme['type']==1 && in_array($item['pay_status'],array(0,4))}
+				{if:$item['type']==0 && in_array($item['pay_status'],array(0,4,7)) || $item['type']==1 && in_array($item['pay_status'],array(0,4))}
 				<tr>
 					<th></th>
 					<td>

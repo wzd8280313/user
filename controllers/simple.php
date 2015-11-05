@@ -169,7 +169,7 @@ class Simple extends IController
 		
 		$password   = md5($password);
 		$captcha = IFilter::act(IReq::get('validCode'),'str');
-		
+		$errTimes = $this->getErrTimes($login_info);
 		$data=array('errorCode'=>0);
     	if($login_info == '')
     	{
@@ -178,9 +178,9 @@ class Simple extends IController
     	else if($password==''){
     		$data['errorCode'] = 2;
     	}
-    	else if(($errTimes = $this->getErrTimes($login_info))>7){//帐户锁定，打电话解冻
-    		$data['errorCode'] = 13;
-    	}
+//     	else if(($errTimes = $this->getErrTimes($login_info))>7){//帐户锁定，打电话解冻
+//     		$data['errorCode'] = 13;
+//     	}
     	else if($errTimes>3 && ISafe::get('captcha')!=$captcha){//二次添加
     			$data['errorCode'] = 10;
     	}
@@ -1358,9 +1358,9 @@ class Simple extends IController
 			{
 				$content = smsTemplate::findPassword(array('{mobile_code}' => $mobile_code));
 				$result = Hsms::send($mobile,$content);
-				if($result == 'success')
+				if($result)
 				{
-					die('success');
+					die('success');exit;
 				}
 				die('短信发送失败');
 			}

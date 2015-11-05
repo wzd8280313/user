@@ -1,6 +1,7 @@
 {set:$user_id = $this->user['user_id']}
 {set:$user = Api::run('getMemberInfo',$user_id)}
 {set:$statistics = Api::run('getMemberTongJi',$user_id)}
+
 {set:$msgObj = new Mess($user_id);$msgNum = $msgObj->needReadNum()}
 {set:$propIds = trim($user['prop'],',');$propIds = $propIds ? $propIds : 0}
 {set:$propData = Api::run('getPropTongJi',$propIds)}

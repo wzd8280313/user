@@ -1111,7 +1111,9 @@ class Site extends IController
 
 
 	function ce(){
-		print_r($_SESSION);
+		echo md5('123qwe');
+		
+		
 	}
 	
 }

@@ -160,10 +160,9 @@ class Ucenter extends IController
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,g.id as goods_id,c.status as comment_status';
+		$order_db->fields = 'o.*,g.id as goods_id,c.status as comment_status,c.id as comment_id';
 		$this->order_db = $order_db;
         $this->initPayment();
-        
         $data['s_beginTime'] = $beginTime;
         $data['s_endTime'] = $endTime;
         $data['s_order_no'] = $order_no;
@@ -292,7 +291,7 @@ class Ucenter extends IController
 			case "confirm":
 			{
 				$model->setData(array('status' => 5,'completion_time' => date('Y-m-d h:i:s')));
-				if($model->update("id = ".$id." and distribution_status = 1 and user_id = ".$this->user['user_id']))
+				if($model->update("id = ".$id."  and user_id = ".$this->user['user_id']))
 				{
 					$orderRow = $model->getObj('id = '.$id);
 

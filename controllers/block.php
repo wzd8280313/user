@@ -207,6 +207,16 @@ class Block extends IController
     	
     	$paymentInstance->doPay($sendData);
     }
+    //订单是否已支付
+    public function has_pay(){
+    	$order_id = IFilter::act(IReq::get('order_id'),'int');
+    	$order_db = new IModel('order');
+    	if($order_db->getObj('id='.$order_id.' and (type!=4 && pay_status=0 || (type=4 && pay_status=0 || type=4 &&  pay_status=1 ))'))
+    	{
+    		echo 1;exit;
+    	}
+    	echo 0;
+    }
 	/**
     * @brief 【重要】进行支付支付方法
     */

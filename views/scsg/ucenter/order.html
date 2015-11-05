@@ -101,14 +101,17 @@
 					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"><input style='margin-bottom:5px;' type="button" class='btn_gray btn_small' value="确认收货" /></a>
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
 					
-					{elseif:$status==6}
+					{elseif:$status==6 || $status==22}
+					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 						{if:$item['comment_status']==1}
 						<b class="orange">已评价</b>
 						{else:}
-						<a href="{url:/site/comments/goods_id/$item['goods_id']/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+						<a href="{url:/site/comments/id/$item['comment_id']}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
 						
 						{/if}
-					
+					{elseif:$status==21}
+						<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
+				
 					{else:}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 					{/if}

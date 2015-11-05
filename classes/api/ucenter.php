@@ -46,7 +46,7 @@ class APIUcenter
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		$query = new IQuery('comment as c');
 		$query->join   = "left join order_goods as og on c.order_id=og.order_id and c.goods_id=og.goods_id left join goods as go on c.goods_id = go.id ";
-		$query->where  = ($status === '') ? "c.user_id = ".$userid : "c.user_id = ".$userid." and c.status = ".$status.' and og.is_send=1';
+		$query->where  = ($status === '') ? "c.user_id = ".$userid : "c.user_id = ".$userid." and c.status = ".$status;
 		$query->fields = "go.name,go.img,c.*";
 		$query->page   = $page;
 		$query->order = 'c.id desc';
@@ -62,9 +62,16 @@ class APIUcenter
 	//用户中心-个人主页统计
 	public function getMemberTongJi($userid){
 		$query = new IQuery('order');
+		
 		$query->fields = "sum(order_amount) as amount,count(id) as num";
-		$query->where  = "user_id = ".$userid." and pay_status = 1 and if_del = 0";
+		$query->where  = "user_id = ".$userid." and pay_status != 0 and if_del = 0";
+		$refund = new IQuery('refundment_doc');
+		$refund->where = 'user_id = '.$userid.' and pay_status=2';
+		$refund->fields = 'sum(amount) as refunds_sum';
 		$info = $query->find();
+		$info_refunds = $refund->find();
+		$info[0]['amount'] = $info[0]['amount'] - $info_refunds[0]['refunds_sum'];
+		//$refund_db = new I
 		return $info[0];
 	}
 	//用户中心-个人主页统计
