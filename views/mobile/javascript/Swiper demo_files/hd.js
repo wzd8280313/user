@@ -3,7 +3,7 @@ $(document).ready(function(){
 	    var swiperHead = new Swiper('.swiper-container.head', {
 	        slidesPerView: 5,
 	        paginationClickable: true,
-	        spaceBetween:2,
+	        spaceBetween:0,
 	        slideToClickedSlide: true,
 			//loop : true,
 			//slidesPerView : 'auto',
