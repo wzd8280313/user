@@ -632,7 +632,7 @@ strong.result{ display:block;margin:0 0 5px;font-size:16px;color:#666;text-align
 	table.cart_table thead th.last{border-right:1px solid #c5c5c5}
 	table.cart_table tbody td{height:86px;border-bottom:1px solid #dfdfdf;color:#6f6f6f;text-align: center;}
 	table.cart_table img{width:66px;height:66px;border:1px solid #c2c2c2}
-	table.cart_table tr.stats td{height:54px;border-bottom:none;background-color:#f3f3f3;text-align:right;font-size:14px;font-weight:bold}
+	table.cart_table tr.stats td{height:54px;border-bottom:none;background-color:#f3f3f3;text-align:left;font-size:14px;font-weight:bold}
 		table.cart_table tr.stats td b{margin-right:10px;font-size:16px}
 		table.cart_table tr.stats td span{margin-right:10px;color:#1a66b3;font-size:12px}
 	table.cart_table tfoot td{height:86px}
