@@ -1111,7 +1111,7 @@ class Site extends IController
 
 
 	function ce(){
-		echo md5('123qwe');
+		
 		
 		
 	}
