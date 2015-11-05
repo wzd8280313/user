@@ -115,7 +115,7 @@
 							<label><input type="radio" name="pay_status" value="2" checked='checked' />同意</label>&nbsp;&nbsp;
 							{/if}
 							<label><input type="radio" name="pay_status" value="5" />拒绝</label>
-							<span class='red'>同意后将钱打入用户帐户</span>
+							<span class='red'></span>
 						</div>
 						
 					</fieldset>
@@ -159,6 +159,7 @@
 		<input type="hidden" name="id" value="{$id}"/>
 		<input type='hidden' name='status' value='{$pay_status}' />
 		<input type="hidden" name="type" value="{$type}"/>
+		<input type='hidden' name='is_send' value='{$is_send}'/>
 		<footer>
 			<div class="submit_link">
 				<input type="submit" onclick="return checkForm({$is_send},{$type})" class="alt_btn" value="确 定" />
