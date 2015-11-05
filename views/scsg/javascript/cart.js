@@ -40,13 +40,13 @@ function check_goods(_this){
 		var goods_price = mathMul(parseFloat(dataObj.sell_price),new_count);//选中商品的价格*数量
 		var goods_reduce = mathMul(parseFloat(dataObj.reduce),new_count);
 		if($(_this).prop('checked')){//
-			$('#weight').text(mathAdd(weight_total,mathMul(parseInt(dataObj.weight),new_count)));
-			 $('#origin_price').text(mathAdd(origin_price,goods_price));
-			 $('#discount_price').text(mathAdd(discount_price,goods_reduce));
+			$('#weight').text(mathAdd(weight_total,mathMul(parseInt(dataObj.weight),new_count),2));
+			 $('#origin_price').text(mathAdd(origin_price,goods_price,2));
+			 $('#discount_price').text(mathAdd(discount_price,goods_reduce,2));
 		}else{
-			$('#weight').text(mathSub(weight_total,parseInt(mathMul(dataObj.weight,new_count))));
-			 $('#origin_price').text(mathSub(origin_price,goods_price));
-			 $('#discount_price').text(mathSub(discount_price,goods_reduce));
+			$('#weight').text(mathSub(weight_total,parseInt(mathMul(dataObj.weight,new_count)),2));
+			 $('#origin_price').text(mathSub(origin_price,goods_price,2));
+			 $('#discount_price').text(mathSub(discount_price,goods_reduce,2));
 		}
 		
 		//促销规则检测
@@ -85,7 +85,7 @@ function prom_ajax(){
 					$('#promotion_price').html(content.proReduce);
 
 					//最终金额
-					$('#sum_price').html(mathSub(mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text())),parseFloat($('#promotion_price').text())));
+					$('#sum_price').html(mathSub(mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text())),parseFloat($('#promotion_price').text()),2));
 
 		});
 }
@@ -166,12 +166,12 @@ function cartCount(obj,oldCount)
 					var weight_total = parseInt($('#weight').text());
 					var origin_price = parseFloat( $('#origin_price').text());
 					var discount_price = parseFloat($('#discount_price').text());
-					var new_origin_price = mathAdd(origin_price,mathMul(parseFloat(obj.sell_price),changeNum));
+					var new_origin_price = mathAdd(origin_price,mathMul(parseFloat(obj.sell_price),changeNum),2);
 					var new_discount_price = mathAdd(discount_price,mathMul(parseFloat(obj.reduce),changeNum));
-					$('#weight').text(mathAdd(weight_total,mathMul(parseInt(obj.weight),changeNum)));
+					$('#weight').text(mathAdd(weight_total,mathMul(parseInt(obj.weight),changeNum),2));
 					$('#origin_price').text(new_origin_price);
 					$('#discount_price').text(new_discount_price);
-					prom_ajax(mathSub(new_origin_price,new_discount_price));
+					prom_ajax(mathSub(new_origin_price,new_discount_price,2));
 				}
 				//check_goods();
 				//修改按钮状态

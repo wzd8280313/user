@@ -23,12 +23,12 @@ class Ucenter extends IController
     	$where = "o.user_id =".$userid." and if_del= 0 and o.type !=4 ";
     	
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on c.order_id=o.id';
+    	$order_db->join = 'left join order_goods as og on o.id=og.order_id  left join comment as c on c.order_id=o.id';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->limit  = 6;
     	$order_db->order = 'o.id DESC';
-    	$order_db->fields = 'o.*,c.status as comment_status';
+    	$order_db->fields = 'o.*,c.status as comment_status,c.id as comment_id';
     	$this->order_db = $order_db;
         $this->initPayment();
         $this->redirect('index');
@@ -155,12 +155,12 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on c.order_id=o.id';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join comment as c on c.order_id=o.id';
 		$order_db->group = 'og.order_id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,g.id as goods_id,c.status as comment_status,c.id as comment_id';
+		$order_db->fields = 'o.*,c.status as comment_status,c.id as comment_id';
 		$this->order_db = $order_db;
         $this->initPayment();
         $data['s_beginTime'] = $beginTime;

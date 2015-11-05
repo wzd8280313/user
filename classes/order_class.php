@@ -1167,6 +1167,7 @@ class Order_Class
 		else if($pay_type==1 || $pay_type==0){//预存款付款和货到付款打入账户余额
 			$obj = new IModel('member');
 			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
+			$obj->commit();
 			if($isSuccess)
 			{
 				//用户余额进行的操作记入account_log表

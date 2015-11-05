@@ -1111,7 +1111,12 @@ class Site extends IController
 
 
 	function ce(){
-		
+		$m = new IModel('ceshi');
+		$m->setData(array('name'=>'华润','value'=>'燃气'));
+		$id = $m->add();
+		$nm = new IModel('ceshi');
+		$data = $nm->getObj('id='.$id);
+		print_r($data);
 		
 		
 	}

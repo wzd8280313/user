@@ -294,7 +294,7 @@ class AccountLog
 		$arr['event'] = $this->allow_event[$this->event];
 		$arr['note'] = IFilter::act($this->_note,'text');
 		$arr['amount'] = $num;
-		$arr['amount_log'] = $this->user['balance'] + $num;
+		$arr['amount_log'] = $this->user['balance'];
 		$arr['type'] = $num>=0 ? 0 : 1 ;
 		$arr['time'] = $this->time;
 
