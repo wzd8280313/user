@@ -268,7 +268,7 @@ class Member extends IController
 			{
 				$memberDB->setData(array('balance' => $balanceUpdate));
 				$memberDB->update('user_id = '.$value['user_id']);
-
+				$memberDB->commit();
 				//用户余额进行的操作记入account_log表
 				$log = new AccountLog();
 				$config=array

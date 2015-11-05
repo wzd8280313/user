@@ -1111,7 +1111,8 @@ class Site extends IController
 
 
 	function ce(){
-		
+		$a = 5;
+		echo -$a;
 		
 		
 	}
