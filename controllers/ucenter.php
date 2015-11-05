@@ -714,7 +714,7 @@ class Ucenter extends IController
 	    	}
 		}
 
-    	$this->redirect('info',false);
+    	$this->redirect('/ucenter/info',false);
     	Util::showMessage($message);
     }
 
