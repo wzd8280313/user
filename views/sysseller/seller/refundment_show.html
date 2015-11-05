@@ -109,7 +109,11 @@
 					<fieldset>
 						<label>处理：</label>
 						<div  class="box">
+							{if:$type==1}
 							<label><input type="radio" name="pay_status" value="7" checked='checked' />同意</label>&nbsp;&nbsp;
+							{else:}
+							<label><input type="radio" name="pay_status" value="2" checked='checked' />同意</label>&nbsp;&nbsp;
+							{/if}
 							<label><input type="radio" name="pay_status" value="5" />拒绝</label>
 							<span class='red'>同意后将钱打入用户帐户</span>
 						</div>
