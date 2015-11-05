@@ -71,10 +71,16 @@ anchor_item.target="_self";
 	anchor_item.target="_self"; 
 	} 
 </script>
-<!-- 加入购物车弹窗 -->
+<!-- 商品详情页面含加入购物车弹窗 -->
 <script type='text/javascript'>
 	$('a').attr('target','_blank');
 	var anchors = $("#product_myCart").getElementsByTagName("a"); 
+	for(i=0;i<anchors.length;i++){ 
+	var anchor_item = anchors[i]; 
+	anchor_item.target="_self"; 
+	}
+	$('a').attr('target','_blank');
+	var anchors = $("#J_DetailMeta").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 

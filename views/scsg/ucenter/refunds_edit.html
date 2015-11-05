@@ -20,8 +20,8 @@
 					<th>类型：</th>
 					<td><p>
 							<label>
-								<input type="radio" name="type" value="0" checked/>退货
-								<input type="radio" name="type" value="1" />换货
+								<input type="radio" name="type"  class="radio" value="0" checked/>退货
+								<input type="radio" name="type"  class="radio" value="1" />换货
 							</label>
 						</p>
 					</td>
@@ -34,7 +34,7 @@
 						{if:$good['is_send'] != 2}
 						<p>
 							<label>
-								<input type="radio" name="order_goods_id" value="{$good['id']}" />
+								<input type="radio" name="order_goods_id" value="{$good['id']}"  class="radio"/>
 								<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</a>
 							</label>
 						</p>

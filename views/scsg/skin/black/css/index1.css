@@ -923,7 +923,7 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 .ad_cycle .number {
     bottom: 8px;
     position: absolute;
-    right: 50px;
+    right: 500px;
     z-index:9999;
 }
 #scroll{
