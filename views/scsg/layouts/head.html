@@ -104,7 +104,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 					<div class="clearfix">
 						<div class="fl">
 							<a class="hd_avata_box" href="{url:/ucenter/}" target="_blank"><img src="{url:$this->user['head_ico']}" style='width:62px;' onerror='this.src="{skin:images/front/user_ico.gif}"'/></a>
-							<a class="grzl" href="{url:/ucenter/}">个人资料</a>
+							<a class="grzl" href="{url:/ucenter/}" target="_blank">个人资料</a>
 						</div>
 						<div class="yhname">
 							<p><a class="name" target="_blank">{$this->user['show']}</a><a class="hydj"><!--<b style="font-size:20px">V</b>0会员--></a></p>
@@ -115,7 +115,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 						</div>
 					</div>
 					<div class="hy_message">
-						<a  href="javascript:void(0)" target="_blank">
+						<a  href="javascript:void(0)">
 							<b>{$this->user['point']}</b>
 							<span>积分<em>							
 							{if:$user['sign']==0}
