@@ -5,7 +5,7 @@
 {if:!$item}
 {set:IError::show(403,'商品信息不存在')}
 {/if}
-<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/products/id/$id}">评论</a> </div>
+<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/products/id/$id}" target="_blank">评论</a> </div>
 <div class="wrapper clearfix">
 	<div class="sidebar f_l">
 		<div class="box_2 m_10">
@@ -13,8 +13,8 @@
 			<div class="content" style='width:95%;'>
 				<ul class="prolist clearfix">
 					<li>
-						<a href="{url:/site/products/id/$id}"><img src="{url:/pic/thumb/img/$item[img]/w/212/h/167}" title="{$item['name']}" alt="{$item['name']}"  width="167"></a>
-						<p class="pro_title">商品名称：<a class="blue" href="{url:/site/products/id/$id}">{$item['name']}</a></p>
+						<a href="{url:/site/products/id/$id}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/212/h/167}" title="{$item['name']}" alt="{$item['name']}"  width="167"></a>
+						<p class="pro_title">商品名称：<a class="blue" href="{url:/site/products/id/$id}" target="_blank">{$item['name']}</a></p>
 						<p>优惠价：<b>{$item['sell_price']}</b></p>
 						<p>评价得分：<span class="grade"><i style="width:{echo:Common::gradeWidth($average_point)}px"></i></span>({$average_point}分)</p>
 						<p>评论数：{$comment_total}条</p>

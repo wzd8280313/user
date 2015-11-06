@@ -123,7 +123,7 @@
 
 
 								{$freightInfo}
-								<a href="{url:/site/help/id/73}" style='color:red;display:inline-block;'>配送说明</a>
+								<a href="{url:/site/help/id/73}" style='color:red;display:inline-block;' target="_blank">配送说明</a>
 							</div>
 						</dd>
 					</dl>
@@ -232,7 +232,7 @@
 					{if:!empty($server_product)}
 					{foreach:items=$server_product}
 					<li>
-						<a target="_blank"  href="{$item['link']}"> {$item['server_name']} </a>
+						<a target="_blank"  href="{$item['link']}" target="_blank"> {$item['server_name']} </a>
 					</li>
 					{/foreach}
 					{/if}
@@ -316,13 +316,13 @@
 		{if:isset($seller)}
 		<!--商家-->
 		<div class="box m_10">
-			<div class="title"><a target='blank' href='{url:/site/home/id/$seller[id]}'>{$seller['true_name']}</a></div>
+			<div class="title"><a target='blank' href='{url:/site/home/id/$seller[id]}' target="_blank">{$seller['true_name']}</a></div>
 			<div class="cont">
 				<ul class="list">
 					{set:$ave = statistics::getSellerGrade($seller['id']);$ave = $ave*70/5;}
 					<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
 					<li style='background:none;'>
-					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}">进入店铺</a>
+					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}" target="_blank">进入店铺</a>
 					</li>
 				</ul>
 			</div>
@@ -350,8 +350,8 @@
 				<ul class="ranklist">
 					{foreach:items=Api::run('getOrderGoodsByBuyerid',array('#buyer_id#',$buyer_id))}
 										<li class="current">
-						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}"></a>
-						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
+						<a href="{url:/site/products/id/$item[id]}" target="_blank"><img width="58px" height="58px" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}"></a>
+						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a>
 						<b>￥{$item['price']}</b>
 					</li>
 					{/foreach}
@@ -368,8 +368,8 @@
 				<ul class="ranklist">
 					{foreach:items=Api::run('getCommendHot')}
 									<li class="current">
-						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" alt="苹果" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
-						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
+						<a href="{url:/site/products/id/$item[id]}" target="_blank"><img width="58px" height="58px" alt="苹果" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
+						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a>
 						<b>￥{$item['sell_price']}</b>
 					</li>
 					{/foreach}
@@ -437,28 +437,31 @@ $('[name="showButton"]>label').click(function(){
 	}
 	$('[name="showBox"]>div').addClass('hidden');
 	$('[name="showBox"]>div:eq('+$(this).index()+')').removeClass('hidden');
+	var add = $('[name="showButton"]').find('.spec').length>0 ? 1 : 0;
+	
+			switch($(this).index())
+			{
+				case (1+add):
+				{
+					comment_ajax();
+				}
+				break;
+		
+				case (2+add):
+				{
+					history_ajax();
+				}
+				break;
+		
+				case (3+add):
+				{
+					refer_ajax();
+				}
+				break;
+		
+			}
 
-	switch($(this).index())
-	{
-		case 1:
-		{
-			comment_ajax();
-		}
-		break;
 
-		case 2:
-		{
-			history_ajax();
-		}
-		break;
-
-		case 3:
-		{
-			refer_ajax();
-		}
-		break;
-
-	}
 });
 
 });

@@ -478,6 +478,8 @@ class Ucenter extends IController
 					'content'  => $content,
 					'goods_id' => $goodsOrderRow['goods_id'],
 					'product_id' => $goodsOrderRow['product_id'],
+        			'delivery_com'=> $delivery_com,
+        			'delivery_code'=>$delivery_code
 				);
         		if($goodsOrderRow['is_send']==1){
         			$updateData['pay_status'] = 4;

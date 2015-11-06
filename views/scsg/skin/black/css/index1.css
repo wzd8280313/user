@@ -888,13 +888,17 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 	background:url(../images/gz-11.png) no-repeat;
 }
 .right{width:960px;}
+
 .ad_cycle{
 	position:relative;
-	width:1190px;
-	height:490px;
+	
 	margin:0 auto;
 	/*right:15px;*/
 	
+}
+.ad_index{
+	width:1190px;
+	height:490px;
 }
 .ad_cycle .nonce {
     BACKGROUND: #347e0d;
@@ -920,7 +924,8 @@ color: #fff;
 .ad_cycle .number {
     bottom: 8px;
     position: absolute;
-    right: 300px;
+
+    right: 500px;
     z-index:9999;
 }
 #scroll{

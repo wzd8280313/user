@@ -138,9 +138,10 @@ var countdown=function()
 		else
 		{var val=0;
 			if(value==0){
-				val=59;
+				val=(type=='hour') ? 23 : 59;
 			}else if(value<=10){
-				val= '0'+(value-1);
+				if(type=='day')val=value-1;
+				else val= '0'+(value-1);
 			}else val=value-1;
 			e.innerHTML = val;
 			return true;
@@ -164,12 +165,8 @@ var countDown = function(min_id){
 			count = count%3600;
 			var min = (temp=parseInt(count/60))<10 ? '0'+temp :temp ;
 			var sec = (temp=count%60)<10 ? '0' + temp : temp;
-			if(day==0){
-				$('.day').remove();
-			}else{
-				$('#cd_day_'+id).text(day);
-			}
 			
+			$('#cd_day_'+id).text(day);
 			$('#cd_hour_'+id).text(hour);
 			$('#cd_minute_'+id).text(min);
 			$('#cd_second_'+id).text(sec);

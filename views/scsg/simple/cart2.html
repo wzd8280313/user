@@ -2,6 +2,7 @@
 <script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 <script type='text/javascript' src='{theme:javascript/orderFormClass.js}'></script>
 <link rel="stylesheet" type="text/css" href="{skin:/fap/css/zengzhi.css}">
+
 <script type='text/javascript'>
 
 //更换增值发票和普通发票
@@ -163,7 +164,7 @@ function get_delivery()
 				//允许保价
 				if(content.protect_price > 0)
 				{
-					html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"_"+dataArray[2]+"]' onchange='selectProtect(this);' />保价</label>";
+					html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"_"+dataArray[2]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
 				}
 				$('#'+idValue).html(html);
 			}
@@ -310,7 +311,7 @@ function selectTakeself(deliveryId)
 						<script type='text/html' id='addressShowTemplate'>
 							<tr><th>收货人信息：</th><td><%=province_val%> <%=city_val%>  (<%=accept_name%>收)</td></tr>
 							<tr><th></th><td><%=area_val%> <%=address%>  <%=mobile%>  <%=telphone%></td></tr>
-							<tr><th>代收点：</th><td><input type='checkbox' name='takeself' class='hide' value='0'/> <span id="takeself"></span>
+							<tr><th>代收点：</th><td><input type='checkbox' name='takeself' class='hide checks' value='0'/> <span id="takeself"></span>
 								<a href="javascript:selectTakeself();"><span class="red">切换自提点</span></a>
 								</td>
 							</tr>
@@ -329,7 +330,7 @@ function selectTakeself(deliveryId)
 							</li>
 							{/foreach}
 							<li>
-								<label><input type='radio' name='radio_address' onclick='orderFormInstance.addressEmpty();' value='' />其他收货地址</label>
+								<label><input type='radio' name='radio_address' onclick='orderFormInstance.addressEmpty();' value='' class='radio'/>其他收货地址</label>
 							</li>
 						</ul>
 
@@ -416,7 +417,7 @@ function selectTakeself(deliveryId)
 							{set:$deliveryData = $this->allDeliveryType}
 							{foreach:items = $deliveryData}
 							<tr>
-								<th><label><input type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
+								<th><label><input class="radio" type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
 								<td>
 									{$item['description']}
 								</td>
@@ -431,9 +432,9 @@ function selectTakeself(deliveryId)
 						<tfoot>
 							<th>指定送货时间：</th>
 							<td>
-								<label class='attr'><input type='radio' name='accept_time' checked="checked" value='任意' />任意</label>
-								<label class='attr'><input type='radio' name='accept_time' value='周一到周五' />周一到周五</label>
-								<label class='attr'><input type='radio' name='accept_time' value='周末' />周末</label>
+								<label class='attr'><input type='radio' name='accept_time' checked="checked" value='任意' class='radio'/>任意</label>
+								<label class='attr'><input type='radio' name='accept_time' value='周一到周五'  class='radio'/>周一到周五</label>
+								<label class='attr'><input type='radio' name='accept_time' value='周末'  class='radio'/>周末</label>
 							</td>
 						</tfoot>
 					</table>

@@ -63,7 +63,7 @@
 						只有购买过该商品的用户才能进行评价
 						{if:isset($this->user['user_id']) && $user_id = $this->user['user_id']}
 						{foreach:items=Api::run('getCommentByGoodsid',array('#id#',$id),array('#user_id#',$user_id),1) }
-						<a class="comm_btn" href="{url:/site/comments/id/$item[id]}">我要评论</a>
+						<a class="comm_btn" href="{url:/site/comments/id/$item[id]}"  target="_blank">我要评论</a>
 						{/foreach}
 						{/if}
 					</span>
@@ -138,7 +138,7 @@
 					<!--购买历史js模板-->
 					<script type='text/html' id='historyRowTemplate'>
 					<tr>
-						<td><%=username?username:'游客'%></td>
+						<td><%=show%></td>
 						<td><%=goods_price%></td>
 						<td class="bold orange"><%=goods_nums%></td>
 						<td class="light_gray"><%=completion_time%></td>
@@ -152,7 +152,7 @@
 			<!-- 购买前咨询 start -->
 			<div class="hidden comment_list box">
 				<div class="title3">
-					<span class="f_r f12 normal"><a class="comm_btn" href="{url:/site/consult/id/$id}">我要咨询</a></span>
+					<span class="f_r f12 normal"><a class="comm_btn" href="{url:/site/consult/id/$id}" target="_blank">我要咨询</a></span>
 					<img src="{skin:images/front/cart.gif}" width="16" height="16" />购买前咨询<span class="f12 normal">（共<b class="red2">{$refer}</b>记录）</span>
 				</div>
 

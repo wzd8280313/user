@@ -13,7 +13,7 @@
 
 
 			  	{foreach:items=Api::run('getGoodsListBrandSum',array('#brandid#',$brandId),10)}
-			  	<li><span>{echo:intval($key+1)}</span><a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58px" height="58px" /></a><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
+			  	<li><span>{echo:intval($key+1)}</span><a href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58px" height="58px" /></a><a href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
 			  	{/foreach}
 			  </ul>
 			</div>
@@ -24,7 +24,7 @@
 			<div class="cont">
 				<ul class="ranklist">
 					{foreach:items=Api::run('getCommendHotBrand',array('#brandid#',$brandId),10)}
-					<li class='current'><a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58" height="58" /></a><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
+					<li class='current'><a href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58" height="58" /></a><a href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
 					{/foreach}
 				</ul>
 			</div>
@@ -35,7 +35,7 @@
 			<div class="cont">
 			  <ul class="textlist_2 clearfix">
 			  	{foreach:items=Api::run('getBrandList',10)}
-			  	<li><a href="{url:/site/brand_zone/id/$item[id]}">{$item['name']}</a></li>
+			  	<li><a href="{url:/site/brand_zone/id/$item[id]}" target="_blank">{$item['name']}</a></li>
 			  	{/foreach}
 			  </ul>
 			</div>

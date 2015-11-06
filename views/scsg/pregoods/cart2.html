@@ -324,7 +324,7 @@ function selectTakeself(deliveryId)
 							</li>
 							{/foreach}
 							<li>
-								<label><input type='radio' name='radio_address' onclick='orderFormInstance.addressEmpty();' value='' />其他收货地址</label>
+								<label><input class='radio' type='radio' name='radio_address' onclick='orderFormInstance.addressEmpty();' value='' />其他收货地址</label>
 							</li>
 						</ul>
 
@@ -411,7 +411,7 @@ function selectTakeself(deliveryId)
 							{set:$deliveryData = $this->allDeliveryType}
 							{foreach:items = $deliveryData}
 							<tr>
-								<th><label><input type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
+								<th><label><input class='radio' type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
 								<td>
 									{$item['description']}
 								</td>
@@ -426,9 +426,9 @@ function selectTakeself(deliveryId)
 						<tfoot>
 							<th>指定送货时间：</th>
 							<td>
-								<label class='attr'><input type='radio' name='accept_time' checked="checked" value='任意' />任意</label>
-								<label class='attr'><input type='radio' name='accept_time' value='周一到周五' />周一到周五</label>
-								<label class='attr'><input type='radio' name='accept_time' value='周末' />周末</label>
+								<label class='attr'><input class='radio' type='radio' name='accept_time' checked="checked" value='任意' />任意</label>
+								<label class='attr'><input class='radio' name='accept_time' value='周一到周五' />周一到周五</label>
+								<label class='attr'><input class='radio' name='accept_time' value='周末' />周末</label>
 							</td>
 						</tfoot>
 					</table>

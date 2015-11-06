@@ -90,15 +90,17 @@ function orderFormClass()
 	 */
 	this.addressInit = function(defaultAddressId)
 	{
-		if(defaultAddressId)
+		if(defaultAddressId>0)
 		{
 			this.addressActiveId = defaultAddressId;
 			$('input:radio[name="radio_address"][value="'+defaultAddressId+'"]').trigger('click');
 			this.addressSave();
+			return 1;
 		}
 		else
 		{
 			$('input:radio[name="radio_address"][value=""]').trigger('click');
+			return false;
 		}
 	}
 
@@ -195,7 +197,7 @@ function orderFormClass()
 		$('#address_form').trigger('submit',function(){return false;});
 
 		//数据格式不正确
-		if($('#address_form .invalid-text').length > 0)
+		if($('#address_form .invalid-text').length > 0 || (!$('#address_often radio[name=radio_address]:checked').val() && !$('[name=accept_name]').val()))
 		{
 			return false;
 		}
@@ -245,8 +247,13 @@ function orderFormClass()
 				clearInterval(timeHandle);
 			}
 		},500);
-
+	
 		$('#deliveryBox').show('slow');
+		if(this.deliveryCheck() && this.paymentCheck()){
+			$('#amountBox').show('slow');
+			//计算金额
+			this.doAccount();
+		}
 	}
 
 	/**
@@ -481,11 +488,14 @@ function orderFormClass()
 		//支付金额
 		this.paymentPrice = $('input:radio[name="payment"]:checked').attr('alt');
 
-		//开启订单金额
+		if(this.addressCheck()){
+			//开启订单金额
 		$('#amountBox').show('slow');
 
 		//计算金额
 		this.doAccount();
+		}
+		
 	}
 
 	/**

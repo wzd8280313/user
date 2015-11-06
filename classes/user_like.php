@@ -145,6 +145,7 @@ class user_like{
 	public static function get_user_history($user_id=false){
 		if(!$user_id){
 			$history = ISession::get('user_history');
+			if(empty($history))return false;
 			$ids = '';
 			foreach($history as $val){
 				$ids = $val['goods_id'].',';

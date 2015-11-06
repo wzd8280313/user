@@ -32,7 +32,7 @@
 			<div class="content">
 				<ul class="ranklist" id="ranklist">
 					{foreach:items=Api::run('getGoodsListBySellerid',array('#seller_id#',$seller_id),10)}
-					<li><span>{echo:intval($key+1)}</span><a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58px" height="58px" /></a><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
+					<li><span>{echo:intval($key+1)}</span><a href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58px" height="58px" /></a><a href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
 					{/foreach}
 				</ul>
 			</div>
@@ -44,7 +44,7 @@
 				<ul class="ranklist">
 
 					{foreach:items=Api::run('getGoodsListBySelleridList',array('#seller_id#',$seller_id),10)}
-					<li class='current'><a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58" height="58" /></a><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
+					<li class='current'><a href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" width="58" height="58" /></a><a href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
 					{/foreach}
 				</ul>
 			</div>
@@ -77,11 +77,11 @@
 			{foreach:items=$resultData}
 			<li class="clearfix {echo:search_goods::getListShow(IFilter::act(IReq::get('show_type')))}">
 				<div class="pic">
-					<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">
+					<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}" target="_blank">
 					<img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" title="{$item['name']}" />
 					</a>
 				</div>
-				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
+				<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}" target="_blank">( {$item['comments']}人评论 )</a></span><span class='grade'><i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'></i></span></h3>
 				
 				<div  class="price" >￥{$item['sell_price']}<s>￥{$item['market_price']}</s></div>
 			</li>

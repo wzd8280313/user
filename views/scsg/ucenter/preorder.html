@@ -87,10 +87,10 @@
                 <td>
                 	{if:$item['status']==1}
 					<a href="{url:/ucenter/preorder_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
-					<a href="{url:/block/doPayPresell/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="支付预付款" /></a>
+					<a topay="{url:/block/doPayPresell/order_id/$item['id']}" href='javascript:void(0)' money='{$item["pre_amount"]}' onclick='pay_confirm(this,1)'><input type="button" class='btn_gray btn_small' value="支付预付款" /></a>
 					
 					{elseif:$item['status']==4 && $item['can_pay']}
-					<a href="{url:/block/doPayPresell/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="支付尾款" /></a>
+					<a topay="{url:/block/doPayPresell/order_id/$item['id']}"  onclick='pay_confirm(this,2)'  money='{echo:number_format($item["order_amount"] - $item["pre_amount"],2)}'><input type="button" class='btn_gray btn_small' value="支付尾款" /></a>
 					{elseif:$item['status']==9}
 					<a href="{url:/ucenter/preorder_status/op/confirm/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="确认收货" /></a>
 					{elseif:$item['status']==11}
@@ -124,4 +124,15 @@ formObj.init({
 {if:$s_beginTime||$s_endTime||$s_status||$s_seller_id}
 $('.jsx').show();
 {/if}
+
+function pay_confirm(_this,type){
+	var to_pay = $(_this).attr('topay');
+	var pay_money = $(_this).attr('money');
+	if(type==1){//预付款
+		confirm('该订单需支付预付款￥'+pay_money+'，确认支付吗',"location.href='"+to_pay+"'",1);
+	}else{
+		confirm('该订单需支付尾款￥'+pay_money+'，确认支付吗',"location.href='"+to_pay+"'",1);
+	}
+	
+}
 </script>

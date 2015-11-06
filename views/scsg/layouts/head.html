@@ -6,9 +6,13 @@
 	$categoryTop = Api::run('getCategoryListTop',10);
 }
 {if:$this->user}
+{set:$user_id = $this->user['user_id']}
+{set:$user = Api::run('getMemberInfo',$user_id)}
 {set:$m = new IModel('favorite');
 $favorite_id_arr = $m->getFields(array('user_id'=>$this->user['user_id']),'rid');
 $favorite_ids = implode(',',$favorite_id_arr);}
+{set:$user_id = $this->user['user_id']}
+{set:$user = Api::run('getMemberInfo',$user_id)}
 {/if}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,7 +36,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	{js:artTemplate}
 	<!--[if IE 8]>
 	 <script type="text/javascript">
-	window.location="{url:/site/}";
+	window.location="http:www/yqtvt.com/site/index";
 	</script>
 	<![endif]-->
 	
@@ -103,11 +107,11 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 					<a href="{url:/simple/logout}" class="blue_link">退出登录</a>
 					<div class="clearfix">
 						<div class="fl">
-							<a class="hd_avata_box" href="{url:/ucenter/}"><img src="{url:$this->user['head_ico']}" style='width:62px;' onerror='this.src="{skin:images/front/user_ico.gif}"'/></a>
+							<a class="hd_avata_box" href="{url:/ucenter/}" target="_blank"><img src="{url:$this->user['head_ico']}" style='width:62px;' onerror='this.src="{skin:images/front/user_ico.gif}"'/></a>
 							<a class="grzl" href="{url:/ucenter/}">个人资料</a>
 						</div>
 						<div class="yhname">
-							<p><a class="name">{$this->user['show']}</a><a class="hydj"><!--<b style="font-size:20px">V</b>0会员--></a></p>
+							<p><a class="name" target="_blank">{$this->user['show']}</a><a class="hydj"><!--<b style="font-size:20px">V</b>0会员--></a></p>
 							<p><span>会员等级:</span><a class="hd_login" href="">{$this->user['group_name']}</a></p>
 							<div class="hy_line">
 								<p class="hy_line_bar"></p>
@@ -115,12 +119,18 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 						</div>
 					</div>
 					<div class="hy_message">
-						<a  href="javascript:void(0)">
+						<a  href="javascript:void(0)" target="_blank">
 							<b>{$this->user['point']}</b>
-							<span>积分<em><img src="{skin:images/qiandao.gif}" onclick='sign_point()'/></em></span>
+							<span>积分<em>							
+							{if:$user['sign']==0}
+							<img src="{skin:images/qiandao.gif}" onclick='sign_point()'/>
+							{else:}
+							<img src="{skin:images/yqiandao.gif}" onclick='sign_point()'/>
+							{/if}
+							</em></span>
 							
 						</a>
-						<a  href="{url:/ucenter/account_log}">
+						<a  href="{url:/ucenter/account_log}" target="_blank">
 							<b>{$this->user['balance']}</b>
 							<span>账户余额</span>
 							<span></span>
@@ -135,18 +145,18 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 				{/if}
 			<ul id="navul" class="cl" style="float:right;margin-left:170px;">
 				<li>
-					<a href="{url:/ucenter/index}">个人中心</a>
+					<a href="{url:/ucenter/index}" target="_blank">个人中心</a>
 					<ul>
-						<li><a target='blank' href="{url:/ucenter/order}">我的订单</a></li>
-						<li><a href="{url:/ucenter/address}">我的收货地址</a></li>
-						<li><a href="{url:/ucenter/integral}">我的积分</a></li>
-						<li><a href="{url:/ucenter/account_log}">我的资金</a></li>
-						<li><a href="{url:/ucenter/favorite}">我的关注</a></li>
-						<li><a href="{url:/ucenter/history}">我的足迹</a></li>
+						<li><a target='blank' href="{url:/ucenter/order}" target="_blank">我的订单</a></li>
+						<li><a href="{url:/ucenter/address}" target="_blank">我的收货地址</a></li>
+						<li><a href="{url:/ucenter/integral}" target="_blank">我的积分</a></li>
+						<li><a href="{url:/ucenter/account_log}" target="_blank">我的资金</a></li>
+						<li><a href="{url:/ucenter/favorite}" target="_blank">我的关注</a></li>
+						<li><a href="{url:/ucenter/history}" target="_blank">我的足迹</a></li>
 					</ul>
 				</li>
 				<li>
-					<a href="{url:/simple/seller}">申请开店</a>
+					<a href="{url:/simple/seller}" target="_blank">申请开店</a>
 				</li>
 				<li>
 					<a href="#">山城速购APP</a>
@@ -160,11 +170,11 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 										
 										<dl class="hd_mobile_tab">
 										<dt><b>山城速购APP</b></dt>
-										<dt><a href="#" target="_blank" class="blue_link">手机购物更优惠</a></dt>
+										<dt><a href="#" target="_blank" class="blue_link" target="_blank">手机购物更优惠</a></dt>
 										<dt>
-											<a href="#" class="app_icons"><i class="app_icons_03"></i></a>
-											<a href="#" class="app_icons"><i class="app_icons_04"></i></a>
-											<a href="#" class="app_icons"><i class="app_icons_05"></i></a>
+											<a href="#" class="app_icons"><i class="app_icons_03" target="_blank"></i></a>
+											<a href="#" class="app_icons"><i class="app_icons_04" target="_blank"></i></a>
+											<a href="#" class="app_icons"><i class="app_icons_05" target="_blank"></i></a>
 										</dt>
 										</dl>
 
@@ -174,34 +184,34 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 					</ul>
 				</li>
 				<li>
-					<a href="{url:/site/help_list}">帮助中心</a>
+					<a href="{url:/site/help_list}" target="_blank">帮助中心</a>
 					<ul>
-						<li><a href="{url:/site/help_list/id/9}">常见问题</a></li>
-						<li><a href="{url:/site/help_list/id/4}">支付帮助</a></li>
-						<li><a href="{url:/site/help/id/61}">当天送达</a></li>
-						<li><a href="{url:/site/help/id/56}">积分说明</a></li>
-						<li><a href="{url:/site/help/id/63}">退换货说明</a></li>
+						<li><a href="{url:/site/help_list/id/9}" target="_blank">常见问题</a></li>
+						<li><a href="{url:/site/help_list/id/4}" target="_blank">支付帮助</a></li>
+						<li><a href="{url:/site/help/id/61}" target="_blank">当天送达</a></li>
+						<li><a href="{url:/site/help/id/56}" target="_blank">积分说明</a></li>
+						<li><a href="{url:/site/help/id/63}" target="_blank">退换货说明</a></li>
 					</ul>
 				</li>
 				<li>
 					<a href="{url:/ucenter/index}">客户服务</a>
 					<ul>
-						<li><a href="javascript:showService()">在线客服</a></li>
-						<li><a href="{url:/ucenter/complain}">意见建议</a></li>
-						<li><a href="{url:/site/help_list/id/5}">售后服务</a></li>
-						<li><a href="{url:/ucenter/order}">订单状态</a></li>
+						<li><a onclick="showService()">在线客服</a></li><!-- href="javascript:showService()" -->
+						<li><a href="{url:/ucenter/complain}" target="_blank">意见建议</a></li>
+						<li><a href="{url:/site/help_list/id/5}" target="_blank">售后服务</a></li>
+						<li><a href="{url:/ucenter/order}" target="_blank">订单状态</a></li>
 					</ul>
 				</li>
 				<li style="color:#fff;">关注我们:
 				</li>
 				<li  class="erwei">
-					<a href="#" class="erwei" title="关注山城速购新浪微博"><img src="{skin:images/weixin1_01.png}"></a>
+					<a href="#" class="erwei" title="关注山城速购新浪微博" target="_blank"><img src="{skin:images/weixin1_01.png}"></a>
 					<!-- <ul>
 						<li style="height:160px;width:140px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
 					</ul> -->
 				</li>
 				<li class="erwei">
-					<a href="#" class="erwei" title="关注山城速购微信"><img src="{skin:images/weixin1_02.png}"></a>
+					<a class="erwei" title="关注山城速购微信"><img src="{skin:images/weixin1_02.png}"></a>
 					<ul>
 						<li style="height:160px;width:140px;border:0;box-shadow: 0 1px 3px #ccc;"><a href="#"><img src="{skin:images/erweima1.png}"></a></li>
 					</ul>
@@ -227,14 +237,14 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 		{query:name=ad_manage as ad fields=ad.name,ad.link,ad.content where=position_id eq 20 item=$adData}
 			
 		{/query}
-			<A href="{$adData['name']}" target="_blank"><IMG alt="jquery广告图片缩略图" src="{url:$adData['content']}" width="1190" ></A> 
+			<A href="{$adData['link']}" target="_blank"><IMG alt="jquery广告图片缩略图" src="{url:$adData['content']}" width="1190" ></A> 
 	</DIV>
 	<DIV class="dt_big">
 		<DIV class="dt_toSmall"></DIV>
 		{query:name=ad_manage as ad fields=ad.name,ad.link,ad.content where=position_id eq 19 item=$adBig}
 			
 		{/query}
-		<A href="{$adBig['name']}" target="_blank">
+		<A href="{$adBig['link']}" target="_blank">
 			<IMG id="actionimg" alt="jquery广告图片大图" src="{url:$adBig['content']}" width="1190" ></A> 
 	</DIV>
 </DIV>
@@ -296,7 +306,8 @@ if($("#actionimg").length>0){
 				<img src="{skin:images/logo.png}" alt="" class="png">
 
 				{/if}
-				<img src="{skin:images/yqbank.png}" alt="" class="png" style="margin-left:10px;">
+				<a href="http://www.yqccb.com/"><img src="{skin:images/yqbank.png}" alt="" class="png" style="margin-left:10px;border:0"></a>
+
 			</a>
 		</div>
 		<!--logo-->
@@ -304,7 +315,7 @@ if($("#actionimg").length>0){
 		<!--cart f-r-->
 		<div class="cart f-r mycart" id="jCart">
 			<span class="cart-count"><span name="mycart_count">{$myCartInfo['count']}</span></span>
-			<a href="{url:/simple/cart}" class="cart-buying"><span class="cart-account">去购物车结算</span></a>
+			<a href="{url:/simple/cart}" class="cart-buying" target="_blank"><span class="cart-account">去购物车结算</span></a>
 			
 		</div>
 		
@@ -329,7 +340,7 @@ if($("#actionimg").length>0){
 			<!--kw-suggest-->
 			<div class="kw-suggest">
 				{foreach:items=Api::run('getKeywordList')}
-				<a href="{url:/site/search_list/word/$item['word']}">{$item['word']}</a>
+				<a href="{url:/site/search_list/word/$item['word']}" target="_blank">{$item['word']}</a>
 				{/foreach}
 			</div>
 			<!--kw-suggest-->
@@ -349,7 +360,9 @@ if($("#actionimg").length>0){
 		<div class="nav-cat-pos">
 			<!--category-->
 			<div class="category " id="jCat">
-				<h2 class="cat-title"><a class="t14" href="">全部商品分类<b class="png"></b></a></h2>
+
+				<h2 class="cat-title"><a class="t14">全部商品分类<b class="png"></b></a></h2>
+
 				
 				<ul class="cat-list" {if:!isset($this->isIndex)}style='display:none;'{/if}>
 					{set:$hotCat=array();}
@@ -358,12 +371,12 @@ if($("#actionimg").length>0){
 					{set:$k=$keyT+1;}
 					<li class="list-item" style='position:static;'>
 						<h3 class="cat-type-{$k}">
-							<a href="{url:/site/pro_list/cat/$valT[id]}" class='underline-a'>{$valT['name']}</a>
+							<a href="{url:/site/pro_list/cat/$valT[id]}" class='underline-a' target="_blank">{$valT['name']}</a>
 						</h3>
 						<p class="cat-rcmd">
 							{set:$secondCat=Api::run('getCategoryByParentid',array('#parent_id#',$valT['id']))}
 							{foreach:items=$secondCat key=$keyS item=$valS}
-								<a href="{url:/site/pro_list/cat/$valS[id]}" class='underline-a'>{$valS['name']}</a>
+								<a href="{url:/site/pro_list/cat/$valS[id]}" class='underline-a' target="_blank">{$valS['name']}</a>
 							{/foreach}
 						</p>
 						<div class="cat-pop" style="display:none;top:0px;">
@@ -376,13 +389,13 @@ if($("#actionimg").length>0){
 										{set:$hotCat[$valT['id']][] = $valS;}
 										{/if}
 					                     <li class="cat-item">
-					                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}" class='underline-a'>{$valS['name']}</a></h3>
+					                   		 <h3 class="level-title"><a href="{url:/site/pro_list/cat/$valS[id]}" class='underline-a' target="_blank">{$valS['name']}</a></h3>
 					                   		 <p class="level-list clearfix">
 					                   		 	{foreach:items=Api::run('getCategoryByParentid',array('#parent_id#',$valS['id']),30) key=$keyG item=$valG}
 													{if:$valG['hot']==1 && count($hotCat[$valT['id']])<=5}
 														{set:$hotCat[$valT['id']][] = $valG;}
 													{/if}
-													<a href="{url:/site/pro_list/cat/$valG[id]}" class='underline-a'>{$valG['name']}</a>
+													<a href="{url:/site/pro_list/cat/$valG[id]}" class='underline-a' target="_blank">{$valG['name']}</a>
 												{/foreach}
 										     </p>
 					                    </li>
@@ -411,7 +424,7 @@ if($("#actionimg").length>0){
 		<!--nav-cnt-->
 		<div class="nav-cnt">
 			{foreach:items=Api::run('getGuideList')}
-						<li class="nav-item"><a href="{url:$item['link']}">{$item['name']}</a></li>
+						<li class="nav-item"><a href="{url:$item['link']}" target="_blank">{$item['name']}</a></li>
 			{/foreach}			
 		</div>
 		<!--nav-cnt-->
