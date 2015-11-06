@@ -998,14 +998,12 @@ class Seller extends IController
 				if($delivery_add)$setData['delivery_add']=$delivery_add;
 				$tb_refundment_doc->setData($setData);
 				$tb_refundment_doc->update('id = '.$refundment_id);
-				if($is_send==1){
-					//增加用户评论商品机会
-					Order_Class::addGoodsCommentChange($order_id);
-						
-					//经验值、积分、代金券发放
-				}
 				
-				Order_Class::sendGift($order_id,$user_id);
+				if($type==0){
+					Order_Class::addGoodsCommentChange($order_id);
+					Order_Class::sendGift($order_id,$user_id);
+					
+				}
 				Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
 			}
 			

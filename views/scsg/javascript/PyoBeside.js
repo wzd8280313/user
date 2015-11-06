@@ -5,7 +5,7 @@ var sourceJson=[
 			   {ico:"ic4.png",name:"我的关注"},			   
 			   {ico:"ic5.png",name:"返回顶部"}
 			   ];
-$(function(){
+JQuery(function(){
 	var beside=$("#beside");
 	var height=$(window).height();
 	var rightsead =$("#rightsead");
