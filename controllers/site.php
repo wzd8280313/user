@@ -900,12 +900,21 @@ class Site extends IController
 
 		$orderGoodsDB = new IQuery('order_goods as og');
 		$orderGoodsDB->join   = 'left join order as o on og.order_id = o.id left join user as u on o.user_id = u.id';
-		$orderGoodsDB->fields = 'o.user_id,og.goods_price,og.goods_nums,o.create_time as completion_time,u.username';
+		$orderGoodsDB->fields = 'o.user_id,og.goods_price,og.goods_nums,o.create_time as completion_time,u.username,u.email,u.phone';
 		$orderGoodsDB->where  = 'og.goods_id = '.$goods_id.' and o.status = 5';
 		$orderGoodsDB->order  = 'o.create_time desc';
 		$orderGoodsDB->page   = $page;
 
 		$data = $orderGoodsDB->find();
+		foreach($data as $key=>$val){
+			if($val['username']!=''){
+				$data[$key]['show'] = $val['username'];
+			}else if($val['phone']!=''){
+				$data[$key]['show'] = user_like::getSecretPhone($val['phone']);
+			}else{
+				$data[$key]['show'] = user_like::getSecretEmail($val['email']);
+			}
+		}
 		$pageHtml = $orderGoodsDB->getPageBar("javascript:void(0);",'onclick="history_ajax([page])"');
 
 		echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));

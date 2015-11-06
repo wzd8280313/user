@@ -90,7 +90,7 @@
 					<a topay="{url:/block/doPayPresell/order_id/$item['id']}" href='javascript:void(0)' money='{$item["pre_amount"]}' onclick='pay_confirm(this,1)'><input type="button" class='btn_gray btn_small' value="支付预付款" /></a>
 					
 					{elseif:$item['status']==4 && $item['can_pay']}
-					<a to_pay="{url:/block/doPayPresell/order_id/$item['id']}" href='javascript:void(0)' onclick='pay_confirm(this,2)'  money='{echo:number_format($item["order_amount"] - $item["pre_amount"],2)}'><input type="button" class='btn_gray btn_small' value="支付尾款" /></a>
+					<a topay="{url:/block/doPayPresell/order_id/$item['id']}"  onclick='pay_confirm(this,2)'  money='{echo:number_format($item["order_amount"] - $item["pre_amount"],2)}'><input type="button" class='btn_gray btn_small' value="支付尾款" /></a>
 					{elseif:$item['status']==9}
 					<a href="{url:/ucenter/preorder_status/op/confirm/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="确认收货" /></a>
 					{elseif:$item['status']==11}
