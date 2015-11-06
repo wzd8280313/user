@@ -236,44 +236,41 @@ class Order_Class
 				$localStoreNums = $productsRow['store_nums'];
 
 				//同步更新所属商品的库存量
-				if(in_array($val['goods_id'],$updateGoodsId) == false)
-				{
-					$updateGoodsId[] = $val['goods_id'];
-				}
+				if(!isset($updateGoodsId[$val['goods_id']])){$updateGoodsId[$val['goods_id']] = 0;}
+				$updateGoodsId[$val['goods_id']] += $val['goods_nums'];
+				
 
 				$newStoreNums = ($type == 'add') ? $localStoreNums + $val['goods_nums'] : $localStoreNums - $val['goods_nums'];
 				$newStoreNums = $newStoreNums > 0 ? $newStoreNums : 0;
 
 				$productObj->setData(array('store_nums' => $newStoreNums));
 				$productObj->update('id = '.$val['product_id'],'store_nums');
+				
 			}
-			//商品库存更新
-			else
-			{
-				$goodsRow = $goodsObj->getObj('id = '.$val['goods_id'],'store_nums');
-				$localStoreNums = $goodsRow['store_nums'];
-
-				$newStoreNums = ($type == 'add') ? $localStoreNums + $val['goods_nums'] : $localStoreNums - $val['goods_nums'];
-				$newStoreNums = $newStoreNums > 0 ? $newStoreNums : 0;
-
-				$goodsObj->setData(array('store_nums' => $newStoreNums));
-				$goodsObj->update('id = '.$val['goods_id'],'store_nums');
-			}
-
-			//更新销售量sale字段，库存减少销售量增加，两者成反比
-			$saleData = ($type == 'add') ? -$val['goods_nums'] : $val['goods_nums'];
-			$goodsObj->setData(array('sale' => 'sale + '.$saleData));
-			$goodsObj->update('id = '.$val['goods_id'],'sale');
 		}
-
+		foreach($goodsList as $key=>$val)
+		{
+			
+			if($val['product_id'] == 0){
+				
+				if(!isset($updateGoodsId[$val['goods_id']]))$updateGoodsId[$val['goods_id']] = 0;
+				$updateGoodsId[$val['goods_id']] += $val['goods_nums'];
+				
+			}
+		}
 		//更新统计goods的库存
 		if($updateGoodsId)
 		{
-			foreach($updateGoodsId as $val)
+			$table = $goodsObj->getTableName();
+			foreach($updateGoodsId as $key=>$val)
 			{
-				$totalRow = $productObj->getObj('goods_id = '.$val,'SUM(store_nums) as store');
-				$goodsObj->setData(array('store_nums' => $totalRow['store']));
-				$goodsObj->update('id = '.$val);
+				if($type=='add'){
+					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` +  '.$val.', sale = sale - '.$val.' where id = '.$key;
+				}else{
+					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` -  '.$val.', sale = sale + '.$val.' where id = '.$key;
+				}
+				$goodsObj->db_query($sql);
+				
 			}
 		}
 	}

@@ -124,7 +124,7 @@ class IModel
 				$updateStr.= '`'.$key.'` = '.$val;
 		}
 		$sql = 'UPDATE '.$this->tableName.' SET '.$updateStr.$where;
-		
+	
 		return $this->db->query($sql);
 	}
 
