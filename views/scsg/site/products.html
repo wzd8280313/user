@@ -204,7 +204,7 @@
 				<input class="submit_join" type="button" id="joinCarButton" onclick="spec_show_obj.joinCart();" value="加入购物车" />
 
 
-				<div class="shopping" id="product_myCart" style="z-index:-1;display:none">
+				<div class="shopping" id="product_myCart" style="z-index:1;display:none">
 					<dl class="cart_stats">
 						<dt class="gray f14 bold">
 							<a class="close_2 f_r" href="javascript:closeCartDiv();" title="关闭">关闭</a>
@@ -217,6 +217,16 @@
 			</div>
 			{/if}
 		</div>
+		<script type="text/javascript">
+		if ($("#store-selector.hover .content").css("display")==block)
+		  {
+		  $(#product_myCart).css("z-index","-1")
+		  }
+		else
+		  {
+		  $(#product_myCart).css("z-index","1")
+		  }
+		</script>
 		
 		<div class="tm-ser tm-clear" style="z-index:-1000">
 			<dl class="tm-clear">
