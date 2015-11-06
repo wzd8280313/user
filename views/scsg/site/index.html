@@ -49,7 +49,7 @@ _mvq.push(['$logConversion']);
 				});
 				function startScroll(){
 				    tId = setInterval(function(){
-				        var nextImg = $('.nonce').next('.initial');
+				        var nextImg = $('#ad_index .nonce').next('.initial');
 				        if(nextImg.length==0){
 				            nextImg = $($('#ad_index li')[0]);
 				        }
@@ -363,7 +363,7 @@ _mvq.push(['$logConversion']);
 							{/if}
 						</div>
 									
-						{echo:Ad::show("首页楼层".$Kad."-小广告")}
+						{echo:Ad::show("首页楼层".$Kad."-小广告",0,1)}
 					</div>
 				</div>
 				<!--分层轮播广告-->

@@ -1112,8 +1112,8 @@ class Site extends IController
 
 	function ce(){
 		
-		$adData = Ad::getAdData('首页楼层1-大广告');
-		print_r($adData);
+		$history = ISession::get('user_history');
+		print_r($history);
 	}
 	
 }
