@@ -92,7 +92,7 @@ $seller_arr[0]='平台自营';
 					<dt>价格：</dt>
 					<dd id='price_dd'>
 						<p class="f_r"><input type="text" class="mini" name="min_price" value="{echo:IFilter::act(IReq::get('min_price'),'url')}" onchange="checkPrice(this);"> 至 <input type="text" class="mini" name="max_price" onchange="checkPrice(this);" value="{echo:IFilter::act(IReq::get('max_price'),'url')}"> 元
-						<label class="btn_gray_s"><input type="button" onclick="priceLink();" value="确定"></label></p>
+						<label class="btn_gray_s"><input class='btn_gray btn_mini' type="button" onclick="priceLink();" value="确定"></label></p>
 						<a class="nolimit current" href="{echo:search_goods::searchUrl(array('min_price','max_price'),'')}">不限</a>
 						{foreach:items=search_goods::$priceSearch}
 						{set:$priceZone = explode('-',$item)}
