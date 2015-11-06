@@ -32,8 +32,8 @@
 			{foreach:items=$this->fapiaoData}
 			<tr>
 				<td>{$item['order_no']}</td>
-				<td>{$item['type']}</td>
-				<td>{$item['create_time']}</td>
+				<td>{if:$item['type']==0}普通{else:}增值税{/if}</td>
+				<td>{if:$item['type']==0}{$item['taitou']}{else:}{$item['com']}{/if}</td>
 				<td>{echo:Order_Class::getFapiaoStatus($item['status'])}</td>
 				<td>{$item['username']}</th>
 				<td><a href="{url:/seller/fapiao_show/id/$item[id]}"><img class="operator" src="{skin:images/main/icn_settings.png}" title="查看" /></a></td>

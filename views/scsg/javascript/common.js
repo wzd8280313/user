@@ -139,7 +139,7 @@ var countdown=function()
 		{var val=0;
 			if(value==0){
 				val=(type=='hour') ? 23 : 59;
-			}else if(value<=10){
+			}else if(value<=10 ){
 				if(type=='day')val=value-1;
 				else val= '0'+(value-1);
 			}else val=value-1;

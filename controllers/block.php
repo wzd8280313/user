@@ -646,10 +646,10 @@ class Block extends IController
     	{
     		if($val)
     		{
-    			$where .= $key.'"'.$val.'"';
+    			$where .= $key.'"'.$val.'" and ';
     		}
     	}
-
+		$where .= '1';
     	//有筛选条件
     	if($where)
     	{

@@ -1474,6 +1474,7 @@ class Seller extends IController
 		$fapiao_db->page = $page;
 		$fapiao_db->fields = 'f.*,o.order_no,u.username';
 		$this->fapiaoData = $fapiao_db->find();
+	
 		$this->db = $fapiao_db;
 		$this->redirect('fapiao_list');
 	}
