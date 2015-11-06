@@ -248,7 +248,7 @@ function checkForm(is_send,type)
 {
 	if(is_send==2)return false;
 	var payValue = $('[name="pay_status"]:checked').val();
-	if(payValue == 2 && type==1){
+	if(payValue == 7 && type==1){
 		var chgGoodsId = $('input[name=goods_id]').val();
 		if(!chgGoodsId){
 			alert('请选择更换的商品');

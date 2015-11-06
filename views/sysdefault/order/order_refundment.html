@@ -105,7 +105,7 @@
 					
 						{foreach:items=$order_goods_data item=$good}
 						{set:$good_info = JSON::decode($good['goods_array'])}
-						{if:$good['is_send'] != 2}
+						{if:$good['is_send'] != 2 && $good["refunds_id"]}
 						<label>
 							<input type="radio" name="order_goods_id" value="{$good['id']}" refunds_id='{$good["refunds_id"]}' onclick="countGoodsAmount(this);" refund_fee='{if:$good["amount"]}{$good["amount"]}{else:}{echo:Order_Class::get_refund_fee($good,$good)}{/if}'/>
 							<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</a>

@@ -212,6 +212,7 @@ class Ucenter extends IController
         $tb_refundment->join = 'left join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id';
         $tb_refundment->where = 'r.if_del=0 and r.order_id='.$id;
         $tb_refundment->order = 'r.id DESC';
+        $tb_refundment->group = 'r.id';
         $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.' as end_time';
         $this->refund_data = $tb_refundment->find();
         
