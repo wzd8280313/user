@@ -889,7 +889,7 @@ class Simple extends IController
     	$order_type    = 0;
     	$invoice       = isset($_POST['taxes']) ? 1 : 0;
     	$dataArray     = array();
-		
+    	$seller_ids    = IFilter::act(IReq::get('seller_id'),'int');
 		//防止表单重复提交
     	if(IReq::get('timeKey') != null)
     	{
@@ -1143,8 +1143,13 @@ class Simple extends IController
 				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
 				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
 			}
-			$db_fapiao->setData($fapiao_data);
-			$db_fapiao->add();
+			
+			
+			foreach($seller_ids as $key=>$v){
+				$fapiao_data['seller_id'] = $v;
+				$db_fapiao->setData($fapiao_data);
+				$db_fapiao->add();
+			}
 		}
 		//获取备货时间
 		$siteConfigObj = new Config("site_config");

@@ -542,6 +542,7 @@ function selectTakeself(deliveryId)
 								<col width="80px" />
 							</colgroup>
 							<caption>商家：{$value['seller_name']}</caption>
+							<input type='hidden' value='{$value[0]['seller_id']}' name='seller_id[]' />
 							<thead>
 								<tr>
 									<th>图片</th>
