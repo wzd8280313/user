@@ -196,7 +196,7 @@
 
 
 								{$freightInfo}
-								<a href="{url:/site/help/id/73}" style='color:red;display:inline-block;'>配送说明</a>
+								<a href="{url:/site/help/id/73}" style='color:red;display:inline-block;' target="_blank">配送说明</a>
 							</div>
 						</dd>
 					</dl>
@@ -232,7 +232,7 @@
 						</li>
 						<li class="tm-ind-item tm-ind-emPointCount" >
 							<div class="tm-indcon">
-								<a target="_blank" href="" >
+								<a target="_blank" href="#">
 									<span class="tm-label">送积分</span>
 									<span class="tm-count">{$point}</span>
 								</a>
@@ -286,7 +286,7 @@
 		<!--购买区域-->
 		<div class="current">
 			{if:$store_nums <= 0}
-				该商品已售完，不能购买，您可以看看其它商品！(<a href="{url:/simple/arrival/goods_id/$id}" class="orange">到货通知</a>)
+				该商品已售完，不能购买，您可以看看其它商品！(<a href="{url:/simple/arrival/goods_id/$id}" class="orange" style="color:#F15A24">到货通知</a>)
 			{else:}
 
 			<input class="submit_buy" type="button" id="buyNowButton" onclick="buy_now();" value="立即购买" />
@@ -396,12 +396,12 @@
 					{set:$ave = statistics::getSellerGrade($seller['id']);$ave = $ave*70/5;}
 					<li style='background:none;'>评分：<span class="grade"><i style="width:{$ave}px"></i></span></li>
 					<li style='background:none;'>客服QQ:
-						<a target="_blank" href="{echo:Sonline::getChatUrl($seller['server_num'])}" >
+						<a target="_blank" href="{echo:Sonline::getChatUrl($seller['server_num'])}"  target="_blank">
 							<img border="0"  src="{skin:images/qq.jpg}"/>
 						</a>
 					</li>
 					<li style='background:none;'>
-					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}">进入店铺</a>
+					<a class="btn_blue bold" href="{url:/site/home/id/$seller[id]}" target="_blank">进入店铺</a>
 					</li>
 				</ul>
 			</div>
@@ -427,8 +427,8 @@
 				<ul class="ranklist">
 					{foreach:items=Api::run('getCommendHot')}
 									<li class="current">
-						<a href="{url:/site/products/id/$item[id]}"><img width="58px" height="58px" alt="苹果" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
-						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a>
+						<a href="{url:/site/products/id/$item[id]}" target="_blank"><img width="58px" height="58px" alt="苹果" src="{url:/pic/thumb/img/$item[img]/w/58/h/58}" /></a>
+						<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a>
 						<b>￥{$item['sell_price']}</b>
 					</li>
 					{/foreach}

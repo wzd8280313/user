@@ -151,7 +151,7 @@ _mvq.push(['$logConversion']);
 		                        <div class="tab-item tab-item-hover" style="display: block;">
 								<ul class="news-list">
 									{foreach:items=Api::run('getAnnouncementList')}
-										<li><a style='height:22px;' href='{url:/site/notice_detail/id/$item["id"]}' class="limit">{$item['title']}</a>
+										<li><a style='height:22px;' href='{url:/site/notice_detail/id/$item["id"]}' class="limit" target="_blank">{$item['title']}</a>
 										</li>
 									{/foreach}
 								</ul>
@@ -235,7 +235,7 @@ _mvq.push(['$logConversion']);
 								});
 							</script>
 						    </div>
-		便民服务--><a href="{url:/simple/seller}"><img src="{skin:images/bianmin.png}" style="width:228px;height:200px;margin-top:5px;"></a>
+		便民服务--><a href="{url:/simple/seller}" target="_blank"><img src="{skin:images/bianmin.png}" style="width:228px;height:200px;margin-top:5px;"></a>
 						</div>
 		                  <!--便民服务-->
 		        </div>
@@ -262,10 +262,10 @@ _mvq.push(['$logConversion']);
 				{foreach:items=$this->user_like_goods}
 				
 				<li class="xi">
-					 <a class="goods-img" href="{url:/site/products/id/$item['id']}" >
+					 <a class="goods-img" href="{url:/site/products/id/$item['id']}"  target="_blank">
 						<img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
 					</a>
-					<a class="goods-name" href="{url:/site/products/id/$item['id']}" title="{$item['name']}" >
+					<a class="goods-name" href="{url:/site/products/id/$item['id']}" title="{$item['name']}"  target="_blank">
 						{$item['name']}<span class="txt-red"></span>
 					</a>
 					<div class="goods-price">
@@ -305,10 +305,10 @@ _mvq.push(['$logConversion']);
 						
                 		{foreach:items=Api::run('getGoodsListByTags',array('#id#',$tag['id']),6)}
                     	<li>
-	                         <a class="goods-img" target='blank' href="{url:/site/products/id/$item['id']}">
+	                         <a class="goods-img"  target="_blank" href="{url:/site/products/id/$item['id']}">
 	                            <img class="jImg" src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"><div class="shine">&nbsp;</div>
 	                        </a>
-	                        <a class="goods-name red-a" target='blank' href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
+	                        <a class="goods-name red-a" target="_blank" href="{url:/site/products/id/$item['id']}" title=" {$item['name']}">
 	                            {$item['name']}<span class="txt-red"></span>
 	                        </a>
 	                        <div class="goods-price">
@@ -346,9 +346,9 @@ _mvq.push(['$logConversion']);
 				<h2 class="t18">{$base['name']}</h2>
 				<ul class="fl-cat">
 					{foreach:items=$base['child'] item=$second}
-								<li><a href="site/pro_list/cat/{$second['id']}">{$second['name']}</a>|</li>
+								<li><a href="site/pro_list/cat/{$second['id']}" target="_blank">{$second['name']}</a>|</li>
 					{/foreach}
-								<li><a href="site/pro_list/cat/{$base['id']}" style="font-size: 12px;">更多</a></li>
+								<li><a href="site/pro_list/cat/{$base['id']}" style="font-size: 12px;"target="_blank">更多</a></li>
 				</ul>
 			</div>
 			<div class="fl-cnt clearfix">
@@ -358,7 +358,7 @@ _mvq.push(['$logConversion']);
 							{if:isset($hotCat[$base['id']])}
 							{foreach:items=$hotCat[$base['id']] item=$hot kHot=$key}
 							
-								<a href="{url:site/pro_list/cat/$hot[id]}" class="key red-a">{$hot['name']}</a>
+								<a href="{url:site/pro_list/cat/$hot[id]}" class="key red-a"target="_blank">{$hot['name']}</a>
 							{/foreach}
 							{/if}
 						</div>
@@ -379,11 +379,11 @@ _mvq.push(['$logConversion']);
 				    <ul class="goods-list clearfix">
 				    	{foreach:items=$base['goods'] item=$goods}
 					    	<li>
-					        <a class="goods-img" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}">
-					            <img class="jImg" alt="{$goods['name']}" src="{url:/pic/thumb/img/$goods[img]/w/180/h/180}">
+					        <a class="goods-img" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}" target="_blank">
+					            <img class="jImg" alt="{$goods['name']}" src="{url:/pic/thumb/img/$goods[img]/w/180/h/180}" target="_blank">
 								<div class="shine">&nbsp;</div>
 					        </a>
-					        <a class="goods-name red-a" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}">
+					        <a class="goods-name red-a" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}" target="_blank">
 					         <span class="txt-red">{if:$goods['is_del']==4}[预售]{/if}</span> {$goods['name']}
 					        </a>
 					        <div class="goods-price">
@@ -400,7 +400,7 @@ _mvq.push(['$logConversion']);
 		<div class="big-pro">
 	       <div class='seller_list'>
 		 		{foreach:items=$base['seller'] item=$seller}
-					<a href="{url:/site/home/id/$seller['id']}"><img src="{url:/pic/thumb/img/$seller['logo_img']/w/119/h/60}"/></a>
+					<a href="{url:/site/home/id/$seller['id']}" target="_blank"><img src="{url:/pic/thumb/img/$seller['logo_img']/w/119/h/60}"/></a>
 				{/foreach}
 		 	</div>
 		</div>

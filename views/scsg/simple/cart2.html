@@ -417,7 +417,7 @@ function selectTakeself(deliveryId)
 							{set:$deliveryData = $this->allDeliveryType}
 							{foreach:items = $deliveryData}
 							<tr>
-								<th><label><input type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
+								<th><label><input class="radio" type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
 								<td>
 									{$item['description']}
 								</td>

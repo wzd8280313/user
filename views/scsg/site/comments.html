@@ -2,7 +2,7 @@
 {set:$id = $this->comment['id'];}
 {set:$item=$this->goodsRow;}
 {set:$goods_id=$this->comment['goods_id']}
-<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/products/id/$goods_id}">{$item['name']}</a> </div>
+<div class="position"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » <a href="{url:/site/products/id/$goods_id}" target="_blank">{$item['name']}</a> </div>
 <div class="clearfix">
 	<div class="sidebar f_l">
 		<div class="box_2 m_10">
@@ -10,8 +10,8 @@
 			<div class="content" style='width:95%;'>
 				<ul class="prolist clearfix">
 					<li>
-						<a href="{url:/site/products/id/$goods_id}"><img src="{webroot:}{$item['img']}" alt="{$item['name']}" height="212" width="167"></a>
-						<p class="pro_title">商品名称：<a class="blue" href="{url:/site/products/id/$goods_id}">{$item['name']}</a></p>
+						<a href="{url:/site/products/id/$goods_id}" target="_blank"><img src="{webroot:}{$item['img']}" alt="{$item['name']}" height="212" width="167"></a>
+						<p class="pro_title">商品名称：<a class="blue" href="{url:/site/products/id/$goods_id}" target="_blank">{$item['name']}</a></p>
 						<p>优惠价：<b>￥{$item['sell_price']}</b></p>
 						<p>评价得分：<span class="grade"><i style="width:{echo:Common::gradeWidth($average_point)}px"></i></span>({$average_point}分)</p>
 						<p>评论数：{$this->comment_info['comment_total']}条</p>

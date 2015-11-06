@@ -11,7 +11,7 @@
 			<div class="cont">
 				<ul class="list">
 				{foreach:items=Api::run('getVipSellerList')}
-					<li><a href="{url:/site/home/id/$item['id']}">{$item['true_name']}</a></li>
+					<li><a href="{url:/site/home/id/$item['id']}" target="_blank">{$item['true_name']}</a></li>
 				{/foreach}
 				</ul>
 			</div>
@@ -30,7 +30,7 @@
 					{foreach:items=$resultData}
 					<li>
 						<div class='title2' style='overflow:hidden'>
-							<a href="{url:/site/home/id/$item['id']}">{$item['true_name']}</a>
+							<a href="{url:/site/home/id/$item['id']}" target="_blank">{$item['true_name']}</a>
 						</div>
 						<div class='t_l block'>
 							评分：
@@ -40,7 +40,7 @@
 						</div>
 						<div class='t_l block'>销量：{echo:statistics::sellCountSeller($item['id'])} 件</div>
 						<div class='t_l block' style='height:37px;'>{echo:join(' ',area::name($item['province'],$item['city'],$item['area']))}</div>
-						<h3><a href="{url:/site/home/id/$item[id]}" class="orange">进入店铺</a></h3>
+						<h3><a href="{url:/site/home/id/$item[id]}" class="orange" target="_blank">进入店铺</a></h3>
 					</li>
 					{/foreach}
 				</ul>
