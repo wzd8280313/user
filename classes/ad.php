@@ -72,7 +72,7 @@ class Ad
 	 * @param $goods_cat_id 商品分类ID
 	 * @return string
 	 */
-	public static function show($position,$goods_cat_id = 0)
+	public static function show($position,$goods_cat_id = 0,$nav=0)
 	{
 		$positionObject = array();
 		$adArray        = array();
@@ -111,7 +111,7 @@ class Ad
 			<div id='{$adPositionJsId}' class='admanage'>
 			</div>
 			<script type='text/javascript'>
-				(new adLoader()).load({$positionJson},{$adJson},"{$adPositionJsId}");
+				(new adLoader()).load({$positionJson},{$adJson},"{$adPositionJsId}",$nav);
 			</script>
 OEF;
 			echo $htmlOutput;

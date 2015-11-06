@@ -37,7 +37,7 @@ _mvq.push(['$logConversion']);
 				var tId;
 				startScroll();
 				$(function(){
-				    $('.ad_cycle li').each(function(){
+				    $('#ad_index li').each(function(){
 				        $(this).click(function(){
 				            slideHere($(this));
 				        }).mouseover(function(){
@@ -51,7 +51,7 @@ _mvq.push(['$logConversion']);
 				    tId = setInterval(function(){
 				        var nextImg = $('.nonce').next('.initial');
 				        if(nextImg.length==0){
-				            nextImg = $($('.ad_cycle li')[0]);
+				            nextImg = $($('#ad_index li')[0]);
 				        }
 				        slideHere($(nextImg));
 				    }, 3000);
@@ -60,13 +60,13 @@ _mvq.push(['$logConversion']);
 				    clearInterval(tId);
 				}
 				function slideHere(imgObj){
-				    $('.ad_cycle li').removeClass('nonce');
-				    $('.ad_cycle li').addClass('initial');
+				    $('#ad_index li').removeClass('nonce');
+				    $('#ad_index li').addClass('initial');
 				    imgObj.removeClass('initial');
 				    imgObj.addClass('nonce');
-				    if($('.ad_cycle img').length)
+				    if($('#ad_index img').length)
 				    {
-				        $('.ad_cycle .pic img')
+				        $('#ad_index .pic img')
 				            .attr('src', imgObj.attr('target_src'))
 				            .css('display', 'none')
 				            .fadeIn('normal')
@@ -83,7 +83,7 @@ _mvq.push(['$logConversion']);
 		{if:$this->index_slide}
 		<div id='scroll' style="background-color:#{$this->index_slide[0]['color']}" >
 			
-			<div class="ad_cycle">
+			<div class="ad_cycle ad_index" id='ad_index'>
 				<div class="number" >
 					<ul style=''>
 						{foreach:$items=$this->index_slide }
@@ -370,7 +370,7 @@ _mvq.push(['$logConversion']);
 				<div class="fl-rcmd1 f-l" >
 					<div class="fl-rcmd-bg1 ad-shine" >
 					
-						{echo:Ad::show("首页楼层".$Kad."-大广告")}
+						{echo:Ad::show("首页楼层".$Kad."-大广告",0,1)}
 					</div>
 				</div>
 				<!--分层轮播广告-->
