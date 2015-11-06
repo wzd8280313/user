@@ -35,8 +35,8 @@ $seller_arr[0]='平台自营';
 			<ul class="prolist">
 				{foreach:items=$pro_list}
 				<li>
-					<a class="pic" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/85/h/85}" height="85px" width="85px"></a>
-					<p class="pro_title"><a class="blue" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span class="gray">{$item['description']}</span></p>
+					<a class="pic" href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/85/h/85}" height="85px" width="85px"></a>
+					<p class="pro_title"><a class="blue" href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a><span class="gray">{$item['description']}</span></p>
 					<p><b>￥{$item['sell_price']}</b> <s>￥{$item['sell_price']}</s></p>
 				</li>
 				{/foreach}
@@ -122,9 +122,9 @@ $seller_arr[0]='平台自营';
 				{foreach:items=$resultData}
 				<li class="clearfix  {$showType}">
 					<div class="pic">
-						<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" width="200" height="200" alt="{$item['name']}" title="{$item['name']}" /></a>
+						<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" width="200" height="200" alt="{$item['name']}" title="{$item['name']}" /></a>
 					</div>
-					<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}">( {$item['comments']}人评论 )</a></span><span class='grade'><i style="width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px"></i></span>
+					<h3 class="title"><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a><span>总销量：{$item['sale']}<a class="blue" href="{url:/site/comments_list/id/$item[id]}" target="_blank">( {$item['comments']}人评论 )</a></span><span class='grade'><i style="width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px"></i></span>
 					<span style='margin-top:5px;'>
 						<a  style='margin-left:5px;text-decoration:none;'>{$seller_arr[$item['seller_id']]}</a>
 					</span>
