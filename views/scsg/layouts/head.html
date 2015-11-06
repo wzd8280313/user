@@ -11,8 +11,6 @@
 {set:$m = new IModel('favorite');
 $favorite_id_arr = $m->getFields(array('user_id'=>$this->user['user_id']),'rid');
 $favorite_ids = implode(',',$favorite_id_arr);}
-{set:$user_id = $this->user['user_id']}
-{set:$user = Api::run('getMemberInfo',$user_id)}
 {/if}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
