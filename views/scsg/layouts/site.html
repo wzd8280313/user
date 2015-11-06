@@ -23,16 +23,15 @@
 
 <script type='text/javascript'>
 	$('a').attr('target','_blank');
-var anchors = document.getElementById("floornav").getElementsByTagName("a"); 
-for(i=0;i<anchors.length;i++){ 
-var anchor_item = anchors[i]; 
-anchor_item.target="_self"; 
-} 
+	var anchors = document.getElementById("floornav").getElementsByTagName("a"); 
+	for(i=0;i<anchors.length;i++){ 
+	var anchor_item = anchors[i]; 
+	anchor_item.target="_self"; 
+	} 
 </script>
 <!-- 首页logo -->  
 <script type='text/javascript'>
-	$('a').attr('target','_blank');
-	var anchors = $(".logo").getElementsByTagName("a"); 
+	var anchors = document.getElementByClassName("logo").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 
@@ -40,8 +39,7 @@ anchor_item.target="_self";
 </script>
 <!-- 首页七天退换货 -->
 <script type='text/javascript'>
-	$('a').attr('target','_blank');
-	var anchors = $("#promise").getElementsByTagName("a"); 
+	var anchors = document.getElementById("promise").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 
@@ -49,14 +47,13 @@ anchor_item.target="_self";
 </script>
 <!-- 商品搜索结果页筛选 -->
 <script type='text/javascript'>
-	$('a').attr('target','_blank');
-	var anchors = $(".display_title").getElementsByTagName("a"); 
+	var anchors = document.getElementByClassName("display_title").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 
 	} 
 	$('a').attr('target','_blank');
-	var anchors = $(".box m_10").getElementsByTagName("a"); 
+	var anchors = document.getElementByClassName("box").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 
@@ -64,8 +61,7 @@ anchor_item.target="_self";
 </script>
 <!-- 帮助中心所有a -->
 <script type='text/javascript'>
-	$('a').attr('target','_blank');
-	var anchors = $(".wrapper").getElementsByTagName("a"); 
+	var anchors = document.getElementByClassName("wrapper").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 
@@ -73,14 +69,12 @@ anchor_item.target="_self";
 </script>
 <!-- 商品详情页面含加入购物车弹窗 -->
 <script type='text/javascript'>
-	$('a').attr('target','_blank');
-	var anchors = $("#product_myCart").getElementsByTagName("a"); 
+	var anchors = document.getElementById("product_myCart").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 
 	}
-	$('a').attr('target','_blank');
-	var anchors = $("#J_DetailMeta").getElementsByTagName("a"); 
+	var anchors = document.getElementById("J_DetailMeta").getElementsByTagName("a"); 
 	for(i=0;i<anchors.length;i++){ 
 	var anchor_item = anchors[i]; 
 	anchor_item.target="_self"; 
