@@ -708,17 +708,16 @@ class Ucenter extends IController
 	    	$result  = $userObj->update($where);
 	    	if($result)
 	    	{
-	    		ISafe::set('user_pwd',$passwordMd5);
-	    		$message = '密码修改成功';
+	    		$this->redirect('/site/success?message=密码修改成功');
+	    		
 	    	}
 	    	else
 	    	{
-	    		$message = '密码修改失败';
+	    		$this->redirect('/site/error?msg=密码修改失败');
 	    	}
 		}
-
-    	$this->redirect('/ucenter/info',false);
-    	Util::showMessage($message);
+		$this->redirect('/site/error?msg=密码修改失败');
+    	//$this->redirect('/ucenter/info');
     }
 
     //[个人资料]展示 单页

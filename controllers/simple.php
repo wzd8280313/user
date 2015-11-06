@@ -1840,13 +1840,14 @@ class Simple extends IController
 		//发送邮件
 		$smtp   = new SendMail();
 		$result = $smtp->send($email,"用户注册邮箱验证",$content);
+		
 		if($result===false)
 		{
 			return 0;
 		}
 
 		$message = "您的邮箱验证邮件已发送到{$email}！请到您的邮箱中去激活";
-		return IUrl::creatUrl('/site/success?message='.urlencode($message).'&email='.$email);//返回url
+		$this->redirect('/site/success?message='.urlencode($message).'&email='.$email);//返回url
 	}
 
 	/**

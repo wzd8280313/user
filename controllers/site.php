@@ -1120,16 +1120,7 @@ class Site extends IController
 
 
 	function ce(){
-		$goodsObj = new IModel('goods');
-		$table = $goodsObj->getTableName();
-		$updateGoodsId = array('22'=>1);
-			foreach($updateGoodsId as $key=>$val)
-			{
-				$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` -  '.$val.', sale = sale + '.$val.' where id = '.$key;
-				if($goodsObj->db_query($sql))echo 999;
-				else echo 111;
-				
-			}
+		print_r($_SESSION);
 	}
 	
 }

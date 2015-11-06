@@ -428,7 +428,7 @@ function checkForm()
 		$('input[name="_imgList"]').val(goodsPhoto.join(','));
 		$('input[name="img"]').val($('#thumbnails img[class="current"]').attr('alt'));
 	}
-	if($('input[name^=_goods_category]').length==0){
+	if($('input[name="_goods_category[]"]').length==0){
 		alert('商品分类不能为空');
 		return false;
 	}
