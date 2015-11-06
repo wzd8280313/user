@@ -117,7 +117,13 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 					<div class="hy_message">
 						<a  href="javascript:void(0)" target="_blank">
 							<b>{$this->user['point']}</b>
-							<span>积分<em><img src="{skin:images/qiandao.gif}" onclick='sign_point()'/></em></span>
+							<span>积分<em>							
+							{if:$user['sign']==0}
+							<img src="{skin:images/qiandao.gif}" onclick='sign_point()'/>
+							{else:}
+							<img src="{skin:images/yqiandao.gif}" onclick='sign_point()'/>
+							{/if}
+							</em></span>
 							
 						</a>
 						<a  href="{url:/ucenter/account_log}" target="_blank">
