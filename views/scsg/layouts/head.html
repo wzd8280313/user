@@ -32,7 +32,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	{js:artTemplate}
 	<!--[if IE 8]>
 	 <script type="text/javascript">
-	window.location="{url:/site/index}";
+	window.location="http:www/yqtvt.com/site/index";
 	</script>
 	<![endif]-->
 	
@@ -296,7 +296,8 @@ if($("#actionimg").length>0){
 				<img src="{skin:images/logo.png}" alt="" class="png">
 
 				{/if}
-				<img src="{skin:images/yqbank.png}" alt="" class="png" style="margin-left:10px;">
+				<a href="http://www.yqccb.com/"><img src="{skin:images/yqbank.png}" alt="" class="png" style="margin-left:10px;border:0"></a>
+
 			</a>
 		</div>
 		<!--logo-->
@@ -349,7 +350,7 @@ if($("#actionimg").length>0){
 		<div class="nav-cat-pos">
 			<!--category-->
 			<div class="category " id="jCat">
-				<h2 class="cat-title"><a class="t14" href="">全部商品分类<b class="png"></b></a></h2>
+				<h2 class="cat-title t14">全部商品分类<b class="png"></b></h2>
 				
 				<ul class="cat-list" {if:!isset($this->isIndex)}style='display:none;'{/if}>
 					{set:$hotCat=array();}
