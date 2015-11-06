@@ -203,7 +203,7 @@ class trade_alipay extends paymentPlugin
 	 * @param array $tradeData  返回的报文
 	 * @param int   $asyn  0:同步处理 1：异步回调
 	 */
-	private static function addTradeData($tradeData,$asyn=0,$ids){
+	private static function addTradeData($tradeData,$asyn=0,$ids=0){
 		$resArr = array(
 				'trade_no' 	   => $tradeData['trade_no'],
 				'order_no'     => $tradeData['out_trade_no'],
