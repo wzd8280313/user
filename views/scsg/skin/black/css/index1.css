@@ -250,7 +250,7 @@ textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;bor
 .submit{width:99px;height:38px;margin-top:-15px}
 .submit_buy{width:169px;background-position:0 -80px;font-size:20px;background:#e65b08;color:#fff;}
 
-.submit_join{width:158px;height:40px;font-size:20px;background:#ff9024;color:#fff;}
+.submit_join{width:200px;height:40px;font-size:20px;background:#ff9024;color:#fff;display:block;margin:0 auto;}
 
 .submit_login{width:117px;background-position:0 -166px}
 .submit_reg{width:205px;background-position:0 -254px}
