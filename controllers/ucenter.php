@@ -198,7 +198,11 @@ class Ucenter extends IController
 
         $orderObj = new order_class();
         $this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
-
+		$this->fapiao_data = array();
+		if($this->order_info['invoice']==1){
+			$fapiao_db = new IModel('order_fapiao');
+			$this->fapiao_data = $fapiao_db->getObj('order_id='.$id);
+		}
         if(!$this->order_info)
         {
         	IError::show(403,'订单信息不存在');
