@@ -337,8 +337,10 @@ class Order extends IController
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了换货单",'修改的ID：'.$refundment_id));
 		}
+		if($type==0){
+			$this->redirect('refundment_list');
+		}else $this->redirect('refundment_chg_list');
 		
-		$this->redirect('refundment_list');
 	}
 	/**
 	 * @brief查看发货单
