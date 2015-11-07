@@ -213,7 +213,7 @@ class Ucenter extends IController
         $tb_refundment->where = 'r.if_del=0 and r.order_id='.$id;
         $tb_refundment->order = 'r.id DESC';
         $tb_refundment->group = 'r.id';
-        $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.' as end_time';
+        $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
         $this->refund_data = $tb_refundment->find();
         
       	 
@@ -535,9 +535,18 @@ class Ucenter extends IController
     public function refunds_del()
     {
         $id = IFilter::act( IReq::get('id'),'int' );
-        $model = new IModel("refundment_doc");
-        $model->del("id = ".$id." and user_id = ".$this->user['user_id']);
-        $this->redirect('refunds');
+        $refundment_doc_db = new IQuery("refundment_doc as r");
+        $refundment_doc_db->join = 'left join order_goods as og on og.order_id=r.order_id and og.goods_id=r.goods_id and og.product_id=r.product_id';
+        $refundment_doc_db->fields = 'r.type,og.*';
+        $refundment_doc_db->where = 'r.id='.$id.' and r.pay_status=0 and r.user_id='.$this->user['user_id'];
+        $order_goods_row = $refundment_doc_db->getObj();
+      
+        if(empty($order_goods_row))Util::showMessage("退款信息不存在");
+        $model = new IModel('refundment_doc');
+       if($model->del('id='.$id.' and user_id='.$this->user['user_id'])){
+       		Order_Class::order_status_refunds(1,$order_goods_row,$order_goods_row['type']);
+       }
+     	 $this->redirect('refunds');
     }
     /**
      * @brief 查看退款申请详情（此处做了更改）
