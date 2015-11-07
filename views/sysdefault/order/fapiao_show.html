@@ -85,7 +85,7 @@
 				<tr>
 					<th>开票金额：</th>
 					<td align="left">
-						<input type='text' value="{$fapiao['money']}" pattern='^[0-9]+.?[0-9]{0,2}$' name='money' alt='请正确填写金额'/>
+						<input type='text' {if:$fapiao['status']==1}disabled{/if} value="{$fapiao['money']}" pattern='^[0-9]+.?[0-9]{0,2}$' name='money' alt='请正确填写金额'/>
 					</td>
 				</tr>
 		

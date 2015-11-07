@@ -1,4 +1,4 @@
-/* SVN.committedRevision=1442192 */
+﻿SVN.committedRevision=1442192 */
 ﻿body,p,form,input,button,dl,dt,dd,ul,ol,li,h1,h2,h3,h4{margin:0;padding:0;list-style:none;}
 
 body,button,input,select,textarea{font:12px Arial,Helvetica,sans-serif;color:#333;}
@@ -124,7 +124,7 @@ body{background:#FAFAFA;}
 
 .mod_login_wrap .form_item_wrap a.check_agreement{padding-left:18px;background:url(images/login.png) no-repeat -347px -329px;color:#999;line-height:20px;}
 
-.mod_login_wrap .form_item_wrap a.uncheck_agreement{padding-left:18px;background:url(images/login.png) no-repeat -347px -269px;color:#999;line-height:20px;display: none;}
+.mod_login_wrap .form_item_wrap a.uncheck_agreement{padding-left:18px;background:url(images/login.png) no-repeat -347px -269px;color:#999;line-height:20px;}
 
 .mod_login_wrap .form_item_wrap a.uncheck_agreement:hover{background-position:-347px -299px;color:#999;}
 

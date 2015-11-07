@@ -237,7 +237,10 @@ class Ucenter extends IController
     	$this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
     	$presellData = $presell_db->getObj('id='.$this->order_info['active_id']);
     	$now = time();
-    	
+    	if($this->order_info['invoice']==1){
+    		$fapiao_db = new IModel('order_fapiao');
+    		$this->fapiao_data = $fapiao_db->getObj('order_id='.$id);
+    	}
     	if($presellData['wei_type']==1)
     	{
     		$start = strtotime($presellData['wei_start_time']);
