@@ -195,7 +195,49 @@ class Order extends IController
 
 	 	$this->redirect('refundment_list');
 	}
-
+	
+	/**
+	 * @brief查看换货单
+	 */
+	public function refundment_chged_show()
+	{
+		//获得post传来的申请退款单id值
+		$refundment_id = IFilter::act(IReq::get('id'),'int');
+		if($refundment_id)
+		{
+			$refundsDB = new IModel('refundment_doc');
+			$data = $refundsDB->getObj('id = '.$refundment_id);
+			if($data)
+			{
+				$this->setRenderData($data);
+				$this->redirect('refundment_chged_show',false);
+				exit;
+			}
+		}
+	
+		$this->redirect('refundment_list');
+	}
+	/**
+	 * @brief查看换货单
+	 */
+	public function refundment_apply_show()
+	{
+		//获得post传来的申请退款单id值
+		$refundment_id = IFilter::act(IReq::get('id'),'int');
+		if($refundment_id)
+		{
+			$refundsDB = new IModel('refundment_doc');
+			$data = $refundsDB->getObj('id = '.$refundment_id);
+			if($data)
+			{
+				$this->setRenderData($data);
+				$this->redirect('refundment_apply_show',false);
+				exit;
+			}
+		}
+	
+		$this->redirect('refundment_list');
+	}
 	/**
 	 * @brief查看申请换货单
 	 */
