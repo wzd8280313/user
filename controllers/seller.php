@@ -999,7 +999,7 @@ class Seller extends IController
 				$tb_refundment_doc->setData($setData);
 				$tb_refundment_doc->update('id = '.$refundment_id);
 				
-				if($type==0){
+				if($type==0 && $pay_status==2){
 					Order_Class::addGoodsCommentChange($order_id);
 					Order_Class::sendGift($order_id,$user_id);
 					
