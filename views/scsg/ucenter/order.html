@@ -91,7 +91,7 @@
                
 				<td>
 					{if:$status==2}
-                	<a topay='{url:/block/dopay/order_id/$item["id"]}' money='{$item["order_amount"]}' href='javascript:void(0)' onclick='pay_confirm(this);' target=='blank'><input type="button" class='btn_gray btn_small' style='margin-bottom:5px;' value="立即支付" onclick="javascript:window.location.href='{url:/block/dopay/order_id/$item["id"]}'"/></a>
+                	<a topay='{url:/block/dopay/order_id/$item["id"]}' money='{$item["order_amount"]}' href='javascript:void(0)' onclick='pay_confirm(this);' target=='blank'><input type="button" class='btn_gray btn_small' style='margin-bottom:5px;' value="立即支付" onclick="javascript:window.location.href='{url:/block/dopay/order_id/$item['id']}'"/></a>
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" onclick="javascript:window.location.href='{url:/ucenter/order_status/op/cancel/order_id/$item['id']}'"/></a>
 					{elseif:$status==1}
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" onclick="javascript:window.location.href='{url:/ucenter/order_status/op/cancel/order_id/$item['id']}'"/></a>
