@@ -6,18 +6,18 @@
 		<h3>编辑商户</h3>
 	</header>
 
-	<form action="{url:/seller/seller_add}" method="post" name="sellerForm" enctype='multipart/form-data'>
+	
 		<div class="module_content">
 			<fieldset>
 				<label>登陆用户名：</label>
-				<input name="seller_name" type="text" value="" pattern="required" alt="用户名不能为空" disabled="disabled" />
+				<input name="seller_name" type="text" value="{if:isset($this->sellerRow['seller_name'])}{$this->sellerRow['seller_name']}{/if}" pattern="required" alt="用户名不能为空" disabled="disabled" />
 				<label class="tip">* 用户名称（必填）</label>
 			</fieldset>
 
 
 			<fieldset>
 				<label>商户真实全称：</label>
-				<input name="true_name" type="text" value="" pattern="required" disabled="disabled" />
+				<input name="true_name" type="text" value="{if:isset($this->sellerRow['true_name'])}{$this->sellerRow['true_name']}{/if}" pattern="required" disabled="disabled" />
 			</fieldset>
 
 			<fieldset>
@@ -30,6 +30,13 @@
 					{/if}
 				</div>
 			</fieldset>
+			
+			<fieldset>
+				<label>保证金数额：</label>
+				<input type="text" name="cash" pattern="float" empty disabled="disabled" value='{if:isset($this->sellerRow["cash"])}{$this->sellerRow["cash"]}{/if}}'/>
+				<label class="tip">人民币（元）</label>
+			</fieldset>
+		<form action="{url:/seller/seller_add}" method="post" name="sellerForm" enctype='multipart/form-data'>
 			<fieldset>
 				<label>经营范围：</label>
 				{set:$goods_cat = explode(',',$this->sellerRow['goods_cat'])}
@@ -43,12 +50,6 @@
 				{/foreach}
 				<label class="tip"></label>
 			</fieldset>
-			<fieldset>
-				<label>保证金数额：</label>
-				<input type="text" name="cash" pattern="float" empty disabled="disabled" />
-				<label class="tip">人民币（元）</label>
-			</fieldset>
-
 			<fieldset>
 				<label>收款账号：</label>
 				<textarea class="normal" name="account" empty></textarea>
