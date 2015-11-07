@@ -5,8 +5,8 @@
     </div>
 	<!--新增搜索-->
 	<div class="sstj">
-	<form action='{url:/ucenter/order}' method='post' name='search_order'/>
-		<input type="text" placeholder="输入订单号进行搜索" class="ddss" name='order_no' ><input class="dstxt" name='find_order' value='订单搜索'  type='submit'>
+	<form name='search_order' >
+		<input type="text" placeholder="输入订单号进行搜索" class="ddss" name='order_no' ><input class="dstxt" name='find_order' value='订单搜索'  type='button'>
 		<span class="showst">精简筛选条件</span>
 		<div class="jsx">
 			<table>
@@ -21,7 +21,7 @@
 					<td>
 						<span>商户状态</span>
 						<select name='seller_id' >
-							<option  >全部</option>
+							<option  value='0'>全部</option>
 							<option value='2'>平台</option>
 							<option value='1'>商户</option>
 						</select>
@@ -145,4 +145,15 @@ function pay_confirm(_this){
 	confirm('该订单需支付￥'+pay_money+'，确认支付吗',"location.href='"+to_pay+"'",1);
 }
 
+$('[name=find_order]').on('click',function(){
+	var order_no = $('input[name=order_no]').val();
+	var status = $('[name=status]').val();
+	var seller_id = $('[name=seller_id]').val();
+	var beginTime = $('[name=beginTime]').val();
+	var endTime=$('[name=endTime]').val();
+	var to_url = '{url:/ucenter/order}';
+	to_url += '?order_no='+order_no+'&status='+status+'&seller_id='+seller_id+'&beginTime='+beginTime+'&endTime='+endTime;
+
+	location.href = to_url;
+})
 </script>
