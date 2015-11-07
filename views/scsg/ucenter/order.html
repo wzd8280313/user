@@ -95,7 +95,7 @@
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
 					{elseif:$status==1}
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
-					{elseif:in_array($status,array(4,8,9,10,11))}
+					{elseif:in_array($status,array(4,8,9,10))}
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
 					{elseif:in_array($status,array(3,11,17))}
 					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"><input style='margin-bottom:5px;' type="button" class='btn_gray btn_small' value="确认收货" /></a>
@@ -114,6 +114,8 @@
 				
 					{else:}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
+					
 					{/if}
 					<!--<img class="img_delt" src="{skin:images/front/ucenter/bin_closed.png}"/>-->
 					

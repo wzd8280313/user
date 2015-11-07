@@ -30,8 +30,9 @@
 					<th>退换货商品：</th>
 					<td>
 						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good}
+					
 						{set:$good_info = JSON::decode($good['goods_array'])}
-						{if:$good['is_send'] != 2}
+						{if:$good['is_send'] != 2 && !$good['refund_time'] }
 						<p>
 							<label>
 

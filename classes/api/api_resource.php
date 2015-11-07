@@ -575,9 +575,10 @@ return array(
 	'getOrderGoodsListByGoodsid'=>array(
 	 	 'query'=>array(
 	    	'name'  => 'order_goods as og',
-	    	'join'  => 'left join goods as go on og.goods_id = go.id',
-	    	'where' => 'order_id = #order_id# ',
-	    	'fields'=> 'og.*,go.point',
+	    	'join'  => 'left join goods as go on og.goods_id = go.id left join refundment_doc as r on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.pay_status in (0,3,4,7)',
+	    	'where' => 'og.order_id = #order_id#  ',
+	 	 	'group' => 'og.id',
+	    	'fields'=> 'og.*,go.point,r.pay_status,r.type,r.time as refund_time',
 	    )
 	),
 	//用户中心-我的代金券

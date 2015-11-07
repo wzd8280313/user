@@ -89,8 +89,10 @@ class Active
 					}
 
 					//检查次团购订单
-					$orderDB   = new IModel('order as o,order_goods as og');
-					$orderData = $orderDB->query('o.user_id = '.$this->user_id.' and o.type = 1 and active_id = '.$this->active_id);
+					$orderDB   = new IQuery('order as o');
+					$orderDB->join = 'left join order_goods as og on o.id = og.order_id ';
+					$orderDB->where = 'o.type=1 and o.active_id='.$this->active_id.' and o.user_id = '.$this->user_id;
+					$orderData = $orderDB->find();
 					$hasBugNum = 0;
 					foreach($orderData as $key => $val)
 					{
