@@ -19,9 +19,11 @@
 					<td>
 						{if:!empty($paymentList)}
 						{foreach:items = $paymentList}
+						{if:$item['id']!=7}
 						<label class='attr'><input class="radio" name="payment_id" title="{$item['name']}" type="radio" value="{$item['id']}" />{$item['name']}</label>
 						{$item['note']}，手续费：{if:$item['poundage_type']==2}￥{$item['poundage']}{else:}{$item['poundage']}%{/if}
 						<br />
+						{/if}
 						{/foreach}
 						{else:}
 						没有线上支付方式

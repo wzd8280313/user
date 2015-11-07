@@ -906,7 +906,7 @@ class Simple extends IController
 
     	if($province == 0 || $city == 0 || $area == 0)
     	{
-    		IError::show(403,'请填写收货地址的省市地区');
+    		IError::show(403,'请认真核对收货地址等订单信息，切勿快速提交');
     	}
 
     	if($delivery_id == 0)

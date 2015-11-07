@@ -246,6 +246,9 @@ class Block extends IController
 		//在线充值
 		if($recharge !== null)
 		{
+			if($payment_id==7){//担保交易不能充值
+				IError::show(403,'担保交易不能用户充值');
+			}
 			$recharge   = IFilter::act($recharge,'float');
 			$paymentRow = Payment::getPaymentById($payment_id);
 
