@@ -122,10 +122,10 @@
 					{elseif:$status==21}
 						<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 				
-					{else:}
+					{elseif:in_array($status,array(5,7,6))}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
-					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
-					
+					{else:}
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
 					{/if}
 					<!--<img class="img_delt" src="{skin:images/front/ucenter/bin_closed.png}"/>-->
 					
