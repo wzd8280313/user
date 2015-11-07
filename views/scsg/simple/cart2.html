@@ -138,37 +138,48 @@ function get_delivery()
 	{
 		var idValue = $(this).attr('id');
 		var dataArray = idValue.split("_");
-		$.getJSON("{url:/block/order_delivery}",{"area":area,"distribution":delivery,"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},function(content){
-			//地区无法送达
-			if(content.if_delivery == 1)
+		$.ajax({
+			type:'post',
+			async:false,
+			data:{"area":area,"distribution":delivery,"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
+			dataType:'json',
+			url:"{url:/block/order_delivery}",
+			
+			success:function(content)
 			{
-				alert('您选择地区部分商品无法送达');
-				$('#'+idValue).html("<span style='color:red'>无法送达</span>");
-			}
-			else
-			{
-				//免运费
-				if(orderFormInstance.freeFreight == 1)
+				//地区无法送达
+				if(content.if_delivery == 1)
 				{
-					var html = "活动免运费";
-					content.price = 0;
-					orderFormInstance.doAccount();
+					alert('您选择地区部分商品无法送达');
+					$('#'+idValue).html("<span style='color:red'>无法送达</span>");
 				}
 				else
 				{
-					var html = "￥"+content.price;
-					orderFormInstance.deliveryPrice += parseFloat(content.price);
-					orderFormInstance.doAccount();
+					//免运费
+					if(orderFormInstance.freeFreight == 1)
+					{
+						var html = "活动免运费";
+						content.price = 0;
+						orderFormInstance.doAccount();
+					}
+					else
+					{
+						var html = "￥"+content.price;
+						orderFormInstance.deliveryPrice += parseFloat(content.price);
+						orderFormInstance.doAccount();
+					}
+	
+					//允许保价
+					if(content.protect_price > 0)
+					{
+						html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"_"+dataArray[2]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+					}
+					$('#'+idValue).html(html);
 				}
+			},
+			timeout:1000,
+		})
 
-				//允许保价
-				if(content.protect_price > 0)
-				{
-					html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"_"+dataArray[2]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
-				}
-				$('#'+idValue).html(html);
-			}
-		});
 	});
 }
 

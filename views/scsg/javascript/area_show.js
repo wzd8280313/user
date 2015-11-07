@@ -105,6 +105,7 @@ function delivery_init(){
 $(function(){
 	$('#store-selector').append(provinceHtml);
 	$('#store-selector .close').click(function(){
+		$('#product_myCart').css("z-index","1")
 		$('#store-selector').removeClass('hover');
 	})
 	template.compile("areaTemplate",areaTemplate);
@@ -121,6 +122,13 @@ $(function(){
 	//
 	$('#store-selector .text').hover(
 				function(){
+					
+					  $('#product_myCart').css("z-index","-1")
+					 
+					/*else
+					  {
+					  
+					  }*/
 					$('#store-selector').addClass('hover');
 				}
 	)

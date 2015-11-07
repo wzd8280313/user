@@ -241,7 +241,7 @@ function orderFormClass()
 
 		//获取配送数据并且开启配送方式
 		var timeHandle = setInterval(function(){
-			if($('[name="province"]').val())
+			if($('[name="area"]').val())
 			{
 				get_delivery();
 				clearInterval(timeHandle);
@@ -381,6 +381,7 @@ function orderFormClass()
 		{
 			$('#paymentBox').show('slow');
 		}
+		
 		//计算运费
 		get_delivery();
 

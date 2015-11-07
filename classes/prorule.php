@@ -26,7 +26,7 @@ class ProRule
 	public $isCashOnce = true;
 
 	//赠品促销规则奖励仅一次 true:1次;false:多次不限
-	public $isGiftOnce = true;
+	public $isGiftOnce = false;
 
 	//现金促销规则奖励方式 1减金额 2奖励折扣
 	private $cash_award_type = array(1,2);
