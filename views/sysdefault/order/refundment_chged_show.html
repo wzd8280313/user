@@ -18,7 +18,7 @@
 					<th>订单号：</th><td align="left">{$order_no}</td>
 				</tr>
 				<tr>
-					<th>退款商品：</th>
+					<th>换货商品：</th>
 					<td align="left">
 						{query:name=order_goods where=order_id eq $order_id and goods_id eq $goods_id and product_id eq $product_id}
 						{set:$goods = JSON::decode($item['goods_array'])}
@@ -38,23 +38,11 @@
 					<th>联系方式：</th><td align="left">{query:name=member fields=mobile where=user_id eq $user_id}{$item['mobile']}{/query}</td>
 				</tr>
 				<tr>
-					<th>退款金额：</th><td align="left">{$amount}</td>
-				</tr>
-				<tr>
 					<th>申请时间：</th><td align="left">{$time}</td>
 				</tr>
 				<tr>
-					<th>退款原因：</th><td align="left">{$content}</td>
+					<th>换货原因：</th><td align="left">{$content}</td>
 				</tr>
-				{if:$dispose_time!=NULL}
-					{set:$h=$pay_status==1?'驳回':'核准'}
-					<tr>
-						<th>{$h}时间：</th><td align="left">{$dispose_time}</td>
-					</tr>
-					<tr>
-						<th>处理意见：</th><td align="left">{$dispose_idea}</td>
-					</tr>
-				{/if}
 				{if:$delivery_code && $delivery_com}
 					<tr>
 						<th>退货快递单：</th><td align="left">{$delivery_com} | {$delivery_code}</td>
