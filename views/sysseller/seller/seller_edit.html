@@ -33,7 +33,7 @@
 			
 			<fieldset>
 				<label>保证金数额：</label>
-				<input type="text" name="cash" pattern="float" empty disabled="disabled" value='{if:isset($this->sellerRow["cash"])}{$this->sellerRow["cash"]}{/if}}'/>
+				<input type="text" name="cash" pattern="float" empty disabled="disabled" value='{if:isset($this->sellerRow["cash"])}{$this->sellerRow["cash"]}{/if}'/>
 				<label class="tip">人民币（元）</label>
 			</fieldset>
 		<form action="{url:/seller/seller_add}" method="post" name="sellerForm" enctype='multipart/form-data'>

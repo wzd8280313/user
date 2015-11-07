@@ -5,8 +5,8 @@
     </div>
 	<!--新增搜索-->
 	<div class="sstj">
-	<form action='{url:/ucenter/order}' method='post' name='search_order'>
-		<input type="text" placeholder="输入订单号进行搜索" class="ddss" name='order_no' ><input class="dstxt" value='订单搜索'  type='submit'>
+	<form action='{url:/ucenter/order}' method='post' name='search_order'/>
+		<input type="text" placeholder="输入订单号进行搜索" class="ddss" name='order_no' ><input class="dstxt" name='find_order' value='订单搜索'  type='submit'>
 		<span class="showst">精简筛选条件</span>
 		<div class="jsx">
 			<table>
@@ -41,8 +41,8 @@
 				</tr>
 			</table>
 		</div>
-		
 	</form>
+
 	</div>
 	<form action='{url:/block/dopaymerge}' method='post' name='merge_pay'>
 	<div class='m_5' id='merge_pay'>
@@ -144,4 +144,5 @@ function pay_confirm(_this){
 	var pay_money = $(_this).attr('money');
 	confirm('该订单需支付￥'+pay_money+'，确认支付吗',"location.href='"+to_pay+"'",1);
 }
+
 </script>

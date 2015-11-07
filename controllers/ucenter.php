@@ -155,7 +155,7 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join comment as c on c.order_id=o.id';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on g.id=og.goods_id  left join comment as c on c.order_id=o.id';
 		$order_db->group = 'og.order_id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
