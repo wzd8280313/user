@@ -3,7 +3,7 @@ var areaTemplate = '<%for(var index in data){%>'+'<%var item = data[index]%>'+' 
 
 var provinceHtml = 	'<div class="text"><span name="pro_show"></span>  <span name="city_show"></span>  <span name="area_show"></span><div></div><b></b></div> <span style="margin-left:5px;" name="fee_box"></span>'                  
 					+'	<div class="close"></div>'+
-					'<div id="areaShow" class="content" ><div data-widget="tabs" class="m JD-stock" id="JD-stock">'
+					'<div id="areaShow" class="content" onmouseout="this.style.visibility="hidden""  ><div data-widget="tabs" class="m JD-stock" id="JD-stock">'
 								+'<div class="mt">'
 								+'    <ul class="tab">'
 								+'        <li data-index="0" data-widget="tab-item" class="curr"><a href="#none" class="hover"><em>请选择</em><i></i></a></li>'
