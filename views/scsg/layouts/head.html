@@ -54,7 +54,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	$(function(){
 		$('#user_log,.hd_user_center').hover(function(){$('.hd_user_center').show();},function(){$('.hd_user_center').hide();})
 	})
-		function sign_point(){
+		function sign_point(_this){
 		$.ajax({
 			type : 'post',
 			async:true,
@@ -66,7 +66,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 			},
 			success:function(data){
 				if(data==1){
-					alert('签到成功');
+					$(_this).attr('src','{skin:images/yqiandao.gif}');
 				}
 			},
 			error:function(){
@@ -117,9 +117,9 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 							<b>{$this->user['point']}</b>
 							<span>积分<em>							
 							{if:$user['sign']==0}
-							<img src="{skin:images/qiandao.gif}" onclick='sign_point()'/>
+							<img src="{skin:images/qiandao.gif}" name='sign' onclick='sign_point(this)'/>
 							{else:}
-							<img src="{skin:images/yqiandao.gif}" onclick='sign_point()'/>
+							<img src="{skin:images/yqiandao.gif}" name='sign' />
 							{/if}
 							</em></span>
 							
