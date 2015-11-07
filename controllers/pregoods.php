@@ -260,6 +260,10 @@ class Pregoods extends IController
 			$this->num       = $buy_num;
 			$this->active_id = $active_id;
 		}
+		else{
+			IError::show(403,$result);
+			exit;
+		}
 		//检查商品合法性或促销活动等有错误
 		if( is_string($result))
 		{
@@ -346,9 +350,9 @@ class Pregoods extends IController
 			$this->seller_name = '山城速购';
 		}else{
 			$seller_db = new IModel('seller');
-			$this->seller_name = $seller_db->getField('id='.$seller_id,'true_name');
+			$this->seller_name = $seller_db->getField('id='.$seller_id,'true_name,id');
 		}
-		
+		$this->seller_id = $seller_id;
 		//获取配送方式列表
 		$deli_db = new IQuery('delivery as d');
 		if($seller_id==0){
@@ -394,6 +398,7 @@ class Pregoods extends IController
 		$order_type    = 4;//预售订单
 		$dataArray     = array();
 		$prom          = 'presell';
+		$seller_id    = IFilter::act(IReq::get('seller_id'),'int');
 		//防止表单重复提交
 		if(IReq::get('timeKey') != null)
 		{
@@ -632,6 +637,7 @@ class Pregoods extends IController
 				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
 				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
 			}
+			$fapiao_data['seller_id'] = $seller_id;
 			$db_fapiao->setData($fapiao_data);
 			$db_fapiao->add();
 		}
