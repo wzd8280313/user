@@ -1,5 +1,5 @@
 {set:$seller_id = $this->seller['seller_id']}
-
+{set:$id=IFilter::act(IReq::get('id'),'int');}
 <article class="module width_full">
 	<header>
 		<h3 class="tabs_involved">订单查看</h3>
@@ -147,12 +147,55 @@
 					<tr>
 						<th>是否开票:</th><td>{if:$invoice==0}否{else:}是{/if}</td>
 					</tr>
-					<tr>
-						<th>发票抬头:</th><td>{$invoice_title}</td>
-					</tr>
 				</tbody>
 			</table>
 		</fieldset>
+		{if:$invoice==1}
+		{set:$fapiao=new IModel('order_fapiao');$fapiao_data=$fapiao->getObj('order_id='.$id.' and seller_id='.$seller_id);}
+		
+		<fieldset>
+			<table class="tablesorter clear">
+				<colgroup>
+					<col width="120px" />
+					<col />
+				</colgroup>
+
+				<thead>
+					<tr><th colspan="2">发票信息</th></tr>
+				</thead>
+				{if:$fapiao_data }
+						
+				<tbody>
+					{if:$fapiao_data['type']==1}
+					<tr>
+								<th>单位名称:</th><td>{$fapiao_data['com']}</td>
+							</tr>
+							<tr>
+								<th>纳税人识别号:</th><td>{$fapiao_data['tax_no']}</td>
+							</tr>
+							<tr>
+								<th>注册地址:</th><td>{$fapiao_data['address']}</td>
+							</tr>
+							<tr>
+								<th>注册电话:</th><td>{$fapiao_data['telphone']}</td>
+							</tr>
+							<tr>
+								<th>开户银行:</th><td>{$fapiao_data['bank']}</td>
+							</tr>
+							<tr>
+								<th>银行账户:</th><td>{$fapiao_data['account']}</td>
+							</tr>
+						{else:}
+							<tr>
+								<th>发票抬头:</th><td>{$fapiao_data['taitou']}</td>
+							</tr>
+						{/if}
+					
+				</tbody>
+				{/if}
+			</table>
+		</fieldset>
+		{/if}
 
 		<fieldset>
 			<table class="tablesorter clear">
