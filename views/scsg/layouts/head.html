@@ -8,6 +8,7 @@
 {if:$this->user}
 {set:$user_id = $this->user['user_id']}
 {set:$user = Api::run('getMemberInfo',$user_id)}
+{set:print_r($user)}
 {set:$m = new IModel('favorite');
 $favorite_id_arr = $m->getFields(array('user_id'=>$this->user['user_id']),'rid');
 $favorite_ids = implode(',',$favorite_id_arr);}
