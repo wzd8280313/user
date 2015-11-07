@@ -156,9 +156,7 @@ var countDown = function(min_id){
 			var id = $(this).attr('id').split('-')[1];
 			if(min_id && id<min_id)return true;
 			var temp;
-			var endTime = $(this).find('input[name=endTime]').val();
-			var now = Date.parse(new Date())/1000;
-			var count = endTime - now;
+			var count = $(this).find('input[name=endTime]').val();
 			var day = parseInt(count/(24*3600));
 			count=count%(24*3600);
 			var hour = (temp = parseInt(count/3600))<10 ? '0'+temp : temp;

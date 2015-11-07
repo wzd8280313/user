@@ -48,7 +48,7 @@
 	<input name='start' type='hidden' value='{$this->count}'/>
 	  <div class="left_group">
 	  	{foreach:items = $this->todayList}
-		{set:$end=strtotime($item['end_time'])}
+		{set:$end= strtotime($item['end_time']) - time()}
 		{set:$zhe = 10*round($item['regiment_price']/$item['sell_price'],2)}
 	        <div class="today-deals-con">
 		        <div class="deal-img-wrap">
@@ -111,7 +111,7 @@
 					<div class="shan-brand width">
 						<ul class="shan-all-li">
 							{foreach:items = $this->brandList}
-							{set:$end=strtotime($item['end_time']);$k=$key+2;}
+							{set:$end=strtotime($item['end_time']) - time();$k=$key+2;}
 								<li style="margin-top:0;">
 									<dl>
 										<dt class="brand-img">

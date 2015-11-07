@@ -107,7 +107,7 @@ class Site extends IController
 		
 		foreach($tuanData as $key=>$val){
 			$tuanData[$key]['key'] = $key + $start;
-			$tuanData[$key]['end'] = strtotime($val['end_time']);
+			$tuanData[$key]['end'] = strtotime($val['end_time']) - time();
 		}
 		echo $tuanData ? JSON::encode($tuanData) : 0;
 		

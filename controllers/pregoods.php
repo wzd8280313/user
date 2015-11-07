@@ -19,7 +19,7 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,UNIX_TIMESTAMP(p.yu_end_time) as end_timestamp,g.sell_price as price,g.img';
+		$presell_db->fields = 'p.*,(UNIX_TIMESTAMP(p.yu_end_time)- UNIX_TIMESTAMP(now())) as end_timestamp,g.sell_price as price,g.img';
 		$presell_db->limit = 6;
 		$presell_db->order = 'p.id DESC';
 		$this->pre_list = $presell_db->find();
@@ -35,7 +35,7 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,UNIX_TIMESTAMP(p.yu_end_time) as end_timestamp,g.sell_price as price';
+		$presell_db->fields = 'p.*,(UNIX_TIMESTAMP(p.yu_end_time)-UNIX_TIMESTAMP(now())) as end_timestamp,g.sell_price as price';
 		$presell_db->order = 'p.id DESC';
 		$presell_db->limit = $limit;
 		$presellData = $presell_db->find();
@@ -54,7 +54,7 @@ class Pregoods extends IController
 		$this->logoUrl = 'images/yulogo.png';
 		$id = IFilter::act(IReq::get('id'),'int');
 		$presell = new IModel('presell');
-		if(!$id || !$preData = $presell->getObj('goods_id='.$id.' and  TIMESTAMPDIFF(second,yu_end_time,NOW()) <0 ','*,unix_timestamp(yu_end_time) as end_time'))
+		if(!$id || !$preData = $presell->getObj('goods_id='.$id.' and  TIMESTAMPDIFF(second,yu_end_time,NOW()) <0 ','*,unix_timestamp(yu_end_time)-UNIX_TIMESTAMP(now()) as end_time'))
 		{
 			IError::show(403,"预售商品不存在");
 			exit;
