@@ -48,7 +48,7 @@
 									<span id='cd_hour_1'></span>小时
 									<span id='cd_minute_1'></span>分
 									<span id='cd_second_1' ></span>秒订单关闭
-									<input name='endTime' type='hidden' value='{$this->end}' />
+									<input name='endTime' type='hidden' value='{echo:$this->end - time()}' />
 					</div>	
 					{elseif:$this->wei_status==0}
 					<div class=" countdown" id="timeRemaining-1" style='margin-left:30px;'>
@@ -56,7 +56,7 @@
 									<span id='cd_hour_1'></span>小时
 									<span id='cd_minute_1'></span>分
 									<span id='cd_second_1' ></span>秒	开始支付尾款
-									<input name='endTime' type='hidden' value='{$this->start}' />
+									<input name='endTime' type='hidden' value='{echo:$this->start-time();}' />
 					</div>		
 					{/if}
 				{else:}
@@ -67,7 +67,7 @@
 										<span id='cd_hour_1'></span>小时
 										<span id='cd_minute_1'></span>分
 										<span id='cd_second_1' ></span>秒订单关闭
-										<input name='endTime' type='hidden' value='{$this->end}' />
+										<input name='endTime' type='hidden' value='{echo:$this->end-time();}' />
 						</div>	
 					
 					
