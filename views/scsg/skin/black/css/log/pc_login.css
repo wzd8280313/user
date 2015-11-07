@@ -122,9 +122,9 @@ body{background:#FAFAFA;}
 .mod_login_wrap .form_item_wrap .auto_login{height:20px;padding:10px 0;}
 
 
-.mod_login_wrap .form_item_wrap a.check_agreement{padding-left:18px;background:url(images/login.png) no-repeat -347px -329px;color:#999;line-height:20px;display: none;}
+.mod_login_wrap .form_item_wrap a.check_agreement{padding-left:18px;background:url(images/login.png) no-repeat -347px -329px;color:#999;line-height:20px;}
 
-.mod_login_wrap .form_item_wrap a.uncheck_agreement{padding-left:18px;background:url(images/login.png) no-repeat -347px -269px;color:#999;line-height:20px;display: none;}
+.mod_login_wrap .form_item_wrap a.uncheck_agreement{padding-left:18px;background:url(images/login.png) no-repeat -347px -269px;color:#999;line-height:20px;}
 
 .mod_login_wrap .form_item_wrap a.uncheck_agreement:hover{background-position:-347px -299px;color:#999;}
 
