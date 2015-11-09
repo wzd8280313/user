@@ -195,7 +195,49 @@ class Order extends IController
 
 	 	$this->redirect('refundment_list');
 	}
-
+	
+	/**
+	 * @brief查看换货单
+	 */
+	public function refundment_chged_show()
+	{
+		//获得post传来的申请退款单id值
+		$refundment_id = IFilter::act(IReq::get('id'),'int');
+		if($refundment_id)
+		{
+			$refundsDB = new IModel('refundment_doc');
+			$data = $refundsDB->getObj('id = '.$refundment_id);
+			if($data)
+			{
+				$this->setRenderData($data);
+				$this->redirect('refundment_chged_show',false);
+				exit;
+			}
+		}
+	
+		$this->redirect('refundment_list');
+	}
+	/**
+	 * @brief查看换货单
+	 */
+	public function refundment_apply_show()
+	{
+		//获得post传来的申请退款单id值
+		$refundment_id = IFilter::act(IReq::get('id'),'int');
+		if($refundment_id)
+		{
+			$refundsDB = new IModel('refundment_doc');
+			$data = $refundsDB->getObj('id = '.$refundment_id);
+			if($data)
+			{
+				$this->setRenderData($data);
+				$this->redirect('refundment_apply_show',false);
+				exit;
+			}
+		}
+	
+		$this->redirect('refundment_list');
+	}
 	/**
 	 * @brief查看申请换货单
 	 */
@@ -295,8 +337,10 @@ class Order extends IController
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了换货单",'修改的ID：'.$refundment_id));
 		}
+		if($type==0){
+			$this->redirect('refundment_list');
+		}else $this->redirect('refundment_chg_list');
 		
-		$this->redirect('refundment_list');
 	}
 	/**
 	 * @brief查看发货单
@@ -401,7 +445,7 @@ class Order extends IController
 			}else{
 				$order_goods_db = new IQuery('order_goods as og');
 				$order_goods_db->join = 'left join order as o on o.id=og.order_id left join refundment_doc as r on r.order_id=o.id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.type=0';
-				$order_goods_db->where = 'o.id='.$orderId;
+				$order_goods_db->where = 'o.id='.$orderId.' and r.pay_status in(0,4,7) ';
 				$order_goods_db->fields = 'og.*,o.pro_reduce,o.ticket_reduce,o.real_amount,o.pro_reduce,r.id as refunds_id,r.amount';
 				$order_goods_data = $order_goods_db->find();
 				$data['order_goods_data'] = $order_goods_data;

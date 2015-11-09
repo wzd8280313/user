@@ -252,6 +252,17 @@ window.onscroll = function () {
 
 
 $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTop:$($(this).attr("data")).offset().top}, 500); }) });
+
+
+//当楼层字数为两个时
+if($('#floor_text').eq(0).text().length == 4)
+{
+	$(this).css('line-height','34px')
+}
+if($('#floor_text_show').eq(0).text().length == 4)
+{
+	$(this).css('line-height','34px')
+}
 </script>
 
 {if:$this->isIndex}
@@ -266,8 +277,8 @@ $(function(){ $("#floornav a").click(function(){$("html,body").animate({scrollTo
 {foreach:items=$categoryTop}
 {set:$K=$key+2}
 <a href="#floor-{$K}" data="#floor-{$K}" rel="floor-{$K}">
-<i class="left_iconfont ">{$item['name']}</i>
-<em class="two_line">{$item['name']}</em>
+<i class="left_iconfont " id="floor_text_show">{$item['name']}</i>
+<em class="two_line" id="floor_text">{$item['name']}</em>
 </a>
 {/foreach}
 {/if}

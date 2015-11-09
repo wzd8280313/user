@@ -889,7 +889,7 @@ class Simple extends IController
     	$order_type    = 0;
     	$invoice       = isset($_POST['taxes']) ? 1 : 0;
     	$dataArray     = array();
-		
+    	$seller_ids    = IFilter::act(IReq::get('seller_id'),'int');
 		//防止表单重复提交
     	if(IReq::get('timeKey') != null)
     	{
@@ -906,7 +906,7 @@ class Simple extends IController
 
     	if($province == 0 || $city == 0 || $area == 0)
     	{
-    		IError::show(403,'请填写收货地址的省市地区');
+    		IError::show(403,'请认真核对收货地址等订单信息，切勿快速提交');
     	}
 
     	if($delivery_id == 0)
@@ -1143,8 +1143,13 @@ class Simple extends IController
 				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
 				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
 			}
-			$db_fapiao->setData($fapiao_data);
-			$db_fapiao->add();
+			
+			
+			foreach($seller_ids as $key=>$v){
+				$fapiao_data['seller_id'] = $v;
+				$db_fapiao->setData($fapiao_data);
+				$db_fapiao->add();
+			}
 		}
 		//获取备货时间
 		$siteConfigObj = new Config("site_config");
@@ -1840,13 +1845,14 @@ class Simple extends IController
 		//发送邮件
 		$smtp   = new SendMail();
 		$result = $smtp->send($email,"用户注册邮箱验证",$content);
+		
 		if($result===false)
 		{
 			return 0;
 		}
 
 		$message = "您的邮箱验证邮件已发送到{$email}！请到您的邮箱中去激活";
-		return IUrl::creatUrl('/site/success?message='.urlencode($message).'&email='.$email);//返回url
+		$this->redirect('/site/success?message='.urlencode($message).'&email='.$email);//返回url
 	}
 
 	/**

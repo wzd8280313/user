@@ -26,6 +26,8 @@ function Spec_show(){
 		spec_str = spec_str.replace(/}/g,'\\}');
 		spec_str = spec_str.replace(/\//g,'\\/');
 		spec_str = spec_str.replace(/\./g,'\\.');
+		spec_str = spec_str.replace(/\*/g,'\\*');
+		spec_str = spec_str.replace(/\+/g,'\\+');
 		return spec_str;
 	}
 		/**

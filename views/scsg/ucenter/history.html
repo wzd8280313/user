@@ -24,7 +24,7 @@
 			<col width='90px' />
 			<thead>
 				<tr>
-					<td><input type="checkbox" onclick="selectAll('id[]');" /></td>
+					<td><input name="id[]" type="checkbox" onclick="selectAll('id[]');" /></td>
 					<td align="center">商品名称</td>
 					<td align="center">浏览时间</td>
 					<td align="center">价格</td>
@@ -67,7 +67,7 @@
 				<tr>
 					<td colspan="5">
 						<div class="pages_bar f_r">{$historyObj->getPageBar()}</div>
-						<label><input class="radio" type="checkbox" onclick="selectAll('id[]');" />全选</label>
+						<label><input name="id[]" class="radio" type="checkbox" onclick="selectAll('id[]');" />全选</label>
 						<label class="btn_gray_s"><input type="button" class='btn_gray btn_mini' onclick="$('#history').attr('action','{url:/ucenter/history_del}');delModel({msg:'是否删除浏览历史？',form:'history'});" value="删除记录" /></span></label>
 					</td>
 				</tr>

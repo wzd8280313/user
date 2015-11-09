@@ -5,8 +5,8 @@
     </div>
 	<!--新增搜索-->
 	<div class="sstj">
-	<form action='{url:/ucenter/order}' method='post' name='search_order'>
-		<input type="text" placeholder="输入订单号进行搜索" class="ddss" name='order_no' ><input class="dstxt" value='订单搜索'  type='submit'>
+	<form name='search_order' >
+		<input type="text" placeholder="输入订单号进行搜索" class="ddss" name='order_no' ><input class="dstxt" name='find_order' value='订单搜索'  type='button'>
 		<span class="showst">精简筛选条件</span>
 		<div class="jsx">
 			<table>
@@ -21,7 +21,7 @@
 					<td>
 						<span>商户状态</span>
 						<select name='seller_id' >
-							<option  >全部</option>
+							<option  value='0'>全部</option>
 							<option value='2'>平台</option>
 							<option value='1'>商户</option>
 						</select>
@@ -41,8 +41,8 @@
 				</tr>
 			</table>
 		</div>
-		
 	</form>
+
 	</div>
 	<form action='{url:/block/dopaymerge}' method='post' name='merge_pay'>
 	<div class='m_5' id='merge_pay'>
@@ -91,29 +91,41 @@
                
 				<td>
 					{if:$status==2}
-                	<a topay='{url:/block/dopay/order_id/$item["id"]}' money='{$item["order_amount"]}' href='javascript:void(0)' onclick='pay_confirm(this);' target=='blank'><input type="button" class='btn_gray btn_small' style='margin-bottom:5px;' value="立即支付" /></a>
-					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
+
+                	<a topay='{url:/block/dopay/order_id/$item["id"]}' money='{$item["order_amount"]}' href='javascript:void(0)' onclick='pay_confirm(this);' target=='blank' class='btn_gray btn_small' style='margin-bottom:5px;'>立即支付</a>
+					
+					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}" class='btn_gray btn_small'>取消订单</a>
 					{elseif:$status==1}
-					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="取消订单" /></a>
+					
+					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"  class='btn_gray btn_small'>取消订单</a>
 					{elseif:in_array($status,array(4,8,9,10,11))}
-					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
+					
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
 					{elseif:in_array($status,array(3,11,17))}
-					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"><input style='margin-bottom:5px;' type="button" class='btn_gray btn_small' value="确认收货" /></a>
-					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"><input type="button" class='btn_gray btn_small' value="申请退换货" /></a>
+					
+					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"  class='btn_gray btn_small' style='margin-bottom:5px;'>确认收货</a>
+					
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
+
 					
 					{elseif:$status==6 || $status==22}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 						{if:$item['comment_status']==1}
 						<b class="orange">已评价</b>
 						{else:}
-						<a href="{url:/site/comments/id/$item['comment_id']}"><input type="button" class='btn_gray btn_small' value="评价" /></a>
+
+					
+						<a href="{url:/site/comments/id/$item['comment_id']}"  class='btn_gray btn_small'>评价</a>
+
 						
 						{/if}
 					{elseif:$status==21}
 						<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 				
-					{else:}
+					{elseif:in_array($status,array(5,7,6))}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
+					{else:}
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
 					{/if}
 					<!--<img class="img_delt" src="{skin:images/front/ucenter/bin_closed.png}"/>-->
 					
@@ -144,4 +156,16 @@ function pay_confirm(_this){
 	var pay_money = $(_this).attr('money');
 	confirm('该订单需支付￥'+pay_money+'，确认支付吗',"location.href='"+to_pay+"'",1);
 }
+
+$('[name=find_order]').on('click',function(){
+	var order_no = $('input[name=order_no]').val();
+	var status = $('[name=status]').val();
+	var seller_id = $('[name=seller_id]').val();
+	var beginTime = $('[name=beginTime]').val();
+	var endTime=$('[name=endTime]').val();
+	var to_url = '{url:/ucenter/order}';
+	to_url += '?order_no='+order_no+'&status='+status+'&seller_id='+seller_id+'&beginTime='+beginTime+'&endTime='+endTime;
+
+	location.href = to_url;
+})
 </script>

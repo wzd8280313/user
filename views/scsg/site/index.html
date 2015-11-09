@@ -150,7 +150,7 @@ _mvq.push(['$logConversion']);
 		    				<div class="tab-cnt">
 		                        <div class="tab-item tab-item-hover" style="display: block;">
 								<ul class="news-list">
-									{foreach:items=Api::run('getAnnouncementList')}
+									{foreach:items=Api::run('getAnnouncementList',8)}
 										<li><a style='height:22px;' href='{url:/site/notice_detail/id/$item["id"]}' class="limit" target="_blank">{$item['title']}</a>
 										</li>
 									{/foreach}

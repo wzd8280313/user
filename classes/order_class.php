@@ -1481,7 +1481,7 @@ class Order_Class
 			
 			if($goodsOrderRow['is_send']==1){
 				$not_send_data = $order_goods_db->getObj('order_id='.$goodsOrderRow['order_id']. ' and is_send=0');
-				if($not_send_data){
+				if($not_send_data){//退款商品已发货，且订单中存在未发货商品
 					$setData = array('distribution_status'=>2,'pay_status'=>1);
 				}else{
 					$setData = array('distribution_status'=>1,'pay_status'=>1);

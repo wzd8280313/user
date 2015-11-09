@@ -59,7 +59,7 @@
 				{set:$goods = JSON::decode($item['goods_array'])}
 				<tr>
 					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
-					<td><a href="{url:/order/refundment_doc_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>
+					<td><a href="{url:/order/refundment_apply_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>
 					<td>{$item['order_no']}</td>
 					<td>{$item['amount']}</td>
 					<td>{$item['time']}</td>

@@ -92,7 +92,7 @@ $seller_arr[0]='平台自营';
 					<dt>价格：</dt>
 					<dd id='price_dd'>
 						<p class="f_r"><input type="text" class="mini" name="min_price" value="{echo:IFilter::act(IReq::get('min_price'),'url')}" onchange="checkPrice(this);"> 至 <input type="text" class="mini" name="max_price" onchange="checkPrice(this);" value="{echo:IFilter::act(IReq::get('max_price'),'url')}"> 元
-						<label class="btn_gray_s"><input type="button" onclick="priceLink();" value="确定"></label></p>
+						<label class="btn_gray_s"><input type="button" class="btn_gray btn_mini" onclick="priceLink();" value="确定"></label></p>
 						<a class="nolimit current" href="{echo:search_goods::searchUrl(array('min_price','max_price'),'')}">不限</a>
 						{foreach:items=search_goods::$priceSearch}
 						{set:$priceZone = explode('-',$item)}
@@ -131,8 +131,9 @@ $seller_arr[0]='平台自营';
 				<div class="pic">
 					<a title="{$item['name']}" href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/$listSize[width]/h/$listSize[height]}" width="{$listSize['width']}" height="{$listSize['height']}" alt="{$item['name']}" title="{$item['name']}" /></a>
 				</div>
-				<h3 class="title">
-					<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}" target="_blank">
+				<h3 class="title" >
+					<span style='display:inline;color:red;'>{if:$item['is_del']==4}[预售]{/if}</span>
+					<a title="{$item['name']}" style='display:inline;' class="p_name" href="{url:/site/products/id/$item[id]}" target="_blank">
 						{echo:str_replace($this->word,'<b class="red">'.$this->word.'</b>',$item['name'])}
 					</a>
 					<span>总销量：{$item['sale']}
@@ -142,7 +143,7 @@ $seller_arr[0]='平台自营';
 						<i style='width:{echo:Common::gradeWidth($item['grade'],$item['comments'])}px'>
 						</i>
 					</span>
-					<span style='margin-top:5px;'>
+					<span style='margin-top:2px;'>
 						<a  style='margin-left:5px;text-decoration:none;'>{$seller_arr[$item['seller_id']]}</a>
 					</span>
 				</h3>

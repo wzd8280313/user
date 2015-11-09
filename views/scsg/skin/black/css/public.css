@@ -912,7 +912,7 @@ a.btn_big{
 	  min-width: 110px;height: 37px;line-height: 37px; font-size: 16px;padding:1px 5px;
 }
 a.btn_small{
-	font-size:14px;min-width:108px; height:37px; line-height: 37px; padding:0px 5px;
+	font-size:14px;min-width:108px; height:26px; line-height: 26px; padding:0px 5px;
 }
 input.btn_red{
 	font-family:微软雅黑;
@@ -922,10 +922,17 @@ input.btn_red{
    color: #fff;
 }
 input.btn_gray{
-	font-family:微软雅黑;
+  font-family:微软雅黑;
     border:#b7b7b7 solid 1px;
   background: #f5f3f3;
    color:#666;
+}
+a.btn_gray{
+  font-family:微软雅黑;
+    border:#b7b7b7 solid 1px;
+  background: #f5f3f3;
+   color:#666;
+   display: block;
 }
 input.btn_brown{
 	font-family:微软雅黑;
@@ -935,7 +942,8 @@ input.btn_brown{
    color:#fff;
 }
 input.btn_mini{font-size:14px;min-width: 60px;height:25px; border-radius:3px;padding:1px 4px;}
-input.btn_small{font-size:14px;min-width: 80px;height:26px; border-radius:3px;padding:1px 5px;}
+input.btn_small{font-size:14px;min-width: 108px;height:26px; border-radius:3px;padding:1px 5px;}
+a.btn_small{font-size:14px;min-width: 80px;height:26px; border-radius:3px;padding:1px 5px;display: block;}
 input.btn_order{
 	font-size: 16px;  width: 191px;height: 40px;line-height: 40px;
 }

@@ -155,7 +155,7 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join comment as c on c.order_id=o.id';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on g.id=og.goods_id  left join comment as c on c.order_id=o.id';
 		$order_db->group = 'og.order_id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
@@ -198,7 +198,11 @@ class Ucenter extends IController
 
         $orderObj = new order_class();
         $this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
-
+		$this->fapiao_data = array();
+		if($this->order_info['invoice']==1){
+			$fapiao_db = new IModel('order_fapiao');
+			$this->fapiao_data = $fapiao_db->getObj('order_id='.$id);
+		}
         if(!$this->order_info)
         {
         	IError::show(403,'订单信息不存在');
@@ -212,7 +216,8 @@ class Ucenter extends IController
         $tb_refundment->join = 'left join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id';
         $tb_refundment->where = 'r.if_del=0 and r.order_id='.$id;
         $tb_refundment->order = 'r.id DESC';
-        $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.' as end_time';
+        $tb_refundment->group = 'r.id';
+        $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
         $this->refund_data = $tb_refundment->find();
         
       	 
@@ -232,7 +237,10 @@ class Ucenter extends IController
     	$this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
     	$presellData = $presell_db->getObj('id='.$this->order_info['active_id']);
     	$now = time();
-    	
+    	if($this->order_info['invoice']==1){
+    		$fapiao_db = new IModel('order_fapiao');
+    		$this->fapiao_data = $fapiao_db->getObj('order_id='.$id);
+    	}
     	if($presellData['wei_type']==1)
     	{
     		$start = strtotime($presellData['wei_start_time']);
@@ -534,9 +542,18 @@ class Ucenter extends IController
     public function refunds_del()
     {
         $id = IFilter::act( IReq::get('id'),'int' );
-        $model = new IModel("refundment_doc");
-        $model->del("id = ".$id." and user_id = ".$this->user['user_id']);
-        $this->redirect('refunds');
+        $refundment_doc_db = new IQuery("refundment_doc as r");
+        $refundment_doc_db->join = 'left join order_goods as og on og.order_id=r.order_id and og.goods_id=r.goods_id and og.product_id=r.product_id';
+        $refundment_doc_db->fields = 'r.type,og.*';
+        $refundment_doc_db->where = 'r.id='.$id.' and r.pay_status=0 and r.user_id='.$this->user['user_id'];
+        $order_goods_row = $refundment_doc_db->getObj();
+      
+        if(empty($order_goods_row))Util::showMessage("退款信息不存在");
+        $model = new IModel('refundment_doc');
+       if($model->del('id='.$id.' and user_id='.$this->user['user_id'])){
+       		Order_Class::order_status_refunds(1,$order_goods_row,$order_goods_row['type']);
+       }
+     	 $this->redirect('refunds');
     }
     /**
      * @brief 查看退款申请详情（此处做了更改）
@@ -707,17 +724,16 @@ class Ucenter extends IController
 	    	$result  = $userObj->update($where);
 	    	if($result)
 	    	{
-	    		ISafe::set('user_pwd',$passwordMd5);
-	    		$message = '密码修改成功';
+	    		$this->redirect('/site/success?message=密码修改成功');
+	    		
 	    	}
 	    	else
 	    	{
-	    		$message = '密码修改失败';
+	    		$this->redirect('/site/error?msg=密码修改失败');
 	    	}
 		}
-
-    	$this->redirect('/ucenter/info',false);
-    	Util::showMessage($message);
+		$this->redirect('/site/error?msg=密码修改失败');
+    	//$this->redirect('/ucenter/info');
     }
 
     //[个人资料]展示 单页

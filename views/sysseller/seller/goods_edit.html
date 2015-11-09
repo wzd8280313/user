@@ -365,6 +365,11 @@ function checkForm()
 		$('input[name="_imgList"]').val(goodsPhoto.join(','));
 		$('input[name="img"]').val($('#thumbnails img[class="current"]').attr('alt'));
 	}
+	if($('input[name^="_goods_category"]'==0)){
+		alert('请选择商品分类');
+		return false;
+	}
+	
 	return true;
 }
 

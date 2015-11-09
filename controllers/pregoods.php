@@ -19,7 +19,7 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,UNIX_TIMESTAMP(p.yu_end_time) as end_timestamp,g.sell_price as price,g.img';
+		$presell_db->fields = 'p.*,(UNIX_TIMESTAMP(p.yu_end_time)- UNIX_TIMESTAMP(now())) as end_timestamp,g.sell_price as price,g.img';
 		$presell_db->limit = 6;
 		$presell_db->order = 'p.id DESC';
 		$this->pre_list = $presell_db->find();
@@ -35,7 +35,7 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,UNIX_TIMESTAMP(p.yu_end_time) as end_timestamp,g.sell_price as price';
+		$presell_db->fields = 'p.*,(UNIX_TIMESTAMP(p.yu_end_time)-UNIX_TIMESTAMP(now())) as end_timestamp,g.sell_price as price';
 		$presell_db->order = 'p.id DESC';
 		$presell_db->limit = $limit;
 		$presellData = $presell_db->find();
@@ -54,7 +54,7 @@ class Pregoods extends IController
 		$this->logoUrl = 'images/yulogo.png';
 		$id = IFilter::act(IReq::get('id'),'int');
 		$presell = new IModel('presell');
-		if(!$id || !$preData = $presell->getObj('goods_id='.$id.' and  TIMESTAMPDIFF(second,yu_end_time,NOW()) <0 ','*,unix_timestamp(yu_end_time) as end_time'))
+		if(!$id || !$preData = $presell->getObj('goods_id='.$id.' and  TIMESTAMPDIFF(second,yu_end_time,NOW()) <0 ','*,unix_timestamp(yu_end_time)-UNIX_TIMESTAMP(now()) as end_time'))
 		{
 			IError::show(403,"预售商品不存在");
 			exit;
@@ -260,6 +260,10 @@ class Pregoods extends IController
 			$this->num       = $buy_num;
 			$this->active_id = $active_id;
 		}
+		else{
+			IError::show(403,$result);
+			exit;
+		}
 		//检查商品合法性或促销活动等有错误
 		if( is_string($result))
 		{
@@ -346,9 +350,9 @@ class Pregoods extends IController
 			$this->seller_name = '山城速购';
 		}else{
 			$seller_db = new IModel('seller');
-			$this->seller_name = $seller_db->getField('id='.$seller_id,'true_name');
+			$this->seller_name = $seller_db->getField('id='.$seller_id,'true_name,id');
 		}
-		
+		$this->seller_id = $seller_id;
 		//获取配送方式列表
 		$deli_db = new IQuery('delivery as d');
 		if($seller_id==0){
@@ -394,6 +398,7 @@ class Pregoods extends IController
 		$order_type    = 4;//预售订单
 		$dataArray     = array();
 		$prom          = 'presell';
+		$seller_id    = IFilter::act(IReq::get('seller_id'),'int');
 		//防止表单重复提交
 		if(IReq::get('timeKey') != null)
 		{
@@ -632,6 +637,7 @@ class Pregoods extends IController
 				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
 				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
 			}
+			$fapiao_data['seller_id'] = $seller_id;
 			$db_fapiao->setData($fapiao_data);
 			$db_fapiao->add();
 		}

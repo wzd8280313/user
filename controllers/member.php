@@ -612,8 +612,7 @@ class Member extends IController
 				$_GET['type']    = 'withdraw';
 				$this->member_recharge();
 			}
-			$this->redirect('withdraw_list',false);
-			Util::showMessage("更新成功");
+			$this->redirect('withdraw_list');
 		}
 		else
 		{

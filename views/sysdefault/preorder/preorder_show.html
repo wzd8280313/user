@@ -545,7 +545,7 @@ function initButton()
 	{/if}
 
 	//退款
-	{if:in_array($status,array(3,4,7,8))}
+	{if:in_array($status,array(3,4,7,8,9))}
 	$('#to_refundment').removeAttr('disabled');
 	$('#to_refundment').removeClass('inactive');
 	{/if}

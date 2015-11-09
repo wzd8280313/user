@@ -25,7 +25,7 @@
 			<col width='70px' />
 			<thead>
 				<tr>
-					<td><input type="checkbox" onclick="selectAll('id[]');" /></td>
+					<td><input name="id[]" type="checkbox" onclick="selectAll('id[]');" /></td>
 					<td align="center">商品名称</td>
 					<td align="center">关注时间</td>
 					<td align="center">价格</td>
@@ -75,7 +75,7 @@
 				<tr>
 					<td colspan="5">
 						<div class="pages_bar f_r">{$favoriteObj->getPageBar()}</div>
-						<label><input class="radio" type="checkbox" onclick="selectAll('id[]');" />全选</label>
+						<label><input class="radio" name="id[]" type="checkbox" onclick="selectAll('id[]');" />全选</label>
 						<label class="btn_gray_s"><input type="button" class='btn_gray btn_mini' onclick="$('#favorite').attr('action','{url:/ucenter/favorite_del}');delModel({msg:'是否取消关注？',form:'favorite'});" value="取消关注" /></span></label>
 					</td>
 				</tr>
