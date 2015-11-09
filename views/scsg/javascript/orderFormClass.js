@@ -36,6 +36,7 @@ function orderFormClass()
 	this.taxPrice     = 0;//税金
 	this.protectPrice = 0;//保价
 	this.ticketPrice  = 0;//代金券
+	this.weight       = 0;//商品总重量
 	
 	this.deliveryConf = {};//记录配送信息的json对象
 	

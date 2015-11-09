@@ -419,13 +419,19 @@ class Simple extends IController
 		//渲染视图
     	$this->redirect('cart',$redirect);
     }
-    //将商品列表按商家分开
+    /*将商品列表按商家分开
+     * @return array array('seller_name'=>商家名，'weight'=>商品重量,'total_price'=>总价,[0]=>array(商品数据),)
+     */
     private function goodsListBySeller($goodsList){
     	$goodsListSeller = array();
     	foreach($goodsList as $key => $value){
     		if(!isset($goodsListSeller[$value['seller_id']])){
+    			$goodsListSeller[$value['seller_id']]['weight'] = 0;
+    			$goodsListSeller[$value['seller_id']]['total_price'] = 0;
     			$goodsListSeller[$value['seller_id']]['seller_name'] = $value['seller_id']==0 ? '平台':API::run('getSellerInfo',$value['seller_id'],'true_name')['true_name'];
     		}
+    		$goodsListSeller[$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
+    		$goodsListSeller[$value['seller_id']]['weight'] += $value['weight']*$value['count']; 
     		$goodsListSeller[$value['seller_id']][] = $value;
     	}
     	return $goodsListSeller;
@@ -795,11 +801,12 @@ class Simple extends IController
     	$this->count       = $result['count'];
     	$this->reduce      = $result['reduce'];
     	$this->weight      = $result['weight'];
+    
     	$this->freeFreight = $result['freeFreight'];
     	
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
-  
+
     	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
@@ -988,7 +995,7 @@ class Simple extends IController
 		$paymentRow = $paymentObj->getObj('id = '.$payment,'type,name');
 		$paymentName= $paymentRow['name'];
 		$paymentType= $paymentRow['type'];
-
+//print_r($goodsResult);exit;
 		//最终订单金额计算
 		$orderData = $countSumObj->countOrderFee($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
 		//print_r($orderData);

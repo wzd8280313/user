@@ -38,7 +38,7 @@
 						<tbody>
 							{foreach:items=$value key=$k}
 							
-							{if:$k !== 'seller_name'}
+							{if:is_array($item)}
 							{set:$type=isset($item['spec_array'])?'product':'goods'}
 							{set:$item['id']=isset($item['spec_array'])?$item['product_id']:$item['goods_id']}
 							{set:$item['type']=$type}
