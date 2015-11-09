@@ -63,7 +63,6 @@ class Member extends IController
 		$contact_addr = IFilter::act(IReq::get('contact_addr'));
 		$zip        = IFilter::act(IReq::get('zip'));
 		$qq         = IFilter::act(IReq::get('qq'));
-		$msn        = IFilter::act(IReq::get('msn'));
 		$exp        = IFilter::act(IReq::get('exp'),'int');
 		$point      = IFilter::act(IReq::get('point'),'int');
 		$status     = IFilter::act(IReq::get('status'),'int');
@@ -94,7 +93,6 @@ class Member extends IController
 			'area'         => $_POST['area'],
 			'contact_addr' => $contact_addr,
 			'qq'           => $qq,
-			'msn'          => $msn,
 			'sex'          => $sex,
 			'zip'          => $zip,
 			'exp'          => $exp,
@@ -191,7 +189,35 @@ class Member extends IController
 		$this->setRenderData($this->data);
 		$this->redirect('member_list');
 	}
-
+	/**
+	 * 恶意用户列表
+	 * @
+	 */
+	function bad_member_list(){
+		$site_config = new Config('site_config');
+		$times = isset($site_config->refund_warning) ? $site_config->refund_warning : 10;
+		$limit_seconds = 30*24*3600;
+		
+		$tb_user_group = new IModel('user_group');
+		$data_group = $tb_user_group->query();
+		$group      = array();
+		foreach($data_group as $value)
+		{
+			$group[$value['id']] = $value['group_name'];
+		}
+		$this->group = $group;
+		
+		$member_db = new IQuery('member as m');
+		$member_db->join = 'left join user as u on m.user_id=u.id left join refundment_doc as r on m.user_id=r.user_id ';
+		$member_db->where = 'TIMESTAMPDIFF(second,r.time,NOW()) <'.$limit_seconds;
+		$member_db->having = 'count(r.id)>'.$times;
+		$member_db->fields = 'm.*,count(r.id) as times,u.username,u.email,u.phone';
+		$member_db->group = 'm.user_id';
+		$member_db->page = IFilter::act(IReq::get('page'),'int') ? IFilter::act(IReq::get('page'),'int') : 1;
+		$this->member_db = $member_db;
+		$this->member_list = $member_db->find();
+		$this->redirect('bad_member_list');
+	}
 	/**
 	 * 用户余额管理页面
 	 */

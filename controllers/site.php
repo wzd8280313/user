@@ -639,6 +639,9 @@ class Site extends IController
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
+		$regiment_db = new IModel('regiment');
+		$goods_info['regiment'] = $regiment_db->getObj('goods_id='.$goods_id.' and is_close=0 and  TIMESTAMPDIFF(second,start_time,NOW()) >=0 and TIMESTAMPDIFF(second,end_time,NOW())<0');
+		
 		$product_db = new IModel('products');
 		$goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
 		$goods_info['product'] = JSON::encode($goods_info['product']);

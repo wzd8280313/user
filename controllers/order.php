@@ -488,6 +488,10 @@ class Order extends IController
 			'user_id'      => $user_id,
 		);
 		$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
+		if($amount>$orderGoodsRow['real_price']+$orderGoodsRow['delivery_fee']+$orderGoodsRow['save_price']+$orderGoodsRow['tax']){
+			die('<script text="text/javascript">parent.actionCallback("退款金额不得大于实际支付金额");</script>');
+			return false;
+		}
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{

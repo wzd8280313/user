@@ -78,7 +78,7 @@ class Menu
 			'会员管理'=>array(
 	    		'/member/member_list' => '会员列表',
 	     		'/member/group_list' => '会员组列表',
-	     		'/member/withdraw_list'=>'会员提现管理'
+	     		'/member/withdraw_list'=>'会员提现管理',
 			),
 			'商户管理' => array(
 				'/member/seller_list' => '商户列表',
@@ -220,7 +220,7 @@ class Menu
 		'/system/delivery_recycle' => '/system/delivery',
 
 		'/member/recycling' => '/member/member_list',
-
+		'/member/bad_member_list'=>'/member/member_list',
 		'/tools/article_edit_act'=>'/tools/article_list',
 
 		'/market/ticket_edit' => '/market/ticket_list',

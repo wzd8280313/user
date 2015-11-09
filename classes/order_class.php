@@ -1280,11 +1280,12 @@ class Order_Class
 			//$memberObj->setData($memberData);
 			$memberObj->addNum('user_id = '.$user_id,$memberData);
 		
+			$order_url = IUrl::getHost().IUrl::creatUrl("/ucenter/order_detail/id/{$order_id}");
 			//(4)增加积分
 			$pointConfig = array(
 					'user_id' => $user_id,
 					'point'   => $point_add,
-					'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励积分'.$point_add,
+					'log'     => '成功购买了订单号：<a href="'.$order_url.'">'.$orderRow['order_no'].'</a>中的商品,奖励积分'.$point_add,
 			);
 			$pointObj = new Point();
 			$pointObj->update($pointConfig);

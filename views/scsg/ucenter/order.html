@@ -103,7 +103,7 @@
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
 					{elseif:in_array($status,array(3,11,17))}
 					
-					<a href="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}"  class='btn_gray btn_small' style='margin-bottom:5px;'>确认收货</a>
+					<a tourl="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}" href='javascript:void(0)' class='btn_gray btn_small' style='margin-bottom:5px;' onclick='ok_confirm(this);'>确认收货</a>
 					
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
 
@@ -155,6 +155,10 @@ function pay_confirm(_this){
 	var to_pay = $(_this).attr('topay');
 	var pay_money = $(_this).attr('money');
 	confirm('该订单需支付￥'+pay_money+'，确认支付吗',"location.href='"+to_pay+"'",1);
+}
+function ok_confirm(_this){
+	var to_url = $(_this).attr('tourl');
+	confirm('由于商品的特殊性，该订单确认收货后将不可进行退款操作，请在确认订单前，仔细检查商品后确认收货',"location.href='"+to_url+"'",1);
 }
 
 $('[name=find_order]').on('click',function(){

@@ -33,6 +33,7 @@
 			{set:$menu = new Menu($this->admin);}
 			var data = {echo:$menu->submenu()};
 			var current = '{echo:$menu->current}';
+			
 			var url='{url:/}';
 			initMenu(data,current,url);
 		});

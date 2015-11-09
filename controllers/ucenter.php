@@ -198,6 +198,7 @@ class Ucenter extends IController
 
         $orderObj = new order_class();
         $this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
+        if($this->order_info['type']==4)$this->redirect('preorder_detail/id/'.$this->order_info['id']);
 		$this->fapiao_data = array();
 		if($this->order_info['invoice']==1){
 			$fapiao_db = new IModel('order_fapiao');

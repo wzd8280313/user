@@ -86,6 +86,19 @@
 						
 					<%}%>
 				</script>
+				{if:!empty($regiment)}
+				<div class="tb-meta">
+					<dl id="J_RSPostageCont" class="tm-delivery-panel">
+						<dt class="tb-metatit">团购信息</dt>
+						<dd>
+							<div class="det_tuan " >
+								<span class='sell_sum' style='margin-left:5px;'>正在团购(<span >￥{$regiment['regiment_price']}</span>)</span>
+								<a href='{url:/site/tuan_product/active/$regiment["id"]}' style='color:blue;'>去团购</a>
+							</div>
+						</dd>
+					</dl>
+				</div>
+				{/if}
 				<div class="tb-meta">
 					<dl id="J_RSPostageCont" class="tm-delivery-panel">
 						<dt class="tb-metatit">配送至</dt>
