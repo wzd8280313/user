@@ -98,7 +98,7 @@
 				</td>
 				<td colspan="6" class="t_r">
 					{set:$callback = IFilter::act(IReq::get('callback'),'text');}
-					<a class="btn_gray btn_small mr_10" href="{url:$callback}" style="margin:0 auto;">继续购物</a>
+					<a class="btn_gray btn_small mr_10" href="{url:$callback}" style="float:right;">继续购物</a>
 					{if:$this->goodsList}
 					<a class="btn_brown btn_big mr_20" href="javascript:check_finish();">去结算</a>
 					{/if}
