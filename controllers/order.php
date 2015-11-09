@@ -1823,7 +1823,8 @@ class Order extends IController
 		$db_fa->where = 'f.id ='. $id;
 		$db_fa->limit = 1;
 		$db_fa->fields = 's.true_name,u.username,o.order_no,f.*';
-		$data = $db_fa->find()[0];
+		$data = $db_fa->find();
+		$data = $data[0];
 		if(!$data['true_name']){
 			$config = new config('site_config');
 			$data['true_name'] = $config->name;

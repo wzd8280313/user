@@ -1487,7 +1487,8 @@ class Seller extends IController
 		$db_fa->where = 'f.id ='. $id.' AND f.seller_id = '.$seller_id;
 		$db_fa->limit = 1;
 		$db_fa->fields = 'u.username,o.order_no,f.*';
-		$data = $db_fa->find()[0];
+		$data = $db_fa->find();
+		$data = $data[0];
 		if($data['money']==0)$data['money']='';
 		
 		$this->setRenderData($data);

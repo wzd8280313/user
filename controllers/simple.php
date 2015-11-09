@@ -428,7 +428,12 @@ class Simple extends IController
     		if(!isset($goodsListSeller[$value['seller_id']])){
     			$goodsListSeller[$value['seller_id']]['weight'] = 0;
     			$goodsListSeller[$value['seller_id']]['total_price'] = 0;
-    			$goodsListSeller[$value['seller_id']]['seller_name'] = $value['seller_id']==0 ? '平台':API::run('getSellerInfo',$value['seller_id'],'true_name')['true_name'];
+    			if($value['seller_id']==0){
+    				$goodsListSeller[$value['seller_id']]['seller_name'] = '平台';
+    			}else{
+    				$seller_data = API::run('getSellerInfo',$value['seller_id'],'true_name');
+    				$goodsListSeller[$value['seller_id']]['seller_name'] = $seller_data['true_name'];
+    			}
     		}
     		$goodsListSeller[$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
     		$goodsListSeller[$value['seller_id']]['weight'] += $value['weight']*$value['count']; 
@@ -995,10 +1000,11 @@ class Simple extends IController
 		$paymentRow = $paymentObj->getObj('id = '.$payment,'type,name');
 		$paymentName= $paymentRow['name'];
 		$paymentType= $paymentRow['type'];
-//print_r($goodsResult);exit;
+		//$goodsResult['goodsList'] = $this->goodsListBySeller($goodsResult['goodsList']);
+
 		//最终订单金额计算
 		$orderData = $countSumObj->countOrderFee($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
-		//print_r($orderData);
+	
 		if(is_string($orderData))
 		{
 			IError::show(403,$orderData);

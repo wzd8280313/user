@@ -1432,7 +1432,15 @@ class Order_Class
 	public static function get_refund_fee($orderRow,$goodsOrderRow){
 		//未发货的时候 退款运费和保价,税金
 		$otherFee = 0;
-		if($goodsOrderRow['delivery_id'] == 0)
+		$goods_db = new IModel('goods');
+		$seller_id = $goods_db->getField('id='.$goodsOrderRow['goods_id'],'seller_id');
+		
+		$order_goods_db = new IQuery('order_goods as og');
+		$order_goods_db->join = 'left join goods as g on og.goods_id=g.id ';
+		$order_goods_db->where = 'og.order_id='.$goodsOrderRow['order_id'].' and og.id !='.$goodsOrderRow['id'].' and og.is_send!=2 and g.seller_id='.$seller_id;
+		$order_goods_db->limit = 1;
+		$send_data = $order_goods_db->find();
+		if($goodsOrderRow['delivery_id'] == 0 && empty($send_data))
 		{
 			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
 		}
