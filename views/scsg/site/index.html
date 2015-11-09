@@ -377,7 +377,10 @@ _mvq.push(['$logConversion']);
 				<!--分类产品列表-->
                 <div class="f-r">
 				    <ul class="goods-list clearfix">
-				    	{foreach:items=$base['goods'] item=$goods}
+				    	{foreach:items=$base['goods'] item=$goods key=$gk}
+						{if:$gk>=6}
+						{set:break}
+						{/if}
 					    	<li>
 					        <a class="goods-img" href="{url:/site/products/id/$goods['id']}" title="{$goods['name']}" target="_blank">
 					            <img class="jImg" alt="{$goods['name']}" src="{url:/pic/thumb/img/$goods[img]/w/180/h/180}" target="_blank">

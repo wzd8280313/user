@@ -34,7 +34,7 @@ class Site extends IController
 		foreach( Api::run('getCategoryListTop') as $key=>$v){
 			$categoryList[$key] = $v;
 			$categoryList[$key]['child'] = Api::run('getCategoryByParentid',array('#parent_id#',$v['id']),5);
-			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']),6);
+			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']),20);
 			$categoryList[$key]['seller']= Api::run('getSellerListByCat',array('#cat_id#',$v['id']),10);
 			
 		}
