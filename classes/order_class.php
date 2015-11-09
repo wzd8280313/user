@@ -1440,10 +1440,14 @@ class Order_Class
 		$order_goods_db->where = 'og.order_id='.$goodsOrderRow['order_id'].' and og.id !='.$goodsOrderRow['id'].' and og.is_send!=2 and g.seller_id='.$seller_id;
 		$order_goods_db->limit = 1;
 		$send_data = $order_goods_db->find();
-		if($goodsOrderRow['delivery_id'] == 0 && empty($send_data))
+		if($goodsOrderRow['delivery_id'] == 0 )
 		{
-			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
+			if(empty($send_data)){
+				$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price']  ;
+			}
+			$otherFee += $goodsOrderRow['tax'];
 		}
+		
 		$amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
 		//退款额计算：将促销优惠和红包优惠平均分配
 		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];
