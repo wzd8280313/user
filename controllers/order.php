@@ -331,7 +331,7 @@ class Order extends IController
 						return false;
 					}
 				}
-				Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
+			//	Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
 			}
 			
 			
@@ -488,7 +488,7 @@ class Order extends IController
 			'user_id'      => $user_id,
 		);
 		$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
-		if($amount>$orderGoodsRow['real_price']+$orderGoodsRow['delivery_fee']+$orderGoodsRow['save_price']+$orderGoodsRow['tax']){
+		if($amount>$orderGoodsRow['real_price']*$orderGoodsRow['goods_nums']+$orderGoodsRow['delivery_fee']+$orderGoodsRow['save_price']+$orderGoodsRow['tax']){
 			die('<script text="text/javascript">parent.actionCallback("退款金额不得大于实际支付金额");</script>');
 			return false;
 		}
@@ -519,8 +519,8 @@ class Order extends IController
 					
 				//经验值、积分、代金券发放
 			}
-			Order_Class::sendGift($order_id,$user_id);
-			Order_Class::order_status_refunds(2,$orderGoodsRow);
+		//	Order_Class::sendGift($order_id,$user_id);
+			//Order_Class::order_status_refunds(2,$orderGoodsRow);
 			
 		if($result)
 		{

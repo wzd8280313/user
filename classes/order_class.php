@@ -1206,12 +1206,19 @@ class Order_Class
 		{
 			self::updateStore($order_goods_id,'add');
 		}
-		
+		//更新order表状态
+		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and id != '.$order_goods_id.' and is_send != 2');
+		$orderStatus = 6;//全部退款
+		if($isSendData)
+		{
+			$orderStatus = 7;//部分退款
+		}
+		$tb_order = new IModel('order');
+		$tb_order->setData(array('status' => $orderStatus));
+		$tb_order->update('id='.$order_id);
 		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
-		$orderGoodsDB->commit();
-
 		
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');

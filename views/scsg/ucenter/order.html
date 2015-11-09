@@ -96,17 +96,14 @@
 					
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}" class='btn_gray btn_small'>取消订单</a>
 					{elseif:$status==1}
-					
+					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"  class='btn_gray btn_small'>取消订单</a>
-					{elseif:in_array($status,array(4,8,9,10,11))}
+					{elseif:in_array($status,array(4,8,9,10,11,3,17)) && $item['og_sum']>$item['refund_times']}
 					
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
 					{elseif:in_array($status,array(3,11,17))}
 					
 					<a tourl="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}" href='javascript:void(0)' class='btn_gray btn_small' style='margin-bottom:5px;' onclick='ok_confirm(this);'>确认收货</a>
-					
-					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
-
 					
 					{elseif:$status==6 || $status==22}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
@@ -119,13 +116,9 @@
 
 						
 						{/if}
-					{elseif:$status==21}
-						<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
-				
-					{elseif:in_array($status,array(5,7,6))}
-					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
+					
 					{else:}
-					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
+					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 					{/if}
 					<!--<img class="img_delt" src="{skin:images/front/ucenter/bin_closed.png}"/>-->
 					
