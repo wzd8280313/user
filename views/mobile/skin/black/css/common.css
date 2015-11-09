@@ -88,7 +88,7 @@ body{font-size:14px;font-family:'\5FAE\8F6F\96C5\9ED1';-webkit-overflow-scrollin
 
 .h-left a,.h-right a{display:block;height:50px;line-height:50px;color:#999;overflow:hidden;text-align:center;position:relative}
 
-.h-left a{padding-left:20px;font-size:14px}
+.h-left a{padding-left:16px;font-size:14px}
 
 .h-left a:before{content:' ';position:absolute;left:6px;top:17px;border:#999 solid;border-width:2px 0 0 2px;width:13px;height:13px;-webkit-transform:rotate(-45deg);-moz-transform:rotate(-45deg)}
 
