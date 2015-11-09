@@ -38,6 +38,7 @@ class Site extends IController
 			$categoryList[$key]['seller']= Api::run('getSellerListByCat',array('#cat_id#',$v['id']),10);
 			
 		}
+		
 		$this->categoryList = $categoryList;
 		$this->isIndex = 1;
 		unset($categoryList);

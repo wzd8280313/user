@@ -1236,10 +1236,10 @@ class Order_Class
 	public static function sendGift($order_id,$user_id){
 			$order_db = new IModel('order');
 			$memberObj = new IModel('member');
-			$orderRow = $order_db->getObj('id='.$order_id,'point,exp,real_amount,order_no');
+			$orderRow = $order_db->getObj('id='.$order_id,'point,exp,real_amount,pro_reduce,order_no');
 			$memberRow=$memberObj->getObj('user_id='.$user_id);
 			$exp_add = $point_add = 0;
-			$real_amount = $orderRow['real_amount'];
+			$real_amount = $orderRow['real_amount'] + $orderRow['pro_reduce'];
 			
 			$order_goods_query = new IQuery('order_goods as og');
 			

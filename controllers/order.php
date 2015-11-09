@@ -24,10 +24,11 @@ class Order extends IController
 		{
 			$order_show = new Order_Class();
 			$data = $order_show->getOrderShow($order_id);
+		
 			if($data)
 			{
 				//获得折扣前的价格
-			 	$rule = new ProRule($data['real_amount']);
+			 	$rule = new ProRule($data['real_amount']+$data['pro_reduce']);
 			 	$this->result = $rule->getInfo();
 
 		 		//获取地区
