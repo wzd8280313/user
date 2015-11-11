@@ -171,7 +171,7 @@
             	{foreach:items=Api::run('getRegimentList','3')}
                      <li class="fl">
                         <a href="{url:/site/tuan_product/active/$item['id']}}">
-
+                        
                             <div class="img_wrap" style="width:80px;height:90px;">
                                 <img src="{url:$item['img']}">
                             </div>
@@ -332,112 +332,36 @@
 	<div style="margin-top:10px;">
 	    <div class="swiper-container swiper-container-horizontal head" id="box1" >
 	        <div class="swiper-wrapper swiper_height">
-	            <div class="swiper-slide active swiper_bg">
-					<div class="swiper_tit">
-						<span class="jx"></span>
-						<span>精选</span>
-					</div>
-				</div>
-	            <div class="swiper-slide swiper_bg">
+                {foreach:items=$this->categoryList}
+	            <div class="swiper-slide swiper_bg {if:$key==0} active {/if}">
 					<div class="swiper_tit">
 						<span class="ls"></span>
-						<span>零食</span>
+						<span>{$item['name']}</span>
 					</div>
 				</div>
-	            <div class="swiper-slide swiper_bg">
-					<div class="swiper_tit">
-						<span class="yl"></span>
-						<span>饮料</span>
-					</div>
-				</div>
-	            <div class="swiper-slide swiper_bg">
-					<div class="swiper_tit">
-						<span class="jx"></span>
-						<span>精选4</span>
-					</div>
-				</div>
-	            <div class="swiper-slide swiper_bg">
-					<div class="swiper_tit">
-						<span class="jx"></span>
-						<span>精选5</span>
-					</div>
-				</div>
-				<div class="swiper-slide swiper_bg">
-					<div class="swiper_tit">
-						<span class="jx"></span>
-						<span>精选6</span>
-					</div>
-				</div>
+                {/foreach}
 	        </div>
 	    </div>
 		<div>
 		<div class="swiper-container panel section_bg">
 			<section class="swiper-wrapper" style="background:#fff;">
-				<div class="swiper-slide" style="width:100%;">
+                {foreach:items=$this->categoryList item=$goods}
+				<div class="swiper-slide" {if:$key==0} style="width:100%;" {/if}>
 					<ul class="ul_conter">
-						<li><a href="">
-								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
-								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
-								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
-								<p><span class="ul_price">￥34</span>				
+                        {foreach:items=$goods['goods']}
+						<li><a href="{url:/site/products/id/$item['id']}">
+								<div><img src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"/></div>
+								<p>{$item['name']}</p>
+								<p><span class="ul_sell">月销售<b>{$item['sale']}</b>件</span></p>
+								<p><span class="ul_price">￥{$item['sell_price']}</span>				
 								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
 
 							</a>
 						</li>
-						<li><a href="">
-								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
-								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
-								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
-								<p><span class="ul_price">￥34</span>				
-								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
-
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
-								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
-								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
-								<p><span class="ul_price">￥34</span>				
-								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
-
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
-								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
-								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
-								<p><span class="ul_price">￥34</span>				
-								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
-
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<div><img src="{skin:images/hot_theme/u168.png}"/></div>
-								<p>【天猫超市】福建琯溪红心蜜柚2个红肉柚子水果 1kg/个-1.2kg/个</p>
-								<p><span class="ul_sell">月销售<b>8623</b>件</span></p>
-								<p><span class="ul_price">￥34</span>				
-								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
-
-							</a>
-						</li>
+                        {/foreach}
 					</ul>
 				</div>
-				<div class="swiper-slide">
-					2222
-				</div>
-				<div class="swiper-slide">
-					3333
-				</div>
-				<div class="swiper-slide">
-					444
-				</div>
-				<div class="swiper-slide">
-					ddd5
-				</div>
-				<div class="swiper-slide">ssss6</div>
+                {/foreach}
 			</section>
 		</div>
 		</div>
