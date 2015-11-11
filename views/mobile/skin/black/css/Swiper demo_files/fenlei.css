@@ -33,38 +33,74 @@
 	 border-bottom: 1px solid  #F4F2F2;
 	 
  }
-/*商品分类图标开始*/
- .active .jx{
-	 background: url(../wap/jxt.png) no-repeat center!important;
+/*点击后商品分类图标开始*/
+.swiper_bg  .ls{
+	display: block;
+	height: 20px;
+	width:25px;
+	margin:auto;
+	background: url(../wap/category.png) no-repeat;
+}
+.active .tb1{
+	background-position:-200px -182px!important;
+ }
+.active .tb2{
+	background-position:-200px -60px!important;
 
  }
-  .active .ls{
-	 background: url(../wap/lst.png) no-repeat center!important;
+.active .tb3{
+	background-position:-200px -120px!important;
 
  }
-   .active .yl{
-	 background: url(../wap/ylt.png) no-repeat center!important;
+.active .tb4{
+	background-position:-200px -80px!important;
 
  }
- .swiper_bg .jx{
-	display: block;
-	height: 25px;
-	background: url(../wap/jx.png) no-repeat center;
-	background-size: 20px;
+.active .tb5{
+	background-position:-200px -160px!important;
+
  }
-  .swiper_bg .ls{
-	display: block;
-	height: 25px;
-	background: url(../wap/ls.png) no-repeat center;
-	background-size: 20px;
+.active .tb6{
+	background-position:-200px -100px!important;
+
  }
-   .swiper_bg .yl{
-	display: block;
-	height: 25px;
-	background: url(../wap/yl.png) no-repeat center;
-	background-size: 20px;
+ .active .tb7{
+	background-position:-200px -240px!important;
+
  }
- /*商品分类图标结束*/
+ .active .tb8{
+	background-position:-200px -140px!important;
+
+ }
+ 
+  /*点击后商品分类图标结束*/
+ /*点击前的图标*/
+.swiper_bg .tb1{
+	background-position:0px -182px;
+ }
+  .swiper_bg .tb2{
+	background-position:0px -60px;
+ }
+   .swiper_bg .tb3{
+	background-position:0px -120px;
+ }
+   .swiper_bg .tb4{
+	background-position:0px -80px;
+ }
+   .swiper_bg .tb5{
+	background-position:0px -160px;
+ }
+.swiper_bg .tb6{
+	background-position:0px -100px;
+ }
+ .swiper_bg .tb7{
+	background-position:0px -240px;
+ }
+ .swiper_bg .tb8{
+	background-position:0px -140px;
+ }
+  /*点击前的图标结束*/
+
  .section_bg{
 	background:#fff;
 	margin-top: -6px;
@@ -128,11 +164,22 @@ background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAA8AQMAAACU1
 	text-decoration: none;
 	color:#000;
 }
-.swiper-slide .ul_conter li a p{
+.swiper-slide .ul_conter li a .fl_title{
+	line-height: 18px;
+	height: 34px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	word-wrap: break-word;
+}
+.swiper-slide .ul_conter li a  p{
 	font-size:13px;
 	text-align:left;
 	margin:5px 2px;
 }
+
 /*销售件数样式*/
 .swiper-slide .ul_conter li a p .ul_sell{
 	color:#c0c0c0;
