@@ -65,16 +65,15 @@
         <table class="list_table" width="100%" cellpadding="0" cellspacing="0">
         	<col width="200px" />
             <tr>
-                <th><span class="checktet"><input id="ckAll" class="checks" type="checkbox"/>全部</span>订单编号</th>
-                <th>下单日期</th>
-                <th width='50px'>收货人</th>
-                <th>支付方式</th>
-                <th>总金额</th>
-                <th>订单状态</th>
+                <th colspan="2" ><span class="checktet"><input id="ckAll" class="checks" type="checkbox"/>全部</span>商品名称</th>
+             
+                <th width='200px;'>单价</th>
+                <th>数量</th>
+                <th>状态</th>
+				 <th></th>
             </tr>
             {set:$queryOrderList=$this->order_db;$tem_order_id=-1;}
 			{foreach:items = $queryOrderList->find()}
-			
 			
 			{if:$item['id']!=$tem_order_id}
 			{set:$status=Order_Class::getOrderStatus($item);}
@@ -89,20 +88,59 @@
 					<td>
 						订单号：<a href="{url:/ucenter/order_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
 					</td>
-					<td colspan="2">
+					<td >
 						总金额：{$item['order_amount']}
 					</td>
-					<td colspan="1">
+					<td colspan="2">
 						订单状态：{echo:Order_Class::orderStatusText($status)}
 					</td>
-					<td colspan="1">
+					<td colspan="2">
+						{if:$status==2}
+							<a topay='{url:/block/dopay/order_id/$item["id"]}' money='{$item["order_amount"]}' href='javascript:void(0)' onclick='pay_confirm(this);' target=='blank' class='btn_gray btn_small' style='margin-bottom:5px;'>立即支付</a>
+							<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}" class='btn_gray btn_small'>取消订单</a>
+						{/if}
+						{if:$status==25}
+							<a tourl="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}" href='javascript:void(0)' class='btn_gray btn_small' style='margin-bottom:5px;' onclick='ok_confirm(this);'>确认收货</a>
+					
+						{/if}
+						
+					</td>
+					<td>
 						
 					</td>
 				</tr>
 			{/if}
+			
             <tr>
-				
-            
+            	
+				<td>
+					<a href="{url:/site/products/id/$item['goods_id']}">
+						<img src="{url:/pic/thumb/img/$item['img']/w/88/h/88}" width="88px" height="88px"  onerror='this.src="{skin:images/front/nopic_435_435.gif}"'/>
+					</a>
+				</td>
+				<td width="300px" >
+					{set:$goods_data = JSON::decode($item['goods_array'])}
+					<a >
+						{$goods_data['name']}{$goods_data['value']}
+					</a>
+				</td>
+            	<td>
+            		￥{$item['real_price']}
+            	</td>
+				<td>
+					{$item['goods_nums']}
+				</td>
+				<td>
+					{echo:Order_Class::get_order_good_status($item)}
+				</td>
+				<td colspan="2">
+					{if:$item['refunds_status']==0 && in_array($item['status'],array(2,7,8,9))}
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
+					{/if}
+				</td>
+				<td>
+						
+					</td>
             </tr>
 			{/foreach}
             <tfoot><tr><td colspan="6" class="t_l">{$this->order_db->getPageBar()}</td></tr></tfoot>

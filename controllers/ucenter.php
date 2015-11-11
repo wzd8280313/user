@@ -156,11 +156,11 @@ class Ucenter extends IController
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
 		$order_db->join = 'left join order_goods as og on o.id=og.order_id ';
-		$order_db->group = 'o.id';
+	
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
+		$order_db->fields = 'o.*,og.img,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
 		$this->order_db = $order_db;
 		//print_r($order_db->find());
         $this->initPayment();
@@ -473,20 +473,6 @@ class Ucenter extends IController
         	//判断商品是否已经退货
         	if($goodsOrderRow && in_array($goodsOrderRow['is_send'],array(0,1)))
         	{
-        		//更新order_goods表is_send状态
-        		if($goodsOrderRow['is_send']==1 && $type==1){
-        			$setData['refunds_status'] = 11;
-        		}else if($goodsOrderRow['is_send']==1 && $type==0){
-        			$setData['refunds_status'] = 7;
-        		}else if($goodsOrderRow['is_send']==0 && $type==0){
-        			$setData['refunds_status'] = 3;
-        		}
-        		else{
-        			$message = '未发货不能换货申请';
-        			IError::show(403,$message);
-        		}
-        		$goodsOrderDB->setData($setData);
-        		$goodsOrderDB->update('id = '.$order_goods_id);
         		
         		//退款单数据
         		$refundsDB = new IModel('refundment_doc');
@@ -531,8 +517,9 @@ class Ucenter extends IController
         		
         		//更改订单状态
         		if($type==0){//只有退款更新
-        			Order_Class::order_status_refunds(0,$goodsOrderRow,0);
+        			Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
         		}
+        		Order_Class::ordergoods_status_refunds(0,$goodsOrderRow,$type);
         		$this->redirect('order');
         		exit;
         	}
@@ -547,8 +534,7 @@ class Ucenter extends IController
         	$message = '订单未付款';
         }
 
-        $this->redirect('order',false);
-        Util::showMessage($message);
+        $this->redirect('order');
     }
     /**
      * @brief 退款申请删除

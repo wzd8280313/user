@@ -347,7 +347,7 @@ class Order extends IController
 		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
 		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
 		$status=IFilter::act(IReq::get('status'),'int');//原先的pay_status
-		
+		$order_goods_db = new IModel('order_goods');
 		$type = 0;
 		$setData=array(
 				'pay_status'   => $pay_status,
@@ -359,11 +359,14 @@ class Order extends IController
 		if($refundment_id)
 		{
 			$tb_refundment_doc = new IModel('refundment_doc');
+			
 			$tb_refundment_doc->setData($setData);
 			$tb_refundment_doc->update('id='.$refundment_id);
 			
+			$refundment_row = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,goods_id,product_id');
+			$goodsOrderRow = $order_goods_db->getObj('order_id='.$refundment_row['order_id'].' and goods_id='.$refundment_row['goods_id'].' and product_id ='.$refundment_row['product_id'],'is_send,id');
 			Order_Class::get_order_status_refunds($refundment_id,$pay_status);
-		
+			Order_Class::ordergoods_status_refunds($pay_status,$goodsOrderRow,$type);
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了退货单",'修改的ID：'.$refundment_id));
 		}
@@ -546,7 +549,7 @@ class Order extends IController
 				
 			}
 			Order_Class::get_order_status_refunds($refunds_id,2);
-			
+			Order_Class::ordergoods_status_refunds(2,$orderGoodsRow,0);
 		if($result)
 		{
 			
