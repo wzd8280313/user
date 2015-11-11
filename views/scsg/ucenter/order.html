@@ -78,7 +78,7 @@
 		
             <tr>
 				
-                <td>	
+                <td>	{$status}
                 	{if:$status==2}
 					<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
 					{/if}
@@ -98,11 +98,11 @@
 					{elseif:$status==1}
 					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
 					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"  class='btn_gray btn_small'>取消订单</a>
-					{elseif:in_array($status,array(4,8,9,10,11,3,17)) && $item['og_sum']>$item['refund_times']}
+					{elseif:in_array($status,array(4,8,9)) && $item['og_sum']>$item['refund_times']}
 					
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
-					{elseif:in_array($status,array(3,11,17))}
-					
+					{elseif:in_array($status,array(3,11,10,17))}
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
 					<a tourl="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}" href='javascript:void(0)' class='btn_gray btn_small' style='margin-bottom:5px;' onclick='ok_confirm(this);'>确认收货</a>
 					
 					{elseif:$status==6 || $status==22}
