@@ -1206,12 +1206,19 @@ class Order_Class
 		{
 			self::updateStore($order_goods_id,'add');
 		}
-		
+		//更新order表状态
+		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and id != '.$order_goods_id.' and is_send != 2');
+		$orderStatus = 6;//全部退款
+		if($isSendData)
+		{
+			$orderStatus = 7;//部分退款
+		}
+		$tb_order = new IModel('order');
+		$tb_order->setData(array('status' => $orderStatus));
+		$tb_order->update('id='.$order_id);
 		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
 		$orderGoodsDB->update('id = '.$order_goods_id);
-		$orderGoodsDB->commit();
-
 		
 		//生成订单日志
 		$authorName = $type == 'admin' ? ISafe::get('admin_name') : ISafe::get('seller_name');
@@ -1236,10 +1243,10 @@ class Order_Class
 	public static function sendGift($order_id,$user_id){
 			$order_db = new IModel('order');
 			$memberObj = new IModel('member');
-			$orderRow = $order_db->getObj('id='.$order_id,'point,exp,real_amount,order_no');
+			$orderRow = $order_db->getObj('id='.$order_id,'point,exp,real_amount,pro_reduce,order_no');
 			$memberRow=$memberObj->getObj('user_id='.$user_id);
 			$exp_add = $point_add = 0;
-			$real_amount = $orderRow['real_amount'];
+			$real_amount = $orderRow['real_amount'] + $orderRow['pro_reduce'];
 			
 			$order_goods_query = new IQuery('order_goods as og');
 			
@@ -1280,11 +1287,12 @@ class Order_Class
 			//$memberObj->setData($memberData);
 			$memberObj->addNum('user_id = '.$user_id,$memberData);
 		
+			$order_url = IUrl::getHost().IUrl::creatUrl("/ucenter/order_detail/id/{$order_id}");
 			//(4)增加积分
 			$pointConfig = array(
 					'user_id' => $user_id,
 					'point'   => $point_add,
-					'log'     => '成功购买了订单号：'.$orderRow['order_no'].'中的商品,奖励积分'.$point_add,
+					'log'     => '成功购买了订单号：<a href="'.$order_url.'">'.$orderRow['order_no'].'</a>中的商品,奖励积分'.$point_add,
 			);
 			$pointObj = new Point();
 			$pointObj->update($pointConfig);
@@ -1432,10 +1440,22 @@ class Order_Class
 	public static function get_refund_fee($orderRow,$goodsOrderRow){
 		//未发货的时候 退款运费和保价,税金
 		$otherFee = 0;
-		if($goodsOrderRow['delivery_id'] == 0)
+		$goods_db = new IModel('goods');
+		$seller_id = $goods_db->getField('id='.$goodsOrderRow['goods_id'],'seller_id');
+		
+		$order_goods_db = new IQuery('order_goods as og');
+		$order_goods_db->join = 'left join goods as g on og.goods_id=g.id ';
+		$order_goods_db->where = 'og.order_id='.$goodsOrderRow['order_id'].' and og.id !='.$goodsOrderRow['id'].' and og.is_send!=2 and g.seller_id='.$seller_id;
+		$order_goods_db->limit = 1;
+		$send_data = $order_goods_db->find();
+		if($goodsOrderRow['delivery_id'] == 0 )
 		{
-			$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price'] + $goodsOrderRow['tax'];
+			if(empty($send_data)){
+				$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price']  ;
+			}
+			$otherFee += $goodsOrderRow['tax'];
 		}
+		
 		$amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
 		//退款额计算：将促销优惠和红包优惠平均分配
 		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];

@@ -38,7 +38,7 @@
 						<tbody>
 							{foreach:items=$value key=$k}
 							
-							{if:$k !== 'seller_name'}
+							{if:is_array($item)}
 							{set:$type=isset($item['spec_array'])?'product':'goods'}
 							{set:$item['id']=isset($item['spec_array'])?$item['product_id']:$item['goods_id']}
 							{set:$item['type']=$type}
@@ -98,7 +98,7 @@
 				</td>
 				<td colspan="6" class="t_r">
 					{set:$callback = IFilter::act(IReq::get('callback'),'text');}
-					<a class="btn_gray btn_small mr_10" href="{url:$callback}">继续购物</a>
+					<a class="btn_gray btn_small mr_10" href="{url:$callback}" style="float:right;">继续购物</a>
 					{if:$this->goodsList}
 					<a class="btn_brown btn_big mr_20" onclick="check_finish();" href='javascript:void(0)'>去结算</a>
 					{/if}

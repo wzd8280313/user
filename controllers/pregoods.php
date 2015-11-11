@@ -480,7 +480,7 @@ class Pregoods extends IController
 		$paymentType= $paymentRow['type'];
 	
 		//最终订单金额计算
-		$orderData = $countSumObj->countOrderFee($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
+		$orderData = $countSumObj->countOrderFeePresell($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
 		
 		
 		if(is_string($orderData))

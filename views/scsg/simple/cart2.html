@@ -47,7 +47,6 @@ jQuery(function(){
 	createAreaSelect('province',0,'');
 	//收货地址数据
 	orderFormInstance.addressInit("{$this->defaultAddressId}");
-
 	//初始化自提点数据(自添)
 	takeselfInit("{$this->custom['takeself']}");
 
@@ -134,59 +133,56 @@ function get_delivery()
 		return;
 	}
 
-	$('[id^="deliveryFeeBox_"]').each(function(i)
-	{
-		var idValue = $(this).attr('id');
-		var dataArray = idValue.split("_");
-		$.ajax({
-			type:'post',
-			async:false,
-			data:{"area":area,"distribution":delivery,"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
-			dataType:'json',
-			url:"{url:/block/order_delivery}",
-			
-			success:function(content)
-			{
-				//地区无法送达
-				if(content.if_delivery == 1)
-				{
-					alert('您选择地区部分商品无法送达');
-					$('#'+idValue).html("<span style='color:red'>无法送达</span>");
+	$('span[id^=deliveryfee_]').each(function(){
+		var _this = $(this);
+				if(orderFormInstance.freeFreight == 1){
+					$(this).text('免运费');
+					orderFormInstance.deliveryPrice = 0;
 				}
-				else
-				{
-					//免运费
-					if(orderFormInstance.freeFreight == 1)
-					{
-						var html = "活动免运费";
-						content.price = 0;
-						orderFormInstance.doAccount();
-					}
-					else
-					{
-						var html = "￥"+content.price;
-						orderFormInstance.deliveryPrice += parseFloat(content.price);
-						orderFormInstance.doAccount();
-					}
-	
-					//允许保价
-					if(content.protect_price > 0)
-					{
-						html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"_"+dataArray[2]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
-					}
-					$('#'+idValue).html(html);
+				else{
+					var idValue = $(this).attr('id');
+					var dataArray = idValue.split("_");
+					$.ajax({
+						type:'post',
+						async:false,
+						data:{"area":area,"distribution":delivery,"weight":dataArray[2],"seller_id":dataArray[1],"total_price":dataArray[3]},
+						dataType:'json',
+						url:"{url:/block/order_delivery_seller}",
+						
+						success:function(content)
+						{
+							//地区无法送达
+							if(content.if_delivery == 1)
+							{
+								alert('您选择地区部分商品无法送达');
+								$('#'+idValue).html("<span style='color:red'>无法送达</span>");
+							}
+							else
+							{
+								orderFormInstance.deliveryPrice += parseFloat(content.price);
+								var html = "￥"+parseFloat(content.price).toFixed(2);
+								//允许保价
+								if(content.protect_price > 0)
+								{
+									html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+								}
+								_this.text(html);
+							}
+						},
+						timeout:1000,
+					})
 				}
-			},
-			timeout:1000,
-		})
+				
+	})
+	orderFormInstance.doAccount();
 
-	});
+
 }
 
 //保价
 function selectProtect(obj)
 {
-	if($(obj).attr('checked') == 'checked')
+	if($(obj).prop('checked'))
 	{
 		orderFormInstance.protectPrice += parseFloat(obj.value);
 	}
@@ -550,15 +546,16 @@ function selectTakeself(deliveryId)
 								<col width="80px" />
 								<col width="80px" />
 								<col width="80px" />
-								<col width="80px" />
 							</colgroup>
-							<caption>商家：{$value['seller_name']}</caption>
+							<caption>商家：{$value['seller_name']}
+								<span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'></span></span>
+							</caption>
 							<input type='hidden' value='{$value[0]['seller_id']}' name='seller_id[]' />
+							
 							<thead>
 								<tr>
 									<th>图片</th>
 									<th>商品名称</th>
-									<th>运费</th>
 									<th>赠送积分</th>
 									<th>单价</th>
 									<th>优惠</th>
@@ -570,7 +567,7 @@ function selectTakeself(deliveryId)
 							<tbody >
 								<!-- 商品展示 开始-->
 								{foreach:items = $value $key=$k}
-								{if:$k!=='seller_name'}
+								{if:is_array($item)}
 								<tr>
 									<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
 									<td class="t_l">
@@ -590,7 +587,6 @@ function selectTakeself(deliveryId)
 										</p>
 										{/if}
 									</td>
-									<td id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"></td>
 									<td>{$item['point']}</td>
 									<td><b>￥{$item['sell_price']}</b></td>
 									<td>减￥{$item['reduce']}</td>

@@ -363,11 +363,11 @@ class ProRule
 				break;
 
 				//赠送经验
-				case "5":
+				case "7":
 				{
 					$memberObj   = new IModel('member');
 					$memberArray = array(
-						'exp' => 'exp' + $award_value,
+						'exp' => 'exp + '.$award_value,
 					);
 					$memberObj->setData($memberArray);
 					$memberObj->update('user_id = '.$user_id,'exp');

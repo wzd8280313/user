@@ -13,8 +13,9 @@
 		<tbody>
 			{set:$queryEvaluationList = Api::run('getUcenterEvaluation',$this->user['user_id'],0)}
 			{foreach:items = $queryEvaluationList->find()}
+			
 			<tr>
-				<td>{$item['order_no']}</td>
+				<td><a href='{url:/ucenter/order_detail/id/$item["order_id"]}'>{$item['order_no']}</a></td>
 				<td><a href="{url:/site/products/id/$item[goods_id]}" target='_block'>{$item['name']}</a></td>
 				<td>{$item['time']}</td>
 				<td>

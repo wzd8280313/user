@@ -337,7 +337,7 @@ class CountSum
     /**
      * 计算订单信息,其中部分计算都是以商品原总价格计算的$goodsSum
      * @param $goodsResult array CountSum结果集
-     * @param $province_id int 省份ID
+     * @param $area_id int 区域ID
      * @param $delievery_id int 配送方式ID
      * @param $payment_id int 支付ID
      * @param $is_insured array("goods_id_product_id")部分商品需要报价 or int都设置保价
@@ -345,7 +345,128 @@ class CountSum
      * @param $discount float 订单的加价或者减价
      * @return $result 最终的返回数组
      */
-    public static function countOrderFee($goodsResult,$province_id,$delivery_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
+    public static function countOrderFee($goodsResult,$area_id,$delivery_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
+    {
+    	$goodsFinalSum = $goodsResult['final_sum'];
+
+    	//最终的返回数组
+    	$result = array(
+    		//原本运费
+    		'deliveryOrigPrice' => 0,
+
+    		//实际运费
+    		'deliveryPrice' => 0,
+
+    		//保价
+    		'insuredPrice' => 0,
+
+    		//税金
+    		'taxPrice' => 0,
+
+    		//支付手续费
+    		'paymentPrice' => 0,
+
+    		//最终订单金额
+    		'orderAmountPrice' => 0,
+
+    		//商品列表
+    		'goodsResult' => array(),
+    	);
+    	$goods_seller_data = array();
+    	foreach($goodsResult['goodsList'] as $key => $val){
+    		if(!isset($goods_seller_data[$val['seller_id']])){
+    			$goods_seller_data[$val['seller_id']]['sum'] = $val['sum'];
+    			$goods_seller_data[$val['seller_id']]['weight'] = $val['weight'];
+    		}
+    		else{
+    			$goods_seller_data[$val['seller_id']]['sum'] += $val['sum'];
+    			$goods_seller_data[$val['seller_id']]['weight'] += $val['weight'];
+    		}
+    	}
+    	foreach($goods_seller_data as $k=>$val){
+    		$deliveryRow = Delivery::getDeliveryWeight($area_id,$delivery_id,$val['weight'],$k,$val['sum']);
+    		//商品无法送达
+    		if($deliveryRow['if_delivery'] == 1)
+    		{
+    			return "您所选购的商品：".$val['name']."，无法送达";
+    		}
+    		$goods_seller_data[$k]['deliveryPrice'] = $deliveryRow['price'];
+    		$goods_seller_data[$k]['insuredPrice'] = $deliveryRow['protect_price'];
+    		$result['deliveryOrigPrice'] += $deliveryRow['price'];
+    		
+    		//商品保价计算
+    		//	if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+    		if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$k]) ) )
+    		{
+    			$result['insuredPrice'] += $deliveryRow['protect_price'];
+    		}
+    		if(!$goodsResult['freeFreight'])
+    		{
+    			$result['deliveryPrice'] += $deliveryRow['price'];
+    		}
+    	}
+    	foreach($goodsResult['goodsList'] as $key => $val){
+    		//商品保价计算
+    		//	if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+    		if($is_insured == 1  )
+    		{
+    			$goodsResult['goodsList'][$key]['insuredPrice'] = $goods_seller_data[$val['seller_id']]['insuredPrice'];
+    		}
+    		else
+    		{
+    			$goodsResult['goodsList'][$key]['insuredPrice'] = 0;
+    		}
+    		 if($goodsResult['freeFreight'] == true)
+    		{
+    			  $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+    		}
+    		 else
+    		{
+    			$goodsResult['goodsList'][$key]['deliveryPrice'] = $goods_seller_data[$val['seller_id']]['deliveryPrice'];
+    		}
+    		
+    		//商品税金计算
+    		if($is_invoice == true)
+    		{
+    			
+    			$tempTax = self::getGoodsTax($val['sum'],$val['seller_id']);
+    			$goodsResult['goodsList'][$key]['taxPrice'] = $tempTax;
+    			$result['taxPrice'] += $tempTax;
+    			 
+    		}
+    		else{
+    			$goodsResult['goodsList'][$key]['taxPrice'] = 0;
+    		}
+    	}
+
+
+		//非货到付款的线上支付方式手续费
+		if($payment_id != 0)
+		{
+			$result['paymentPrice'] = self::getGoodsPaymentPrice($payment_id,$goodsFinalSum);
+		}
+
+		//最终订单金额计算
+		$order_amount = $goodsFinalSum + $result['deliveryPrice'] + $result['insuredPrice'] + $result['taxPrice'] + $result['paymentPrice'] + $discount;
+		$result['orderAmountPrice'] = $order_amount <= 0 ? 0 : round($order_amount,2);
+
+		//订单商品刷新
+		$result['goodsResult'] = $goodsResult;
+
+		return $result;
+    }
+    /**
+     * 计算订单信息，预售订单
+     * @param $goodsResult array CountSum结果集
+     * @param $province_id int 区域ID
+     * @param $delievery_id int 配送方式ID
+     * @param $payment_id int 支付ID
+     * @param $is_insured array("goods_id_product_id")部分商品需要报价 or int都设置保价
+     * @param $is_invoice int 是否要发票
+     * @param $discount float 订单的加价或者减价
+     * @return $result 最终的返回数组
+     */
+    public static function countOrderFeePresell($goodsResult,$province_id,$delivery_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
     {
     	$goodsFinalSum = $goodsResult['final_sum'];
 
@@ -434,7 +555,6 @@ class CountSum
 
 		return $result;
     }
-
     /**
      * 获取商品的税金
      * @param $goodsSum float 商品总价格

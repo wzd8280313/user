@@ -34,10 +34,11 @@ class Site extends IController
 		foreach( Api::run('getCategoryListTop') as $key=>$v){
 			$categoryList[$key] = $v;
 			$categoryList[$key]['child'] = Api::run('getCategoryByParentid',array('#parent_id#',$v['id']),5);
-			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']),6);
+			$categoryList[$key]['goods'] = Api::run('getCategoryExtendList',array('#categroy_id#',$v['id']),20);
 			$categoryList[$key]['seller']= Api::run('getSellerListByCat',array('#cat_id#',$v['id']),10);
 			
 		}
+		
 		$this->categoryList = $categoryList;
 		$this->isIndex = 1;
 		unset($categoryList);
@@ -638,6 +639,9 @@ class Site extends IController
 			IError::show(403,"这件商品不存在或已下架");
 			exit;
 		}
+		$regiment_db = new IModel('regiment');
+		$goods_info['regiment'] = $regiment_db->getObj('goods_id='.$goods_id.' and is_close=0 and  TIMESTAMPDIFF(second,start_time,NOW()) >=0 and TIMESTAMPDIFF(second,end_time,NOW())<0');
+		
 		$product_db = new IModel('products');
 		$goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
 		$goods_info['product'] = JSON::encode($goods_info['product']);
@@ -1120,7 +1124,13 @@ class Site extends IController
 
 
 	function ce(){
-		print_r($_SESSION);
+		$order_id = 721;
+	$refundsDB = new IModel('refundment_doc');
+				
+					$where = 'order_id = 722 and goods_id = 22 and product_id = 75 and if_del = 0　and (type=0 OR type=1 and pay_status in(0,3,4,7))' ;
+				$data = $refundsDB->getObj($where);
+				print_r($data);	
+  
 	}
 	
 }

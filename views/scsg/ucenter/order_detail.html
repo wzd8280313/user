@@ -47,7 +47,7 @@
 	        </label>
 			{/if}
 
-	        {if:in_array($orderStatus,array(3,4,8,9,10,11,17)) }
+	        {if:in_array($orderStatus,array(3,4,8,9,10,11,17)) && $this->show_refund}
 	        <label >
 	        	<input type="button"  class='btn_red btn_small' value="申请退换货" onclick='javascript:window.location.href="{url:/ucenter/refunds_edit/order_id/$this->order_info['order_id']}"' />
 	        </label>

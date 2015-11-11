@@ -80,7 +80,8 @@ class Ucenter_ajax extends IController
 		$order_goods_data = $order_goods_db->find();
 		
 		foreach($order_goods_data as $k=>$v){
-			$order_goods_data[$k]['spec'] = JSON::decode($v['goods_array'])['value'];
+			$tem = JSON::decode($v['goods_array']);
+			$order_goods_data[$k]['spec'] = $tem['value'];
 		}
 		foreach($order_data as $k=>$v){
 			if($v['type']!='4'){
@@ -127,7 +128,7 @@ class Ucenter_ajax extends IController
 		$user_id = $this->user['user_id'];
 		$member_db = new IModel('member');
 		$member_db->setData(array('sign_date'=>ITime::getDateTime()));
-		if($member_db->update('user_id='.$user_id.' and (sign_date is NULL  or DATEDIFF(now(),sign_date)>=1)')){
+		if($member_db->update('user_id='.$user_id.' and (sign_date IS NULL  or DATEDIFF(now(),sign_date)>=1)')){
 			$pointConfig = array(
 					'user_id' => $user_id,
 					'point'   => $point,

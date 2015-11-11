@@ -24,10 +24,11 @@ class Order extends IController
 		{
 			$order_show = new Order_Class();
 			$data = $order_show->getOrderShow($order_id);
+		
 			if($data)
 			{
 				//获得折扣前的价格
-			 	$rule = new ProRule($data['real_amount']);
+			 	$rule = new ProRule($data['real_amount']+$data['pro_reduce']);
 			 	$this->result = $rule->getInfo();
 
 		 		//获取地区
@@ -330,7 +331,7 @@ class Order extends IController
 						return false;
 					}
 				}
-				Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
+			//	Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
 			}
 			
 			
@@ -487,6 +488,10 @@ class Order extends IController
 			'user_id'      => $user_id,
 		);
 		$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
+		if($amount>$orderGoodsRow['real_price']*$orderGoodsRow['goods_nums']+$orderGoodsRow['delivery_fee']+$orderGoodsRow['save_price']+$orderGoodsRow['tax']){
+			die('<script text="text/javascript">parent.actionCallback("退款金额不得大于实际支付金额");</script>');
+			return false;
+		}
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{
@@ -514,8 +519,8 @@ class Order extends IController
 					
 				//经验值、积分、代金券发放
 			}
-			Order_Class::sendGift($order_id,$user_id);
-			Order_Class::order_status_refunds(2,$orderGoodsRow);
+		//	Order_Class::sendGift($order_id,$user_id);
+			//Order_Class::order_status_refunds(2,$orderGoodsRow);
 			
 		if($result)
 		{
@@ -1823,7 +1828,8 @@ class Order extends IController
 		$db_fa->where = 'f.id ='. $id;
 		$db_fa->limit = 1;
 		$db_fa->fields = 's.true_name,u.username,o.order_no,f.*';
-		$data = $db_fa->find()[0];
+		$data = $db_fa->find();
+		$data = $data[0];
 		if(!$data['true_name']){
 			$config = new config('site_config');
 			$data['true_name'] = $config->name;

@@ -4170,7 +4170,7 @@ function double_submit() {
 								 break;
 							}
 							case 7 : {
-								showErrorInfo($("#un"), "账号密码不匹配");return ;
+								showErrorInfo($("#un"), "账号密码不匹配");
 								if(e.errorTimes>3){
 									showValidCode = '1';
 									isShowValidCode();

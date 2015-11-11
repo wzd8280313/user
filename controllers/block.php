@@ -166,6 +166,22 @@ class Block extends IController
     	echo JSON::encode($data);
     }
     /**
+     * 根据商家、订单重量算运费价格ajax
+     */
+   	public function order_delivery_seller(){
+   		$weight = IFilter::act(IReq::get('weight'),'int');
+   		$seller_id = IFilter::act(IReq::get('seller_id'),'int');
+   		$area     = IFilter::act(IReq::get("area"),'int');
+   		$distribution = IFilter::act(IReq::get("distribution"),'int');//配送方式
+   		$total_price = IFilter::act(IReq::get('total_price'),'int');
+   		if($distribution)
+   		{
+   			$data = Delivery::getDeliveryWeight($area,$distribution,$weight,$seller_id,$total_price);
+   		}
+   		else echo 0;
+   		echo JSON::encode($data);
+   	}
+    /**
      * 合并付款
      */
     public function dopaymerge(){

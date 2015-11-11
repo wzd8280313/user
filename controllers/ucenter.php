@@ -142,7 +142,7 @@ class Ucenter extends IController
     		}
     		$status_str=' ('.substr($status_str,0,-4).') ';
     	}
-    	$where = "o.user_id =".$userid." and if_del= 0 and type !=4 ";
+    	$where = "o.user_id =".$userid." and o.if_del= 0 and o.type !=4 ";
     	$where .= $status_str ? ' and '.$status_str : '';
     	$where .= $seller_str ? ' and '.$seller_str : '';
   		 if($beginTime)
@@ -155,13 +155,14 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on g.id=og.goods_id  left join comment as c on c.order_id=o.id';
-		$order_db->group = 'og.order_id';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on g.id=og.goods_id   left join comment as c on c.order_id=o.id  left join refundment_doc as r on r.order_id=o.id  and g.id = r.goods_id and r.pay_status in (0,3,4,7)';
+		$order_db->group = 'o.id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,c.status as comment_status,c.id as comment_id';
+		$order_db->fields = 'o.*,count(og.id ) as og_sum,c.status as comment_status,c.id as comment_id,count(r.id) as refund_times,r.id as rid';
 		$this->order_db = $order_db;
+		//print_r($order_db->find());
         $this->initPayment();
         $data['s_beginTime'] = $beginTime;
         $data['s_endTime'] = $endTime;
@@ -198,6 +199,7 @@ class Ucenter extends IController
 
         $orderObj = new order_class();
         $this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
+        if($this->order_info['type']==4)$this->redirect('preorder_detail/id/'.$this->order_info['id']);
 		$this->fapiao_data = array();
 		if($this->order_info['invoice']==1){
 			$fapiao_db = new IModel('order_fapiao');
@@ -220,7 +222,13 @@ class Ucenter extends IController
         $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
         $this->refund_data = $tb_refundment->find();
         
-      	 
+        $order_db = new IModel('order_goods');
+        $order_data = $order_db->getObj('order_id='.$id,'count(*) as num');
+      	$order_goods_num = $order_data['num'];
+      	 $refundment_db = new IModel('refundment_doc');
+      	 $refund_num = $refundment_db->getObj('order_id='.$id.' and pay_status in (0,3,4,7)','count(*) as refund_num');
+      	 $refund_num = $refund_num['refund_num'];
+      	 $this->show_refund = $refund_num - $order_goods_num < 0 ? 1 : 0;
         $this->redirect('order_detail',false);
     }
 	
@@ -462,19 +470,21 @@ class Ucenter extends IController
         	
         	$goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id.' and order_id = '.$order_id);
         	//更改订单状态
-        	Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
+        	//Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
         	
         	//判断商品是否已经退货
         	if($goodsOrderRow && $goodsOrderRow['is_send'] != 2)
         	{
         		$refundsDB = new IModel('refundment_doc');
-
-        		//判断是否重复提交申请
-//         		if($refundsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0 and type='.$type))
-//         		{
-//         			$message = '请不要重复提交申请';
-// 			       IError::show(403,$message);
-//         		}
+				
+// 					$where = 'order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0　and  (type=0 OR type=1 and pay_status in(0,3,4,7))';
+					
+//         			if($refundsDB->getObj($where)){
+//         				$message = '请不要重复提交申请';
+//         				IError::show(403,$message);
+//         			}
+        
+        		
         		//退款单数据
         		$updateData = array(
 					'order_no' => $orderRow['order_no'],
