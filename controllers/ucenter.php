@@ -469,29 +469,33 @@ class Ucenter extends IController
         {
         	
         	$goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id.' and order_id = '.$order_id);
-        	//更改订单状态
-        	//Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
         	
         	//判断商品是否已经退货
-        	if($goodsOrderRow && $goodsOrderRow['is_send'] != 2)
+        	if($goodsOrderRow && in_array($goodsOrderRow['is_send'],array(0,1)))
         	{
-        		$refundsDB = new IModel('refundment_doc');
-				
-// 					$where = 'order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0　and  (type=0 OR type=1 and pay_status in(0,3,4,7))';
-					
-//         			if($refundsDB->getObj($where)){
-//         				$message = '请不要重复提交申请';
-//         				IError::show(403,$message);
-//         			}
-        
+        		//更新order_goods表is_send状态
+        		if($goodsOrderRow['is_send']==1 && $type==1){
+        			$setData['is_send'] = 11;
+        		}else if($goodsOrderRow['is_send']==1 && $type==0){
+        			$setData['is_send'] = 7;
+        		}else if($goodsOrderRow['is_send']==0 && $type==0){
+        			$setData['is_send'] = 3;
+        		}
+        		else{
+        			$message = '未发货不能换货申请';
+        			IError::show(403,$message);
+        		}
+        		$goodsOrderDB->setData($setData);
+        		$goodsOrderDB->update('id = '.$order_goods_id);
         		
         		//退款单数据
+        		$refundsDB = new IModel('refundment_doc');
         		$updateData = array(
 					'order_no' => $orderRow['order_no'],
+        			'refunds_no' => Order_Class::createOrderNum(),
 					'order_id' => $order_id,
 					'user_id'  => $user_id,
         			'type'     => $type,
-					'amount'   => Order_Class::get_refund_fee($orderRow,$goodsOrderRow),
 					'time'     => ITime::getDateTime(),
 					'content'  => $content,
 					'goods_id' => $goodsOrderRow['goods_id'],
@@ -499,23 +503,19 @@ class Ucenter extends IController
         			'delivery_com'=> $delivery_com,
         			'delivery_code'=>$delivery_code
 				);
-        		if($goodsOrderRow['is_send']==1){
+        		if($type==0)
+        		{
+        			$updateData['amount'] = Order_Class::get_refund_fee($orderRow,$goodsOrderRow);
+        		}
+        		if($goodsOrderRow['is_send']==1)
+        		{
         			$updateData['pay_status'] = 4;
         			
-        		}else if($goodsOrderRow['is_send']==0){
+        		}
+        		else if($goodsOrderRow['is_send']==0){
         			$updateData['pay_status'] = 0;
         		}
-        		if(isset($_FILES['delivery_img']['name']) && $_FILES['delivery_img']['name'])
-        		{
-        			$uploadObj = new PhotoUpload();
-        			$uploadObj->setIterance(false);
-        			$photoInfo = $uploadObj->run();
-        			if(isset($photoInfo['delivery_img']['img']) && file_exists($photoInfo['delivery_img']['img']))
-        			{
-        				$updateData['delivery_img'] = $photoInfo['delivery_img']['img'];
-        			}
-        		
-        		}
+
 				$goodsDB  = new IModel('goods');
         		$goodsRow = $goodsDB->getObj('id = '.$goodsOrderRow['goods_id']);
 
@@ -528,7 +528,11 @@ class Ucenter extends IController
         		//写入数据库
         		$refundsDB->setData($updateData);
         		$refundsDB->add();
-
+        		
+        		//更改订单状态
+        		if($type==0){//只有退款更新
+        			Order_Class::order_status_refunds(0,$goodsOrderRow,0);
+        		}
         		$this->redirect('order');
         		exit;
         	}

@@ -1040,7 +1040,7 @@ class Order_Class
 	public static function isRefundmentApply($orderRow)
 	{
 		//已经付款
-		if($orderRow['distribution_status']!=3 && $orderRow['pay_status'] == 1 && $orderRow['status'] != 5 && $orderRow['status'] != 6 && self::getOrderStatus($orderRow)!=6)
+		if($orderRow['pay_status'] == 1 && $orderRow['status'] != 6)
 		{
 			return true;
 		}
@@ -1310,6 +1310,8 @@ class Order_Class
 		if(!$new_goods_id && !$new_product_id)return false;
 		$orderGoodsDB= new IModel('order_goods');
 		$refundDB    = new IModel('refundment_doc');
+		$order_db = new IModel('order');
+		$goods_db = new IModel('goods');
 		
 		
 		//获取goods_id和product_id用于给用户减积分，经验
@@ -1320,20 +1322,46 @@ class Order_Class
 		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
 		$order_goods_id = $orderGoodsRow['id'];
-		
-		//未发货的情况下还原商品库存
-		if($orderGoodsRow['is_send'] == 0)
-		{
-			self::updateStore($order_goods_id,'add');
-		}
-		
 		//原商品更新为退款状态
-		$orderGoodsDB->setData(array('is_send' => 2));
+		$orderGoodsDB->setData(array('is_send' => 12));
 		$orderGoodsDB->update('id = '.$order_goods_id);
+		
+		//生成新订单
+		$orderRow = $order_db->getObj('id='.$order_id);
+		$goodsRow = $goods_db->getObj('id='.$refundsRow['goods_id'],'exp,point');
+		$new_order_data = array(
+			'order_no' => Order_Class::createOrderNum(),
+			'user_id' => $orderRow['user_id'],
+			'pay_type'=> $orderRow['pay_type'],
+			'distribution'=>$orderRow['distribution'],
+			'status' => 2,
+			'pay_status' => 1,
+			'distribution_status' => 0,
+			'accept_name' => $orderRow['accept_name'],
+			'postcode'    => $orderRow['postcode'],
+			'telphone'    => $orderRow['telphone'],
+			'country'     => $orderRow['country'],
+			'province'    => $orderRow['province'],
+			'city'        => $orderRow['city'],
+			'area'        => $orderRow['area'],
+			'address'     => $orderRow['address'],
+			'mobile'      => $orderRow['mobile'],
+			'pay_time'    => $orderRow['pay_time'],
+			'create_time' => ITime::getDateTime(),
+			'exp'         => $goodsRow['exp']*$orderGoodsRow['goods_nums'],
+			'point'       => $goodsRow['point']*$orderGoodsRow['goods_nums'],
+			'type'        => $orderRow['type'],
+			'trade_no'    => $orderRow['trade_no'],
+			'takeself'    => $orderRow['takeself'],
+			'checkcode'   => $orderRow['checkcode'],
+			'active_id'   => $orderRow['active_id'],
+		);
+		$order_db->setData($new_order_data);
+		$new_order_id = $order_db->add();
 		
 		//新增order_good
 		$new_order_good = array(
-			'order_id'=>$order_id,
+			'order_id'=>$new_order_id,
 			'goods_id'=>$new_goods_id,
 			'product_id'=>$new_product_id,
 			'real_price'=>$orderGoodsRow['real_price'],
@@ -1342,29 +1370,26 @@ class Order_Class
 			'delivery_fee'=>$orderGoodsRow['delivery_fee'],
 			'save_price'=>$orderGoodsRow['save_price']
 		);
-		$goods_db = new IModel('products');
+		$product_db = new IModel('products');
 		if($new_product_id){//存在货品
-			$resData = $goods_db->getObj('id='.$new_product_id,'sell_price,spec_array,products_no as goods_no');
-			$goods_db ->changeTable('goods');
+			$resData = $product_db->getObj('id='.$new_product_id,'sell_price,spec_array,products_no as goods_no');
+		
 			$resData = array_merge($resData,$goods_db->getObj('id='.$new_goods_id,'name'));
 		}else {
-			$goods_db ->changeTable('goods');
 			$resData = $goods_db->getObj('id='.$new_goods_id,'name,sell_price,spec_array,goods_no');
 		}
-			$new_order_good['goods_price']=$resData['sell_price'];
-			$new_order_good['goods_array'] = self::order_goods_spec($resData);
+		$new_order_good['goods_price']=$resData['sell_price'];
+		$new_order_good['goods_array'] = self::order_goods_spec($resData);
+	
+		$orderGoodsDB->setData($new_order_good);
+		$new_goods_id = $orderGoodsDB->add();
 		
-			$orderGoodsDB->setData($new_order_good);
-			$new_goods_id = $orderGoodsDB->add();
-			
-			self::updateStore($new_goods_id,'reduce');
-	//	}
+		self::updateStore($new_goods_id,'reduce');
+
 		//获取原商品货号
 		if($refundsRow['product_id']!=0){
-			$goods_db->changeTable('products');
-			$old_good_no = $goods_db->getField('id='.$refundsRow['product_id'],'products_no');
+			$old_good_no = $product_db->getField('id='.$refundsRow['product_id'],'products_no');
 		}else{
-			$goods_db->changeTable('goods');
 			$old_good_no = $goods_db->getField('id='.$refundsRow['goods_id'],'goods_no');
 		}
 		

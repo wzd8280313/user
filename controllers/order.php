@@ -282,7 +282,61 @@ class Order extends IController
 		$this->redirect('refundment_list');
 	}
 
-
+	/**
+	 * 更新申请换货单
+	 */
+	public function refundment_chg_show_save(){
+		//获得post传来的退款单id值
+		$refundment_id = IFilter::act(IReq::get('id'),'int');
+		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
+		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
+		$status=IFilter::act(IReq::get('status'),'int');//原先的pay_status
+		
+		$type = 1;
+		$chg_goods_id = IFilter::act(IReq::get('goods_id'),'int');
+		$chg_product_id = IFilter::act(IReq::get('product_id'),'int');
+		
+		//获得refundment_doc对象
+		
+		$setData=array(
+				'pay_status'   => $pay_status,
+				'dispose_idea' => $dispose_idea,
+				'dispose_time' => ITime::getDateTime(),
+				'admin_id'     => $this->admin['admin_id'],
+		);
+		
+		if($refundment_id)
+		{
+			
+			$tb_refundment_doc = new IModel('refundment_doc');
+			
+			if($refund_data = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,pay_status,goods_id,product_id')){
+				$order_goods_db = new IModel('order_goods');
+				$order_goods_row = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
+		
+				if($pay_status==2){//换货类型且审核通过
+					if(!$chg_goods_id){
+						$chg_goods_id = $refund_data['goods_id'];
+						$chg_product_id = $refund_data['product_id'];
+					}
+					$chgRes = Order_Class::chg_goods($refundment_id,$chg_goods_id,$chg_product_id,$this->admin['admin_id']);
+					if(!$chgRes){
+						$this->redirect('refundment_chg_list');
+						return false;
+					}
+					$tb_refundment_doc->setData($setData);
+					$tb_refundment_doc->update('id='.$refundment_id);
+				}else{//审核不通过
+					$tb_refundment_doc->setData($setData);
+					$tb_refundment_doc->update('id='.$refundment_id);
+				}
+			}
+			$logObj = new log('db');
+			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了换货单",'修改的ID：'.$refundment_id));
+		}
+		 $this->redirect('refundment_chg_list');
+		
+	}
 	/**
 	 * @brief更新申请退款单
 	 */
@@ -294,7 +348,6 @@ class Order extends IController
 		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
 		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
 		$status=IFilter::act(IReq::get('status'),'int');//原先的pay_status
-		$delivery_add = IFilter::act(IReq::get('delivery_add'),'int');
 		
 		$type = IFilter::act(IReq::get('type'),'int');
 		$chg_goods_id = IFilter::act(IReq::get('goods_id'),'int');
@@ -302,14 +355,12 @@ class Order extends IController
 		
 		//获得refundment_doc对象
 		
-		$dispose_time_name = !$status ? 'dispose_time' : 'dispose_time2';
 		$setData=array(
 				'pay_status'   => $pay_status,
 				'dispose_idea' => $dispose_idea,
-				$dispose_time_name => ITime::getDateTime(),
+				'dispose_time' => ITime::getDateTime(),
 				'admin_id'     => $this->admin['admin_id'],
 		);
-		if($delivery_add)$setData['delivery_add']=$delivery_add;
 		
 		if($refundment_id)
 		{
