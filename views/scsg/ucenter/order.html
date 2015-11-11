@@ -72,59 +72,39 @@
                 <th>总金额</th>
                 <th>订单状态</th>
             </tr>
-            {set:$queryOrderList=$this->order_db}
+            {set:$queryOrderList=$this->order_db;$tem_order_id=-1;}
 			{foreach:items = $queryOrderList->find()}
+			
+			
+			{if:$item['id']!=$tem_order_id}
 			{set:$status=Order_Class::getOrderStatus($item);}
-		
+			{set:$tem_order_id = $item['id']}
+				<tr>
+					<td>
+						{if:$status==2}
+						<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
+						{/if}
+						{$item['create_time']}
+					</td>
+					<td>
+						订单号：<a href="{url:/ucenter/order_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
+					</td>
+					<td colspan="2">
+						总金额：{$item['order_amount']}
+					</td>
+					<td colspan="1">
+						订单状态：{echo:Order_Class::orderStatusText($status)}
+					</td>
+					<td colspan="1">
+						
+					</td>
+				</tr>
+			{/if}
             <tr>
 				
-                <td>	{$status}
-                	{if:$status==2}
-					<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
-					{/if}
-                	<a href="{url:/ucenter/order_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
-                </td>
-                <td>{$item['create_time']}</td>
-                <td>{$item['accept_name']}</td>
-                <td>{$this->payments[$item['pay_type']]['name']}</td>
-                <td>￥{echo:$item['order_amount']}</td>
-               
-				<td>
-					{if:$status==2}
-
-                	<a topay='{url:/block/dopay/order_id/$item["id"]}' money='{$item["order_amount"]}' href='javascript:void(0)' onclick='pay_confirm(this);' target=='blank' class='btn_gray btn_small' style='margin-bottom:5px;'>立即支付</a>
-					
-					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}" class='btn_gray btn_small'>取消订单</a>
-					{elseif:$status==1}
-					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
-					<a href="{url:/ucenter/order_status/op/cancel/order_id/$item['id']}"  class='btn_gray btn_small'>取消订单</a>
-					{elseif:in_array($status,array(4,8,9)) && $item['og_sum']>$item['refund_times']}
-					
-					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
-					{elseif:in_array($status,array(3,11,10,17))}
-					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
-					<a tourl="{url:/ucenter/order_status/op/confirm/order_id/$item['id']}" href='javascript:void(0)' class='btn_gray btn_small' style='margin-bottom:5px;' onclick='ok_confirm(this);'>确认收货</a>
-					
-					{elseif:$status==6 || $status==22}
-					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
-						{if:$item['comment_status']==1}
-						<b class="orange">已评价</b>
-						{else:}
-
-					
-						<a href="{url:/site/comments/id/$item['comment_id']}"  class='btn_gray btn_small'>评价</a>
-
-						
-						{/if}
-					
-					{else:}
-					<b class="orange">{echo:Order_Class::orderStatusText($status)}</b>
-					{/if}
-					<!--<img class="img_delt" src="{skin:images/front/ucenter/bin_closed.png}"/>-->
-					
-                </td>
-            {/foreach}
+            
             </tr>
+			{/foreach}
             <tfoot><tr><td colspan="6" class="t_l">{$this->order_db->getPageBar()}</td></tr></tfoot>
         </table>
     </div>

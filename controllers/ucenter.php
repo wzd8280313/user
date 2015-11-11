@@ -155,12 +155,12 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on g.id=og.goods_id   left join comment as c on c.order_id=o.id  left join refundment_doc as r on r.order_id=o.id  and g.id = r.goods_id and r.pay_status in (0,3,4,7)';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id ';
 		$order_db->group = 'o.id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,count(og.id ) as og_sum,c.status as comment_status,c.id as comment_id,count(r.id) as refund_times,r.id as rid';
+		$order_db->fields = 'o.*,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
 		$this->order_db = $order_db;
 		//print_r($order_db->find());
         $this->initPayment();
