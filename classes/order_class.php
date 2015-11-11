@@ -1322,9 +1322,16 @@ class Order_Class
 		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
 		$order_goods_id = $orderGoodsRow['id'];
+		
+		//原订单中没有未退货的订单那，状态改为作废
+		if(!$orderGoodsDB->getObj('order_id='.$order_id.' and is_send !=2 and id !='.$order_goods_id)){
+			$order_db->setData(array('status'=>4));
+			$order_db->update('id='.$order_id);
+		}
 		//原商品更新为退款状态
-		$orderGoodsDB->setData(array('is_send' => 12));
+		$orderGoodsDB->setData(array('is_send' => 2,'refunds_status'=>12));
 		$orderGoodsDB->update('id = '.$order_goods_id);
+		
 		
 		//生成新订单
 		$orderRow = $order_db->getObj('id='.$order_id);
@@ -1368,7 +1375,8 @@ class Order_Class
 			'goods_nums'=>$orderGoodsRow['goods_nums'],
 			'goods_weight'=>$orderGoodsRow['goods_weight'],
 			'delivery_fee'=>$orderGoodsRow['delivery_fee'],
-			'save_price'=>$orderGoodsRow['save_price']
+			'save_price'=>$orderGoodsRow['save_price'],
+			'img'       => $orderGoodsRow['img']
 		);
 		$product_db = new IModel('products');
 		if($new_product_id){//存在货品
@@ -1560,9 +1568,57 @@ class Order_Class
 			return false;
 		}
 		$order_db->setData($setData);
+		
 		$order_db->update('id='.$goodsOrderRow['order_id']);
 		
 	}
-
+	
+	/**
+	 * 退货更改订单状态，按照同一订单中退货单状态最低的计算
+	 * @param int $refund_id 退款单 id
+	 * @param int $pay_status 要更新为的退款单状态
+	 */
+	public function get_order_status_refunds($refund_id,$pay_status){
+		$status_arr = array(
+			'0' => 9,
+			'4' => 1,
+			'7' => 2,
+			'2' => 3,
+		);
+		$refund_db = new IModel('refundment_doc');
+		$refund_data = $refund_db->getObj('id='.$refund_id,'order_id,goods_id,product_id');
+		if(!$refund_data)return false;
+		$order_goods_db = new IModel('order_goods');
+		$order_goods_data = $order_goods_db->query('order_id='.$refund_data['order_id'].' and is_send!=2');
+		
+		//找到退款状态最慢的状态，退款拒绝的除外
+		$low_pay_status = 0;
+		foreach($order_goods_data as $key=>$val){
+			if($val['goods_id']==$refund_data['goods_id'] && $val['product_id']==$refund_data['product_id']){
+				$order_goods_row = $order_goods_data[$key];
+				continue;
+			}
+			if(in_array($val['refunds_status'],array(3,7)))
+			{
+				if($status_arr[4]<$status_arr[$low_pay_status])$low_pay_status = 4;
+				continue;
+			}else if(in_array($val['refunds_status'],array(4,8)))
+			{
+				if($status_arr[7]<$status_arr[$low_pay_status])$low_pay_status = 7;
+				continue;
+			}
+			else if(in_array($val['refunds_status'],array(6,10)))
+			{
+				if($status_arr[2]<$status_arr[$low_pay_status])$low_pay_status = 2;
+				continue;
+			}
+				
+		}
+		if($status_arr[$low_pay_status] > $status_arr[$pay_status])
+			$low_pay_status = $pay_status;
+		
+		self::order_status_refunds($low_pay_status,$order_goods_row);
+		
+	}
 	
 }

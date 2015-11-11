@@ -60,11 +60,6 @@
 						<th>退货快递单：</th><td align="left">{$delivery_com} | {$delivery_code}</td>
 					</tr>
 				{/if}
-				{if:$delivery_img}
-					<tr>
-						<th>商品图片：</th><td align="left"><img src='{url:$delivery_img}' height='200px;'/></td>
-					</tr>
-				{/if}
 				{if:$dispose_time2!=NULL}
 					{set:$h=$pay_status==5?'驳回':'核准'}
 					<tr>

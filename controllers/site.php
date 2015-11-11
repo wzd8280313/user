@@ -1124,12 +1124,7 @@ class Site extends IController
 
 
 	function ce(){
-		$order_id = 721;
-	$refundsDB = new IModel('refundment_doc');
-				
-					$where = 'order_id = 722 and goods_id = 22 and product_id = 75 and if_del = 0　and (type=0 OR type=1 and pay_status in(0,3,4,7))' ;
-				$data = $refundsDB->getObj($where);
-				print_r($data);	
+		echo 0 || 0 || 98;
   
 	}
 	

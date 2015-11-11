@@ -475,11 +475,11 @@ class Ucenter extends IController
         	{
         		//更新order_goods表is_send状态
         		if($goodsOrderRow['is_send']==1 && $type==1){
-        			$setData['is_send'] = 11;
+        			$setData['refunds_status'] = 11;
         		}else if($goodsOrderRow['is_send']==1 && $type==0){
-        			$setData['is_send'] = 7;
+        			$setData['refunds_status'] = 7;
         		}else if($goodsOrderRow['is_send']==0 && $type==0){
-        			$setData['is_send'] = 3;
+        			$setData['refunds_status'] = 3;
         		}
         		else{
         			$message = '未发货不能换货申请';
