@@ -1006,7 +1006,7 @@ class Order_Class
 	public static function getSearchCondition($search=false)
 	{
 		$join  = "left join delivery as d on o.distribution = d.id left join payment as p on o.pay_type = p.id left join user as u on u.id = o.user_id";
-		$where = "if_del = 0";
+		$where = "o.if_del = 0";
 		//查询检索过滤
 		if($search)
 		{

@@ -870,14 +870,15 @@ class Order extends IController
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
+		$join .= ' left join refundment_doc as r on r.order_id=o.id and (r.pay_status in (0,3,4,7) OR r.pay_status in (2,5,6))';
 		//拼接sql
 		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
-		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
+		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name,r.id as refundment_id,IF(r.pay_status in (0,3,4,7),0,1) as refundment_status ";
 		$orderHandle->page   = $page;
-		$orderHandle->where  = $where.' and o.type !=4';
+		$orderHandle->where  = $where.' and o.type !=4 ';
 		$orderHandle->join   = $join;
-
+		$orderHandle->group = 'o.id';
 		$this->search      = $search;
 		$this->orderHandle = $orderHandle;
 

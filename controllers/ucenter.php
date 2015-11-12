@@ -161,7 +161,7 @@ class Ucenter extends IController
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,IF(TIMESTAMPDIFF(second,o.completion_time,NOW())<'.$chg_time.',1,0) as can_chg,c.status as comment_status,og.img,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
+		$order_db->fields = 'o.*,IF(o.status=5 && TIMESTAMPDIFF(second,o.completion_time,NOW())<'.$chg_time.',1,0) as can_chg,c.status as comment_status,og.id as og_id,og.img,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
 		$this->order_db = $order_db;
 		//print_r($order_db->find());
         $this->initPayment();
@@ -447,7 +447,6 @@ class Ucenter extends IController
     public function refunds_update()
     {
         $order_goods_id = IFilter::act( IReq::get('order_goods_id'),'int' );
-        $order_id       = IFilter::act( IReq::get('order_id'),'int' );
         $user_id        = $this->user['user_id'];
         $type           = IFilter::act(IReq::get('type'),'int');
         $content        = IFilter::act(IReq::get('content'),'text');
@@ -463,18 +462,29 @@ class Ucenter extends IController
 
         $orderDB = new IModel('order');
         $goodsOrderDB = new IModel('order_goods');
-        $orderRow = $orderDB->getObj("id = ".$order_id." and user_id = ".$user_id);
+        
+        $goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id);
+        $orderRow = array();
+        if($goodsOrderRow){
+        	$order_id = $goodsOrderRow['order_id'];
+        	$orderRow = $orderDB->getObj("id = ".$order_id." and user_id = ".$user_id);
+        }
+       
 
         //判断订单是否付款（已付款且非退款）
-        if($orderRow && Order_Class::isRefundmentApply($orderRow))
+        
+        if($orderRow )
         {
-        	
-        	$goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id.' and order_id = '.$order_id);
-        	
-        	//判断商品是否已经退货
-        	if($goodsOrderRow && in_array($goodsOrderRow['is_send'],array(0,1)))
-        	{
-        		
+        		if($type==0){//判断是否可退货
+        			if(!Refunds_Class::order_goods_refunds(array_merge($orderRow,$goodsOrderRow))){
+        				IError::show(403,'该商品不可退款');
+        			}
+        		}
+        		else if($type==1){//判断是否可换货
+        			if(!Refunds_Class::order_goods_chg(array_merge($orderRow,$goodsOrderRow))){
+        				IError::show(403,'该商品不可更换');
+        			}
+        		}
         		//退款单数据
         		$refundsDB = new IModel('refundment_doc');
         		$updateData = array(
@@ -523,18 +533,13 @@ class Ucenter extends IController
         		Order_Class::ordergoods_status_refunds(0,$goodsOrderRow,$type);
         		$this->redirect('order');
         		exit;
-        	}
-        	else
-        	{
-        		$message = '此商品已经做了退换货处理，请耐心等待';
-        		IError::show(403,$message);
-        	}
+        	
         }
         else
         {
-        	$message = '订单未付款';
+        	$message = '订单不存在';
         }
-
+        
         $this->redirect('order');
     }
     /**
@@ -602,13 +607,20 @@ class Ucenter extends IController
      */
 	public function refunds_edit()
 	{
-		$order_id = IFilter::act(IReq::get('order_id'),'int');
-		if($order_id)
+		$order_goods_id = IFilter::act(IReq::get('og_id'),'int');
+		if($order_goods_id)
 		{
-			$orderDB  = new IModel('order');
-			$orderRow = $orderDB->getObj('id = '.$order_id.' and user_id = '.$this->user['user_id']);
+			
+			$orderDB  = new IQuery('order_goods as og');
+			$orderDB->join = 'left join order as o on og.order_id=o.id ';
+			$orderDB->where = 'og.id='.$order_goods_id.' and o.user_id='.$this->user['user_id'];
+			$orderDB->fields = 'o.order_no,o.status,o.completion_time,og.img,og.refunds_status,og.is_send,og.goods_nums,og.goods_id,og.goods_array,og.id as og_id';
+			$orderRow = $orderDB->getObj();
 			if($orderRow)
 			{
+				$orderRow['can_refunds'] = Refunds_Class::order_goods_refunds($orderRow);
+				$orderRow['can_chg'] = Refunds_Class::order_goods_chg($orderRow);
+				if(!$orderRow['can_refunds'] && !$orderRow['can_chg'])$this->redirect('refunds');
 				$this->orderRow = $orderRow;
 				$this->redirect('refunds_edit');
 				exit;
