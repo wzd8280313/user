@@ -114,6 +114,13 @@
 						<a href="{url:/order/order_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
 						{/if}
 						<a href="javascript:void(0)" onclick="delModel({link:'{url:/order/order_del/id/$item[id]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" title="删除"/></a>
+						{if:$item['refundment_id']}
+						{if:$item['refundment_status']}
+						<a href='{url:/order/order_show/id/$item[id]}?refunds' class='blue'>退换货完成</a>
+						{else:}
+						<a href='{url:/order/order_show/id/$item[id]}?refunds' class='red'>退换货处理</a>
+						{/if}
+						{/if}
 					</td>
 				</tr>
 				{/foreach}

@@ -728,6 +728,7 @@ class Simple extends IController
 			$goodsdata = $_POST;
 			$checked = IFilter::act(IReq::get('sub'));
 			$cartData = array();
+			if(empty($checked))$this->redirect('cart');
 			foreach($checked as $key=>$val){//转换成购物车的数据结构
 				$tem = explode('-',$val);
 				$cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
@@ -2011,7 +2012,7 @@ class Simple extends IController
 			IError::show(403,"订单不存在");
 		}
 		$config = new Config('site_config');
-		$cancle_days = $config->order_cancel_time;
+		$cancle_days = isset($config->order_cancel_time) ? $config->order_cancel_time : 3;
 		$this->end_time = strtotime($order_data['create_time']) + $cancle_days*24*3600;
 		$this->order_id = $order_id;
 	

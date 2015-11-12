@@ -29,6 +29,7 @@
 					<th class="t_c">选择</th>
 					<th></th>
 					<th>订单号</th>
+					<th>退货单号</th>
 					<th>金额</th>
 					<th>用户名</th>
 					<th>状态</th>
@@ -52,6 +53,7 @@
 				<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 				<td><a href="{url:/order/refundment_doc_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>
 				<td>{$item['order_no']}</td>
+				<td>{$item['refunds_no']}</td>
 				<td>{$item['amount']}</td>
 				<td>{echo:$item['username']=='' ? '游客' : $item['username']}</td>
 				<td>{echo:Order_Class::refundmentText($item['pay_status'],$item['type'])}</td>

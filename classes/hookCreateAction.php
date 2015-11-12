@@ -92,7 +92,7 @@ class hookCreateAction extends IInterceptorBase
 	public static function ucenter_order()
 	{
 		$siteConfig = new Config('site_config');
-		$order_cancel_time = isset($siteConfig->order_cancel_time) ? intval($siteConfig['order_cancel_time']) : 7;
+		$order_cancel_time = isset($siteConfig->order_cancel_time) ? intval($siteConfig['order_cancel_time']) : 3;
 		$order_finish_time = isset($siteConfig->order_finish_time) ? intval($siteConfig['order_finish_time']) : 20;
 
 		$refunds_limit_time=isset($siteConfig->refunds_limit_time) ? intval($siteConfig['refunds_limit_time']) : 7;
@@ -176,7 +176,7 @@ class hookCreateAction extends IInterceptorBase
 	public static function ucenter_preorder(){
 		$siteConfig = new Config('site_config');
 		//获取订单取消，完成天数
-		$order_cancel_time = isset($siteConfig->preorder_cancel_days) ? intval($siteConfig['preorder_cancel_days']) : 7;
+		$order_cancel_time = isset($siteConfig->order_cancel_time) ? intval($siteConfig['order_cancel_time']) : 3;
 		$order_finish_time = isset($siteConfig->preorder_finish_days) ? intval($siteConfig['preorder_finish_days']) : 20;
 		$order_cancel_second = $order_cancel_time*24*3600;//天数换成秒数
 		$order_finish_second = $order_finish_time*24*3600;
@@ -186,8 +186,16 @@ class hookCreateAction extends IInterceptorBase
 		$orderCancelData  = $order_cancel_time > 0 ? $orderModel->query(" if_del = 0 and type=4 and status in(1) and TIMESTAMPDIFF(second,create_time,NOW()) >= {$order_cancel_second} ","id,order_no,2 as type_data") : array();
 		$orderCreateData  = $order_finish_time > 0 ? $orderModel->query(" if_del = 0 and type=4 and status in(9) and TIMESTAMPDIFF(second,send_time,NOW()) >= {$order_finish_second} ","id,order_no,11 as type_data") : array();
 			
-		//超期未支付尾款订单
 		$order_db = new IQuery('order as o');
+		//超期未支付预付款
+		$order_db->join = 'left join presell as p on o.active_id = p.id';
+		$where  = 'o.type=4 and o.if_del = 0 and o.status=1 ';
+		$where .= ' and TIMESTAMPDIFF(second,p.yu_end_time,NOW()) >0';
+		$order_db->where = $where;
+		$order_db->fields = 'o.id,o.order_no,2 as type_data';
+		$orderCancelDatayu = $order_db->find();
+		
+		//超期未支付尾款订单
 		$order_db->join = 'left join presell as p on o.active_id = p.id';
 		$where  = 'o.type=4 and o.if_del = 0 and o.status=4 and p.money_rate!=100 ';
 		$where .= ' and (p.wei_type = 0 and TIMESTAMPDIFF(second,o.pay_time,NOW()) >= p.wei_days*24*3600 OR ';
@@ -205,7 +213,7 @@ class hookCreateAction extends IInterceptorBase
 		$order_db->where = $where;
 		$order_db->fields = 'o.id,o.order_no,o.pre_amount,o.user_id,og.id as order_goods_id,5 as type_data';
 		$orderCancelDataSure = $order_db->find();
-		$resultData = array_merge($orderCreateData,$orderCancelData,$orderCancelDataWei,$orderCancelDataSure);
+		$resultData = array_merge($orderCreateData,$orderCancelData,$orderCancelDatayu,$orderCancelDataWei,$orderCancelDataSure);
 		
 		if($resultData)
 		{

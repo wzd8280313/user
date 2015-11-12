@@ -6,7 +6,8 @@
 
 	<div class="box">
 		<form action="{url:/ucenter/refunds_update}" method="post" callback="checkForm();" enctype='multipart/form-data'>
-			<input type="hidden" name="order_id" value="{$this->orderRow['id']}" />
+			<input type="hidden" name="order_goods_id" value="{$this->orderRow['og_id']}"  class="radio" />
+
 			<table class="border_table" width="100%" cellpadding="0" cellspacing="0">
 				<colgroup>
 					<col width="140px" />
@@ -20,8 +21,12 @@
 					<th>类型：</th>
 					<td><p>
 							<label>
+								{if:$this->orderRow['can_refunds']}
 								<input type="radio" name="type"  class="radio" value="0" checked/>退货
-								<input type="radio" name="type"  class="radio" value="1" />换货
+								{/if}
+								{if:$this->orderRow['can_chg']}
+								<input type="radio" name="type"  class="radio" value="1" checked/>换货
+								{/if}
 							</label>
 						</p>
 					</td>
@@ -29,31 +34,26 @@
 				<tr>
 					<th>退换货商品：</th>
 					<td>
-						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good}
-					
-						{set:$good_info = JSON::decode($good['goods_array'])}
-						{if:$good['is_send'] != 2 && !$good['refund_time'] }
+						
+						{set:$good_info = JSON::decode($this->orderRow['goods_array'])}
 						<p>
 							<label>
-
-								<input type="radio" name="order_goods_id" value="{$good['id']}"  class="radio" is_send='{$good["is_send"]}'/>
-
-								<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</a>
+								<a class="blue" href="{url:/site/products/id/$this->orderRow['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$this->orderRow['goods_nums']}件</a>
 							</label>
 						</p>
-						{/if}
-						{/foreach}
 					</td>
 				</tr>
+				{if:$this->orderRow['is_send']==1}
 				 <tr name='delivery'>
 		            <th>快递公司：</th><td><input name="delivery_com" type="text"   class="normal" /><label >* </label></td>
 		        </tr>
 		        <tr name='delivery'>
 		            <th>快递单号：</th><td><input name='delivery_code'  class="normal"/><label>*</label></td>
 		        </tr>
-				<tr name='delivery'>
+				{/if}
+				<!--<tr name='delivery'>
 		            <th>上传图片：</th><td><input type='file' name='delivery_img' /></td>
-		        </tr>
+		        </tr>-->
 				<tr>
 					<th>退换货理由：</th>
 					<td>
@@ -93,28 +93,7 @@ function checkForm()
 		return false;
 	}
 
-	if($('[name="order_goods_id"]:checked').length == 0)
-	{
-		alert('请选择要退换货的商品');
-		return false;
-	}
 	return true;
 }
-$(function(){
-	$('input[type=radio][name=order_goods_id]').on('click',function(){
-		var is_send = $(this).attr('is_send');
-		if(is_send==0){
-			$('input[type=radio][name=type][value=0]').attr('checked',true);
-			$('input[type=radio][name=type][value=1]').attr('disabled',true);
-			$('tr[name=delivery]').hide();
-		}
-		else{
-			$('tr[name=delivery]').show();
-			$('input[type=radio][name=type][value=1]').attr('disabled',false);
-		}
-	})
-})
-$(function(){
-	$('input[type=radio][name=order_goods_id]').eq(0).trigger('click');
-})
+
 </script>

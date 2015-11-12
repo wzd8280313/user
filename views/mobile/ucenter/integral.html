@@ -36,7 +36,7 @@
 <script type='text/html' id='jifen_box'>
 	<li>
 	     <font>
-	         <p><a href="{url:/site/detail}"><%=intro%></a></p>
+	         <p><a href="{url:/site/detail}"><%==intro%></a></p>
 		</font>                       
 	      <h5><p><%=value%></p><p><a><%=datetime%></a></p></h5>
 	 </li>
@@ -62,11 +62,13 @@ var obj = {
 	'append_to': $('#con ul'),
 	'loading_img': '{skin:images/files/loading.gif}',
 	'trans_data': {type:type},
+	'callback' : function(){
+		$('#con a').attr('href','javascript:void(0)');
+	}
 };
 
 var ajax = new Ajax_Get_Data();
 ajax.init(obj);
-
 
 
 </script>

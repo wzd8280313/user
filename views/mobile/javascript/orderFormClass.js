@@ -93,53 +93,59 @@ function orderFormClass()
 	}
 	//获取运费
 	this.get_delivery  = function ()
-	{
+	{alt();
 		this.deliveryPrice = 0;
 		var url = this.delivery_fee_url;
-		var province = $('input[name="province"]').val();
-		var delivery = $('select[name=delivery_id]').val();
-		if(!province || !delivery )
+		var area     = $('[name=area]').val();
+	
+		var delivery = $('[name="delivery_id"]:checked').val();
+		if(!area || !delivery)
 		{
 			return;
 		}
 		var _this=this;
-		$('[id^="deliveryFeeBox_"]').each(function(i)
-		{
-			var idValue = $(this).attr('id');
-			var dataArray = idValue.split("_");
-			$.getJSON(url,{"province":province,"distribution":delivery,"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},function(content){
-			
-				//地区无法送达
-				if(content.if_delivery == 1)
-				{
-					alert('您选择地区部分商品无法送达');
-					$('#'+idValue).html("<span style='color:red'>无法送达</span>");
-				}
-				else
-				{
-					//免运费
-					if(_this.freeFreight == 1)
-					{
-						var html = "活动免运费";
-						content.price = 0;
-						_this.doAccount();
+		$('span[id^=deliveryfee_]').each(function(){
+			var _this = $(this);
+					if(_this.freeFreight == 1){
+						$(_this).text('免运费');
+						_this.deliveryPrice = 0;
 					}
-					else
-					{
-						var html = "￥"+content.price;
-						_this.deliveryPrice += parseFloat(content.price);
-						_this.doAccount();
+					else{
+						var idValue = $(this).attr('id');
+						var dataArray = idValue.split("_");
+						$.ajax({
+							type:'post',
+							async:false,
+							data:{"area":area,"distribution":delivery,"weight":dataArray[2],"seller_id":dataArray[1],"total_price":dataArray[3]},
+							dataType:'json',
+							url:_this.delivery_fee_url,
+							
+							success:function(content)
+							{
+								//地区无法送达
+								if(content.if_delivery == 1)
+								{
+									alert('您选择地区部分商品无法送达');
+									$('#'+idValue).html("<span style='color:red'>无法送达</span>");
+								}
+								else
+								{
+									_this.deliveryPrice += parseFloat(content.price);
+									var html = "￥"+parseFloat(content.price).toFixed(2);
+									//允许保价
+									if(content.protect_price > 0)
+									{
+										html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+									}
+									_this.text(html);
+								}
+							},
+							timeout:1000,
+						})
 					}
-	
-					//允许保价
-					if(content.protect_price > 0)
-					{
-						html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"_"+dataArray[2]+"]' onchange='selectProtect(this);' />保价</label>";
-					}
-					$('#'+idValue).html(html);
-				}
-			});
-		});
+					
+		})
+		this.doAccount();
 	}
 
 	

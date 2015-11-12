@@ -5,7 +5,6 @@
 <div class="content">
 	<form method="post" action="{url:/order/refundment_doc_show_save}">
 		<input type="hidden" name="id" value="{$id}"/>
-		<input type="hidden" name="type" value="{$type}"/>
 		<table class="border_table" width="100%" style="margin:10px auto">
 			<colgroup>
 				<col width="200px" />
@@ -58,11 +57,6 @@
 				{if:$delivery_code && $delivery_com}
 					<tr>
 						<th>退货快递单：</th><td align="left">{$delivery_com} | {$delivery_code}</td>
-					</tr>
-				{/if}
-				{if:$delivery_img}
-					<tr>
-						<th>商品图片：</th><td align="left"><img src='{url:$delivery_img}' height='200px;'/></td>
 					</tr>
 				{/if}
 				{if:$dispose_time2!=NULL}

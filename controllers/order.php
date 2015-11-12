@@ -282,45 +282,39 @@ class Order extends IController
 		$this->redirect('refundment_list');
 	}
 
-
 	/**
-	 * @brief更新申请退款单
+	 * 更新申请换货单
 	 */
-	public function refundment_doc_show_save()
-	{
-		
+	public function refundment_chg_show_save(){
 		//获得post传来的退款单id值
 		$refundment_id = IFilter::act(IReq::get('id'),'int');
 		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
 		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
 		$status=IFilter::act(IReq::get('status'),'int');//原先的pay_status
-		$delivery_add = IFilter::act(IReq::get('delivery_add'),'int');
 		
-		$type = IFilter::act(IReq::get('type'),'int');
+		$type = 1;
 		$chg_goods_id = IFilter::act(IReq::get('goods_id'),'int');
 		$chg_product_id = IFilter::act(IReq::get('product_id'),'int');
 		
 		//获得refundment_doc对象
 		
-		$dispose_time_name = !$status ? 'dispose_time' : 'dispose_time2';
 		$setData=array(
 				'pay_status'   => $pay_status,
 				'dispose_idea' => $dispose_idea,
-				$dispose_time_name => ITime::getDateTime(),
+				'dispose_time' => ITime::getDateTime(),
 				'admin_id'     => $this->admin['admin_id'],
 		);
-		if($delivery_add)$setData['delivery_add']=$delivery_add;
 		
 		if($refundment_id)
 		{
+			
 			$tb_refundment_doc = new IModel('refundment_doc');
-			$tb_refundment_doc->setData($setData);
-			$tb_refundment_doc->update('id='.$refundment_id);
+			
 			if($refund_data = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,pay_status,goods_id,product_id')){
 				$order_goods_db = new IModel('order_goods');
 				$order_goods_row = $order_goods_db->getObj('order_id='.$refund_data['order_id'].' and goods_id='.$refund_data['goods_id'].' and product_id='.$refund_data['product_id']);
-				
-				if($type==1&&$pay_status==7){//换货类型且审核通过
+		
+				if($pay_status==2){//换货类型且审核通过
 					if(!$chg_goods_id){
 						$chg_goods_id = $refund_data['goods_id'];
 						$chg_product_id = $refund_data['product_id'];
@@ -330,17 +324,53 @@ class Order extends IController
 						$this->redirect('refundment_chg_list');
 						return false;
 					}
+					$tb_refundment_doc->setData($setData);
+					$tb_refundment_doc->update('id='.$refundment_id);
+				}else{//审核不通过
+					$tb_refundment_doc->setData($setData);
+					$tb_refundment_doc->update('id='.$refundment_id);
 				}
-			//	Order_Class::order_status_refunds($pay_status,$order_goods_row,$type);
 			}
-			
-			
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了换货单",'修改的ID：'.$refundment_id));
 		}
-		if($type==0){
-			$this->redirect('refundment_list');
-		}else $this->redirect('refundment_chg_list');
+		 $this->redirect('refundment_chg_list');
+		
+	}
+	/**
+	 * @brief更新申请退款单
+	 */
+	public function refundment_doc_show_save()
+	{
+		//获得post传来的退款单id值
+		$refundment_id = IFilter::act(IReq::get('id'),'int');
+		$pay_status = IFilter::act(IReq::get('pay_status'),'int');
+		$dispose_idea = IFilter::act(IReq::get('dispose_idea'),'text');
+		$status=IFilter::act(IReq::get('status'),'int');//原先的pay_status
+		$order_goods_db = new IModel('order_goods');
+		$type = 0;
+		$setData=array(
+				'pay_status'   => $pay_status,
+				'dispose_idea' => $dispose_idea,
+				'dispose_time' => ITime::getDateTime(),
+				'admin_id'     => $this->admin['admin_id'],
+		);
+		
+		if($refundment_id)
+		{
+			$tb_refundment_doc = new IModel('refundment_doc');
+			
+			$tb_refundment_doc->setData($setData);
+			$tb_refundment_doc->update('id='.$refundment_id);
+			
+			$refundment_row = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,goods_id,product_id');
+			$goodsOrderRow = $order_goods_db->getObj('order_id='.$refundment_row['order_id'].' and goods_id='.$refundment_row['goods_id'].' and product_id ='.$refundment_row['product_id'],'is_send,id');
+			Order_Class::get_order_status_refunds($refundment_id,$pay_status);
+			Order_Class::ordergoods_status_refunds($pay_status,$goodsOrderRow,$type);
+			$logObj = new log('db');
+			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"修改了退货单",'修改的ID：'.$refundment_id));
+		}
+		$this->redirect('refundment_list');
 		
 	}
 	/**
@@ -516,12 +546,10 @@ class Order extends IController
 			if($orderGoodsRow['is_send']==1){
 				//增加用户评论商品机会
 				Order_Class::addGoodsCommentChange($order_id);
-					
-				//经验值、积分、代金券发放
+				
 			}
-		//	Order_Class::sendGift($order_id,$user_id);
-			//Order_Class::order_status_refunds(2,$orderGoodsRow);
-			
+			Order_Class::get_order_status_refunds($refunds_id,2);
+			Order_Class::ordergoods_status_refunds(2,$orderGoodsRow,0);
 		if($result)
 		{
 			
@@ -842,14 +870,15 @@ class Order extends IController
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
+		$join .= ' left join refundment_doc as r on r.order_id=o.id and (r.pay_status in (0,3,4,7) OR r.pay_status in (2,5,6))';
 		//拼接sql
 		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
-		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
+		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name,r.id as refundment_id,IF(r.pay_status in (0,3,4,7),0,1) as refundment_status ";
 		$orderHandle->page   = $page;
-		$orderHandle->where  = $where.' and o.type !=4';
+		$orderHandle->where  = $where.' and o.type !=4 ';
 		$orderHandle->join   = $join;
-
+		$orderHandle->group = 'o.id';
 		$this->search      = $search;
 		$this->orderHandle = $orderHandle;
 

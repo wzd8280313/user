@@ -23,12 +23,12 @@ class Ucenter extends IController
     	$where = "o.user_id =".$userid." and if_del= 0 and o.type !=4 ";
     	
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join order_goods as og on o.id=og.order_id  left join comment as c on c.order_id=o.id';
+    	$order_db->join = 'left join order_goods as og on o.id=og.order_id ';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->limit  = 6;
     	$order_db->order = 'o.id DESC';
-    	$order_db->fields = 'o.*,c.status as comment_status,c.id as comment_id';
+    	$order_db->fields = 'o.*';
     	$this->order_db = $order_db;
         $this->initPayment();
         $this->redirect('index');
@@ -85,6 +85,7 @@ class Ucenter extends IController
      */
     public function order()
     {
+    	$chg_time = 7*24*3600;//完成订单后换货期限
     	$userid = $this->user['user_id'];
     	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
     	$status_array = array(
@@ -155,12 +156,12 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on g.id=og.goods_id   left join comment as c on c.order_id=o.id  left join refundment_doc as r on r.order_id=o.id  and g.id = r.goods_id and r.pay_status in (0,3,4,7)';
-		$order_db->group = 'o.id';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join comment as c on og.comment_id=c.id';
+		$order_db->group = 'og.id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
 		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,count(og.id ) as og_sum,c.status as comment_status,c.id as comment_id,count(r.id) as refund_times,r.id as rid';
+		$order_db->fields = 'o.*,IF(o.status=5 && TIMESTAMPDIFF(second,o.completion_time,NOW())<'.$chg_time.',1,0) as can_chg,c.status as comment_status,og.id as og_id,og.img,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
 		$this->order_db = $order_db;
 		//print_r($order_db->find());
         $this->initPayment();
@@ -210,25 +211,25 @@ class Ucenter extends IController
         	IError::show(403,'订单信息不存在');
         }
         
+        //获取商品列表信息
+        //$order_goods_db = new IModel('order_goods');
+        //$order_goods_db->query('order_id='.$id,'id,is_send,refunds_status');
+        
+        //获取退货信息
         $siteConfig = new Config('site_config');
         $refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
         	
         $refunds_seller_second = $refunds_seller_time*24*3600;
         $tb_refundment = new IQuery('refundment_doc as r');
-        $tb_refundment->join = 'left join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id';
-        $tb_refundment->where = 'r.if_del=0 and r.order_id='.$id;
+        $tb_refundment->join = 'right join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.if_del=0 left join goods as g on og.goods_id=g.id';
+        $tb_refundment->where = 'og.order_id='.$id;
         $tb_refundment->order = 'r.id DESC';
         $tb_refundment->group = 'r.id';
-        $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
-        $this->refund_data = $tb_refundment->find();
+        $tb_refundment->fields = 'r.*,g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
+        $this->og_data = $tb_refundment->find();
+      //  print_r($this->refund_data);
         
-        $order_db = new IModel('order_goods');
-        $order_data = $order_db->getObj('order_id='.$id,'count(*) as num');
-      	$order_goods_num = $order_data['num'];
-      	 $refundment_db = new IModel('refundment_doc');
-      	 $refund_num = $refundment_db->getObj('order_id='.$id.' and pay_status in (0,3,4,7)','count(*) as refund_num');
-      	 $refund_num = $refund_num['refund_num'];
-      	 $this->show_refund = $refund_num - $order_goods_num < 0 ? 1 : 0;
+        
         $this->redirect('order_detail',false);
     }
 	
@@ -446,7 +447,6 @@ class Ucenter extends IController
     public function refunds_update()
     {
         $order_goods_id = IFilter::act( IReq::get('order_goods_id'),'int' );
-        $order_id       = IFilter::act( IReq::get('order_id'),'int' );
         $user_id        = $this->user['user_id'];
         $type           = IFilter::act(IReq::get('type'),'int');
         $content        = IFilter::act(IReq::get('content'),'text');
@@ -462,36 +462,37 @@ class Ucenter extends IController
 
         $orderDB = new IModel('order');
         $goodsOrderDB = new IModel('order_goods');
-        $orderRow = $orderDB->getObj("id = ".$order_id." and user_id = ".$user_id);
+        
+        $goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id);
+        $orderRow = array();
+        if($goodsOrderRow){
+        	$order_id = $goodsOrderRow['order_id'];
+        	$orderRow = $orderDB->getObj("id = ".$order_id." and user_id = ".$user_id);
+        }
+       
 
         //判断订单是否付款（已付款且非退款）
-        if($orderRow && Order_Class::isRefundmentApply($orderRow))
-        {
-        	
-        	$goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id.' and order_id = '.$order_id);
-        	//更改订单状态
-        	//Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
-        	
-        	//判断商品是否已经退货
-        	if($goodsOrderRow && $goodsOrderRow['is_send'] != 2)
-        	{
-        		$refundsDB = new IModel('refundment_doc');
-				
-// 					$where = 'order_id = '.$order_id.' and goods_id = '.$goodsOrderRow['goods_id'].' and product_id = '.$goodsOrderRow['product_id'].' and if_del = 0　and  (type=0 OR type=1 and pay_status in(0,3,4,7))';
-					
-//         			if($refundsDB->getObj($where)){
-//         				$message = '请不要重复提交申请';
-//         				IError::show(403,$message);
-//         			}
         
-        		
+        if($orderRow )
+        {
+        		if($type==0){//判断是否可退货
+        			if(!Refunds_Class::order_goods_refunds(array_merge($orderRow,$goodsOrderRow))){
+        				IError::show(403,'该商品不可退款');
+        			}
+        		}
+        		else if($type==1){//判断是否可换货
+        			if(!Refunds_Class::order_goods_chg(array_merge($orderRow,$goodsOrderRow))){
+        				IError::show(403,'该商品不可更换');
+        			}
+        		}
         		//退款单数据
+        		$refundsDB = new IModel('refundment_doc');
         		$updateData = array(
 					'order_no' => $orderRow['order_no'],
+        			'refunds_no' => Order_Class::createOrderNum(),
 					'order_id' => $order_id,
 					'user_id'  => $user_id,
         			'type'     => $type,
-					'amount'   => Order_Class::get_refund_fee($orderRow,$goodsOrderRow),
 					'time'     => ITime::getDateTime(),
 					'content'  => $content,
 					'goods_id' => $goodsOrderRow['goods_id'],
@@ -499,23 +500,19 @@ class Ucenter extends IController
         			'delivery_com'=> $delivery_com,
         			'delivery_code'=>$delivery_code
 				);
-        		if($goodsOrderRow['is_send']==1){
+        		if($type==0)
+        		{
+        			$updateData['amount'] = Order_Class::get_refund_fee($orderRow,$goodsOrderRow);
+        		}
+        		if($goodsOrderRow['is_send']==1)
+        		{
         			$updateData['pay_status'] = 4;
         			
-        		}else if($goodsOrderRow['is_send']==0){
+        		}
+        		else if($goodsOrderRow['is_send']==0){
         			$updateData['pay_status'] = 0;
         		}
-        		if(isset($_FILES['delivery_img']['name']) && $_FILES['delivery_img']['name'])
-        		{
-        			$uploadObj = new PhotoUpload();
-        			$uploadObj->setIterance(false);
-        			$photoInfo = $uploadObj->run();
-        			if(isset($photoInfo['delivery_img']['img']) && file_exists($photoInfo['delivery_img']['img']))
-        			{
-        				$updateData['delivery_img'] = $photoInfo['delivery_img']['img'];
-        			}
-        		
-        		}
+
 				$goodsDB  = new IModel('goods');
         		$goodsRow = $goodsDB->getObj('id = '.$goodsOrderRow['goods_id']);
 
@@ -528,23 +525,22 @@ class Ucenter extends IController
         		//写入数据库
         		$refundsDB->setData($updateData);
         		$refundsDB->add();
-
+        		
+        		//更改订单状态
+        		if($type==0){//只有退款更新
+        			Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
+        		}
+        		Order_Class::ordergoods_status_refunds(0,$goodsOrderRow,$type);
         		$this->redirect('order');
         		exit;
-        	}
-        	else
-        	{
-        		$message = '此商品已经做了退换货处理，请耐心等待';
-        		IError::show(403,$message);
-        	}
+        	
         }
         else
         {
-        	$message = '订单未付款';
+        	$message = '订单不存在';
         }
-
-        $this->redirect('order',false);
-        Util::showMessage($message);
+        
+        $this->redirect('order');
     }
     /**
      * @brief 退款申请删除
@@ -611,13 +607,20 @@ class Ucenter extends IController
      */
 	public function refunds_edit()
 	{
-		$order_id = IFilter::act(IReq::get('order_id'),'int');
-		if($order_id)
+		$order_goods_id = IFilter::act(IReq::get('og_id'),'int');
+		if($order_goods_id)
 		{
-			$orderDB  = new IModel('order');
-			$orderRow = $orderDB->getObj('id = '.$order_id.' and user_id = '.$this->user['user_id']);
+			
+			$orderDB  = new IQuery('order_goods as og');
+			$orderDB->join = 'left join order as o on og.order_id=o.id ';
+			$orderDB->where = 'og.id='.$order_goods_id.' and o.user_id='.$this->user['user_id'];
+			$orderDB->fields = 'o.order_no,o.status,o.completion_time,og.img,og.refunds_status,og.is_send,og.goods_nums,og.goods_id,og.goods_array,og.id as og_id';
+			$orderRow = $orderDB->getObj();
 			if($orderRow)
 			{
+				$orderRow['can_refunds'] = Refunds_Class::order_goods_refunds($orderRow);
+				$orderRow['can_chg'] = Refunds_Class::order_goods_chg($orderRow);
+				if(!$orderRow['can_refunds'] && !$orderRow['can_chg'])$this->redirect('refunds');
 				$this->orderRow = $orderRow;
 				$this->redirect('refunds_edit');
 				exit;
@@ -1773,11 +1776,11 @@ class Ucenter extends IController
     	}
     	if($order_no)$where = ' o.order_no='.$order_no;
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on c.order_id=o.id';
+    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join comment as c on og.comment_id = c.id';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->page  = $page;
-    	$order_db->fields = 'o.*,og.goods_id,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days,c.status as comment_status';
+    	$order_db->fields = 'o.*,og.goods_id,og.comment_id,c.status as comment_status,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days';
     	$order_db->order = 'o.id DESC';
     	$preorder_list = $order_db->find();
     	foreach($preorder_list as $key=>$val){
