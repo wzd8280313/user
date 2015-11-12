@@ -23,12 +23,12 @@ class Ucenter extends IController
     	$where = "o.user_id =".$userid." and if_del= 0 and o.type !=4 ";
     	
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join order_goods as og on o.id=og.order_id  left join comment as c on c.order_id=o.id';
+    	$order_db->join = 'left join order_goods as og on o.id=og.order_id ';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->limit  = 6;
     	$order_db->order = 'o.id DESC';
-    	$order_db->fields = 'o.*,c.status as comment_status,c.id as comment_id';
+    	$order_db->fields = 'o.*';
     	$this->order_db = $order_db;
         $this->initPayment();
         $this->redirect('index');
@@ -211,25 +211,25 @@ class Ucenter extends IController
         	IError::show(403,'订单信息不存在');
         }
         
+        //获取商品列表信息
+        //$order_goods_db = new IModel('order_goods');
+        //$order_goods_db->query('order_id='.$id,'id,is_send,refunds_status');
+        
+        //获取退货信息
         $siteConfig = new Config('site_config');
         $refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
         	
         $refunds_seller_second = $refunds_seller_time*24*3600;
         $tb_refundment = new IQuery('refundment_doc as r');
-        $tb_refundment->join = 'left join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id';
-        $tb_refundment->where = 'r.if_del=0 and r.order_id='.$id;
+        $tb_refundment->join = 'right join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.if_del=0 left join goods as g on og.goods_id=g.id';
+        $tb_refundment->where = 'og.order_id='.$id;
         $tb_refundment->order = 'r.id DESC';
         $tb_refundment->group = 'r.id';
-        $tb_refundment->fields = 'r.*,og.is_send,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
-        $this->refund_data = $tb_refundment->find();
+        $tb_refundment->fields = 'r.*,g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
+        $this->og_data = $tb_refundment->find();
+      //  print_r($this->refund_data);
         
-        $order_db = new IModel('order_goods');
-        $order_data = $order_db->getObj('order_id='.$id,'count(*) as num');
-      	$order_goods_num = $order_data['num'];
-      	 $refundment_db = new IModel('refundment_doc');
-      	 $refund_num = $refundment_db->getObj('order_id='.$id.' and pay_status in (0,3,4,7)','count(*) as refund_num');
-      	 $refund_num = $refund_num['refund_num'];
-      	 $this->show_refund = $refund_num - $order_goods_num < 0 ? 1 : 0;
+        
         $this->redirect('order_detail',false);
     }
 	
@@ -1776,11 +1776,11 @@ class Ucenter extends IController
     	}
     	if($order_no)$where = ' o.order_no='.$order_no;
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on c.order_id=o.id';
+    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join comment as c on og.comment_id = c.id';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->page  = $page;
-    	$order_db->fields = 'o.*,og.goods_id,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days,c.status as comment_status';
+    	$order_db->fields = 'o.*,og.goods_id,og.comment_id,c.status as comment_status,p.yu_end_time,p.wei_type,p.wei_start_time,p.wei_end_time,p.wei_days';
     	$order_db->order = 'o.id DESC';
     	$preorder_list = $order_db->find();
     	foreach($preorder_list as $key=>$val){

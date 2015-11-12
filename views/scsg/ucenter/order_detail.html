@@ -40,23 +40,18 @@
 			</label>
 			{/if}
 
-			{if:in_array($orderStatus,array(11,3,17))}
+			{if:in_array($orderStatus,array(25))}
 	        <label >
 	        	<input type="hidden" name='op' value='confirm' />
 	        	<input type="submit" class='btn_gray btn_small' value="确认收货" />
 	        </label>
 			{/if}
 
-	        {if:in_array($orderStatus,array(3,4,8,9,10,11,17)) && $this->show_refund}
-	        <label >
-	        	<input type="button"  class='btn_red btn_small' value="申请退换货" onclick='javascript:window.location.href="{url:/ucenter/refunds_edit/order_id/$this->order_info['order_id']}"' />
-	        </label>
-	    	{/if}
 	    </p>
         </form>
 	</div>
-	{if:$this->refund_data}
-		{foreach:items=$this->refund_data}
+		{foreach:items=$this->og_data}
+		{if:$item['id']}
 		{set:$typeName = $item['type']==0 ? '退货' : '换货';}
 		
 	<div class="box m_10">
@@ -69,7 +64,7 @@
 			<table class="dotted_table f_l" width="100%" cellpadding="0" cellspacing="0">
 				<col width="130px" />
 				<col />
-				{if:$item['type']==0 && in_array($item['pay_status'],array(0,4,7)) || $item['type']==1 && in_array($item['pay_status'],array(0,4))}
+				{if: in_array($item['pay_status'],array(0,4,7))}
 				<tr>
 					<th></th>
 					<td>
@@ -121,8 +116,8 @@
 			</table>
 		</div>
 	</div>
-	{/foreach}
 	{/if}
+	{/foreach}
 	<div class="box m_10">
 		<div class="title">
 			<h2><span class="orange">收件人信息</span></h2>
@@ -289,16 +284,16 @@
 					<tr>
 						<th>图片</th>
 						<th>商品名称</th>
-						<th>赠送积分</th>
+						<th width='80px'>赠送积分</th>
 						<th>商品价格</th>
 						<th>优惠金额</th>
 						<th>商品数量</th>
 						<th>小计</th>
-						<th>配送</th>
+						<th >配送</th>
+						<th ></th>
 					</tr>
-                    {foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->order_info['order_id'])) item=$good}
+                    {foreach:items=$this->og_data item=$good}
                     {set:$good_info = JSON::decode($good['goods_array'])}
-                    {set:$totalWeight = $good['goods_nums'] * $good['goods_weight']}
 					<tr>
 						<td><img class="pro_pic" src="{webroot:$good['img']}" width="50px" height="50px" onerror='this.src="{skin:images/front/nopic_100_100.gif}"' /></td>
 						<td class="t_l">
@@ -306,14 +301,18 @@
 							{if:$good_info['value']!=''}<p>{$good_info['value']}</p>{/if}
 						</td>
 						<td>{echo:$good['point']*$good['goods_nums']}</td>
-						<td class="red2">￥{$good['goods_price']}</td>
-						<td class="red2">￥{echo:$good['goods_price']-$good['real_price']}</td>
+						<td class="red2">￥{$good['sell_price']}</td>
+						<td class="red2">￥{echo:$good['sell_price']-$good['real_price']}</td>
 						<td>x {$good['goods_nums']}</td>
 						<td class="red2 bold">￥{echo:$good['goods_nums']*$good['real_price']}</td>
 						<td>
 							{echo:Order_Class::goodsSendStatus($good['is_send'])}
-							{if:$good['delivery_id']}
-							<input type='button' class='sbtn' value='物流' onclick='freightLine({$good['delivery_id']});' />
+							<input type='button' class='btn_gray btn_mini' value='物流' onclick='freightLine({$good['delivery_id']});' />
+							
+						</td>
+						<td>
+							{if:Refunds_Class::order_goods_refunds(array_merge($item,$this->order_info)) || Refunds_Class::order_goods_chg(array_merge($item,$this->order_info))}
+							<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"><input type='button' class='btn_red btn_mini' value='申请退换货'  /></a>
 							{/if}
 						</td>
 					</tr>
