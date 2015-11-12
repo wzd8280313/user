@@ -151,7 +151,7 @@
 				<p>{if:$item['refunds_status']==0 && in_array($item['status'],array(2,7,8,9))}
 					<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"  class='btn_gray btn_small'>申请退换货</a>
 					{/if}
-					{if:$item['can_chg']}
+					{if:$item['can_chg'] && Refunds_Class::order_goods_chg($item)}
 					<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"  class='btn_gray btn_small'>申请换货</a>
 					{/if}
 					{if:$item['comment_id'] && $item['comment_status']==0}

@@ -557,7 +557,8 @@ class Ucenter extends IController
         if(empty($order_goods_row))Util::showMessage("退款信息不存在");
         $model = new IModel('refundment_doc');
        if($model->del('id='.$id.' and user_id='.$this->user['user_id'])){
-       		Order_Class::order_status_refunds(1,$order_goods_row,$order_goods_row['type']);
+       		Order_Class::get_order_status_refunds($id,1);
+       		Order_Class::ordergoods_status_refunds(-1,$order_goods_row);
        }
      	 $this->redirect('refunds');
     }

@@ -326,11 +326,12 @@
 			<tbody>
 				{set:$show_refunds = 0;}
 				{query: name=refundment_doc where=order_id eq $order_id items=$refundmentData}
+				{set:$typeName = $item['type']==0 ? '退款' : '换货';}
 				{if:$item['pay_status']==7 && $item['type']==0}
 				{set:$show_refunds = 1;}
 				{/if}
 				<tr>
-					<th>退款商品：</th>
+					<th>{$typeName}商品：</th>
 					<td>
 						{query:name=order_goods where=order_id eq $order_id and goods_id eq $item[goods_id] and product_id eq $item[product_id] item=$good}
 						{set:$goods = JSON::decode($good['goods_array'])}
@@ -341,9 +342,11 @@
 						{/if}
 					</td>
 				</tr>
+				{if:$item['type']==0}
 				<tr>
 					<th>退款金额：</th><td>{$item['amount']}</td>
 				</tr>
+				{/if}
 				<tr>
 					<th>申请时间：</th><td>{$item['time']}</td>
 				</tr>
@@ -351,7 +354,7 @@
 					<th>状态：</th><td>{echo:Order_Class::refundmentText($item['pay_status'],$item['type'])}</td>
 				</tr>
 				<tr>
-					<th>退款理由：</th><td>{$item['content']}</td>
+					<th>{$typeName}理由：</th><td>{$item['content']}</td>
 				</tr>
 				<tr><th colspan="2"></th></tr>
 				{/query}

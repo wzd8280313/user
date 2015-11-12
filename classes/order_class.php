@@ -1644,15 +1644,18 @@ class Order_Class
 				}
 			}
 		}
-		else if(in_array($refunds_status,array(1,5))){
+		else if(in_array($refunds_status,array(1,5))){//被拒绝
 			if($goodsOrderRow['is_send']==1){
-				$setDataOg['refunds_status'] = 9;
+				if($type==0){
+					$setDataOg['refunds_status'] = 9;
+				}else $setDataOg['refunds_status'] = 13;
+				
 			}else{
 				$setDataOg['refunds_status'] = 5;
 			}
 				
 		}
-		else if($refunds_status==2){
+		else if($refunds_status==2){//成功
 			if($type==0){
 				if($goodsOrderRow['is_send']==0){//未发货退货
 					$setDataOg['refunds_status'] = 6;
@@ -1664,6 +1667,9 @@ class Order_Class
 			}else{
 				$setDataOg['refunds_status'] = 13;
 			}
+		}
+		else if($refunds_status==-1){//退换货单取消
+			$setDataOg['refunds_status'] = 0;
 		}
 		else{
 			return false;

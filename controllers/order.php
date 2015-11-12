@@ -329,6 +329,7 @@ class Order extends IController
 				}else{//审核不通过
 					$tb_refundment_doc->setData($setData);
 					$tb_refundment_doc->update('id='.$refundment_id);
+					Order_Class::ordergoods_status_refunds(5,$order_goods_row,1);
 				}
 			}
 			$logObj = new log('db');
