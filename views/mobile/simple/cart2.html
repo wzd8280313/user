@@ -238,6 +238,7 @@ function selectProtect(obj)
      		<!-- 商品详情-->
 			{foreach:items=$this->goodsList item=$value}
 			<span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'></span></span>
+				<input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
 				{foreach:items=$value key=$k}
 				{if:is_array($item)}
 		     		<div class="qr_xq">
@@ -325,7 +326,8 @@ function selectProtect(obj)
 	     	<span class="yhj_check"  name='taxes' onclick='orderFormInstance.tax(this)'></span>
 	     	<div class="fapiao hide">
 	     		<span class="fa_tit">发票抬头</span>
-	     		<input name='tax_title' class="xt" type="text" placeholder="个人"/>
+				<input type='hidden' name='type' value='0' />
+	     		<input name='taitou' class="xt" type="text" placeholder="普通"/>
 	     	</div>		
      	
      	</div>

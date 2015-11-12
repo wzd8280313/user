@@ -1683,6 +1683,8 @@ class Order_Class
 			'4' => 1,
 			'7' => 2,
 			'2' => 3,
+			'1' => 6,
+			'5' => 6
 		);
 		$refund_db = new IModel('refundment_doc');
 		$refund_data = $refund_db->getObj('id='.$refund_id,'order_id,goods_id,product_id');

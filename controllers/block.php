@@ -174,6 +174,7 @@ class Block extends IController
    		$area     = IFilter::act(IReq::get("area"),'int');
    		$distribution = IFilter::act(IReq::get("distribution"),'int');//配送方式
    		$total_price = IFilter::act(IReq::get('total_price'),'int');
+   		
    		if($distribution)
    		{
    			$data = Delivery::getDeliveryWeight($area,$distribution,$weight,$seller_id,$total_price);
