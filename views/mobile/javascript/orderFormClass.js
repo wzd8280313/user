@@ -93,22 +93,22 @@ function orderFormClass()
 	}
 	//获取运费
 	this.get_delivery  = function ()
-	{alt();
+	{
 		this.deliveryPrice = 0;
+		var orderFormObj = this;
 		var url = this.delivery_fee_url;
 		var area     = $('[name=area]').val();
 	
-		var delivery = $('[name="delivery_id"]:checked').val();
+		var delivery = this.deliveryActiveId;
 		if(!area || !delivery)
 		{
 			return;
 		}
-		var _this=this;
 		$('span[id^=deliveryfee_]').each(function(){
 			var _this = $(this);
-					if(_this.freeFreight == 1){
-						$(_this).text('免运费');
-						_this.deliveryPrice = 0;
+					if(orderFormObj.freeFreight == 1){
+						$(this).text('免运费');
+						orderFormObj.deliveryPrice = 0;
 					}
 					else{
 						var idValue = $(this).attr('id');
@@ -118,7 +118,7 @@ function orderFormClass()
 							async:false,
 							data:{"area":area,"distribution":delivery,"weight":dataArray[2],"seller_id":dataArray[1],"total_price":dataArray[3]},
 							dataType:'json',
-							url:_this.delivery_fee_url,
+							url:url,
 							
 							success:function(content)
 							{
@@ -130,7 +130,7 @@ function orderFormClass()
 								}
 								else
 								{
-									_this.deliveryPrice += parseFloat(content.price);
+									orderFormObj.deliveryPrice += parseFloat(content.price);
 									var html = "￥"+parseFloat(content.price).toFixed(2);
 									//允许保价
 									if(content.protect_price > 0)
@@ -185,13 +185,14 @@ function orderFormClass()
 	 */
 	this.deliverySave = function()
 	{
+		
 		if(this.deliveryCheck() == false)
 		{
 			tips('请选择配送方式');
 			return;
 		}
 		this.deliveryActiveId = $('select[name=delivery_id]').val();
-	
+
 		//计算运费
 		this.get_delivery();
 
