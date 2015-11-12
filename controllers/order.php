@@ -507,16 +507,7 @@ class Order extends IController
 
 		$orderGoodsDB      = new IModel('order_goods');
 		$tb_refundment_doc = new IModel('refundment_doc');
-		$updateData = array(
-			'order_no'     => $order_no,
-			'order_id'     => $order_id,
-			'admin_id'     => $this->admin['admin_id'],
-			'pay_status'   => 2,
-			'dispose_time' => ITime::getDateTime(),
-			'dispose_idea' => '退款成功',
-			'amount'       => $amount,
-			'user_id'      => $user_id,
-		);
+		
 		$orderGoodsRow = $orderGoodsDB->getObj('id = '.$order_goods_id);
 		if($amount>$orderGoodsRow['real_price']*$orderGoodsRow['goods_nums']+$orderGoodsRow['delivery_fee']+$orderGoodsRow['save_price']+$orderGoodsRow['tax']){
 			die('<script text="text/javascript">parent.actionCallback("退款金额不得大于实际支付金额");</script>');
@@ -526,7 +517,16 @@ class Order extends IController
 		if(!$refunds_id)
 		{
 			if(!$order_goods_id)return false;
-			
+			$updateData = array(
+					'order_no'     => $order_no,
+					'order_id'     => $order_id,
+					'admin_id'     => $this->admin['admin_id'],
+					'pay_status'   => 2,
+					'dispose_time' => ITime::getDateTime(),
+					'dispose_idea' => '退款成功',
+					'amount'       => $amount,
+					'user_id'      => $user_id,
+			);
 
 			//插入refundment_doc表
 			$updateData['time']       = ITime::getDateTime();
@@ -539,6 +539,10 @@ class Order extends IController
 
 			$tb_refundment_doc->setData($updateData);
 			$refunds_id = $tb_refundment_doc->add();
+			$tb_refundment_doc->commit();
+		}else{
+			$tb_refundment_doc->setData(array('amount'=>$amount));
+			$tb_refundment_doc->update('id='.$refunds_id);
 			$tb_refundment_doc->commit();
 		}
 		

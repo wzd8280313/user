@@ -124,7 +124,7 @@ class Ucenter_ajax extends IController
 	 */
 	public function sign_add_point(){
 		$config = new Config('site_config');
-		$point = $config->sign_point;
+		$point = isset($config->sign_point) ? $config->sign_point : 5;
 		$user_id = $this->user['user_id'];
 		$member_db = new IModel('member');
 		$member_db->setData(array('sign_date'=>ITime::getDateTime()));
@@ -136,7 +136,7 @@ class Ucenter_ajax extends IController
 			);
 			$pointObj = new Point();
 			if($pointObj->update($pointConfig)){
-				echo 1;
+				echo JSON::encode(array('point'=>$point));
 			}else echo 2;
 		}
 		else{
