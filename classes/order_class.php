@@ -1651,7 +1651,7 @@ class Order_Class
 				}else $setDataOg['refunds_status'] = 13;
 				
 			}else{
-				$setDataOg['refunds_status'] = 5;
+				$setDataOg['refunds_status'] = 0;
 			}
 				
 		}
