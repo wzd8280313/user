@@ -728,6 +728,7 @@ class Simple extends IController
 			$goodsdata = $_POST;
 			$checked = IFilter::act(IReq::get('sub'));
 			$cartData = array();
+			if(empty($checked))$this->redirect('cart');
 			foreach($checked as $key=>$val){//转换成购物车的数据结构
 				$tem = explode('-',$val);
 				$cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
