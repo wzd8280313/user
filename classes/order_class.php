@@ -26,10 +26,10 @@ class Order_Class
 		$orderRow = $orderDB->getObj('id = '.$order_id);
 
 		//获取此订单中的商品种类
-		$orderGoodsDB        = new IQuery('order_goods');
-		$orderGoodsDB->where = 'order_id = '.$order_id.' and (is_send =1 OR is_send=2 and refunds_status = 10)';
-		$orderGoodsDB->group = 'goods_id';
-		$orderList           = $orderGoodsDB->find();
+		$orderGoodsDB        = new IModel('order_goods');
+		$where = 'order_id = '.$order_id.' and (is_send =1 OR is_send=2 and refunds_status = 10)';
+	
+		$orderList           = $orderGoodsDB->query($where);
 
 		//可以允许进行商品评论
 		$commentDB = new IModel('comment');
@@ -39,6 +39,7 @@ class Order_Class
 		{
 			if(!$goodsDB->getObj('id='.$val['goods_id'],'id'))continue;
 			$attr = array(
+				'og_id'    => $val['id'],
 				'goods_id' => $val['goods_id'],
 				'order_no' => $orderRow['order_no'],
 				'order_id' => $order_id,
@@ -46,7 +47,9 @@ class Order_Class
 				'time'     => date('Y-m-d H:i:s')
 			);
 			$commentDB->setData($attr);
-			$commentDB->add();
+			$id = $commentDB->add();
+			$orderGoodsDB->setData(array('comment_id'=>$id));
+			$orderGoodsDB->update('id='.$val['id']);
 		}
 	}
 

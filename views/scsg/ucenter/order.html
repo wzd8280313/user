@@ -74,7 +74,7 @@
             </tr>
             {set:$queryOrderList=$this->order_db;$tem_order_id=-1;}
 			{foreach:items = $queryOrderList->find()}
-			
+
 			{if:$item['id']!=$tem_order_id}
 			{set:$status=Order_Class::getOrderStatus($item);}
 			{set:$tem_order_id = $item['id']}
@@ -136,6 +136,14 @@
 				<td colspan="2">
 					{if:$item['refunds_status']==0 && in_array($item['status'],array(2,7,8,9))}
 					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请退换货</a>
+					{/if}
+					{if:$item['can_chg']}
+					<a href="{url:/ucenter/refunds_edit/order_id/$item['id']}"  class='btn_gray btn_small'>申请换货</a>
+					{/if}
+					{if:$item['comment_id'] && $item['comment_status']==0}
+						<a href="{url:/site/comments/id/$item['comment_id']}"  class='btn_gray btn_small'>评价</a>
+					{elseif :$item['comment_id'] && $item['comment_status']==1}
+						<b class="orange">已评价</b>
 					{/if}
 				</td>
 				<td>
