@@ -292,7 +292,9 @@
 						<th >配送</th>
 						<th ></th>
 					</tr>
+					
                     {foreach:items=$this->og_data item=$good}
+					
                     {set:$good_info = JSON::decode($good['goods_array'])}
 					<tr>
 						<td><img class="pro_pic" src="{webroot:$good['img']}" width="50px" height="50px" onerror='this.src="{skin:images/front/nopic_100_100.gif}"' /></td>
@@ -311,8 +313,8 @@
 							
 						</td>
 						<td>
-							{if:Refunds_Class::order_goods_refunds(array_merge($item,$this->order_info)) || Refunds_Class::order_goods_chg(array_merge($item,$this->order_info))}
-							<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"><input type='button' class='btn_red btn_mini' value='申请退换货'  /></a>
+							{if:Refunds_Class::order_goods_refunds(array_merge($good,$this->order_info)) || Refunds_Class::order_goods_chg(array_merge($good,$this->order_info))}
+							<a href="{url:/ucenter/refunds_edit/og_id/$good['og_id']}"><input type='button' class='btn_red btn_mini' value='申请退换货'  /></a>
 							{/if}
 						</td>
 					</tr>

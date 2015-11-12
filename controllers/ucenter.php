@@ -220,14 +220,14 @@ class Ucenter extends IController
         $refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
         	
         $refunds_seller_second = $refunds_seller_time*24*3600;
-        $tb_refundment = new IQuery('refundment_doc as r');
-        $tb_refundment->join = 'right join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.if_del=0 left join goods as g on og.goods_id=g.id';
+        $tb_refundment = new IQuery('order_goods as og');
+        $tb_refundment->join = 'left join refundment_doc as r on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.if_del=0 left join goods as g on og.goods_id=g.id';
         $tb_refundment->where = 'og.order_id='.$id;
         $tb_refundment->order = 'r.id DESC';
-        $tb_refundment->group = 'r.id';
+        $tb_refundment->group = 'og.id';
         $tb_refundment->fields = 'r.*,g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
         $this->og_data = $tb_refundment->find();
-      //  print_r($this->refund_data);
+       
         
         
         $this->redirect('order_detail',false);
