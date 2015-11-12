@@ -71,6 +71,14 @@ return array(
 			
 		)
 	),
+    //团购列表
+    'getRegimentList' => array(
+        'query' => array(
+            'name' => 'regiment',
+            'where' => 'is_close = 0 and NOW() between start_time and end_time',
+            'order' => 'id desc',
+        )
+    ),
 	//限时抢购列表
 	'getPromotionList'=> array(
 		'query' => array(
@@ -133,13 +141,13 @@ return array(
 					'order'=>'go.sort asc,go.id desc'
 			)
 	),
-	//热卖商品列表
+	//特价商品列表
 	'getCommendHot' => array(
 		'query' => array(
 			'name' => 'commend_goods as co',
 			'join' => 'left join goods as go on co.goods_id = go.id',
 			'where' => 'co.commend_id = 3 and go.is_del = 0 AND go.id is not null',
-			'fields' => 'go.img,go.sell_price,go.name,go.id,go.market_price',
+			'fields' => 'go.img,go.sell_price,go.name,go.id,go.market_price,go.sale',
 			'limit'=>'10',
 			'order'=>'sort asc,id desc'
 		)
@@ -575,10 +583,9 @@ return array(
 	'getOrderGoodsListByGoodsid'=>array(
 	 	 'query'=>array(
 	    	'name'  => 'order_goods as og',
-	    	'join'  => 'left join goods as go on og.goods_id = go.id left join refundment_doc as r on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.pay_status in (0,3,4,7)',
-	    	'where' => 'og.order_id = #order_id#  ',
-	 	 	'group' => 'og.id',
-	    	'fields'=> 'og.*,go.point,r.pay_status,r.type,r.time as refund_time',
+	    	'join'  => 'left join goods as go on og.goods_id = go.id',
+	    	'where' => 'order_id = #order_id# ',
+	    	'fields'=> 'og.*,go.point',
 	    )
 	),
 	//用户中心-我的代金券
