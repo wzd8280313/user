@@ -80,7 +80,7 @@
 			{if:$item['id']!=$tem_order_id}
 			{set:$status=Order_Class::getOrderStatus($item);}
 			{set:$tem_order_id = $item['id']}
-				<tr>
+				<tr class='even'>
 					<td>
 						{if:$status==2}
 						<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
