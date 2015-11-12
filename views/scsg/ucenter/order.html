@@ -46,7 +46,7 @@
 	</div>
 	<form action='{url:/block/dopaymerge}' method='post' name='merge_pay'>
 	<div class='m_5' id='merge_pay'>
-		<input type="button" class='btn_gray btn_small' value="合并付款" name='merge_show' onclick='merge_pay_toggle()'/>
+		<input type="button" class='btn_gray btn_small' value="批量付款" name='merge_show' onclick='merge_pay_toggle()'/>
 		<select style='height:25px;' name='payment' class='hide'>
 			<option>请选择支付方式</option>
 			{set:$paymentList=Api::run('getPaymentList')}
@@ -65,7 +65,7 @@
         <table class="list_table" width="100%" cellpadding="0" cellspacing="0" border='1'>
         	<col />
             <tr>
-                <th ><span class="checktet"><input id="ckAll" class="checks" type="checkbox"/>全选<input type='button' value='批量付款'></span></th>
+                <th ><span class="checktet"><input id="ckAll" class="checks" type="checkbox"/>全选</span></th>
                 <th>商品名称</th>
              
                 <th>单价（元）</th>
