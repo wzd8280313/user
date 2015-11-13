@@ -749,6 +749,7 @@ class Order_Class
 			20=> '换货处理',
 			21=> '订单完成',
 			22=> '订单完成',
+			25=> '已发货'
 				
 		);
 		return isset($result[$statusCode]) ? $result[$statusCode] : '';

@@ -1478,7 +1478,7 @@ class Seller extends IController
 		$tb_refundment_doc->update('id='.$refunds_id);
 		$tb_refundment_doc->commit();
 		
-		$result = Order_Class::refund($refunds_id,$seller_id,'admin');
+		$result = Order_Class::refund($refunds_id,$seller_id,'seller');
 		
 		
 		if($result)

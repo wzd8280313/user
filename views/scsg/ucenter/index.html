@@ -56,6 +56,7 @@
 			</tr>
 			{foreach:items=$this->order_db->find()}
 			{set:$status=Order_Class::getOrderStatus($item);}
+			
 			<tr>
 				<td><a href="{url:/ucenter/order_detail/id/$item[id]}">{$item['order_no']}</a></td>
 				<td>{$item['create_time']}</td>
