@@ -211,26 +211,29 @@ class Ucenter extends IController
         	IError::show(403,'订单信息不存在');
         }
         
-        //获取商品列表信息
-        //$order_goods_db = new IModel('order_goods');
-        //$order_goods_db->query('order_id='.$id,'id,is_send,refunds_status');
         
         //获取退货信息
         $siteConfig = new Config('site_config');
         $refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
         	
+        //获取退款数据
         $refunds_seller_second = $refunds_seller_time*24*3600;
-        $tb_refundment = new IQuery('order_goods as og');
-        $tb_refundment->join = 'left join refundment_doc as r on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id and r.if_del=0 left join goods as g on og.goods_id=g.id';
-        $tb_refundment->where = 'og.order_id='.$id;
+        $tb_refundment = new IQuery('refundment_doc as r');
+        $tb_refundment->join = 'left join order_goods as og on r.order_id = og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id';
+        $tb_refundment->where = 'r.if_del=0 and r.order_id ='.$id;
+        $tb_refundment->fields = 'og.is_send,og.goods_array,r.*,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now()) as end_time';
         $tb_refundment->order = 'r.id DESC';
-        $tb_refundment->group = 'og.id';
-        $tb_refundment->fields = 'r.*,g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,UNIX_TIMESTAMP(r.time)+'.$refunds_seller_second.'- UNIX_TIMESTAMP(now())'.' as end_time';
-        $this->og_data = $tb_refundment->find();
+        $tb_refundment->group = 'r.id';
+        $this->refunds = $tb_refundment->find();
        
-        
-        
-        $this->redirect('order_detail',false);
+        //获取商品信息
+        $tb_order_goods = new IQuery('order_goods as og');
+        $tb_order_goods->join = 'left join goods as g on og.goods_id=g.id';
+        $tb_order_goods->where = 'og.order_id='.$id;
+        $tb_order_goods->group = 'og.id';
+        $tb_order_goods->fields = 'g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums';
+        $this->og_data = $tb_order_goods->find();
+       	$this->redirect('order_detail',false);
     }
 	
     /**

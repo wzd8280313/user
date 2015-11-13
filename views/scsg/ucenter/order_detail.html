@@ -50,8 +50,8 @@
 	    </p>
         </form>
 	</div>
-		{foreach:items=$this->og_data}
-		{if:$item['id']}
+	{if:$this->refunds}
+		{foreach:items=$this->refunds}
 		{set:$typeName = $item['type']==0 ? '退货' : '换货';}
 		
 	<div class="box m_10">
@@ -116,8 +116,8 @@
 			</table>
 		</div>
 	</div>
-	{/if}
 	{/foreach}
+	{/if}
 	<div class="box m_10">
 		<div class="title">
 			<h2><span class="orange">收件人信息</span></h2>
