@@ -75,11 +75,11 @@
             </tr>
             {set:$queryOrderList=$this->order_db;$tem_order_id=-1;}
 			{foreach:items = $queryOrderList->find()}
-
+			{set:$even=''}
 			{if:$item['id']!=$tem_order_id}
 			{set:$status=Order_Class::getOrderStatus($item);}
-			{set:$tem_order_id = $item['id']}
-				<tr>
+			{set:$tem_order_id = $item['id'];$even = 'even'}
+				<tr class='{$even}'>
 					<td>
 						{if:$status==2}
 						<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
@@ -90,10 +90,10 @@
 						订单号：<a href="{url:/ucenter/order_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
 					</td>
 					<td >
-						<img src="#" style='width:16px;height:16px;' class="sj_logo">商家名称
+						
 					</td>
 					<td>
-						
+						总计：{$item['order_amount']}
 					</td>
 					<td>
 						
@@ -131,7 +131,7 @@
 					</a>
 				</td>
             	<td>            		
-			<p>总计：{$item['order_amount']}</p>
+			<p></p>
             		<p>￥{$item['real_price']}</p>
             	</td>
 				<td>

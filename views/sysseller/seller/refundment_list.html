@@ -11,6 +11,7 @@
 	<table class="tablesorter" cellspacing="0">
 		<colgroup>
 			<col width="160px" />
+			<col width="160px" />
 			<col width="120px" />
 			<col width="180px" />
 			<col />
@@ -21,6 +22,7 @@
 		<thead>
 			<tr>
 				<th>订单号</th>
+				<th>退货单号</th>
 				<th>商品金额</th>
 				<th>申请时间</th>
 				<th>退款商品名称</th>
@@ -36,6 +38,7 @@
 			{set:$goods = JSON::decode($item['goods_array'])}
 			<tr>
 				<td>{$item['order_no']}</td>
+				<td>{$item['refunds_no']}</td>
 				<td>{$item['amount']}</td>
 				<td>{$item['time']}</td>
 				<td><a href="{url:/site/products/id/$item['goods_id']}" target="_blank">{$goods['name']} X {$item['goods_nums']}件</a></td>

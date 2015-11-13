@@ -1,9 +1,9 @@
 <article class="module width_full">
 	<header>
-		<h3 class="tabs_involved">商品退款详情</h3>
+		<h3 class="tabs_involved">商品换货详情</h3>
 	</header>
 
-	<form action="{url:/seller/refundment_update}" name="refundForm" method="post">
+	<form action="{url:/seller/refundment_chg_show_save}" name="refundForm" method="post">
 		
 		<div class="module_content">
 			<fieldset>
@@ -21,13 +21,9 @@
 				<div class="box">{$username}</div>
 			</fieldset>
 
-			<fieldset>
-				<label>退款金额:</label>
-				<div class="box">{$amount}</div>
-			</fieldset>
 
 			<fieldset>
-				<label>退款商品:</label>
+				<label>换货商品:</label>
 				<div class="box">
 					{query:name=order_goods where=order_id eq $order_id and goods_id eq $goods_id and product_id eq $product_id}
 					{set:$goods = JSON::decode($item['goods_array'])}
@@ -39,7 +35,7 @@
 			</fieldset>
 
 			<fieldset>
-				<label>退款原因:</label>
+				<label>换货原因:</label>
 				<div class="box">{$content}</div>
 			</fieldset>
 
@@ -103,7 +99,11 @@
 					<fieldset>
 						<label>处理：</label>
 						<div  class="box">
+							{if:$type==1}
 							<label><input type="radio" name="pay_status" value="2" checked='checked' />同意</label>&nbsp;&nbsp;
+							{else:}
+							<label><input type="radio" name="pay_status" value="2" checked='checked' />同意</label>&nbsp;&nbsp;
+							{/if}
 							<label><input type="radio" name="pay_status" value="5" />拒绝</label>
 							<span class='red'></span>
 						</div>
@@ -116,9 +116,39 @@
 					</div>
 					</fieldset>
 			{/if}
-	
+				{if:($is_send==0 || $pay_status==4) && $type==1 }
+					<fieldset>
+						<label>替换商品：</label>
+					<table class="tablesorter" cellspacing="0">
+						<colgroup>
+							<col width="100px" />
+							<col width="80px" />
+							<col width="150px" />
+							<col width="100px" />
+							<col width="100px" />
+							<col width="70px" />
+						</colgroup>
+				
+						<thead>
+							<tr>
+								<th class="header">图片</th>
+								<th class="header">货号</th>
+								<th class="header">名称</th>
+								<th class="header">规格</th>
+								<th class="header">价格</th>
+								<th class="header">数量</th>
+							</tr>
+						</thead>
+						<tbody id='store_list'>
+									
+						</tbody>
+					</table>
+					<button type='button' onclick="searchGoods('{url:/block/search_goods/type/radio/is_products/1/seller_id/$seller_id}',searchGoodsCallback,{$num});" class='btn'><span>选择商品</span></button>
+					</fieldset>
+				{/if}
 		<input type="hidden" name="id" value="{$id}"/>
 		<input type='hidden' name='status' value='{$pay_status}' />
+		<input type="hidden" name="type" value="{$type}"/>
 		<input type='hidden' name='is_send' value='{$is_send}'/>
 		<footer>
 			<div class="submit_link">
@@ -167,7 +197,6 @@ function actionCallback(msg)
 	if(msg)
 	{
 		alert(msg);
-		art.dialog.list['refundment'].close();
 		return;
 	}
 	document.forms[0].submit();
@@ -187,5 +216,56 @@ function checkForm(is_send,type)
 	return true;
 }
 
+//输入筛选商品的条件
+function searchGoodsCallback(goodsList,num)
+{
+	goodsList.each(function()
+	{
+		var temp = $.parseJSON($(this).attr('data'));
+		if(!temp.product_id)temp.product_id = 0;
+		var spec_str = getSpec(temp.spec_array);
+		var content = {
+			"data":
+			{
+				"goods_id":temp.goods_id,
+				"goods_no":temp.goods_no,
+				"product_id":temp.product_id,
+				"name":temp.name,
+				"img":temp.img,
+				"spec":spec_str,
+				"sell_price":temp.sell_price,
+				"num" : num
+			}
+		};
+		//window.realAlert(key);
+		relationCallBack(content);
+	});
+}
 
+//关联商品回调处理函数
+function relationCallBack(content)
+{
+	
+	var appendTo = $('#store_list');
+	var n = $('#store_list>tr').length;
+	if(content)
+	{
+		$('[name="condition"]').val(content['data']['id']);
+		var imgUrl = "{webroot:@url@}";
+		imgUrl     = imgUrl.replace("@url@",content['data']['img']);
+
+		var html =  '<tr  class="td_c">'+
+		 '<td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-height:50px;" class="ico"/></td>'
+					+'<td>'+content['data']['goods_no']+'</td>'
+					+'<td>'+content['data']['name']+'</td>'
+					+'<td>'+content['data']['spec']+'</td>'
+					+'<td>'+content['data']['sell_price']+'</td>'
+					+'<td>'+content['data']['num']
+					+'<input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
+					'<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/>'+
+					'</td>'
+					+'</tr>';
+		appendTo.html(html);	
+	}
+}
 </script>

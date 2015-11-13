@@ -666,7 +666,12 @@ function deliver(id)
 //执行回调处理
 function actionCallback(msg)
 {
-	msg ? alert(msg) : window.location.reload();
+	if(msg){
+		alert(msg);art.dialog.list['refundment'].close();
+	}
+	else {
+		 window.location.reload();
+	}
 }
 
 //操作失败回调

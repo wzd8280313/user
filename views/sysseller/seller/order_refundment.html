@@ -93,20 +93,22 @@
 					<th>退款商品:</th>
 					<td align="left">
 					{if:isset($refunds)}
-						{query:name=order_goods where=order_id eq $refunds[order_id] and goods_id eq $refunds[goods_id] and product_id eq $refunds[product_id]}
+						{query:name=order_goods  where=order_id eq $refunds[order_id] and goods_id eq $refunds[goods_id] and product_id eq $refunds[product_id]}
 						{set:$goods = JSON::decode($item['goods_array'])}
 						{$goods['name']} X {$item['goods_nums']}件
 						【{echo:Order_Class::goodsSendStatus($item['is_send'])}】
-						{/query}
+					
 						{if:$refunds['seller_id']}
+						<input type='hidden' value='{$item["id"]}' name='order_goods_id' />
 						<a href="{url:/site/home/id/$refunds['seller_id']}" target="_blank"><img src="{skin:images/admin/seller_ico.png}" /></a>
 						{/if}
+						{/query}
 					{else:}
-						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$order_id)) item=$good}
+						{foreach:items=$order_goods_data item=$good}
 						{set:$good_info = JSON::decode($good['goods_array'])}
-						{if:$good['is_send'] != 2}
+						{if:$good['is_send'] != 2 && $good["refunds_id"]}
 						<label>
-							<input type="radio" name="order_goods_id" value="{$good['id']}" onclick="countGoodsAmount({echo:$good['goods_nums']*$good['real_price']});" />
+							<input type="radio" name="order_goods_id" value="{$good['id']}" refunds_id='{$good["refunds_id"]}' onclick="countGoodsAmount(this);" refund_fee='{if:$good["amount"]}{$good["amount"]}{else:}{echo:Order_Class::get_refund_fee($good,$good)}{/if}'/>
 							<a class="blue" href="{url:/site/products/id/$good['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</a>
 						</label>
 						<br/>
@@ -120,7 +122,6 @@
 				</tr>
 				<tr>
 					<th>说明:</th>
-					<td align="left">点击退款后，<退款金额>将直接转入到用户的余额中</td>
 				</tr>
 			</tbody>
 		</table>

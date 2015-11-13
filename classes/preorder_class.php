@@ -126,7 +126,7 @@ class Preorder_Class extends Order_Class{
 	
 		//获取支付方式
 		$pay_type = $orderDB->getField('id='.$order_id,'pay_type');
-		if($pay_type==0 || $pay_type==1){//货到付款，余额支付退款到余额
+		if($pay_type==1){//货到付款，余额支付退款到余额
 			$obj = new IModel('member');
 			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
 			if($isSuccess)
@@ -213,6 +213,7 @@ class Preorder_Class extends Order_Class{
 		//无退款申请单，必须生成退款单
 		if(!$refunds_id)
 		{
+			$orderDB = new IModel('order');
 			$orderGoodsDB      = new IModel('order_goods');
 			$tb_refundment_doc = new IModel('refundment_doc');
 			if(!$ordergoods_id)return false;
@@ -226,12 +227,15 @@ class Preorder_Class extends Order_Class{
 			$goodsDB = new IModel('goods');
 			$goodsRow= $goodsDB->getObj('id = '.$orderGoodsRow['goods_id']);
 			$updateData['seller_id'] = $goodsRow['seller_id'];
-	
+			
+			$order_amount = $orderDB->getField('id='.$updateData['order_id'],'order_amount');
+			if($updateData['amount']>$order_amount)die('<script text="text/javascript">parent.actionCallback("退款金额不能大于实际支付金额");</script>');
+			
 			$tb_refundment_doc->setData($updateData);
 			$refunds_id = $tb_refundment_doc->add();
 			$tb_refundment_doc->commit();
 		}
-	
+		
 		$result = self::refund($refunds_id,$updateData['admin_id'],'admin');
 	
 	

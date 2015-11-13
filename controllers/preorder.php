@@ -72,7 +72,8 @@ class Preorder extends IController
 	
 			
 			if($data['pay_status']==1)$data['refunds_amount']=$data['pre_amount'];
-			else if($data['pay_status']==2)$data['refunds_amount']=$data['order_amount'];
+			else if($data['pay_status']==2 && $data['distribution_status']==0)$data['refunds_amount']=$data['order_amount'];
+			else if($data['distribution_status']==1)$data['refunds_amount']=$data['real_amount'];
 			else $data['refunds_amount'] = 0;
 			$this->setRenderData($data);
 			
@@ -132,7 +133,7 @@ class Preorder extends IController
 						'user_id'      => $user_id,
 				);
 				
-				$this->refundHandle(0,$goods_id,$updateData);
+				Preorder_Class::refundHandle(0,$goods_id,$updateData);
 			}
 			die('<script text="text/javascript">parent.actionCallback();</script>');
 		}else die('<script text="text/javascript">parent.actionCallback("确认失败");</script>');

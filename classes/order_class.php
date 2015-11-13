@@ -1186,7 +1186,7 @@ class Order_Class
 			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$refundId,$order_id,$amount);
 			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败
 		}
-		else if($pay_type==1 || $pay_type==0){//预存款付款和货到付款打入账户余额
+		else if($pay_type==1){//预存款付款打入账户余额
 			$obj = new IModel('member');
 			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
 			$obj->commit();
@@ -1593,6 +1593,7 @@ class Order_Class
 				}
 				
 			}
+			
 			$has_send = $not_send = 0;
 			if(!empty($order_good_data)){
 				foreach($order_good_data as $v){
@@ -1698,9 +1699,10 @@ class Order_Class
 		);
 		$refund_db = new IModel('refundment_doc');
 		$refund_data = $refund_db->getObj('id='.$refund_id,'order_id,goods_id,product_id');
+		
 		if(!$refund_data)return false;
 		$order_goods_db = new IModel('order_goods');
-		$order_goods_data = $order_goods_db->query('order_id='.$refund_data['order_id'].' and is_send!=2');
+		$order_goods_data = $order_goods_db->query('order_id='.$refund_data['order_id']);
 		
 		//找到退款状态最慢的状态，退款拒绝的除外
 		$low_pay_status = 0;
