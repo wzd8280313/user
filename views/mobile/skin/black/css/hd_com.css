@@ -106,7 +106,8 @@ html,body{height:100%;font-size:100%}
 
 .inner-section .modle_items2 .items li{width:45%;float:left;margin:15px 2.5% 0}
 
-.inner-section .modle_items2 .items li .img img{width:100%;display:block;border:1px #dcdcdc solid}
+.inner-section .modle_items2 .items li .img img{width:100%;display:block;border:1px #dcdcdc solid;height: 150px;
+}
 
 .inner-section .modle_items2 .items li .tit{line-height:20px;height:40px;display:block;overflow:hidden;margin-top:4px;font-size:14px;}
 
