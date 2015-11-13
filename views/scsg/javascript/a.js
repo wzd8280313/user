@@ -6,9 +6,7 @@ $(document).ready(function(){
 			var h = img.css('height');
 			var shine = $('.shine').eq(0).clone(true);
 			shine.css('width',w).css('height',h);
-			shine.on('click',function(){
-				img.trigger('click');
-			})
+			
 			$(this).append(shine);
 			
 		});
@@ -17,7 +15,9 @@ $(document).ready(function(){
 		$(this).find(".shine").css("opacity","0.4"); 
 		$(this).find(".shine").animate({opacity: '0'},500);
 	})
-	
+	$('.shine').on('click',function(){
+		$(this).parent('div').find('img').trigger('click');
+	})
 	
 });
 
