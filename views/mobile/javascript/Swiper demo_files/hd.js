@@ -61,6 +61,10 @@ $(function(){
 	
 	})
 })
-
-	
+/*头部循环增加class值*/
+$(function(){
+	$(".head .swiper-slide .ls").each(function(i){
+	$(this).addClass("tb"+(i+1));
+	});
+});
 

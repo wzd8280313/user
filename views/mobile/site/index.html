@@ -337,7 +337,7 @@
                         {foreach:items=$goods['goods']}
 						<li><a href="{url:/site/products/id/$item['id']}">
 								<div><img src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"/></div>
-								<p>{$item['name']}</p>
+								<p class="fl_title">{$item['name']}</p>
 								<p><span class="ul_sell">月销售<b>{$item['sale']}</b>件</span></p>
 								<p><span class="ul_price">￥{$item['sell_price']}</span>				
 								<span class="ul_gw"><img src="{skin:images/front/gwc.png}"/></span></p>
