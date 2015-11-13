@@ -58,7 +58,10 @@ $server_num = count($server_info)>0 ? $server_info[0]['qq'] : 0;
 				<div class="tc_le tc_tite">
 					<div class="tc_img"><img src="{url:/pic/thumb/img/$img/w/200/h/200}" alt=" "></div>
 					<div class="tc_cont">
-						<p style="color:red;" class='price'>￥{if:isset($group_price)}{$group_price}{else:}{$sell_price}{/if}</p>
+						<p style="color:red; display: inline-block;"  class='price'>￥{if:isset($group_price)}{$group_price}{else:}{$sell_price}{/if}</p>
+                        
+                        <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
+                        
 						<p>{$name}{if:$short_desc}（{$short_desc}）{/if}</p>
 					</div>
 					<div style="clear: none;"></div>
@@ -89,7 +92,7 @@ $server_num = count($server_info)>0 ? $server_info[0]['qq'] : 0;
 						<div class="spinner">
 							<button type="button" class="decrease" onclick='modified(-1);'>-</button>
 							<input id="buyNums" type="text" class="spinner value" value='1'>
-							<button type="button" class="increase" onclick='modified(1);'>+</button>
+							<button type="button" style="margin-right:30px;" class="increase" onclick='modified(1);'>+</button>
 						</div>
 					
 					</div>库存：<span id='data_storeNums' style='background:#fff;'>{$store_nums}</span>
