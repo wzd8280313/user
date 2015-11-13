@@ -70,33 +70,37 @@
              
                 <th>单价（元）</th>
                 <th>数量</th>
-                <th colspan='2'>状态</th>
+                <th>状态</th>
                 <th>交易操作</th>
+               
             </tr>
             {set:$queryOrderList=$this->order_db;$tem_order_id=-1;}
 			{foreach:items = $queryOrderList->find()}
 			{set:$even=''}
 			{if:$item['id']!=$tem_order_id}
 			{set:$status=Order_Class::getOrderStatus($item);}
+
 			{set:$tem_order_id = $item['id'];$even = 'even'}
 				<tr class='{$even}'>
+
+
 					<td>
 						{if:$status==2}
 						<input  name="sub[]" class="checks" type="checkbox" value='{$item["id"]}'/>
 						{/if}
 						{$item['create_time']}
 					</td>
-					<td>
+					<td style='text-align:left;'>
 						订单号：<a href="{url:/ucenter/order_detail/id/$item[id]}" class="orange">{$item['order_no']}</a>
 					</td>
 					<td >
-						
-					</td>
-					<td>
 						总计：{$item['order_amount']}
 					</td>
-					<td>
+
 						
+
+					<td>
+
 					</td>
 					<td>
 						订单状态:{echo:Order_Class::orderStatusText($status)}
@@ -124,22 +128,17 @@
 						<img src="{url:/pic/thumb/img/$item['img']/w/88/h/88}" width="88px" height="88px"  onerror='this.src="{skin:images/front/nopic_435_435.gif}"'/>
 					</a>
 				</td>
-				<td width="300px" >
+				<td style='text-align:left;'>
 					{set:$goods_data = JSON::decode($item['goods_array'])}
 					<a >
 						{$goods_data['name']}{$goods_data['value']}
 					</a>
 				</td>
-            	<td>            		
-			<p></p>
+            	<td>   
             		<p>￥{$item['real_price']}</p>
             	</td>
 				<td>
-					{$item['goods_nums']}
-				</td>
-				<td >
-					
-
+					{$item['goods_nums']}	
 				</td>
 				<td>
 					<p>{echo:Order_Class::get_order_good_status($item)}</p>
