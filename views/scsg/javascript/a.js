@@ -15,8 +15,11 @@ $(document).ready(function(){
 		$(this).find(".shine").css("opacity","0.4"); 
 		$(this).find(".shine").animate({opacity: '0'},500);
 	})
-	$('.shine').on('click',function(){
-		$(this).parent('div').find('img').trigger('click');
+	$('.shine').each(function(){
+		
+		$(this).on('click',function(){
+			$(this).parent('div').find('img').trigger('click');
+		})
 	})
 	
 });
