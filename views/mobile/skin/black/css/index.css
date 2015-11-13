@@ -142,7 +142,7 @@ body{font-size:62.5%}
 
 #page .suggestion .content{border-bottom:1px solid #eee}
 
-#page .suggestion .content ul li{border-right:1px solid #eee;width:33.3%;padding:10px}
+#page .suggestion .content ul li{border-right:1px solid #eee;width:30%;padding:10px}
 
 #page .suggestion .content ul li:last-child{border-right:0}
 
