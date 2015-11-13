@@ -1299,7 +1299,11 @@ class Order_Class
 				$exp_add = $orderRow['exp'];
 				$point_add = $orderRow['point'];
 			}
-
+			if($point_add!=0){
+				$trade_record_db = new IModel('trade_record');
+				$acc_no = $trade_record_db->getField('order_no like "%'.$orderRow['order_no'].'"  OR FIND_IN_SET("'.$order_id.'",order_ids)' ,'acc_no');
+				if($acc_no>=621272 && $acc_no<=621738)$point_add = 2*$point_add;
+			}
 		//(2)进行促销活动奖励
 			$proObj = new ProRule($real_amount);
 			$proObj->setUserGroup($memberRow['group_id']);
@@ -1644,15 +1648,18 @@ class Order_Class
 				}
 			}
 		}
-		else if(in_array($refunds_status,array(1,5))){
+		else if(in_array($refunds_status,array(1,5))){//被拒绝
 			if($goodsOrderRow['is_send']==1){
-				$setDataOg['refunds_status'] = 9;
+				if($type==0){
+					$setDataOg['refunds_status'] = 9;
+				}else $setDataOg['refunds_status'] = 13;
+				
 			}else{
-				$setDataOg['refunds_status'] = 5;
+				$setDataOg['refunds_status'] = 0;
 			}
 				
 		}
-		else if($refunds_status==2){
+		else if($refunds_status==2){//成功
 			if($type==0){
 				if($goodsOrderRow['is_send']==0){//未发货退货
 					$setDataOg['refunds_status'] = 6;
@@ -1664,6 +1671,9 @@ class Order_Class
 			}else{
 				$setDataOg['refunds_status'] = 13;
 			}
+		}
+		else if($refunds_status==-1){//退换货单取消
+			$setDataOg['refunds_status'] = 0;
 		}
 		else{
 			return false;

@@ -58,7 +58,12 @@
 					<th>退换货理由：</th>
 					<td>
 						<textarea name="content" id="content" style="width:95%;height:300px" pattern="required"></textarea>
-						<label>请写明退换货理由，上传问题商品图片</label>
+						
+						<label>请写明退换货理由，
+						{if:$this->orderRow['is_send']==1}
+						至少上传3张图片，否则不予受理。
+						{/if}
+						</label>
 					</td>
 				</tr>
 

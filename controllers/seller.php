@@ -401,7 +401,8 @@ class Seller extends IController
 		$home_url    = IFilter::act(IReq::get('home_url'));
 		$tax         = IFilter::act(IReq::get('tax'),'float');
 		$freight_collect = IFilter::act(IReq::get('freight_collect'),'int');
-		$goods_cat = implode(',',IFilter::act(IReq::get('goods_cat')));
+		$goods_cat = IFilter::act(IReq::get('goods_cat'));
+		$goods_cat = !empty($goods_cat) ? implode(',',$goods_cat) : '';
 		
 		//操作失败表单回填
 		if(isset($errorMsg))

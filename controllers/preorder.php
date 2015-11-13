@@ -22,11 +22,8 @@ class Preorder extends IController
 			if($data)
 			{
 				$this->result = '';
-				$config = new Config('site_config');
-				if($config->presell_promotion!=0){
-					$rule = new ProRule($data['real_amount']);
+					$rule = new ProRule($data['real_amount']+$data['pro_reduce']);
 					$this->result = $rule->getInfo();
-				}
 				
 				//获取地区
 				$data['area_addr'] = join('&nbsp;',area::name($data['province'],$data['city'],$data['area']));

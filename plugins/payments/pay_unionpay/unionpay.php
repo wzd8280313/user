@@ -273,7 +273,8 @@ class unionpay extends paymentPlugin
 				'pay_type'     => 3,
 				'trade_type'   => self::getTradeType(3,$tradeData['txnType']),
 				'time'         => $tradeData['txnTime'],
-				'order_ids'    => $ids
+				'order_ids'    => $ids,
+				'acc_no'       => substr($tradeData['accNo'],0,6)
 		);
 		$resArr['trade_status']=$asyn;
 		$resArr['orig_trade_no'] = isset($tradeData['origQryId']) ? $tradeData['origQryId'] : '';
