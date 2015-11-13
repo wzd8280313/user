@@ -128,6 +128,16 @@ function show_det2(_this){
 	$('#det_tuijian').removeClass('hidden');
 	$('#det1').addClass('hidden');
 	$('#comments').addClass('hidden');
+	
+		$('.desbox').attr({'style':'outline: 0px; padding: 12px 0px; margin: 0px auto 0px 0px; font-size: 14px;width:100%; overflow: hidden; color: rgb(51, 51, 51); line-height: normal; white-space: normal;'});
+	$(".desbox img").attr({"style":"width:100%;"});
+	$(".ull").attr({"style":"width:100%;"});
+	 $("#rightProdDescNavDiv").height(1000);
+
+	
+	
+	
+	
 }
 function show_comments_list(_this){
 	$('.lin').removeClass('lin');
