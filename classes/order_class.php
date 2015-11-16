@@ -37,6 +37,7 @@ class Order_Class
 		//对每类商品进行评论开启
 		foreach($orderList as $val)
 		{
+			if($val['comment_id']==-1)continue;
 			if(!$goodsDB->getObj('id='.$val['goods_id'],'id'))continue;
 			$attr = array(
 				'og_id'    => $val['id'],
@@ -779,6 +780,9 @@ class Order_Class
 		if($orderGoodsRow['is_send']==0){
 			return '未发货';
 		}
+		else if($orderGoodsRow['status']==5 && $orderGoodsRow['is_send']==1){
+			return '已完成';
+		}
 		else if($orderGoodsRow['is_send']==1){
 			return '已发货';
 		}
@@ -1093,10 +1097,10 @@ class Order_Class
 	public static function refundmentText($pay_status,$type)
 	{	
 		if($type==0){//退货
-			$result = array('0' => '退款申请,等待卖家确认中', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）','7'=>'审核通过，等待退款');
+			$result = array('0' => '退款申请,等待卖家确认中', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待退货审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）','7'=>'审核通过，等待退款');
 			
 		}else{//换货
-			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待审核','5'=>'验货未通过','6'=>'换货失败（超期未退货）','7'=>'等待换货');
+			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待换货审核','5'=>'验货未通过','6'=>'换货失败（超期未退货）','7'=>'等待换货');
 		}
 		return isset($result[$pay_status]) ? $result[$pay_status] : '';
 	}
@@ -1411,6 +1415,7 @@ class Order_Class
 			'save_price'=>$orderGoodsRow['save_price'],
 			'img'       => $orderGoodsRow['img']
 		);
+		if($orderGoodsRow['comment_id']!=0)$new_order_good['comment_id']=-1;
 		$product_db = new IModel('products');
 		if($new_product_id){//存在货品
 			$resData = $product_db->getObj('id='.$new_product_id,'sell_price,spec_array,products_no as goods_no');

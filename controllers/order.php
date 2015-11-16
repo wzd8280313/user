@@ -875,18 +875,24 @@ class Order extends IController
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
-		$join .= ' left join refundment_doc as r on r.order_id=o.id and (r.pay_status in (0,3,4,7) OR r.pay_status in (2,5,6))';
+		$join1 = $join.' left join refundment_doc as r on r.order_id=o.id and r.if_del=0 ';
+		$join2 = $join.' left join refundment_doc as r on r.order_id=o.id and r.if_del=0 and r.pay_status in (0,3,4,7)';
 		//拼接sql
 		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
-		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name,r.id as refundment_id,IF(r.pay_status in (0,3,4,7),0,1) as refundment_status ";
+		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name,r.type as refundment_type ,r.id as refundment_id";
 		$orderHandle->page   = $page;
 		$orderHandle->where  = $where.' and o.type !=4 ';
-		$orderHandle->join   = $join;
+		$orderHandle->join   = $join1;
 		$orderHandle->group = 'o.id';
 		$this->search      = $search;
 		$this->orderHandle = $orderHandle;
-
+		
+		$this->order_list = $orderHandle->find();
+		$orderHandle->join   = $join2;
+		$this->order_list2 = $orderHandle->find();
+	//	print_r($order_list);
+	//	print_r($order_list2);exit;
 		$this->redirect("order_list");
     }
    

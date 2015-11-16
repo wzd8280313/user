@@ -618,7 +618,7 @@ class Ucenter extends IController
 			$orderDB  = new IQuery('order_goods as og');
 			$orderDB->join = 'left join order as o on og.order_id=o.id ';
 			$orderDB->where = 'og.id='.$order_goods_id.' and o.user_id='.$this->user['user_id'];
-			$orderDB->fields = 'o.order_no,o.status,o.completion_time,og.img,og.refunds_status,og.is_send,og.goods_nums,og.goods_id,og.goods_array,og.id as og_id';
+			$orderDB->fields = 'o.order_no,o.status,o.completion_time,o.order_amount,og.img,og.refunds_status,og.is_send,og.goods_nums,og.goods_id,og.goods_array,og.id as og_id';
 			$orderRow = $orderDB->getObj();
 			if($orderRow)
 			{

@@ -42,7 +42,11 @@
 				</tr>
 			</thead>
 			<tbody>
+				{set:$show_deli=0}
 				{query:name=order_goods where=order_id eq $order_id}
+				{if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
+				{set:$show_deli = 1;}
+				{/if}
 				<tr>
 					<td>
 						{set:$goodsRow = JSON::decode($item['goods_array'])}
@@ -326,6 +330,7 @@
 			<tbody>
 				{set:$show_refunds = 0;}
 				{query: name=refundment_doc where=order_id eq $order_id items=$refundmentData}
+				
 				{set:$typeName = $item['type']==0 ? '退款' : '换货';}
 				{if:$item['pay_status']==7 && $item['type']==0}
 				{set:$show_refunds = 1;}
@@ -553,7 +558,7 @@ function initButton()
 	{/if}
 
 	//发货
-	{if:in_array($orderStatus,array(1,3,4,8,9,10,12,20,18,19))}
+	{if:$show_deli}
 	$('#to_deliver').removeAttr('disabled');
 	$('#to_deliver').removeClass('inactive');
 	{/if}

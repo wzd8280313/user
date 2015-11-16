@@ -49,11 +49,11 @@
 		<col />
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=delivery_doc as c join=left join order as o on c.order_id eq o.id left join user as m on m.id eq c.user_id left join delivery as p on c.delivery_type eq p.id fields=o.order_no,c.name,c.delivery_code,p.name as pname,c.id,c.time,c.freight,m.username where=c.if_del eq 0 $this->where order= o.id desc page=$page }
+			{query: name=delivery_doc as c join=left join order as o on c.order_id eq o.id left join user as m on m.id eq c.user_id left join delivery as p on c.delivery_type eq p.id fields=o.order_no,o.id as order_id,c.name,c.delivery_code,p.name as pname,c.id,c.time,c.freight,m.username where=c.if_del eq 0 $this->where order= o.id desc page=$page }
 			<tr>
 				<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 				<td><a href="{url:/order/delivery_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>
-				<td>{$item['order_no']}</td>
+				<td><a href='{url:/order/order_show/id/$item[order_id]}' style='color:#222;'>{$item['order_no']}</a></td>
 				<td>{$item['name']}</td>
 				<td>{$item['delivery_code']}</td>
 				<td>{$item['pname']}</td>

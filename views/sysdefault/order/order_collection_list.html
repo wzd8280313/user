@@ -49,11 +49,11 @@
 		<col />
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=collection_doc as c join=left join order as o on c.order_id eq o.id left join user as u on u.id eq c.user_id left join payment as p on c.payment_id eq p.id fields=o.order_no,c.amount,u.username,p.name,c.id,c.pay_status,c.time where=c.if_del eq 0 $this->where order= o.id desc  page=$page }
+			{query: name=collection_doc as c join=left join order as o on c.order_id eq o.id left join user as u on u.id eq c.user_id left join payment as p on c.payment_id eq p.id fields=o.order_no,o.id as order_id,c.amount,u.username,p.name,c.id,c.pay_status,c.time where=c.if_del eq 0 $this->where order= o.id desc  page=$page }
 			<tr>
 				<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
 				<td><a href="{url:/order/collection_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a></td>
-				<td>{$item['order_no']}</td>
+				<td><a href='{url:/order/order_show/id/$item[order_id]}' style='color:#222;'>{$item['order_no']}</a></td>
 				<td>{$item['amount']}</td>
 				<td>{$item['username']}</td>
 				<td>{$item['name']}</td>

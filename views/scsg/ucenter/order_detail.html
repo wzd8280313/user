@@ -43,7 +43,7 @@
 			{if:in_array($orderStatus,array(25))}
 	        <label >
 	        	<input type="hidden" name='op' value='confirm' />
-	        	<input type="submit" class='btn_gray btn_small' value="确认收货" />
+	        	<input type="button" class='btn_gray btn_small' value="确认收货" tourl="{url:/ucenter/order_status/op/confirm/order_id/$this->order_info['order_id']}"  onclick='ok_confirm(this);'/>
 	        </label>
 			{/if}
 

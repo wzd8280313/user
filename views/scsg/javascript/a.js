@@ -5,7 +5,7 @@ $(document).ready(function(){
 			var w = img.css('width');
 			var h = img.css('height');
 			var shine = $('.shine').eq(0).clone(true);
-			shine.css('width',w).css('height',h);
+			shine.css('width',w).css('height',h).css('cursor','pointer');
 			
 			$(this).append(shine);
 			

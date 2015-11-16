@@ -147,15 +147,17 @@
 				
 				<td>
 					
-				<p>{if:$item['refunds_status']==0 && in_array($item['status'],array(2,7,8,9))}
+				<p>{if:$item['refunds_status']==0 && in_array($item['status'],array(2,7,8,9)) && $item['order_amount']!=0}
+					<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"  class='btn_gray btn_small'>申请退换货</a>
+					{elseif:$item['order_amount']==0 && $item['is_send']==1 && $item['refunds_status']==0}
+					<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"  class='btn_gray btn_small'>申请退换货</a>
+					
+					{elseif:$item['can_chg'] && Refunds_Class::order_goods_chg($item)}
 					<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"  class='btn_gray btn_small'>申请退换货</a>
 					{/if}
-					{if:$item['can_chg'] && Refunds_Class::order_goods_chg($item)}
-					<a href="{url:/ucenter/refunds_edit/og_id/$item['og_id']}"  class='btn_gray btn_small'>申请换货</a>
-					{/if}
-					{if:$item['comment_id'] && $item['comment_status']==0}
+					{if:$item['comment_id']!=-1 && $item['comment_id'] && $item['comment_status']==0}
 						<a href="{url:/site/comments/id/$item['comment_id']}"  class='btn_gray btn_small'>评价</a>
-					{elseif :$item['comment_id'] && $item['comment_status']==1}
+					{elseif :$item['comment_id']!=-1 && $item['comment_id'] && $item['comment_status']==1}
 						<b class="orange">已评价</b>
 					{/if}</p>	
 				</td>
@@ -189,10 +191,7 @@ function pay_confirm(_this){
 	var pay_money = $(_this).attr('money');
 	confirm('该订单需支付￥'+pay_money+'，确认支付吗',"location.href='"+to_pay+"'",1);
 }
-function ok_confirm(_this){
-	var to_url = $(_this).attr('tourl');
-	confirm('由于商品的特殊性，该订单确认收货后将不可进行退款操作，请在确认订单前，仔细检查商品后确认收货',"location.href='"+to_url+"'",1);
-}
+
 
 $('[name=find_order]').on('click',function(){
 	var order_no = $('input[name=order_no]').val();
