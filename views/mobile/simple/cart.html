@@ -125,7 +125,7 @@
 						<tr>
 						<td width="3%"></td>
 						<td width='50%'> </td>
-						<td width="15%"><a href='javascript:void(0)' onclick='cart_del_many()'><button class="submit2" type='button' style='width:100px;'>删除</button</a></td>
+						<td width="15%"><a href='javascript:void(0)' onclick='cart_del_many()'><button class="submit2" type='button' style='width:100px;'>删除</button></a></td>
 						<td width="18%">
 							
 							<button class="submit" onclick="check_finish();" type='button'>去结算</button>
@@ -171,7 +171,7 @@
 					<ul class="swiper-slide clear-fix fl swiper-slide-active" style="width: 640px;">
 						{foreach:items=Api::run('getCommendHot',5)}
 							<li class="fl">
-								<div class="brand_one_box" >
+								<div class="brand_one_box" style="height:100px;" >
 									<a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/98/h/106}" onerror='this.src="{skin:images/front/nopic_435_435.gif}"' /></a>
 								<a href="{url:/site/products/id/$item[id]}"><span class="title">{$item['name']}</span><span class="price">￥{$item['sell_price']}</span></a></div>
 							</li>  
