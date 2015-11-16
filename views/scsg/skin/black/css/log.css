@@ -264,10 +264,11 @@ textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;bor
 /* border table style start */
 /* list table style start */
 .list_table{ border-collapse:collapse;text-align:center;word-break:break-all;word-wrap:break-word;}
-	.list_table td{padding:10px 5px;line-height:18px;border-bottom:1px solid #e5e5e5}
+	.list_table td{padding:10px 15px;line-height:18px;border-bottom:1px solid #e5e5e5}
 	.list_table th{height:32px;border-bottom:1px solid #c5c5c5;font-weight:bold;color:3333;background:url(../images/front/ucenter/list_table_thbg.gif) repeat-x}
 	.list_table thead th{border-top:1px solid #ffc8a1;border-bottom:1px solid #ffc8a1;color:#545454;background:url(../images/front/ucenter/list_table_thbg.gif) 0 -33px repeat-x}
 	.list_table tbody th{color:#545454;background:none}
+	.list_table tr.even {height:57px;}
 	.list_table tr.even td{background-color:#fffcf3}
 	.list_table tfoot td{border:none;padding:15px 15px 15px 0}
 		.list_table td .pro_pic{border:1px solid #bbb}
