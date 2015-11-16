@@ -191,10 +191,10 @@
 								<dl class="tb-amount tm-clear">
 									<dt class="tb-metatit">数量</dt>
 									<dd id="J_Amount">
-										<input class="gray_t f_l" type="text" id="buyNums" onblur="tuan_spec_show.checkBuyNums();" value="1" maxlength="5" />
+										<input class="gray_t f_l" type="text" id="buyNums" onblur="tuan_spec_show.checkBuyNums();get_delivery_fee()" value="1" maxlength="5" />
 											<div class="resize">
-												<a class="add" href="javascript:tuan_spec_show.modified(1);"></a>
-												<a class="reduce" href="javascript:tuan_spec_show.modified(-1);"></a>
+												<a class="add" href="javascript:tuan_spec_show.modified(1);get_delivery_fee()"></a>
+												<a class="reduce" href="javascript:tuan_spec_show.modified(-1);get_delivery_fee()"></a>
 											</div>
 											<span class="mui-amount-unit">&nbsp;件</span>
 										<em id="J_EmStock" class="tb-hidden" style="display: inline;">库存量 <label id="data_storeNums">{$store_nums}</label>件</em>

@@ -265,10 +265,10 @@
 								<dl class="tb-amount tm-clear">
 									<dt class="tb-metatit">数量</dt>
 									<dd id="J_Amount">
-										<input class="gray_t f_l" type="text" id="buyNums" onblur="checkBuyNums();" value="1" maxlength="5" />
+										<input class="gray_t f_l" type="text" id="buyNums" onblur="checkBuyNums();get_delivery_fee()" value="1" maxlength="5" />
 											<div class="resize">
-												<a class="add" href="javascript:modified(1);"></a>
-												<a class="reduce" href="javascript:modified(-1);"></a>
+												<a class="add" href="javascript:modified(1);get_delivery_fee()"></a>
+												<a class="reduce" href="javascript:modified(-1);get_delivery_fee()"></a>
 											</div>
 											<span class="mui-amount-unit">&nbsp;件</span>
 										<em id="J_EmStock" class="tb-hidden" style="display: inline;">库存<label id="data_storeNums">{$store_nums}</label>件</em>
@@ -784,7 +784,7 @@ function sele_spec(_self)
 				$('#data_goodsNo').text(json.data.products_no);
 				$('#data_storeNums').text(json.data.store_nums);
 				$('#product_id').val(json.data.id);
-
+				get_delivery_fee();
 				//库存监测
 				checkStoreNums();
 			}

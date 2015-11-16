@@ -174,9 +174,9 @@
 										{set:$specVal=explode(',',trim($item['value'],','))}
 										{foreach:items=$specVal item=$spec_value}
 										{if:$item['type'] == 1}
-										<div class="item w_27"><a href="javascript:void(0);" class='allowed' onclick="spec_show_obj.sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' >{$spec_value}<span></span></a></div>
+										<div class="item w_27"><a href="javascript:void(0);" class='allowed' onclick="spec_show_obj.sele_spec(this);get_delivery_fee()" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' >{$spec_value}<span></span></a></div>
 										{else:}
-										<div class="item"><a href="javascript:void(0);" onclick="spec_show_obj.sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' ><img src="{webroot:$spec_value}" width='30px' height='30px' /><span></span></a></div>
+										<div class="item"><a href="javascript:void(0);" onclick="spec_show_obj.sele_spec(this);get_delivery_fee()" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}' ><img src="{webroot:$spec_value}" width='30px' height='30px' /><span></span></a></div>
 										{/if}
 										{/foreach}
 									</dd>
@@ -187,10 +187,10 @@
 								<dl class="tb-amount tm-clear">
 									<dt class="tb-metatit">数量</dt>
 									<dd id="J_Amount">
-										<input class="gray_t f_l" type="text" id="buyNums" onblur="spec_show_obj.checkBuyNums();" value="1" maxlength="5" />
+										<input class="gray_t f_l" type="text" id="buyNums" onblur="spec_show_obj.checkBuyNums();get_delivery_fee()" value="1" maxlength="5" />
 											<div class="resize">
-												<a class="add" href="javascript:spec_show_obj.modified(1);"></a>
-												<a class="reduce" href="javascript:spec_show_obj.modified(-1);"></a>
+												<a class="add" href="javascript:spec_show_obj.modified(1);get_delivery_fee()"></a>
+												<a class="reduce" href="javascript:spec_show_obj.modified(-1);get_delivery_fee()"></a>
 											</div>
 											<span class="mui-amount-unit">&nbsp;件</span>
 										<em id="J_EmStock" class="tb-hidden" style="display: inline; margin-left:20px;">库存<label id="data_storeNums">{$store_nums}</label>件</em>
@@ -520,33 +520,6 @@ function searchDelivery(province)
 	});
 }
 
-/**
- * 计算运费
- * @param provinceId
- * @param provinceName
- */
-function delivery(provinceId,provinceName)
-{
-	$('.sel_area').text(provinceName);
-
-	var buyNums = $('#buyNums').val();
-	var productId = $('#product_id').val();
-	var goodsId = "{$id}";
-
-	//通过省份id查询出配送方式，并且传送总重量计算出运费,然后显示配送方式
-	var url = '{url:/block/order_delivery}';
-	$.getJSON(url,{'province':provinceId,'goodsId':goodsId,'productId':productId,'num':buyNums,'random':Math.random},function(json)
-	{
-		//清空配送信息
-		$('#deliveInfo').empty();
-
-		for(var item in json)
-		{
-			var deliveRowHtml = template.render('deliveInfoTemplate',json[item]);
-			$('#deliveInfo').append(deliveRowHtml);
-		}
-	});
-}
 
 /**
  * 获取评论数据
