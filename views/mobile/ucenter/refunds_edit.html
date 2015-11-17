@@ -52,31 +52,35 @@
                         <!--第三种模块开始-->
     <section class="modle_section">
         <form action="{url:/ucenter/refunds_update}" method="post" callback="checkForm();">
-        	<input type="hidden" name="order_id" value="{$this->orderRow['id']}" />
+        	<input type="hidden" name="order_goods_id" value="{$this->orderRow['og_id']}"  class="radio" />
             <div class="yj">
 				<p>售后类型<span class="red">*</span></p>
 				<p>
 					<select name='type' class="sel">
+					{if:$this->orderRow['can_refunds']}
 					  <option value="0">我要退款</option>
+					 {/if}
+					 {if:$this->orderRow['can_chg']}
 					  <option value="1">我要换货</option>
-					</select>
-				</p>
-				<p>选择商品<span class="red">*</span></p>
-				<p>
-					<select class="sel" name="order_goods_id">
-						{foreach:items=Api::run('getOrderGoodsListByGoodsid',array('#order_id#',$this->orderRow['id'])) item=$good}
-						{set:$good_info = JSON::decode($good['goods_array'])}
-						{if:$good['is_send'] != 2}
-					  	<option  is_send='{$good["is_send"]}' value="{$good['id']}">{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$good['goods_nums']}件</option>
 					  {/if}
-					  {/foreach}
 					</select>
 				</p>
-				<p>快递公司<span class="red">(*未发货不填)</span></p>
+				<p>售后商品<span class="red"></span></p>
+				<p>
+					{set:$good_info = JSON::decode($this->orderRow['goods_array'])}
+						<p>
+							<label>
+								<a class="blue" href="{url:/site/products/id/$this->orderRow['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$this->orderRow['goods_nums']}件</a>
+							</label>
+						</p>
+				</p>
+				{if:$this->orderRow['is_send']==1}
+				<p>快递公司<span class="red">*</span></p>
 				<p>
 					<input type='text' class="text" name='delivery_com'/>
 				</p>
-				<p>快递单号<span class="red">(*未发货不填)</span></p>
+				<p>快递单号<span class="red">*</span></p>
+				{/if}
 				<p>
 					<input type='text' class="text" name='delivery_code'/>
 				</p>

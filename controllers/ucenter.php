@@ -17,6 +17,7 @@ class Ucenter extends IController
 			$this->redirect('/simple/login');
 		}
 	}
+	
     public function index()
     {
     	$userid = $this->user['user_id'];
@@ -542,7 +543,9 @@ class Ucenter extends IController
         {
         	$message = '订单不存在';
         }
-        
+        if(IClient::getDevice()=='mobile'){
+        	$this->redirect('morder');
+        }else
         $this->redirect('order');
     }
     /**
