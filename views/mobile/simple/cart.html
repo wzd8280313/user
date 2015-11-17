@@ -124,8 +124,12 @@
 				<table width="100%" border="0">
 						<tr>
 						<td width="3%"></td>
-						<td width='50%'> </td>
-						<td width="15%"><a href='javascript:void(0)' onclick='cart_del_many()'><button class="submit2" type='button' style='width:100px;'>删除</button</a></td>
+						<td width='50%'>							
+							<div id='cart_prompt'>
+								满足的优惠活动：
+							</div>
+						</td>
+						<td width="15%"><a href='javascript:void(0)' onclick='cart_del_many()'><button class="submit2" type='button' style='max-width:100px;'>删除</button</a></td>
 						<td width="18%">
 							
 							<button class="submit" onclick="check_finish();" type='button'>去结算</button>
@@ -138,9 +142,6 @@
 
 				</form>
 			
-				<div id='cart_prompt'>
-					满足的优惠活动：
-				</div>
 			</div>
 			{else:}
                 <div class="centerContent" >
