@@ -759,24 +759,43 @@ class Order_Class
 	 * 获取订单中商品的状态
 	 */
 	public static function get_order_good_status($orderGoodsRow){
-		if(in_array($orderGoodsRow['refunds_status'],array(3,4,7,8))){
-			return '退货中';
+		$refunds_status = $orderGoodsRow['refunds_status'];
+		switch($refunds_status){
+			case 3 : {
+				return '退款申请,等待卖家确认';
+			}
+			case 4 : {
+				return '审核通过，等待退款';
+			}
+			case 5 : {
+				return '退款失败';
+			}
+			case 6 : {
+			   return '退款成功'	;
+			}
+			case 7 : {
+				return '等待退货审核';
+			}
+			case 8 : {
+				return '审核通过，等待退款';
+			}
+			case 9 : {
+				return '退款失败';
+			}
+			case 10 : {
+				return '退款成功';
+			}
+			case 11 : {
+				return '等待换货审核';
+			}
+			case 12 : {
+				return '换货成功';
+			}
+			case 13 : {
+				return '换货失败';
+			}
 		}
-		else if($orderGoodsRow['refunds_status']==11){
-			return '换货中';
-		}
-		else if(in_array($orderGoodsRow['refunds_status'],array(5,9))){
-			return '退货失败';
-		}
-		else if($orderGoodsRow['refunds_status']==13){
-			return '换货失败';
-		}
-		else if(in_array($orderGoodsRow['refunds_status'],array(6,10))){
-			return '已退货';
-		}
-		else if($orderGoodsRow['refunds_status']==12){
-			return '换货成功';
-		}
+
 		if($orderGoodsRow['is_send']==0){
 			return '未发货';
 		}

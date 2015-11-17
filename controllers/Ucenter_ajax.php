@@ -72,7 +72,9 @@ class Ucenter_ajax extends IController
 		
 		$order_list = $order_db->find();
 		
-		
+		foreach($order_list as $k=>$v){
+			
+		}
 		
 	}
 	/**

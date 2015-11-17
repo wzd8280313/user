@@ -93,7 +93,7 @@
 			<tbody>
 				
 				{foreach:items = $this->order_list key=$k}
-				{set:$refunded_id = $this->order_list2[$k]['refundment_id']}
+				{set:$refunding_id = $this->order_list2[$k]['refundment_id'];$refunding_type=$this->order_list2[$k]['refundment_type']}
 				<tr>
 					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" onclick='to_excel(this)' /></td>
 					<td title="{$item['order_no']}">{$item['order_no']}</td>
@@ -117,18 +117,18 @@
 						{/if}
 						<a href="javascript:void(0)" onclick="delModel({link:'{url:/order/order_del/id/$item[id]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" title="删除"/></a>
 						{if:$item['refundment_id']}
-							{if:!$refunded_id}
-							{if:$item['refundment_type']==0}
-							<a href='{url:/order/order_show/id/$item[id]}?refunds' class='blue'>退货完成</a>
-							{else:}
-								<a href='{url:/order/order_show/id/$item[id]}?refunds' class='blue'>换货完成</a>
-							{/if}
+							{if:!$refunding_id}
+								{if:$item['refundment_type']==0}
+								<a href='{url:/order/order_show/id/$item[id]}?refunds' class='blue'>退货完成</a>
+								{else:}
+									<a href='{url:/order/order_show/id/$item[id]}?refunds' class='blue'>换货完成</a>
+								{/if}
 								
 							{else:}
-								{if:$item['refundment_type']==0}
-									<a href='{url:/order/refundment_apply_show/id/$item[refundment_id]}' class='red'>退货处理</a>
+								{if:$refunding_type==0}
+									<a href='{url:/order/refundment_apply_show/id/$refunding_id}' class='red'>退货处理</a>
 								{else:}
-								<a href='{url:/order/refundment_chg_show/id/$item[refundment_id]}' class='red'>换货处理</a>
+								<a href='{url:/order/refundment_chg_show/id/$refunding_id}' class='red'>换货处理</a>
 								{/if}
 							{/if}
 						{/if}
