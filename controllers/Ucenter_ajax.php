@@ -38,11 +38,48 @@ class Ucenter_ajax extends IController
 		}
 		echo JSON::encode($resData);
 	}
+	
+	/**
+	 * 
+	 */
+	public function get_orderlist(){
+		$chg_time = 7*24*3600;//完成订单后换货期限
+		$userid = $this->user['user_id'];
+		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+		$status = IReq::get('status')? intval(IReq::get('status')) : null;
+		
+		$where = '';
+		if($status==1){//待付款
+			$where .= ' and (o.type!=4 and o.status=1 and o.pay_type!=0  or o.type=4 and o.status in (1,4) )';
+				
+		}else if($status==2){//待发货
+			$where .= ' and (o.type!=4 and o.status=2 and o.distribution_status=0 OR o.type=4 and o.status=7)';
+		}
+		else if($status==3){//待收货
+			$where .= ' and (type!=4 and status!=5 and distribution_status = 1 OR type=4 and status=9)';
+		}
+		else if($status==4){//待评价
+			$where .= ' and (type!=4 and status=5 OR type=4 and status=11)';
+		}
+		
+		$order_db = new IQuery('order as o');
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join comment as c on og.comment_id=c.id';
+		$order_db->group = 'og.id';
+		$order_db->where = 'user_id='.$userid.' and if_del=0'.$where;
+		$order_db->page  = $page;
+		$order_db->order = 'o.id DESC';
+		$order_db->fields = 'o.*,c.status as comment_status,og.id as og_id,og.img,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
+		
+		$order_list = $order_db->find();
+		
+		
+		
+	}
 	/**
 	 * 获取订单数据
 	 * 
 	 */
-	public function get_orderlist(){
+	public function get_orderlist1(){
 		$userid = $this->user['user_id'];
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		$status = IReq::get('status')? intval(IReq::get('status')) : null;
