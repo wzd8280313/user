@@ -166,6 +166,7 @@ img{vertical-align:middle/* 此样式会控制前端图片属性所以去掉*/ }
 .w_img60{width:60%;}
 .w_img50{width:50%;}
 .w_img30{width:30%;}
+.indent{width:100%;}
 
 /* 边距 5 10 15 20 25 30 */
 .m5{margin:5px}
