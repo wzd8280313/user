@@ -163,17 +163,17 @@
 		
 </section>
 
-<section id="wrap">
+<section id="wrap" style="height:160px; margin-bottom:30px;">
 	<!--品牌wrap-->
             <div class="brand_wrap swiper-container swiper-container-horizontal" >
 				<h5>猜你喜欢</h5>
-				<div class="brand_swiper_wrap swiper-wrapper ">
+				<div class="brand_swiper_wrap swiper-wrapper " style="height:146px;">
 					<ul class="swiper-slide clear-fix fl swiper-slide-active" style="width: 640px;">
 						{foreach:items=Api::run('getCommendHot',5)}
 							<li class="fl">
-								<div class="brand_one_box" style="height:100px;" >
+								<div class="brand_one_box" style="height:140px;" >
 									<a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/98/h/106}" onerror='this.src="{skin:images/front/nopic_435_435.gif}"' /></a>
-								<a href="{url:/site/products/id/$item[id]}"><span class="title">{$item['name']}</span><span class="price">￥{$item['sell_price']}</span></a></div>
+								<a href="{url:/site/products/id/$item[id]}"><span style="border:none; line-height:63px; margin-top:-10px;font-size:13px;" class="title">{$item['name']}</span><span class="price" style="line-height:55px;font-size:13px;">￥{$item['sell_price']}</span></a></div>
 							</li>  
 						{/foreach}
 					</ul>  
