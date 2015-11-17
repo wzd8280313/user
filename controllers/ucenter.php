@@ -543,10 +543,7 @@ class Ucenter extends IController
         {
         	$message = '订单不存在';
         }
-        if(IClient::getDevice()=='mobile'){
-        	$this->redirect('morder');
-        }else
-        $this->redirect('order');
+        	$this->redirect('order');
     }
     /**
      * @brief 退款申请删除

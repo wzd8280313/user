@@ -90,7 +90,7 @@ class Ucenter_ajax extends IController
 			if($v['type']!='4'){
 				$order_data[$k]['order_status_no'] = Order_Class::getOrderStatus($order_data[$k]);
 				$order_data[$k]['order_status'] = Order_Class::orderStatusText($order_data[$k]['order_status_no']);
-				$order_data[$k]['can_pay'] = $v['pay_type']!=0 && $v['status']==1 ? 1 : 0;
+				$order_data[$k]['can_pay'] = ($v['pay_type']!=0 && $v['status']==1) ? 1 : 0;
 			}else{
 				$order_data[$k]['order_status_no'] = $v['status'];
 				$order_data[$k]['order_status'] = Preorder_Class::getOrderStatus($order_data[$k]);
