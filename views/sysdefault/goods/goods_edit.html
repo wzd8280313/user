@@ -53,11 +53,10 @@
 					<tr>
 						<th>所属分类：</th>
 						<td>
-							<div id="__categoryBox" class='cate' style="margin-bottom:8px"></div>
+							<div id="__categoryBox" style="margin-bottom:8px"></div>
 
 							<!--分类数据显示-->
 							<script id="categoryButtonTemplate" type="text/html">
-							
 							<button class="btn" type="button" onclick="return confirm('确定删除此分类？') ? $(this).remove() : '';">
 								<input type="hidden" value="<%=templateData['id']%>" name="_goods_category[]" />
 								<span class="del"><%=templateData['name']%></span>
@@ -244,17 +243,76 @@
 							{/query}
 						</td>
 					</tr>
+		
+		<!-- 商品品牌模糊搜索    start         -->
+		
 					<tr>
 						<th>商品品牌：</th>
-						<td>
-							<select class="auto" name="brand_id">
-								<option value="0">请选择</option>
-								{query:name=brand}
-								<option value="{$item['id']}">{$item['name']}</option>
-								{/query}
-							</select>
+						<td style="position:relative;">
+                            <span style="margin-left:100px;width:18px;overflow:hidden;">
+								<select style="width:118px;margin-left:-100px" class="auto" name="brand_id" id="xialakuang" onchange="this.parentNode.nextSibling.value=this.value">
+									<option value="0">请选择</option>
+									{query:name=brand group=name}
+									<option value="{$item['id']}">{$item['name']}</option>
+									{/query}
+									<!-- <p><input type="text" name="shangpin" id="chapinpai" onblur="cha();"></p> -->
+								</select>
+							</span>
+							<input type="text" name="shangpin" id="chapinpai" onkeyup="cha();" style="width:100px;height:20px;position:absolute;left:10px;border:1px solid #eee;" placeholder="请输入或选择">
+							<ul id="add_list" style="width:100px;height:100px;overflow:auto;"></ul>
 						</td>
+		
+						<script>
+							function cha() {
+								var inp = $('#chapinpai').val();
+								if(inp == ''){
+									return false;
+								}
+								var url = '/goods/getdata';
+								$.ajax({
+									type:'post',
+									url : url,
+									data:'name='+inp,
+									dataType:'json',
+									success:function(call){
+										addList(call);
+									}
+								});
+							}
+
+							$('#xialakuang').change(function(){
+								$(this).children().each(function(){
+									if($(this).attr('selected')){
+										var name = $(this).text();
+										$('#chapinpai').val(name);
+										return false;
+									}
+								});
+							});
+
+							function addList(obj){
+								// $('#add_list').html('');
+								var list_1 = '<li style="width:100px;margin-left:0px;border:1px solid #eee;cursor:pointer;" class="edit_list">';
+								var list_2 = '</li>';
+								var list = '';
+								for(var i in obj){
+									list += list_1 + obj[i].name + list_2;
+								}
+								$('#add_list').html(list);
+
+								$('li.edit_list').click(function(){
+									var list_name = $(this).text();
+									$('#chapinpai').val(list_name);
+									$('#add_list').html('');
+								});
+								return false;
+							}
+
+						</script>
 					</tr>
+
+		<!-- 商品品牌模糊搜索    end         -->
+		
 					<tr>
 						<th>产品相册：</th>
 						<td>
@@ -429,7 +487,7 @@ function checkForm()
 		$('input[name="_imgList"]').val(goodsPhoto.join(','));
 		$('input[name="img"]').val($('#thumbnails img[class="current"]').attr('alt'));
 	}
-	if($('#__categoryBox .btn').length==0){
+	if($('input[name^="_goods_category"]').length==0){
 		alert('商品分类不能为空');
 		return false;
 	}

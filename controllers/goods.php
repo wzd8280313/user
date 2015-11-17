@@ -226,6 +226,26 @@ class Goods extends IController
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');
 	}
+
+	/**
+	* @brief 商品模糊查询
+	*/
+	public function getData() {
+		$name = IFilter::act(IReq::get('name'));
+
+		$table_name = 'brand';
+		$where = ' name like "';
+		$where .= $name .'%"';
+		$tb_brand = new IQuery($table_name);
+		$tb_brand->where = $where;
+		$tb_brand->group = 'name';
+		$tb_brand->fields = ' name ';
+		$data = $tb_brand->find();
+		echo json_encode($data, JSON_UNESCAPED_UNICODE );
+		exit();
+	}
+
+
 	/**
 	 * @brief 保存修改商品信息
 	 */
