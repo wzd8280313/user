@@ -258,8 +258,8 @@
 									<!-- <p><input type="text" name="shangpin" id="chapinpai" onblur="cha();"></p> -->
 								</select>
 							</span>
-							<input type="text" name="shangpin" id="chapinpai" onkeyup="cha();" style="width:100px;height:20px;position:absolute;left:10px;border:1px solid #eee;" placeholder="请输入或选择">
-							<ul id="add_list" style="width:100px;height:100px;overflow:auto;"></ul>
+							<input type="text"  id="chapinpai" onkeyup="cha();"  autocomplete="off" style="width:100px;height:23px;position:absolute;left:10px;border:1px solid #eee;" placeholder="请输入或选择">
+							<ul id="add_list" style="width:100px;height:auto;overflow:auto;"></ul>
 						</td>
 		
 						<script>
@@ -268,7 +268,7 @@
 								if(inp == ''){
 									return false;
 								}
-								var url = '/goods/getdata';
+								var url = '{url:/goods/getdata}';
 								$.ajax({
 									type:'post',
 									url : url,
@@ -292,20 +292,21 @@
 
 							function addList(obj){
 								// $('#add_list').html('');
-								var list_1 = '<li style="width:100px;margin-left:0px;border:1px solid #eee;cursor:pointer;" class="edit_list">';
+								var list_1 = '<li style="width:100px;margin-left:0px;border:1px solid #eee;cursor:pointer;"';
 								var list_2 = '</li>';
 								var list = '';
 								for(var i in obj){
-									list += list_1 + obj[i].name + list_2;
+									list += list_1 + ' value="'+ obj[i].id + '" class="edit_list">' + obj[i].name + list_2;
 								}
 								$('#add_list').html(list);
 
 								$('li.edit_list').click(function(){
 									var list_name = $(this).text();
+									var id = $(this).attr('value');
 									$('#chapinpai').val(list_name);
+									$('#xialakuang').val(id);
 									$('#add_list').html('');
 								});
-								return false;
 							}
 
 						</script>

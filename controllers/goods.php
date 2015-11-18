@@ -239,7 +239,7 @@ class Goods extends IController
 		$tb_brand = new IQuery($table_name);
 		$tb_brand->where = $where;
 		$tb_brand->group = 'name';
-		$tb_brand->fields = ' name ';
+		$tb_brand->fields = ' id,name ';
 		$data = $tb_brand->find();
 		echo json_encode($data, JSON_UNESCAPED_UNICODE );
 		exit();
@@ -250,7 +250,8 @@ class Goods extends IController
 	 * @brief 保存修改商品信息
 	 */
 	function goods_update()
-	{
+	{   
+		//print_r($_POST);exit();
 		$id       = IFilter::act(IReq::get('id'),'int');
 		$callback = IFilter::act(IReq::get('callback'),'url');
 		$callback = strpos($callback,'goods/goods_list') === false ? '' : $callback;
