@@ -309,8 +309,9 @@
 						<td class="red2 bold">￥{echo:$good['goods_nums']*$good['real_price']}</td>
 						<td>
 							{echo:Order_Class::goodsSendStatus($good['is_send'])}
+							{if:$good['is_send']==1}
 							<input type='button' class='btn_gray btn_mini' value='物流' onclick='freightLine({$good['delivery_id']});' />
-							
+							{/if}
 						</td>
 						<td>
 							{if:Refunds_Class::order_goods_refunds(array_merge($good,$this->order_info)) || Refunds_Class::order_goods_chg(array_merge($good,$this->order_info))}

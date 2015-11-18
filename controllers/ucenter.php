@@ -157,7 +157,7 @@ class Ucenter extends IController
 		}
 		if($order_no)$where .= ' and o.order_no='.$order_no;
 		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join comment as c on og.comment_id=c.id';
+		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on og.comment_id=c.id';
 		$order_db->group = 'og.id';
 		$order_db->where = $where?$where : 1;
 		$order_db->page  = $page;
@@ -1798,7 +1798,7 @@ class Ucenter extends IController
     	}
     	if($order_no)$where = ' o.order_no='.$order_no;
     	$order_db = new IQuery('order as o');
-    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og on o.id=og.order_id left join comment as c on og.comment_id = c.id';
+    	$order_db->join = 'left join presell as p on o.active_id=p.id left join order_goods as og left join goods as g on g.id=og.goods_id on o.id=og.order_id left join comment as c on og.comment_id = c.id';
     	$order_db->group = 'og.order_id';
     	$order_db->where = $where?$where : 1;
     	$order_db->page  = $page;

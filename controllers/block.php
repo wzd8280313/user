@@ -850,7 +850,7 @@ class Block extends IController
 				}
 			}
 		}
-		die('发货单信息不存在');
+		die('启奏皇上，您所下单御品，微臣已命物流锦衣卫护送【山城速购】');
 	}
 
 	//微信API接口地址
