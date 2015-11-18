@@ -280,7 +280,8 @@
 								});
 							}
 
-							$('#xialakuang').change(function(){
+							$('#xialakuang').click(function(){
+								$('.edit_list').hide();
 								$(this).children().each(function(){
 									if($(this).attr('selected')){
 										var name = $(this).text();
@@ -288,6 +289,7 @@
 										return false;
 									}
 								});
+								//$('input').attr('value','');
 							});
 
 							function addList(obj){
@@ -403,6 +405,7 @@ $(function()
 	$('#goodsBaseBody').find('input.product_id').val(0);//商品的货品字段为0
 
 	formObj.init(goods);
+	$('#chapinpai').val($('#xialakuang').find("option:selected").text());
 
 	//模型选择
 	$('[name="model_id"]').change();
