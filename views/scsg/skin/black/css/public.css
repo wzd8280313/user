@@ -235,6 +235,16 @@ position: absolute;
 left: 0;
 overflow: hidden;
 }
+.search .logo .png{
+  width:171px;
+  height: 70px;
+  border: 0;
+}
+.search .logo .png_t{
+  width: 210px;
+  height: 70px;
+  border: 0;
+}
 .search .w1190 {
 position: relative;
 z-index: 70;
@@ -650,7 +660,7 @@ z-index: 3;
 background-color: #fff;
 overflow: hidden;
 display:none;
-width: 990px;
+width: 991px;
 height:490px;
 }
 .category .cat-layer {
