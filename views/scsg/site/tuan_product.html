@@ -298,7 +298,7 @@
 
 <!-- JiaThis Button END -->
 			{set:$cls=isset($favorite_id_arr)&&in_array($id,$favorite_id_arr) ? 'guanzhu' : 'quguan'}
-				<div class='{$cls}' style="line-height:26px;position:absolute; left:300px;bottom:1px; padding-left:17px; " id="gz"><a href='javascript:void(0)' onclick='favorite_add(this)'>我的关注：({$favorite}人气)</a></div>
+				<div class='{$cls}' onclick='favorite_add(this)' style="line-height:26px;position:absolute; left:300px;bottom:1px; padding-left:17px; " id="gz"><a href='javascript:void(0)' onclick='favorite_add(this)'>我的关注：({$favorite}人气)</a></div>
 		</div>
 	</div>
 
