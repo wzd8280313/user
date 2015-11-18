@@ -55,10 +55,10 @@
 					<td>{$item['real_price']}</td>
 					<td>{$item['goods_nums']}</td>
 					<td>
-						{if:$item['is_send'] == 0}
+						{if:$item['is_send'] == 0 && ($item['refunds_status']==0 || $item['refunds_status']==5)}
 						<input type="checkbox" name="sendgoods[]" value="{$item['id']}" />
 						{else:}
-						{echo:Order_class::goodsSendStatus($item['is_send'])}
+						{echo:Order_class::get_order_good_status($item)}
 						{/if}
 					</td>
 				</tr>
