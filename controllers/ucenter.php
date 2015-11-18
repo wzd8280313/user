@@ -618,12 +618,30 @@ class Ucenter extends IController
 			$orderDB  = new IQuery('order_goods as og');
 			$orderDB->join = 'left join order as o on og.order_id=o.id ';
 			$orderDB->where = 'og.id='.$order_goods_id.' and o.user_id='.$this->user['user_id'];
-			$orderDB->fields = 'o.order_no,o.status,o.completion_time,o.order_amount,og.img,og.refunds_status,og.is_send,og.goods_nums,og.goods_id,og.goods_array,og.id as og_id';
+			$orderDB->fields = 'o.order_no,og.id as order_id,o.real_freight,o.payable_freight,o.status,o.completion_time,o.real_amount,o.pro_reduce,o.order_amount,og.img,og.refunds_status,og.is_send,og.goods_nums,og.real_price,og.goods_id,og.goods_array,og.id as og_id';
 			$orderRow = $orderDB->getObj();
 			if($orderRow)
 			{
 				$orderRow['can_refunds'] = Refunds_Class::order_goods_refunds($orderRow);
 				$orderRow['can_chg'] = Refunds_Class::order_goods_chg($orderRow);
+				
+				if($orderRow['can_refunds'] && $orderRow['real_freight']==0 && $orderRow['payable_freight']>0 && $orderRow['is_send']==0){
+					$prom = new IModel('promotion');
+					$free_freight_price = $prom->getObj('type=0 and award_type=6 and is_close=0','`condition`');
+					$free_freight_price = $free_freight_price['condition'];//免运费的额度
+
+					$order_amount = $orderRow['real_amount'] + $orderRow['pro_reduce'];
+					$order_goods_db = new IModel('order_goods');
+					$refunds_og = $order_goods_db->query('order_id='.$orderRow['order_id'].' and refunds_status in (3,4,6)','real_price');
+					$refunds_sum = 0;//未发货已申请退款的金额，包括当前商品
+					foreach($refunds_og as $v){
+						$refunds_sum += $v['real_price'];
+					}
+					$refunds_sum += $orderRow['real_price'];
+					if($order_amount - $refunds_sum < $free_freight_price){//剩余的钱小于免运费的额度
+						$orderRow['freight_text'] = 1;
+					}
+				}
 				if(!$orderRow['can_refunds'] && !$orderRow['can_chg'])$this->redirect('refunds');
 				$this->orderRow = $orderRow;
 				$this->redirect('refunds_edit');
