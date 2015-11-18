@@ -233,6 +233,9 @@ class Goods extends IController
 	public function getData() {
 		$name = IFilter::act(IReq::get('name'));
 
+		if(!$name){
+			echo 0;exit;
+		}
 		$table_name = 'brand';
 		$where = ' name like "';
 		$where .= $name .'%"';
