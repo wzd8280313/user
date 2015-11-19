@@ -74,17 +74,33 @@ $seller_arr[0]='平台自营';
 				<!--品牌展示-->
 
 				<!--商品属性-->
-				{foreach:items = search_goods::$attrSearch}
-				<dl class="sorting">
-					<dt>{$item['name']}：</dt>
-					<dd id='attr_dd_{$item['id']}'>
-						<a class="nolimit current" href="{echo:search_goods::searchUrl('attr['.$item["id"].']','')}">不限</a>
-						{foreach:items=$item['value'] item=$attr}
-						<a href="{echo:search_goods::searchUrl('attr['.$item["id"].']',$attr)}" id="attr_{$item['id']}_{echo:md5($attr)}">{$attr}</a>
-						{/foreach}
-					</dd>
-				</dl>
-				{/foreach}
+				{set:$attrSearch = search_goods::$attrSearch;$modelSearch = search_goods::$modelSearch}
+		
+				{if: !empty($attrSearch)}
+					{foreach:items = $attrSearch}
+					<dl class="sorting">
+						<dt>{$item['name']}：</dt>
+						<dd id='attr_dd_{$item['id']}'>
+							<a class="nolimit current" href="{echo:search_goods::searchUrl('attr['.$item["id"].']','')}">不限</a>
+							{foreach:items=$item['value'] item=$attr}
+							<a href="{echo:search_goods::searchUrl('attr['.$item["id"].']',$attr)}" id="attr_{$item['id']}_{echo:md5($attr)}">{$attr}</a>
+							{/foreach}
+						</dd>
+					</dl>
+					{/foreach}
+				{elseif: !empty($modelSearch)}
+						<dl class="sorting">
+							<dt>分类：</dt>
+							<dd >
+								<a class="nolimit current" >不限</a>
+								
+								{foreach:items=$modelSearch }
+								<a href="{echo:search_goods::searchUrl(array('1'=>'model'),$item['id'])}" id="model_{$item['id']}">{$item['name']}</a>
+								{/foreach}
+							</dd>
+						</dl>
+
+				{/if}
 				<!--商品属性-->
 
 				<!--商品价格-->

@@ -501,6 +501,7 @@ class Site extends IController
 
 		//获取子分类
 		$this->childId = goods_class::catChild($this->catId);
+	//	echo $this->childId;echo $this->catId;
 		$this->redirect('pro_list');
 	}
 	
@@ -1160,7 +1161,7 @@ class Site extends IController
 
 
 	function ce(){
-		Delivery::getDelivery('120225',7,7,0);
+		echo search_goods::searchUrl(array('1'=>'model'),6);
 	}
 	
 }
