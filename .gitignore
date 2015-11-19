@@ -1,4 +1,8 @@
-backup
-runtime
-config
-upload
+node_modules
+*.log
+.*
+.txt
+/runtime
+/upload
+/backup
+!.gitignore
