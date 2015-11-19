@@ -67,7 +67,10 @@ class ISession
 	{
 		self::$pre  = self::getPre();
 		$is_checked = self::checkSafe();
-
+		if($is_checked==-1) {
+			$_SESSION[self::$pre.'safecode']=self::sessionId();
+			$is_checked = self::checkSafe();
+		}
 		if($is_checked == 1)
 		{
 			return isset($_SESSION[self::$pre.$name])?$_SESSION[self::$pre.$name]:null;

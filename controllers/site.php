@@ -1160,10 +1160,7 @@ class Site extends IController
 
 
 	function ce(){
-		$trade_record_db = new IModel('trade_record');
-		$order_no = '20151113001639674996';$order_id = 5;
-		$acc_no = $trade_record_db->getField('order_no like "%'.$order_no.'"  OR FIND_IN_SET("'.$order_id.'",order_ids)' ,'acc_no');
-		echo $acc_no;
+		Delivery::getDelivery('120225',7,7,0);
 	}
 	
 }

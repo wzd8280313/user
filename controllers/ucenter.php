@@ -86,94 +86,97 @@ class Ucenter extends IController
      */
     public function order()
     {
-    	$chg_time = 7*24*3600;//完成订单后换货期限
-    	$userid = $this->user['user_id'];
-    	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
-    	$status_array = array(
-    		'1' => array('o.status'=>'=1','pay_status'=>'=0'),//等待付款
-    		'2' => array('o.status'=>'in (3,4) '),//取消订单
-    		'3' => array(//等待发货
-    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=0'),
-    				array('o.status'=>'=2','distribution_status'=>'=0')
-    		),
-    		'4' => array(//已发货
-    				array('o.status'=>'in (2,8) ','distribution_status'=>'=1'),
-    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=1'),
-    		),
-    		'5' => array(
-    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=2'),
-    				//array('status'=>'=7','distribution_status'=>'in (0,2) ')
-    		),
-    		'6' => array(
-    			'o.status'=>'=5'
-    		),
-//     		'7' => array(
-//     			'status' => '=6'
-//     		),
-//     		'8' => array(
-//     				'status'=>'=7','distribution_status'=>'=1'
-//     		)
-    	);
-    	$status_str = $seller_str = '';
-    	$order_no = IFilter::act(IReq::get('order_no'));
-    	$status = IFilter::act(IReq::get('status'),'int');
-    	$beginTime = IFilter::act(IReq::get('beginTime'));
-    	$endTime = IFilter::act(IReq::get('endTime'));
-    	$seller_id = IFilter::act(IReq::get('seller_id'),'int');
-    	if($seller_id){
-    		if($seller_id==2){
-    			$seller_str = ' g.seller_id=0 ';
-    		}else if($seller_id==1){
-    			$seller_str = ' g.seller_id!=0 ';
-    		}
+    	if(IClient::getDevice()=='pc'){
+    	
+	    	$chg_time = 7*24*3600;//完成订单后换货期限
+	    	$userid = $this->user['user_id'];
+	    	$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+	    	$status_array = array(
+	    		'1' => array('o.status'=>'=1','pay_status'=>'=0'),//等待付款
+	    		'2' => array('o.status'=>'in (3,4) '),//取消订单
+	    		'3' => array(//等待发货
+	    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=0'),
+	    				array('o.status'=>'=2','distribution_status'=>'=0')
+	    		),
+	    		'4' => array(//已发货
+	    				array('o.status'=>'in (2,8) ','distribution_status'=>'=1'),
+	    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=1'),
+	    		),
+	    		'5' => array(
+	    				array('o.status'=>'=1','pay_type'=>'=0','distribution_status'=>'=2'),
+	    				//array('status'=>'=7','distribution_status'=>'in (0,2) ')
+	    		),
+	    		'6' => array(
+	    			'o.status'=>'=5'
+	    		),
+	//     		'7' => array(
+	//     			'status' => '=6'
+	//     		),
+	//     		'8' => array(
+	//     				'status'=>'=7','distribution_status'=>'=1'
+	//     		)
+	    	);
+	    	$status_str = $seller_str = '';
+	    	$order_no = IFilter::act(IReq::get('order_no'));
+	    	$status = IFilter::act(IReq::get('status'),'int');
+	    	$beginTime = IFilter::act(IReq::get('beginTime'));
+	    	$endTime = IFilter::act(IReq::get('endTime'));
+	    	$seller_id = IFilter::act(IReq::get('seller_id'),'int');
+	    	if($seller_id){
+	    		if($seller_id==2){
+	    			$seller_str = ' g.seller_id=0 ';
+	    		}else if($seller_id==1){
+	    			$seller_str = ' g.seller_id!=0 ';
+	    		}
+	    	}
+	    	if($status && isset($status_array[$status])){
+	    		$status_arr = $status_array[$status];
+	    		foreach($status_arr as $key=>$val){
+	    			if(is_array($val)){
+	    				foreach($val as $k=>$v){
+	    					$status_str .= $k.' '.$v.' and ';
+	    				}
+	    				$status_str=substr($status_str,0,-4);
+	    				$status_str .= ' OR  ';
+	    				
+	    			}else{
+	    				$status_str .= $key.' '.$val.' and ';
+	    			}
+	    			
+	    		}
+	    		$status_str=' ('.substr($status_str,0,-4).') ';
+	    	}
+	    	$where = "o.user_id =".$userid." and o.if_del= 0 and o.type !=4 ";
+	    	$where .= $status_str ? ' and '.$status_str : '';
+	    	$where .= $seller_str ? ' and '.$seller_str : '';
+	  		 if($beginTime)
+			{
+				$where .= ' and o.create_time > "'.$beginTime.'"';
+			}
+			if($endTime)
+			{
+				$where .= ' and o.create_time < "'.$endTime.'"';
+			}
+			if($order_no)$where .= ' and o.order_no='.$order_no;
+			$order_db = new IQuery('order as o');
+			$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on og.comment_id=c.id';
+			$order_db->group = 'og.id';
+			$order_db->where = $where?$where : 1;
+			$order_db->page  = $page;
+			$order_db->order = 'o.id DESC';
+			$order_db->fields = 'o.*,IF(o.status=5 && TIMESTAMPDIFF(second,o.completion_time,NOW())<'.$chg_time.',1,0) as can_chg,c.status as comment_status,og.id as og_id,og.img,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
+			$this->order_db = $order_db;
+			//print_r($order_db->find());
+	        $this->initPayment();
+	        $data['s_beginTime'] = $beginTime;
+	        $data['s_endTime'] = $endTime;
+	        $data['s_order_no'] = $order_no;
+	        $data['s_status'] = $status;
+	        $data['s_seller_id'] = $seller_id;
+	        $this->setRenderData($data);
+	        
     	}
-    	if($status && isset($status_array[$status])){
-    		$status_arr = $status_array[$status];
-    		foreach($status_arr as $key=>$val){
-    			if(is_array($val)){
-    				foreach($val as $k=>$v){
-    					$status_str .= $k.' '.$v.' and ';
-    				}
-    				$status_str=substr($status_str,0,-4);
-    				$status_str .= ' OR  ';
-    				
-    			}else{
-    				$status_str .= $key.' '.$val.' and ';
-    			}
-    			
-    		}
-    		$status_str=' ('.substr($status_str,0,-4).') ';
-    	}
-    	$where = "o.user_id =".$userid." and o.if_del= 0 and o.type !=4 ";
-    	$where .= $status_str ? ' and '.$status_str : '';
-    	$where .= $seller_str ? ' and '.$seller_str : '';
-  		 if($beginTime)
-		{
-			$where .= ' and o.create_time > "'.$beginTime.'"';
-		}
-		if($endTime)
-		{
-			$where .= ' and o.create_time < "'.$endTime.'"';
-		}
-		if($order_no)$where .= ' and o.order_no='.$order_no;
-		$order_db = new IQuery('order as o');
-		$order_db->join = 'left join order_goods as og on o.id=og.order_id left join goods as g on og.goods_id=g.id left join comment as c on og.comment_id=c.id';
-		$order_db->group = 'og.id';
-		$order_db->where = $where?$where : 1;
-		$order_db->page  = $page;
-		$order_db->order = 'o.id DESC';
-		$order_db->fields = 'o.*,IF(o.status=5 && TIMESTAMPDIFF(second,o.completion_time,NOW())<'.$chg_time.',1,0) as can_chg,c.status as comment_status,og.id as og_id,og.img,og.goods_id,og.product_id,og.real_price,og.goods_nums,og.goods_array,og.is_send,og.comment_id,og.refunds_status';
-		$this->order_db = $order_db;
-		//print_r($order_db->find());
-        $this->initPayment();
-        $data['s_beginTime'] = $beginTime;
-        $data['s_endTime'] = $endTime;
-        $data['s_order_no'] = $order_no;
-        $data['s_status'] = $status;
-        $data['s_seller_id'] = $seller_id;
-        $this->setRenderData($data);
-        $this->redirect('order');
-
+    	$this->redirect('order');
     }
     /**
      * @brief 初始化支付方式
@@ -800,7 +803,7 @@ class Ucenter extends IController
     	$username = IFilter::act(IReq::get('username'));
     	$user_id = $this->user['user_id'];
     	$user_db = new IModel('user');
-    	if($user_db->getObj('username='.$username,'id')){
+    	if($user_db->getObj('username="'.$username.'"','id')){
     		$this->redirect('username',false);
     		Util::showMessage('该用户名已注册');
     	}
