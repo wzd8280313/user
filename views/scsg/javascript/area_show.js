@@ -44,6 +44,7 @@ function createAreaSelect(name,parent_id,select_id)
 			var childName = $(this).parent('ul').attr('child');
 			var area_id = $(this).find('a').attr('data-value');
 			var area_text = $(this).find('a').text();
+			
 			switch(name){
 				case 'province' : {
 					$('[name=pro_show]').text(area_text);
@@ -62,7 +63,10 @@ function createAreaSelect(name,parent_id,select_id)
 				}
 				break;
 			}
+			
+			
 			get_delivery_fee(name);
+			
 			if(!childName)//最后一级
 			{
 				
