@@ -135,8 +135,8 @@ function show_det2(_this){
 	 $("#rightProdDescNavDiv").height(1000);
 
 	
-	
-	
+	$(".ke-zeroborder tbody").remove();
+	$(".ke-zeroborder").css({   "background-size": "100%" , "height": "150px", "width": "100%"}); 
 	
 }
 function show_comments_list(_this){
