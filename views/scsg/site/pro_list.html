@@ -87,7 +87,8 @@ $seller_arr[0]='平台自营';
 								<a class="nolimit current" >不限</a>
 								
 								{foreach:items=$modelSearch }
-								<a href="{echo:search_goods::searchUrl(array('1'=>'model'),$item['id'])}" id="model_{$item['id']}">{$item['name']}</a>
+								{set:$id=(int)$item['id']}
+								<a href="{echo:search_goods::searchUrl(array('1'=>'model'),$id)}" id="model_{$item['id']}">{$item['name']}</a>
 								{/foreach}
 							</dd>
 						</dl>

@@ -398,9 +398,11 @@ class search_goods
 						if(!in_array($v['model_id'],$modelTemp))
 							$modelTemp[] = $v['model_id'];
 					}
+			
 					if(!empty($modelTemp)){
 						$model_db = new IModel('model');
 						self::$modelSearch = $model_db->query('id in ('.implode(',',$modelTemp).')','id,name');
+					
 						if(count(self::$modelSearch)==1){
 							$model_id = self::$modelSearch[0]['id'];
 							self::$modelSearch = array();
@@ -408,7 +410,7 @@ class search_goods
 						}
 					}
 				}
-				
+			
 				
 				//模型筛选(参数中有model或者搜索出的商品只有一种模型)
 				if($model_id){//存在模型参数则获取属性
