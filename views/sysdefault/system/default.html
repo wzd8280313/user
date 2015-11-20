@@ -1,5 +1,5 @@
-{set:$site_config = new Config('site_config');$store_num_warning = isset($site_config->store_num_warning) ? $site_config->store_num_warning : 20}
-{set:$refund_warning = isset($site_config->refund_warning) ? $site_config->refund_warning : 10;$limit_seconds = 30*24*3600;}
+{set:$site_config = new Config('site_config');$config_info = $site_config->getInfo();$store_num_warning = isset($config_info['store_num_warning']) ? $config_info['store_num_warning'] : 20}
+{set:$refund_warning = isset($config_info['refund_warning']) ? $config_info['refund_warning'] : 10;$limit_seconds = 30*24*3600;}
 <form action="{url:/}" method="get" name="storeNumWarning">
 	<input type='hidden' name='controller' value='goods' />
 	<input type='hidden' name='action' value='goods_list' />
