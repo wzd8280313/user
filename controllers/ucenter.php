@@ -706,6 +706,9 @@ class Ucenter extends IController
         {
             $model->update('id = '.$id.' and user_id = '.$this->user['user_id']);
         }
+        if(IClient::getDevice()=='mobile'){
+        	$this->redirect('index');
+        }else
         $this->redirect('complain');
     }
     /**
