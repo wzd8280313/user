@@ -1161,7 +1161,7 @@ class Site extends IController
 
 
 	function ce(){
-		echo search_goods::searchUrl(array('1'=>'model'),11);
+		print_r($_SESSION);
 	}
 	
 }

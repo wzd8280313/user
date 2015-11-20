@@ -5,7 +5,7 @@
     </div>
 
 	<div class="box">
-		<form action="{url:/ucenter/refunds_update}" method="post" callback="checkForm();" enctype='multipart/form-data'>
+		<form action="{url:/ucenter/refunds_update}" method="post"  enctype='multipart/form-data'>
 			<input type="hidden" name="order_goods_id" value="{$this->orderRow['og_id']}"  class="radio" />
 
 			<table class="border_table" width="100%" cellpadding="0" cellspacing="0">
@@ -74,7 +74,7 @@
 				<tr>
 					<th></th>
 					<td>
-						<label class="btn"><input type="submit" class='btn_brown btn_small' value="提交申请" /></label>
+						<label class="btn"><input type="submit" class='btn_brown btn_small' value="提交申请" onclick='return checkForm()'/></label>
 						<label class="btn"><input type="reset" class='btn_gray btn_small' value="重置" /></label>
 					</td>
 				</tr>
@@ -96,12 +96,17 @@ KindEditorObj = KindEditor.create('#content',
 //提交表单检查
 function checkForm()
 {
-	if($('#content').val() == '')
+	var pay_type = {$this->orderRow['pay_type']};
+	if(window.frames[0].document.body.innerHTML == '')
 	{
 		alert('请填写退换货原因');
 		return false;
 	}
-
+	if(pay_type==7){
+		confirm('由于您使用的是支付宝第三方担保交易，“退款”操作结束后需前往支付宝界面再次操作','$("form").submit()',1);
+		return false;
+	}
+	
 	return true;
 }
 

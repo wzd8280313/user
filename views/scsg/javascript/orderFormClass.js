@@ -423,6 +423,7 @@ function orderFormClass()
 					$('input:radio[name="payment"][value="'+this.paymentActiveId+'"]').trigger('click');
 				}
 				$('#'+this.paymentToggleButton).text('[修改]');
+				
 			}
 			break;
 		}
@@ -432,7 +433,10 @@ function orderFormClass()
 
 		//展示模式
 		$('#payment_show_box').toggle();
-
+		
+		//选择担保交易时提醒退款到支付宝界面
+		if(this.paymentActiveId==7)
+			$('#paymentShowBox').append('<tr><th></th><td class="red">由于您使用的是支付宝第三方担保交易，“退款”操作结束后需前往支付宝界面再次操作</td></tr>');
 		//修改模式
 		$('#payment_form').toggle();
 		$('#payment_save_button').toggle();
