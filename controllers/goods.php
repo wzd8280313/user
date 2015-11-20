@@ -226,11 +226,35 @@ class Goods extends IController
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');
 	}
+
+	/**
+	* @brief 商品模糊查询
+	*/
+	public function getData() {
+		$name = IFilter::act(IReq::get('name'));
+
+		if(!$name){
+			echo 0;exit;
+		}
+		$table_name = 'brand';
+		$where = ' name like "';
+		$where .= $name .'%"';
+		$tb_brand = new IQuery($table_name);
+		$tb_brand->where = $where;
+		$tb_brand->group = 'name';
+		$tb_brand->fields = ' id,name ';
+		$data = $tb_brand->find();
+		echo json_encode($data, JSON_UNESCAPED_UNICODE );
+		exit();
+	}
+
+
 	/**
 	 * @brief 保存修改商品信息
 	 */
 	function goods_update()
-	{
+	{   
+		//print_r($_POST);exit();
 		$id       = IFilter::act(IReq::get('id'),'int');
 		$callback = IFilter::act(IReq::get('callback'),'url');
 		$callback = strpos($callback,'goods/goods_list') === false ? '' : $callback;

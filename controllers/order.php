@@ -875,18 +875,45 @@ class Order extends IController
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
-		$join .= ' left join refundment_doc as r on r.order_id=o.id and (r.pay_status in (0,3,4,7) OR r.pay_status in (2,5,6))';
+		//$join = $join.' left join refundment_doc as r on r.order_id=o.id and r.if_del=0 ';
+		//$join2 = $join.' left join refundment_doc as r on r.order_id=o.id and r.if_del=0 and r.pay_status in (0,3,4,7)';
 		//拼接sql
+		
 		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
-		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name,r.id as refundment_id,IF(r.pay_status in (0,3,4,7),0,1) as refundment_status ";
+		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
 		$orderHandle->page   = $page;
 		$orderHandle->where  = $where.' and o.type !=4 ';
 		$orderHandle->join   = $join;
 		$orderHandle->group = 'o.id';
 		$this->search      = $search;
 		$this->orderHandle = $orderHandle;
-
+		
+		$order_list = $orderHandle->find();
+		$this->order_list = $order_list;
+		$order_list_new = array();
+		$order_ids = '';
+		foreach($order_list as $k=>$v){
+			$order_ids .= $v['id'].',';
+		}
+		$order_ids = $order_ids=='' ? '' : substr($order_ids,0,-1);
+		
+		$refundment_doc_db = new IModel('refundment_doc');
+		$refund_data = $refundment_doc_db->query('order_id in ('.$order_ids.')','id,pay_status,type,order_id');
+		//print_r($refund_data);exit;
+		$order_refund = array();
+		if(!empty($refund_data)){
+			foreach($refund_data as $k=>$v){
+				if(in_array($v['pay_status'],array(0,3,4,7)))
+					$order_refund[$v['order_id']][$v['type']]['refunding'] = $v['id'];
+				else{
+					$order_refund[$v['order_id']][$v['type']]['refunded'] = $v['id'];
+				}
+			}
+		}
+		
+		$this->order_refund = $order_refund;
+	
 		$this->redirect("order_list");
     }
    

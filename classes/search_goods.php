@@ -16,6 +16,9 @@ class search_goods
 
 	//商品检索的价格过滤
 	public static $priceSearch = array();
+	
+	//模型数据
+	public static $modelSearch = array();
 
 	//[条件检索url处理]对于query url中已经存在的数据进行删除;没有的参数进行添加
 	public static function searchUrl($queryKey,$queryVal = '')
@@ -56,6 +59,7 @@ class search_goods
 			{
 				//获取在url中已存储数据
 				$urlArray = IReq::get($match[1]);
+		
 				if(isset($urlArray[$match[2]]))
 				{
 					$urlVal = $urlArray[$match[2]];
@@ -208,6 +212,7 @@ class search_goods
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
 		$orderArray    = array();//排序
+		$model_id = intval(IReq::get('model'));
 
 		//开始查询
 		$goodsObj = new IQuery("goods as go");
@@ -231,7 +236,9 @@ class search_goods
 				$attrCond[] = ' attribute_id = '.intval($key).' and FIND_IN_SET("'.$val.'",attribute_value)';
 			}
 		}
-
+		
+		
+		
 		//合并规格与属性的值,并且生成SQL查询语句
 		$GoodsId = null;
 		if($attrCond)
@@ -376,47 +383,78 @@ class search_goods
 				$where .= " and go.id in (".join(',',$GoodsId).") ";
 			}else $where .= ' and false';
 			
-	
+			
 			//商品属性进行检索
-			if($isCondition == true)
+			if($isCondition == true )
 			{
-				/******属性 开始******/
-				$attrTemp = array();
 				$goodsAttrDB = new IModel('goods_attribute');
-				$w = count($GoodsId)==0 ? false : "goods_id in (".join(',',$GoodsId).")";
-				$attrData    = $goodsAttrDB->query($w);
-				foreach($attrData as $key => $val)
-				{
-					//属性
-					if($val['attribute_id'])
-					{
-						if(!isset($attrTemp[$val['attribute_id']]))
-						{
-							$attrTemp[$val['attribute_id']] = array();
-						}
-
-						$checkSelectedArray = explode(",",$val['attribute_value']);
-						foreach($checkSelectedArray as $k => $v)
-						{
-							if(!in_array($v,$attrTemp[$val['attribute_id']]))
-							{
-								$attrTemp[$val['attribute_id']][] = $v;
-							}
+				if($model_id)$where .= ' and model_id = '.$model_id;
+				if(!$model_id){
+					/*****获取模型数据******/
+					$w = count($GoodsId)==0 ? 0 :"goods_id in (".join(',',$GoodsId).")";
+					$attrData    = $goodsAttrDB->query($w);
+					$modelTemp = array();
+					foreach($attrData as $v){
+						if(!in_array($v['model_id'],$modelTemp))
+							$modelTemp[] = $v['model_id'];
+					}
+			
+					if(!empty($modelTemp)){
+						$model_db = new IModel('model');
+						self::$modelSearch = $model_db->query('id in ('.implode(',',$modelTemp).')','id,name');
+					
+						if(count(self::$modelSearch)==1){
+							$model_id = self::$modelSearch[0]['id'];
+							self::$modelSearch = array();
+								
 						}
 					}
 				}
-
-				//属性的数据拼接
-				if($attrTemp)
-				{
-					$attrDB   = new IModel('attribute');
-					$attrData = $attrDB->query("id in (".join(',',array_keys($attrTemp)).") and search = 1","*","id","asc",8);
+			
+				
+				//模型筛选(参数中有model或者搜索出的商品只有一种模型)
+				if($model_id){//存在模型参数则获取属性
+					/******属性 开始******/
+					$attrTemp = array();
+				
+					$w = "model_id = ".$model_id;
+					$attrData    = $goodsAttrDB->query($w);
+				
 					foreach($attrData as $key => $val)
 					{
-						self::$attrSearch[] = array('id' => $val['id'],'name' => $val['name'],'value' => $attrTemp[$val['id']]);
+						//属性
+						if($val['attribute_id'])
+						{
+							if(!isset($attrTemp[$val['attribute_id']]))
+							{
+								$attrTemp[$val['attribute_id']] = array();
+							}
+					
+							$checkSelectedArray = explode(",",$val['attribute_value']);
+							foreach($checkSelectedArray as $k => $v)
+							{
+								if(!in_array($v,$attrTemp[$val['attribute_id']]))
+								{
+									$attrTemp[$val['attribute_id']][] = $v;
+								}
+							}
+						}
 					}
-				} 
-				/******属性 结束******/
+				
+					//属性的数据拼接
+					if($attrTemp)
+					{
+						$attrDB   = new IModel('attribute');
+						$attrData = $attrDB->query("id in (".join(',',array_keys($attrTemp)).") and search = 1","*","id","asc",8);
+						foreach($attrData as $key => $val)
+						{
+							self::$attrSearch[] = array('id' => $val['id'],'name' => $val['name'],'value' => $attrTemp[$val['id']]);
+						}
+					}
+					/******属性 结束******/
+					
+				}
+				
 
 				/******品牌 开始******/
 				$brandQuery = new IModel('brand as b,goods as go');
@@ -429,6 +467,7 @@ class search_goods
 				$w = count($GoodsId)==0 ? false : join(',',$GoodsId);
 				self::$priceSearch = goods_class::getGoodsPrice($w);
 				/******价格 结束******/
+				
 			}
 		}
 
@@ -439,6 +478,7 @@ class search_goods
 		//(5),商品品牌
 		$where.= intval(IReq::get('brand')) ? ' and go.brand_id = '.intval(IReq::get('brand')) : '';
 
+		
 		//排序类别
 		$order = IFilter::act(IReq::get('order'),'url');
 		if($order == null)

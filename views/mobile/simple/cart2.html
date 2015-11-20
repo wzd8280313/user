@@ -282,7 +282,10 @@ function selectProtect(obj)
      		
      		<div class="qrdds_zf">
      			<h4 style=" margin-right:10px;margin-top:12px;">代收点</h4>
-				<select style="width:97%;margin-top:10px;height:33px;background-color: #F30; color:#fff;">
+
+
+				<select style="width:78%;margin-left:14px;height:33px;background-color: #F30; color:#fff;">
+
      				<option>请选择代收点（可空）</option>
      			</select>
      			<h4 style=" margin-right:10px; margin-top:2px;">支付方式</h4>
@@ -297,8 +300,10 @@ function selectProtect(obj)
 						{/if}
 					{/foreach}
      			</select>
-     			<p style=" margin-right:10px; margin-top:7px;margin-bottom:6px;">配送方式</p>
-     			<select style="width:97%;height:33px; background-color: #F30; color:#fff; " name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
+
+     			<p style=" margin-right:10px; margin-top:7px;">配送方式</p>
+     			<select style="width:78%;height:33px; background-color: #F30; color:#fff; " name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
+
      				<option value='-1'>请选配送方式</option>
 					{set:$deliveryData = $this->allDeliveryType}
 					{foreach:items = $deliveryData}
@@ -365,7 +370,7 @@ function selectProtect(obj)
 		</div>
      	<div style="height:55px;"></div>
      	<div class="anniu">
-     		<input class="but"  type="button" onclick='submit_check();' value="确定提交" style="bottom:-5px;" />
+     		<input class="but"  type="button" onclick='submit_check();' value="确定提交"/>
      	</div>
      	</form>
      </div>

@@ -24,8 +24,13 @@
 				</thead>
 
 				<tbody>
+					{set:$show_deli=0}
 					{set:$seller_id = $this->seller['seller_id']}
 					{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id fields=og.*,go.seller_id where=og.order_id eq $order_id and go.seller_id eq $seller_id}
+					{if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
+					{set:$show_deli = 1;}
+					{/if}
+
 					<tr>
 						<td>
 							{set:$goodsRow = JSON::decode($item['goods_array'])}
@@ -34,10 +39,11 @@
 						<td>{$item['real_price']}</td>
 						<td>{$item['goods_nums']}</td>
 						<td>
-							{if:$item['is_send'] == 0}
+							{if:$show_deli}
 							<input type="checkbox" name="sendgoods[]" value="{$item['id']}" />
+							
 							{else:}
-							{echo:Order_class::goodsSendStatus($item['is_send'])}
+							{echo:Order_class::get_order_good_status($item)}
 							{/if}
 						</td>
 					</tr>

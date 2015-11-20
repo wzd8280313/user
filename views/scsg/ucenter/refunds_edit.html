@@ -39,7 +39,11 @@
 						<p>
 							<label>
 								<a class="blue" href="{url:/site/products/id/$this->orderRow['goods_id']}" target='_blank'>{$good_info['name']}{if:$good_info['value']}{$good_info['value']}{/if} X {$this->orderRow['goods_nums']}件</a>
+							
 							</label>
+							{if:$this->orderRow['is_send']==0 && isset($this->orderRow['freight_text'])}
+								<span class='red'>(该商品若退货，则该订单不再满足免运费的条件，需要重新支付运费)</span>
+							{/if}
 						</p>
 					</td>
 				</tr>

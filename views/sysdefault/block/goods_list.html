@@ -57,5 +57,13 @@
 	</div>
 </div>
 {$this->tb_goods->getPageBar()}
+
+{if:$this->condition}
+<script type='text/javascript'>
+	$('.pages_bar a').each(function(){
+		$(this).attr('href',$(this).attr('href')+'{$this->condition}')
+	})
+</script>
+{/if}
 </body>
 </html>

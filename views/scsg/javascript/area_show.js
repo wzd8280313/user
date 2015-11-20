@@ -1,7 +1,7 @@
 //artTemplate模板 {name:组件名字,area_id:选中的地区ID,data:地区的对象}
 var areaTemplate = '<%for(var index in data){%>'+'<%var item = data[index]%>'+'  <li><a href="javascript:void(0)" data-value="<%=item.area_id%>"><%=item.area_name%></a></li>'+'<%}%>';
 
-var provinceHtml = 	'<div class="text"><span name="pro_show"></span>  <span name="city_show"></span>  <span name="area_show"></span><div></div><b></b></div> <span style="margin-left:5px;" name="fee_box"></span>'                  
+var provinceHtml = 	'<div class="text"><span name="pro_show"></span>  <span name="city_show"></span>  <span name="area_show"></span><div><input type="hidden" name="area_id" /></div><b></b></div> <span style="margin-left:5px;" name="fee_box"></span>'                  
 					+'	<div class="close"></div>'+
 
 					'<div id="areaShow" class="content" ><div data-widget="tabs" class="m JD-stock" id="JD-stock">'
@@ -44,6 +44,7 @@ function createAreaSelect(name,parent_id,select_id)
 			var childName = $(this).parent('ul').attr('child');
 			var area_id = $(this).find('a').attr('data-value');
 			var area_text = $(this).find('a').text();
+			
 			switch(name){
 				case 'province' : {
 					$('[name=pro_show]').text(area_text);
@@ -58,10 +59,14 @@ function createAreaSelect(name,parent_id,select_id)
 				break;
 				case 'area' : {
 					$('[name=area_show]').text(area_text);
+					$('input[name=area_id]').val(area_id);
 				}
 				break;
 			}
-			get_delivery_fee(area_id,name);
+			
+			
+			get_delivery_fee(name);
+			
 			if(!childName)//最后一级
 			{
 				
@@ -81,12 +86,15 @@ function createAreaSelect(name,parent_id,select_id)
 	});
 }
 //获取运费
-function get_delivery_fee(area_id,name){
+function get_delivery_fee(name){
 	if(name=='province' || name=='city'){
 		$('span[name=fee_box').text('运费：');
 		return;
 	}
-	$.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"productId":0,"num":1},function(content){
+	area_id = $('input[name=area_id]').val();
+	var buyNums = $('#buyNums').val();
+	var productId = $('#product_id').val();
+	$.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"productId":productId,"num":buyNums},function(content){
 		var delivery_fee = 99999;
 		for(var i in content){
 			if(content[i].price<delivery_fee)
@@ -95,6 +103,7 @@ function get_delivery_fee(area_id,name){
 		if(delivery_fee!=99999){
 			$('span[name=fee_box').text('运费：'+delivery_fee);
 		}
+		
 	})
 }
 //运费初始化
@@ -102,7 +111,8 @@ function delivery_init(){
 	$('[name=pro_show]').text('山西省');
 	$('[name=city_show]').text('阳泉市');
 	$('[name=area_show]').text('城区');
-	get_delivery_fee('140302');
+	$('input[name=area_id]').val('140302');
+	get_delivery_fee();
 }
 $(function(){
 	$('#store-selector').append(provinceHtml);

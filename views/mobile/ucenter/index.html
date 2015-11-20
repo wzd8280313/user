@@ -39,14 +39,14 @@
 		<ul>
 			<li><a href="javascript:void(0)" class="dfk"><p class="sj">{$propData['prop_num']} 张</p><p class="tex">代金券</p></a></li>
 			<li><a href="javascript:void(0)" class="dfh"><p class="sj">￥{$user['balance']}</p><p class="tex">账户余额</p></a></li>
-			<li><a href="{url:/ucenter/integral}" class="dsh"><p class="sj">{$user['point']} </p><p class="tex">积分</p></a></li>
+			<li><a href="{url:/ucenter/integral}" class="dsh"><p class="sj" name='point'>{$user['point']} </p><p class="tex">积分</p></a></li>
 			<li>{if:$user['sign']==0}
 				<a href="javascript:void(0)" class="dpl">
-				  <span class="qdjf" onclick='sign_point()'>
+				  <span class="qdjf" onclick='sign_point(this)'>
 				</a>
 				{else:}
 				<a href="javascript:void(0)" class="dpl">
-				  <span class="yqd" onclick='sign_point()'>
+				  <span class="yqd" >
 				</a>
 				{/if}
 			</li>
@@ -60,10 +60,10 @@
 	
 			<div class="wa">
 				<ul>
-					<li><a href="{url:/ucenter/morder/status/1}" class="dfk"><p>待付款</p></a></li>
-					<li><a href="{url:/ucenter/morder/status/2}" class="dfh"><p>待发货</p></a></li>
-					<li><a href="{url:/ucenter/morder/status/3}" class="dsh"><p>待收货</p></a></li>
-					<li><a href="{url:/ucenter/morder/status/4}" class="dpl"><p>待评论</p></a></li>
+					<li><a href="{url:/ucenter/order/status/1}" class="dfk"><p>待付款</p></a></li>
+					<li><a href="{url:/ucenter/order/status/2}" class="dfh"><p>待发货</p></a></li>
+					<li><a href="{url:/ucenter/order/status/3}" class="dsh"><p>待收货</p></a></li>
+					<li><a href="{url:/ucenter/order/status/4}" class="dpl"><p>待评论</p></a></li>
 				</ul>
 			</div>			
 		
@@ -97,7 +97,7 @@
 		
 	</div>
 <script type='text/javascript'>
-	function sign_point(){
+	function sign_point(_this){
 		$.ajax({
 			type : 'post',
 			async:true,
@@ -108,8 +108,9 @@
 				
 			},
 			success:function(data){
-				if(data==1){
-					location.reload();
+				if(data.point){
+					$(_this).removeClass('qdjf').addClass('yqd');
+					$('span[name=point]').text(data.point+parseInt($('span[name=point]').text()));
 				}
 			},
 			error:function(){

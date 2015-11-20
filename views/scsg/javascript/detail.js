@@ -135,7 +135,7 @@ function Spec_show(){
 				$('#price_panel').html(priceHtml);
 				//普通货品数据渲染
 				$('#product_id').val(json.data.id);
-
+				get_delivery_fee();
 			}
 			
 		});
@@ -190,6 +190,7 @@ function Spec_show(){
 			$('#buyNums').val(storeNums);
 			return;
 		}
+		
 	}
 	/**
 	 * 购物车数量的加减

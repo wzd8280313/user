@@ -68,6 +68,28 @@ var getMobileCodeUrl = '{url:/simple/getMobileValidateCode}';
                 <a href="javascript:void(0);" class="icon-reg reg-empty" title="清空" style="display:none;">清空</a>
                 <a id="getCode" type="button" onclick='receiveCode()' class="receive_code  reg-btn dark-btn get-code get-code-register fr" >获取验证码</a>
             </div>
+
+            <!-- 获取验证码倒计时 -->
+
+            <script type="text/javascript">
+            var wait=60;
+            function time(o) {
+                    if (wait == 0) {
+                        o.removeAttribute("disabled");          
+                        o.value="重新获取验证码";
+                        wait = 60;
+                    } else {
+                        o.setAttribute("disabled", true);
+                        o.value="重新发送(" + wait + ")";
+                        wait--;
+                        setTimeout(function() {
+                            time(o)
+                        },
+                        1000)
+                    }
+                }
+            document.getElementById("getCode").onclick=function(){time(this);}
+            </script>
         </div>
         <div class="field psw mt10">
             <div class="field-relative">

@@ -57,33 +57,54 @@ class hookCreateAction extends IInterceptorBase
 		$siteConfig = new Config('site_config');
 		$refunds_limit_time=isset($siteConfig->refunds_limit_time) ? intval($siteConfig['refunds_limit_time']) : 7;
 		$refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
-		$refunds_db = new IModel('refundment_doc');
-		$refunds_db->setData(array(
-			'pay_status'=>6,
-		));
+		$refundment_db = new IModel('refundment_doc');
+		
 		$refunds_limit_second = $refunds_limit_time*24*3600;
 		$refunds_seller_second = $refunds_seller_time*24*3600;
 		//超期未退货状态更改
-		$refunds_db->update(" if_del = 0 and pay_status =3 and TIMESTAMPDIFF(second,dispose_time,NOW()) >= {$refunds_limit_second}");
+		$refunds_db = new IQuery('refundment_doc as r');
+		$refunds_db->join = 'left join order_goods as og on r.order_id=og.order_id and r.goods_id=og.goods_id and r.product_id=og.product_id left join order as o on o.id=r.order_id';
+		$refunds_db->where = "r.if_del = 0 and r.type=0 and r.pay_status in (0,4) and TIMESTAMPDIFF(second,r.time,NOW()) >= {$refunds_seller_second}";
+		$refunds_db->fields = 'r.pay_status,r.id as rid,og.*';
+		$resData = $refunds_db->find();
+		//$refunds_db->where = "if_del = 0 and pay_status=4 and TIMESTAMPDIFF(second,delivery_time,NOW()) >= {$refunds_seller_second}";
 		
 		//后台超期未审核，自动打钱
-		$resData = $refunds_db->query(" if_del = 0 and pay_status=0 and TIMESTAMPDIFF(second,time,NOW()) >= {$refunds_seller_second}","id,order_id,pay_status");
-		$resData1 = $refunds_db->query(" if_del = 0 and pay_status=4 and TIMESTAMPDIFF(second,delivery_time,NOW()) >= {$refunds_seller_second}","id,order_id,pay_status");
-		//print_r($resData);
-		$resData = array_merge($resData,$resData1);
-		if(count($resData)>0){
+		
+		if(!empty($resData)){
+			
 			foreach($resData as $k=>$v){
-				$is_send = refunds::is_send($v['id']);
-				if($v['pay_status']==0&&$is_send==1){
-					$refunds_db->setData(array('pay_status'=>3,'dispose_time'=>ITime::getDateTime()));
-					$refunds_db->update('id='.$v['id']);
-				}else{
-					Order_Class::refund($v['id'],'','system');
-				}
+				try{
+					Order_Class::refund($v['rid'],'','system');
 					
+					if($v['is_send']==1){
+						Order_Class::addGoodsCommentChange($v['order_id']);
+					}
+					Order_Class::get_order_status_refunds($v['rid'],2);
+					Order_Class::ordergoods_status_refunds(2,$v,0);
+					$refundment_db->setData(array('pay_status'=>2));
+					$refundment_db->update('id='.$v['rid']);
+				}
+				catch(Exception $e){
+					
+				}
+				
 			}
 		}
-		
+		//超期未审核的换货单
+		$refunds_data = $refundment_db->query("if_del=0 and type=1 and pay_status=4 and TIMESTAMPDIFF(second,time,NOW()) >= {$refunds_seller_second}");
+		if(!empty($refunds_data)){
+			foreach($refunds_data as $k=>$v){
+				try{
+					$chgRes = Order_Class::chg_goods($v['id'],$v['goods_id'],$v['product_id'],'system');
+					$refundment_db->setData(array('pay_status'=>2));
+					$refundment_db->update('id='.$v['id']);
+				}
+				catch(Exception $e){
+						
+				}
+			}
+		}
 		
 		
 		
@@ -91,6 +112,8 @@ class hookCreateAction extends IInterceptorBase
 	//用户中心订单列表
 	public static function ucenter_order()
 	{
+		self::ucenter_refunds();
+		
 		$siteConfig = new Config('site_config');
 		$order_cancel_time = isset($siteConfig->order_cancel_time) ? intval($siteConfig['order_cancel_time']) : 3;
 		$order_finish_time = isset($siteConfig->order_finish_time) ? intval($siteConfig['order_finish_time']) : 20;

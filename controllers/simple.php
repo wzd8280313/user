@@ -1165,6 +1165,7 @@ class Simple extends IController
 				$db_fapiao->add();
 			}
 		}
+		
 		//获取备货时间
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
@@ -1181,28 +1182,27 @@ class Simple extends IController
 		//订单金额为0时，订单自动完成
 		if($this->final_sum <= 0)
 		{
-			$order_id = Order_Class::updateOrderStatus($dataArray['order_no']);
-			if($order_id)
-			{
-				if($user_id)
-				{
-					$this->redirect('/site/success/message/'.urlencode("订单确认成功，等待发货").'/?callback=ucenter/order_detail/id/'.$order_id);
-				}
-				else
-				{
-					$this->redirect('/site/success/message/'.urlencode("订单确认成功，等待发货"));
-				}
-			}
-			else
-			{
-				IError::show(403,'订单修改失败');
-			}
+			$this->redirect('update_order_status/order_no/'.$dataArray['order_no']);
 		}
 		else
 		{
 			$this->setRenderData($dataArray);
 			$this->redirect('cart3');
 		}
+    }
+    
+    //订单总金额为0时直接修改为已支付
+    public function update_order_status(){
+    	$order_no = IFilter::act(IReq::get('order_no'));
+    	$order_id = Order_Class::updateOrderStatus($order_no);
+    	if($order_id)
+    	{
+    		$this->redirect('/site/success/message/'.urlencode("订单支付成功，等待发货"));
+    	}
+    	else
+    	{
+    		IError::show(403,'订单修改失败');
+    	}
     }
 
     //到货通知处理动作

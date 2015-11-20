@@ -50,11 +50,20 @@ class Block extends IController
 		$is_products = IFilter::act( IReq::get('is_products'),'int');
 		$seller_id   = IFilter::act( IReq::get('seller_id'),'int');
 		$goods_id    = IFilter::act( IReq::get('goods_id'),'int');
-
 		//$tb_goods = new IQuery('goods as go');
 		
+		$condition = '&show_num='.$show_num;
+		if($keywords)$condition .= '&keywords='.$keywords;
+		if($cat_id)$condition .= '&category_id='.$cat_id;
+		if($min_price)$condition .= '&min_price='.$min_price;
+		if($max_price)$condition .= '&max_price='.$max_price;
+		if($goods_no)$condition .= '&goods_no='.$goods_no;
+		if($is_products)$condition .= '&is_products='.$is_products;
+		if($seller_id)$condition .= '&seller_id='.$seller_id;
+		if($goods_id)$condition .= '&goods_id='.$goods_id;
 		//查询条件
 		$table_name = 'goods as go';
+
 		$where   = ' (go.is_del = 0 or go.is_del = 4) ';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
 		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
@@ -104,6 +113,7 @@ class Block extends IController
 			}
 		}
 		$this->tb_goods = $tb_goods;
+		$this->condition = $condition;
 		$this->data = $data;
 		$this->type = IFilter::act(IReq::get('type'));//页面input的type类型，比如radio，checkbox
 		$this->redirect('goods_list');
@@ -850,7 +860,7 @@ class Block extends IController
 				}
 			}
 		}
-		die('发货单信息不存在');
+		die('启奏皇上，您所下单御品，微臣已命物流锦衣卫护送【山城速购】');
 	}
 
 	//微信API接口地址

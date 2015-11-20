@@ -52,6 +52,7 @@ tuan_spec_show.sele_spec = function(_self)
 				$('#price_panel').html(priceHtml);
 				//普通货品数据渲染
 				$('#product_id').val(json.data.id);
+				get_delivery_fee();
 
 			}
 			

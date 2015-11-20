@@ -73,6 +73,7 @@ class Delivery
 
  		//当配送方式是统一配置的时候，不进行区分地区价格
 		$area_groupid = unserialize($deliveryRow['area_groupid']);
+		//print_r($area_groupid);
  		if($deliveryRow['price_type'] == 0 || !is_array($area_groupid))
  		{
  			$deliveryRow['price'] = self::getFeeByWeight($weight,$deliveryRow['first_price'],$deliveryRow['second_price']);
@@ -88,17 +89,17 @@ class Delivery
 			foreach($area_groupid as $key => $result)
 			{
 				//匹配到了特殊的省份运费价格
-				if(strpos($result,';'.$area.';') !== false && $matchKeyArea=='')
+				if(strpos($result,';'.$area.';') !== false && $matchKeyArea==='')
 				{
 					$matchKeyArea = $key;
 					$flag     = true;
 				}
-				else if(strpos($result,';'.substr($area,0,4).'00;') !== false && $matchKeyCity==''){
+				else if(strpos($result,';'.substr($area,0,4).'00;') !== false && $matchKeyCity===''){
 					$matchKeyCity = $key;
 					$flag     = true;
 					
 				}
-				else if(strpos($result,';'.substr($area,0,2).'0000;') !== false && $matchKeyProvince='')
+				else if(strpos($result,';'.substr($area,0,2).'0000;') !== false )
 				{
 					$matchKeyProvince = $key;
 					$flag     = true;
@@ -108,7 +109,14 @@ class Delivery
 			//匹配到了特殊的省份运费价格
 			if($flag)
 			{
-				$matchKey = $matchKeyArea || $matchKeyCity || $matchKeyProvince;
+				if($matchKeyArea){
+					$matchKey = $matchKeyArea;
+				}else if($matchKeyCity){
+					$matchKey =$matchKeyCity;
+				}else {
+					$matchKey = $matchKeyProvince;
+				}
+				//echo $matchKey;
 				//获取当前省份特殊的运费价格
 				$firstprice  = unserialize($deliveryRow['firstprice']);
 				$secondprice = unserialize($deliveryRow['secondprice']);
@@ -141,6 +149,7 @@ class Delivery
  		{
  			$deliveryRow['protect_price'] = 0;
  		}
+ 		
      	return $deliveryRow;
 	}
 	
@@ -208,7 +217,7 @@ class Delivery
 					$flag     = true;
 						
 				}
-				else if(strpos($result,';'.substr($area,0,2).'0000;') !== false && $matchKeyProvince='')
+				else if(strpos($result,';'.substr($area,0,2).'0000;') !== false )
 				{
 					$matchKeyProvince = $key;
 					$flag     = true;
@@ -218,7 +227,13 @@ class Delivery
 			//匹配到了特殊的省份运费价格
 			if($flag)
 			{
-				$matchKey = $matchKeyArea || $matchKeyCity || $matchKeyProvince;
+				if($matchKeyArea){
+					$matchKey = $matchKeyArea;
+				}else if($matchKeyCity){
+					$matchKey =$matchKeyCity;
+				}else {
+					$matchKey = $matchKeyProvince;
+				}
 				//获取当前省份特殊的运费价格
 				$firstprice  = unserialize($deliveryRow['firstprice']);
 				$secondprice = unserialize($deliveryRow['secondprice']);
