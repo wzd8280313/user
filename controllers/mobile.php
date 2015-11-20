@@ -10,7 +10,7 @@ class Mobile extends IController
 	
 	function getMoreProlist(){
 		$childCat = IFilter::act(IReq::get('childCat'));
-		$pagesize = 3;
+		$pagesize = 10;
 		$goodsObj = search_goods::find(array('category_extend' => $childCat),$pagesize);
 		self::getGoodsList($goodsObj);
 	}

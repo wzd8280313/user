@@ -117,9 +117,10 @@ class Comment_Class
 		
 		$query->order    = "a.id DESC";
 		$query->page     = IReq::get('page') ? intval(IReq::get('page')):1;
-		$query->pagesize = 10;
+		$query->pagesize = 3;
 		
 		$data['comment_list']= $query->find();
+		if($query->page==0){return 0;}
 		if($controller){
 			$controller->comment_query = $query;
 		}
@@ -142,6 +143,7 @@ class Comment_Class
 			$query->join = "left join user_group AS b ON a.user_id IN ({$user_ids}) AND a.group_id=b.id";
 			$query->fields="a.user_id,b.group_name";
 			$user_info = $query->find();
+			
 			$user_info = Util::array_rekey($user_info,'user_id');
 		
 			foreach($data['comment_list'] as $key=>$value)

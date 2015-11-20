@@ -357,7 +357,7 @@ class IController extends IControllerBase
 		{
 			//重定跳转定向
 			if($actionId!=$nextUrl && $location == true)
-			{
+			{ 
 				$locationUrl = IUrl::creatUrl('/'.$this->ctrlId.'/'.$nextUrl);
 				header('location: '.$locationUrl);
 				IWeb::$app->end(0);

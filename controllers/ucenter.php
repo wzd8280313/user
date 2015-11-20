@@ -334,7 +334,7 @@ class Ucenter extends IController
 			}
 			break;
 		}
-		$this->redirect("order_detail/id/$id");
+		$this->redirect("order");
 	}
     /**
      * @brief 我的地址

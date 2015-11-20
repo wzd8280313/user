@@ -1161,7 +1161,7 @@ class Site extends IController
 
 
 	function ce(){
-		print_r($_SESSION);
+		$this->redirect('help_list');
 	}
 	
 }

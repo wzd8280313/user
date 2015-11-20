@@ -179,8 +179,10 @@ function show_comments(){
  */
 function comment_ajax_list(type,statics){
 	var url = comments_url;
-	$.getJSON(url,{type:type},function(json)
-	{//window.realAlert(JSON.stringify(json));
+	var page = parseInt($('input[name=comment_page]').val());
+	$.getJSON(url,{type:type,page:page},function(json)
+	{//window.alt(JSON.stringify(json));
+	if(json==0)return false;
 		json.point_grade.comment_total=json.comment_total;
 		if(statics){
 			var commentHtml = template.render('comment_statics',json.point_grade);
@@ -190,6 +192,7 @@ function comment_ajax_list(type,statics){
 				$('#comments .content hr').remove();
 				$('#comments .current').removeClass('current').addClass('other');
 				$(this).removeClass('other').addClass('current');
+				 $('input[name=comment_page]').val('1');
 				comment_ajax_list($(this).attr('type'));
 			})
 		}
@@ -198,6 +201,7 @@ function comment_ajax_list(type,statics){
 			var commentHtml = template.render('comment_list',json.comment_list[i]);
 			$('#comments .content').append(commentHtml);
 		}
+		$('input[name=comment_page]').val(page+1);
 		
 	});
 }

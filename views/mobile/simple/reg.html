@@ -23,7 +23,7 @@
 		<link rel="stylesheet" href="{skin:css/center.css}" type="text/css">       
 		<script src="{theme:javascript/jquery-1.9.1.min.js}"></script>
 		<script src="{theme:javascript/common.js}"></script> 
-		<script src="{theme:javascript/reg/register.js}"></script>     
+		    
 		<link rel="stylesheet" href="{skin:css/csshide1.css}">
 <style>#sell-ad{display:none!important;}</style>
 <script type="text/javascript">window.onerror=function(){return true;}</script></head>
@@ -36,6 +36,7 @@ var checkEmailIsOneUrl = '{url:/simple/checkEmailIsOne}';
 var getMobileCodeUrl = '{url:/simple/getMobileValidateCode}';
 
 </script>
+<script src="{theme:javascript/reg/register.js}"></script> 
     <body data-mps="PA4101">
         <div id="page">
             <header class="wap-header">
@@ -66,30 +67,10 @@ var getMobileCodeUrl = '{url:/simple/getMobileValidateCode}';
             <div class="field-relative cf">
                 <input id="code" class="reg-input reg-disabled fl" type="text" name="code" placeholder="请输入验证码" value="" onfocus='hideErrInfo()' autocomplete="off" maxlength="6" >
                 <a href="javascript:void(0);" class="icon-reg reg-empty" title="清空" style="display:none;">清空</a>
-                <a id="getCode" type="button" onclick='receiveCode()' class="receive_code  reg-btn dark-btn get-code get-code-register fr" >获取验证码</a>
+                <a id="getCode" type="button" onclick='receiveCode()' href='javascript:void(0)' class="receive_code  reg-btn dark-btn get-code get-code-register fr" >获取验证码</a>
             </div>
 
-            <!-- 获取验证码倒计时 -->
 
-            <script type="text/javascript">
-            var wait=60;
-            function time(o) {
-                    if (wait == 0) {
-                        o.removeAttribute("disabled");          
-                        o.value="重新获取验证码";
-                        wait = 60;
-                    } else {
-                        o.setAttribute("disabled", true);
-                        o.value="重新发送(" + wait + ")";
-                        wait--;
-                        setTimeout(function() {
-                            time(o)
-                        },
-                        1000)
-                    }
-                }
-            document.getElementById("getCode").onclick=function(){time(this);}
-            </script>
         </div>
         <div class="field psw mt10">
             <div class="field-relative">

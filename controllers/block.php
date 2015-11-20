@@ -443,7 +443,13 @@ class Block extends IController
 				if($order_id)
 				{
 					$url  = '/site/success/message/'.urlencode("支付成功");
-					$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+					if(IClient::getDevice()=='mobile'){
+						$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
+					}
+					else{
+						$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+					}
+					
 					$this->redirect($url);
 					exit;
 				}
@@ -454,7 +460,12 @@ class Block extends IController
 				if($order_id)
 				{
 					$url  = '/site/success/message/'.urlencode("支付成功");
-					$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+					if(IClient::getDevice()=='mobile'){
+						$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
+					}
+					else{
+						$url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+					}
 					$this->redirect($url);
 					exit;
 				}

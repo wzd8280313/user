@@ -30,6 +30,7 @@ function showPhoneTipWhenBlur(){
     }
 }
  function receiveCode(){
+
     if ($(".receive_code").hasClass("reacquire_code")) {
         return false
 
@@ -46,6 +47,7 @@ function showPhoneTipWhenBlur(){
             if (a) {
                 if (0 == a.errorCode) {
                     var d = $(".receive_code");
+					d.attr("disabled", true);
                     d.html("重新获取验证码(<i>59</i>)");
                     var f = d.find('i').text();
                     var c = setInterval(function() {
@@ -56,7 +58,7 @@ function showPhoneTipWhenBlur(){
                     },
                     1000);
                     var b = setTimeout(function() {
-                        d.removeClass('reacquire_code').html("重新获取验证码");
+                        d.removeAttr("disabled").removeClass('reacquire_code').html("重新获取验证码");
                     },
                     f * 1000);
                     return

@@ -33,6 +33,7 @@ class Ucenter_ajax extends IController
 		$query->page   = $page;
 		$query->order= "id desc";
 		$resData = $query->find();
+		if($query->page==0){echo 0;exit;}
 		foreach($resData as $k=>$v){
 			if($v['value']>0)$resData[$k]['value']='+'.$v['value'];
 		}
