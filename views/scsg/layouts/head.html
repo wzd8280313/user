@@ -225,7 +225,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 
 {if:$this->isIndex}
 <!--下拉广告图-->
-
+{if:$siteConfig->index_ad_button == 'open'}
 <DIV class="advbox" >
 	<DIV style="display: none;" class="dt_small">
 		<DIV style="display: none;" class="dt_toBig"></DIV>
@@ -243,6 +243,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 			<IMG id="actionimg" alt="jquery广告图片大图" src="{url:$adBig['content']}" width="1190" ></A> 
 	</DIV>
 </DIV>
+{/if}
 <SCRIPT type="text/javascript">
 	var searchUrl = '{url:/site/search_list/word/}';
 function AdvClick(){
@@ -295,6 +296,7 @@ if($("#actionimg").length>0){
 		<div class="logo">
 			<a href="{url:/}" class="go-home">
 				{if:isset($this->logoUrl)}
+
 
 
 				<img src="{skin:$this->logoUrl}" alt="" class="png_t" style="width:210px;height:65px;">
