@@ -19,6 +19,20 @@ class goods_class
 	{
 		$this->seller_id = $seller_id;
 	}
+    
+    /**
+     * 根据货号获取商品id,name
+     * @param array
+     * 
+     */
+     public static function getGoodsIdName($array = array())
+     {
+        $goods = new IQuery('goods');
+        $goods->where  = "goods_no = '{$array['goods_no']}'";
+        $goods->fields = 'id,name';
+        $info = $goods->find();
+        return $info ? $info[0] : array();
+     }
 
 	/**
 	 * 获取商品价格
@@ -144,7 +158,8 @@ class goods_class
 		$goodsUpdateData['goods_no']     = isset($postData['_goods_no'])     ? current($postData['_goods_no'])     : '';
 		$goodsUpdateData['store_nums']   = array_sum($postData['_store_nums']);
 		$goodsUpdateData['market_price'] = isset($postData['_market_price']) ? current($postData['_market_price']) : 0;
-		$goodsUpdateData['sell_price']   = isset($postData['_sell_price'])   ? current($postData['_sell_price'])   : 0;
+        $goodsUpdateData['sell_price']   = isset($postData['_sell_price'])   ? current($postData['_sell_price'])   : 0;
+		$goodsUpdateData['combine_price']   = isset($postData['_combine_price'])   ? current($postData['_combine_price'])   : 0;
 		$goodsUpdateData['cost_price']   = isset($postData['_cost_price'])   ? current($postData['_cost_price'])   : 0;
 		$goodsUpdateData['weight']       = isset($postData['_weight'])       ? current($postData['_weight'])       : 0;
 		

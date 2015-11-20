@@ -221,8 +221,7 @@ class Goods extends IController
 		if($goods_id && !$data)
 		{
 			die("没有找到相关商品！");
-		}
-
+		}                        
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');
 	}
@@ -234,7 +233,6 @@ class Goods extends IController
 		$id       = IFilter::act(IReq::get('id'),'int');
 		$callback = IFilter::act(IReq::get('callback'),'url');
 		$callback = strpos($callback,'goods/goods_list') === false ? '' : $callback;
-
 		//检查表单提交状态
 		if(!$_POST)
 		{
@@ -243,7 +241,11 @@ class Goods extends IController
 
 		//初始化商品数据
 		unset($_POST['id']);
-		unset($_POST['callback']); 
+		unset($_POST['callback']);         
+        if(!$_POST['_combine_price'][0])
+        {
+            $_POST['_combine_price'] = $_POST['_sell_price'];
+        }
 		$goodsObject = new goods_class();
 		$goodsObject->update($id,$_POST);
 
@@ -579,11 +581,182 @@ class Goods extends IController
 	function category_list()
 	{
 		$tb_category = new IModel('category');
-		$goods = new goods_class();
+		$goods = new goods_class();    
 		$this->data['category'] = $goods->sortdata($tb_category->query(false,'*','sort','asc'));
 		$this->setRenderData($this->data);
 		$this->redirect('category_list',false);
 	}
+    
+    /*
+     * 选择组合主商品
+     * 
+     */
+    function _change(){
+        $data = goods_class::getGoodsIdName($_GET);
+        echo $data ? json_encode($data) : 0;
+    }
+    
+    /*
+     * 搜索商品
+     *
+     */
+     function _search()
+     {
+         $key = $_GET['_v'];
+         $exp = $_GET['_exp'];
+         $handle = new IQuery('goods');
+         $handle->order    = "sort asc,id desc";
+         $handle->fields   = "id,name";
+         $where = "(is_del = 0 or is_del = 3) and name like '%".$key."%'";
+         if($exp)
+         {
+             $where .= " and id not in (".$exp.")";
+         }
+         $handle->where    =  $where;
+         echo $handle->find() ? json_encode($handle->find()) : 0;
+     }
+    
+    /**
+     * @商品组合添加、修改
+     */
+    function combine_edit()
+    {
+        $id = IFilter::act(IReq::get('cid'),'int');
+        if($id)
+        {
+            $obj = new IModel('combine_goods');
+            $this->object = $obj->getObj('id = '.$id);
+            $goods = new IModel('goods');                                        
+            $this->goods_name = $goods->getField('id='.$this->object['goods_id'], 'name');
+            $this->goods_no = $goods->getField('id='.$this->object['goods_id'], 'goods_no');
+            
+            //获取已选商品列表
+            if($this->object['combine'])
+            {
+                $handle = new IQuery('goods');
+                $handle->order    = "sort asc,id desc";
+                $handle->fields   = "id,name";
+                $handle->where    = "(is_del = 0 or is_del = 3) and id in (".$this->object['combine'].")";
+                $this->goods = $handle->find();
+            }                                       
+        }
+    
+        //获取所有商品列表---过滤已选商品
+        $goodsHandle = new IQuery('goods');
+        $goodsHandle->order = "sort asc,id desc";
+        $goodsHandle->fields = "id,name";
+        $where = "(is_del = 0 or is_del = 3)";   
+        if($this->object['combine'])
+        {
+            $where .=  " and id not in (".$this->object['combine'].")";
+        }
+        $goodsHandle->where =  $where;
+        $this->goodsList = $goodsHandle->find();                                                                                       
+        $this->redirect('combine_edit');
+    }
+    
+    /**
+     * @保存商品组合
+     */
+    function combine_save()
+    {
+        //获得post值
+        $id = IFilter::act(IReq::get('id'),'int');
+        $name = IFilter::act(IReq::get('name'));
+        $goods_id = IFilter::act(IReq::get('goods_id'),'int'); 
+        $ids = isset($_POST['ids']) ? $_POST['ids'] : '';
+        $sort = IFilter::act(IReq::get('sort'),'int');
+        $status = IFilter::act(IReq::get('status'),'int');   
+
+        if(!$name)
+        {
+            $this->combine_list();
+            exit;
+        }      
+        $combine = $ids ? implode(',', $ids) : ''; 
+
+        $tb = new IModel('combine_goods');
+        $info = array(
+            'name'      => $name,
+            'goods_id' => $goods_id,
+            'combine' => $combine,
+            'sort'      => $sort,
+            'status'=> $status
+        );        
+        $tb->setData($info);
+        if($id)                                   
+        {
+            $where = "id=".$id;
+            $tb->update($where);
+        }
+        else                                              
+        {
+            $tb->add();
+        }
+
+        $this->redirect('combine_list');
+    }
+    
+    /**
+     * @商品组合列表
+     */
+    function combine_list()
+    {
+        $page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+        $QB = new IQuery('combine_goods');
+        $QB->order    = "sort asc,id desc";
+        $QB->page   = $page;
+        $this->QB = $QB;
+        $this->redirect('combine_list');
+    }
+    
+    /**
+     * @商品组合排序
+     */
+    public function combine_sort()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');
+        $sort = IFilter::act(IReq::get('sort'),'int');
+        $flag = 0;
+        if($id)
+        {
+            $tb = new IModel('combine_goods');
+            $info = $tb->getObj('id='.$id);
+            if(count($info)>0)
+            {
+                if($info['sort']!=$sort)
+                {
+                    $tb->setData(array('sort'=>$sort));
+                    if($tb->update('id='.$id))
+                    {
+                        $flag = 1;
+                    }
+                }
+            }
+        }
+        echo $flag;
+    }
+    
+    /**
+     * @删除商品组合
+     */
+    function combine_del()
+    {
+        //post数据
+        $id = IFilter::act(IReq::get('cid'),'int');
+                          
+        $tb = new IModel('combine_goods');
+        $tb->setData(array('status'=>0));
+        if($id)
+        {
+            $tb->update(Util::joinStr($id));
+        }
+        else
+        {
+            die('请选择要删除的数据');
+        }
+        $this->redirect("combine_list");
+    }
 
 	//修改规格页面
 	function spec_edit()
