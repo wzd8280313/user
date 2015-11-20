@@ -41,7 +41,7 @@
 	         <section class="s-list cf" id="dataList">
 						
 						<div class="search-conts">
-							<h5><i><img src="{skin:css/wap/hot-line.png}"></i>&nbsp;热门搜索<a href="huiyuan.html"><i style="float:right;"><img src="{skin:css/wap/watch.png}"></i></a></h5>
+							<h5><i><img src="{skin:css/wap/hot-line.png}"></i>&nbsp;热门搜索></h5>
 							<ul>
 								{foreach:items=Api::run('getKeywordList')}
 								<li><a href="{url:/site/search_list/word/$item['word']}">{$item['word']}</a></li>

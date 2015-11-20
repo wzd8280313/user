@@ -341,14 +341,14 @@ function showService(){
 function getKeywords(url,_this){ 
 	var word = _this.val();
 	var showDiv = $('.words-give');
-	if (!word) {
+	if (word=='') {
 		showDiv.html('').css('display','none');
 		return false;
 	}
 	showDiv.css('display','block');
 	$.ajax({
 		type:'post',
-		async:true,
+		async: false,
 		data:{word:word},
 		dataType:'json',
 		url:url,
@@ -367,7 +367,7 @@ function getKeywords(url,_this){
 					location.href = searchUrl+'/'+$(this).text();
 				})
 			}else{
-				showDiv.html('').css('display','none');
+				showDiv.css('display','none').html('');
 			}
 			
 		},
