@@ -74,25 +74,35 @@ class hookCreateAction extends IInterceptorBase
 		if(!empty($resData)){
 			
 			foreach($resData as $k=>$v){
-				
-				Order_Class::refund($v['rid'],'','system');
-	
-				if($v['is_send']==1){
-					Order_Class::addGoodsCommentChange($v['order_id']);
+				try{
+					Order_Class::refund($v['rid'],'','system');
+					
+					if($v['is_send']==1){
+						Order_Class::addGoodsCommentChange($v['order_id']);
+					}
+					Order_Class::get_order_status_refunds($v['rid'],2);
+					Order_Class::ordergoods_status_refunds(2,$v,0);
+					$refundment_db->setData(array('pay_status'=>2));
+					$refundment_db->update('id='.$v['rid']);
 				}
-				Order_Class::get_order_status_refunds($v['rid'],2);
-				Order_Class::ordergoods_status_refunds(2,$v,0);
-				$refundment_db->setData(array('pay_status'=>2));
-				$refundment_db->update('id='.$v['rid']);
+				catch(Exception $e){
+					
+				}
+				
 			}
 		}
 		//超期未审核的换货单
 		$refunds_data = $refundment_db->query("if_del=0 and type=1 and pay_status=4 and TIMESTAMPDIFF(second,time,NOW()) >= {$refunds_seller_second}");
 		if(!empty($refunds_data)){
 			foreach($refunds_data as $k=>$v){
-				$chgRes = Order_Class::chg_goods($v['id'],$v['goods_id'],$v['product_id'],'system');
-				$refundment_db->setData(array('pay_status'=>2));
-				$refundment_db->update('id='.$v['id']);
+				try{
+					$chgRes = Order_Class::chg_goods($v['id'],$v['goods_id'],$v['product_id'],'system');
+					$refundment_db->setData(array('pay_status'=>2));
+					$refundment_db->update('id='.$v['id']);
+				}
+				catch(Exception $e){
+						
+				}
 			}
 		}
 		
