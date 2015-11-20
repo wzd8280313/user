@@ -33,12 +33,16 @@ class ProRule
 
 	//赠品促销规则奖励方式 3赠送积分 4赠送代金券 5赠送赠品 6免运费 7赠送经验值
 	private $gift_award_type = array(3,4,5,6,7);
+	
+	//积分倍数
+	private $point_mul = 1;
 
 	/**
 	 * @brief 构造函数 初始化商品金额
 	 * @param float $sum 商品金额
+	 * @param int $point_mul 积分倍数
 	 */
-	public function __construct($sum)
+	public function __construct($sum,$point_mul=1)
 	{
 		//商品金额必须为数字
 		if(!is_numeric($sum))
@@ -46,6 +50,7 @@ class ProRule
 			IError::show(403,array('message'=>'order sum must a num'));
 		}
 		$this->sum = $sum;
+		$this->point_mul = $point_mul;
 	}
 
 	/**
@@ -305,6 +310,7 @@ class ProRule
 				//积分
 				case "3":
 				{
+					$award_value = $award_value * $this->point_mul;
 					$pointConfig = array(
 						'user_id' => $user_id,
 						'point'   => $award_value,
