@@ -110,7 +110,7 @@
 			success:function(data){
 				if(data.point){
 					$(_this).removeClass('qdjf').addClass('yqd');
-					$('span[name=point]').text(data.point+parseInt($('span[name=point]').text()));
+					$('p[name=point]').text(data.point+parseInt($('p[name=point]').text()));
 				}
 			},
 			error:function(){
