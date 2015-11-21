@@ -247,7 +247,7 @@ function orderFormClass()
 				get_delivery();
 				clearInterval(timeHandle);
 			}
-		},500);
+		},10);
 	
 		$('#deliveryBox').show('slow');
 		if(this.deliveryCheck() && this.paymentCheck()){

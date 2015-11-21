@@ -725,8 +725,8 @@ class Simple extends IController
 		}
 		else//购物车
 		{
+			
 			$goodsdata = $_POST;
-			//print_r($goodsdata);
 			$checked = IFilter::act(IReq::get('sub'));
 			$cartData = array();
 			if(empty($checked))$this->redirect('cart');

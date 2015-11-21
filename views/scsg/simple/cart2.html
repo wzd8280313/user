@@ -96,10 +96,20 @@ function takeselfInit(id){
 function createAreaSelect(name,parent_id,select_id)
 {
 	//生成地区
-	$.getJSON("{url:/block/area_child}",{"aid":parent_id,"random":Math.random()},function(json)
-	{
-		$('[name="'+name+'"]').html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
-	});
+	$.ajax({
+		type:'post',
+		async:false,
+		data:{"aid":parent_id,"random":Math.random()},
+		dataType:'json',
+		url:"{url:/block/area_child}",
+		beforeSend:function(){
+			
+		},
+		success:function(json){
+			$('[name="'+name+'"]').html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
+		},
+	})
+	
 }
 
 //[address]保存到常用的收货地址

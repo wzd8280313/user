@@ -106,7 +106,7 @@ function prom_ajax(){
 			$('#sum_price').html(mathSub(mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()),2),parseFloat($('#promotion_price').text()),2));
 
 			//修改按钮状态
-			countInput.attr('disabled',false);
+			//countInput.attr('disabled',false);
 			$('.btn_pay').val('ok');
 		})
 }
@@ -212,6 +212,7 @@ function cartCount(obj,oldCount)
 			}
 		});
 	}
+	countInput.attr('disabled',false);
 }
 //
 //增加商品数量

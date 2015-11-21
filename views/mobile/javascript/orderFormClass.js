@@ -45,10 +45,10 @@ function orderFormClass()
 		$(_this).toggleClass("show_check");
 		if($(_this).hasClass("show_check")){
 			$(_this).next('div').show();
-			$('input[name=taxes]').val($('input[name=istaxes]').val());
+			$('input[name=taxes]').prop('checked',true);
 		}else{
 			$(_this).next('div').hide();
-			$('input[name=taxes]').val('');
+			$('input[name=taxes]').removeAttr('checked');
 		}
 		this.doAccount();
 	}

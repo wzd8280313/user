@@ -326,8 +326,7 @@ function selectProtect(obj)
 		{/if}
      	<div class="qrdd qrdds">
 	     	<span class="yhj">是否开发票</span><span>(税金:￥{$this->goodsTax})</span>
-			<input type='hidden' name='taxes' value='0'/>
-			<input type='hidden' name='istaxes' value='{$this->goodsTax}'/>
+			<input class="radio hide" name='taxes' type="checkbox" value='{$this->goodsTax}'/>
 	     	<span class="yhj_check"  name='taxes' onclick='orderFormInstance.tax(this)'></span>
 	     	<div class="fapiao hide">
 	     		<span class="fa_tit">发票抬头</span>
