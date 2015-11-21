@@ -1161,7 +1161,7 @@ class Site extends IController
 
 
 	function ce(){
-		$this->redirect('help_list');
+		echo rand(000000,999999);
 	}
 	
 }

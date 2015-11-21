@@ -54,7 +54,7 @@ class Simple extends IController
 		if($phone=='')$res['errorCode']==1;
 		if(!$phone)$res['errorCode']==15;
 		if($res['errorCode']==0){
-			$text = rand(000000,999999);
+			$text = rand(100000,999999);
 			ISafe::set('mobileValidate',array('num'=>$text,'time'=>time()));
 			$text = smsTemplate::checkCode(array('{mobile_code}'=>$text));
 			if(!hsms::send($phone,$text))
@@ -1368,7 +1368,7 @@ class Simple extends IController
 			{
 				die("申请验证码的时间间隔过短，请稍候再试");
 			}
-			$mobile_code = rand(000000,999999);
+			$mobile_code = rand(100000,999999);
 			$findPasswordDB->setData(array(
 				'user_id' => $userRow['id'],
 				'hash'    => $mobile_code,
