@@ -5,8 +5,8 @@ var goods_id = id;
 var pnum = photo_num;
 function loaded() {
 
-	document.getElementById("scroller").style.width=200*2+'px';
-	document.getElementById("scroller1").style.width=300*2+'px';
+	document.getElementById("scroller").style.width=200*pnum+'px';
+	document.getElementById("scroller1").style.width=300*pnum+'px';
     myScroll = new iScroll('wrapper', {
         snap: true,
         momentum: false,
