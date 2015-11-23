@@ -144,10 +144,10 @@ function show_comments_list(_this){
 	$('#det2').addClass('hidden');
 	$('#det1').addClass('hidden');
 	$('#det_tuijian').addClass('hidden');
-	$('#comments').removeClass('hidden').find('.anniu').remove();
-	$('#comments').find('ul').remove();
-	$('#comments').find('hr').remove();
+	$('#comments').removeClass('hidden');
+	if($('#comments .content').text()==''){
 	comment_ajax_list('all',1);
+	}
 }
 /**
  * 获取评论数据(详情首页)
