@@ -138,6 +138,7 @@
 		  <%if(goods_data[i]['can_refund']){%>
 		  <a class="hongzi wd-popup-trigger" href='{url:/ucenter/refunds_edit/og_id}/<%=goods_data[i]["id"]%>' >申请售后</a>
 		  <%}%>
+		  <a class="hongzi wd-popup-trigger" href='javascript:void(0)'><%=goods_data[i]['og_status']%></a>
 		  <%if(goods_data[i]['comment_id']>0){%>
 			  <%if(  goods_data[i]['comment_status']==0){%>
 			

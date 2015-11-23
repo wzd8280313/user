@@ -86,6 +86,7 @@ class Ucenter_ajax extends IController
 			$tem = JSON::decode($v['goods_array']);
 			$order_goods_data[$k]['spec'] = $tem['value'];
 			$order_goods_data[$k]['name'] = $tem['name'];
+			$order_goods_data[$k]['og_status'] = Order_Class::get_order_good_status($v);
 		}
 		foreach($order_data as $k=>$v){
 			if($v['type']!='4'){
