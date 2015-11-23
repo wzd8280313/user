@@ -572,9 +572,9 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	color: #FFF;
 	display: block;
 	background-color: #F00;
-	width: 37%;
 	text-align: center;
 	overflow: hidden;
+	width: 37%;
 }
 .qijiandian ul .chanpin b {
 	float: right;
@@ -606,7 +606,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	margin-bottom: 2px;
 }
 .qijiandian ul li .hongzi {
-   /* height: 24px;*/
+   
     line-height:24px;
 	color: #F00;
 	border-top-color: #F00;
