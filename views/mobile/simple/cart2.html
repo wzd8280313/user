@@ -219,10 +219,11 @@ function selectProtect(obj)
 	     		<a class="dz" href="{url:simple/address}">
 	     			<input type='hidden' value='{$this->defaultAddressId}' name='address_id' pattern='int'/>
 					<input type='hidden' value='{$defaultAddress["province"]}' name='province'/>
-					<input type='hidden' value='{$defaultAddress["city"]}' name='city'/>
+					<input type='hidden' value='{$defaultAddress["accept_name"]}' name='accept_name'/>
 					<input type='hidden' value='{$defaultAddress["area"]}' name='area'/>
 					<input type='hidden' value='{$defaultAddress["city"]}' name='city'/>
 					<input type='hidden' value='{$defaultAddress["address"]}' name='address'/>
+					<input type='hidden' value='{$defaultAddress["telphone"]}' name='telphone'/>
 					<input type='hidden' value='{$defaultAddress["mobile"]}' name='mobile'/>
 					<input type='hidden' value='{$defaultAddress["zip"]}' name='zip'/>
 					{if:empty($defaultAddress)}

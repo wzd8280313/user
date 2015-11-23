@@ -216,6 +216,7 @@ class unionpay extends paymentPlugin
 		$return['orderId'] = $payment['M_OrderNO'];	//商户订单号
 		$return['txnAmt'] = $payment['M_Amount']*100;		//交易金额，单位分
 		$return['reqReserved'] = $payment['M_OrderId'].":".$payment['M_Remark'];	//订单发送时间'透传信息'; //请求方保留域，透传字段，查询、通知、对账文件中均会原样出现
+		
 		// 签名
 		Common::sign ( $return );
 		
