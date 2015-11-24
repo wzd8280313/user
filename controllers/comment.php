@@ -106,7 +106,7 @@ class Comment extends IController
 				$tb_suggestion->del($where);
 			}
 		}
-		$this->suggestion_list();
+		$this->redirect('suggestion_list');
 	}
 
 	/**
@@ -177,7 +177,7 @@ class Comment extends IController
 				$tb_comment->del($where);
 			}
 		}
-		$this->comment_list();
+		$this->redirect('comment_list');
 	}
 
 	/**
@@ -361,7 +361,7 @@ class Comment extends IController
 				$tb_refer->del($where);
 			}
 		}
-		$this->refer_list();
+		$this->redirect('refer_list');
 	}
 	/**
 	 * @brief 回复咨询信息

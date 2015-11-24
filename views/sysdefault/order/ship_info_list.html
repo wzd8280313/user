@@ -7,7 +7,7 @@ $where = getSearchCondition($this->search);
 	<div class="operating">
 		<a href="javascript:void(0)"><button class="operating_btn" type="button" onclick="location.href='{url:/order/ship_info_edit}'"><span class="addition">添加发货信息</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
-		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button>
+		<a href="javascript:void(0)" onclick="delModel({form:'ship_list'});"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button>
 		<a href="javascript:;"><button class="operating_btn" type="button" onclick="location.href='{url:/order/ship_recycle_list}'"><span class="recycle">回收站</span></button></a>
 	</div>
 	<div class="searchbar">

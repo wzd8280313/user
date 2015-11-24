@@ -1925,4 +1925,15 @@ class Order extends IController
 	public function ship_info_list(){
 		$this->redirect('ship_info_list');
 	}
+	
+	//发票删除
+	public function fapiao_del(){
+		$id = IFilter::act(IReq::get('id'),'int');
+		$action = IFilter::act(IReq::get('toaction'));
+		if(is_array($id) && !empty($id)){
+			$fapiao_db = new IModel('order_fapiao');
+			$fapiao_db ->del('id in ('.implode(',',$id).')');
+		}
+		$this->redirect($action);
+	}
 }

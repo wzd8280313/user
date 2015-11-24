@@ -7,7 +7,7 @@ $where = getSearchCondition($this->search);
 	<div class="operating">
 		<a href="javascript:;" onclick="event_link('{url:/market/pro_rule_edit}')"><button class="operating_btn" type="button"><span class="addition">添加活动</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
-		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+		<a href="javascript:void(0)" onclick="delModel({form:'pro_rule'});"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 	</div>
 	<div class="searchbar">
 		<form action="{url:/}" method="get" name="spec_list">
@@ -40,7 +40,7 @@ $where = getSearchCondition($this->search);
 	</div>
 </div>
 <div class="content">
-	<form method='post' action='{url:/market/pro_rule_del}'>
+	<form method='post' action='{url:/market/pro_rule_del}' name='pro_rule' >
 		<table class="list_table">
 			<col width="40px" />
 			<col width="150px" />
