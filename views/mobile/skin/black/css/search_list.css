@@ -308,7 +308,7 @@ cursor: pointer;
 
 .list div{padding-bottom:10px;border-bottom:1px solid #c3c3c3;margin-top:10px;overflow: hidden}
 .list div figure {margin-left:3%;position: relative;margin-right:2%;float:left}
-.list div figure img{width:102px;height:68px;}
+.list div figure img{width:70px;height:68px;}
 .list div figure sup{width:25px;height:25px;background: url(../images/v2icon2.png) 0 0 no-repeat;position: absolute;top:0;left:0}
 .list div h2{height:36px;overflow: hidden;position: relative;padding-right:35px}
 .list div h2 span{font:14px/18px "微软雅黑"}
