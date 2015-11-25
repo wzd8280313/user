@@ -14,37 +14,7 @@ $seller_arr[0]='平台自营';
 {/foreach}
 <div class="position"> <span>全部结果：</span> <a href="javascript:void(0)">{$this->word}</a> </div>
 <div class="wrapper clearfix container_2">
-	<!--<div class="sidebar f_l">
-		<div class="box_2 m_10">
-			<div class="title">分类筛选</div>
-			<div class="content">
-				<dl class="w clearfix">
-					{foreach:items=Api::run('getGoodsCategoryExtend',array('#word#',$this->word)) }
-					{set:$tmpWord=urlencode($this->word);}
-					<dd class='{if:IReq::get('cat') == $item['id']}current{/if}'><a href="{url:/site/search_list/word/$tmpWord/cat/$item[id]}">{$item['name']}({$item['num']})</a></dd>
-					{/foreach}
-				</dl>
-			</div>
-		</div>
-		<div class="box m_10">
-			{echo:Ad::show(8)}
-		</div>
-		<div class="box m_10">
-			<div class="title">销售排行榜</div>
-			<div class="content">
-				<ul class="ranklist" id='ranklist'>
-					{set:$whereCat = $this->cat_id ? " and ca.category_id in ($this->cat_id)" : ''}
-				  	{foreach:items=Api::run('getGoodsListByWordSum',array('#word#',$this->word),array('#whereCat#',$whereCat)) }
-				  	<li>
-				  		<span>{echo:intval($key+1)}</span>
-				  		<a href="{url:/site/products/id/$item[id]}"><img src="{url:/pic/thumb/img/$item[img]/w/60/h/60}" width="60" height="60" alt="{$item['name']}" /></a>
-				  		<a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b>
-				  	</li>
-				  	{/foreach}
-				</ul>
-			</div>
-		</div>
-	</div>-->
+
 	<div class="search_list main f_r">
 		<strong class="result">"<span class="red">{$this->word}</span>" 搜索结果</strong>
 		<p class="t_l gray m_10">你是不是想找：
