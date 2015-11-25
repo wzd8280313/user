@@ -1888,14 +1888,14 @@ class Order extends IController
 		$db_fa->join = 'left join order as o on o.id = f.order_id left join seller as s on f.seller_id = s.id left join user as u on u.id = f.user_id';
 		$db_fa->where = 'f.id ='. $id;
 		$db_fa->limit = 1;
-		$db_fa->fields = 's.true_name,u.username,o.order_no,f.*';
+		$db_fa->fields = 's.true_name,u.username,o.order_no,o.real_amount,f.*';
 		$data = $db_fa->find();
 		$data = $data[0];
 		if(!$data['true_name']){
 			$config = new config('site_config');
 			$data['true_name'] = $config->name;
 		}
-		if($data['money']==0)$data['money']='';
+		if($data['money']==0)$data['money']=$data['real_amount'];
 		
 		$this->fapiao =$data;
 		$this->redirect('fapiao_show');

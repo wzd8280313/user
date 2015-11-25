@@ -85,15 +85,22 @@
 				<tr>
 					<th>开票金额：</th>
 					<td align="left">
-						<input type='text' {if:$fapiao['status']==1}disabled{/if} value="{$fapiao['money']}" pattern='^[0-9]+.?[0-9]{0,2}$' name='money' alt='请正确填写金额'/>
+						<input type='text' {if:$fapiao['status']==1}disabled{/if} max-value="{$fapiao['money']}" value="{$fapiao['money']}" pattern='^[0-9]+.?[0-9]{0,2}$' name='money' alt='请正确填写金额'/>
 					</td>
 				</tr>
 		
 				<tr>
-					<td colspan="2"><button type="submit" class="submit" ><span>开票</span></button></td>
+					<td colspan="2"><button type="submit" class="submit" onclick='return checkForm()'><span>开票</span></button></td>
 				</tr>
 			</tbody>
 		</table>
 	</form>
 </div>
-
+<script type='text/javascript' >
+	function checkForm(){
+		var money = $('input[name=money]').val();
+		var max = parseFloat($('input[name=money]').attr('max-value'));
+		if(money>max){alert('开票金额不得大于订单商品总金额');return false;}
+		else return true;
+	}
+</script>
