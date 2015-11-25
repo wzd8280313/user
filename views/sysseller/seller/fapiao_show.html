@@ -64,14 +64,22 @@
 			{/if}
 			<fieldset>
 				<label>开票金额:</label>
-				<div class="box"><input type='text' class='small' name='money' value='{$money}' pattern='^[0-9]+.?[0-9]{0,2}$'/></div>
+				<div class="box"><input type='text' class='small' {if:$status==1}disabled{/if} max-value='{$money}' name='money' value='{$money}' pattern='^[0-9]+.?[0-9]{0,2}$'/></div>
 			</fieldset>
 			<footer>
 				<div class="submit_link">
-					<input type="submit" class="alt_btn" value="确 定" />
+					<input type="submit" class="alt_btn" value="确 定" onclick='return checkForm()' />
 					<input type="reset" value="重 置" />
 				</div>
 			</footer>
 		</div>
 	</form>
 </article>
+<script type='text/javascript' >
+	function checkForm(){
+		var money = $('input[name=money]').val();
+		var max = parseFloat($('input[name=money]').attr('max-value'));
+		if(money>max){alert('开票金额不得大于订单商品总金额');return false;}
+		else return true;
+	}
+</script>

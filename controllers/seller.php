@@ -1537,10 +1537,10 @@ class Seller extends IController
 		$db_fa->join = 'left join order as o on o.id = f.order_id  left join user as u on u.id = f.user_id';
 		$db_fa->where = 'f.id ='. $id.' AND f.seller_id = '.$seller_id;
 		$db_fa->limit = 1;
-		$db_fa->fields = 'u.username,o.order_no,f.*';
+		$db_fa->fields = 'u.username,o.order_no,o.real_amount,f.*';
 		$data = $db_fa->find();
 		$data = $data[0];
-		if($data['money']==0)$data['money']='';
+		if($data['money']==0)$data['money']=$data['real_amount'];
 		
 		$this->setRenderData($data);
 		$this->redirect('fapiao_show');
