@@ -2,6 +2,7 @@
 {js:my97date}
 {set:$swfloadObject = new Swfupload('/seller/goods_img_upload');$swfloadObject->show($this->seller['seller_name'],$this->seller['seller_pwd']);}
 {set:$seller_id = $this->seller['seller_id']}
+
 <article class="module width_full">
 	<header>
 		<h3 class="tabs_involved">商品编辑</h3>
@@ -393,7 +394,8 @@ function selSpec()
 	var tempUrl = '{url:/goods/search_spec/model_id/@model_id@/goods_id/@goods_id@/seller_id/$seller_id}';
 	var model_id = $('[name="model_id"]').val();
 	var goods_id = $('[name="id"]').val();
-
+	model_id = model_id ? model_id : 0;
+	goods_id = goods_id ? goods_id : 0;
 	tempUrl = tempUrl.replace('@model_id@',model_id);
 	tempUrl = tempUrl.replace('@goods_id@',goods_id);
 

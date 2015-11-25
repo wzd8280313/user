@@ -2,9 +2,9 @@
 var areaTemplate = '<%for(var index in data){%>'+'<%var item = data[index]%>'+'  <li><a href="javascript:void(0)" data-value="<%=item.area_id%>"><%=item.area_name%></a></li>'+'<%}%>';
 
 var provinceHtml = 	'<div class="text"><span name="pro_show"></span>  <span name="city_show"></span>  <span name="area_show"></span><div><input type="hidden" name="area_id" /></div><b></b></div> <span style="margin-left:5px;" name="fee_box"></span>'                  
-					+'	<div class="close"></div>'+
+					
 
-					'<div id="areaShow" class="content" ><div data-widget="tabs" class="m JD-stock" id="JD-stock">'
+					+'<div id="areaShow" class="content" style="height:600px;"><div data-widget="tabs" class="m JD-stock" id="JD-stock">'
 
 								+'<div class="mt">'
 								+'    <ul class="tab">'
@@ -134,15 +134,23 @@ $(function(){
 	//
 	$('#store-selector .text').hover(
 				function(){
-					
-					  $('#product_myCart').css("z-index","-1")
-					 
-					/*else
-					  {
-					  
-					  }*/
+					$('#product_myCart').css("z-index","-1")
 					$('#store-selector').addClass('hover');
+				},
+				function(){
+					$('#product_myCart').css("z-index","1")
+					$('#store-selector').removeClass('hover');
 				}
+	)
+	$('#areaShow').hover(
+			function(){
+				$('#product_myCart').css("z-index","-1");
+				$('#store-selector').addClass('hover');
+			},
+			function(){
+				$('#product_myCart').css("z-index","1");
+				$('#store-selector').removeClass('hover');
+			}
 	)
 	delivery_init();
 })

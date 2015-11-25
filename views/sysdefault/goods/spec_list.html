@@ -7,7 +7,7 @@ $where = getSearchCondition($this->search);
 	<div class="operating">
 		<a href="javascript:;"><button class="operating_btn" type="button" onclick="addNewSpec();"><span class="addition">添加规格</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
-		<a href="javascript:void(0)" onclick="delModel();"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
+		<a href="javascript:void(0)" onclick="delModel({form:'specForm'});"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 		<a href="javascript:void(0)"><button class="operating_btn" type="button" onclick="location.href='{url:/goods/spec_recycle_list}'"><span class="recycle">回收站</span></button></a>
 	</div>
 	<div class="searchbar">

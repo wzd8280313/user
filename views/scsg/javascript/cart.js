@@ -13,7 +13,7 @@ $(function(){
 						total_price +=mathMul(parseFloat(json.sell_price),num);
 						total_discount += mathMul(parseFloat(json.reduce),num);
 					})
-					$('#origin_price').text(total_price);
+					$('#origin_price').text(total_price.toFixed(2));
 					 $('#discount_price').text(total_discount);	
 					
 			}

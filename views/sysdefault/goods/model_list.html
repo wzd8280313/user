@@ -8,7 +8,7 @@ $where = getSearchCondition($search);
 	<div class="operating">
 		<a href="javascript:;"><button class="operating_btn" type="button" onclick="window.location='{url:/goods/model_edit}'"><span class="addition">添加模型</span></button></a>
 		<a href="javascript:void(0)"><button class="operating_btn" type="button"  onclick="selectAll('id[]')"><span class="sel_all">全选</span></button></a>
-		<a href="javascript:void(0)"><button class="operating_btn" type="button" onclick="delModel()"><span class="delete">批量删除</span></button></a>
+		<a href="javascript:void(0)"><button class="operating_btn" type="button" onclick="delModel({form:'ModelForm'})"><span class="delete">批量删除</span></button></a>
 	</div>
 	<div class="searchbar">
 		<form action="{url:/}" method="get" name="model_list">

@@ -147,7 +147,6 @@ class Goods extends IController
 		$model_id = IFilter::act(IReq::get('model_id'),'int');
 		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
 		$specId   = '';
-
 		if($goods_id)
 		{
 			$tb_goods = new IModel('goods');

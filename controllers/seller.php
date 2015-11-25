@@ -1120,6 +1120,7 @@ class Seller extends IController
 		$productsDB = new IModel('products');
 
 		$goodsData = $goodsDB->query('id in ('.join(',',$idArray).') and is_share = 1 and is_del = 0 and seller_id = 0','*');
+		
 		if($goodsData)
 		{
 			foreach($goodsData as $key => $val)
@@ -1136,7 +1137,7 @@ class Seller extends IController
 				unset($val['id'],$val['visit'],$val['favorite'],$val['sort'],$val['comments'],$val['sale'],$val['grade'],$val['is_share']);
 				$val['seller_id'] = $this->seller['seller_id'];
 				$val['goods_no'] .= '-'.$this->seller['seller_id'];
-
+				$val['content'] = IFilter::addSlash($val['content']);
 				$goodsDB->setData($val);
 				$goods_id = $goodsDB->add();
 

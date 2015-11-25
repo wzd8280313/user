@@ -85,7 +85,7 @@ class Site extends IController
 		$this->tuangou = 1;
 		$this->todayList = array();
 		$this->brandList = array();
-		$tuanList = Api::run('getRegimentList','6');
+		$tuanList = Api::run('getRegimentList','10');
 		$this->count = count($tuanList);
 		if($this->count>2){
 			$this->todayList = array(array_shift($tuanList),array_shift($tuanList));

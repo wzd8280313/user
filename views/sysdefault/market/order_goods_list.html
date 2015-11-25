@@ -62,7 +62,7 @@
 		</colgroup>
 
 		<tbody>
-			{set:$where = ''}
+			{set:$where = ' and go.seller_id!=0 '}
 			{foreach:items=$search}
 				{if:$item !== ""}{set:$where .= " and ".$key."'".$item."'"}{/if}
 			{/foreach}
