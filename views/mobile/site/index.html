@@ -196,28 +196,7 @@
     </section>
 
     <section class="activity_floor">
-		<!--<header class="title clear-fix">-->
-           <!-- <h2 class="fl">加盟商户</h2>
-        </header>
-		{set:$seller=Api::run('getSellerList2');}
-        <div class="first_floor clear-fix">
-            <div class="left fl">
-
-            	{for:from=0 upto=1}
-                 <div class="top" style='border-bottom: 1px solid #eee;'>
-                    <a href="javascript:voie(0)"><img src="{url:$seller[$i]['logo_img']}"></a>
-               	 </div>
-               	{/for}
-            </div>
-            <div class="right fl">
-            	{for:from=2 upto=3}
-                 <div class="top">
-                    <a href="javascript:voie(0)"><img src="{url:$seller[$i]['logo_img']}"></a>
-               	 </div>
-				 {/for}
-             </div>
-
-        </div>-->                           
+                       
         
         
         <header class="title clear-fix">
@@ -309,24 +288,7 @@
         
         
         
-	<!--<header class="title clear-fix">
 
-            <h2 class="fl">商品分类</h2>
-        </header>
-      <div class="second_floor">
-            <ul class="clear-fix">
-
-            	{foreach:items=Api::run('getCategoryListTop',6)}
-                <li class="fl" style='width:33%;'>       
-					 <a href="{url:site/pro_list/cat/$item['id']}">
-					 <img src="{url:$item['img']}">
-					 </a>
-				</li>
-				{/foreach}
-
-            </ul>
-        </div>-->
-		<!--更换商品分类内容-->
 
     <!-- Swiper JS -->
 	<link rel="stylesheet" href="{skin:css/Swiper demo_files/swiper.min.css}">
@@ -356,18 +318,32 @@
 			<section class="swiper-wrapper" style="background:#fff;">
                 {foreach:items=$this->categoryList item=$goods}
 				<div class="swiper-slide" {if:$key==0} style="width:100%;" {/if}>
+				{for:from=0 upto=count($goods['goods']) step=2 item=$key}
+				<div>
 					<ul class="ul_conter">
-                        {foreach:items=$goods['goods']}
-						<li><a href="{url:/site/products/id/$item['id']}">
-								<div><img src="{url:/pic/thumb/img/$item[img]/w/170/h/170}"/></div>
-								<p class="fl_title">{$item['name']}</p>
-								<p><span class="ul_sell">月销售<b>{$item['sale']}</b>件</span></p>
-								<p><span class="ul_price">￥{$item['sell_price']}</span>				
+                        {if:$key+1 <= count($goods['goods'])}
+						<li><a href="{url:/site/products/id/$goods['goods'][$key]['id']}">
+								<div><img src="{url:/pic/thumb/img/$goods['goods'][$key]['img']/w/170/h/170}"/></div>
+								<p class="fl_title">{$goods['goods'][$key]['name']}</p>
+								<p><span class="ul_sell">月销售<b>{$goods['goods'][$key]['sale']}</b>件</span></p>
+								<p><span class="ul_price">￥{$goods['goods'][$key]['sell_price']}</span>				
 
 							</a>
 						</li>
-                        {/foreach}
+						{/if}
+						{if:$key+2 <= count($goods['goods'])}
+                       <li><a href="{url:/site/products/id/$goods['goods'][$key+1]['id']}">
+								<div><img src="{url:/pic/thumb/img/$goods['goods'][$key+1]['img']/w/170/h/170}"/></div>
+								<p class="fl_title">{$goods['goods'][$key+1]['name']}</p>
+								<p><span class="ul_sell">月销售<b>{$goods['goods'][$key+1]['sale']}</b>件</span></p>
+								<p><span class="ul_price">￥{$goods['goods'][$key+1]['sell_price']}</span>				
+
+							</a>
+						</li>
+						{/if}
 					</ul>
+				</div>
+				{/for}
 				</div>
                 {/foreach}
 			</section>

@@ -9,4 +9,4 @@
 #wrap .brand_one_box .title{height:20px;margin-top:4px;display:inline-block;float:left;text-align:left;padding-left:3px;
                             border:none; line-height:65px;height:40px;width:120%; margin-top:-10px;font-size:13px;white-space:nowrap;overflow:hidden;                            text-overflow:ellipsis;}
 #wrap .brand_one_box .price{height:20px;color:#f15a24;margin-top:4px;display:inline-block;float:right;padding-right:3px;
-                            font-size:13px;text-align: center;display: block;width:120%;}
+                            font-size:13px;text-align: center;display: block;width:100%;}

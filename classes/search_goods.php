@@ -302,18 +302,20 @@ class search_goods
 						$wordWhere     = array();
 						$wordLikeOrder = array();
 
-						//检查输入的内容是否为分词形式
-						if(preg_match("#\s+#",$defaultWhere['search']) == false)
+						//检查输入的内容是否为分词形式（有空格隔开）
+						if(preg_match("#\s+#",$defaultWhere['search']) == false)//没有分词
 						{
 							$wordWhere[]     = ' name like "%'.$defaultWhere['search'].'%" or find_in_set("'.$defaultWhere['search'].'",search_words) ';
 							$wordLikeOrder[] = $defaultWhere['search'];
 						}
-
 						//进行分词
-						if(IString::getStrLen($defaultWhere['search']) >= 4 || IString::getStrLen($defaultWhere['search']) <= 100)
+						else if(IString::getStrLen($defaultWhere['search']) >= 4 || IString::getStrLen($defaultWhere['search']) <= 100)
 						{
-							$wordData = words_facade::run($defaultWhere['search']);
-							
+							//$wordData = words_facade::run($defaultWhere['search']);
+							$wordData['data'] = explode(' ',$defaultWhere['search']);
+							foreach($wordData['data'] as $k=>$v){
+								if($v=='')unset($wordData['data'][$k]);
+							}
 							if(isset($wordData['data']) && count($wordData['data']) >= 2)
 							{
 								foreach($wordData['data'] as $word)
