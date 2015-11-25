@@ -17,7 +17,9 @@ $(document).ready(function(){
 		
 //ÄÚÈÝ»¬¶¯
 		var swiperPanel = new Swiper('.swiper-container.panel', {
-	        slidesPerView: 1,
+			slidesPerColumn : 1,
+			slidesPerColumnFill : 'row',
+		   //slidesPerView: 1,
 			//loop : true,
 			//slidesPerView : 'auto',
 			//loopedSlides :6,
