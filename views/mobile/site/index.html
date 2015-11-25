@@ -317,28 +317,30 @@
 		<div class="swiper-container panel section_bg">
 			<section class="swiper-wrapper" style="background:#fff;">
                 {foreach:items=$this->categoryList item=$goods}
-				
 				<div class="swiper-slide" {if:$key==0} style="width:100%;" {/if}>
 				{for:from=0 upto=count($goods['goods']) step=2 item=$key}
 				<div>
 					<ul class="ul_conter">
-                        
+                        {if:$key+1 <= count($goods['goods'])}
 						<li><a href="{url:/site/products/id/$goods['goods'][$key]['id']}">
-								<div><img src="{url:/pic/thumb/img/$goods['goods'][$key][img]/w/170/h/170}"/></div>
+								<div><img src="{url:/pic/thumb/img/$goods['goods'][$key]['img']/w/170/h/170}"/></div>
 								<p class="fl_title">{$goods['goods'][$key]['name']}</p>
 								<p><span class="ul_sell">月销售<b>{$goods['goods'][$key]['sale']}</b>件</span></p>
 								<p><span class="ul_price">￥{$goods['goods'][$key]['sell_price']}</span>				
 
 							</a>
 						</li>
+						{/if}
+						{if:$key+2 <= count($goods['goods'])}
                        <li><a href="{url:/site/products/id/$goods['goods'][$key+1]['id']}">
-								<div><img src="{url:/pic/thumb/img/$goods['goods'][$key+1][img]/w/170/h/170}"/></div>
+								<div><img src="{url:/pic/thumb/img/$goods['goods'][$key+1]['img']/w/170/h/170}"/></div>
 								<p class="fl_title">{$goods['goods'][$key+1]['name']}</p>
 								<p><span class="ul_sell">月销售<b>{$goods['goods'][$key+1]['sale']}</b>件</span></p>
 								<p><span class="ul_price">￥{$goods['goods'][$key+1]['sell_price']}</span>				
 
 							</a>
 						</li>
+						{/if}
 					</ul>
 				</div>
 				{/for}
