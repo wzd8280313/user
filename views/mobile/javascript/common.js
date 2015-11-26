@@ -136,6 +136,7 @@ function checkboxCheck(boxName,errMsg)
 	return true;
 }
 
+
 //倒计时
 var countdown=function()
 {
@@ -163,16 +164,45 @@ var countdown=function()
 		else
 		{var val=0;
 			if(value==0){
-				val=59;
-			}else if(value<=10){
-				val= '0'+(value-1);
+				val=(type=='hour') ? 23 : 59;
+			}else if(value<=10 ){
+				if(type=='day')val=value-1;
+				else val= '0'+(value-1);
 			}else val=value-1;
 			e.innerHTML = val;
 			return true;
 		}
 	};
 };
+
+//倒计时函数
+//min_id 小于min_id的不做处理
+var countDown = function(min_id){
+		$('.countdown').each(function(){
+			var id = $(this).attr('id').split('-')[1];
+			if(min_id && id<min_id)return true;
+			var temp;
+			var count = $(this).find('input[name=endTime]').val();
+			var day = parseInt(count/(24*3600));
+			count=count%(24*3600);
+			var hour = (temp = parseInt(count/3600))<10 ? '0'+temp : temp;
+			count = count%3600;
+			var min = (temp=parseInt(count/60))<10 ? '0'+temp :temp ;
+			var sec = (temp=count%60)<10 ? '0' + temp : temp;
+			
+			$('#cd_day_'+id).text(day);
+			$('#cd_hour_'+id).text(hour);
+			$('#cd_minute_'+id).text(min);
+			$('#cd_second_'+id).text(sec);
+			
+			var count = new countdown();
+			count.add(id);
+		})
+	};
 //时分秒倒计时
+$(function(){
+	countDown();
+})
 
 //切换验证码
 function changeCaptcha(urlVal)

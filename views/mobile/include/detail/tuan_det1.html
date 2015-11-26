@@ -68,18 +68,32 @@
 			<p>
 				<span class="label">团&nbsp;购&nbsp;价:</span>
 				<span class="d_price">￥{$this->tuanData['regiment_price']}</span>
-				</p><p>
-				购买送积分:<span class="jifen">{$point}</span></p>   
-				<p>
-					<span class="label">山&nbsp;城&nbsp;价:</span>
-					<span class="m_price">￥{$sell_price}</span>
-				</p>
+			</p>
+			<p>
+				购买送积分:<span class="jifen">{$point}</span>
+			</p>   
+			<p>
+				<span class="label">山&nbsp;城&nbsp;价:</span>
+				<span class="m_price">￥{$sell_price}</span>
+			</p>
 	
 			<p>
 				<span class="label">顾客评分:</span>
 				<span class="starlevel star_4">{$grade}</span>(共有<a href="javascript:void(0)" onclick='show_comments()' class="all">{$comments}</a>次评分)
 			</p>
-			
+			{set:$end = strtotime($this->tuanData['end_time']) - time()}
+			<p><span class="label">剩余时间:</span>
+				<span class=" countdown" id="timeRemaining-1" style=''>
+								<span id='cd_day_1' style='color:red;'></span>天
+								<span id='cd_hour_1' style='color:red;'></span>小时
+								<span id='cd_minute_1' style='color:red;'></span>分
+								<span id='cd_second_1' style='color:red;'></span>秒	
+								<input name='endTime' type='hidden' value='{$end}' />
+								
+								<span class='sell_sum'>已团购(<span >{$this->tuanData['sum_count']}/{$this->tuanData['store_nums']}</span>)</span>
+								
+				</span>
+			</p>
 		
 	</section>	
 
