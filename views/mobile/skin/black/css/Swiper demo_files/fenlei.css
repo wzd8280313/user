@@ -31,6 +31,7 @@
  .swiper_height{
 	 height:52px;
 	 border-bottom: 1px solid  #F4F2F2;
+	 text-align:center;
 	 
  }
 /*点击后商品分类图标开始*/
@@ -99,6 +100,33 @@
  .swiper_bg .tb8{
 	background-position:0px -140px;
  }
+ 
+  /*点击后商品分类图标结束*/
+ /*点击前的图标*/
+.swiper_bg .tb1{
+	background-position:0px -182px;
+ }
+  .swiper_bg .tb2{
+	background-position:0px -60px;
+ }
+   .swiper_bg .tb3{
+	background-position:0px -120px;
+ }
+   .swiper_bg .tb4{
+	background-position:0px -80px;
+ }
+   .swiper_bg .tb5{
+	background-position:0px -160px;
+ }
+.swiper_bg .tb6{
+	background-position:0px -100px;
+ }
+ .swiper_bg .tb7{
+	background-position:0px -240px;
+ }
+ .swiper_bg .tb8{
+	background-position:0px -140px;
+ }
   /*点击前的图标结束*/
 
  .section_bg{
@@ -112,9 +140,10 @@
     
  }
 .swiper-slide {
-    text-align: center;
-    font-size: 15px;
-    /* background: #fff;
+	font-size: 15px;
+    /* text-align: center;
+    
+    background: #fff;
     Center slide text vertically 
     display: -webkit-box;
     display: -ms-flexbox;
@@ -154,8 +183,8 @@ background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAA8AQMAAACU1
 	
 }
 .swiper-slide .ul_conter li{
-	float:left;
-	width:50%;
+	display: inline-block;
+	width:49%;
 	border: 1px solid #eee;
 	border-top:0;
 	
@@ -185,12 +214,10 @@ background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAA8AQMAAACU1
 	color:#c0c0c0;
 }
 /*价格*/
-.swiper-slide .ul_conter  .ul_price{
-	display: block;
+.swiper-slide .ul_price{
 	color:red;
-	text-align: left;
 }
-/*.swiper-slide .ul_conter li a p .ul_gw{
+.swiper-slide .ul_conter li a p .ul_gw{
 	display: block;
 	height: 30px;
 	width: 30px;
@@ -200,10 +227,10 @@ background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAA8AQMAAACU1
 	position: relative;
 	bottom: 15px;
 	border-radius: 50%;
-}*/
+}
 .swiper-slide .ul_conter li a img{
 	width:100%;
-	/*height:100%;*/
+	height:100%;
 	border:0;
 	
 }
