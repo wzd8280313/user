@@ -86,8 +86,8 @@
 				{/if}
 				
 				<p>说明</p>
-				<p><textarea type="text" class="text" style='height:70px;' name='content' required></textarea></p>
-				<p><input class="butt" type="submit" value="提交申请"/></p>
+				<p><textarea type="text" class="text" style='height:70px;' name='content'  ></textarea></p>
+				<p><input class="butt" type="submit" value="提交申请" onclick=' return checkform()'/></p>
 			</div>
 		</form>
     </section>
@@ -95,7 +95,13 @@
 </div>
        
         <script type="text/javascript" src="{theme:javascript/js/stat3.min.js}"></script><div style="display: none;"><script type="text/javascript" async src="{theme:javascript/js/h.js}"></script></div><img id="stat_image" src="{skin:images/files/__utm.gif}" style="display: none;">
-
+<script type='text/javascript' >
+function checkform(){
+	if($('textarea[name=content]').val()=='')
+		return false;
+	else return true;
+}
+</script>
     
 
 <footer id="footer">
