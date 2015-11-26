@@ -238,7 +238,7 @@ function selectProtect(obj)
      	<div class="qrdd qrdds">
      		<!-- 商品详情-->
 			{foreach:items=$this->goodsList item=$value}
-			<span style='float:right;margin-bottom:-10px;margin-top:2px;'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'></span></span>
+			
 				<input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
 				{foreach:items=$value key=$k}
 				{if:is_array($item)}
@@ -250,7 +250,7 @@ function selectProtect(obj)
 						{/if}
 						<input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
 		     		<a href="{url:/site/products/id/$item['goods_id']}">
-		     			<div class="tjxq_img" style="margin-top:-10px;">
+		     			<div class="tjxq_img" style="margin-top:10px;">
 		     				<img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}"/>
 		     			</div>
 		     			<div class="tjxq_tit">
@@ -269,10 +269,12 @@ function selectProtect(obj)
 				     			单价：<span>￥{$item['sell_price']}</span>
 								优惠：<span>￥{$item['reduce']}</span>
 				     			数量：<span>x{$item['count']}</span>
+								
 				     		</p>
 							<p style='color:red; text-align:right;padding-right:15px;'>
 								小计：<b >￥{$item['sum']}</b>
 							</p>
+							<p style="float: right;padding-right: 16px;">配送费用<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'></span></p>
 			     		</div>
 			     	</a>
 					</div>
@@ -370,7 +372,11 @@ function selectProtect(obj)
 		</div>
      	<div style="height:55px;"></div>
      	<div class="anniu">
-     		<input class="but"  type="button" onclick='submit_check();' value="确定提交" style="bottom:-5px;"/>
+			<div class="an fk"> 实付款：<b  id='final_sums' style="font-size: 15px;">￥{$this->final_sum}</b></div>
+     		<div class="an but" onclick='submit_check();'>
+				确定提交
+			<!--<input class="but"  type="button"  value="确定提交" style="bottom:-5px;"/>-->
+			</div>
      	</div>
      	</form>
      </div>

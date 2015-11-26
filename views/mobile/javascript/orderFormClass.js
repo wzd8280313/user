@@ -89,6 +89,7 @@ function orderFormClass()
 			var wei_sum = this.orderAmount - parseFloat($('#pre_sum').text());
 			$('#wei_sum').text(wei_sum.toFixed(2));
 		}
+		$('#final_sums').text(this.orderAmount);
 		
 	}
 	//获取运费
