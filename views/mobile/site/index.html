@@ -317,7 +317,7 @@
 		<div class="swiper-container panel section_bg">
 			<section class="swiper-wrapper" style="background:#fff;">
                 {foreach:items=$this->categoryList item=$goods}
-				<div class="swiper-slide" {if:$key==0} style="width:100%;" {/if}>
+				<div class="swiper-slide " {if:$key==0} style="width:100%;" {/if}>
 				{for:from=0 upto=count($goods['goods']) step=2 item=$key}
 				<div>
 					<ul class="ul_conter">
