@@ -363,9 +363,13 @@ function selectProtect(obj)
      		</div>
 		</div>
      	<div style="height:55px;"></div>
-     	<div class="anniu">
-     		<input class="but" type="button" onclick='submit_check();' value="确定提交" />
+		<div class="anniu">
+			<div class="an fk"> 实付款：<b  id='final_sum' style="font-size: 15px;">￥{$this->pre_sum}</b></div>
+     		<div class="an but" onclick='submit_check();'>
+				确定提交
+			</div>
      	</div>
+     		<!--<input class="but" type="button" onclick='submit_check();' value="确定提交" />-->
      	</form>
      </div>
   </body>

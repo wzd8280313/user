@@ -242,7 +242,7 @@ function selectProtect(obj)
 				<input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
 				{foreach:items=$value key=$k}
 				{if:is_array($item)}
-		     		<div class="qr_xq" style="clear:both;margin:10px;">
+		     		<div class="qr_xq" style="clear:both;margin:-5px;">
 		     			{if:$item['product_id']==0}
 							{set:$type= 'goods';$id=$item['goods_id']}
 						{else:}

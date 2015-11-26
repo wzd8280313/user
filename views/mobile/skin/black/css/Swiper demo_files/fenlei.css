@@ -43,89 +43,76 @@
 	background: url(../wap/category.png) no-repeat;
 }
 .active .tb1{
-	background-position:-200px -182px!important;
+	background-position:-200px -140px!important;
  }
 .active .tb2{
-	background-position:-200px -60px!important;
-
- }
-.active .tb3{
-	background-position:-200px -120px!important;
-
- }
-.active .tb4{
-	background-position:-200px -80px!important;
-
- }
-.active .tb5{
 	background-position:-200px -160px!important;
 
  }
+.active .tb3{
+	background-position:-200px -282px!important;
+
+ }
+.active .tb4{
+	background-position:-200px -60px!important;
+
+ }
+.active .tb5{
+	background-position:-200px -80px!important;
+
+ }
 .active .tb6{
-	background-position:-200px -100px!important;
+	background-position:-200px -301px!important;
 
  }
  .active .tb7{
-	background-position:-200px -240px!important;
+	background-position:-200px -120px!important;
 
  }
  .active .tb8{
-	background-position:-200px -140px!important;
+	background-position:-200px -240px!important;
 
  }
- 
+  .active .tb9{
+	background-position:-200px -260px!important;
+
+ }
+   .active .tb9{
+	background-position:-200px -220px!important;
+
+ }
+
   /*点击后商品分类图标结束*/
  /*点击前的图标*/
 .swiper_bg .tb1{
-	background-position:0px -182px;
- }
-  .swiper_bg .tb2{
-	background-position:0px -60px;
- }
-   .swiper_bg .tb3{
-	background-position:0px -120px;
- }
-   .swiper_bg .tb4{
-	background-position:0px -80px;
- }
-   .swiper_bg .tb5{
-	background-position:0px -160px;
- }
-.swiper_bg .tb6{
-	background-position:0px -100px;
- }
- .swiper_bg .tb7{
-	background-position:0px -240px;
- }
- .swiper_bg .tb8{
 	background-position:0px -140px;
  }
- 
-  /*点击后商品分类图标结束*/
- /*点击前的图标*/
-.swiper_bg .tb1{
-	background-position:0px -182px;
- }
   .swiper_bg .tb2{
-	background-position:0px -60px;
- }
-   .swiper_bg .tb3{
-	background-position:0px -120px;
- }
-   .swiper_bg .tb4{
-	background-position:0px -80px;
- }
-   .swiper_bg .tb5{
 	background-position:0px -160px;
  }
+   .swiper_bg .tb3{
+	background-position: 0px -282px;
+ }
+   .swiper_bg .tb4{
+	background-position:0px -60px;
+ }
+   .swiper_bg .tb5{
+	background-position:0px -80px;
+ }
 .swiper_bg .tb6{
-	background-position:0px -100px;
+	background-position:0px -301px;
  }
  .swiper_bg .tb7{
-	background-position:0px -240px;
+	background-position:0px -120px;
  }
  .swiper_bg .tb8{
-	background-position:0px -140px;
+	background-position:0px -240px;
+ }
+ .swiper_bg .tb9{
+	background-position:0px -260px;
+ }
+  .swiper_bg .tb10{
+	background-position:0px -220pxpx;
  }
   /*点击前的图标结束*/
 
