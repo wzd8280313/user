@@ -139,7 +139,8 @@ function show_det2(_this){
 	$(".ke-zeroborder").css({   "background-size": "100%" , "height": "150px", "width": "100%"});
 	$("#description tbody").remove();
 	 
-	
+	$(".spjs_img img").attr({"style":"width:100%;"});
+	$(".spjs_img p").attr({"style":"width:100%;"});  
 	
 }
 function show_comments_list(_this){
