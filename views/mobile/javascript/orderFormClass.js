@@ -69,6 +69,7 @@ function orderFormClass()
 	 */
 	this.doAccount = function()
 	{
+		this.paymentPrice = !this.paymentPrice ? 0 : this.paymentPrice ;
 		//税金
 		this.taxPrice = $('span[name="taxes"]').hasClass("show_check")? $('input[name="taxes"]').val() : 0 ;
 		//代金券
