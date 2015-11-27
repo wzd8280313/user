@@ -546,7 +546,7 @@ class Ucenter extends IController
         {
         	$message = '订单不存在';
         }
-        	$this->redirect('/site/success');
+        	IError::show(403,$message);
     }
     /**
      * @brief 退款申请删除

@@ -1161,7 +1161,18 @@ class Site extends IController
 
 
 	function ce(){
-		echo rand(000000,999999);
+		$order_goods_id = 1834;
+		  $orderDB = new IModel('order');
+        $goodsOrderDB = new IModel('order_goods');
+        $user_id = 108;
+        $goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id);
+        $orderRow = array();
+        if($goodsOrderRow){
+        	$order_id = $goodsOrderRow['order_id'];
+        	$orderRow = $orderDB->getObj("id = ".$order_id." and user_id = ".$user_id);
+        }
+		print_r($goodsOrderRow);
+		echo Order_Class::get_refund_fee($orderRow,$goodsOrderRow);
 	}
 	
 }
