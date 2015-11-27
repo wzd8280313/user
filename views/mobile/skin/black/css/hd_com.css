@@ -111,15 +111,15 @@ html,body{height:100%;font-size:100%}
 
 .inner-section .modle_items2 .items li .tit{line-height:20px;height:40px;display:block;overflow:hidden;margin-top:4px;font-size:14px;}
 
-.inner-section .modle_items2 .items li .price .n_price{color:#ea3434;font-size:18px}
+.inner-section .modle_items2 .items li .price .n_price{color:#ea3434;font-size:16px}
 
 .inner-section .modle_items2 .items li .price .n_price i{font-size:12px}
 
 .inner-section .modle_items2 .items li .price .s_price{display:block;color:#999;text-decoration:line-through;font-size:12px}
 
-.inner-section .modle_items2 .items li .price .ms_btn{float:right;
+.inner-section .modle_items2 .items li .price .ms_btn{float:right; top: 0px;
 position: relative;
-left: -20px;
+left: -14px;
 background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px;font-size:14px;bottom: 10px;}
 
 .inner-section .modle_items3{background:#fff;margin:10px 0;border-bottom:1px #dcdcdc solid;border-top:1px #dcdcdc solid}
