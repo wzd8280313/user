@@ -139,7 +139,7 @@ function orderFormClass()
 									{
 										html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
 									}
-									_this.text(html);
+									_this.html(html);
 								}
 							},
 							timeout:1000,
