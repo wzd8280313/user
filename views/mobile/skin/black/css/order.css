@@ -58,12 +58,12 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 
 /* ֧����ʽ */
 .pages .qrdds .qrdds_zf{
-	margin-top: 0px;
+	margin-top: 25px;
 	border-top:1px solid #c0c0c0;
 	border-bottom:1px solid #c0c0c0;
 	padding-left:10px;
 	position:relative;
-	top:5px;
+	top:0px;
 	
 }
 .pages .qrdds .qrdds_zf h4{
