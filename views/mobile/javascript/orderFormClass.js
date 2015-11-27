@@ -226,7 +226,10 @@ function orderFormClass()
 	{
 
 		this.paymentActiveId = $('select[name=payment]').val();
-
+		if(this.paymentActiveId==7)
+			$('[name=payment]').after('<p style="color:red;" name="alipay_info">由于您使用的是支付宝第三方担保交易，“确认收货、退款”等相关操作结束后需前往支付宝界面再次操作</p>');
+		else
+			$('[name=alipay_info]').remove();
 		//支付金额
 		this.paymentPrice = $('select[name=payment] option:selected').attr('price');
 
