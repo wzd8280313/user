@@ -321,7 +321,7 @@ class hookCreateAction extends IInterceptorBase
 	//自动将到期的预售产品改为下架
 	public static function pregoods_presell_list(){
 		$db_presell = new IModel('presell');
-		if($presell_list = $db_presell->query('TIMESTAMPDIFF(second,yu_end_time,NOW()) >0','goods_id')){
+		if($presell_list = $db_presell->query('is_close=0 and TIMESTAMPDIFF(second,yu_end_time,NOW()) >0','goods_id')){
 			$ids = '';
 			foreach($presell_list as $val){
 				$ids .= $val['goods_id'].',';
