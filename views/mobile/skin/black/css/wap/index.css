@@ -105,9 +105,9 @@ div.myFavoritesLis ul li{-webkit-box-shadow: inset 0px -1px 0px #e0e0e0;}
 color: #999999;padding: 0px 0 0 0;
 display: block;overflow: hidden;
 margin: 0 30px 0 0;}
-.sortList .arrow,.sortList .icon{background: url(iconPage.png) 0 -5px;}
+.sortList .arrow,.sortList .icon{background: url(big-category.png) no-repeat;}
 .sortList .icon{width: 35px;height: 35px;
-display: block;float: left;/*margin: 10px 0 0 5px;*/margin: 5px 0 0 5px;background-position: 0 -5px;}
+display: block;float: left;/*margin: 10px 0 0 5px;*/margin: 5px 0 0 5px;}
 .sortList .arrow{background-position: 0 -5px;width: 9px;height: 17px;display: block;float: right;background-position: -430px -13px;margin: -23px 15px 0 0;}
 
 .sortList .icon2{background-position: -51px -5px;}
@@ -118,6 +118,16 @@ display: block;float: left;/*margin: 10px 0 0 5px;*/margin: 5px 0 0 5px;backgrou
 .sortList .icon7{background-position: -283px -5px;}
 .sortList .icon8{background-position: -326px -5px;}
 .sortList .icon9{background-position: -374px -5px;}
+/*分类页图标问题*/
+.sortList .icons1{background-position: -9px -145px;}
+.sortList .icons2{background-position: -9px -178px;}
+.sortList .icons3{background-position: -9px -379px;}
+.sortList .icons4{background-position: -9px -9px;}
+.sortList .icons5{background-position: -9px -45px;}
+.sortList .icons6{background-position: -9px -413px;}
+.sortList .icons7{background-position: -9px -112px;}
+.sortList .icons8{background-position: -9px -311px;}
+.sortList .icons9{background-position: -9px -342px;}
 /* ------------- Retina ------------- */
 @media only screen and (-o-min-device-pixel-ratio: 2/1),
        only screen and (min--moz-device-pixel-ratio: 2),

@@ -499,3 +499,10 @@ function Ajax_Get_Data(){
 		})
 	}	
 
+/*分类页头部循环增加class值*/
+$(function(){
+	$(".sortList li .icon").each(function(i){
+	$(this).addClass("icons"+(i+1));
+	});
+});
+

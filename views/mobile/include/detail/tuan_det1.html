@@ -1,4 +1,4 @@
-<input type='hidden' id='product_id' alt='货品ID' value='{$product_id}' />
+﻿<input type='hidden' id='product_id' alt='货品ID' value='{$product_id}' />
 <input type='hidden' name='promo_name' value="groupon"/>
 <input type='hidden' name='active_id' value="{$active_id}"/><!--活动id-->
 <div id='det1' >
@@ -190,8 +190,10 @@
 <div class="history">
 	<h3 class="tit">商品评价</h3>
 	<!--介绍内容-->
-	<div id="commentBox" style="margin-left:10px;">
-		<a  href="javascript:void(0)" onclick="show_comments_list($('[name=pingjia]'))">查看更多</a>
+	<div id="commentBox" style="margin: 6px 0px;">
+		<div style="text-align:center;">
+			<a  href="javascript:void(0)"style="border: 2px solid #845959;padding: 2px 10px;color: #000;" onclick="show_comments_list($('[name=pingjia]'))">查看更多</a>
+		</div>
 	</div>
 
 </div>
