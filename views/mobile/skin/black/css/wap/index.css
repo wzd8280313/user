@@ -135,9 +135,9 @@ display: block;float: left;/*margin: 10px 0 0 5px;*/margin: 5px 0 0 5px;}
        only screen and (-webkit-min-device-pixel-ratio: 2),
        only screen and (min-resolution: 240dpi),
        only screen and (min-resolution: 2dppx){
-.sortList .arrow,.sortList .icon{background-image: url(iconPage_402x.png);background-size: 462px 48px;}
+/*.sortList .arrow,.sortList .icon{background-image: url(iconPage_402x.png);background-size: 462px 48px;}
        
-}
+}*/
 /*分类页面end*/
 
 
