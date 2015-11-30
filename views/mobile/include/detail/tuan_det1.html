@@ -1,4 +1,6 @@
-﻿<input type='hidden' id='product_id' alt='货品ID' value='{$product_id}' />
+﻿<input type='hidden' name='min_num' value='{$this->tuanData["limit_min_count"]}'/>
+<input type='hidden' name='max_num' value='{$this->tuanData["limit_max_count"]}'/>
+<input type='hidden' id='product_id' alt='货品ID' value='{$product_id}' />
 <input type='hidden' name='promo_name' value="groupon"/>
 <input type='hidden' name='active_id' value="{$active_id}"/><!--活动id-->
 <div id='det1' >
@@ -221,3 +223,10 @@
 </div>
 </div>
 </div>
+<script type='text/javascript' >
+$(function(){
+	var max_num = '{$this->tuanData["limit_max_count"]}';
+	var min_num = '{$this->tuanData["limit_min_count"]}';
+	$('#buyNums').val(min_num);
+})
+</script>

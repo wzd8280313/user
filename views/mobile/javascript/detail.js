@@ -288,6 +288,8 @@ function sele_spec(_self)
 function modified(code)
 {
 	var buyNums = parseInt($.trim($('#buyNums').val()));
+	var min_num = $('[name=min_num]').val();
+	var max_num = $('[name=max_num]').val();
 	switch(code)
 	{
 		case 1:
@@ -302,7 +304,8 @@ function modified(code)
 		}
 		break;
 	}
-
+	if(min_num && buyNums <min_num)return false;
+	if(max_num!=0 && buyNums>max_num)return false;
 	$('#buyNums').val(buyNums);
 	checkBuyNums();
 }
@@ -359,6 +362,7 @@ function checkBuyNums()
 {
 	//购买数量小于0
 	var buyNums = parseInt($.trim($('#buyNums').val()));
+	
 	if(buyNums <= 0)
 	{
 		$('#buyNums').val(1);

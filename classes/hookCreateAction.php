@@ -86,7 +86,7 @@ class hookCreateAction extends IInterceptorBase
 					$refundment_db->update('id='.$v['rid']);
 				}
 				catch(Exception $e){
-					
+					$e->getMessage();
 				}
 				
 			}
