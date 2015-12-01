@@ -100,7 +100,7 @@
 					
 						{if:$refunds['seller_id']}
 						<input type='hidden' value='{$item["id"]}' name='order_goods_id' />
-						<a href="{url:/site/home/id/$refunds['seller_id']}" target="_blank"><img src="{skin:images/admin/seller_ico.png}" /></a>
+						<a href="{url:/site/home/id/$refunds['seller_id']}" target="_blank"><img src="{skin:images/main/icn_user.png}" /></a>
 						{/if}
 						{/query}
 					{else:}
@@ -119,9 +119,6 @@
 				</tr>
 				<tr>
 					<th>退款金额:</th><td align="left"><input type="text" class="small" name="amount" id="amount" value="{$refunds['amount']}" pattern="float" /></td>
-				</tr>
-				<tr>
-					<th>说明:</th>
 				</tr>
 			</tbody>
 		</table>
