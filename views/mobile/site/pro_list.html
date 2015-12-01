@@ -128,4 +128,14 @@
 			  </p>
 			</div>
 	</script>
+	<script type='text/javascript' >
+		window.onscroll = function(){
+			 if ($(document).scrollTop() >= $(document).height() - $(window).height()){
+					showMorePro();
+				if(typeof(showMoreSearch)=='function'){
+					showMoreSearch();
+				}
+			 }
+		}
+	</script>
 {include:layouts/footer.html} 
