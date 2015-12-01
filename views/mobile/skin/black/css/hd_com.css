@@ -117,7 +117,8 @@ html,body{height:100%;font-size:100%}
 
 .inner-section .modle_items2 .items li .price .s_price{display:block;color:#999;text-decoration:line-through;font-size:12px}
 
-.inner-section .modle_items2 .items li .price .ms_btn{float:right; top: 0px;
+.inner-section .modle_items2 .items li .price .ms_btn{
+float:right; top: -0px;
 position: relative;
 left: -14px;
 background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px;font-size:14px;bottom: 10px;}
