@@ -20,6 +20,15 @@ class Site extends IController
 	{
 		CheckRights::checkUserRights();
 	}
+    
+    /**
+    * 第三方登录测试页面
+    * 
+    */
+    function login()
+    {
+       $this->redirect('login'); 
+    }
 
 	function index()
 	{  
