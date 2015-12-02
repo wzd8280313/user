@@ -929,7 +929,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	margin-left: auto;
 	padding-left: 10px;
 }
- .bottom .dibu  .button{ float:right; margin-right:10px; height:32px;line-height: 32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
+ .bottom .dibu  .button{ float:right; height:32px;line-height: 32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
 .bottom .dibu  input{
 	color: #F00;
 	float: left;
@@ -989,7 +989,7 @@ color: #000;
 	-ms-transform: translateY(0);
 	transform: translateY(0);
 	width: 100%;
-	z-index: 11111;
+	z-index: 1111;
 	background: #fff;
 	padding: 5px 20px;
 }
@@ -1005,7 +1005,7 @@ color: #000;
 	-webkit-transition: -webkit-transform 300ms;
 	transition: transform 300ms;
 	width: 100%;
-	z-index: 11110;
+	z-index: 1110;
 	background: #fff;
 	
 }
