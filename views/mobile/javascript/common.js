@@ -487,7 +487,7 @@ function Ajax_Get_Data(){
 			$(".sharebg").addClass("sharebg-active");
 		}else{
 			//给整个body内增加div层
-			$(".fk-modal-active").append('<div class="sharebg"></div>');
+			$("body").append('<div class="sharebg"></div>');
 			$(".sharebg").addClass("sharebg-active");
 		}
 		$(".sharebg-active,.share_btn").click(function(){
