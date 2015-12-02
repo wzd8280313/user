@@ -929,7 +929,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	margin-left: auto;
 	padding-left: 10px;
 }
- .bottom .dibu  .button{ float:right; margin-right:10px; height:32px;line-height: 32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
+ .bottom .dibu  .button{ float:right; height:32px;line-height: 32px; width:100px; background-color:#F30; border:#F00 solid 1px; color:#FFF; font-size:14px;}
 .bottom .dibu  input{
 	color: #F00;
 	float: left;
