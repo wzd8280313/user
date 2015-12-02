@@ -46,6 +46,15 @@ class Site extends IController
 		$uid = $this->user ? $this->user['user_id'] : 0;
 
 		$this->user_like_goods = user_like::get_like_cate($uid,6);
+		
+		//获取团购商品
+		 $tuan = new IQuery('regiment as r');
+		$tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->order = 'r.id desc';
+        $tuan->limit = 3;
+        $this->tuanList = $tuan->find();
 
 		$this->redirect('index');
 	}

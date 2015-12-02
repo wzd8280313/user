@@ -212,7 +212,7 @@
         
         <div class="content">
             <ul class="clear-fix">
-            	{foreach:items=Api::run('getRegimentList','3')}
+            	{foreach:items=$this->tuanList}
                      <li class="fl">
                         <a href="{url:/site/tuan_product/active/$item['id']}}">
 
