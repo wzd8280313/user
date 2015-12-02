@@ -57,6 +57,13 @@
 					
 				</div>
 				<script  type='text/html' id='priceTemplate'>
+					<dl id="J_PromoPrice" class="tm-promo-panel"  >
+							<dt class="tb-metatit">市场价</dt>
+							<dd><em class="tm-yen">¥</em>
+								<span class="tm-price" style='text-decoration:line-through;'><%=market_price%></span>
+								<div class="staticPromoTip"> </div>
+							</dd>
+						</dl>
 					<%if (group_price) {%>
 						<dl id="J_PromoPrice" class="tm-promo-panel"  >
 							<dt class="tb-metatit">原价格</dt>
@@ -436,7 +443,7 @@ $('.area_box').hover(
 getAddress();
 
 //生成商品价格
-var priceHtml = template.render('priceTemplate',{"group_price":"{$group_price}","minSellPrice":"{$minSellPrice}","maxSellPrice":"{$maxSellPrice}","sell_price":"{$sell_price}"});
+var priceHtml = template.render('priceTemplate',{"group_price":"{$group_price}","minSellPrice":"{$minSellPrice}","maxSellPrice":"{$maxSellPrice}","sell_price":"{$sell_price}","market_price":"{$market_price}"});
 $('#price_panel').html(priceHtml);
 
 
