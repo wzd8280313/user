@@ -1,3 +1,5 @@
+﻿<input type='hidden' name='min_num' value='{$this->tuanData["limit_min_count"]}'/>
+<input type='hidden' name='max_num' value='{$this->tuanData["limit_max_count"]}'/>
 <input type='hidden' id='product_id' alt='货品ID' value='{$product_id}' />
 <input type='hidden' name='promo_name' value="groupon"/>
 <input type='hidden' name='active_id' value="{$active_id}"/><!--活动id-->
@@ -46,11 +48,11 @@
 				<div class="am-share">
 				  <h3 class="am-share-title">分享到</h3>
 				  <ul class="am-share-sns">
-					<li><a href="http://v.t.sina.com.cn/share/share.php?url=http://www.shao-ming.com&title='分享内容'" target=_blank> <i class="share-icon-weibo share-sina"></i> <span>新浪微博</span> </a> </li>
+					<li><a href="http://v.t.sina.com.cn/share/share.php?url=http://www.shao-ming.com&title={echo:$site_config->name}_{$name}http://www.yqtvt.com/site/tuan_product/active/{$active_id}" target=_blank> <i class="share-icon-weibo share-sina"></i> <span>新浪微博</span> </a> </li>
 					<li>
 						<a href="javascript:void(0);" onclick="window.open('http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='+encodeURIComponent(document.location.href));return false;" title="分享到QQ空间"  target=_blank><i class="share-icon-dou"></i> <span>QQ空间</span> </a>
 					</li>
-					<li><a href="http://v.t.qq.com/share/share.php?url=http://www.shao-ming.com&title='分享内容'" target=_blank> <i class="share-icon-tweibo"></i> <span>腾讯微博</span> </a> </li>
+					<li><a href="http://v.t.qq.com/share/share.php?url=http://www.shao-ming.com&title={echo:$site_config->name}_{$name}http://www.yqtvt.com/site/tuan_product/active/{$active_id}" target=_blank> <i class="share-icon-tweibo"></i> <span>腾讯微博</span> </a> </li>
 					<li><a href="javascript:window.open('http://share.renren.com/share/buttonshare.do?link='+encodeURIComponent(document.location.href)+'&title='+encodeURIComponent(document.title));void(0)" target=_blank> <i class="share-icon-renren"></i> <span>人人网</span> </a> </li>
 				  </ul>
 				  <div class="am-share-footer"><button class="share_btn">取消</button></div>	
@@ -190,8 +192,10 @@
 <div class="history">
 	<h3 class="tit">商品评价</h3>
 	<!--介绍内容-->
-	<div id="commentBox" style="margin-left:10px;">
-		<a  href="javascript:void(0)" onclick="show_comments_list($('[name=pingjia]'))">查看更多</a>
+	<div id="commentBox" style="margin: 6px 0px;">
+		<div style="text-align:center;">
+			<a  href="javascript:void(0)"style="border: 2px solid #845959;padding: 2px 10px;color: #000;" onclick="show_comments_list($('[name=pingjia]'))">查看更多</a>
+		</div>
 	</div>
 
 </div>
@@ -219,3 +223,10 @@
 </div>
 </div>
 </div>
+<script type='text/javascript' >
+$(function(){
+	var max_num = '{$this->tuanData["limit_max_count"]}';
+	var min_num = '{$this->tuanData["limit_min_count"]}';
+	$('#buyNums').val(min_num);
+})
+</script>

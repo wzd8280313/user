@@ -56,7 +56,6 @@
 					<td>{$item['time']}</td>
 					<td><span class='red'>￥{$item['data']['sell_price']}</span></td>
 					<td>
-						<label class="btn_gray_s"><input type="button" class='btn_gray btn_mini' value="加入购物车" onclick='joinCart_ajax({$item["goods_id"]},"{url:/simple/joinCart}","goods");' /></span></label><br />
 						<label class="btn_gray_s"><input type="button" class='btn_gray btn_mini mt_5' value="删除" onclick="delModel({link:'{url:/ucenter/history_del/id/$item[id]}',msg:'是否删除？'});" /></span></label>
 					</td>
 				</tr>

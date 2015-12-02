@@ -469,7 +469,7 @@ vertical-align: top;
 .nav .cat-list h3 {
 height: 19px;
 padding-left: 24px;
-background-position: 0 -60px;
+background-position: 0 -140px;
 overflow: hidden;
 }
 .nav .cat-list h3 a {
@@ -479,22 +479,22 @@ font: 700 14px/24px 'microsoft yahei';
 
 
 .nav .cat-list .cat-type-2 {
-    background-position: 0 -120px;
-}
-.nav .cat-list .cat-type-3 {
-    background-position: 0 -80px;
-}
-.nav .cat-list .cat-type-4 {
     background-position: 0 -160px;
 }
+.nav .cat-list .cat-type-3 {
+    background-position: 0 -282px;
+}
+.nav .cat-list .cat-type-4 {
+    background-position: 0 -60px;
+}
 .nav .cat-list .cat-type-5 {
-    background-position: 0 -200px;
+    background-position: 0 -80px;
 }
 .nav .cat-list .cat-type-6 {
-    background-position: 0 -220px;
+    background-position: 0 -301px;
 }
 .nav .cat-list .cat-type-7 {
-    background-position: 0 -180px;
+    background-position: 0 -120px;
 }
 .nav .cat-list .cat-type-8 {
     background-position: 0 -240px;
@@ -505,37 +505,37 @@ font: 700 14px/24px 'microsoft yahei';
 
 .nav .cat-list .cat-hover .cat-type-1
 {
-	background-position:-200px -60px;
+	background-position:-200px -140px;
 }
 
 .nav .cat-list .cat-hover .cat-type-2
 {
-	background-position:-200px -120px;
+	background-position:-200px -160px;
 }
 
 .nav .cat-list .cat-hover .cat-type-3
 {
-	background-position:-200px -80px;
+	background-position:-200px -282px;
 }
 
 .nav .cat-list .cat-hover .cat-type-4
 {
-	background-position:-200px -160px;
+	background-position:-200px -60px;
 }
 
 .nav .cat-list .cat-hover .cat-type-5
 {
-	background-position:-200px -200px;
+	background-position:-200px -80px;
 }
 
 .nav .cat-list .cat-hover .cat-type-6
 {
-	background-position:-200px -220px;
+	background-position:-200px -301px;
 }
 
 .nav .cat-list .cat-hover .cat-type-7
 {
-	background-position:-200px -180px;
+	background-position:-200px -120px;
 }
 
 .nav .cat-list .cat-hover .cat-type-8

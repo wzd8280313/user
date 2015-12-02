@@ -20,6 +20,15 @@ class Site extends IController
 	{
 		CheckRights::checkUserRights();
 	}
+    
+    /**
+    * 第三方登录测试页面
+    * 
+    */
+    function login()
+    {
+       $this->redirect('login'); 
+    }
 
 	function index()
 	{  
@@ -46,6 +55,15 @@ class Site extends IController
 		$uid = $this->user ? $this->user['user_id'] : 0;
 
 		$this->user_like_goods = user_like::get_like_cate($uid,6);
+		
+		//获取团购商品
+		 $tuan = new IQuery('regiment as r');
+		$tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->order = 'r.id desc';
+        $tuan->limit = 3;
+        $this->tuanList = $tuan->find();
 
 		$this->redirect('index');
 	}
@@ -85,7 +103,13 @@ class Site extends IController
 		$this->tuangou = 1;
 		$this->todayList = array();
 		$this->brandList = array();
-		$tuanList = Api::run('getRegimentList','10');
+		 $tuan = new IQuery('regiment as r');
+		$tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->order = 'r.id desc';
+        $tuan->limit = 10;
+        $tuanList = $tuan->find();
 		$this->count = count($tuanList);
 		if($this->count>2){
 			$this->todayList = array(array_shift($tuanList),array_shift($tuanList));
@@ -100,9 +124,10 @@ class Site extends IController
         $start = IFilter::act(IReq::get('start'),'int');
         $limit = $start.',6';
         $tuan = new IQuery('regiment as r');
-        $tuan->fields = '*';
-        $tuan->where = 'is_close = 0 AND NOW() between start_time and end_time ';
-        $tuan->order = 'id desc';
+		$tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->order = 'r.id desc';
         $tuan->limit = $limit;
         $tuanData = $tuan->find();
         
@@ -1161,7 +1186,18 @@ class Site extends IController
 
 
 	function ce(){
-		echo rand(000000,999999);
+		$order_goods_id = 1834;
+		  $orderDB = new IModel('order');
+        $goodsOrderDB = new IModel('order_goods');
+        $user_id = 108;
+        $goodsOrderRow = $goodsOrderDB->getObj('id = '.$order_goods_id);
+        $orderRow = array();
+        if($goodsOrderRow){
+        	$order_id = $goodsOrderRow['order_id'];
+        	$orderRow = $orderDB->getObj("id = ".$order_id." and user_id = ".$user_id);
+        }
+		print_r($goodsOrderRow);
+		echo Order_Class::get_refund_fee($orderRow,$goodsOrderRow);
 	}
 	
 }

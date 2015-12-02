@@ -53,13 +53,4 @@ function showMoreSearch(){
 	};
 	getData(obj,getMoreUrl);
 }
-window.onscroll = function(){
-	 if ($(document).scrollTop() >= $(document).height() - $(window).height()){
-	 	if(typeof(showMorePro)=='function'){
-			showMorePro();
-		}
-		if(typeof(showMoreSearch)=='function'){
-			showMoreSearch();
-		}
-	 }
-}
+

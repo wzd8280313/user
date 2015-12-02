@@ -4,7 +4,6 @@
 	{/if}
 {/foreach}
 <!DOCTYPE html>
-<!-- saved from url=(0035)http://m.b5m.com/activelistings/198 -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">        
         <link rel="apple-touch-icon-precomposed" href="http://static-web.b5m.com/wap/img/collect-logo/b5m-collect-logo.png">
@@ -242,7 +241,7 @@ function selectProtect(obj)
 				<input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
 				{foreach:items=$value key=$k}
 				{if:is_array($item)}
-		     		<div class="qr_xq" style="clear:both;margin:10px;">
+		     		<div class="qr_xq" style="clear:both;margin:-5px;">
 		     			{if:$item['product_id']==0}
 							{set:$type= 'goods';$id=$item['goods_id']}
 						{else:}
@@ -250,7 +249,7 @@ function selectProtect(obj)
 						{/if}
 						<input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
 		     		<a href="{url:/site/products/id/$item['goods_id']}">
-		     			<div class="tjxq_img" style="margin-top:10px;">
+		     			<div class="tjxq_img" style="margin-top:-5px;">
 		     				<img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}"/>
 		     			</div>
 		     			<div class="tjxq_tit">
@@ -303,7 +302,7 @@ function selectProtect(obj)
 						{/if}
 					{/foreach}
      			</select>
-
+				
      			<p style=" margin-right:10px; margin-top:7px;margin-bottom:6px;">配送方式</p>
      			<select style="width:97%;height:33px; background-color: #F30; color:#fff; " name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
 
@@ -313,7 +312,7 @@ function selectProtect(obj)
      				<option value="{$item['id']}" >{$item['name']}</option>
 					{/foreach}
      			</select>
-     			<input style="width:96%;height:33px;" class="xt" type="text" name='message' placeholder="买家留言"/>
+     			<input style="width:97%;height:33px;" class="xt" type="text" name='message' placeholder="买家留言"/>
      			
      		</div>
      	</div>

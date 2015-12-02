@@ -84,7 +84,7 @@
 			   	<input name='page' type='hidden' value='1' />
 				<input name='childCat' type='hidden' value='{$this->childId}'/>
 	            <div class="loading-ctn loading-imgS">
-	            <p onclick='showMorePro();'>下拉查看更多</p>
+	            <p >下拉查看更多</p>
 	            <img alt="" src="{skin:images/files/loading.gif}">
 			    </div>
 		
@@ -127,5 +127,12 @@
 				
 			  </p>
 			</div>
+	</script>
+	<script type='text/javascript' >
+		window.onscroll = function(){
+			 if ($(document).scrollTop() >= $(document).height() - $(window).height()){
+					showMorePro();
+			 }
+		}
 	</script>
 {include:layouts/footer.html} 

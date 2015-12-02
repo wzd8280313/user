@@ -52,8 +52,9 @@ class IError
 		//检查用户是否定义了error处理类
 		if(method_exists('Error','error'.$httpNum))
 		{
-			$errorObj = new Error(IWeb::$app,'error');
-			call_user_func(array($errorObj,'error'.$httpNum),$showData);
+			$controller->redirect('/site/error?msg='.$showData['message']);
+			//$errorObj = new Error(IWeb::$app,'error');
+			//call_user_func(array($errorObj,'error'.$httpNum),$showData);
 		}
 
 		//是系统内置的错误机制

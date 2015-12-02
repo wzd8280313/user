@@ -544,10 +544,11 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	border-right-style: none;
 	border-bottom-style: none;
 	border-left-style: none;
+	width:20%;
 }
 .qijiandian ul .chanpin p {
 	display: block;
-	width: 57%;
+	width: 58%;
 	overflow: hidden;
 	height: auto;
 	font-size: 14px;
@@ -578,11 +579,12 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	width: 37%;
 }
 .qijiandian ul .chanpin b {
-	float: right;
+	/*float: right;*/
 	font-size: 14px;
 	margin-right: 3px;
-	position: absolute;
-	right: 2px;
+	/*position: absolute;
+	right: 2px;*/
+	width: 20%;
 }
 .qijiandian ul .chanpin b span {
 	color: #666;

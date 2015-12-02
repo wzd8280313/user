@@ -86,6 +86,9 @@
 				
 
 				<p>说明<span class="red">*</span></p>
+				{if:$this->orderRow['is_send']==0 && isset($this->orderRow['freight_text'])}
+					<p class='red'>(该商品若退货，则该订单不再满足免运费的条件，需要重新支付运费)</p>
+				{/if}
 				<p><textarea type="text" class="text" style='height:70px;' name='content' required ></textarea></p>
 				<p><input class="butt" type="submit" value="提交申请" onclick=' return checkform()'/></p>
 
@@ -100,7 +103,16 @@
 function checkform(){
 	if($('textarea[name=content]').val()=='')
 		return false;
-	else return true;
+	
+	var pay_type = {$this->orderRow['pay_type']};
+	var type = $('[name=type]').val();
+
+	if(pay_type==7 && type==0){
+		return realConfirm('由于您使用的是支付宝第三方担保交易，“退款”操作结束后需前往支付宝界面再次操作');
+		
+	}
+	
+	return true;
 }
 </script>
     

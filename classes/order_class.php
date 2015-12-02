@@ -1538,7 +1538,7 @@ class Order_Class
 		$otherFee = 0;
 		$goods_db = new IModel('goods');
 		$seller_id = $goods_db->getField('id='.$goodsOrderRow['goods_id'],'seller_id');
-		
+		if(!$seller_id)$seller_id = 0;
 		$order_goods_db = new IQuery('order_goods as og');
 		$order_goods_db->join = 'left join goods as g on og.goods_id=g.id ';
 		$order_goods_db->where = 'og.order_id='.$goodsOrderRow['order_id'].' and og.id !='.$goodsOrderRow['id'].' and og.is_send!=2 and g.seller_id='.$seller_id;

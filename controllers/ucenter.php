@@ -538,7 +538,7 @@ class Ucenter extends IController
         			Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
         		}
         		Order_Class::ordergoods_status_refunds(0,$goodsOrderRow,$type);
-        		$this->redirect('order');
+        		$this->redirect('/site/success');
         		exit;
         	
         }
@@ -546,7 +546,7 @@ class Ucenter extends IController
         {
         	$message = '订单不存在';
         }
-        	$this->redirect('order');
+        	IError::show(403,$message);
     }
     /**
      * @brief 退款申请删除
