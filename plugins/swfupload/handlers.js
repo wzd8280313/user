@@ -59,7 +59,6 @@ function uploadSuccess(file, serverData) {
 	{
 		var progress = new FileProgress(file,  this.customSettings.upload_target);
 		var resultObject = $.parseJSON(serverData);
-
 		if (resultObject.flag == 1)
 		{
 			//回调页面上传后的处理
@@ -70,7 +69,7 @@ function uploadSuccess(file, serverData) {
 		} else {
 			progress.setStatus("上传失败");
 			progress.toggleCancel(false);
-			alert(serverData);
+			alert('图片规格不正确');
 		}
 	}
 	catch (ex)

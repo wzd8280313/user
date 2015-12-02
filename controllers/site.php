@@ -85,7 +85,13 @@ class Site extends IController
 		$this->tuangou = 1;
 		$this->todayList = array();
 		$this->brandList = array();
-		$tuanList = Api::run('getRegimentList','10');
+		 $tuan = new IQuery('regiment as r');
+		$tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->order = 'r.id desc';
+        $tuan->limit = 10;
+        $tuanList = $tuan->find();
 		$this->count = count($tuanList);
 		if($this->count>2){
 			$this->todayList = array(array_shift($tuanList),array_shift($tuanList));
@@ -100,9 +106,10 @@ class Site extends IController
         $start = IFilter::act(IReq::get('start'),'int');
         $limit = $start.',6';
         $tuan = new IQuery('regiment as r');
-        $tuan->fields = '*';
-        $tuan->where = 'is_close = 0 AND NOW() between start_time and end_time ';
-        $tuan->order = 'id desc';
+		$tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->order = 'r.id desc';
         $tuan->limit = $limit;
         $tuanData = $tuan->find();
         
