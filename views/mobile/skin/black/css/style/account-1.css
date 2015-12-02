@@ -987,7 +987,7 @@ color: #000;
 	-ms-transform: translateY(0);
 	transform: translateY(0);
 	width: 100%;
-	z-index: 11111;
+	z-index: 1111;
 	background: #fff;
 	padding: 5px 20px;
 }
@@ -1003,7 +1003,7 @@ color: #000;
 	-webkit-transition: -webkit-transform 300ms;
 	transition: transform 300ms;
 	width: 100%;
-	z-index: 11110;
+	z-index: 1110;
 	background: #fff;
 	
 }
