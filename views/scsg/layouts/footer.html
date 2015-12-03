@@ -380,27 +380,8 @@ if($('#floor_text_show').text().length == 4)
 						</h3>
 						<div class="tbar-panel-main">
 							<div style="height: 943px;" class="tbar-panel-content J-panel-content">
-								<div class="jt-online-wrap">
-									<div class="n_bk">
-									{set:$service=Sonline::getService()}
-									{if:$service}
-										<table  width="100%" >
-											<col width="90px" />
-											<col />
-											{foreach:items=$service['qq']}
-											<tr height='35'>
-												<th align='right'>{$item['name']}：</th>
-												<td style='padding-left:10px;'>
-													<a target="_blank" href="{$item['link']}" >
-														<img border="0"  src="{skin:images/qq.jpg}"/>
-													</a>
-												</td>
-											</tr>
-											{/foreach}
-											
-										</table>
-										{/if}
-									</div>
+								<div class="jt-online-wrap" style='padding-left:20px'>
+								<div id="BDBridgeFixedWrap"></div>
 								</div>
 							</div>
 						</div>
@@ -479,5 +460,6 @@ _mvq.push(['$logConversion']);
 
 </script>
 </body>
-
+<script type="text/javascript"> var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F0885aeaf12e11e6a4919f3317c26942a' type='text/javascript'%3E%3C/script%3E")) </script>
+								
 </html>
