@@ -53,9 +53,16 @@
       <li {if:$status==4}class="qbys"{/if}><a href="{url:/ucenter/order/status/4}">待评论</a></li>
   </ul>
      </div>  
-
-
-
+<div class="wd-popup" role="alert">
+	<div class="wd-popup-container">
+		<p></p>
+		<ul class="wd-buttons">
+			<li><a name='todo' href="">是</a></li>
+			<li><a href="#" class="wd-popup-close image-repeat">否</a></li>
+		</ul>
+		<a href="#" class="wd-popup-close img-replace">关闭</a>
+	</div> 
+</div> 
 <form action='{url:/block/dopaymerge}' method='post'>
 <div class="qijiandian" id='order_list'>
 
@@ -104,18 +111,6 @@
 		<div class="item"><a href="{url:/site/index/client/pc}">标准版</a></div>
 		<div class="item"><span class="copyright_1">Copyright</span> <span class="copyright_2">2012-2015</span><span class="copyright_3">NAI.COM</span><span class="copyright_4">版权所有</span></div></div>
 </footer>
-<div class="wd-popup" role="alert">
-	<div class="wd-popup-container">
-		<p></p>
-		<ul class="wd-buttons">
-			<li><a name='todo' href="">是</a></li>
-			<li><a href="#" class="wd-popup-close image-repeat">否</a></li>
-		</ul>
-		<a href="#" class="wd-popup-close img-replace">关闭</a>
-	</div> 
-</div> 
-
-
 
 	
 <script type='text/html' id='order_box'>
