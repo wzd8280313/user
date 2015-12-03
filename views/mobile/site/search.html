@@ -52,5 +52,20 @@
 				</section>
 	</section>
   </div>
+
+
+<script language='javascript'>
+    $(function(){
+    $('#keyword').click(function(){
+    $div1=$('.words-give');
+    $div2=$('#dataList');
+    if($div1.is(':hidden')){
+    $div2.show();
+    }else if($div1.is(':visible')){
+    $div2.hide();
+    }
+    });
+    });
+</script>
 </body>
 </html>
