@@ -479,10 +479,10 @@ function Ajax_Get_Data(){
 
 
 //代付款页面点击合并付款弹出支付方式
-	function toMethod(){
+	/*function toMethod(){
 	
 		$("#ks_Method").removeClass("fkfs").addClass("fk-modal-active");     
-	/* 	$(".tc_shop").addClass("tc-modal-active");	 */
+	//	$(".tc_shop").addClass("tc-modal-active");	 
 		if($(".sharebg").length>0){
 			$(".sharebg").addClass("sharebg-active");
 		}else{
@@ -497,8 +497,11 @@ function Ajax_Get_Data(){
 				$(".sharebg").remove();	
 			},300);
 		})
-	}	
-
+	}	*/
+	
+	
+	
+	
 /*分类页头部循环增加class值*/
 $(function(){
 	$(".sortList li .icon").each(function(i){
@@ -506,3 +509,17 @@ $(function(){
 	});
 });
 
+/*搜索框样式*/
+
+    $(function(){
+    $('#keyword').click(function(){
+		alert("dd");
+		$div1=$('.words-give');
+		$div2=$('#dataList');
+		if($div1.is(':hidden')){
+		$div2.show();
+		}else if($div1.is(':visible')){
+		$div2.hide();
+		}
+    });
+    });

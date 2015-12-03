@@ -24,7 +24,14 @@
 .loading-imgS p{font-size:16px;color:#9A9A9A;text-align:center}
 
 .loading-imgS img{width:32px!important;height:32px!important;display:none}
-
+.wds-popup{
+	position: fixed;
+left: 0;
+top: 0;
+height: 100%;
+width: 100%;
+background-color: rgba(94, 110, 141, 0.9);
+}
 </style> 
 <script type='text/javascript'>
 	
@@ -75,6 +82,7 @@
 	</div>
 </div>
 <!--增加付款方式（js控制在common.js中）-->
+<div class="wds-popup" role="alert" style="display:none;">
 <div id="ks_Method" class="fkfs">
 	<form method="" action="">
 	<div class="fkfs_txt">
@@ -95,6 +103,7 @@
 		<input class="submit" name='buyNowButton' type="submit" onclick='if($("[name^=sub]:checked").length==0 || $("[name=payment]").val()==-1)return false;' value="确定" />
 	</div>
 	</form>
+</div>
 </div>
 <!--增加付款方式结束-->
 {/if}
