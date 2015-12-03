@@ -1443,7 +1443,7 @@ class Ucenter extends IController
     	}
 		$res = array('errorCode'=>0);
 		
-		$code = rand(000000,999999);
+		$code = rand(100000,999999);
 		ISafe::set('mobileValidate',array('code'=>$code,'phone'=>$phone,'time'=>time()));
 		$text = smsTemplate::checkCode(array('{mobile_code}'=>$code)); 
 		if(!hsms::send($phone,$text)){
