@@ -999,11 +999,11 @@ color: #000;
 	bottom: 0;
 	left: 0;
 	position: fixed;
-	-webkit-transform: translateY(500%);
+	/*-webkit-transform: translateY(500%);
 	-ms-transform: translateY(100%);
 	transform: translateY(500%);
 	-webkit-transition: -webkit-transform 300ms;
-	transition: transform 300ms;
+	transition: transform 300ms;*/
 	width: 100%;
 	z-index: 1110;
 	background: #fff;

@@ -24,4 +24,23 @@ jQuery(document).ready(function($){
 	    }
     });
 });
-
+//合并付款弹出页面
+jQuery(document).ready(function($){
+	//open popup
+	$('.button').on('click', function(event){
+		$(".wds-popup").css('display','block');
+	});
+	//close popup
+	$('.wds-popup').on('click', function(event){
+		if( $(event.target).is('.wds-popup-close') || $(event.target).is('.wds-popup') ) {
+			event.preventDefault();
+			$(".wds-popup").css('display','none');
+		}
+	});
+	//close popup when clicking the esc keyboard button
+	$(document).keyup(function(event){
+    	if(event.which=='27'){
+			$(".wds-popup").css('display','none');
+	    }
+    });
+});
