@@ -24,7 +24,7 @@
 <div class="help">
 	<div class="w1190 clearfix">
 		{set:$cls=array('help-new','help-delivery','help-pay','help-user','help-service');}
-		{foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat}
+		{foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat key=$k}
 		<dl class="{$cls[$key]}">
 			<dt class="t14">{$helpCat['name']}</dt>
 			{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$helpCat['id']))}
@@ -33,11 +33,13 @@
 			{else:}
 			<dd><a href="{url:/site/help/id/$item[id]}" style='color:#333;' target="_blank">{$item['name']}</a></dd>
 			{/if}
-						
+			
 			{/foreach}
+			{if:$k==0}
+				<dd><a href="{url:site/login}">登录</a></dd>
+			{/if}
 		</dl>
 		{/foreach}
-		
 		<div class="contact f-l">
 			<div class="contact-border clearfix">
 				<p>
@@ -49,6 +51,7 @@
 			</div>
 		</div>
     </div>
+	
 </div>
 
 
