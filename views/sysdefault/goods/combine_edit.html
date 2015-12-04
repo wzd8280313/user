@@ -17,7 +17,7 @@
 				<col />
 				<tr>
 					<th>组合名称：</th>
-					<td><input class="normal" name="name" type="text" value="{$this->object['name']}" pattern="required" alt="品牌名称不能为空" />
+					<td><input class="normal" name="name" type="text" value="{$this->object['name']}" pattern="required" alt="组合名称不能为空" />
 						<label>*</label>
 						<input name="id" value="{$this->object['id']}" type="hidden" />
 					</td>
@@ -28,9 +28,9 @@
 				<tr>
 					<th>选择主商品：</th>
 					<td>
+                    <button type='button' onclick="searchGoods('{url:/block/search_goods/type/radio/is_products/0/seller_id/0}',storeNumsCallback);" class='btn'><span>选择商品</span></button>
                     <input class="normal" id="js_goods_name" type="text" value="{$this->goods_name}" disabled="disabled" />
-                    <input class="normal" id="js_goods_no" js_data="{$this->goods_no}" type="text" value="{$this->goods_no}" placeholder="输入商品货号" />
-                    <input type="hidden" name="goods_id" value="{$this->object['goods_id']}" />
+                    <input type="hidden" name="goods_id" value="{$this->object['goods_id']}" js_require="true" pattern='intval' alt="请选择主商品" js_site=""/>
 					</td>
 				</tr>
                 <tr>
@@ -69,9 +69,9 @@
 				<tr>
                     <th>状态：</th>
                     <td>
-                        <label class='attr'><input type="radio" name="status" value="1" {if:$this->object['status'] == 1} checked {/if}> 显示</label>
-                        <label class='attr'><input type="radio" name="status" value="2" {if:$this->object['status'] == 2} checked {/if}> 不显示</label>
-                        <label class='attr'><input type="radio" name="status" value="0" {if:$this->object['status'] == 0} checked {/if}> 删除</label>
+                        <label class='attr'><input type="radio" name="status" value="1" {if:$this->object['status'] == 1} checked {/if}> 固定搭配</label>
+                        <label class='attr'><input type="radio" name="status" value="2" {if:$this->object['status'] == 2} checked {/if}> 自由搭配</label>
+                        <label class='attr'><input type="radio" name="status" value="3" {if:$this->object['status'] == 3} checked {/if}> 删除</label>
                     </td>
                 </tr>
 				<tr>
@@ -85,38 +85,6 @@
 $(function(){
     dbClick();
 })
-    $('#js_goods_no').blur(function(){
-        var no = $(this).attr('js_data');
-        var _no = $(this).val();
-        if(_no)
-        {
-            if(no == _no) 
-            {
-                return;
-            }
-            $.ajax({
-                type: "get",
-                 url: "{url:/goods/_change}",
-                 data: {goods_no: _no},
-                 dataType: "json",
-                 success: function(data){
-                    if(data)
-                    {
-                        $('#js_goods_name').val(data.name);
-                        $('input[name=goods_id]').val(data.id);
-                    }
-                    else
-                    {
-                        alert('请输入正确的商品货号');
-                    }
-                 }
-            })
-        }
-        else
-        {
-            alert('请输入商品货号');
-        }
-    })
     
     $("#js_goods_list").keyup(function(){
         var _v = $(this).val();
@@ -170,4 +138,14 @@ $(function(){
         })
     }
     
+    //输入筛选商品的条件
+    function storeNumsCallback(goodsList)
+    {
+        goodsList.each(function()
+        {
+            var temp = $.parseJSON($(this).attr('data'));
+            $('#js_goods_name').val(temp.name);
+            $('input[name=goods_id]').val(temp.goods_id);
+        });
+    }
 </script>

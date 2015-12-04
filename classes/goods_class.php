@@ -25,14 +25,14 @@ class goods_class
      * @param array
      * 
      */
-     public static function getGoodsIdName($array = array())
+     /*public static function getGoodsIdName($array = array())
      {
         $goods = new IQuery('goods');
         $goods->where  = "goods_no = '{$array['goods_no']}'";
         $goods->fields = 'id,name';
         $info = $goods->find();
         return $info ? $info[0] : array();
-     }
+     }*/
 
 	/**
 	 * 获取商品价格
@@ -66,7 +66,7 @@ class goods_class
 	 */
 	public function update($id,$paramData)
 	{
-		$postData = array();
+		$postData = array(); 
 		$nowDataTime = ITime::getDateTime();
 
 		foreach($paramData as $key => $val)
@@ -162,7 +162,7 @@ class goods_class
 		$goodsUpdateData['combine_price']   = isset($postData['_combine_price'])   ? current($postData['_combine_price'])   : 0;
 		$goodsUpdateData['cost_price']   = isset($postData['_cost_price'])   ? current($postData['_cost_price'])   : 0;
 		$goodsUpdateData['weight']       = isset($postData['_weight'])       ? current($postData['_weight'])       : 0;
-		
+		 
 		unset($goodsUpdateData['product_id']);
 		//处理商品
 		$goodsDB = new IModel('goods');
@@ -228,8 +228,9 @@ class goods_class
 					'products_no' => $postData['_goods_no'][$key],
 					'store_nums' => $postData['_store_nums'][$key],
 					'market_price' => $postData['_market_price'][$key],
-					'sell_price' => $postData['_sell_price'][$key],
-					'cost_price' => $postData['_cost_price'][$key],
+                    'sell_price' => $postData['_sell_price'][$key],
+					'combine_price' => $postData['_combine_price'][$key],
+                    'cost_price' => $postData['_cost_price'][$key],
 					'weight' => $postData['_weight'][$key],
 					'spec_array' => "[".join(',',$postData['_spec_array'][$key])."]"
 				);

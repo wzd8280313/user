@@ -42,9 +42,9 @@
 				<td>{$item['name']}</td>
 				<td>{$list[$item['goods_id']]}</td>
 				<td>
-				{if:$item['status']=='1'}<span class="green">显示</span>{elseif:$item['status']=='2'}<span class="brown">不显示</span>{else:}<span class="red">已删除</span>{/if}
+				{if:$item['status']=='1'}<span class="green">固定搭配</span>{elseif:$item['status']=='2'}<span class="brown">自由搭配</span>{else:}<span class="red">已删除</span>{/if}
 				</td>
-				<td><a href="{url:/goods/combine_edit/cid/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" /></a>{if:$item['status']!='0'}<a href="javascript:void(0)" onclick="delModel({link:'{url:/goods/combine_del/cid/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>{/if}</td>
+				<td><a href="{url:/goods/combine_edit/cid/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" /></a>{if:$item['status']!='3'}<a href="javascript:void(0)" onclick="delModel({link:'{url:/goods/combine_del/cid/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>{/if}</td>
 			</tr>
 			{/foreach}
             {/if}

@@ -241,10 +241,13 @@ class Goods extends IController
 
 		//初始化商品数据
 		unset($_POST['id']);
-		unset($_POST['callback']);         
-        if(!$_POST['_combine_price'][0])
+		unset($_POST['callback']);
+        foreach($_POST['_combine_price'] as $k=>$v)
         {
-            $_POST['_combine_price'] = $_POST['_sell_price'];
+            if(!$v)
+            {
+                $_POST['_combine_price'][$k] = $_POST['_sell_price'][$k];
+            }
         }
 		$goodsObject = new goods_class();
 		$goodsObject->update($id,$_POST);
@@ -591,10 +594,10 @@ class Goods extends IController
      * 选择组合主商品
      * 
      */
-    function _change(){
+    /*function _change(){
         $data = goods_class::getGoodsIdName($_GET);
         echo $data ? json_encode($data) : 0;
-    }
+    }    */
     
     /*
      * 搜索商品
@@ -626,8 +629,9 @@ class Goods extends IController
         {
             $obj = new IModel('combine_goods');
             $this->object = $obj->getObj('id = '.$id);
-            $goods = new IModel('goods');                                        
-            $this->goods_name = $goods->getField('id='.$this->object['goods_id'], 'name');
+            $goods = new IModel('goods');
+            $name = $goods->getField('id='.$this->object['goods_id'], 'name');                                        
+            $this->goods_name = $name ? $name : '';
             $this->goods_no = $goods->getField('id='.$this->object['goods_id'], 'goods_no');
             
             //获取已选商品列表
@@ -666,8 +670,8 @@ class Goods extends IController
         $goods_id = IFilter::act(IReq::get('goods_id'),'int'); 
         $ids = isset($_POST['ids']) ? $_POST['ids'] : '';
         $sort = IFilter::act(IReq::get('sort'),'int');
-        $status = IFilter::act(IReq::get('status'),'int');   
-
+        $status = IFilter::act(IReq::get('status'),'int', 1);
+        
         if(!$name)
         {
             $this->combine_list();
@@ -746,7 +750,7 @@ class Goods extends IController
         $id = IFilter::act(IReq::get('cid'),'int');
                           
         $tb = new IModel('combine_goods');
-        $tb->setData(array('status'=>0));
+        $tb->setData(array('status'=>3));
         if($id)
         {
             $tb->update(Util::joinStr($id));
