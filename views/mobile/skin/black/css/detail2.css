@@ -85,7 +85,7 @@ height: 13px;
 /*底部菜单修改，添加*/
 .sr-l{position:fixed;left:0;bottom:0;height:50px;width:100%;background:rgba(255,255,255,1);z-index:100;border-bottom:1px solid #f1f1f1;}
 .sr-l div{/* width:20%; */float:left;display:-webkit-box;display:flex;justify-content:center;align-items:center;-webkit-box-align:center;-webkit-box-pack:center;}
-.sr-l .s-cd{width:15%;height:50px; position:relative;top:7px;}
+.sr-l .s-cd{width:15%;height:50px; position:relative;top:0px;}
 .sr-l .s-an{width:35%;line-height:50px;color:#fff;}
 .sr-l .s-colo{background: #ff9000;}
 .sr-l .s-colos{background: #dd2726;}
