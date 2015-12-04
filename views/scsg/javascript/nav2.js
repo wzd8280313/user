@@ -85,6 +85,7 @@ $(document).ready(function(){
 	});
 	
 	$('.tbar-tab-chat').on('click',function(){
+		$('#BDBridgeFixedWrap').css('display','block');
 		if ($('.toolbar-wrap').hasClass('toolbar-open')) {
 			if ($(this).find('.tab-text').length > 0) {
 				if (!$('.tbar-tab-follow').find('.tab-text').length > 0) {

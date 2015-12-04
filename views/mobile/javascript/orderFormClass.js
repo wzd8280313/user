@@ -137,7 +137,7 @@ function orderFormClass()
 									//允许保价
 									if(content.protect_price > 0)
 									{
-										html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+										html += "<label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
 									}
 									_this.html(html);
 								}
