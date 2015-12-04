@@ -375,7 +375,7 @@ function getKeywords(url,_this){
 		showDiv.html('').css('display','none');
 		return false;
 	}
-	showDiv.css('display','block');
+	
 	$.ajax({
 		type:'post',
 		async: false,
@@ -396,6 +396,7 @@ function getKeywords(url,_this){
 					showDiv.html('').css('display','none');
 					location.href = searchUrl+'/'+$(this).text();
 				})
+				showDiv.css('display','block');
 			}else{
 				showDiv.css('display','none').html('');
 			}
