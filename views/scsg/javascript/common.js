@@ -351,11 +351,11 @@ function showService(){
 function getKeywords(url,_this){
 	var word = _this.val();
 	var showDiv = $('.words-give');
-	if (!word) {
+	if (word=='') {
 		showDiv.html('').css('display','none');
 		return false;
 	}
-	showDiv.css('display','block');
+	
 	$.ajax({
 		type:'post',
 		async:true,
@@ -376,6 +376,7 @@ function getKeywords(url,_this){
 					showDiv.html('').css('display','none');
 					location.href = searchUrl+'/'+$(this).text();
 				})
+				showDiv.css('display','block');
 			}else{
 				showDiv.html('').css('display','none');
 			}

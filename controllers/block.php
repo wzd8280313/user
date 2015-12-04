@@ -884,8 +884,8 @@ class Block extends IController
 	 */
 	public function getLikeWords(){
 		$word = IFilter::act(IReq::get('word'),'strict');
-		$sear = new IModel('search');
-		$data = $sear->query('keyword like "'.$word.'%"','*','num', 'DESC',10);
+		$sear = new IModel('keyword');
+		$data = $sear->query('word like "'.$word.'%"','word as keyword','goods_nums', 'DESC',10);
 		echo JSON::encode($data);
 	}
 }
