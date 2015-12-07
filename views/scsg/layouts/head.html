@@ -48,7 +48,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	<script type="text/javascript"  src="{theme:javascript/nav.js}"></script>
 	<meta name="keywords" content="{echo:$siteConfig->index_seo_keywords}">
 	<meta name="description" content="{echo:$siteConfig->index_seo_description}">
-
+    <meta property="qc:admins" content="36501465376114646375733377" />
 	
 </head>
 <body>
@@ -96,6 +96,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 					<a href="{url:/simple/login?callback=$callback}">登录</a>
 					<span class="split"></span>
 					<a href="{url:/simple/reg?callback=$callback}">免费注册</a>
+					<a href="javascript:void(0)"  onclick="return window.open('https://graph.qq.com/oauth2.0/authorize?client_id=100481011&amp;response_type=token&amp;scope=all&amp;redirect_uri=http%3A%2F%2Fwww.jxvdy.com%2Fmy%2Foauth%2Ftxqq%2Fcallback.html', 'oauth2Login_10575' ,'height=525,width=585, toolbar=no, menubar=no, scrollbars=no, status=no, location=yes, resizable=yes');" ><img src="/scsg/views/scsg/skin/black/images/bt_white_qq.png"></a>
 					{/if}
 				</li>
 			</ul>
