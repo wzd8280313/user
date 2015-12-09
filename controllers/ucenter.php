@@ -327,14 +327,39 @@ class Ucenter extends IController
 		    		
 		    		//经验值、积分、代金券发放
 		    		Order_Class::sendGift($id,$this->user['user_id']);
+					
+					$this->redirect('/ucenter/user_group_chg?callback=/ucenter/evaluation');
+					
 
 		    		//确认收货以后直接跳转到评论页面
-		    		$this->redirect('evaluation');
+		    		//$this->redirect('evaluation');
 				}
 			}
 			break;
 		}
 		$this->redirect("order");
+	}
+	/**
+	*更改用户等级
+	*/
+	public function user_group_chg(){
+		$callBack = IReq::get('callback');
+		$user_id = $this->user['user_id'];
+		$member_db = new IQuery('member as m');
+		$member_db->join = 'left join user_group as g  on m.exp >= g.minexp and m.exp <=g.maxexp';
+		$member_db->where = 'm.user_id='.$user_id;
+		$member_db->fields = 'm.exp,g.id as gid';
+		$member_db->limit = 1;
+		$member_data = $member_db->find();
+		if(!empty($member_data) && isset($member_data[0]['gid']) && $member_data[0]['gid']){
+			$group_id = $member_data[0]['gid'];
+			$memberDB = new IModel('member');
+			$memberDB->setData(array('group_id'=>$group_id));
+			$memberDB->update('user_id='.$user_id);
+		}
+		if($callBack)
+		$this->redirect($callBack);
+		else $this->redirect('index');
 	}
     /**
      * @brief 我的地址

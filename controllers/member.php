@@ -86,7 +86,9 @@ class Member extends IController
 			$this->redirect('member_edit',false);
 			Util::showMessage($errorMsg);
 		}
-
+		$groupDB = new IModel('user_group');
+		$expGroup = $groupDB->getObj('minexp<='.$exp.' and maxexp>='.$exp,'id');
+		if(!empty($expGroup))$group_id = $expGroup['id'];
 		$member = array(
 			'true_name'    => $truename,
 			'telephone'    => $telephone,
@@ -349,25 +351,25 @@ class Member extends IController
 	function group_save()
 	{
 		$group_id = IFilter::act(IReq::get('group_id'),'int');
-		//$maxexp   = IFilter::act(IReq::get('maxexp'),'int');
-		//$minexp   = IFilter::act(IReq::get('minexp'),'int');
+		$maxexp   = IFilter::act(IReq::get('maxexp'),'int');
+		$minexp   = IFilter::act(IReq::get('minexp'),'int');
 		$discount = IFilter::act(IReq::get('discount'),'float');
 		$is_default = IFilter::act(IReq::get('is_default'),'int');
 		if($discount==0)$discount=100;
 		$group_name = IFilter::act(IReq::get('group_name'));
 
 		$group = array(
-			//'maxexp' => $maxexp,
-			//'minexp' => $minexp,
+			'maxexp' => $maxexp,
+			'minexp' => $minexp,
 			'discount' => $discount,
 			'group_name' => $group_name,
 			'is_default'=>$is_default
 		);
 
-// 		if($maxexp <= $minexp)
-// 		{
-// 			$errorMsg = '最大经验值必须大于最小经验值';
-// 		}
+ 		if($maxexp <= $minexp)
+ 		{
+ 			$errorMsg = '最大经验值必须大于最小经验值';
+ 		}
 
 		if(isset($errorMsg) && $errorMsg)
 		{
