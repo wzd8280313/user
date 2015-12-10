@@ -125,7 +125,7 @@
 							<a href='{url:/order/order_show/id/$item[id]}?refunds' class='blue'>退货完成</a>
 						{/if}
 						{if:isset($this->order_refund[$item['id']][1]['refunding'])}
-						<a href='{url:/order/refundment_apply_show/id/$this->order_refund[$item[id]][1]["refunding"]}' class='red'>换货处理</a>
+						<a href='{url:/order/refundment_chg_show/id/$this->order_refund[$item[id]][1]["refunding"]}' class='red'>换货处理</a>
 						{elseif:isset($this->order_refund[$item['id']][1]['refunded'])}
 						<a href='{url:/order/order_show/id/$item[id]}?refunds' class='blue'>换货完成</a>
 						{/if}
