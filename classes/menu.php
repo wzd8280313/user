@@ -91,7 +91,6 @@ class Menu
 				'/comment/comment_list'		=> '评价管理',
 				'/comment/message_list'		=> '站内消息',
 				'/message/notify_list'      => '到货通知',
-				'/message/registry_list'    => '邮件订阅',
 			),
 		),
 
