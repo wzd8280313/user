@@ -14,6 +14,9 @@ class Goods extends IController
 	{
 		IInterceptor::reg('CheckRights@onCreateAction');
 	}
+	public function goods_in(){
+		$this->redirect('goods_in');
+	}
 	/**
 	 * 选择规格数据
 	 */
