@@ -1186,9 +1186,6 @@ class Site extends IController
 
 
 	function ce(){
-		$m = new IModel('order');
-		$data = $m->query('type=4 and if_del=0');
-		print_r($data);
 		
 	}
 	
