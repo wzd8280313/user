@@ -899,7 +899,9 @@ class Order extends IController
 		$order_ids = $order_ids=='' ? '' : substr($order_ids,0,-1);
 		
 		$refundment_doc_db = new IModel('refundment_doc');
+		if($order_ids!='')
 		$refund_data = $refundment_doc_db->query('order_id in ('.$order_ids.')','id,pay_status,type,order_id');
+		else $refund_data = array();
 		//print_r($refund_data);exit;
 		$order_refund = array();
 		if(!empty($refund_data)){
