@@ -1327,7 +1327,7 @@ class Order extends IController
 
 			//记录日志
 			$logObj = new log('db');
-			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"删除回收站中退货单",'退货单ID：'.$id));
+			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"删除回收站中订单",'订单ID：'.$id));
 
 			$this->redirect('order_recycle_list');
 		}

@@ -165,7 +165,7 @@ class Market extends IController
 		{
 			$ticketObj = new IModel('ticket');
 			$propObj   = new IModel('prop');
-			$propRow   = $propObj->getObj(" `type` = 0 and `condition` = {$id} and (is_close = 2 or (is_userd = 0 and is_send = 1)) ");
+			$propRow   = $propObj->getObj(" `type` = 0 and `condition` = {$id} and (now() between start_time and end_time) and (is_close = 2 or (is_userd = 0 and is_send = 1)) ");
 
 			if($propRow)
 			{

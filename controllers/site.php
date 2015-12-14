@@ -1186,7 +1186,10 @@ class Site extends IController
 
 
 	function ce(){
-		print_r($_SESSION);
+		$m = new IModel('order');
+		$data = $m->query('type=4 and if_del=0');
+		print_r($data);
+		
 	}
 	
 }

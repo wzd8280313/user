@@ -45,7 +45,7 @@
 		<col />
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=order_presell as o join=left join delivery as d on o.distribution eq d.id left join payment as p on o.pay_type eq p.id left join user as u on u.id eq o.user_id fields=o.id as oid,d.name as dname,p.name as pname,o.order_no,o.accept_name,o.pay_status,o.distribution_status,u.username,o.create_time,o.status where=if_del eq 1 page=$page }
+			{query: name=order as o join=left join delivery as d on o.distribution eq d.id left join payment as p on o.pay_type eq p.id left join user as u on u.id eq o.user_id fields=o.id as oid,d.name as dname,p.name as pname,o.order_no,o.accept_name,o.pay_status,o.distribution_status,u.username,o.create_time,o.status where=if_del eq 1 and o.type eq 4 page=$page }
 			<tr>
 				<td class="t_c"><input name="id[]" type="checkbox" value="{$item['oid']}" /></td>
 				<td>{$item['order_no']}</td>
