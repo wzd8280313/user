@@ -107,7 +107,7 @@ class Site extends IController
 		$tuan->join = 'left join goods as g on r.goods_id=g.id';
         $tuan->fields = 'r.*';
         $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
-        $tuan->order = 'r.id desc';
+        $tuan->order = 'r.sort asc';
         $tuan->limit = 10;
         $tuanList = $tuan->find();
 		$this->count = count($tuanList);
@@ -127,7 +127,7 @@ class Site extends IController
 		$tuan->join = 'left join goods as g on r.goods_id=g.id';
         $tuan->fields = 'r.*';
         $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
-        $tuan->order = 'r.id desc';
+        $tuan->order = 'r.sort asc';
         $tuan->limit = $limit;
         $tuanData = $tuan->find();
         
