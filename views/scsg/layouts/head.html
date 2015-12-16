@@ -231,14 +231,14 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 <DIV class="advbox" >
 	<DIV style="display: none;" class="dt_small">
 		<DIV style="display: none;" class="dt_toBig"></DIV>
-		{query:name=ad_manage as ad fields=ad.name,ad.link,ad.content where=position_id eq 20 item=$adData}
+		{query:name=ad_manage as ad join=left join ad_position as p on ad.position_id eq p.id fields=ad.name,ad.link,ad.content where=p.name eq '首页顶部缩略' item=$adData}
 			
 		{/query}
 			<A href="{$adData['link']}" target="_blank"><IMG alt="jquery广告图片缩略图" src="{url:$adData['content']}" width="1190" ></A> 
 	</DIV>
 	<DIV class="dt_big">
 		<DIV class="dt_toSmall"></DIV>
-		{query:name=ad_manage as ad fields=ad.name,ad.link,ad.content where=position_id eq 19 item=$adBig}
+		{query:name=ad_manage as ad join=left join ad_position as p on ad.position_id eq p.id fields=ad.name,ad.link,ad.content where=p.name eq '首页顶部大图' item=$adBig}
 			
 		{/query}
 		<A href="{$adBig['link']}" target="_blank">
