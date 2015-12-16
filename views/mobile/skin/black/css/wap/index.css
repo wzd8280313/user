@@ -119,15 +119,15 @@ display: block;float: left;/*margin: 10px 0 0 5px;*/margin: 5px 0 0 5px;}
 .sortList .icon8{background-position: -326px -5px;}
 .sortList .icon9{background-position: -374px -5px;}
 /*分类页图标问题*/
-.sortList .icons1{background-position: -6px -145px;}
-.sortList .icons2{background-position: -6px -178px;}
-.sortList .icons3{background-position: -6px -379px;}
-.sortList .icons4{background-position: -6px -9px;}
-.sortList .icons5{background-position: -6px -45px;}
-.sortList .icons6{background-position: -6px -413px;}
-.sortList .icons7{background-position: -6px -112px;}
-.sortList .icons8{background-position: -6px -311px;}
-.sortList .icons9{background-position: -6px -342px;}
+.sortList .icons1{background-position: -10px -141px;}
+.sortList .icons2{background-position: -10px -175px;}
+.sortList .icons3{background-position: -10px -379px;}
+.sortList .icons4{background-position: -12px -5px;}
+.sortList .icons5{background-position: -10px -41px;}
+.sortList .icons6{background-position: -15px -413px;}
+.sortList .icons7{background-position: -10px -110px;}
+.sortList .icons8{background-position: -10px -308px;}
+.sortList .icons9{background-position: -10px -342px;}
 /* ------------- Retina ------------- */
 @media only screen and (-o-min-device-pixel-ratio: 2/1),
        only screen and (min--moz-device-pixel-ratio: 2),
