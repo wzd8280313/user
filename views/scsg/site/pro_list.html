@@ -19,7 +19,15 @@ $seller_arr[0]='平台自营';
 {/foreach}
 <div class="position">
 	<span>您当前的位置：</span>
-	<a href="{url:}">首页</a>{foreach:items=$breadGuide} » <a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a>{/foreach}
+	<a href="{url:}">首页</a>
+    {foreach:items=$breadGuide item=$cate} » 
+    <a href="javascript:;">{$cate['name']}</a>
+    <div>
+    {foreach:items=$cate['cate']}
+    <a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a>
+    {/foreach}
+    </div>
+    {/foreach}
 </div>
 
 <div class="wrapper clearfix container_2">
