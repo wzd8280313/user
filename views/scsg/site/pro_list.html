@@ -20,16 +20,28 @@ $seller_arr[0]='平台自营';
 <div class="position">
 	<span>您当前的位置：</span>
 	<a href="{url:}">首页</a>
-    {foreach:items=$breadGuide item=$cate} » 
-    <a href="javascript:;">{$cate['name']}</a>
-    <div>
+    {foreach:items=$breadGuide item=$cate} »
+    <div style="display: inline-block;"> 
+    <a href="javascript:;" class="js_show_on_off">{$cate['name']}</a>
+    <ul style="display: none;">
     {foreach:items=$cate['cate']}
-    <a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a>
+    <li><a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a></li>
     {/foreach}
+    </ul>
     </div>
     {/foreach}
 </div>
-
+<script type="text/javascript">
+$(function(){
+    $('.js_show_on_off').each(function(){
+        $(this).hover(function(){
+            $(this).next('ul').show();
+        },function(){
+            $(this).next('ul').hide();
+        })
+    })
+})
+</script>
 <div class="wrapper clearfix container_2">
 	
 
