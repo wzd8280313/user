@@ -1189,7 +1189,7 @@ class Site extends IController
 	$productId    = 171;
     	$goodsId      = 136;
     	$area     = 140302;
-    	$num          = 1；
+    	$num          = 1;
 	$data         = array();
 		$delivery     = new IModel('delivery');
 			$deliveryList = $delivery->query('is_delete = 0 and status = 1');
