@@ -227,8 +227,10 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 {if:$this->isIndex}
 <!--下拉广告图-->
 {if:$siteConfig->index_ad_button == 'open'}
+{query:name=ad_manage as ad join=left join ad_position as p on ad.position_id eq p.id fields=ad.name,ad.link,ad.content where=p.name eq '首页顶部大图' item=$adBig}
+{/query}
 <DIV class="advbox" >
-	<DIV style="display: none;" class="dt_small">
+	<DIV {if:!empty($adBig)}style="display: none;"{/if} class="dt_small">
 		<DIV style="display: none;" class="dt_toBig"></DIV>
 		{query:name=ad_manage as ad join=left join ad_position as p on ad.position_id eq p.id fields=ad.name,ad.link,ad.content where=p.name eq '首页顶部缩略' item=$adData}
 			
@@ -239,9 +241,7 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	</DIV>
 	<DIV class="dt_big">
 		<DIV class="dt_toSmall"></DIV>
-		{query:name=ad_manage as ad join=left join ad_position as p on ad.position_id eq p.id fields=ad.name,ad.link,ad.content where=p.name eq '首页顶部大图' item=$adBig}
-			
-		{/query}
+		
 		{if:!empty($adBig)}
 		<A href="{$adBig['link']}" target="_blank">
 			<IMG id="actionimg" alt="jquery广告图片大图" src="{url:$adBig['content']}" width="1190" ></A> 
@@ -283,7 +283,8 @@ function AdvAuto(){
 
 <SCRIPT type="text/javascript">
 $(document).ready(function(){
-	AdvClick();
+		AdvClick();
+
 });
 //顶部通览可展开收起效果
 if($("#actionimg").length>0){	
