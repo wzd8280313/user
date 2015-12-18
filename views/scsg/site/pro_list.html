@@ -37,7 +37,7 @@ $seller_arr[0]='平台自营';
 				<li>
 					<a class="pic" href="{url:/site/products/id/$item[id]}" target="_blank"><img src="{url:/pic/thumb/img/$item[img]/w/85/h/85}" height="85px" width="85px"></a>
 					<p class="pro_title"><a class="blue" href="{url:/site/products/id/$item[id]}" target="_blank">{$item['name']}</a><span class="gray">{$item['description']}</span></p>
-					<p><b>￥{$item['sell_price']}</b> <s>￥{$item['sell_price']}</s></p>
+					<p><b>￥{$item['sell_price']}</b> <s>￥{$item['market_price']}</s></p>
 				</li>
 				{/foreach}
 			</ul>
