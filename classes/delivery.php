@@ -21,6 +21,8 @@ class Delivery
 	 */
 	private static function getFeeByWeight($weight,$firstFee,$secondFee)
 	{
+		$firstFee = (float)$firstFee;
+		$secondFee = (float)$secondFee;
 		//当商品重量小于或等于首重的时候
 		if($weight <= self::$firstWeight)
 		{
