@@ -229,11 +229,12 @@ $(function(){
 /**
  * 规格的选择
  * @param _self 规格本身
+ * @price int 1:不改变价格
  */
-function sele_spec(_self)
+function sele_spec(_self,price)
 {
 	var specObj = $.parseJSON($(_self).find('a').attr('value'));
-
+	var not_chg_price = price;
 	//已经为选中状态时
 	if($(_self).attr('class') == 'current')
 	{
@@ -263,7 +264,8 @@ function sele_spec(_self)
 			{
 				var goods_data = json.data;
 				var price = goods_data.group_price ? goods_data.group_price : goods_data.sell_price;
-				$('.tc_cont .price').text('￥'+price);
+				if(!not_chg_price)
+					$('.tc_cont .price').text('￥'+price);
 			
 				//普通货品数据渲染
 				$('#data_storeNums').text(goods_data.store_nums);

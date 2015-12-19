@@ -1897,66 +1897,7 @@ class Simple extends IController
 		$this->redirect('/site/success?message='.urlencode($message));
 	}
 
-	//添加地址ajax
-	function address_add()
-	{
-		$accept_name = IFilter::act(IReq::get('accept_name'));
-		$province    = IFilter::act(IReq::get('province'),'int');
-		$city        = IFilter::act(IReq::get('city'),'int');
-		$area        = IFilter::act(IReq::get('area'),'int');
-		$address     = IFilter::act(IReq::get('address'));
-		$zip         = IFilter::act(IReq::get('zip'));
-		$telphone    = IFilter::act(IReq::get('telphone'));
-		$mobile      = IFilter::act(IReq::get('mobile'));
-        $user_id     = $this->user['user_id'];
 
-        if(!$user_id)
-        {
-        	die(JSON::encode(array('data' => null)));
-        }
-
-		//整合的数据，检查数据库中是否存在此收货地址
-        $sqlData = array(
-        	'user_id'     => $user_id,
-        	'accept_name' => $accept_name,
-        	'zip'         => $zip,
-        	'telphone'    => $telphone,
-        	'province'    => $province,
-        	'city'        => $city,
-        	'area'        => $area,
-        	'address'     => $address,
-        	'mobile'      => $mobile,
-        );
-        $sqlArray = array();
-        foreach($sqlData as $key => $val)
-        {
-        	$sqlArray[] = $key.'="'.$val.'"';
-        }
-
-        $model       = new IModel('address');
-		$addressRow  = $model->getObj(join(' and ',$sqlArray));
-
-		if($addressRow)
-		{
-			$result = array('data' => null);
-		}
-		else
-		{
-			//获取地区text
-			$areaList = area::name($province,$city,$area);
-
-			//执行insert
-			$model->setData($sqlData);
-			$sqlData['add_id']=$model->add();
-
-			$sqlData['province_val'] = $areaList[$province];
-			$sqlData['city_val']     = $areaList[$city];
-			$sqlData['area_val']     = $areaList[$area];
-
-			$result = array('data' => $sqlData);
-		}
-		die(JSON::encode($result));
-	}
 	//获取用户密码错误次数
 	private function getErrTimes($username){
 		$M = new IModel('user');

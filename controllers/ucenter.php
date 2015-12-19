@@ -429,6 +429,53 @@ class Ucenter extends IController
 		}
 		$this->redirect('address');
 	}
+	//添加地址ajax
+	function address_add()
+	{
+		$id          = IFilter::act(IReq::get('add_id'),'int');
+		$accept_name = IFilter::act(IReq::get('accept_name'));
+		$province    = IFilter::act(IReq::get('province'),'int');
+		$city        = IFilter::act(IReq::get('city'),'int');
+		$area        = IFilter::act(IReq::get('area'),'int');
+		$address     = IFilter::act(IReq::get('address'));
+		$zip         = IFilter::act(IReq::get('zip'));
+		$telphone    = IFilter::act(IReq::get('telphone'));
+		$mobile      = IFilter::act(IReq::get('mobile'));
+        $user_id     = $this->user['user_id'];
+
+        if(!$user_id)
+        {
+        	die(JSON::encode(array('data' => null)));
+        }
+
+		//整合的数据，检查数据库中是否存在此收货地址
+        $sqlData = array(
+        	'user_id'     => $user_id,
+        	'accept_name' => $accept_name,
+        	'zip'         => $zip,
+        	'telphone'    => $telphone,
+        	'province'    => $province,
+        	'city'        => $city,
+        	'area'        => $area,
+        	'address'     => $address,
+        	'mobile'      => $mobile,
+			'default'     => 1
+        );
+        $model       = new IModel('address');
+		
+		//将所有收货信息设为非默认
+		$model->setData(array('default'=>0));
+		$model->update('user_id='.$user_id);
+
+		//执行insert
+		$model->setData($sqlData);
+		if(!$id)
+			$res=$model->add();
+		else 
+			$res=$model->update('id='.$id.' and user_id='.$user_id);
+		
+		echo $res ? 1 : 0;
+	}
     /**
      * @brief 收货地址删除处理
      */

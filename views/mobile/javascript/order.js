@@ -15,8 +15,8 @@ $(function(){
 				
 			},
 			success:function(data){
-				if(data.data!=null){
-					location.reload();
+				if(data==1){
+					location.href=last_url+'?radom='+Math.random();
 				}
 			},
 			error:function(){
@@ -30,29 +30,18 @@ $(function(){
 	})
 	
 })
-//选择收货地址
-function address_select(_this){
-	var addressId = $(_this).find('input').val();
-	$.ajax({
-		type:'post',
-		async:false,
-		data:{id:addressId},
-		//dataType:'json',
-		url:address_default_url,
-		beforeSend:function(){
-			
-		},
-		success:function(data){
-			if(data==1)
-				location.href=last_url+'?radom='+Math.random();
-			
-		},
-		error:function(){
-			
-		},
-		complete:function(){
-			
-		},
-		timeout:1000,
-	})
+
+
+//
+function address_edit(_this){
+	var json_str = $(_this).find('[name^=json_data]').val();
+	var json = JSON.parse(json_str);
+	createAreaSelect('province',0,json.province);
+	createAreaSelect('city',json.province,json.city);
+	createAreaSelect('area',json.city,json.area);
+	$('input[name=add_id]').val(json.id);
+	$('input[name=accept_name]').val(json.accept_name);
+	$('input[name=address]').val(json.address);
+	$('input[name=zip]').val(json.zip);
+	$('input[name=mobile]').val(json.mobile);
 }

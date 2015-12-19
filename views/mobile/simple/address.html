@@ -55,8 +55,9 @@
 						<th class="wid">手机</th>
 					  </tr>
 					  {foreach:items=$this->addressList}
-					  <tr onclick='address_select(this);'>
+					  <tr onclick='address_edit(this);'>
 					  	<input type='hidden' name='{$item["id"]}' value='{$item["id"]}' />
+						<input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
 						<td>{$item['accept_name']}</td>
 						<td>{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</td>
 						<td>{$item['mobile']}</td>
@@ -65,7 +66,8 @@
 				</table>
 
 			</div>
-		<form action="{url:/simple/address_add}" method="post">
+		<form action="{url:/ucenter/address_add}" method="post">
+			<input type='hidden' name='add_id' value='0' />
 			<div  class="mod_dres">
 				<div class="dres">
 					<div style="margin:0 5px;border-bottom: 1px solid #ABADB3; padding-bottom:10px;">
@@ -123,14 +125,16 @@
 				<div class="dres">
 					<span><input style="height:30px;" class="texts tex2" placeholder="手机号" type="text" name='mobile' /></span>
 				</div>
+				<!--
 				<div class="dres">
 					<span><input class="chbox" type="checkbox" name='default' value='1'/></span>
 					<span>设置为默认收货地址</span>
 				</div>
+				-->
 				<div class="dres">
 					<span class="wb"></span>
 					<div><span style="margin: 0 auto;display: block;width: 90%;">
-					<input class="butt" type="button" value="保 存" name='address_add'/></span></div>
+					<input class="butt" type="button" value="保 存 并 使 用" name='address_add'/></span></div>
 				</div>
 			</div>
 		</form>
@@ -143,5 +147,7 @@
    	var address_default_url = '{url:ucenter/address_default_ajax}';
 	var address_url = "{url:/block/area_child}";
 	var last_url = document.referrer;
+	
+	
    	</script>
  

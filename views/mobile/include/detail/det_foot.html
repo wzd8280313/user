@@ -58,7 +58,7 @@
 				<div class="tc_le tc_tite">
 					<div class="tc_img"><img src="{url:/pic/thumb/img/$img/w/200/h/200}" alt=" "></div>
 					<div class="tc_cont">
-						<p style="color:red; display: inline-block;"  class='price'>￥{if:isset($group_price)}{$group_price}{else:}{$sell_price}{/if}</p>
+						<p style="color:red; display: inline-block;"  class='price'>￥{if:isset($tuan_price)}{$tuan_price}{elseif:isset($group_price)}{$group_price}{else:}{$sell_price}{/if}</p>
                         
                         <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
                         
@@ -75,10 +75,18 @@
 						{set:$specVal=explode(',',trim($item['value'],','))}
 						<div id="specList{$item['id']}">
 						{foreach:items=$specVal item=$spec_value}
-						{if:$item['type'] == 1}
-							<span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</a></span>
+						{if:!isset($tuan_price)}
+							{if:$item['type'] == 1}
+								<span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</a></span>
+							{else:}
+								<span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></a></span>
+							{/if}
 						{else:}
-							<span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></a></span>
+							{if:$item['type'] == 1}
+								<span class="tc_gg" onclick="sele_spec(this,1);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</a></span>
+							{else:}
+								<span class="tc_gg" onclick="sele_spec(this,1);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></a></span>
+							{/if}
 						{/if}
 						{/foreach}
 						</div>
