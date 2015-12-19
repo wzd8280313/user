@@ -55,13 +55,13 @@ class Ucenter_ajax extends IController
 			$where .= ' and (o.type!=4 and o.status=1 and o.pay_type!=0  or o.type=4 and o.status in (1,4) )';
 			
 		}else if($status==2){//待发货
-			$where .= ' and (o.type!=4 and o.status=2 and o.distribution_status=0 OR o.type=4 and o.status=7)';
+			$where .= ' and (o.type!=4 and o.status=2 and o.distribution_status=0 or o.type=4 and o.status=7)';
 		}
 		else if($status==3){//待收货
-			$where .= ' and (type!=4 and status=9  OR type=4 and status=9)';
+			$where .= ' and (type!=4 and status=9  or type=4 and status=9)';
 		}
 		else if($status==4){//待评价
-			$where .= ' and (type!=4 and status=5 OR type=4 and status=11)';
+			$where .= ' and (type!=4 and status=5 or type=4 and status=11)';
 		}
 		//$order_db->join = 'left join presell as p on p.'
 		$order_db->where = 'user_id='.$userid.' and if_del=0'.$where;
@@ -69,7 +69,7 @@ class Ucenter_ajax extends IController
 		$order_db->order ='id DESC';
 		$order_db->page = $page;
 		$order_data = $order_db->find();
-		if($order_db->page==0){echo 0;exit;}
+		if($order_db->page==0 || empty($order_data)){echo 0;exit;}
 		$ids = '';
 		foreach($order_data as $k=>$v){
 			$ids .=$v['id'].',';
@@ -77,9 +77,9 @@ class Ucenter_ajax extends IController
 		$ids = substr($ids,0,-1);
 		
 		$order_goods_db = new IQuery('order_goods as og');
-		$order_goods_db->join = ' left join comment as c on og.comment_id=c.id ';
+		$order_goods_db->join = ' left join order as o on o.id = og.order_id left join comment as c on og.comment_id=c.id ';
 		$order_goods_db->where = 'og.order_id in ('.$ids.')';
-		$order_goods_db->fields = 'og.id,og.goods_id,og.refunds_status,og.order_id,og.goods_nums,og.comment_id,og.img,og.real_price,og.goods_array,og.is_send,og.delivery_id,og.delivery_fee,c.id as cid,c.point,c.status as comment_status';
+		$order_goods_db->fields = 'o.status,og.id,og.goods_id,og.refunds_status,og.order_id,og.goods_nums,og.comment_id,og.img,og.real_price,og.goods_array,og.is_send,og.delivery_id,og.delivery_fee,c.id as cid,c.point,c.status as comment_status';
 		$order_goods_data = $order_goods_db->find();
 		
 		foreach($order_goods_data as $k=>$v){
