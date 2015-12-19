@@ -2,7 +2,9 @@ $(function(){
 
 	//新增收货地址
 	$('input[name=address_add]').on('click',function(){
+	
 		var _this=$(this);
+		if(!checkForm('address')){return false;}
 		_this.attr('disabled',true);
 		var form = _this.parents('form');
 		$.ajax({
