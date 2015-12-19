@@ -7,7 +7,7 @@ function checkForm(_form){
 	
 	formChild.each(function(){
 			var pattern = $(this).attr("pattern");
-            var required = $(this).attr("required")!='undefined';
+            var required = $(this).attr("required")!=undefined;
 			if(required && !pattern)
             {
 				pattern = "\\S";
