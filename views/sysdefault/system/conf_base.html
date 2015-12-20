@@ -76,6 +76,18 @@
 					<th>首页description：</th>
 					<td><input type='text' class='normal' pattern='required' name='index_seo_description' empty alt='首页description' /></td>
 				</tr>
+				<tr>
+					<th>注册赠送积分：</th>
+					<td><input type='text' class='normal' pattern='required' name='reg_point' empty alt='注册赠送积分' value='0' /></td>
+				</tr>
+				<tr>
+					<th>注册赠送代金券：</th>
+					<td>
+						<select name='reg_ticket' class='normal'>
+							<option value='0' >请选择</option>
+						</select>
+					</td>
+				</tr>
 				<!-- 加入顶部下拉广告的展示开关 -->
 				<tr>
 					<th>顶部广告展示：</th>
@@ -91,7 +103,23 @@
 				</tr>
 			</table>
 		</form>
-
+<script type='text/javascript' >
+	$.ajax({
+		type:'post',
+		async:false,
+		data:{},
+		dataType:'json',
+		url:'{url:/market/getTicketList}',
+		success:function(content){
+			for(pro in content)
+			{
+				var expire = content[pro]['expire'] ? '(已过期)' : '';
+				$('select[name="reg_ticket"]').append('<option value="'+content[pro]['id']+'">'+content[pro]['name']+'   面值:'+content[pro]['value']+'元'+expire+'</option>');
+			}
+			
+		},
+	})
+</script>
 		<form action='{url:/system/save_conf/form_index/guide_conf}' method='post' name='guide_conf'>
 			<table class='form_table'>
 				<col width="150px" />

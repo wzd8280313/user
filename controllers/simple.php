@@ -124,6 +124,7 @@ class Simple extends IController
     				$userObj->commit();
     				if($user_id)
     				{
+						
     					$group = new IModel('user_group');
     					$group_id =$group->getField('is_default=1','id');
     					
@@ -138,6 +139,31 @@ class Simple extends IController
     					$memberObj = new IModel('member');
     					$memberObj->setData($memberArray);
     					$memberObj->add();
+						$memberObj->commit();
+						
+						//赠送代金券、积分
+						$site_config=new Config('site_config');
+						$site_config=$site_config->getInfo();
+						if(isset($site_config['reg_point']))
+							$reg_point_add = intval($site_config['reg_point']);
+						else $reg_point_add = 0;
+						if($reg_point_add){
+							$pointConfig = array(
+								'user_id' => $user_id,
+								'point'   => $reg_point_add,
+								'log'     => '注册赠送积分'.$reg_point_add,
+							);
+							$pointObj = new Point();
+							$pointObj->update($pointConfig);
+						}
+						
+						if(isset($site_config['reg_ticket']) && intval($site_config['reg_ticket']))
+						{
+							$prop = new ProRule(0);
+							$prop->giftSend(array('ticket'=>intval($site_config['reg_ticket'])),$user_id);
+						}
+						
+						
     			
     					//邮箱激活帐号
     					if($type == 1)

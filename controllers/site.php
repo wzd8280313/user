@@ -1186,18 +1186,7 @@ class Site extends IController
 
 
 	function ce(){
-	$productId    = 171;
-    	$goodsId      = 136;
-    	$area     = 140302;
-    	$num          = 1;
-	$data         = array();
-		$delivery     = new IModel('delivery');
-			$deliveryList = $delivery->query('is_delete = 0 and status = 1');
-			foreach($deliveryList as $key => $item)
-			{
-				$data[$item['id']] = Delivery::getDelivery($area,$item['id'],$goodsId,$productId,$num);
-			}
-		print_r($data);
+		print_r($_SESSION);
 	}
 	
 }
