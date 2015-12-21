@@ -310,6 +310,16 @@ return array(
 	    	'limit' => 5,
 	    )
 	),
+    
+    //友情链接列表
+    'getLinkList'=>array(
+          'query'=>array(
+            'name'  => 'link',
+            'where' => ' status = 1',
+            'order' => 'sort ASC,id desc',
+            'limit' => 10,
+        )
+    ),
 	//帮助中心底部列表
 	'getHelpCategoryFoot'=>array(
 	 	 'query'=>array(

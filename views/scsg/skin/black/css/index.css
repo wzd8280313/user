@@ -598,8 +598,7 @@ background-position: 0 -100px;
 }
 .help .t14 {
 height: 22px;
-line-height: 22px;
-padding-left: 28px;
+line-height: 22px; 
 text-overflow: ellipsis;
 white-space: nowrap;
 overflow: hidden;
