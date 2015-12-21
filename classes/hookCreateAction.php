@@ -203,7 +203,7 @@ class hookCreateAction extends IInterceptorBase
 		$site_config = $siteConfigObj->getInfo();
 		//获取订单取消，完成天数
 		$order_cancel_time = isset($site_config['order_cancel_time']) ? intval($site_config['order_cancel_time']) : 3;
-		$order_finish_time = isset($site_config['preorder_finish_days']) ? intval($site_config['preorder_finish_days']) : 20;
+		$order_finish_time = isset($site_config['order_finish_time']) ? intval($site_config['order_finish_time']) : 20;
 		$order_cancel_second = $order_cancel_time*24*3600;//天数换成秒数
 		$order_finish_second = $order_finish_time*24*3600;
 		
