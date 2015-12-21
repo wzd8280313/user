@@ -54,9 +54,10 @@ class hookCreateAction extends IInterceptorBase
 	//用户中心退款列表 
 	public static function ucenter_refunds()
 	{
-		$siteConfig = new Config('site_config');
-		$refunds_limit_time=isset($siteConfig->refunds_limit_time) ? intval($siteConfig['refunds_limit_time']) : 7;
-		$refunds_seller_time=isset($siteConfig->refunds_seller_time) ? intval($siteConfig['refunds_limit_time']) : 7;
+		$siteConfigObj = new Config('site_config');
+		$site_config = $siteConfigObj->getInfo();
+		$refunds_limit_time=isset($site_config['refunds_limit_time']) ? intval($site_config['refunds_limit_time']) : 7;
+		$refunds_seller_time=isset($site_config['refunds_limit_time']) ? intval($site_config['refunds_limit_time']) : 7;
 		$refundment_db = new IModel('refundment_doc');
 		
 		$refunds_limit_second = $refunds_limit_time*24*3600;
@@ -114,11 +115,12 @@ class hookCreateAction extends IInterceptorBase
 	{
 		self::ucenter_refunds();
 		
-		$siteConfig = new Config('site_config');
-		$order_cancel_time = isset($siteConfig->order_cancel_time) ? intval($siteConfig['order_cancel_time']) : 3;
-		$order_finish_time = isset($siteConfig->order_finish_time) ? intval($siteConfig['order_finish_time']) : 20;
+		$siteConfigObj = new Config('site_config');
+		$site_config = $siteConfigObj->getInfo();
+		$order_cancel_time = isset($site_config['order_cancel_time']) ? intval($site_config['order_cancel_time']) : 3;
+		$order_finish_time = isset($site_config['order_finish_time']) ? intval($site_config['order_finish_time']) : 20;
 
-		$refunds_limit_time=isset($siteConfig->refunds_limit_time) ? intval($siteConfig['refunds_limit_time']) : 7;
+		$refunds_limit_time=isset($site_config['refunds_limit_time']) ? intval($site_config['refunds_limit_time']) : 7;
 		
 		
 		$orderModel = new IModel('order');
@@ -197,10 +199,11 @@ class hookCreateAction extends IInterceptorBase
 	}
 	//用户中心预售订单
 	public static function ucenter_preorder(){
-		$siteConfig = new Config('site_config');
+		$siteConfigObj = new Config('site_config');
+		$site_config = $siteConfigObj->getInfo();
 		//获取订单取消，完成天数
-		$order_cancel_time = isset($siteConfig->order_cancel_time) ? intval($siteConfig['order_cancel_time']) : 3;
-		$order_finish_time = isset($siteConfig->preorder_finish_days) ? intval($siteConfig['preorder_finish_days']) : 20;
+		$order_cancel_time = isset($site_config['order_cancel_time']) ? intval($site_config['order_cancel_time']) : 3;
+		$order_finish_time = isset($site_config['preorder_finish_days']) ? intval($site_config['preorder_finish_days']) : 20;
 		$order_cancel_second = $order_cancel_time*24*3600;//天数换成秒数
 		$order_finish_second = $order_finish_time*24*3600;
 		
