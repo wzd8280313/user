@@ -1308,8 +1308,12 @@ class Order_Class
 				$point_mul = 2;
 				if($memberRow['com_orders']==0){
 					$site_config = new Config('site_config');
-					$ticket_combank = $site_config->ticket_combank;
-					$prop = new proRule(0);
+					$ticket_combank = isset($site_config->ticket_combank) ? $site_config->ticket_combank : 0;
+					if($ticket_combank){
+						$prop = new proRule(0);
+						$prop->giftSend(array('ticket'=>$ticket_combank),$user_id);
+						
+					}
 					
 					$memberObj->setData(array('com_orders'=>1));
 					$memberObj->update('user_id='.$user_id);

@@ -88,6 +88,17 @@
 						</select>
 					</td>
 				</tr>
+				<tr>
+					<th>商业银行首笔订单</br>
+					赠送代金券：
+					
+					</th>
+					<td>
+						<select name='ticket_combank' class='normal'>
+							<option value='0' >请选择</option>
+						</select>
+					</td>
+				</tr>
 				<!-- 加入顶部下拉广告的展示开关 -->
 				<tr>
 					<th>顶部广告展示：</th>
@@ -115,6 +126,8 @@
 			{
 				var expire = content[pro]['expire'] ? '(已过期)' : '';
 				$('select[name="reg_ticket"]').append('<option value="'+content[pro]['id']+'">'+content[pro]['name']+'   面值:'+content[pro]['value']+'元'+expire+'</option>');
+				$('select[name="ticket_combank"]').append('<option value="'+content[pro]['id']+'">'+content[pro]['name']+'   面值:'+content[pro]['value']+'元'+expire+'</option>');
+				
 			}
 			
 		},

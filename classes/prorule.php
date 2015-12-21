@@ -294,7 +294,7 @@ class ProRule
 		}
 		return $sum;
 	}
-	//
+	//赠送礼物
 	public function giftSend($giftArray,$user_id){
 		$array = array();
 		if(isset($giftArray['point']))
