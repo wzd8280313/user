@@ -127,7 +127,7 @@ class hookCreateAction extends IInterceptorBase
 		$order_cancel_second = $order_cancel_time*24*3600;
 		$order_finish_second = $order_finish_time*24*3600;
 		$orderCancelData  = $order_cancel_time > 0 ? $orderModel->query(" if_del = 0 and type!=4 and pay_type != 0 and status in(1) and TIMESTAMPDIFF(second,create_time,NOW()) >= {$order_cancel_second} ","id,order_no,4 as type_data") : array();
-		$orderCreateData  = $order_finish_time > 0 ? $orderModel->query(" if_del = 0 and type!=4 and distribution_status = 1 and status in(1,2) and TIMESTAMPDIFF(second,send_time,NOW()) >= {$order_finish_second} ","id,order_no,5 as type_data") : array();
+		$orderCreateData  = $order_finish_time > 0 ? $orderModel->query(" if_del = 0 and type!=4 and distribution_status = 1 and status in(9,1,2) and TIMESTAMPDIFF(second,send_time,NOW()) >= {$order_finish_second} ","id,order_no,5 as type_data") : array();
 
 		$resultData = array_merge($orderCreateData,$orderCancelData);
 		if($resultData)
