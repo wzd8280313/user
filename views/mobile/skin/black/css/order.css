@@ -10,12 +10,24 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 }
 .pages .qrdd .dz{
 	display: block;
-	padding: 10px 10px;
+	padding: 10px 15px 10px 10px;
 }
-
+.pages .qrdd .dz:before{
+	content: ' ';
+	position: absolute;
+	border: #999 solid;
+	border-width: 2px 0 0 2px;
+	width: 13px;
+	height: 13px;
+	-webkit-transform: rotate(-225deg);
+	-moz-transform: rotate(-225deg);
+	right: 5px;
+	margin-top: 13px;
+}
 
 .pages .qrdd .float_rt{
 	float:right;
+	padding-right: 5px;
 }
 /*�ջ��˵�ַ����*/
 /* ��Ʒ���� */
@@ -60,7 +72,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 
 /* ֧����ʽ */
 .pages .qrdds .qrdds_zf{
-	margin-top: 25px;
+	
 	border-top:1px solid #c0c0c0;
 	border-bottom:1px solid #c0c0c0;
 	padding-left:10px;
@@ -69,20 +81,30 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 	
 }
 .pages .qrdds .qrdds_zf h4{
-	line-height:30px;
-	height:30px;
+	 line-height: 30px;
+    height: 30px;
+    margin-right: 5px;
+    display: inline-block;
+    width: 75px;
+    text-align: right;
+}
+.pages .qrdds .qrdds_zf h4 i{
+	color: red;
+    font-size: 16px;
+    padding-right: 5px;
 }
 .pages .qrdds .qrdds_zf select{
-	width:90%;
+	width:65%;
 	height:30px;
-	margin-bottom: 10px;
+	margin: 10px 0px;
 	padding: 0 5px;
+	color: #A9A4A4;
 }
 .xt{
 	border:1px solid #c0c0c0;
-	width:90%;
+	width:97%;
 	height:30px;
-	margin-bottom: 10px;
+	margin: 10px 0px;
 	padding: 0 5px;
 }
 .pages .qrdds .qrdds_sum{
@@ -178,7 +200,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 /*订单详情*/
 .sj{
 	padding: 0 0px 5px 5px;
-	border-bottom: 1px solid #F4F1F1;
+	border-bottom: 1px solid  #E4E2E2;
 }
 .sj a{
     display: block;
