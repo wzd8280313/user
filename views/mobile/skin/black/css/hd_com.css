@@ -123,7 +123,7 @@ position: relative;
 left: -14px;
 background:#ea3434;color:#fff;padding:2px 3px;border-radius:3px;font-size:14px;bottom: 10px;}
 
-.inner-section .modle_items3{background:#fff;margin:10px 0;border-bottom:1px #dcdcdc solid;border-top:1px #dcdcdc solid}
+.inner-section .modle_items3{background:#fff;margin:10px 0;/*border-bottom:1px #dcdcdc solid;border-top:1px #dcdcdc solid*/}
 
 .inner-section .modle_items3 .items{padding:10px 0}
 
@@ -212,12 +212,21 @@ input{
 			margin: 0 0 0px 5px;
 		}
 		.dres .butt{
-			width: 100%;
-			height: 35px;
+			height: 40px;
+    margin: 0 0 10px 0px;
+    background: #FC0320;
+    border-radius: 5px;
+    color: #fff;
+    position: fixed;
+    right: 5%;
+    width: 90%;
+    bottom:3%;
+			/*width: 100%;
+			height: 40px;
 			margin: 0 0 10px 0px;
 			background: #FC0320;
 			border-radius: 5px;
-			color: #fff;
+			color: #fff;*/
 			
 		}
 		.dres em{
@@ -228,7 +237,7 @@ input{
 			color: #F9581E;
 		}
 		.modle_items3 table th,.modle_items3 table tr{
-			border: 1px solid #ABADB3;
+			border-bottom: 1px solid #ABADB3;
 			vertical-align: middle;
 			text-align:center;
 			
@@ -239,7 +248,30 @@ input{
 		.modle_items3 table th{
 			background:#D5D5D5;
 		}
-		.modle_items3 table .wid{
+		/*.modle_items3 table .wid{
 			width:17%;
-		}
+		}	*/
+		#page .addadres a span{ width: 90%;
+    height: 40px;
+    background: #FC0320;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+    line-height: 40px;
+    margin: 0 5%;
+    position: fixed;
+    bottom: 3%;}
+	#page .addadres{width: 100%;
+    height: 13%;
+    margin: 20px auto;
+    background: rgb(255, 255, 255);
+    position: fixed;
+    bottom: -20px;}
+	#page .addadres a{color: #fff;}
+	
+	
+	#page .inner-section .modle_section .modle_items3 table .done_sall td .bianji{
+   float: right;
+    margin-bottom: 20px;
+    margin-right: 25px;}
 /*�ջ���ַ��������
