@@ -33,9 +33,9 @@
 		<script type='text/javascript' src="{theme:javascript/order.js}"></script>
 		
 		<script src="{theme:javascript/scrollTop.js}"></script>  
-   
+       
    <script type="text/javascript">
-$(document).ready(function(){
+  $(document).ready(function(){
   $(".addadres").click(function(){
   $("#addders_main").show();
    $(".modle_items3").hide();
@@ -53,11 +53,9 @@ $(document).ready(function(){
   	$(this).find(".choice_tb").show();
   
   });
-
-  
-  
 });
 </script>
+
 
 
         
@@ -65,7 +63,7 @@ $(document).ready(function(){
            
 		</head>
 		
-    <body style="background: #FBF8F8;">
+    <body style="background:#ECECEC;">
         <div id="page">
             <header class="wap-header">
 			<div class="wap-topbar" style="background: #FDFDFD;">
@@ -85,21 +83,45 @@ $(document).ready(function(){
 				<table width="100%" border="0"  style="line-height:35px;">
              
 					  {foreach:items=$this->addressList}
-					  <tr class="done_sall"  onclick='address_edit(this);' style="text-align:left">
+					  <tr class="done_sall"    onclick='address_edit(this);' style="text-align:left">
 					  	<input type='hidden' name='{$item["id"]}' value='{$item["id"]}' />
 						<input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
                         
-                      	<td> </td>
+                      
 						<td> 
-                        <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 24px;margin-left: 5px;" 
+                        <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
                         src="{skin:images/right_left.png}"></span>
-                        <div style="float: left;    width: 88%;">
+                        <div  style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
                         	<span style="padding-left:30px">{$item['accept_name']}
                         <span style="padding-left:20px">{$item['mobile']}</span></span>
 							<p style="padding-left:30px">{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</p>
-                           </div> 
+                           </div>
+                           
+                           
+                     <div id="wrap">
+                <div class="box-163css">
+		          
+                  <span onclick="Showbo.Msg.confirm('您确定删除收货信息吗？')" class="dealisc er" 
+                  style="float: right;margin:3px 30px 0 0;color: #4A4747; font-size: 12px;">删除</span>
+                  <a  onclick="Showbo.Msg.confirm('您确定删除收货信息吗？')"  href="#">
+                  <img style="float:right;" class="dealisc" src="{skin:images/trash.png}"></a>
+                          <div style="float: right;" >
+                          <span class="bianji er" style="float: right;margin:3px 30px 0 0;color: #4A4747;font-size: 12px;">编辑</span>
+                          <img class="bianji" src="{skin:images/edit3.png}"> 
+                          </div> 
+                  
+                  
+	            </div>
+                </div>
+                           
+                           
+                          
+                   
+      
+                          
 						</td>
-                        <td ><img class="bianji" src="{skin:images/edit3.png}"><td>
+                        
+                        
                         
                         
 					  </tr>
@@ -113,7 +135,7 @@ $(document).ready(function(){
 			<div  class="mod_dres">
 				<div class="dres">
 					<div style="margin:0 5px;border-bottom: 1px solid #ABADB3; padding-bottom:10px;">
-						<a href=""><span style="float:left;margin-top:8px;">+新增收货地址：</span></a>
+						<a  href=""><span style="float:left;margin-top:8px;">+新增收货地址：</span></a>
                         
                         
                         

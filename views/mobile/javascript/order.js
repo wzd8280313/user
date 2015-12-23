@@ -47,3 +47,8 @@ function address_edit(_this){
 	$('input[name=zip]').val(json.zip);
 	$('input[name=mobile]').val(json.mobile);
 }
+
+
+/*收货地址确认框*/
+
+
