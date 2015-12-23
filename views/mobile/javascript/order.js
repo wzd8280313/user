@@ -17,8 +17,15 @@ $(function(){
 				
 			},
 			success:function(data){
-				if(data==1){
-					location.href=last_url+'?radom='+Math.random();
+				if(data.errCode==0){
+					history.back();
+				}
+				else if(data.errCode==2){
+					realAlert('请先登录');
+				}else if(data.errCode==1){
+					$('[name='+data.field+']').focus();
+				}else if(data.errCode==3){
+					realAlert('系统繁忙');
 				}
 			},
 			error:function(){
