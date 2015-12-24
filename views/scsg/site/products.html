@@ -16,12 +16,18 @@
 	{/if}
 {/foreach}
 <link rel="stylesheet" href="{skin:css/index1.css}">
+<link rel="stylesheet" type='text/css' href="{skin:css/sales_css/Portfolio_sales.css}"/>
 <link rel="stylesheet" type='text/css' href="{skin:css/detail.css}"/>
 <link rel="stylesheet" type='text/css' href="{skin:css/css.css}"/>
 <link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />
+<script type='text/javascript' src="{theme:javascript/sales_js/jquery-1.11.1.min.js}" ></script>
+<script type='text/javascript' src="{theme:javascript/sales_js/jquery.SuperSlide2.js}" ></script>
+<script type='text/javascript' src="{theme:javascript/sales_js/Portfolio_sales.js}" ></script>
+
 <script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
 <script type='text/javascript' src="{theme:javascript/piczoom.js}"></script>
 <script type='text/javascript' src="{theme:javascript/detail.js}" ></script>
+
 <script type='text/javascript' >
 	var product = {$product};
 	var buy_now_url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
@@ -326,6 +332,399 @@
 <script type='text/javascript'>
 	$("#gz").click(function(){$(this).removeClass('quguan').addClass('guanzhu');});
 </script>
+
+
+
+
+<!--组合销售开始-->
+<div class="portfolio_sales">
+
+<div class="portfolio">
+  <div class="title cf">
+ 
+    <ul class="title-list fr cf ">
+      <li class="on">推荐配件</li>
+      <li>优惠套装</li>
+      <li>最佳组合</li>
+      <li>美的精品</li>
+      <li>美的周边</li>
+      <p><b></b></p>
+    </ul>
+  </div>
+  <div class="product-wrap">
+   <dl>
+   <dd><a href="#"><img src="{skin:images/sales_img/1.jpg}" width="150" height="150" alt="" /></a></dd>
+   <dd><p class="mt10"> <a href="#"> 【广电自营】美的（midea）WSS5038 多功能智能调压 韩式电压韩式电压 </a></p></dd>
+   <dd><form action="" method="post">
+                              <input class="fuxuan" name="" type="checkbox" disabled value="" checked>
+                               </form><p class="pb10">¥<b>123.00</b></p> </dd>       
+  </dl>
+  <dl class="jiahao">
+  <dd><img src="{skin:images/sales_img/jiahao.jpg}" width="30" height="30" alt="加"></dd>
+  </dl>
+  
+    <!--案例1-->
+    <div class="product show">
+ 
+
+    <div class="friend">
+    <div class="mr_frbox">
+        
+        <div class="mr_frUl">
+            <ul id="mr_fu">
+            
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/2.jpg}" width="150" height="150" alt=""></a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>100.00</b></p>
+                </li>
+                
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/3.jpg}" width="150" height="150" alt="">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>
+                   
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/4.jpg}" width="150" height="150" alt=""></a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>100.00</b></p>
+                
+                </li>
+                
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/5.jpg}" width="150" height="150" alt="">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>
+                </li>
+               
+            <li><a href="#">
+                  <img src="{skin:images/sales_img/6.jpg}" width="150" height="150" alt="">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>
+                </li>
+                
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/7.jpg}" width="150" height="150" alt="">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>
+                </li>
+                
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/8.jpg}" height="150" alt="">
+                </a>
+                <p class="mt10"> <a href="#">【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>
+                </li>
+                
+           
+           
+            </ul>
+        </div>
+         <div class="mr_frBtnR next"><img src="{skin:images/sales_img/imageNavLeft.gif}" width="50" height="30"></div>
+	<div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
+       
+    </div>
+    
+</div>
+
+  
+ 
+      
+      
+    </div>
+    <!--案例2-->
+    <div class="product">
+
+<div class="friend">
+    <div class="mr_frbox">
+        
+        <div class="mr_frUl">
+            <ul id="mr_fu">
+            
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/3.jpg}" width="150" height="150" alt="2">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                </li>
+                
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/3.jpg}" width="150" height="150" alt="2">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                   
+                </li>
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/3.jpg}" width="150" height="150" alt="2">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/4.jpg}" width="150" height="150" alt="3">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/4.jpg}" width="150" height="150" alt="3">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+            </ul>
+        </div>
+       <div class="mr_frBtnR next"><img src="{skin:images/sales_img/imageNavLeft.gif}" width="50" height="30"></div>
+	<div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
+    </div>
+</div>
+
+    
+
+     
+
+
+
+    </div>
+    <!--案例3-->
+    <div class="product">
+
+ 
+ <div class="friend">
+    <div class="mr_frbox">
+        
+        <div class="mr_frUl">
+            <ul id="mr_fu">
+            
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/4.jpg}" width="150" height="150" alt="2">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                </li>
+                
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/4.jpg}" width="150" height="150" alt="2">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                   
+                </li>
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/4.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/5.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/5.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>  
+            </ul>
+        </div>
+        <div class="mr_frBtnR next"><img src="{skin:images/sales_img/imageNavLeft.gif}" width="50" height="30"></div>
+	<div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
+    </div>
+</div>  
+
+
+
+
+    </div>
+    <!--案例4-->
+    <div class="product">
+
+  <div class="friend">
+    <div class="mr_frbox">
+        
+        <div class="mr_frUl">
+            <ul id="mr_fu">
+            
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/6.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                </li>
+                
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/6.jpg}" width="150" height="150" alt=" ">
+                </a>
+               <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                   
+                </li>
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/6.jpg}" width="150" height="150" alt=" ">
+                </a>
+                 <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>    
+                </li>
+             <li><a href="#">
+                    <img src="{skin:images/sales_img/7.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/7.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>   
+            </ul>
+        </div>
+        <div class="mr_frBtnR next"><img src="{skin:images/sales_img/imageNavLeft.gif}" width="50" height="30"></div>
+	<div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
+    </div>
+</div>
+
+
+    </div>
+    <!--案例5-->
+    <div class="product">
+
+   <div class="friend">
+    <div class="mr_frbox">
+        
+        <div class="mr_frUl">
+            <ul id="mr_fu">
+            
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/2.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                </li>
+                
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/8.jpg}" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>  
+                   
+                </li>
+                <li><a href="#">
+                    <img src="{skin:images/sales_img/8.jpg}" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                               </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+              <li><a href="#">
+                    <img src="{skin:images/sales_img/9.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>
+             <li><a href="#">
+                    <img src="{skin:images/sales_img/9.jpg}" width="150" height="150" alt=" ">
+                </a>
+                <p class="mt10"> <a href="#"> 【广电自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋）">【京东自营】佳佰750ml真空不锈钢焖烧杯 焖烧壶 粥桶 保温杯（送便携袋） </a></p>
+          <form action="" method="post">
+                              <input class="fuxuan"  name="" type="checkbox" value="">
+                  </form><p class="pb10">¥<b>123.00</b></p>     
+                </li>    
+            </ul>
+        </div>
+        <div class="mr_frBtnR next"><img src="{skin:images/sales_img/imageNavLeft.gif}" width="50" height="30"></div>
+	<div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
+    </div>
+</div>
+    </div>
+      <div class="sales">
+   <a class="combo-price" href="#">套餐价：<i>¥</i><s>5326.00</s></a>
+    
+    <a class="liji" href="#">立即购买</a>
+     <a class="gouwu" href="#">加入购物车</a>
+    
+          </div>
+  </div>
+</div>
+
+   </div>
+
+<script type="text/javascript">
+         jQuery(".mr_frbox").slide({titCell:"",mainCell:".mr_frUl ul",autoPage:true,effect:"left",autoPlay:true,scroll:4,vis:4,trigger:"click"});
+        
+        </script>
+
+
+<!--组合销售结束-->
+
+
+
+
+
+
+
+
+
+
 
 
 <div class="wrapper clearfix container_2">
