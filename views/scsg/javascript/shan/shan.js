@@ -24,7 +24,7 @@ function loadPromotion(toUrl){
 		},
 		success:function(data){
 			if(data){
-				for(var i in data){realAlert();
+				for(var i in data){
 					var newProm = template.render('promotion_box',data[i]);
 					$('.shan-all-li').append(newProm);
 				}
