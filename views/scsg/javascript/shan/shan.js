@@ -29,7 +29,7 @@ function loadPromotion(toUrl){
 					$('.shan-all-li').append(newProm);
 				}
 				shan_bind_func();
-				//countDown(start);//绑定倒计时函数
+				countDown(start);//绑定倒计时函数
 				$('input[name=start]').val(start+parseInt(i)+1);
 			}
 			
