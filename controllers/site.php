@@ -108,7 +108,7 @@ class Site extends IController
         $tuan->fields = 'r.*';
         $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
         $tuan->order = 'r.sort asc';
-        $tuan->limit = 10;
+        $tuan->limit = 11;
         $tuanList = $tuan->find();
 		$this->count = count($tuanList);
 		if($this->count>2){
