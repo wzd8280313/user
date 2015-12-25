@@ -121,7 +121,7 @@ class Simple extends IController
     				);
     				$userObj->setData($userArray);
     				$user_id = $userObj->add();
-    				$userObj->commit();
+    				//$userObj->commit();
     				if($user_id)
     				{
     					$group = new IModel('user_group');

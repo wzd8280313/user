@@ -106,7 +106,7 @@
 						<span class="prt" title="购物清单打印" onclick="window.open('{url:/order/shop_template/id/$item[id]/type/pre}');">购</span>
 						<span class="prt" title="配货单打印" onclick="window.open('{url:/order/pick_template/id/$item[id]/type/pre}');">配</span>
 						<span class="prt" title="联合打印" onclick="window.open('{url:/order/merge_template/id/$item[id]/type/pre}');">合</span>
-						<span class="prt" title="快递单打印" onclick="window.open('{url:/order/expresswaybill_template/id/$item[id]/type/pre}');">递</span>
+						<span class="prt" title="快递单打印" onclick="window.open('{url:/order/expresswaybill_template/id/$item[id]}');">递</span>
 					</td>
 					<td>{$item['payment_name']}</td>
 					<td>{echo:$item['username']=='' ? '游客' : $item['username']}</td>

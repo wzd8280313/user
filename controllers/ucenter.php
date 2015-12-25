@@ -439,15 +439,30 @@ class Ucenter extends IController
 		$area        = IFilter::act(IReq::get('area'),'int');
 		$address     = IFilter::act(IReq::get('address'));
 		$zip         = IFilter::act(IReq::get('zip'));
-		$telphone    = IFilter::act(IReq::get('telphone'));
+		//$telphone    = IFilter::act(IReq::get('telphone'));
 		$mobile      = IFilter::act(IReq::get('mobile'));
         $user_id     = $this->user['user_id'];
 
         if(!$user_id)
         {
-        	die(JSON::encode(array('data' => null)));
+        	die(JSON::encode(array('errCode' => 2)));
         }
-
+		if(!$accept_name){
+			die(JSON::encode(array('errCode' => 1,'field'=>'accept_name')));
+		}
+		if(!$address){
+			die(JSON::encode(array('errCode' => 1,'field'=>'address')));
+		}
+		if(!IValidate::phone($mobile))
+    	{
+    		die(JSON::encode(array('errCode' => 1,'field'=>'mobile')));
+    	}
+		if(!IValidate::zip($zip))
+    	{
+    		die(JSON::encode(array('errCode' => 1,'field'=>'zip')));
+    	}
+		
+		
 		//整合的数据，检查数据库中是否存在此收货地址
         $sqlData = array(
         	'user_id'     => $user_id,
@@ -474,7 +489,10 @@ class Ucenter extends IController
 		else 
 			$res=$model->update('id='.$id.' and user_id='.$user_id);
 		
-		echo $res ? 1 : 0;
+		if($res){
+			die(JSON::encode(array('errCode' => 0)));
+		}
+		else die(JSON::encode(array('errCode' => 3)));
 	}
     /**
      * @brief 收货地址删除处理
