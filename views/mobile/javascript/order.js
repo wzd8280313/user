@@ -18,7 +18,7 @@ $(function(){
 			},
 			success:function(data){
 				if(data.errCode==0){
-					history.back();
+					history.back(-1);
 				}
 				else if(data.errCode==2){
 					realAlert('请先登录');
