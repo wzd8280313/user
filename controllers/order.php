@@ -584,7 +584,7 @@ class Order extends IController
 	 	));
 	 	$tb_order->update('id='.$order_id);
 	 	IReq::set('id',$order_id);
-	 	$this->order_show();
+	 	$this->redirect('order_show/id/'.$order_id);
 
 	}
 	/**
