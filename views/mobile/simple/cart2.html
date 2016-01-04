@@ -249,8 +249,8 @@ function selectProtect(obj)
 
      	<div class="qrdd qrdds">
      		<!-- 商品详情-->
-     		<div class="sj"><img src="{skin:images/ptlog.png}" style="width:27px;float:left;"/><a herf="#">平台自营</a></div>
-			{foreach:items=$this->goodsList item=$value}
+            {foreach:items=$this->goodsList item=$value}
+     		<div class="sj" style="margin-top: 15px"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="#">{$value['seller_name']}</a></div>
 			
 				<input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
 				{foreach:items=$value key=$k}
@@ -293,7 +293,9 @@ function selectProtect(obj)
 					</div>
 				{/if}
 				{/foreach}
+                <div style="clear: both;"></div>
 			{/foreach}
+            
 			<div style="height:23px;" ></div>
      		<!-- 商品详情结束 -->
      		

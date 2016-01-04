@@ -434,8 +434,7 @@ class Order_Class
 
 		$goodsArray = array(
 			'order_id' => $order_id
-		);
-
+		);                                  
 		if(isset($goodsResult['goodsList']))
 		{
 			foreach($goodsResult['goodsList'] as $key => $val)
@@ -463,7 +462,8 @@ class Order_Class
 				$goodsArray['goods_array'] = IFilter::addSlash(JSON::encode($specArray));
 				$goodsArray['delivery_fee']= $val['deliveryPrice'];
 				$goodsArray['save_price']  = $val['insuredPrice'];
-				$goodsArray['tax']         = $val['taxPrice'];
+                $goodsArray['tax']         = $val['taxPrice'];
+				$goodsArray['seller_id']   = $val['seller_id'];
 				$orderGoodsObj->setData($goodsArray);
 				$orderGoodsObj->add();
 			}

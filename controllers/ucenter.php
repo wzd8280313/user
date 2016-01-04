@@ -85,7 +85,7 @@ class Ucenter extends IController
      * @brief 我的订单列表
      */
     public function order()
-    {
+    {                                  
     	if(IClient::getDevice()=='pc'){
     	
 	    	$chg_time = 7*24*3600;//完成订单后换货期限
@@ -174,8 +174,7 @@ class Ucenter extends IController
 	        $data['s_status'] = $status;
 	        $data['s_seller_id'] = $seller_id;
 	        $this->setRenderData($data);
-	        
-    	}
+    	}              
     	$this->redirect('order');
     }
     /**
@@ -235,8 +234,23 @@ class Ucenter extends IController
         $tb_order_goods->join = 'left join goods as g on og.goods_id=g.id';
         $tb_order_goods->where = 'og.order_id='.$id;
         $tb_order_goods->group = 'og.id';
-        $tb_order_goods->fields = 'g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums';
-        $this->og_data = $tb_order_goods->find();
+        $tb_order_goods->fields = 'g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,g.seller_id';
+        $og_data = $tb_order_goods->find();
+        foreach($og_data as $key=>$val){       
+            if($val['seller_id'] <> 0)
+            {
+                $seller_name = API::run('getSellerInfo',$val['seller_id'],'true_name');
+                $seller_logo = API::run('getSellerInfo',$val['seller_id'],'logo_img');
+                $og_data[$key]['seller_name'] = $seller_name['true_name'];
+                $og_data[$key]['seller_logo'] = $seller_logo['logo_img'];
+            }
+            else
+            {
+                $og_data[$key]['seller_name'] = '平台自营';
+            }
+            
+        }
+        $this->og_data = $og_data;
        	$this->redirect('order_detail',false);
     }
 	
@@ -431,7 +445,7 @@ class Ucenter extends IController
 	}
 	//添加地址ajax
 	function address_add()
-	{
+	{                 
 		$id          = IFilter::act(IReq::get('add_id'),'int');
 		$accept_name = IFilter::act(IReq::get('accept_name'));
 		$province    = IFilter::act(IReq::get('province'),'int');
@@ -439,8 +453,9 @@ class Ucenter extends IController
 		$area        = IFilter::act(IReq::get('area'),'int');
 		$address     = IFilter::act(IReq::get('address'));
 		$zip         = IFilter::act(IReq::get('zip'));
-		//$telphone    = IFilter::act(IReq::get('telphone'));
-		$mobile      = IFilter::act(IReq::get('mobile'));
+		$telphone    = IFilter::act(IReq::get('telphone'));
+        $mobile      = IFilter::act(IReq::get('mobile'));
+		$default      = IFilter::act(IReq::get('default'));
         $user_id     = $this->user['user_id'];
 
         if(!$user_id)
@@ -461,8 +476,7 @@ class Ucenter extends IController
     	{
     		die(JSON::encode(array('errCode' => 1,'field'=>'zip')));
     	}
-		
-		
+		                     
 		//整合的数据，检查数据库中是否存在此收货地址
         $sqlData = array(
         	'user_id'     => $user_id,
@@ -474,13 +488,16 @@ class Ucenter extends IController
         	'area'        => $area,
         	'address'     => $address,
         	'mobile'      => $mobile,
-			'default'     => 1
+			'default'     => $default
         );
         $model       = new IModel('address');
 		
 		//将所有收货信息设为非默认
-		$model->setData(array('default'=>0));
-		$model->update('user_id='.$user_id);
+        if($default)
+        {   
+            $model->setData(array('default'=>0));
+            $model->update('user_id='.$user_id);
+        }                                  
 
 		//执行insert
 		$model->setData($sqlData);
@@ -488,11 +505,7 @@ class Ucenter extends IController
 			$res=$model->add();
 		else 
 			$res=$model->update('id='.$id.' and user_id='.$user_id);
-		
-		if($res){
-			die(JSON::encode(array('errCode' => 0)));
-		}
-		else die(JSON::encode(array('errCode' => 3)));
+		die(JSON::encode(array('errCode' => 0)));                                             
 	}
     /**
      * @brief 收货地址删除处理
@@ -504,6 +517,26 @@ class Ucenter extends IController
 		$model->del('id = '.$id.' and user_id = '.$this->user['user_id']);
 		$this->redirect('address');
 	}
+    
+    /**
+     * @brief 手机端删除收货地址
+     */
+    public function address_delete()
+    {
+        $user_id     = $this->user['user_id'];
+        if(!$user_id)
+        {
+            die(JSON::encode(array('errCode' => 2)));
+        }
+        $id = IFilter::act( IReq::get('id'),'int' );
+        $model = new IModel('address');            
+        $res = $model->del('id = '.$id.' and user_id = '.$this->user['user_id']); 
+        if($res){
+            die(JSON::encode(array('errCode' => 0)));
+        }
+        else die(JSON::encode(array('errCode' => 3)));
+        
+    }
     /**
      * @brief 设置默认的收货地址
      */

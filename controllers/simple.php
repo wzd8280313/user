@@ -416,7 +416,7 @@ class Simple extends IController
     	//将商品按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);	
     	//print_r($this->goodsList);
-		//渲染视图
+		//渲染视图                  
     	$this->redirect('cart',$redirect);
     }
     /*将商品列表按商家分开
@@ -431,8 +431,10 @@ class Simple extends IController
     			if($value['seller_id']==0){
     				$goodsListSeller[$value['seller_id']]['seller_name'] = '平台';
     			}else{
-    				$seller_data = API::run('getSellerInfo',$value['seller_id'],'true_name');
-    				$goodsListSeller[$value['seller_id']]['seller_name'] = $seller_data['true_name'];
+                    $seller_data = API::run('getSellerInfo',$value['seller_id'],'true_name');
+    				$seller_logo = API::run('getSellerInfo',$value['seller_id'],'logo_img');
+                    $goodsListSeller[$value['seller_id']]['seller_name'] = $seller_data['true_name'];
+    				$goodsListSeller[$value['seller_id']]['logo_img'] = $seller_logo['logo_img'];
     			}
     		}
     		$goodsListSeller[$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
@@ -813,7 +815,7 @@ class Simple extends IController
     	
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
-
+        
     	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
@@ -1002,7 +1004,6 @@ class Simple extends IController
 		$paymentRow = $paymentObj->getObj('id = '.$payment,'type,name');
 		$paymentName= $paymentRow['name'];
 		$paymentType= $paymentRow['type'];
-		//$goodsResult['goodsList'] = $this->goodsListBySeller($goodsResult['goodsList']);
 
 		//最终订单金额计算
 		$orderData = $countSumObj->countOrderFee($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
@@ -1086,7 +1087,7 @@ class Simple extends IController
 		}
 		
 
-		/*将订单中的商品插入到order_goods表*/
+		/*将订单中的商品插入到order_goods表*/                            
     	$orderInstance = new Order_Class();
     	$orderInstance->insertOrderGoods($this->order_id,$orderData['goodsResult']);
 
