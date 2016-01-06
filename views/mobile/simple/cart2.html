@@ -1,3 +1,4 @@
+{set:$param = $this->param}
 {foreach:items=$this->addressList}
 	{if:$item['id']==$this->defaultAddressId}
 	{set:$defaultAddress = $item;}
@@ -216,7 +217,7 @@ function selectProtect(obj)
 			<input type='hidden' name='direct_promo' value='{$this->promo}' />
 			<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
      		<div class="qrdd">
-                <a class="dz " href="{url:simple/address}">
+                <a class="dz " href="{url:simple/address}{$param}">
                 	<input type='hidden' value='{$this->defaultAddressId}' name='address_id' pattern='int'/>
 					<input type='hidden' value='{$defaultAddress["province"]}' name='province'/>
 					<input type='hidden' value='{$defaultAddress["accept_name"]}' name='accept_name'/>

@@ -141,9 +141,9 @@ background-color: rgba(94, 110, 141, 0.9);
 	<% for(var i in goods_data){%>
     <img class="ding_log" <%if(goods_data[i]['seller_logo']){%> src="{webroot:}<%=goods_data[i]['seller_logo']%>" <%}%> src="{skin:images/ptlog.png}"><h3><%=goods_data[i]['seller_name']%>＞</h3>
  	<li class="chanpin">
-		 <a class="tupian"  href="{url:/site/products/id/}/<%=goods_data[i]['goods_id']%>"> <img src="{url:<%=goods_data[i]['img']%>}" ></a>
+		 <a class="tupian"  href="{url:/ucenter/order_detail/id/}/<%=id%>"> <img src="{url:<%=goods_data[i]['img']%>}" ></a>
 		   
-		   <p><a href="{url:/site/products/id/}/<%=goods_data[i]['goods_id']%>"><%if(type==1){%>[团购]<%}%><%if(type==4){%>[预售]<%}%><%=goods_data[i]['name']%><br><b><%==goods_data[i]['spec']%></b>
+		   <p><a href="{url:/ucenter/order_detail/id/}/<%=id%>"><%if(type==1){%>[团购]<%}%><%if(type==4){%>[预售]<%}%><%=goods_data[i]['name']%><br><b><%==goods_data[i]['spec']%></b>
 		     <br><span>七天退换</span></a></p> 
 		  <b>￥<%=goods_data[i]['real_price']%><br><span>×<%=goods_data[i]['goods_nums']%></span></b>
 		  <div style="float:right;">

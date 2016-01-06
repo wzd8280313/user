@@ -80,9 +80,19 @@
   });
   
     $(".done_sall").click(function(){
-		$(".choice_tb").hide();
-  	$(this).find(".choice_tb").show();
-  
+        var id = $(this).attr('js_data')
+        ,param = $(this).attr('js_param')
+        ,url = '{url:/simple/cart2}/addId/'+id+param;
+        if(param)
+        {
+            console.info(url);
+            window.location.href = url;
+        }
+        else
+        {
+            $(".choice_tb").hide();
+            $(this).parents('tr').find(".choice_tb").show();
+        }
   });
 });
 </script>
@@ -108,13 +118,12 @@
 				<table width="100%" border="0"  style="line-height:35px;">
              
 					  {foreach:items=$this->addressList}
-					  <tr class="done_sall"    onclick='address_edit(this);' style="text-align:left">
+					  <tr  style="text-align:left">
 					  	<input type='hidden' name='{$item["id"]}' value='{$item["id"]}' />
-						<input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
 						<td> 
                         <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
                         src="{skin:images/right_left.png}"></span>
-                        <div  style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
+                        <div  class="done_sall" js_data="{$item['id']}" js_param="{$this->param}" style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
                         	<span style="padding-left:30px">{if: $item['default']}<span style="color: red;">[默认]</span> {/if}{$item['accept_name']}
                         <span style="padding-left:20px">{$item['mobile']}</span></span>
 							<p style="padding-left:30px">{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</p>
@@ -124,7 +133,8 @@
                   <span onclick="delAddress({$item['id']})" class="dealisc er" style="float: right;margin:3px 30px 0 0;color: #4A4747; font-size: 12px;">删除</span>
                   <a onclick="delAddress({$item['id']})"  href="javascript:;">
                   <img style="float:right;" class="dealisc" src="{skin:images/trash.png}"></a>
-                          <div style="float: right;" >
+                          <div style="float: right;" onclick='address_edit(this);' >
+                          <input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
                           <span class="bianji er" style="float: right;margin:3px 30px 0 0;color: #4A4747;font-size: 12px;">编辑</span>
                           <img class="bianji" src="{skin:images/edit3.png}"> 
                           </div> 

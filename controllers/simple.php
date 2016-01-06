@@ -691,7 +691,29 @@ class Simple extends IController
 		$promo     = IFilter::act(IReq::get('promo'));
 		$active_id = IFilter::act(IReq::get('active_id'),'int');
 		$buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
-
+        $addId        = IFilter::act(IReq::get('addId'),'int');
+         $param = '';
+         if($id)
+         {
+             $param .= '/id/'.$id;
+         }
+         if($type)
+         {
+             $param .= '/type/'.$type;
+         }
+         if($promo)
+         {
+             $param .= '/promo/'.$promo;
+         }
+         if($active_id)
+         {
+             $param .= '/active_id/'.$active_id;
+         }
+         if($buy_num > 1)
+         {
+             $param .= '/num/'.$buy_num;
+         }             
+         
     	//必须为登录用户
     	if($this->user['user_id'] == null)
     	{
@@ -730,13 +752,25 @@ class Simple extends IController
 			
 			$goodsdata = $_POST;
 			$checked = IFilter::act(IReq::get('sub'));
+            if(is_array($checked))
+            {
+                $param .= '/sub/'.implode('+', $checked);
+            }
+            else
+            {
+                $param .= '/sub/'. $checked;
+                $checked = explode('+', $checked);
+            }
 			$cartData = array();
 			if(empty($checked))$this->redirect('cart');
 			foreach($checked as $key=>$val){//转换成购物车的数据结构
 				$tem = explode('-',$val);
-				$cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
-				
+                if(isset($goodsdata[$val]))
+                {
+                    $cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
+                }
 			}
+            
 			//计算购物车中的商品价格
 			$result = $countSumObj->cart_count($cartData);
 			
@@ -757,7 +791,7 @@ class Simple extends IController
     	$addressList = $addressObj->query('user_id = '.$user_id);
 
 		//更新$addressList数据
-    	$this->defaultAddressId = -1;
+        $this->defaultAddressId = -1;
     	foreach($addressList as $key => $val)
     	{
     		$temp = area::name($val['province'],$val['city'],$val['area']);
@@ -766,10 +800,20 @@ class Simple extends IController
 	    		$addressList[$key]['province_val'] = $temp[$val['province']];
 	    		$addressList[$key]['city_val']     = $temp[$val['city']];
 	    		$addressList[$key]['area_val']     = $temp[$val['area']];
-	    		if($val['default'] == 1)
-	    		{
-	    			$this->defaultAddressId = $val['id'];
-	    		}
+                if($addId)
+                {
+                    if($addId == $val['id'])
+                    {
+                        $this->defaultAddressId = $val['id'];
+                    }
+                }
+                else
+                {
+                    if($val['default'] == 1)
+                    {
+                        $this->defaultAddressId = $val['id'];
+                    }
+                }
     		}
     	}
 
@@ -844,6 +888,7 @@ class Simple extends IController
 			}
 		}
 		
+        $this->param = $param;
 		$this->allDeliveryType = $allDeliveryType;
     	//渲染页面
     	$this->redirect('cart2');
@@ -852,6 +897,40 @@ class Simple extends IController
     function address(){
     	if($this->user['user_id']==null)$this->redirect('login');
     	$user_id = $this->user['user_id'];
+        
+        //获取购物车携带参数
+        $id        = IFilter::act(IReq::get('id'),'int');
+        $type      = IFilter::act(IReq::get('type'));//goods,product
+        $promo     = IFilter::act(IReq::get('promo'));
+        $active_id = IFilter::act(IReq::get('active_id'),'int');
+        $buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
+        $sub = IFilter::act(IReq::get('sub'));
+         $param = '';
+         if($id)
+         {
+             $param .= '/id/'.$id;
+         }
+         if($type)
+         {
+             $param .= '/type/'.$type;
+         }
+         if($promo)
+         {
+             $param .= '/promo/'.$promo;
+         }
+         if($active_id)
+         {
+             $param .= '/active_id/'.$active_id;
+         }
+         if($buy_num > 1)
+         {
+             $param .= '/num/'.$buy_num;
+         }   
+         if($sub)
+         {
+             $param .= '/sub/'.$sub;
+         }             
+        
     	//获取收货地址
     	$addressObj  = new IModel('address');
     	$addressList = $addressObj->query('user_id = '.$user_id);
@@ -867,6 +946,7 @@ class Simple extends IController
     			$addressList[$key]['area_val']     = $temp[$val['area']];
     		}
     	}
+        $this->param = $param;
     	$this->addressList = $addressList;
     	$this->redirect('address');
     }
