@@ -603,10 +603,10 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
 .cnt.w1190 .brand_list .brand li .brand_poto{width:290px; height:195px; text-align: center;}
 .tuangou_list .tuangou li{ border:#CCC 1px solid;height:275px;width:290px; margin:0 7px 15px 0; float:left;}
 .tuangou_list .tuangou li h3{ display:block; height:35px;line-height:50px;overflow:hidden;width: 283px;margin-left:7px;}
-.cnt.w1190 .tuangou_list .tuangou li .tuan_title .price{ float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
+.cnt.w1190 .tuangou_list .tuangou li .tuan_title .price{ float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;   font-style: normal;}
 .cnt.w1190 .tuangou_list .tuangou li .tuan_title .price b{ font-size:20px; margin-right:7px;}
 .cnt.w1190 .tuangou_list .tuangou li .tuan_title .price del{ text-decoration:line-through; font-weight:normal; color:#999;}
-.cnt.w1190 .tuangou_list .tuangou li .tuan_title .qiangg{ position: relative; top: 10px;left:55px; color:#999; float:left;}
+.cnt.w1190 .tuangou_list .tuangou li .tuan_title .qiangg{ position: relative; top: 10px;left:55px; color:#999; float:left; font-style:normal;}
 .cnt.w1190 .tuangou_list .tuangou li .tuan_title .msqing{position: relative; top: 3px;left:63px;background: rgb(227, 55, 58); border-radius:3px;
     line-height: 35px;
     border: none;
@@ -614,10 +614,12 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
     float: initial;
     color: #fff;
     font-size: 12px;
+	font-style: normal;
     }
 .tuangou_list .tuangou li:hover{ border:#F00 1px solid;}
 
 /*品牌团*/
+.cnt.w1190 .brand_list .brand li .brand_title{ font-style:normal;}
 .brand_list{ width:1190px; height:auto; overflow:hidden; margin:0 auto;}
 .brand_list .brand{ height:auto; width:1210px;}
 .cnt.w1190 .brand_list .brand li .brand_poto{width:385px; height:195px; text-align: center;}
@@ -636,3 +638,19 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
     font-size: 12px;
     }
 .brand_list .brand li:hover{ border:#F00 1px solid;}
+
+.cnt.w1190 .pp_tm_con_fr h5{ background-image:url(../images/zdt.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 97%; height:64px;background-position: 0 -1px;border-top: 1px dashed #f789b5; }
+.cnt.w1190 .pp_tm_con_fr.one{ height:110px; border:none; margin-bottom:10px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_left{ width:396px; float:left;text-align: center;margin: 13px;color: #fff;font-size: 13px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_right{width: 396px;float: right;text-align: center;font-weight: bold;font-size: 13px;
+   position: relative;left: 17px;top:13px;color: #cc6721;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center{ float:left;text-align: center;color:#fff;font-size: 13px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center b {position: relative;top: 22px;left: 120px; font-size: 18px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center .ju_stop{    position: relative; color:#9d59bc;
+    top: 12px;
+    left: 141px;
+    font-size: 13px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center .ju_stop i {
+    position: relative;
+    left: 36px;
+    font-weight: bold;}
