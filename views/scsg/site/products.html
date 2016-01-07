@@ -552,6 +552,13 @@ function comment_ajax(page)
 			$('#commentBox').append(commentHtml);
 		}
 		$('#commentBox').append(json.pageHtml);
+		/*点击回复出现弹框*/
+		$("#hf").click(function(){
+			$(this).parents(".huifu").find(".bg-hf").toggle();
+		});
+		$(".re-hf").click(function(){
+			$(this).parents(".ts").find(".J-reply-con").toggle();
+		});
 	});
 }
 
@@ -607,6 +614,14 @@ function refer_ajax(page)
 			$('#referBox').append(commentHtml);
 		}
 		$('#referBox').append(json.pageHtml);
+
+		/*咨询回复弹出框*/
+		$("#hf").click(function(){
+			$(this).parents(".huifu").find(".bg-hf").toggle();
+		});
+		$(".re-hf").click(function(){
+			$(this).parents(".ts").find(".J-reply-con").toggle();
+		});
 	});
 }
 

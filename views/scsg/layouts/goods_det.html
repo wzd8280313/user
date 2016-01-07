@@ -58,7 +58,7 @@
 			{/if}
 			<!-- 顾客评论 start -->
 			<div class="hidden comment_list box">
-				<div class="title3">
+				<!-- <div class="title3">
 					<span class="f_r f12 light_gray normal">
 						只有购买过该商品的用户才能进行评价
 						{if:isset($this->user['user_id']) && $user_id = $this->user['user_id']}
@@ -68,12 +68,32 @@
 						{/if}
 					</span>
 					<img src="{skin:images/front/comm.gif}" width="16px" height="16px" />商品评论<span class="f12 normal">（已有<b class="red2">{$comments}</b>条）</span>
-				</div>
+				</div> -->
+			
+				<script type="text/javascript">
+					$(document).ready(function(){
+						/*选择评价*/
+						$(".m-tab-trigger .trig-item").click(function(){
+							$(".m-tab-trigger .trig-item").removeClass("curr");
+							$(this).addClass("curr");
+						});
+
+					});
+				</script>
+				<div class="mt-inner m-tab-trigger-wrap clearfix">
+       				<ul class="m-tab-trigger">
+           			 	<li class="ui-switchable-item trig-item curr" clstag="shangpin|keycount|product|allpingjia_2"><a href="javascript:;">全部评价<em>(69)</em></a></li>
+            		 	<li class="ui-switchable-item trig-item" clstag="shangpin|keycount|product|haoping_2"><a href="javascript:;">好评<em>(59)</em></a></li>
+             			<li class="ui-switchable-item trig-item" clstag="shangpin|keycount|product|zhongping_2"><a href="javascript:;">中评<em>(10)</em></a></li>
+             			<li class="ui-switchable-item trig-item" clstag="shangpin|keycount|product|chaping_2"><a href="javascript:;">差评<em>(0)</em></a></li>
+        			</ul>
+    			</div>
 
 				<div id='commentBox'></div>
 
 				<!--评论JS模板-->
 				<script type='text/html' id='commentRowTemplate'>
+
 				<div class="item">
 					<div class="user">
 						<div class="ico">
@@ -92,11 +112,75 @@
 						</p>
 						<hr />
 						<p><b>评价：</b><span class="gray"><%=contents%></span></p>
+						<!--修改评价-->
+						<div class="huifu">
+						<p><span class="replys J-reply-trigger" id="hf">回复（2）</span></p>
+							<div class="bg-hf" style="display:none;">
+							<div class="reply-textarea J-reply-con" id="ts" style="margin-bottom: 10px;display:block;">
+							
+								<div class="reply-arrow">
+									<b class="layer1"></b>
+									<b class="layer2"></b>
+								</div>    
+                 
+								<div class="inner">       
+								     <textarea class="reply-input" name="" id="" placeholder="回复 l***e："></textarea>        
+							
+									<div class="btnbox">
+										<button type="button" data-nick="l***e" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz">提交回复</button>
+									</div>                   
+								 </div> 
+							 	<hr/> 
+							 </div>
+
+							 <p><span class="replys J-reply-trigger">l***e:</span><span class="gray"><%=contents%></span><span class="times">2015-12-30</span></p>
+							 <div class="ts">
+							 <p><span class="replys J-reply-trigger re-hf">回复（0）</span></p>  
+							 <div class="reply-textarea J-reply-con" style="margin-bottom: 10px;">
+								 <div class="reply-arrow">
+									<b class="layer1"></b>
+									<b class="layer2"></b>
+								</div>    
+                 
+								<div class="inner">       
+								     <textarea class="reply-input" name="" id="" placeholder="回复 l***e："></textarea>        
+							
+									<div class="btnbox">
+										<button type="button" data-nick="l***e" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz">提交回复</button>
+									</div>                   
+								</div> 
+							 </div> 
+							</div>
+
+				    	</div>
+				    </div>
+				    <hr/>
+					<!--修改评价-->
 						<%if(recontents){%>
-						<p><b>回复：</b><span class="red"><%=recontents%></span></p>
+						<p><span class="colors">山城速购：</span><span class="red"><%=recontents%></span><span class="times">2015-12-30</span></p>
+						<div class="ts">
+						<p><span class="replys J-reply-trigger re-hf">回复（0）</span></p>
+						<div class="reply-textarea J-reply-con" style="margin-bottom: 10px;">
+							<div class="reply-arrow">
+								<b class="layer1"></b>
+								<b class="layer2"></b>
+							</div>    
+                 
+							<div class="inner">       
+							     <textarea class="reply-input" name="" id="" placeholder="回复 l***e："></textarea>        
+						
+								<div class="btnbox">
+									<button type="button" data-nick="l***e" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz">提交回复</button>
+								</div>                   
+							 </div>      
+				    	  </div>
+				    	</div>
+				    	<hr/>
 						<%}%>
+						
 					</dl>
 					<div class="corner b"></div>
+
 				</div>
 				<hr />
 				</script>
@@ -171,12 +255,73 @@
 							<img src="{skin:images/front/ask.gif}" width="16px" height="17px" />
 							<b>咨询内容：</b><span class="f_r"><%=time%></span>
 						</p>
+
 						<p class="indent"><%=question%></p>
+						<!--增加咨询回复-->
+						<div class="huifu">
+							<p><span class="replys J-reply-trigger" id="hf">回复（2）</span></p>
+							<div class="bg-hf" style="display:none;">
+							<div class="reply-textarea J-reply-con" id="ts" style="margin-bottom: 10px;display:block;">
+							
+								<div class="reply-arrow">
+									<b class="layer1"></b>
+									<b class="layer2"></b>
+								</div>    
+                 
+								<div class="inner">       
+								     <textarea class="reply-input" name="" id="" placeholder="回复 l***e："></textarea>        
+							
+									<div class="btnbox">
+										<button type="button" data-nick="l***e" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz">提交回复</button>
+									</div>                   
+								 </div> 
+							 	<hr> 
+							 </div>
+
+							 <p><span class="replys J-reply-trigger">l***e:</span><span class="gray">sdfsdf</span><span class="times">2015-12-30</span></p>
+							 <div class="ts">
+							 <p><span class="replys J-reply-trigger re-hf">回复（0）</span></p>  
+							 <div class="reply-textarea J-reply-con" style="margin-bottom: 10px; display: none;">
+								 <div class="reply-arrow">
+									<b class="layer1"></b>
+									<b class="layer2"></b>
+								</div>    
+                 
+								<div class="inner">       
+								     <textarea class="reply-input" name="" id="" placeholder="回复 l***e："></textarea>        
+							
+									<div class="btnbox">
+										<button type="button" data-nick="l***e" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz">提交回复</button>
+									</div>                   
+								</div> 
+							 </div> 
+							</div>
+
+				    	</div>
+				    </div>
+				   <!--增加咨询回复-->
 						<hr />
 						<%if(answer){%>
 						<p class="bg_gray"><img src="{skin:images/front/answer.gif}" width="16px" height="17px" />
 						<b class="orange">{echo:$siteConfig->name}回复：</b><span class="f_r"><%=reply_time%></span></p>
 						<p class="indent bg_gray"><%=answer%></p>
+						<div class="ts">
+							<p><span class="replys J-reply-trigger re-hf">回复（0）</span></p>
+							<div class="reply-textarea J-reply-con" style="margin-bottom: 10px;">
+								<div class="reply-arrow">
+									<b class="layer1"></b>
+									<b class="layer2"></b>
+								</div>    
+	                 
+								<div class="inner">       
+								     <textarea class="reply-input" name="" id="" placeholder="回复 l***e："></textarea>        
+							
+									<div class="btnbox">
+										<button type="button" data-nick="l***e" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz">提交回复</button>
+									</div>                   
+								 </div>      
+					    	</div>
+				    	</div>
 						<%}%>
 					</dl>
 					<div class="corner b"></div>

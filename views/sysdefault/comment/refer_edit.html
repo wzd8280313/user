@@ -8,6 +8,11 @@
 		<a href="javascript:void(0)" onclick="history.go(-1)"><button class="operating_btn" type="button"><span class="return">返回</span></button></a>
 	</div>
 </div>
+<style type="text/css">
+	.pthf{
+		color:#13BFF3;
+	}
+</style>
 <div class="content_box">
 	<div class="content form_content">
 		<form action="{url:/comment/refer_reply}" method="post" name="refer_edit">
@@ -22,10 +27,22 @@
 					</td>
 				</tr>
 				<tr>
-					<th>咨询时间：</th><td>{$item['time']}</td>
+					<th>最后咨询时间：</th><td>{$item['time']}</td>
 				</tr>
 				<tr>
-					<th>咨询内容：</th><td>{$item['question']}</td>
+					<th valign="top">咨询内容：</th>
+					<td>
+						<div class="">
+							<p><span>游客：</span>
+								<span>2016-01-06</span></p>
+							<p>{$item['question']}</p>	
+						</div>
+						<div class="">
+							<p><span class="pthf">山城速购：</span>
+								<span>2016-01-06</span></p>
+							<p>{$item['question']}</p>	
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<th valign="top">回复：</th><td><textarea name="content" rows="" cols="">{$item['answer']}</textarea></td>
