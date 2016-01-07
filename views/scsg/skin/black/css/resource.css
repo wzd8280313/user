@@ -455,7 +455,7 @@ li{float:left;width:350px;padding:20px;position:relative}
 .group_fuwu
 .fuwu_desc{font-size:14px;left:140px;position:absolute;top:56px}
 
-.left_group{width:860px;float:left}
+.left_group{width:860px;float:left; margin-bottom:-35px;}
 
 .right_group{width:300px;float:right;min-height:500px;background-color:#fff}
 
