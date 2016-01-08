@@ -68,7 +68,7 @@ class trade_alipay extends paymentPlugin
 			if($callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS' && isset($callbackData['trade_no']))
 			{
 				$merge_order_db = new IModel('merge_order');
-					$order_ids = $merge_order_db->getField('order_no='.$orderNo,'order_ids');
+					$order_ids = $merge_order_db->getField('order_no="'.$orderNo.'"','order_ids');
 					$this->recordTradeNoForMerge($order_ids,$callbackData['trade_no'],$paymentId);
 					self::addTradeData($callbackData,0,$order_ids);//添加交易记录
 			}
@@ -105,7 +105,7 @@ class trade_alipay extends paymentPlugin
 			if($callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS' && isset($callbackData['trade_no']))
 			{
 				$merge_order_db = new IModel('merge_order');
-					$order_ids = $merge_order_db->getField('order_no='.$orderNo,'order_ids');
+					$order_ids = $merge_order_db->getField('order_no="'.$orderNo.'"','order_ids');
 					$this->recordTradeNoForMerge($order_ids,$callbackData['trade_no'],$paymentId);
 					self::addTradeData($callbackData,1,$order_ids);//添加交易记录
 			}

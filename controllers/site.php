@@ -108,7 +108,7 @@ class Site extends IController
         $tuan->fields = 'r.*';
         $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
         $tuan->order = 'r.sort asc';
-        $tuan->limit = 10;
+        $tuan->limit = 11;
         $tuanList = $tuan->find();
 		$this->count = count($tuanList);
 		if($this->count>2){
@@ -133,7 +133,7 @@ class Site extends IController
         
         foreach($tuanData as $key=>$val){
             $tuanData[$key]['key'] = $key + $start;
-            $tuanData[$key]['end'] = strtotime($val['end_time']);
+            $tuanData[$key]['end'] = strtotime($val['end_time']) - time();
         }
         echo $tuanData ? JSON::encode($tuanData) : 0;
         
@@ -1186,18 +1186,7 @@ class Site extends IController
 
 
 	function ce(){
-	$productId    = 171;
-    	$goodsId      = 136;
-    	$area     = 140302;
-    	$num          = 1;
-	$data         = array();
-		$delivery     = new IModel('delivery');
-			$deliveryList = $delivery->query('is_delete = 0 and status = 1');
-			foreach($deliveryList as $key => $item)
-			{
-				$data[$item['id']] = Delivery::getDelivery($area,$item['id'],$goodsId,$productId,$num);
-			}
-		print_r($data);
+		print_r($_SESSION);
 	}
 	
 }

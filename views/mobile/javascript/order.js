@@ -1,8 +1,7 @@
 $(function(){
 
 	//新增收货地址
-	$('input[name=address_add]').on('click',function(){
-	
+	$('input[name=address_add]').on('click',function(){ 
 		var _this=$(this);
 		if(!checkForm('address')){return false;}
 		_this.attr('disabled',true);
@@ -16,9 +15,17 @@ $(function(){
 			beforeSend:function(){
 				
 			},
-			success:function(data){
-				if(data==1){
-					location.href=last_url+'?radom='+Math.random();
+			success:function(data){   
+				if(data.errCode==0){
+					location.reload();
+
+				}
+				else if(data.errCode==2){
+					realAlert('请先登录');
+				}else if(data.errCode==1){
+					$('[name='+data.field+']').focus();
+				}else if(data.errCode==3){
+					realAlert('系统繁忙');
 				}
 			},
 			error:function(){

@@ -111,9 +111,9 @@ class Delivery
 			//匹配到了特殊的省份运费价格
 			if($flag)
 			{
-				if($matchKeyArea){
+				if($matchKeyArea!==''){
 					$matchKey = $matchKeyArea;
-				}else if($matchKeyCity){
+				}else if($matchKeyCity!==''){
 					$matchKey =$matchKeyCity;
 				}else {
 					$matchKey = $matchKeyProvince;
@@ -229,9 +229,9 @@ class Delivery
 			//匹配到了特殊的省份运费价格
 			if($flag)
 			{
-				if($matchKeyArea){
+				if($matchKeyArea!==''){
 					$matchKey = $matchKeyArea;
-				}else if($matchKeyCity){
+				}else if($matchKeyCity!==''){
 					$matchKey =$matchKeyCity;
 				}else {
 					$matchKey = $matchKeyProvince;
