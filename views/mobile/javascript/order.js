@@ -1,8 +1,7 @@
 $(function(){
 
 	//新增收货地址
-	$('input[name=address_add]').on('click',function(){
-	
+	$('input[name=address_add]').on('click',function(){ 
 		var _this=$(this);
 		if(!checkForm('address')){return false;}
 		_this.attr('disabled',true);
@@ -16,9 +15,10 @@ $(function(){
 			beforeSend:function(){
 				
 			},
-			success:function(data){
+			success:function(data){   
 				if(data.errCode==0){
-					location.href=last_url+'?'+Math.random();
+					location.reload();
+
 				}
 				else if(data.errCode==2){
 					realAlert('请先登录');
@@ -54,3 +54,8 @@ function address_edit(_this){
 	$('input[name=zip]').val(json.zip);
 	$('input[name=mobile]').val(json.mobile);
 }
+
+
+/*收货地址确认框*/
+
+

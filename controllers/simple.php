@@ -442,7 +442,7 @@ class Simple extends IController
     	//将商品按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);	
     	//print_r($this->goodsList);
-		//渲染视图
+		//渲染视图                  
     	$this->redirect('cart',$redirect);
     }
     /*将商品列表按商家分开
@@ -457,8 +457,10 @@ class Simple extends IController
     			if($value['seller_id']==0){
     				$goodsListSeller[$value['seller_id']]['seller_name'] = '平台';
     			}else{
-    				$seller_data = API::run('getSellerInfo',$value['seller_id'],'true_name');
-    				$goodsListSeller[$value['seller_id']]['seller_name'] = $seller_data['true_name'];
+                    $seller_data = API::run('getSellerInfo',$value['seller_id'],'true_name');
+    				$seller_logo = API::run('getSellerInfo',$value['seller_id'],'logo_img');
+                    $goodsListSeller[$value['seller_id']]['seller_name'] = $seller_data['true_name'];
+    				$goodsListSeller[$value['seller_id']]['logo_img'] = $seller_logo['logo_img'];
     			}
     		}
     		$goodsListSeller[$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
@@ -715,7 +717,29 @@ class Simple extends IController
 		$promo     = IFilter::act(IReq::get('promo'));
 		$active_id = IFilter::act(IReq::get('active_id'),'int');
 		$buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
-
+        $addId        = IFilter::act(IReq::get('addId'),'int');
+         $param = '';
+         if($id)
+         {
+             $param .= '/id/'.$id;
+         }
+         if($type)
+         {
+             $param .= '/type/'.$type;
+         }
+         if($promo)
+         {
+             $param .= '/promo/'.$promo;
+         }
+         if($active_id)
+         {
+             $param .= '/active_id/'.$active_id;
+         }
+         if($buy_num > 1)
+         {
+             $param .= '/num/'.$buy_num;
+         }             
+         
     	//必须为登录用户
     	if($this->user['user_id'] == null)
     	{
@@ -754,13 +778,25 @@ class Simple extends IController
 			
 			$goodsdata = $_POST;
 			$checked = IFilter::act(IReq::get('sub'));
+            if(is_array($checked))
+            {
+                $param .= '/sub/'.implode('+', $checked);
+            }
+            else
+            {
+                $param .= '/sub/'. $checked;
+                $checked = explode('+', $checked);
+            }
 			$cartData = array();
 			if(empty($checked))$this->redirect('cart');
 			foreach($checked as $key=>$val){//转换成购物车的数据结构
 				$tem = explode('-',$val);
-				$cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
-				
+                if(isset($goodsdata[$val]))
+                {
+                    $cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
+                }
 			}
+            
 			//计算购物车中的商品价格
 			$result = $countSumObj->cart_count($cartData);
 			
@@ -781,7 +817,7 @@ class Simple extends IController
     	$addressList = $addressObj->query('user_id = '.$user_id);
 
 		//更新$addressList数据
-    	$this->defaultAddressId = -1;
+        $this->defaultAddressId = -1;
     	foreach($addressList as $key => $val)
     	{
     		$temp = area::name($val['province'],$val['city'],$val['area']);
@@ -790,10 +826,20 @@ class Simple extends IController
 	    		$addressList[$key]['province_val'] = $temp[$val['province']];
 	    		$addressList[$key]['city_val']     = $temp[$val['city']];
 	    		$addressList[$key]['area_val']     = $temp[$val['area']];
-	    		if($val['default'] == 1)
-	    		{
-	    			$this->defaultAddressId = $val['id'];
-	    		}
+                if($addId)
+                {
+                    if($addId == $val['id'])
+                    {
+                        $this->defaultAddressId = $val['id'];
+                    }
+                }
+                else
+                {
+                    if($val['default'] == 1)
+                    {
+                        $this->defaultAddressId = $val['id'];
+                    }
+                }
     		}
     	}
 
@@ -839,7 +885,7 @@ class Simple extends IController
     	
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
-
+        
     	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
@@ -868,6 +914,7 @@ class Simple extends IController
 			}
 		}
 		
+        $this->param = $param;
 		$this->allDeliveryType = $allDeliveryType;
     	//渲染页面
     	$this->redirect('cart2');
@@ -876,6 +923,40 @@ class Simple extends IController
     function address(){
     	if($this->user['user_id']==null)$this->redirect('login');
     	$user_id = $this->user['user_id'];
+        
+        //获取购物车携带参数
+        $id        = IFilter::act(IReq::get('id'),'int');
+        $type      = IFilter::act(IReq::get('type'));//goods,product
+        $promo     = IFilter::act(IReq::get('promo'));
+        $active_id = IFilter::act(IReq::get('active_id'),'int');
+        $buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
+        $sub = IFilter::act(IReq::get('sub'));
+         $param = '';
+         if($id)
+         {
+             $param .= '/id/'.$id;
+         }
+         if($type)
+         {
+             $param .= '/type/'.$type;
+         }
+         if($promo)
+         {
+             $param .= '/promo/'.$promo;
+         }
+         if($active_id)
+         {
+             $param .= '/active_id/'.$active_id;
+         }
+         if($buy_num > 1)
+         {
+             $param .= '/num/'.$buy_num;
+         }   
+         if($sub)
+         {
+             $param .= '/sub/'.$sub;
+         }             
+        
     	//获取收货地址
     	$addressObj  = new IModel('address');
     	$addressList = $addressObj->query('user_id = '.$user_id);
@@ -891,6 +972,7 @@ class Simple extends IController
     			$addressList[$key]['area_val']     = $temp[$val['area']];
     		}
     	}
+        $this->param = $param;
     	$this->addressList = $addressList;
     	$this->redirect('address');
     }
@@ -1028,7 +1110,6 @@ class Simple extends IController
 		$paymentRow = $paymentObj->getObj('id = '.$payment,'type,name');
 		$paymentName= $paymentRow['name'];
 		$paymentType= $paymentRow['type'];
-		//$goodsResult['goodsList'] = $this->goodsListBySeller($goodsResult['goodsList']);
 
 		//最终订单金额计算
 		$orderData = $countSumObj->countOrderFee($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
@@ -1112,7 +1193,7 @@ class Simple extends IController
 		}
 		
 
-		/*将订单中的商品插入到order_goods表*/
+		/*将订单中的商品插入到order_goods表*/                            
     	$orderInstance = new Order_Class();
     	$orderInstance->insertOrderGoods($this->order_id,$orderData['goodsResult']);
 

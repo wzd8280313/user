@@ -25,21 +25,84 @@
 		<link rel="stylesheet" href="{skin:css/hd_com.css}" type="text/css">       
 		<script src="{theme:javascript/jquery-1.9.1.min.js}"></script>
 		{js:artTemplate}
-		
+		<script type="text/javascript">
+            function delAddress(_id)
+            {
+                $.ajax({
+                    type:'get',
+                    async:false,
+                    data:{id:_id},
+                    dataType:'json',
+                    url:'{url:/ucenter/address_delete}',
+                    beforeSend:function(){
+                        
+                    },
+                    success:function(data){   
+                        if(data.errCode==0){
+                            location.reload();
+                        }
+                        else if(data.errCode==2){
+                            realAlert('请先登录');
+                        }else if(data.errCode==3){
+                            realAlert('系统繁忙');
+                        }
+                    },
+                    error:function(){
+                        
+                    },
+                    complete:function(){
+                    
+                    },
+                    timeout:1000,
+                })
+            }
+        </script>
 		<script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 		
 		<script type='text/javascript' src="{theme:javascript/common.js}"></script>
 		<script type='text/javascript' src="{theme:javascript/formCheck.js}"></script>
 		<script type='text/javascript' src="{theme:javascript/order.js}"></script>
 		
-		<script src="{theme:javascript/scrollTop.js}"></script>     
+		<script src="{theme:javascript/scrollTop.js}"></script>  
+       
+   <script type="text/javascript">
+  $(document).ready(function(){
+  $(".addadres").click(function(){
+  $("#addders_main").show();
+   $(".modle_items3").hide();
+   $(".addadres").hide();
+  });
+  
+  $(".bianji").click(function(){
+  $("#addders_main").show();
+  $(".modle_items3").hide();
+   $(".addadres").hide();
+  });
+  
+    $(".done_sall").click(function(){
+        var id = $(this).attr('js_data')
+        ,param = $(this).attr('js_param')
+        ,url = '{url:/simple/cart2}/addId/'+id+param;
+        if(param)
+        {
+            console.info(url);
+            window.location.href = url;
+        }
+        else
+        {
+            $(".choice_tb").hide();
+            $(this).parents('tr').find(".choice_tb").show();
+        }
+  });
+});
+</script>
 		</head>
 		
-    <body>
+    <body style="background:#ECECEC;">
         <div id="page">
             <header class="wap-header">
-			<div class="wap-topbar">
-			<div class="h-left"><a href="javascript:history.go(-1);" title="返回"></a></div>
+			<div class="wap-topbar" style="background: #FDFDFD;">
+			<div class="h-left" style="background: #FDFDFD;"><a href="javascript:history.go(-1);" title="返回"></a></div>
 			<div class="h-center">
 				<h1>收货地址</h1>
 			</div>
@@ -51,37 +114,48 @@
     <section class="modle_section">
 	
 			<div class="modle_items3">
-				<p class="bcdz">请选择收货地址</p>
-				<table width="100%" border="0"  style="line-height:25px;">
-					  <tr>
-						<th class="wid">收货人</th>
-						<th>详细地址</th>
-						<th class="wid">手机</th>
-					  </tr>
+				<!--<p class="bcdz">请选择收货地址</p>-->
+				<table width="100%" border="0"  style="line-height:35px;">
+             
 					  {foreach:items=$this->addressList}
-					  <tr onclick='address_edit(this);'>
+					  <tr  style="text-align:left">
 					  	<input type='hidden' name='{$item["id"]}' value='{$item["id"]}' />
-						<input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
-						<td>{$item['accept_name']}</td>
-						<td>{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</td>
-						<td>{$item['mobile']}</td>
+						<td> 
+                        <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
+                        src="{skin:images/right_left.png}"></span>
+                        <div  class="done_sall" js_data="{$item['id']}" js_param="{$this->param}" style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
+                        	<span style="padding-left:30px">{if: $item['default']}<span style="color: red;">[默认]</span> {/if}{$item['accept_name']}
+                        <span style="padding-left:20px">{$item['mobile']}</span></span>
+							<p style="padding-left:30px">{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</p>
+                           </div>
+                     <div id="wrap">
+                <div class="box-163css">
+                  <span onclick="delAddress({$item['id']})" class="dealisc er" style="float: right;margin:3px 30px 0 0;color: #4A4747; font-size: 12px;">删除</span>
+                  <a onclick="delAddress({$item['id']})"  href="javascript:;">
+                  <img style="float:right;" class="dealisc" src="{skin:images/trash.png}"></a>
+                          <div style="float: right;" onclick='address_edit(this);' >
+                          <input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
+                          <span class="bianji er" style="float: right;margin:3px 30px 0 0;color: #4A4747;font-size: 12px;">编辑</span>
+                          <img class="bianji" src="{skin:images/edit3.png}"> 
+                          </div> 
+	            </div>
+                </div>                          
+						</td>
 					  </tr>
 					  {/foreach}
 				</table>
 
 			</div>
-		<form action="{url:/ucenter/address_add}" method="post" name='address'>
+            
+		<form id="addders_main" action="{url:/ucenter/address_add}" method="post" name='address' style="display:none;">
 			<input type='hidden' name='add_id' value='0' />
 			<div  class="mod_dres">
 				<div class="dres">
 					<div style="margin:0 5px;border-bottom: 1px solid #ABADB3; padding-bottom:10px;">
-						<a href=""><span style="float:left;margin-top:8px;">+新增收货地址：</span></a>
-                        
-                        
-                        
+						<a  href=""><span style="float:left;margin-top:8px;">+收货地址：</span></a>
                         <div class='dres'>
 					<span>
-						<select name="province" child="city,area" style='width:23%;height:35px;float:left;' pattern='int' onchange="areaChangeCallback(this);">
+						<select name="province" child="city,area" style='width:22%;height:35px;float:left;' pattern='int' onchange="areaChangeCallback(this);">
 						<option>请选择省份</option>
 						</select>
 					</span>					
@@ -93,48 +167,38 @@
 						</select>
 					</span>					
 				</div>
-				<div class='dres'>
+				<div class='dres' style="height: 32px;margin-top: 25px;">
 					<span>
 						<select name="area" parent="city" pattern='int' style='width:23%;height:35px;margin-left:1%;' pattern="required" alt="请选择收货地区">
 						<option>请选择地区</option>
 						</select>
 					</span>					
 				</div>
-                
-                
-                        
-                        
-                        
-                        
-                        
-                        
 					</div>
 				</div>
-				
-                
-                
 				<div class="dres">
 			
-					<span><input style="height:30px;" class="texts tex2" placeholder="收货人姓名" type="text" name='accept_name'  required /></span>
+					<span><input style="height:40px;" class="texts tex2" placeholder="收货人姓名" type="text" name='accept_name'  required /></span>
 				</div>
 				<div class="dres">
 					<span>
-						<input style="height:30px;" class="texts tex2" placeholder="详细地址" type="text" name='address' required />
+						<input style="height:40px;" class="texts tex2" placeholder="详细地址" type="text" name='address' required />
 					</span>
 				</div>
 				<div class="dres">
-					<span><input style="height:30px;" class="texts tex2" name='zip' placeholder="邮政编码" type="text" pattern='zip' /></span>
+					<span><input style="height:40px;" class="texts tex2" name='zip' placeholder="邮政编码" type="text" pattern='zip' /></span>
 				</div>
 				
 				<div class="dres">
-					<span><input style="height:30px;" class="texts tex2" placeholder="手机号" type="text" name='mobile' pattern='phone' /></span>
+					<span><input style="height:40px;" class="texts tex2" placeholder="手机号" type="text" name='mobile' pattern='phone' /></span>
 				</div>
-				<!--
+				
 				<div class="dres">
-					<span><input class="chbox" type="checkbox" name='default' value='1'/></span>
-					<span>设置为默认收货地址</span>
+					<span><input style="width:20px; height:20px;margin:20px 0px 30px 30px;" 
+                    class="chbox" type="checkbox" name='default' value='1'/></span>
+					<span style="font-size:16px; position:relative;bottom: 3px;">设置为默认收货地址</span>
 				</div>
-				-->
+				
 				<div class="dres">
 					<span class="wb"></span>
 					<div><span style="margin: 0 auto;display: block;width: 90%;">
@@ -143,12 +207,12 @@
 			</div>
 		</form>
     </section>
-<!--第三种模块结束-->                              
+<!--第三种模块结束--> 
  </div>       
+<div class="addadres"><a href="#"><span>新增收货地址</span></a></div>
  </div>
    <script type='text/javascript'>
    	
-   	var address_default_url = '{url:ucenter/address_default_ajax}';
 	var address_url = "{url:/block/area_child}";
 	var last_url = document.referrer;
 	

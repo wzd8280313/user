@@ -20,7 +20,10 @@
 
 <style>
 	.loading-imgS{background:#fff;text-align:center;padding:10px 0;width:100%}
-
+.ding_log{width: 25px;
+    height: 25px;
+    float: left;
+    margin-top: 2px;}
 .loading-imgS p{font-size:16px;color:#9A9A9A;text-align:center}
 
 .loading-imgS img{width:32px!important;height:32px!important;display:none}
@@ -34,6 +37,7 @@ background-color: rgba(94, 110, 141, 0.9);
 }
 </style> 
 <script type='text/javascript'>
+	
 	
 </script>
 </head>
@@ -132,13 +136,14 @@ background-color: rgba(94, 110, 141, 0.9);
 
 			<%}%>
 	{/if}
-		<h3><a href="#">订单号：<%=order_no%></a></h3><h4><%=order_status%></h4>
+		<a href="{url:/ucenter/order_detail/id/}/<%=id%>"><%=order_no%></a><h4><%=order_status%></h4>
  	</li>
 	<% for(var i in goods_data){%>
+    <img class="ding_log" <%if(goods_data[i]['seller_logo']){%> src="{webroot:}<%=goods_data[i]['seller_logo']%>" <%}%> src="{skin:images/ptlog.png}"><h3><%=goods_data[i]['seller_name']%>＞</h3>
  	<li class="chanpin">
-		 <a class="tupian"  href="{url:/site/products/id/}/<%=goods_data[i]['goods_id']%>"> <img src="{url:<%=goods_data[i]['img']%>}" ></a>
+		 <a class="tupian"  href="{url:/ucenter/order_detail/id/}/<%=id%>"> <img src="{url:<%=goods_data[i]['img']%>}" ></a>
 		   
-		   <p><a href="{url:/site/products/id/}/<%=goods_data[i]['goods_id']%>"><%if(type==1){%>[团购]<%}%><%if(type==4){%>[预售]<%}%><%=goods_data[i]['name']%><br><b><%==goods_data[i]['spec']%></b>
+		   <p><a href="{url:/ucenter/order_detail/id/}/<%=id%>"><%if(type==1){%>[团购]<%}%><%if(type==4){%>[预售]<%}%><%=goods_data[i]['name']%><br><b><%==goods_data[i]['spec']%></b>
 		     <br><span>七天退换</span></a></p> 
 		  <b>￥<%=goods_data[i]['real_price']%><br><span>×<%=goods_data[i]['goods_nums']%></span></b>
 		  <div style="float:right;">
@@ -159,7 +164,7 @@ background-color: rgba(94, 110, 141, 0.9);
    </li>
    <%}%>
   	<li class="heji">
-	  		<p>共<%=num%>商品 合计：￥<b><%=order_amount%></b></p>
+	  		<p style="text-align:right; margin:5px;">共<%=num%>商品 合计：￥<b><%=order_amount%></b></p>
 	 </li> 
  
  	<li>
@@ -168,7 +173,7 @@ background-color: rgba(94, 110, 141, 0.9);
 		<a href="" class="qd-popup-trigger xio pop" tourl='{url:/ucenter/order_status/op/cancel/order_id/}/<%=id%>' alt='你确定取消订单吗?'>取消交易</a>
 		<%}%>
 		<%if(type!=4&&status==9){%>
- 		<a style="margin-top:-20px;" class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/ucenter/order_status/op/confirm/order_id/}/<%=id%>' alt='你确定确认收货吗?'>确认收货</a>
+ 		<a  class="hongzi wd-popup-trigger pop" href='javascript:void(0)' tourl='{url:/ucenter/order_status/op/confirm/order_id/}/<%=id%>' alt='你确定确认收货吗?'>确认收货</a>
 	
 		<%}%>
 		
@@ -191,7 +196,7 @@ background-color: rgba(94, 110, 141, 0.9);
     </li>
  	 <li class="huise"><hr/></li>
 </ul>
-</script>
+</script> 
 <script type='text/javascript'>
 	var status = '{$status}';
 		var obj = {
@@ -218,8 +223,6 @@ background-color: rgba(94, 110, 141, 0.9);
     var $subs = $("input[name^='sub']");
     $("#ckAll").prop("checked" , $subs.length == $subs.filter(":checked").length ? true :false);
   });
-
-
 	
 
 </script>
