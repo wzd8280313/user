@@ -961,6 +961,7 @@ class Simple extends IController
     {
     	
     	$accept_name   = IFilter::act(IReq::get('accept_name'));
+        $address_id    = IFilter::act(IReq::get('address_id'),'int');
     	$province      = IFilter::act(IReq::get('province'),'int');
     	$city          = IFilter::act(IReq::get('city'),'int');
     	$area          = IFilter::act(IReq::get('area'),'int');
@@ -1009,7 +1010,7 @@ class Simple extends IController
     	{
     		IError::show(403,'请选择配送方式');
     	}
-
+        
     	$user_id = ($this->user['user_id'] == null) ? 0 : $this->user['user_id'];
 
 		//配送方式,判断是否为货到付款
@@ -1161,6 +1162,15 @@ class Simple extends IController
 
 		$this->order_id = $orderObj->add();
 		
+        //设置该用户默认收货地址
+        $userObj = new IModel('address');
+        $userAddress = $userObj->getObj('`user_id`='.$user_id.' and `default`=1');
+        if(empty($userAddress))
+        {
+            $userObj->setData(array('default'=>1));
+            $userObj->update('`user_id`='.$user_id.' and id='.$address_id);
+        }
+        
 		if($this->order_id == false)
 		{
 			IError::show(403,'订单生成错误');

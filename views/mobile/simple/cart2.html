@@ -1,4 +1,4 @@
-{set:$param = $this->param}
+{set:$param = $this->param} 
 {foreach:items=$this->addressList}
 	{if:$item['id']==$this->defaultAddressId}
 	{set:$defaultAddress = $item;}
@@ -288,7 +288,7 @@ function selectProtect(obj)
 							<p style='color:red; text-align:right;padding-right:15px;'>
 								小计：<b >￥{$item['sum']}</b>
 							</p>
-							<p style="float: right;padding-right: 16px;">配送费用:<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'></span></p>
+							<p style="float: right;padding-right: 16px;">配送费用:<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'>￥0.00</span></p>
 			     		</div>
 			     	</a>
 					</div>
