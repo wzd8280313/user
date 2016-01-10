@@ -35,12 +35,13 @@ class Pregoods extends IController
 		$presell_db = new IQuery('presell as p');
 		$presell_db->join = 'left join goods as g on p.goods_id = g.id';
 		$presell_db->where = 'p.is_close=0 and TIMESTAMPDIFF(second,p.yu_end_time,NOW())<0 and  g.is_del=4';
-		$presell_db->fields = 'p.*,(UNIX_TIMESTAMP(p.yu_end_time)-UNIX_TIMESTAMP(now())) as end_timestamp,g.sell_price as price';
+		$presell_db->fields = 'p.*,(UNIX_TIMESTAMP(p.yu_end_time)-UNIX_TIMESTAMP(now())) as end_timestamp,g.sell_price as price,g.img';
 		$presell_db->order = 'p.id DESC';
 		$presell_db->limit = $limit;
 		$presellData = $presell_db->find();
 		
 		foreach($presellData as $key=>$val){
+			if(!$val['presell_img'])$presellData[$key]['presell_img'] = $val['img'];
 			$presellData[$key]['key'] = $key + $start;
 		}
 		echo $presellData ? JSON::encode($presellData) : 0;
