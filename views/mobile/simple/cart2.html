@@ -66,7 +66,7 @@ jQuery(function(){
 	//设置是否免运费
 	orderFormInstance.freeFreight = {echo:$this->freeFreight ? 1 : 0};
 	//商品价格
-	orderFormInstance.goodsSum = "{$this->final_sum}";
+	orderclass="sj" style="margin-top: 15px"FormInstance.goodsSum = "{$this->final_sum}";
 	//初始化自提点数据(自添)
 	takeselfInit("{$this->custom['takeself']}");
 	$('select[name=payment]').val('-1');
@@ -199,6 +199,13 @@ function selectProtect(obj)
 	orderFormInstance.doAccount();
 }
 </script>
+<script type="text/javascript">
+$(document).ready(function(){
+$(".sj img").css("height","27px")  
+});
+</script>
+
+
      <div class="pages">
          <header class="wap-header">
 	   		 <div class="wap-topbar">
@@ -217,7 +224,7 @@ function selectProtect(obj)
 			<input type='hidden' name='direct_promo' value='{$this->promo}' />
 			<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
      		<div class="qrdd">
-                <a class="dz " href="{url:simple/address}{$param}">
+                <a class="dz "  href="{url:simple/address}{$param}">
                 	<input type='hidden' value='{$this->defaultAddressId}' name='address_id' pattern='int'/>
 					<input type='hidden' value='{$defaultAddress["province"]}' name='province'/>
 					<input type='hidden' value='{$defaultAddress["accept_name"]}' name='accept_name'/>
@@ -228,9 +235,9 @@ function selectProtect(obj)
 					<input type='hidden' value='{$defaultAddress["mobile"]}' name='mobile'/>
 					<input type='hidden' value='{$defaultAddress["zip"]}' name='zip'/>
 
-                 	<p style="padding-left:15px;">
+                 	<p style="padding-left:15px;padding-bottom:10px;">
                  		{if:empty($defaultAddress)}
-						<span class="shname">请选择收货信息{$defaultAddress['accept_name']}</span>
+						<span style="position: relative;top: 12px;" class="shname">请选择收货信息{$defaultAddress['accept_name']}</span>
 						{else:}
                  		<span class="shname">收货人：{$defaultAddress['accept_name']}</span>
                  		<span class="float_rt">{$defaultAddress['mobile']}</span>
@@ -251,7 +258,7 @@ function selectProtect(obj)
      	<div class="qrdd qrdds">
      		<!-- 商品详情-->
             {foreach:items=$this->goodsList item=$value}
-     		<div class="sj" style="margin-top: 15px"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="#">{$value['seller_name']}</a></div>
+     		<div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="#">{$value['seller_name']}</a></div>
 			
 				<input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
 				{foreach:items=$value key=$k}

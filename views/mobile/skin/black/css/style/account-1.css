@@ -487,7 +487,9 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	width: 100%;
 	margin: 0 auto;
 	overflow: hidden;
-	height: auto;}
+	height: auto;
+    padding-top: 18px;
+    }
 .qijiandian ul li h3 a{
 	border: none;
 	margin-left: 8px;
@@ -503,6 +505,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	color: #F00;
 	line-height: 30px;
 	font-weight: normal;
+	clear: both;
 }
 .qijiandian ul .huise{
 	height: 15px;
