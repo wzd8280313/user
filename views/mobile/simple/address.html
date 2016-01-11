@@ -121,8 +121,8 @@
 					  <tr  style="text-align:left">
 					  	<input type='hidden' name='{$item["id"]}' value='{$item["id"]}' />
 						<td> 
-                        <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
-                        src="{skin:images/right_left.png}"></span>
+                        <!-- <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
+                        src="{skin:images/right_left.png}"></span> -->
                         <div  class="done_sall" js_data="{$item['id']}" js_param="{$this->param}" style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
                         	<span style="padding-left:30px">{if: $item['default']}<span style="color: red;">[默认]</span> {/if}{$item['accept_name']}
                         <span style="padding-left:20px">{$item['mobile']}</span></span>
@@ -162,7 +162,8 @@
 				</div>
 				<div class='dres'>
 					<span>
-						<select name="city" child="area" pattern='int' style='width:23%;height:35px;float:left;margin-left:1%;' parent="province" onchange="areaChangeCallback(this);">
+						<select name="city" child="area" pattern='int' style='width:23%;height:35px;float:left;margin-left:1%;' 
+                        parent="province" onchange="areaChangeCallback(this);">
 						<option>请选择城市</option>
 						</select>
 					</span>					
