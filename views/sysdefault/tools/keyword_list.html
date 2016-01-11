@@ -8,7 +8,7 @@ $where = getSearchCondition($search);
 		<a href="javascript:void(0)" onclick="event_link('{url:/tools/keyword_edit}');"><button class="operating_btn" type="button"><span class="addition">添加关键词</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]');"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel({form:'keywordForm'});"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
-		<a href="javascript:void(0)" onclick="window.document.forms[0].action='{url:/tools/keyword_account}';delModel({msg:'是否批量同步？'});"><button class="operating_btn" type="button"><span class="refresh">批量同步</span></button></a>
+		<a href="javascript:void(0)" onclick="window.document.forms[1].action='{url:/tools/keyword_account}';delModel({form:'keywordForm',msg:'是否批量同步？'});"><button class="operating_btn" type="button"><span class="refresh">批量同步</span></button></a>
 	</div>
 	<div class="searchbar">
 		<form action="{url:/}" method="get" name="keyword_list">
