@@ -782,7 +782,7 @@ class Order extends IController
 		//开始算账
 		$countSumObj = new CountSum();
 		$goodsResult = $countSumObj->goodsCount($buyInfo);
-		$orderFee    = $countSumObj->countOrderFee($goodsResult,$dataArray['province'],$dataArray['distribution'],$dataArray['pay_type'],$dataArray['if_insured'],$dataArray['invoice'],$dataArray['discount']);
+		$orderFee    = $countSumObj->countOrderFeeee($goodsResult,$dataArray['province'],$dataArray['pay_type'],$dataArray['if_insured'],$dataArray['invoice'],$dataArray['discount']);
 
 		//获取原价的运费
 		$dataArray['payable_freight']= $orderFee['deliveryOrigPrice'];

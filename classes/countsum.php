@@ -504,18 +504,19 @@ class CountSum
             if(!isset($goods_seller_data[$val['seller_id']])){
                 $goods_seller_data[$val['seller_id']]['sum'] = $val['sum'];
                 $goods_seller_data[$val['seller_id']]['weight'] = $val['weight'];
-                $goods_seller_data[$val['seller_id']]['delivery_id'] = $val['delivery_id'];
             }
             else{
                 $goods_seller_data[$val['seller_id']]['sum'] += $val['sum'];
                 $goods_seller_data[$val['seller_id']]['weight'] += $val['weight'];
-                $goods_seller_data[$val['seller_id']]['delivery_id'] = $val['delivery_id'];
             }
+            $goods_seller_data[$val['seller_id']]['delivery_id'][] = $val['delivery_id'];
+            $goods_seller_data[$val['seller_id']]['name'] = $val['name'];
         }
         foreach($goods_seller_data as $k=>$val){
-            $deliveryRow = Delivery::getDeliveryWeight($area_id,$val['delivery_id'],$val['weight'],$k,$val['sum']);
+            $deliveryRow = Delivery::getDeliveryWeight($area_id,$val['delivery_id'][$k],$val['weight'],$k,$val['sum']);
+
             //商品无法送达
-            if($deliveryRow['if_delivery'] == 1)
+            if(is_string($deliveryRow) || $deliveryRow['if_delivery'] == 1)
             {
                 return "您所选购的商品：".$val['name']."，无法送达";
             }
