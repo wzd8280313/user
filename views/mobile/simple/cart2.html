@@ -66,7 +66,9 @@ jQuery(function(){
 	//设置是否免运费
 	orderFormInstance.freeFreight = {echo:$this->freeFreight ? 1 : 0};
 	//商品价格
-	orderclass="sj" style="margin-top: 15px"FormInstance.goodsSum = "{$this->final_sum}";
+	orderclass="sj";
+    style="margin-top: 15px";
+    orderFormInstance.goodsSum = "{$this->final_sum}";
 	//初始化自提点数据(自添)
 	takeselfInit("{$this->custom['takeself']}");
 	$('select[name=payment]').val('-1');
