@@ -7,11 +7,13 @@ $search = IFilter::act(IReq::get('search'),'strict');
 {else:}
 {set:$where=1}
 {/if}
-
+{if: isset($_GET['type'])}
+{set:$where.= ' and type='.$_GET['type']}
+{/if}
 <div class="headbar">
 	<div class="position"><span>系统</span><span>></span><span>配送管理</span><span>></span><span>配送方式</span></div>
 	<div class="operating">
-		<a href="javascript:void(0)" onclick="event_link('{url:/system/delivery_edit}')"><button class="operating_btn" type="button"><span class="addition">添加配送方式</span></button></a>
+		<a href="javascript:void(0)" {if: isset($_GET['type'])} onclick="event_link('{url:/system/delivery_edit/type/$_GET['type']}')" {else:} onclick="event_link('{url:/system/delivery_edit}')" {/if}><button class="operating_btn" type="button"><span class="addition">添加配送方式</span></button></a>
 		<a href="javascript:void(0)" onclick="selectAll('id[]')"><button class="operating_btn" type="button"><span class="sel_all">全选</span></button></a>
 		<a href="javascript:void(0)" onclick="delModel({form:'ModelForm'})"><button class="operating_btn" type="button"><span class="delete">批量删除</span></button></a>
 		<a href="javascript:;" onclick="event_link('{url:/system/delivery_recycle}')"><button class="operating_btn" type="button"><span class="recycle">回收站</span></button></a>
