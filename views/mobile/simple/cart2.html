@@ -60,7 +60,7 @@ jQuery(function(){
 	getTakeselfData('area','{$defaultAddress["area"]}');
 
 	//获取配送费用的url
-	orderFormInstance.delivery_fee_url = '{url:/block/order_delivery_seller}';
+	//orderFormInstance.delivery_fee_url = '{url:/block/order_delivery_seller}';
 	//设置是否免运费
 	orderFormInstance.freeFreight = {echo:$this->freeFreight ? 1 : 0};
 	//商品价格
@@ -68,6 +68,11 @@ jQuery(function(){
 	//初始化自提点数据(自添)
 	takeselfInit("{$this->custom['takeself']}");
 	$('select[name=payment]').val('-1');
+    
+    //计算运费
+    $(function(){
+        orderFormInstance.get_delivery();
+    })
 });
 
 /*
@@ -273,7 +278,7 @@ function selectProtect(obj)
 							<p style='color:red; text-align:right;padding-right:15px;'>
 								小计：<b >￥{$item['sum']}</b>
 							</p>
-							<p style="float: right;padding-right: 16px;">配送费用<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'></span></p>
+							<p style="float: right;padding-right: 16px;">配送费用 ￥<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'>{$item['delivery']}</span></p>
 			     		</div>
 			     	</a>
 					</div>
@@ -303,7 +308,7 @@ function selectProtect(obj)
 					{/foreach}
      			</select>
 				
-     			<p style=" margin-right:10px; margin-top:7px;margin-bottom:6px;">配送方式</p>
+     			<!--<p style=" margin-right:10px; margin-top:7px;margin-bottom:6px;">配送方式</p>
      			<select style="width:97%;height:33px; background-color: #F30; color:#fff; " name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
 
      				<option value='-1'>请选配送方式</option>
@@ -311,7 +316,7 @@ function selectProtect(obj)
 					{foreach:items = $deliveryData}
      				<option value="{$item['id']}" >{$item['name']}</option>
 					{/foreach}
-     			</select>
+     			</select>  -->
      			<input style="width:97%;height:33px;" class="xt" type="text" name='message' placeholder="买家留言"/>
      			
      		</div>

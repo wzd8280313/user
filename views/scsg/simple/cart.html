@@ -1,4 +1,4 @@
-<script type='text/javascript' src='{theme:/javascript/cart.js}'></script>
+<script type='text/javascript' src='{theme:javascript/cart.js}'></script>
 <div class="wrapper clearfix">
 	<div class="position mt_10"> <span>您当前的位置：</span> <a href="{url:}"> 首页</a> » 购物车</div>
 	<div class="myshopping m_10">
@@ -33,7 +33,7 @@
 						<col width="80px" />
 						<caption>商家：{$value['seller_name']}</caption>
 						<thead>
-							<tr><th>图片</th><th>商品名称</th><th>赠送积分</th><th>单价</th><th>优惠</th><th>数量</th><th>小计</th><th class="last">操作</th></tr>
+							<tr><th>图片</th><th>商品名称</th><th>赠送积分</th><th>单价</th><th>优惠</th><th>数量</th><th>运费</th><th>小计</th><th class="last">操作</th></tr>
 						</thead>
 						<tbody>
 							{foreach:items=$value key=$k}
@@ -69,6 +69,7 @@
 										<a class="add" href="javascript:void(0)" onclick='cart_increase({$item_json});'>+</a>
 									</div>
 								</td>
+                                <td>￥<b class="red2" id="{$type}_delivery_{$item['id']}">{$item['delivery']}</b></td>
 								<td>￥<b class="red2" id="{$type}_sum_{$item['id']}">{$item['sum']}</b></td>
 								<td><a href="{url:/simple/removeCart/link/cart/type/$type/goods_id/$item[id]}">删除</a></td>
 							</tr>
@@ -84,8 +85,10 @@
 
 				<td><input id="ckAll" class="checks" type="checkbox"/>全部</td>
 				<td colspan="2" style="text-align:right;">
+                    <b id='delivery' style="display: none;">0</b>
 					<!--<span>商品总重量：<b id='weight'>0</b>g</span>--><span>商品总金额：￥<b id='origin_price'>0</b> - 商品优惠：￥<b id='discount_price'>0</b> - 促销活动优惠：￥<b id='promotion_price'>0</b></span><br />
-					金额总计（不含运费）：￥<b class="orange" id='sum_price'></b>
+                    金额总计（不含运费）：￥<b class="orange" id='sum_price'>0</b><br />
+					<!--金额总计（含运费）：￥<b class="orange" id='sum_price_delivery'>0</b>-->
 
 				</td>
 			</tr>
@@ -131,6 +134,7 @@
 
 <script type='text/javascript'>
 	var prom_url = '{url:/simple/promotionRuleAjax/random/@random@}';
+    var delivery_url = '{url:/simple/getChangeDelivery}';
 	var cart_url = '{url:/simple/joinCart}';
 	var cart2_url = '{url:/simple/cart2}';
 //检测购买完成量

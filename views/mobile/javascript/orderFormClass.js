@@ -13,19 +13,19 @@ function orderFormClass()
 
 	//视图状态模式 默认：edit
 	this.addressMod  = 'edit';
-	this.deliveryMod = 'edit';
+	//this.deliveryMod = 'edit';
 	this.paymentMod  = 'edit';
 	this.messageMod  = 'exit';
 
 	//当前正在使用的ID
 	this.addressActiveId   = '';
-	this.deliveryActiveId  = '';
+	//this.deliveryActiveId  = '';
 	this.paymentActiveId   = '';
 	this.messageActiveData = '';
 
 	//视图切换按钮ID
 	this.addressToggleButton  = 'addressToggleButton';
-	this.deliveryToggleButton = 'deliveryToggleButton';
+	//this.deliveryToggleButton = 'deliveryToggleButton';
 	this.paymentToggleButton  = 'paymentToggleButton';
 	this.messageToggleButton  = 'messageToggleButton';
 
@@ -37,9 +37,9 @@ function orderFormClass()
 	this.protectPrice = 0;//保价
 	this.ticketPrice  = 0;//代金券
 	
-	this.deliveryConf = {};//记录配送信息的json对象
+	//this.deliveryConf = {};//记录配送信息的json对象
 	
-	this.delivery_fee_url = '';
+	//this.delivery_fee_url = '';
 	
 	this.tax = function (_this){
 		$(_this).toggleClass("show_check");
@@ -99,111 +99,17 @@ function orderFormClass()
 		this.deliveryPrice = 0;
 		var orderFormObj = this;
 		var url = this.delivery_fee_url;
-		var area     = $('[name=area]').val();
-	
-		var delivery = this.deliveryActiveId;
-		if(!area || !delivery)
+		var area     = $('[name=area]').val();                                          
+		if(!area)
 		{
 			return;
-		}
+		}                           
 		$('span[id^=deliveryfee_]').each(function(){
-			var _this = $(this);
-					if(orderFormObj.freeFreight == 1){
-						$(this).text('免运费');
-						orderFormObj.deliveryPrice = 0;
-					}
-					else{
-						var idValue = $(this).attr('id');
-						var dataArray = idValue.split("_");
-						$.ajax({
-							type:'post',
-							async:false,
-							data:{"area":area,"distribution":delivery,"weight":dataArray[2],"seller_id":dataArray[1],"total_price":dataArray[3]},
-							dataType:'json',
-							url:url,
-							
-							success:function(content)
-							{
-								//地区无法送达
-								if(content.if_delivery == 1)
-								{
-									alert('您选择地区部分商品无法送达');
-									$('#'+idValue).html("<span style='color:red'>无法送达</span>");
-								}
-								else
-								{
-									orderFormObj.deliveryPrice += parseFloat(content.price);
-									var html = "￥"+parseFloat(content.price).toFixed(2);
-									//允许保价
-									if(content.protect_price > 0)
-									{
-										html += "<label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
-									}
-									_this.html(html);
-								}
-							},
-							timeout:1000,
-						})
-					}
-					
-		})
+			var _this = $(this);       
+			orderFormInstance.deliveryPrice += parseFloat(_this.text());     	
+		})                               
 		this.doAccount();
-	}
-
-	
-	/**
-	 * delivery模式切换
-	 */
-	this.deliveryInit = function(defaultDeliveryId)
-	{
-		if(defaultDeliveryId > 0)
-		{
-			this.deliveryActiveId = defaultDeliveryId;
-			var defaultDeliveryItem = $('input[type="radio"][name="delivery_id"][value="'+defaultDeliveryId+'"]');
-			defaultDeliveryItem.trigger('click');
-
-			//默认配送方式
-			if($('#paymentBox:hidden').length == 1 && this.paytype == 0)
-			{
-				this.deliverySave();
-			}
-		}
-	}
-
-	/**
-	 * delivery保存检查
-	 */
-	this.deliveryCheck = function()
-	{
-		if($('select[name=delivery_id]').val() == '-1')
-		{
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * delivery保存
-	 */
-	this.deliverySave = function()
-	{
-		
-		if(this.deliveryCheck() == false)
-		{
-			tips('请选择配送方式');
-			return;
-		}
-		this.deliveryActiveId = $('select[name=delivery_id]').val();
-
-		//计算运费
-		this.get_delivery();
-
-		//计算金额
-		this.doAccount();
-		
-		
-	}
-
+	}            
 	
 	/**
 	 * payment检查

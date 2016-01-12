@@ -93,16 +93,20 @@ function get_delivery_fee(name){
 	}
 	area_id = $('input[name=area_id]').val();
 	var buyNums = $('#buyNums').val();
-	var productId = $('#product_id').val();
-	$.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"productId":productId,"num":buyNums},function(content){
+    var productId = $('#product_id').val();
+	var deliveryId = $('#delivery_id').val();
+	$.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"distribution":deliveryId,"productId":productId,"num":buyNums},function(content){
 		var delivery_fee = 99999;
-		for(var i in content){
-			if(content[i].price<delivery_fee)
-			delivery_fee = content[i].price;
-		}
-		if(delivery_fee!=99999){
-			$('span[name=fee_box').text('运费：'+delivery_fee);
-		}
+        if(content.if_delivery)
+        {
+           if(content.price<delivery_fee){
+                delivery_fee = content.price;
+           }
+           if(delivery_fee!=99999){
+               $('span[name=fee_box').text('运费：'+delivery_fee);
+           } 
+        }
+		
 		
 	})
 }

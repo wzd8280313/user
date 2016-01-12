@@ -125,7 +125,7 @@ class CountSum
     	$this->point         = 0;       //增加积分
     	$this->exp           = 0;       //增加经验
     	$this->isFreeFreight = false;   //是否免运费
-    	$this->tax           = 0;       //商品税金
+        $this->tax           = 0;       //商品税金
 
 		$user_id      = $this->user_id;
 		$group_id     = $this->group_id;
@@ -145,7 +145,7 @@ class CountSum
     		//购物车中的商品数据
     		$goodsIdStr = join(',',$buyInfo['goods']['id']);
     		$goodsObj   = new IModel('goods as go');
-    		$goodsList  = $goodsObj->query('go.id in ('.$goodsIdStr.')','go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id');
+    		$goodsList  = $goodsObj->query('go.id in ('.$goodsIdStr.')','go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id,go.delivery_id');
 
     		//开始优惠情况判断
     		foreach($goodsList as $key => $val)
@@ -166,10 +166,19 @@ class CountSum
 						$minPrice = $val['sell_price'];
 					}
 				}
-    			
+                
     			$minPrice = min($minPrice,$val['sell_price']);
     			$goodsList[$key]['reduce'] = $val['sell_price'] - $minPrice;
     			$goodsList[$key]['count']  = $buyInfo['goods']['data'][$val['goods_id']]['count'];
+                
+                //计算运费
+                $delivery = Delivery::getDelivery(0, $val['delivery_id'], $val['goods_id'], $val['product_id'], $goodsList[$key]['count']);
+                $goodsList[$key]['delivery'] = 0;
+                if(isset($delivery['price']))
+                {
+                   $goodsList[$key]['delivery']  += $delivery['price']; 
+                }
+                
     			$current_sum_all           = $goodsList[$key]['sell_price'] * $goodsList[$key]['count'];
     			$current_reduce_all        = $goodsList[$key]['reduce']     * $goodsList[$key]['count'];
     			$goodsList[$key]['sum']    = $current_sum_all - $current_reduce_all;
@@ -192,7 +201,7 @@ class CountSum
     		$productIdStr = join(',',$buyInfo['product']['id']);
     		$productObj   = new IQuery('products as pro,goods as go');
     		$productObj->where  = 'pro.id in ('.$productIdStr.') and go.id = pro.goods_id';
-    		$productObj->fields = 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,go.point,go.exp,go.img,go.seller_id';
+    		$productObj->fields = 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,go.point,go.exp,go.img,go.seller_id,go.delivery_id';
     		$productList  = $productObj->find();
 
     		//开始优惠情况判断
@@ -222,6 +231,14 @@ class CountSum
     			$current_reduce_all          = $productList[$key]['reduce']      * $productList[$key]['count'];
     			$productList[$key]['sum']    = $current_sum_all - $current_reduce_all;
 
+                //计算运费
+                $delivery = Delivery::getDelivery(0, $val['delivery_id'], $val['goods_id'], $val['product_id'], $productList[$key]['count']);
+                $productList[$key]['delivery'] = 0;
+                if(isset($delivery['price']))
+                {
+                   $productList[$key]['delivery']  += $delivery['price']; 
+                }
+                
     			//全局统计
 		    	$this->weight += $val['weight'] * $productList[$key]['count'];
 		    	$this->point  += $val['point']  * $productList[$key]['count'];
@@ -288,7 +305,6 @@ class CountSum
 		//获取购物车中的商品和货品信息
     	$cartObj    = new Cart();
     	$myCartInfo = $cartObj->getMyCart($cartData);
-
     	return $this->goodsCount($myCartInfo);
     }
 
@@ -455,6 +471,120 @@ class CountSum
 
 		return $result;
     }
+
+    public static function countOrderFeeee($goodsResult,$area_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
+    {
+        $goodsFinalSum = $goodsResult['final_sum'];
+
+        //最终的返回数组
+        $result = array(
+            //原本运费
+            'deliveryOrigPrice' => 0,
+
+            //实际运费
+            'deliveryPrice' => 0,
+
+            //保价
+            'insuredPrice' => 0,
+
+            //税金
+            'taxPrice' => 0,
+
+            //支付手续费
+            'paymentPrice' => 0,
+
+            //最终订单金额
+            'orderAmountPrice' => 0,
+
+            //商品列表
+            'goodsResult' => array(),
+        );
+        $goods_seller_data = array();
+        foreach($goodsResult['goodsList'] as $key => $val){
+            if(!isset($goods_seller_data[$val['seller_id']])){
+                $goods_seller_data[$val['seller_id']]['sum'] = $val['sum'];
+                $goods_seller_data[$val['seller_id']]['weight'] = $val['weight'];
+                $goods_seller_data[$val['seller_id']]['delivery_id'] = $val['delivery_id'];
+            }
+            else{
+                $goods_seller_data[$val['seller_id']]['sum'] += $val['sum'];
+                $goods_seller_data[$val['seller_id']]['weight'] += $val['weight'];
+                $goods_seller_data[$val['seller_id']]['delivery_id'] = $val['delivery_id'];
+            }
+        }
+        foreach($goods_seller_data as $k=>$val){
+            $deliveryRow = Delivery::getDeliveryWeight($area_id,$val['delivery_id'],$val['weight'],$k,$val['sum']);
+            //商品无法送达
+            if($deliveryRow['if_delivery'] == 1)
+            {
+                return "您所选购的商品：".$val['name']."，无法送达";
+            }
+            $goods_seller_data[$k]['deliveryPrice'] = $deliveryRow['price'];
+            $goods_seller_data[$k]['insuredPrice'] = $deliveryRow['protect_price'];
+            $result['deliveryOrigPrice'] += $deliveryRow['price'];
+            
+            //商品保价计算
+            //    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+            if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$k]) ) )
+            {
+                $result['insuredPrice'] += $deliveryRow['protect_price'];
+            }
+            if(!$goodsResult['freeFreight'])
+            {
+                $result['deliveryPrice'] += $deliveryRow['price'];
+            }
+        }
+        foreach($goodsResult['goodsList'] as $key => $val){
+            //商品保价计算
+            //    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+            if($is_insured == 1  )
+            {
+                $goodsResult['goodsList'][$key]['insuredPrice'] = $goods_seller_data[$val['seller_id']]['insuredPrice'];
+            }
+            else
+            {
+                $goodsResult['goodsList'][$key]['insuredPrice'] = 0;
+            }
+             if($goodsResult['freeFreight'] == true)
+            {
+                  $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+            }
+             else
+            {
+                $goodsResult['goodsList'][$key]['deliveryPrice'] = $goods_seller_data[$val['seller_id']]['deliveryPrice'];
+            }
+            
+            //商品税金计算
+            if($is_invoice == true)
+            {
+                
+                $tempTax = self::getGoodsTax($val['sum'],$val['seller_id']);
+                $goodsResult['goodsList'][$key]['taxPrice'] = $tempTax;
+                $result['taxPrice'] += $tempTax;
+                 
+            }
+            else{
+                $goodsResult['goodsList'][$key]['taxPrice'] = 0;
+            }
+        }
+
+
+        //非货到付款的线上支付方式手续费
+        if($payment_id != 0)
+        {
+            $result['paymentPrice'] = self::getGoodsPaymentPrice($payment_id,$goodsFinalSum);
+        }
+
+        //最终订单金额计算
+        $order_amount = $goodsFinalSum + $result['deliveryPrice'] + $result['insuredPrice'] + $result['taxPrice'] + $result['paymentPrice'] + $discount;
+        $result['orderAmountPrice'] = $order_amount <= 0 ? 0 : round($order_amount,2);
+
+        //订单商品刷新
+        $result['goodsResult'] = $goodsResult;
+
+        return $result;
+    }
+    
     /**
      * 计算订单信息，预售订单
      * @param $goodsResult array CountSum结果集

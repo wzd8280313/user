@@ -776,8 +776,7 @@ class Block extends IController
 	{
 		$id   = IFilter::act(IReq::get('id'),'int');
 		$type = IFilter::act(IReq::get('type'));
-		$takeselfObj = new IQuery('takeself');
-
+		$takeselfObj = new IQuery('takeself');         
 		switch($type)
 		{
 			case "province":
@@ -807,7 +806,10 @@ class Block extends IController
 			break;
 		}
 
-		$takeselfObj->where = $where;
+        if(isset($where))
+        {
+              $takeselfObj->where = $where;
+        }  
 		$takeselfList = $takeselfObj->find();
 
 		foreach($takeselfList as $key => $val)

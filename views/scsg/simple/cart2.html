@@ -51,10 +51,7 @@ jQuery(function(){
 	takeselfInit("{$this->custom['takeself']}");
 
 	//配送方式初始化
-	orderFormInstance.deliveryInit("{$this->custom['delivery']}");
-
-	
-
+	//orderFormInstance.deliveryInit("{$this->custom['delivery']}");
 	
 	//设置是否免运费
 	orderFormInstance.freeFreight = {echo:$this->freeFreight ? 1 : 0};
@@ -136,16 +133,15 @@ function get_delivery()
 	var province = $('[name="province"]').val();
 	var city     = $('[name=city]').val();
 	var area     = $('[name=area]').val();
-
-	var delivery = $('[name="delivery_id"]:checked').val();
-	if(!area || !delivery)
+              
+	if(!area)
 	{
 		return;
 	}
-
 	$('span[id^=deliveryfee_]').each(function(){
 		var _this = $(this);
-				if(orderFormInstance.freeFreight == 1){
+        orderFormInstance.deliveryPrice += parseFloat(_this.text());
+				/*if(orderFormInstance.freeFreight == 1){
 					$(this).text('免运费');
 					orderFormInstance.deliveryPrice = 0;
 				}
@@ -155,7 +151,7 @@ function get_delivery()
 					$.ajax({
 						type:'post',
 						async:false,
-						data:{"area":area,"distribution":delivery,"weight":dataArray[2],"seller_id":dataArray[1],"total_price":dataArray[3]},
+						data:{"area":area,"distribution":1,"weight":dataArray[2],"seller_id":dataArray[1],"total_price":dataArray[3]},
 						dataType:'json',
 						url:"{url:/block/order_delivery_seller}",
 						
@@ -181,7 +177,7 @@ function get_delivery()
 						},
 						timeout:1000,
 					})
-				}
+				}*/
 				
 	})
 	orderFormInstance.doAccount();
@@ -398,69 +394,6 @@ function selectTakeself(deliveryId)
 				</div>
 				<!--地址管理 结束-->
 
-				<!--配送方式 开始-->
-				<div class="wrap_box" id='deliveryBox' style='display:none'>
-					<h3>
-						<span class="orange">配送方式</span>
-						<a class="normal f12" href="javascript:void(0)" id='deliveryToggleButton' onclick="orderFormInstance.deliveryModToggle();">[关闭]</a>
-					</h3>
-
-					<!--配送展示 开始-->
-					<table class="form_table" id="delivery_show_box" style='display:none'>
-						<col width="120px" />
-						<col />
-
-						<tbody id="deliveryShowBox"></tbody>
-
-						<!--配送方式展示模板-->
-						<script type='delivery' id='deliveryShowTemplate'>
-						<tr>
-							<th>配送方式：</th><td><%=name%></td>
-							
-						</tr>
-						<tr>
-							<th></th><td><%=takeself%></td><!--zi-->
-						</tr>
-						</script>
-					</table>
-					<!--配送展示 结束-->
-
-					<!--配送修改 开始-->
-					<table width="100%" class="border_table m_10" id='delivery_form'>
-						<col width="180px" />
-						<col />
-
-						<tbody>
-							{set:$deliveryData = $this->allDeliveryType}
-							{foreach:items = $deliveryData}
-							<tr>
-								<th><label><input class="radio" type="radio" name="delivery_id" value="{$item['id']}"  onclick='orderFormInstance.setDeliveryConf({echo:JSON::encode($item)});' />{$item['name']}</label></th>
-								<td>
-									{$item['description']}
-								</td>
-							</tr>
-							{/foreach}
-						</tbody>
-
-						<script type='text/html' id='takeselfTemplate'>
-							<%=item['province_str']%> <%=item['city_str']%> <%=item['area_str']%> <%=item['address']%> <%=item['name']%> <%=item['phone']%> <%=item['mobile']%>
-						</script>
-
-						<tfoot>
-							<th>指定送货时间：</th>
-							<td>
-								<label class='attr'><input type='radio' name='accept_time' checked="checked" value='任意' class='radio'/>任意</label>
-								<label class='attr'><input type='radio' name='accept_time' value='周一到周五'  class='radio'/>周一到周五</label>
-								<label class='attr'><input type='radio' name='accept_time' value='周末'  class='radio'/>周末</label>
-							</td>
-						</tfoot>
-					</table>
-					<!--配送修改 结束-->
-
-					<label class="btn_orange3"><input type="button" id="delivery_save_button" onclick="orderFormInstance.deliverySave();" value="保存配送方式" /></label>
-				</div>
-				<!--配送方式 结束-->
-
 				<!--支付方式 开始-->
 				<div class="wrap_box" id='paymentBox' style='display:none'>
 					<h3>
@@ -559,7 +492,7 @@ function selectTakeself(deliveryId)
 								<col width="80px" />
 							</colgroup>
 							<caption>商家：{$value['seller_name']}
-								<span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'></span></span>
+								<span style='float:right'><span>配送费用：</span>￥<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>{$value['delivery']}</span></span>
 							</caption>
 							<input type='hidden' value='{$value[0]['seller_id']}' name='seller_id[]' />
 							
