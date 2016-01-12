@@ -468,7 +468,7 @@ class Ucenter extends IController
 		if(!$address){
 			die(JSON::encode(array('errCode' => 1,'field'=>'address')));
 		}
-		if(!IValidate::phone($mobile))
+		if(!IValidate::mobi($mobile))
     	{
     		die(JSON::encode(array('errCode' => 1,'field'=>'mobile')));
     	}
@@ -521,19 +521,11 @@ class Ucenter extends IController
      * @brief 手机端删除收货地址
      */
     public function address_delete()
-    {
-        $user_id     = $this->user['user_id'];
-        if(!$user_id)
-        {
-            die(JSON::encode(array('errCode' => 2)));
-        }
+    {                                          
         $id = IFilter::act( IReq::get('id'),'int' );
         $model = new IModel('address');            
         $res = $model->del('id = '.$id.' and user_id = '.$this->user['user_id']); 
-        if($res){
-            die(JSON::encode(array('errCode' => 0)));
-        }
-        else die(JSON::encode(array('errCode' => 3)));
+        $this->redirect('/simple/address');
         
     }
     /**
