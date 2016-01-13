@@ -748,7 +748,7 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	width: 100%;
 	margin-top: 0px;
 	margin-right: auto;
-	margin-bottom: 0px;
+	margin-bottom: 10px;
 	margin-left: auto;
 	overflow: hidden;
 	border-bottom-width: 1px;
@@ -774,20 +774,6 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 .caidan ul .one {background-image: none;}
 
 
-
-
-.caidan {
-	height: 30px;
-	width: 100%;
-	margin-top: 0px;
-	margin-right: auto;
-	margin-bottom: 0px;
-	margin-left: auto;
-	overflow: hidden;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #F00;
-}
 .caidan ul li {
 	float: left;
 	height: 30px;
@@ -808,18 +794,9 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 
 
 
-.caidan {
-	height: 50px;
-	width: 100%;
-	margin-top: 0px;
-	margin-right: auto;
-	margin-bottom: 0px;
-	margin-left: auto;
-	overflow: hidden;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #F00;
-}
+
+
+
 .caidan ul li {
 	float: left;
 	height: 40px;
@@ -840,14 +817,12 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 
 
 
-
-
 .caidan {
 	height: 30px;
 	width: 100%;
 	margin-top: 0px;
 	margin-right: auto;
-	margin-bottom: 0px;
+	margin-bottom: 10px;
 	margin-left: auto;
 	overflow: hidden;
 	border-bottom-width: 1px;
