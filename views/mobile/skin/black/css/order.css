@@ -5,12 +5,12 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 }
 
 /*�ջ��˵�ַ*/
-.pages .qrdd{
+.pages .qrdd{ padding:10px 0 10px 0;
 	background: #fff;
 }
 .pages .qrdd .dz{
 	display: block;
-	padding: 10px 15px 10px 10px;
+	padding: 0px 15px 0px 10px;
 }
 .pages .qrdd .dz:before{
 	content: ' ';
@@ -27,7 +27,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 
 .pages .qrdd .float_rt{
 	float:right;
-	padding-right: 5px;
+	padding-right: 10%;
 }
 /*�ջ��˵�ַ����*/
 /* ��Ʒ���� */
@@ -201,10 +201,17 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 .sj{
 	padding: 0 0px 5px 5px;
 	border-bottom: 1px solid  #E4E2E2;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	height: 30px;
 }
 .sj a{
     display: block;
     padding: 5px 0 0 30px;
+    position: relative;
+    top: 0px;
+    left: 0px;
 }
 .sj a:after{
     content: ' ';

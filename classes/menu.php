@@ -117,7 +117,8 @@ class Menu
 
 		'营销'=>array(
         	'促销活动' => array(
-        		'/market/pro_rule_list' => '促销活动列表'
+        		'/market/pro_rule_list' => '促销活动列表',
+				'/market/pro_argument'  => '营销参数'
         	),
         	'营销活动' => array(
         		'/presell/presell_list' => '预售',
@@ -163,7 +164,9 @@ class Menu
             	'/system/hsms' => '手机短信平台',
         	),
         	'配送管理'=>array(
-            	'/system/delivery'  	=> '配送方式',
+                '/system/delivery'      => '配送方式',
+                '/system/delivery/type/1'     => '&nbsp;&nbsp;&nbsp;&nbsp;重量计算',
+            	'/system/delivery/type/2'  	=> '&nbsp;&nbsp;&nbsp;&nbsp;数量计算',
         		'/system/freight_list'	=> '物流公司',
 	    		'/system/takeself_list' => '自提点列表',
 	    		'/system/takeself_edit'  => '添加自提点',

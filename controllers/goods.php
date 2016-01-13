@@ -224,7 +224,11 @@ class Goods extends IController
 		{
 			die("没有找到相关商品！");
 		}
-
+        
+        //获取运费计算方式
+        $delivery = new IModel('delivery');
+        $list = $delivery->query("is_delete=0", 'id,name');
+        $this->delivery = $list;       
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');
 	}

@@ -1,4 +1,5 @@
 {set:$data=$this->data_info}
+{set:$type=$this->type}
 {js:artTemplate}
 <script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 <div class="headbar">
@@ -12,7 +13,7 @@
 <div class="content_box">
 	<div class="content form_content">
 		<form action='{url:/system/delivery_update}' method='post' name='form'>
-			<input type="hidden" name="id" value="" />
+            <input type="hidden" name="id" value="" />
 
 			<table class="form_table">
 				<col width="150px" />
@@ -24,45 +25,82 @@
 						<input class="normal" name="name" value="" type="text" pattern="required" alt="配送方式名称不能为空" />
 					</td>
 				</tr>
-				<tr>
+                <tr>
+                    <th>计费方式:</th>
+                    <td>
+                       <label class='attr'><input name="type" type="radio" value="1" />重量计算</label>
+                        <label class='attr'><input name="type" type="radio" value="2" />数量计算</label> 
+                    </td>
+                </tr>
+				<tr class="js_set" id="js_set_1" {if: $data['type'] <> 1} style="display: none;" {/if}>
 					<th>重量设置:</th>
 					<td>
 						<label class='attr'>
 							首重重量
 							<select name="first_weight" pattern='int'>
-								<option label="500克" value="500">500克</option>
-								<option label="1公斤" value="1000" selected="selected">1公斤</option>
-								<option label="1.2公斤" value="1200">1.2公斤</option>
-								<option label="2公斤" value="2000">2公斤</option>
-								<option label="5公斤" value="5000">5公斤</option>
-								<option label="10公斤" value="10000">10公斤</option>
-								<option label="20公斤" value="20000">20公斤</option>
-								<option label="50公斤" value="50000">50公斤</option>
+								<option label="500克" value="500" {if: $data['first_weight'] == 500}selected{/if}>500克</option>
+								<option label="1公斤" value="1000" {if: $data['first_weight'] == 1000}selected{/if}>1公斤</option>
+								<option label="1.2公斤" value="1200" {if: $data['first_weight'] == 1200}selected{/if}>1.2公斤</option>
+								<option label="2公斤" value="2000" {if: $data['first_weight'] == 2000}selected{/if}>2公斤</option>
+								<option label="5公斤" value="5000" {if: $data['first_weight'] == 5000}selected{/if}>5公斤</option>
+								<option label="10公斤" value="10000" {if: $data['first_weight'] == 10000}selected{/if}>10公斤</option>
+								<option label="20公斤" value="20000" {if: $data['first_weight'] == 20000}selected{/if}>20公斤</option>
+								<option label="50公斤" value="50000" {if: $data['first_weight'] == 50000}selected{/if}>50公斤</option>
 							</select>
 						</label>
 
-						<label class='attr'>首重费用<input class='tiny' name="first_price" value=""  pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
+						<label class='attr'>首重费用<input class='tiny' name="first_price" {if: $data['first_price']} value="{$data['first_price']}"{/if}  pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
 
 						<label class='attr'>
 							续重重量
 							<select name="second_weight" pattern='int'>
-								<option label="500克" value="500">500克</option>
-								<option label="1公斤" value="1000" selected="selected">1公斤</option>
-								<option label="1.2公斤" value="1200">1.2公斤</option>
-								<option label="2公斤" value="2000">2公斤</option>
-								<option label="5公斤" value="5000">5公斤</option>
-								<option label="10公斤" value="10000">10公斤</option>
-								<option label="20公斤" value="20000">20公斤</option>
-								<option label="50公斤" value="50000">50公斤</option>
+								<option label="500克" value="500" {if: $data['second_weight'] == 500}selected{/if}>500克</option>
+								<option label="1公斤" value="1000" {if: $data['second_weight'] == 1000}selected{/if}>1公斤</option>
+								<option label="1.2公斤" value="1200" {if: $data['second_weight'] == 1200}selected{/if}>1.2公斤</option>
+								<option label="2公斤" value="2000" {if: $data['second_weight'] == 2000}selected{/if}>2公斤</option>
+								<option label="5公斤" value="5000" {if: $data['second_weight'] == 5000}selected{/if}>5公斤</option>
+								<option label="10公斤" value="10000" {if: $data['second_weight'] == 10000}selected{/if}>10公斤</option>
+								<option label="20公斤" value="20000" {if: $data['second_weight'] == 20000}selected{/if}>20公斤</option>
+								<option label="50公斤" value="50000" {if: $data['second_weight'] == 50000}selected{/if}>50公斤</option>
 							</select>
 						</label>
 
-						<label class='attr'>续重费用<input class='tiny' name="second_price" value="" pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
+						<label class='attr'>续重费用<input class='tiny' name="second_price" {if: $data['second_price']} value="{$data['second_price']}"{/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
 
 						<p><label>根据重量来计算运费，当物品不足《首重重量》时，按照《首重费用》计算，超过部分按照《续重重量》和《续重费用》乘积来计算</label></p>
 					</td>
 				</tr>
+                
+                <tr class="js_set" id="js_set_2" {if: $data['type'] <> 2} style="display: none;" {/if}>
+                    <th>个数设置:</th>
+                    <td>
+                        <label class='attr'>
+                            首数计数
+                            <select name="first_weight" pattern='int' {if: $data['type'] <> 2} disabled="disabled" {/if}>
+                                <option label="1个" value="1" {if: $data['first_weight'] == 1}selected{/if}>1个</option>
+                                <option label="2个" value="2" {if: $data['first_weight'] == 2}selected{/if}>2个</option>
+                                <option label="5个" value="5" {if: $data['first_weight'] == 5}selected{/if}>5个</option>
+                                <option label="10个" value="10" {if: $data['first_weight'] == 10}selected{/if}>10个</option>
+                            </select>
+                        </label>
 
+                        <label class='attr'>首数费用<input class='tiny' name="first_price"  {if: $data['first_price']} value="{$data['first_price']}"{/if} {if: $data['type'] <> 2} disabled="disabled" {/if}  pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
+
+                        <label class='attr'>
+                            增加个数
+                            <select name="second_weight" pattern='int' {if: $data['type'] <> 2} disabled="disabled" {/if}>
+                                <option label="1个" value="1" {if: $data['second_weight'] == 1}selected{/if}>1个</option>
+                                <option label="2个" value="2" {if: $data['second_weight'] == 2}selected{/if}>2个</option>
+                                <option label="5个" value="5" {if: $data['second_weight'] == 5}selected{/if}>5个</option>
+                                <option label="10个" value="10" {if: $data['second_weight'] == 10}selected{/if}>10个</option>
+                            </select>
+                        </label>
+
+                        <label class='attr'>增加费用<input class='tiny' name="second_price" {if: $data['second_price']} value="{$data['second_price']}"{/if} {if: $data['type'] <> 2} disabled="disabled" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
+
+                        <p><label>根据个数来计算运费，超过部分按照《增加个数》和《增加费用》乘积来计算</label></p>
+                    </td>
+                </tr>
 				<tr>
 					<th>支持保价:</th>
 					<td>
@@ -153,6 +191,24 @@
 //DOM加载完毕
 $(function()
 {
+    //设置计费方式
+    var id = {$type};
+    $('#js_set_'+id).show();
+    $('#js_set_'+id).find('select').removeAttr('disabled');
+    $('#js_set_'+id).find('input').removeAttr('disabled');
+    
+    $('input[name=type]').each(function(){
+        $(this).click(function(){
+            var _id = $(this).val();
+            $('#js_set_'+_id).siblings('.js_set').hide();
+            $('#js_set_'+_id).siblings('.js_set').find('select').attr('disabled', 'disabled');
+            $('#js_set_'+_id).siblings('.js_set').find('input').attr('disabled', 'disabled');
+            $('#js_set_'+_id).show();
+            $('#js_set_'+_id).find('select').removeAttr('disabled');
+            $('#js_set_'+_id).find('input').removeAttr('disabled');
+        })
+    })
+    
 	//初始化表单
 	var formInstance = new Form('form');
 	formInstance.init({echo:JSON::encode($data)});

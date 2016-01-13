@@ -25,7 +25,38 @@
 		<link rel="stylesheet" href="{skin:css/hd_com.css}" type="text/css">       
 		<script src="{theme:javascript/jquery-1.9.1.min.js}"></script>
 		{js:artTemplate}
-		
+		<script type="text/javascript">
+            function delAddress(_id)
+            {
+                $.ajax({
+                    type:'get',
+                    async:false,
+                    data:{id:_id},
+                    dataType:'json',
+                    url:'{url:/ucenter/address_delete}',
+                    beforeSend:function(){
+                        
+                    },
+                    success:function(data){   
+                        if(data.errCode==0){
+                            location.reload();
+                        }
+                        else if(data.errCode==2){
+                            realAlert('请先登录');
+                        }else if(data.errCode==3){
+                            realAlert('系统繁忙');
+                        }
+                    },
+                    error:function(){
+                        
+                    },
+                    complete:function(){
+                    
+                    },
+                    timeout:1000,
+                })
+            }
+        </script>
 		<script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 		
 		<script type='text/javascript' src="{theme:javascript/common.js}"></script>
@@ -49,18 +80,22 @@
   });
   
     $(".done_sall").click(function(){
-		$(".choice_tb").hide();
-  	$(this).find(".choice_tb").show();
-  
+        var id = $(this).attr('js_data')
+        ,param = $(this).attr('js_param')
+        ,url = '{url:/simple/cart2}/addId/'+id+param;
+        if(param)
+        {
+            console.info(url);
+            window.location.href = url;
+        }
+        else
+        {
+            $(".choice_tb").hide();
+            $(this).parents('tr').find(".choice_tb").show();
+        }
   });
 });
 </script>
-
-
-
-        
-        
-           
 		</head>
 		
     <body style="background:#ECECEC;">
@@ -83,47 +118,29 @@
 				<table width="100%" border="0"  style="line-height:35px;">
              
 					  {foreach:items=$this->addressList}
-					  <tr class="done_sall"    onclick='address_edit(this);' style="text-align:left">
+					  <tr  style="text-align:left">
 					  	<input type='hidden' name='{$item["id"]}' value='{$item["id"]}' />
-						<input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
-                        
-                      
 						<td> 
-                        <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
-                        src="{skin:images/right_left.png}"></span>
-                        <div  style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
-                        	<span style="padding-left:30px">{$item['accept_name']}
+                        <!-- <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
+                        src="{skin:images/right_left.png}"></span> -->
+                        <div  class="done_sall" js_data="{$item['id']}" js_param="{$this->param}" style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
+                        	<span style="padding-left:30px">{if: $item['default']}<span style="color: red;">[默认]</span> {/if}{$item['accept_name']}
                         <span style="padding-left:20px">{$item['mobile']}</span></span>
 							<p style="padding-left:30px">{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</p>
                            </div>
-                           
-                           
                      <div id="wrap">
                 <div class="box-163css">
-		          
-                  <span onclick="Showbo.Msg.confirm('您确定删除收货信息吗？')" class="dealisc er" 
-                  style="float: right;margin:3px 30px 0 0;color: #4A4747; font-size: 12px;">删除</span>
-                  <a  onclick="Showbo.Msg.confirm('您确定删除收货信息吗？')"  href="#">
+                  <span onclick="delAddress({$item['id']})" class="dealisc er" style="float: right;margin:3px 30px 0 0;color: #4A4747; font-size: 12px;">删除</span>
+                  <a onclick="delAddress({$item['id']})"  href="javascript:;">
                   <img style="float:right;" class="dealisc" src="{skin:images/trash.png}"></a>
-                          <div style="float: right;" >
+                          <div style="float: right;" onclick='address_edit(this);' >
+                          <input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
                           <span class="bianji er" style="float: right;margin:3px 30px 0 0;color: #4A4747;font-size: 12px;">编辑</span>
                           <img class="bianji" src="{skin:images/edit3.png}"> 
                           </div> 
-                  
-                  
 	            </div>
-                </div>
-                           
-                           
-                          
-                   
-      
-                          
+                </div>                          
 						</td>
-                        
-                        
-                        
-                        
 					  </tr>
 					  {/foreach}
 				</table>
@@ -135,10 +152,7 @@
 			<div  class="mod_dres">
 				<div class="dres">
 					<div style="margin:0 5px;border-bottom: 1px solid #ABADB3; padding-bottom:10px;">
-						<a  href=""><span style="float:left;margin-top:8px;">+新增收货地址：</span></a>
-                        
-                        
-                        
+						<a  href=""><span style="float:left;margin-top:8px;">+收货地址：</span></a>
                         <div class='dres'>
 					<span>
 						<select name="province" child="city,area" style='width:22%;height:35px;float:left;' pattern='int' onchange="areaChangeCallback(this);">
@@ -161,19 +175,8 @@
 						</select>
 					</span>					
 				</div>
-                
-                
-                        
-                        
-                        
-                        
-                        
-                        
 					</div>
 				</div>
-				
-                
-                
 				<div class="dres">
 			
 					<span><input style="height:40px;" class="texts tex2" placeholder="收货人姓名" type="text" name='accept_name'  required /></span>
@@ -211,9 +214,8 @@
  </div>
    <script type='text/javascript'>
    	
-   	var address_default_url = '{url:ucenter/address_default_ajax}';
 	var address_url = "{url:/block/area_child}";
-	//var last_url = document.referrer;
+	var last_url = document.referrer;
 	
 	
    	</script>

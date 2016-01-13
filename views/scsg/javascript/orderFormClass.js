@@ -13,13 +13,13 @@ function orderFormClass()
 
 	//视图状态模式 默认：edit
 	this.addressMod  = 'edit';
-	this.deliveryMod = 'edit';
+	//this.deliveryMod = 'edit';
 	this.paymentMod  = 'edit';
 	this.messageMod  = 'exit';
 
 	//当前正在使用的ID
 	this.addressActiveId   = '';
-	this.deliveryActiveId  = '';
+	//this.deliveryActiveId  = '';
 	this.paymentActiveId   = '';
 	this.messageActiveData = '';
 
@@ -59,8 +59,7 @@ function orderFormClass()
 		//最终金额
 		this.orderAmount = parseFloat(this.goodsSum) - parseFloat(this.ticketPrice) + parseFloat(this.deliveryPrice) + parseFloat(this.paymentPrice) + parseFloat(this.taxPrice) + parseFloat(this.protectPrice);
 
-		this.orderAmount = this.orderAmount <=0 ? 0 : this.orderAmount.toFixed(2);
-
+		this.orderAmount = this.orderAmount <=0 ? 0 : this.orderAmount.toFixed(2);         
 		//刷新DOM数据
 		$('#final_sum').text(this.orderAmount);
 		$('[name="ticket_value"]').text(this.ticketPrice);
@@ -248,9 +247,8 @@ function orderFormClass()
 				clearInterval(timeHandle);
 			}
 		},100);
-	
-		$('#deliveryBox').show('slow');
-		if(this.deliveryCheck() && this.paymentCheck()){
+		//$('#deliveryBox').show('slow');
+		if(this.paymentCheck()){
 			$('#amountBox').show('slow');
 			//计算金额
 			this.doAccount();
@@ -260,7 +258,7 @@ function orderFormClass()
 	/**
 	 * delivery模式切换
 	 */
-	this.deliveryInit = function(defaultDeliveryId)
+	/*this.deliveryInit = function(defaultDeliveryId)
 	{
 		if(defaultDeliveryId > 0)
 		{
@@ -274,13 +272,13 @@ function orderFormClass()
 				this.deliverySave();
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * delivery选中
 	 * @param jsonData Object 配送方式数对象
 	 */
-	this.deliverySelected = function(jsonData)
+	/*this.deliverySelected = function(jsonData)
 	{
 		var takeself = $('#takeself3').text();//zi
 		if(jsonData.type==2){
@@ -289,74 +287,13 @@ function orderFormClass()
 		
 		var deliveryShowHtml = template.render('deliveryShowTemplate',jsonData);
 		$('#deliveryShowBox').html(deliveryShowHtml);
-	}
-
-	/**
-	 * delivery模式切换
-	 */
-	this.deliveryModToggle = function()
-	{
-		//要切换的模式
-		var toggleMod = this.deliveryMod == 'exit' ? 'edit' : 'exit';
-
-		switch(toggleMod)
-		{
-			case "edit":
-			{
-				$('#'+this.deliveryToggleButton).text('[退出]');
-			}
-			break;
-
-			case "exit":
-			{
-				if(!this.deliveryActiveId)
-				{
-					tips('请选择配送方式，并且进行保存');
-					return;
-				}
-				else if($('input:radio[name="delivery_id"][value="'+this.deliveryActiveId+'"]:checked').length == 0)
-				{
-					//还原配送方式数据
-					$('input:radio[name="delivery_id"][value="'+this.deliveryActiveId+'"]').trigger('click');
-				}
-				$('#'+this.deliveryToggleButton).text('[修改]');
-			}
-			break;
-		}
-
-		//更新模式
-		this.deliveryMod = toggleMod;
-
-		//展示模式
-		$('#delivery_show_box').toggle();
-
-		//修改模式
-		$('#delivery_form').toggle();
-		$('#delivery_save_button').toggle();
-	}
-
-	/**
-	 * delivery保存检查
-	 */
-	this.deliveryCheck = function()
-	{
-		if($('input:radio[name="delivery_id"]:checked').length == 0)
-		{
-			return false;
-		}
-		return true;
-	}
+	}       */
 
 	/**
 	 * delivery保存
 	 */
-	this.deliverySave = function()
+	/*this.deliverySave = function()
 	{
-		if(this.deliveryCheck() == false)
-		{
-			tips('请选择配送方式');
-			return;
-		}
 
 		this.paytype          = $('input:radio[name="delivery_id"]:checked').attr('paytype');
 		this.deliveryActiveId = $('input:radio[name="delivery_id"]:checked').val();
@@ -365,9 +302,7 @@ function orderFormClass()
 		{
 			tips('请选择自提点');
 			return;
-		}
-
-		this.deliveryModToggle();
+		}                        
 
 		//在线支付与货到付款
 		if(this.paytype == 1)
@@ -384,15 +319,15 @@ function orderFormClass()
 		}
 		
 		//计算运费
-		get_delivery();
+		//get_delivery();
 
 		//计算金额
 		this.doAccount();
 		
 		//设置配送信息
-		this.deliverySelected(this.deliveryConf);
+		//this.deliverySelected(this.deliveryConf);
 		
-	}
+	}*/
 
 	/**
 	 * payment模式切换

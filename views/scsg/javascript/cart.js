@@ -4,17 +4,20 @@ $(function(){
 		$("input[name^='sub']").prop("checked", this.checked);
 			if(!this.checked) {
 					 $('#origin_price').text(0);
-					 $('#discount_price').text(0);	
+                     $('#discount_price').text(0);    
+					 $('#delivery').text(0);	
 			}else{
-					var total_price = total_discount = 0;
+					var total_price = total_discount = delivery = 0;
 					$("input[name^='sub']").each(function(i){
 						var json = JSON.parse($(this).attr('data-json'));
 						var num = $('#'+json.type+'_count_'+json.id).val();
 						total_price +=mathMul(parseFloat(json.sell_price),num);
-						total_discount += mathMul(parseFloat(json.reduce),num);
+                        total_discount += mathMul(parseFloat(json.reduce),num);
+						delivery += parseFloat(json.delivery);
 					})
 					$('#origin_price').text(total_price.toFixed(2));
-					 $('#discount_price').text(total_discount);	
+                     $('#discount_price').text(total_discount);    
+					 $('#delivery').text(delivery);	
 					
 			}
 			prom_ajax();
@@ -33,20 +36,24 @@ function check_goods(_this){
 		
 		var weight_total = parseInt($('#weight').text());
 		var origin_price = parseFloat( $('#origin_price').text());
-		var discount_price = parseFloat($('#discount_price').text());
-		var promotion_price = parseFloat($('#promotion_price').text());
+        var discount_price = parseFloat($('#discount_price').text());
+        var promotion_price = parseFloat($('#promotion_price').text());
+		var delivery = parseFloat($('#delivery').text());
 		var sum_price = parseFloat($('#sum_price').text());
-		var new_count = parseInt($('#'+dataObj.type+'_count_'+dataObj.id).val());
+        var delivery_price = parseInt($('#'+dataObj.type+'_delivery_'+dataObj.id).text());
+        var new_count = parseInt($('#'+dataObj.type+'_count_'+dataObj.id).val());
 		var goods_price = mathMul(parseFloat(dataObj.sell_price),new_count);//选中商品的价格*数量
 		var goods_reduce = mathMul(parseFloat(dataObj.reduce),new_count);
 		if($(_this).prop('checked')){//
 			$('#weight').text(mathAdd(weight_total,mathMul(parseInt(dataObj.weight),new_count),2));
 			 $('#origin_price').text(mathAdd(origin_price,goods_price,2));
-			 $('#discount_price').text(mathAdd(discount_price,goods_reduce,2));
+             $('#discount_price').text(mathAdd(discount_price,goods_reduce,2));
+			 $('#delivery').text(mathAdd(delivery,delivery_price,2));
 		}else{
 			$('#weight').text(mathSub(weight_total,parseInt(mathMul(dataObj.weight,new_count)),2));
 			 $('#origin_price').text(mathSub(origin_price,goods_price,2));
-			 $('#discount_price').text(mathSub(discount_price,goods_reduce,2));
+             $('#discount_price').text(mathSub(discount_price,goods_reduce,2));
+			 $('#delivery').text(mathSub(delivery,delivery_price,2));
 		}
 		
 		//促销规则检测
@@ -84,8 +91,11 @@ function prom_ajax(){
 					//促销活动
 					$('#promotion_price').html(content.proReduce);
 
-					//最终金额
+					//最终金额(不含运费)
 					$('#sum_price').html(mathSub(mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text())),parseFloat($('#promotion_price').text()),2));
+                    
+                    //最终金额(含运费)
+                    /*$('#sum_price_delivery').html(mathAdd(mathSub(mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text())),parseFloat($('#promotion_price').text()),2), $('#delivery').text()));*/
 
 		});
 }
@@ -161,14 +171,24 @@ function cartCount(obj,oldCount)
 
 				//缓存旧的购买数量
 				countInput.data('oldCount',parseInt(countInput.val()));
-				$('#'+type+'_sum_'+obj.id).text(mathMul(mathSub(parseFloat(obj.sell_price),parseFloat(obj.reduce)),parseInt(countInput.val())));
+                var price = mathMul(mathSub(parseFloat(obj.sell_price),parseFloat(obj.reduce)),parseInt(countInput.val()));
+                $.getJSON(delivery_url,{"delivery_id":obj.delivery_id,"goods_id":obj.goods_id,"product_id":obj.product_id,"num":countInput.val()},function(callback){
+                        var delivery_price = 0;
+                        if(typeof(callback.price) != 'undefined')
+                        {
+                            delivery_price = callback.price;
+                            $('#'+type+'_delivery_'+obj.id).text(delivery_price);
+                        }
+                        $('#'+type+'_sum_'+obj.id).text(price);
+                    })
 				if(checkInput.prop('checked')){//如果当前商品选中
 					var weight_total = parseInt($('#weight').text());
 					var origin_price = parseFloat( $('#origin_price').text());
 					var discount_price = parseFloat($('#discount_price').text());
 					var new_origin_price = mathAdd(origin_price,mathMul(parseFloat(obj.sell_price),changeNum),2);
 					var new_discount_price = mathAdd(discount_price,mathMul(parseFloat(obj.reduce),changeNum));
-					$('#weight').text(mathAdd(weight_total,mathMul(parseInt(obj.weight),changeNum),2));
+                    var new_weight = mathAdd(weight_total,mathMul(parseInt(obj.weight),changeNum),2);
+					$('#weight').text(new_weight);
 					$('#origin_price').text(new_origin_price);
 					$('#discount_price').text(new_discount_price);
 					prom_ajax(mathSub(new_origin_price,new_discount_price,2));
