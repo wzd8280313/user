@@ -1058,7 +1058,7 @@ background: url(../images/sprites_2.gif) -27px -180px no-repeat;
 
 .display_title ul li.current a{color:#fff;}
 .display_title ul li.current a span{background-position:-38px -180px}
-.display_title ul li.current a span.desc {
+.display_title ul li.current a span.xia {
     background-position: -41px -198px;
 }
 .pro-list {
