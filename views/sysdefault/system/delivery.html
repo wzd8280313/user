@@ -38,7 +38,7 @@ $search = IFilter::act(IReq::get('search'),'strict');
 					<th>配送方式</th>
 					<th>状态</th>
 					<th>物流保价</th>
-					<th>货到付款</th>
+					<!--<th>货到付款</th> -->
 					<th>排序</th>
 					<th>操作</th>
 				</tr>
@@ -60,7 +60,7 @@ $search = IFilter::act(IReq::get('search'),'strict');
 				<td>{$item['name']}</td>
 				<td>{if:$item['status']==1}启用{else:}关闭{/if}</td>
 				<td>{if:$item['is_save_price']==1}是{else:}否{/if}</td>
-				<td>{if:$item['type']==1}是{else:}否{/if}</td>
+				<!--<td>{if:$item['type']==1}是{else:}否{/if}</td>-->
 				<td>{$item['sort']}</td>
 				<td>
 					<a href="{url:/system/delivery_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="编辑" /></a>

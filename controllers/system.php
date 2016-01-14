@@ -183,10 +183,17 @@ class System extends IController
     public function delivery_update()
     {
         $delivery = new IModel('delivery');
+        $message = '';
         //ID
         $id   = IFilter::act(IReq::get('id'),'int');
 		//配送方式名称
-		$name = IFilter::act(IReq::get('name'));
+		$name = IFilter::act(IReq::get('name')); 
+            
+        if(!!$delivery->getObj(" name = '".$name."' and id <> ".$id,'id'))
+        {
+            $message = '配送方式名称重复';
+        }  
+                                      
         //计量方式
         $type   = IFilter::act(IReq::get('type'),'int');
         //首重重量
@@ -238,24 +245,36 @@ class System extends IController
         	'save_rate'    => $save_rate,
         	'low_price'    => $low_price,
         );
-        $delivery->setData($data);
-        $logObj = new log('db');
+        
+        if($message != null)
+        {
+            $data['id'] = $id;
+            $this->data_info = $data;
+            $this->type = $type;
+            $this->redirect('delivery_edit',false);
+            Util::showMessage($message);    
+        }
+        else
+        {    
+            $delivery->setData($data);
+            $logObj = new log('db');
 
-		if($id=="")
-		{
-			if($delivery->add())
-			{
-				$logObj->write('operation',array("管理员:".$this->admin['admin_name'],"添加了配送方式",'添加的配送方式为：'.$name));
-			}
-		}
-		else
-		{
-			if($delivery->update('id = '.$id))
-			{
-				$logObj->write('operation',array("管理员:".$this->admin['admin_name'],"修改了配送方式",'修改的配送方式为：'.$name));
-			}
-		}
-		$this->redirect('delivery');
+            if($id=="")
+            {
+                if($delivery->add())
+                {
+                    $logObj->write('operation',array("管理员:".$this->admin['admin_name'],"添加了配送方式",'添加的配送方式为：'.$name));
+                }
+            }
+            else
+            {
+                if($delivery->update('id = '.$id))
+                {
+                    $logObj->write('operation',array("管理员:".$this->admin['admin_name'],"修改了配送方式",'修改的配送方式为：'.$name));
+                }
+            }
+            $this->redirect('delivery');
+        }              
     }
 
    /**
