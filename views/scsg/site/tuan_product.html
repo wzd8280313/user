@@ -160,7 +160,7 @@
 						<li id="J_ItemRates" class="tm-ind-item tm-ind-reviewCount canClick tm-line3">
 							<div class="tm-indcon"  onclick="jumpTo('point')">
 								<span class="tm-label">累计评价</span>
-								<span class="tm-count">{$comments}</span>
+								<span class="tm-count">{$comment_num}</span>
 							</div>
 						</li>
 						<li class="tm-ind-item tm-ind-emPointCount" >
@@ -544,7 +544,7 @@ function delivery(provinceId,provinceName)
  * 获取评论数据
  * @page 分页数
  */
-function comment_ajax(page)
+/*function comment_ajax(page)
 {
 	if(!page && $.trim($('#commentBox').text()))
 	{
@@ -565,7 +565,7 @@ function comment_ajax(page)
 		}
 		$('#commentBox').append(json.pageHtml);
 	});
-}
+}   */
 
 /**
  * 获取购买记录数据

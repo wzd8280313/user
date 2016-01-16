@@ -121,7 +121,19 @@ class Pregoods extends IController
 		$tb_attribute_goods->order = "g.id asc";
 		$goods_info['attribute'] = $tb_attribute_goods->find();
 	
-		
+		//评论条数
+        $comment = new IModel('comment');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id, 'count(1) as num');
+        $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5', 'count(1) as num');
+        $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1', 'count(1) as num');
+        $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2', 'count(1) as num');
+        $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
 	
 		//购买记录
 		$tb_shop = new IQuery('order_goods as og');

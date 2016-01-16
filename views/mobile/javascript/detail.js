@@ -161,7 +161,7 @@ function show_comments_list(_this){
 function comment_ajax(type)
 {
 	var url = comments_url;
-	$.getJSON(url,{type:type},function(json){
+	$.getJSON(url,{type:type,pageSize:3},function(json){
 		for(var item in json.comment_list)
 		{
 			var commentHtml = template.render('commentRowTemplate',json.comment_list[item]);
@@ -185,7 +185,7 @@ function show_comments(){
 function comment_ajax_list(type,statics){
 	var url = comments_url;
 	var page = parseInt($('input[name=comment_page]').val());
-	$.getJSON(url,{type:type,page:page},function(json)
+	$.getJSON(url,{type:type,page:page,pageSize:7},function(json)
 	{//window.alt(JSON.stringify(json));
 	if(json==0)return false;
 		json.point_grade.comment_total=json.comment_total;
@@ -207,7 +207,12 @@ function comment_ajax_list(type,statics){
 			$('#comments .content').append(commentHtml);
 		}
 		$('input[name=comment_page]').val(page+1);
-		
+		window.onscroll = function(){
+            if ($('#comments').css('display')!='none' && $(document).scrollTop() >= $(document).height() - $(window).height()){
+                 var type = $('.current').attr('type');
+                comment_ajax_list(type);
+             }
+        }
 	});
 }
 
@@ -215,14 +220,6 @@ function comment_ajax_list(type,statics){
 
 $(function(){
 	comment_ajax();//加载评论数据
-	
-	window.onscroll = function(){
-		if ($('#comments').css('display')!='none' && $(document).scrollTop() >= $(document).height() - $(window).height()){
-		 	var type = $('.current').attr('type');
-			comment_ajax_list(type);
-		 }
-	}
-
 })
 
 

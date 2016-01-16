@@ -67,7 +67,7 @@ class Comment_Class
 		$query->group  = "point";
 
 		$data['point_grade'] = array('none'=>0,'good'=>0,'middle'=>0,'bad'=>0);
-		$config = array(0=>'none',1=>'bad',2=>'middle',3=>'middle',4=>'middle',5=>'good');
+		$config = array(0=>'bad',1=>'bad',2=>'middle',3=>'middle',4=>'middle',5=>'good');
 		$data['point_total'] = 0;
 
 		foreach( $query->find() AS $value )
@@ -90,9 +90,9 @@ class Comment_Class
 	 * 获取评论数据
 	 * 
 	 */
-	public static function get_comment_byid($id,$type,$controller=null){
+	public static function get_comment_byid($id,$type,$pageSize=3,$controller=null){
 		
-		$type_config = array('bad'=>'1','middle'=>'2,3,4','good'=>'5');
+		$type_config = array('bad'=>'1,0','middle'=>'2,3,4','good'=>'5');
 		
 		if(!isset($type_config[$type]))
 		{
@@ -117,7 +117,7 @@ class Comment_Class
 		
 		$query->order    = "a.id DESC";
 		$query->page     = IReq::get('page') ? intval(IReq::get('page')):1;
-		$query->pagesize = 3;
+		$query->pagesize = $pageSize;
 		
 		$data['comment_list']= $query->find();
 		if($query->page==0){return 0;}
