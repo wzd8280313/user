@@ -7,7 +7,7 @@ body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background
 img{border:0;vertical-align: middle;}
 table{border-collapse:collapse}
 ul li{list-style:none}
-hr{height:1px;border:none;border-top:1px solid #e4e4e4;overflow:hidden}
+hr{height:1px;border:none;border-top:1px solid #e4e4e4;overflow:hidden;margin:10px 0px; }
 hr.dashed{border-top:1px dashed #e4e4e4}
 a.hidefocus{outline:none}
 button.hidefocus::-moz-focus-inner{border:none}
@@ -538,7 +538,7 @@ dl.sorting{ position:relative;border-bottom:1px solid #e5e5e5;padding:5px 60px 3
 /* display_list style end */
 /* comment_list item style start */
 .comment_list .item{position:relative;min-height:120px;padding:0 14px 10px 128px;margin-top:15px;_zoom:1;_height:120px;}
-	.comment_list .item .user{position:absolute;left:0;top:0;width:128px;}
+	.comment_list .item .user{position:absolute;left:0;top:0;width:100px;padding-left: 25px;}
 		.comment_list .item .user .ico{margin-bottom:5px}
 			.comment_list .item .user .ico img{border:1px solid #d4d4d4}
 	.comment_list .item .desc{min-height:50px;text-align:left;border:1px solid #c6c6c6;padding:10px 15px 5px;background:#fff}
@@ -1130,4 +1130,120 @@ ol,ul{list-style:none}
 /*广告链接光标*/
 .admanage .ad_box{
 	cursor: pointer;
+}
+/*详细页面评价样式*/
+.m-tab-trigger-wrap {
+	position: relative;
+	height: 30px;
+	line-height: 30px;
+	margin-top: 4px;
+	border-bottom: 1px solid #DEDFDE;
+	border-top: 2px solid #999;
+	background-color: #F7F7F7;
+	overflow: visible;
+}
+.m-tab-trigger {
+float: left;
+height: 31px;
+margin-bottom: -1px;
+margin-top: 0px;
+}
+.m-tab-trigger .trig-item {
+float: left;
+height: 30px;
+}
+.m-tab-trigger .trig-item.curr a {
+position: relative;
+height: 35px;
+line-height: 35px;
+margin-top: -6px;
+margin-left: -1px;
+border-top: 2px solid #e4393c;
+border-left: 1px solid #DEDFDE;
+border-right: 1px solid #DEDFDE;
+background-color: #fff;
+}
+.m-tab-trigger .trig-item a {
+display: inline-block;
+padding: 0 10px;
+font-family: "microsoft yahei";
+font-size: 14px;
+}
+/*回复样式*/
+.replys {
+margin-right: 20px;
+color: #999;
+cursor: pointer;
+    display: inline-block;
+}
+.reply-textarea{
+	display: none;
+}
+.reply-textarea .reply-arrow {
+width: 100%;
+height: 12px;
+position: relative;
+bottom: -1px;
+}
+.reply-textarea .reply-arrow .layer1 {
+top: -1px;
+border-color: transparent transparent #d9d9d9;
+}
+.reply-textarea .reply-arrow .layer2 {
+border-color: transparent transparent #f5f5f5;
+}
+
+.reply-textarea .reply-arrow b {
+position: absolute;
+left: 20px;
+top: 0;
+width: 0;
+height: 0;
+overflow: hidden;
+border-width: 6px;
+border-style: dashed dashed solid;
+}
+.reply-textarea .inner {
+padding: 20px 20px 15px;
+border: 1px solid #d9d9d9;
+background-color: #f5f5f5;
+}
+.root61 .reply-textarea .reply-input {
+width: 894px;
+}
+.reply-textarea .reply-input {
+display: block;
+width: 720px;
+height: 20px;
+padding: 3px 5px;
+line-height: 20px;
+border: 1px solid #ddd;
+background-color: #fff;
+}
+user agent stylesheettextarea {
+font-family: monospace;
+}
+.reply-textarea .btnbox {
+margin-top: 10px;
+text-align: right;
+}
+.reply-textarea .btnbox button.reply-submit {
+cursor: pointer;
+height: 25px;
+line-height: 25px;
+margin: 0;
+}
+.reply-textarea .btnbox .reply-submit {
+display: inline-block;
+height: 23px;
+line-height: 23px;
+padding: 0 14px;
+border: 1px solid #ddd;
+background-color: #f5f5f5;
+}
+.colors{
+	color: rgb(14, 171, 239)
+}
+.times{
+	padding: 0 20px;
 }

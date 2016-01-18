@@ -243,6 +243,20 @@ class Site extends IController
             $goods_info['buyer_id'] = join(',',$shop_goods_array);
         }
         
+        //评论条数
+        $comment = new IModel('comment');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id, 'count(1) as num');
+        $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5', 'count(1) as num');
+        $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1', 'count(1) as num');
+        $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2', 'count(1) as num');
+        $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        
         //购买记录
         $tb_shop = new IQuery('order_goods as og');
         $tb_shop->join = 'left join order as o on o.id=og.order_id';
@@ -772,6 +786,20 @@ class Site extends IController
 			}
 			$goods_info['buyer_id'] = join(',',$shop_goods_array);
 		}
+        
+        //评论条数
+        $comment = new IModel('comment');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id, 'count(1) as num');
+        $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5', 'count(1) as num');
+        $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1', 'count(1) as num');
+        $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2', 'count(1) as num');
+        $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
 
 		//购买记录
 		$tb_shop = new IQuery('order_goods as og');
@@ -955,9 +983,121 @@ class Site extends IController
 	function comment_ajax2(){
 		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
 		$type     = IFilter::act(IReq::get('type'));
-		echo JSON::encode(Comment_Class::get_comment_byid($goods_id,$type));
+        $pageSize = IFilter::act(IReq::get('pageSize'),'int');
+		echo JSON::encode(Comment_Class::get_comment_byid($goods_id,$type,$pageSize));
 	}
 
+    //无限极分类评论查询
+    function cir_comment_ajax()
+    {
+        $goods_id = IFilter::act(IReq::get('goods_id'),'int');
+        $page     = IFilter::act(IReq::get('page'),'int') ? IReq::get('page') : 1;
+        $type     = IFilter::act(IReq::get('type')) ? IReq::get('type') : 'all';
+        $pid     = IFilter::act(IReq::get('pid'),'int') ? IReq::get('pid') : 0;
+        
+        $commentDB = new IQuery('comment as c');
+        $commentDB->join   = 'left join goods as go on c.goods_id = go.id AND go.is_del = 0 left join user as u on u.id = c.user_id';
+        $commentDB->fields = 'u.head_ico,u.username,c.*';
+        switch($type)
+        {
+            case 'good': 
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point = 5 and c.pid = '.$pid;
+                break;
+            case 'middle': 
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 5 and c.point > 1 and c.pid = '.$pid;
+                break;
+            case 'bad': 
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 2 and c.pid = '.$pid;
+                break;
+            default:
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.pid = '.$pid;
+                break;   
+        }
+        
+        $commentDB->order  = 'c.id desc';
+        $commentDB->page   = $page;
+        $data     = $commentDB->find();
+        $pageHtml = $commentDB->getPageBar("javascript:void(0);",'onclick="comment_ajax([page])"');
+        $comment = new IModel('comment');
+        foreach($data as $k =>$v)
+        {
+            $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid='.$v['id'], 'count(1) as num');
+            $data[$k]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+        }
+        /*foreach($dataList as $item){
+            if(isset($data[$item['pid']])){
+                $data[$item['pid']]['son'][] = $data[$item['id']];
+            }else{
+                $dataArr[] = $data[$item['id']];
+            }
+        }*/    
+        echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
+    }
+    
+    //回复评论
+    function comment_reply(){
+       if(!isset($this->user['user_id']) || $this->user['user_id']===null)
+       {
+            $message = array('status' => 0, 'msg' => '您还没有登录');
+       }
+       
+       $pid     = IFilter::act(IReq::get('pid'),'int');
+       $content = IFilter::act(IReq::get('content'),'content');
+                                                   
+       if(!$pid)
+       {      
+           $message = array('status' => 0, 'msg' => '传递的参数不完整');
+           echo JSON::encode($message);exit;
+       }
+       
+       if(!$content)
+       {      
+           $message = array('status' => 0, 'msg' => '请输入评论内容');
+           echo JSON::encode($message);exit;
+       }
+       
+       $comment = new IModel('comment');
+       $data = $comment->getObj('id='.$pid);
+       if(!$data)
+       {
+           $message = array('status' => 0, 'msg' => '系统错误');
+           echo JSON::encode($message);exit;
+       }
+       unset($data['id']);                         
+       $data['pid'] = $pid;
+       $data['contents'] = $content;
+       $data['user_id'] = $this->user['user_id'];
+
+       $data['comment_time'] = date("Y-m-d",ITime::getNow());
+       $comment->setData($data);      
+       $res = $comment->add();    
+
+        if($res)
+        {                                                   
+            $goodsDB = new IModel('goods');
+            $goodsDB->setData(array(
+                'comments' => 'comments + 1',
+                'grade'    => 'grade + '.$data['point'],
+            ));
+            $goodsDB->update('id = '.$data['goods_id'],array('grade','comments'));
+        
+            //更新seller表，point 、num
+            $sellerDB = new IModel('seller');
+            $sellerDB->setData(array(
+                'point'=>'point + '.$data['point'],
+                'num'=>'num + 1',
+            ));
+            $sellerDB->update('id = '.$data['sellerid'],array('point','num'));
+            $message = array('status' => 1, 'msg' => '评论成功');
+        }
+        else
+        {
+            $message = array('status' => 0, 'msg' => '评论失败');
+        } 
+        
+        echo JSON::encode($message);
+    }
+    
 	//购买记录ajax获取
 	function history_ajax()
 	{
@@ -1023,6 +1163,69 @@ class Site extends IController
 
 		echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
 	}
+    
+    //买前咨询数据ajax获取
+    function cir_refer_ajax()
+    {
+        $goods_id = IFilter::act(IReq::get('goods_id'),'int');
+        $page     = IFilter::act(IReq::get('page'),'int') ? IReq::get('page') : 1;
+        $pid     = IFilter::act(IReq::get('pid'),'int') ? IReq::get('pid') : 0;
+
+        $referDB = new IQuery('refer as r');
+        $referDB->join = 'left join user as u on r.user_id = u.id';
+        $referDB->where = 'r.goods_id = '.$goods_id.' and r.pid='.$pid;
+        $referDB->order = 'r.id desc';
+        $referDB->fields = 'u.username,u.head_ico,r.id,r.time,r.question,r.reply_time,r.answer';
+        $referDB->page = $page;
+
+        $data = $referDB->find();
+        $refer = new IModel('refer');
+        foreach($data as $k =>$v)
+        {
+            $temp = $refer->query('goods_id = '.$goods_id.' and pid='.$v['id'], 'count(1) as num');
+            $data[$k]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+        }
+        $pageHtml = $referDB->getPageBar("javascript:void(0);",'onclick="refer_ajax([page])"');
+        echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
+    }
+    
+    //回复咨询
+    function question_reply()
+    {
+        $pid     = IFilter::act(IReq::get('pid'),'int');
+        $question = IFilter::act(IReq::get('question'),'content');
+        if(!trim($question))
+        {
+            $message = array('status' => 0, 'msg' => '咨询内容不能为空');
+            echo JSON::encode($message);exit;
+        }
+        
+        $refer = new IModel('refer');
+        $data = $refer->getObj('id='.$pid);
+        if(!$data)
+        {
+            $message = array('status' => 0, 'msg' => '系统错误');
+            echo JSON::encode($message);exit;
+        }
+        unset($data['id']);
+        $data['question'] = $question;
+        $data['pid'] = $pid;
+        $data['user_id'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
+        $data['time'] = ITime::getDateTime();
+
+        $refer->setData($data);
+        $res = $refer->add();
+
+        if($res)
+        {
+            $message = array('status' => 1, 'msg' => '回复成功');
+        }
+        else
+        {
+            $message = array('status' => 1, 'msg' => '回复失败');
+        }
+        echo JSON::encode($message);
+    }
 
 	//评论列表页
 	function comments_list()
@@ -1030,7 +1233,7 @@ class Site extends IController
 		$id   = IFilter::act(IReq::get("id"),'int');
 		$type = IFilter::act(IReq::get("type"));
 
-		$this->data=Comment_Class::get_comment_byid($id,$type,$this);
+		$this->data=Comment_Class::get_comment_byid($id,$type,3,$this);
 
 		$this->redirect('comments_list');
 	}

@@ -157,7 +157,7 @@
 						<li id="J_ItemRates" class="tm-ind-item tm-ind-reviewCount canClick tm-line3">
 							<div class="tm-indcon"  onclick="jumpTo('point')">
 								<span class="tm-label">累计评价</span>
-								<span class="tm-count">{$comments}</span>
+								<span class="tm-count">{$comment_num}</span>
 							</div>
 						</li>
 						<li class="tm-ind-item tm-ind-emPointCount" >
@@ -403,7 +403,7 @@
 		<!--热卖商品-->
 	</div>
 
-	{include:layouts/goods_det.html}
+    {include:layouts/goods_det.html}
 </div>
 <script type='text/javascript' src='{theme:javascript/area_show.js}'></script>
 <script type="text/javascript">
@@ -487,8 +487,6 @@ $('[name="showButton"]>label').click(function(){
 
 });
 
-
-
 //加载根据地域获取城市
 function getAddress()
 {
@@ -528,34 +526,6 @@ function searchDelivery(province)
 	});
 }
 
-
-/**
- * 获取评论数据
- * @page 分页数
- */
-function comment_ajax(page)
-{
-	if(!page && $.trim($('#commentBox').text()))
-	{
-		return;
-	}
-	page = page ? page : 1;
-	var url = '{url:/site/comment_ajax/page/@page@/goods_id/$id}';
-	url = url.replace("@page@",page);
-	$.getJSON(url,function(json)
-	{
-		//清空评论数据
-		$('#commentBox').empty();
-
-		for(var item in json.data)
-		{
-			var commentHtml = template.render('commentRowTemplate',json.data[item]);
-			$('#commentBox').append(commentHtml);
-		}
-		$('#commentBox').append(json.pageHtml);
-	});
-}
-
 /**
  * 获取购买记录数据
  * @page 分页数
@@ -581,33 +551,6 @@ function history_ajax(page)
 			$('#historyBox').append(historyHtml);
 		}
 		$('#historyBox').parent().after(json.pageHtml);
-	});
-}
-
-/**
- * 获取购买记录数据
- * @page 分页数
- */
-function refer_ajax(page)
-{
-	if(!page && $.trim($('#referBox').text()))
-	{
-		return;
-	}
-	page = page ? page : 1;
-	var url = '{url:/site/refer_ajax/page/@page@/goods_id/$id}';
-	url = url.replace("@page@",page);
-	$.getJSON(url,function(json)
-	{
-		//清空评论数据
-		$('#referBox').empty();
-
-		for(var item in json.data)
-		{
-			var commentHtml = template.render('referRowTemplate',json.data[item]);
-			$('#referBox').append(commentHtml);
-		}
-		$('#referBox').append(json.pageHtml);
 	});
 }
 
