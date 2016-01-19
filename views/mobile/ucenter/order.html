@@ -160,7 +160,7 @@ background-color: rgba(94, 110, 141, 0.9);
 		  <%}%>
 		  <a class="hongzi wd-popup-trigger" href='javascript:void(0)'><%=goods_data[i]['og_status']%></a>
 		  <%if(goods_data[i]['comment_id']>0){%>
-			  <%if(  goods_data[i]['comment_status']==0){%>
+			  <%if(!goods_data[i]['comment_status']){%>
 			
 	 			<a class="hongzi wd-popup-trigger" href="{url:/site/comments/id}/<%=goods_data[i]['comment_id']%>" >评价</a>
 			<%}else{%>

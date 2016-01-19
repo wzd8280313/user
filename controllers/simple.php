@@ -906,7 +906,7 @@ class Simple extends IController
 		
 		//print_r($this->goodsList);
 		//获取配送方式列表（一个商家不支持则不显示）
-		$allDeliveryType = Api::run('getDeliveryList');
+		/*$allDeliveryType = Api::run('getDeliveryList');
 		$deli_exe = new IModel('delivery_extend');
 		foreach($allDeliveryType as $key=>$val){
 			if($deli_exe->getObj(' delivery_id='.$val['id'].' and seller_id in ('.$sellerStr.') and is_open = 0','id')){
@@ -915,7 +915,7 @@ class Simple extends IController
 		}
 		
         $this->param = $param;
-		$this->allDeliveryType = $allDeliveryType;
+		$this->allDeliveryType = $allDeliveryType; */
     	//渲染页面
     	$this->redirect('cart2');
     }

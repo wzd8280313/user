@@ -300,21 +300,13 @@ class Order_Class
  		$data = $tb_order->getObj($where);
  		if($data)
  		{
-	 		$data['order_id'] = $order_id;
+	 		$data['order_id'] = $order_id;                                               
 
-	 		//获取配送方式
-	 		$tb_delivery = new IModel('delivery');
-	 		$delivery_info = $tb_delivery->getObj('id='.$data['distribution']);
-	 		if($delivery_info)
+	 		//自提点读取
+	 		if($data['takeself'])
 	 		{
-	 			$data['delivery'] = $delivery_info['name'];
-
-	 			//自提点读取
-	 			if($data['takeself'])
-	 			{
-	 				$data['takeself'] = self::getTakeselfInfo($data['takeself']);
-	 			}
-	 		}
+	 			$data['takeself'] = self::getTakeselfInfo($data['takeself']);
+	 		}  
 
 	 		$areaData = area::name($data['province'],$data['city'],$data['area']);
 	 		$data['province_str'] = $areaData[$data['province']];
@@ -381,6 +373,109 @@ class Order_Class
  		}
  		return $data;
 	}
+    
+    /**
+     * @brief 获取订单扩展数据资料
+     * @param $order_id int 订单的id
+     * @param $user_id int 用户id
+     * @return array()
+     */
+    public function getOrderShowDetail($order_id,$user_id = 0)
+    {
+        $where = 'id = '.$order_id;
+        if($user_id !== 0)
+        {
+            $where .= ' and user_id = '.$user_id;
+        }
+
+        $data = array();
+
+        //获得对象
+        $tb_order = new IModel('order');
+         $data = $tb_order->getObj($where);
+         if($data)
+         {
+             $data['order_id'] = $order_id;
+
+             //获取配送方式
+             $tb_delivery = new IModel('delivery');
+             $delivery_info = $tb_delivery->getObj('id=4');
+             if($delivery_info)
+             {
+                 $data['delivery'] = $delivery_info['name'];
+
+                 //自提点读取
+                 if($data['takeself'])
+                 {
+                     $data['takeself'] = self::getTakeselfInfo($data['takeself']);
+                 }
+             }
+
+             $areaData = area::name($data['province'],$data['city'],$data['area']);
+             $data['province_str'] = $areaData[$data['province']];
+             $data['city_str']     = $areaData[$data['city']];
+             $data['area_str']     = $areaData[$data['area']];
+
+            //物流单号
+            $tb_delivery_doc = new IQuery('delivery_doc as dd');
+            $tb_delivery_doc->join   = 'left join freight_company as fc on dd.freight_id = fc.id';
+            $tb_delivery_doc->fields = 'dd.delivery_code,fc.freight_name';
+            $tb_delivery_doc->where  = 'order_id = '.$order_id;
+            $delivery_info = $tb_delivery_doc->find();
+            if($delivery_info)
+            {
+                $temp = array('freight_name' => array(),'delivery_code' => array());
+                foreach($delivery_info as $key => $val)
+                {
+                    $temp['freight_name'][]  = $val['freight_name'];
+                    $temp['delivery_code'][] = $val['delivery_code'];
+                }
+                $data['freight']['freight_name']  = join(",",$temp['freight_name']);
+                $data['freight']['delivery_code'] = join(",",$temp['delivery_code']);
+            }
+
+             //获取支付方式
+             $tb_payment = new IModel('payment');
+             $payment_info = $tb_payment->getObj('id='.$data['pay_type']);
+             if($payment_info)
+             {
+                 $data['payment'] = $payment_info['name'];
+                 $data['paynote'] = $payment_info['note'];
+             }
+
+             //获取商品总重量和总金额
+             $tb_order_goods = new IModel('order_goods');
+             $order_goods_info = $tb_order_goods->query('order_id='.$order_id);
+             $data['goods_amount'] = 0;
+             $data['goods_weight'] = 0;
+
+             if($order_goods_info)
+             {
+                 foreach ($order_goods_info as $value)
+                 {
+                     $data['goods_amount'] += $value['real_price']   * $value['goods_nums'];
+                     $data['goods_weight'] += $value['goods_weight'] * $value['goods_nums'];
+                 }
+             }
+
+             //获取用户信息
+             $query = new IQuery('user as u');
+             $query->join = ' left join member as m on u.id=m.user_id ';
+             $query->fields = 'u.username,u.email,m.mobile,m.contact_addr,m.true_name';
+             $query->where = 'u.id='.$data['user_id'];
+             $user_info = $query->find();
+             if($user_info)
+             {
+                 $user_info = current($user_info);
+                 $data['username']     = $user_info['username'];
+                 $data['email']        = $user_info['email'];
+                 $data['u_mobile']     = $user_info['mobile'];
+                 $data['contact_addr'] = $user_info['contact_addr'];
+                 $data['true_name']    = $user_info['true_name'];
+             }
+         }
+         return $data;
+    }
 
 	/**
 	 * 获取自提点基本信息

@@ -472,6 +472,16 @@ class CountSum
 		return $result;
     }
 
+    /**
+     * 计算订单信息,其中部分计算都是以商品原总价格计算的$goodsSum
+     * @param $goodsResult array CountSum结果集
+     * @param $area_id int 区域ID         
+     * @param $payment_id int 支付ID
+     * @param $is_insured array("goods_id_product_id")部分商品需要报价 or int都设置保价
+     * @param $is_invoice int 是否要发票
+     * @param $discount float 订单的加价或者减价
+     * @return $result 最终的返回数组
+     */
     public static function countOrderFeeee($goodsResult,$area_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
     {
         $goodsFinalSum = $goodsResult['final_sum'];
@@ -501,27 +511,12 @@ class CountSum
         );
         $goods_seller_data = array();
         foreach($goodsResult['goodsList'] as $key => $val){
-            if(!isset($goods_seller_data[$val['seller_id']])){
-                $goods_seller_data[$val['seller_id']]['sum'] = $val['sum'];
-                $goods_seller_data[$val['seller_id']]['weight'] = $val['weight'];
-            }
-            else{
-                $goods_seller_data[$val['seller_id']]['sum'] += $val['sum'];
-                $goods_seller_data[$val['seller_id']]['weight'] += $val['weight'];
-            }
-            $goods_seller_data[$val['seller_id']]['delivery_id'][] = $val['delivery_id'];
-            $goods_seller_data[$val['seller_id']]['name'] = $val['name'];
-        }
-        foreach($goods_seller_data as $k=>$val){
-            $deliveryRow = Delivery::getDeliveryWeight($area_id,$val['delivery_id'][$k],$val['weight'],$k,$val['sum']);
-
-            //商品无法送达
+            $deliveryRow = Delivery::getDelivery($area_id, $val['delivery_id'], $val['goods_id'], $val['product_id'], $val['count']);
+            
             if(is_string($deliveryRow) || $deliveryRow['if_delivery'] == 1)
             {
                 return "您所选购的商品：".$val['name']."，无法送达";
             }
-            $goods_seller_data[$k]['deliveryPrice'] = $deliveryRow['price'];
-            $goods_seller_data[$k]['insuredPrice'] = $deliveryRow['protect_price'];
             $result['deliveryOrigPrice'] += $deliveryRow['price'];
             
             //商品保价计算
@@ -534,26 +529,8 @@ class CountSum
             {
                 $result['deliveryPrice'] += $deliveryRow['price'];
             }
-        }
-        foreach($goodsResult['goodsList'] as $key => $val){
-            //商品保价计算
-            //    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
-            if($is_insured == 1  )
-            {
-                $goodsResult['goodsList'][$key]['insuredPrice'] = $goods_seller_data[$val['seller_id']]['insuredPrice'];
-            }
-            else
-            {
-                $goodsResult['goodsList'][$key]['insuredPrice'] = 0;
-            }
-             if($goodsResult['freeFreight'] == true)
-            {
-                  $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
-            }
-             else
-            {
-                $goodsResult['goodsList'][$key]['deliveryPrice'] = $goods_seller_data[$val['seller_id']]['deliveryPrice'];
-            }
+            $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
+            $goodsResult['goodsList'][$key]['insuredPrice'] = $deliveryRow['protect_price'];
             
             //商品税金计算
             if($is_invoice == true)
@@ -568,8 +545,7 @@ class CountSum
                 $goodsResult['goodsList'][$key]['taxPrice'] = 0;
             }
         }
-
-
+        
         //非货到付款的线上支付方式手续费
         if($payment_id != 0)
         {

@@ -253,6 +253,20 @@ function orderFormClass()
 			//计算金额
 			this.doAccount();
 		}
+        
+        //在线支付与货到付款
+        if(this.paytype == 1)
+        {
+            $('#paymentBox').hide('slow');
+            this.paymentPrice = 0;
+
+            //开启订单金额
+            $('#amountBox').show('slow');
+        }
+        else
+        {
+            $('#paymentBox').show('slow');
+        }
 	}
 
 	/**
