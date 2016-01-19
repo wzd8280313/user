@@ -50,10 +50,9 @@
 
                 </div>
                 {foreach:items=$this->og_data item=$good}
-                    
                 {set:$good_info = JSON::decode($good['goods_array'])}
                 <div class="qrdd qrdds">
-                    <div class="sj"><img {if:isset($goods['seller_logo'])} src="{webroot:}{$goods['seller_logo']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$goods['seller_name']}</a></div>
+                    <div class="sj"><img {if:isset($good['seller_logo'])} src="{webroot:}{$good['seller_logo']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$good['seller_name']}</a></div>
                  <!-- 商品详情-->
                     <div class="qr_xq">
                       <a href="{url:/site/products/id/$good['goods_id']}" style="display:block;padding-bottom:25px;border-bottom: 1px solid #F4F1F1;">
