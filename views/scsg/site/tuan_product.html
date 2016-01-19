@@ -607,7 +607,7 @@ function refer_ajax(page)
 		return;
 	}
 	page = page ? page : 1;
-	var url = '{url:/site/refer_ajax/page/@page@/goods_id/$id}';
+	var url = '{url:/site/cir_refer_ajax/page/@page@/goods_id/$id}';
 	url = url.replace("@page@",page);
 	$.getJSON(url,function(json)
 	{

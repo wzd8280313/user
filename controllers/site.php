@@ -245,16 +245,16 @@ class Site extends IController
         
         //评论条数
         $comment = new IModel('comment');
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id, 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
         $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5', 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
         $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1', 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
         $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2', 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
         $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
         //购买记录
@@ -789,16 +789,16 @@ class Site extends IController
         
         //评论条数
         $comment = new IModel('comment');
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id, 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
         $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5', 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
         $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1', 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
         $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2', 'count(1) as num');
+        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
         $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
 
 		//购买记录
@@ -1039,6 +1039,7 @@ class Site extends IController
        if(!isset($this->user['user_id']) || $this->user['user_id']===null)
        {
             $message = array('status' => 0, 'msg' => '您还没有登录');
+            echo JSON::encode($message);exit;
        }
        
        $pid     = IFilter::act(IReq::get('pid'),'int');
@@ -1074,7 +1075,7 @@ class Site extends IController
 
         if($res)
         {                                                   
-            $goodsDB = new IModel('goods');
+            /*$goodsDB = new IModel('goods');
             $goodsDB->setData(array(
                 'comments' => 'comments + 1',
                 'grade'    => 'grade + '.$data['point'],
@@ -1087,7 +1088,7 @@ class Site extends IController
                 'point'=>'point + '.$data['point'],
                 'num'=>'num + 1',
             ));
-            $sellerDB->update('id = '.$data['sellerid'],array('point','num'));
+            $sellerDB->update('id = '.$data['sellerid'],array('point','num')); */
             $message = array('status' => 1, 'msg' => '评论成功');
         }
         else
