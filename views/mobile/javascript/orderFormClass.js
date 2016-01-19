@@ -104,8 +104,39 @@ function orderFormClass()
 		{
 			return;
 		}                           
-		$('span[id^=deliveryfee_]').each(function(){
-			var _this = $(this);       
+		$('.js_goods_delivery').each(function(){
+			var _this = $(this)
+            ,obj = _this.attr('js_data')
+            ,dataArray = obj.split("_")
+            ,_u = _url;  
+            $.ajax({
+                type:'post',
+                async:false,
+                data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
+                dataType:'json',
+                url: _u,
+                success:function(content)
+                {
+                    console.info(content);
+                    //地区无法送达
+                    if(content.if_delivery == 1)
+                    {
+                        alert('您选择地区部分商品无法送达');
+                        $('#'+obj).html("<span style='color:red'>无法送达</span>");
+                    }
+                    else
+                    {
+                        var html = parseFloat(content.price).toFixed(2);
+                        //允许保价
+                        if(content.protect_price > 0)
+                        {
+                            html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+                        }
+                        _this.html(html);
+                    }
+                },
+                timeout:1000,
+            })                                             
 			orderFormInstance.deliveryPrice += parseFloat(_this.text());     	
 		})                               
 		this.doAccount();

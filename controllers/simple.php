@@ -914,9 +914,9 @@ class Simple extends IController
 			}
 		}
 		
-        $this->param = $param;
 		$this->allDeliveryType = $allDeliveryType; */
     	//渲染页面
+        $this->param = $param;
     	$this->redirect('cart2');
     }
 	//手机端选择收货地址

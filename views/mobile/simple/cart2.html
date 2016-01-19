@@ -39,6 +39,7 @@
 	<option value="<%=id%>"><%=name%></option>
 </script>
 <script type='text/javascript'>
+var _url = "{url:/block/order_delivery_count}";
 //创建订单表单实例
 orderFormInstance = new orderFormClass();
 
@@ -302,7 +303,7 @@ $(".sj img").css("height","27px")
 							<p style='color:red; text-align:right;padding-right:15px;'>
 								小计：<b >￥{$item['sum']}</b>
 							</p>
-							<p style="float: right;padding-right: 16px;">配送费用 ￥<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'>{$item['delivery']}</span></p>
+							<p style="float: right;padding-right: 16px;">配送费用 ￥<span class="js_goods_delivery" js_data="{$item['delivery_id']}_{$item['goods_id']}_{$item['product_id']}_{$item['count']}">{$item['delivery']}</span></p>
 			     		</div>
 			     	</a>
 					</div>

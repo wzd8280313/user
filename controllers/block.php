@@ -194,7 +194,7 @@ class Block extends IController
    	}
     
     /**
-     * 根据商家、订单重量算运费价格ajax
+     * 计算运费价格ajax
      */
        public function order_delivery_count(){
            $goodsId = IFilter::act(IReq::get('goodsId'),'int');
@@ -202,7 +202,7 @@ class Block extends IController
            $area     = IFilter::act(IReq::get("area"),'int');
            $deliveryId = IFilter::act(IReq::get("deliveryId"),'int');//配送方式
            $num = IFilter::act(IReq::get('num'),'int');
-           $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);              
+           $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);                
            echo JSON::encode($data);
        }
        
