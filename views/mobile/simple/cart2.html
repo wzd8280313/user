@@ -340,15 +340,6 @@ $(".sj img").css("height","27px")
 
 					{/foreach}
      			</select>
-				
-     			<!--<p style=" margin-right:10px; margin-top:7px;margin-bottom:6px;">配送方式</p>
-     			<select style="width:97%;height:33px; background-color: #F30; color:#fff; " name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
-     				<option value='-1'>请选配送方式</option>
-					{set:$deliveryData = $this->allDeliveryType}
-					{foreach:items = $deliveryData}
-     				<option value="{$item['id']}" >{$item['name']}</option>
-					{/foreach}
-     			</select>  -->
      			<input style="width:97%;height:33px;" class="xt" type="text" name='message' placeholder="买家留言"/>
      		</div>
 		</div>
@@ -358,10 +349,6 @@ $(".sj img").css("height","27px")
 		     	<input  class="xt" style="width:65%" type="text" name='message' placeholder="买家留言"/>
 		    </div>
 		</div>	
-		     		
-<!--支付方式结束-->
-
-
 		{if:!empty($this->promotion)}
 		<div class="qrdd qrdds">
 	     	<span class="yhj">满足的优惠活动</span>
