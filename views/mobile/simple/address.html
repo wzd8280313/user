@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!-- saved from url=(0035)http://m.b5m.com/activelistings/198 -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -64,7 +63,8 @@
 		<script type='text/javascript' src="{theme:javascript/order.js}"></script>
 		
 		<script src="{theme:javascript/scrollTop.js}"></script>  
-       
+       <script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=aero}' ></script>
+        <script type='text/javascript' src='{url:/lib/web/js/source/artdialog/plugins/iframeTools.js}' ></script>
    <script type="text/javascript">
   $(document).ready(function(){
   $(".addadres").click(function(){
@@ -84,8 +84,7 @@
         ,param = $(this).attr('js_param')
         ,url = '{url:/simple/cart2}/addId/'+id+param;
         if(param)
-        {
-            console.info(url);
+        {                       
             window.location.href = url;
         }
         else
@@ -121,17 +120,17 @@
 					  <tr  style="text-align:left">
 					  	<input type='hidden' name='{$item["id"]}' value='{$item["id"]}' />
 						<td> 
-                        <!-- <span  class="choice_tb" style="display:none;"  ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
-                        src="{skin:images/right_left.png}"></span> -->
+                        <span  class="choice_tb" {if: !$item['default']} style="display:none;" {/if} ><img  style="float: left;margin-top: 10px;margin-left: 5px;" 
+                        src="{skin:images/right_left.png}"></span>
                         <div  class="done_sall" js_data="{$item['id']}" js_param="{$this->param}" style="float: left;line-height:20px;margin-bottom: 5px; width: 90%; font-size:14px;color: #4A4747;">
-                        	<span style="padding-left:30px">{if: $item['default']}<span style="color: red;">[默认]</span> {/if}{$item['accept_name']}
+                        	<span style="padding-left:30px"> {$item['accept_name']}
                         <span style="padding-left:20px">{$item['mobile']}</span></span>
 							<p style="padding-left:30px">{$item['province_val']} {$item['city_val']} {$item['area_val']} {$item['address']}</p>
                            </div>
                      <div id="wrap">
                 <div class="box-163css">
-                  <span onclick="delAddress({$item['id']})" class="dealisc er" style="float: right;margin:3px 30px 0 0;color: #4A4747; font-size: 12px;">删除</span>
-                  <a onclick="delAddress({$item['id']})"  href="javascript:;">
+                  <span onclick="delModel({link:'{url:/ucenter/address_delete/id/$item[id]}'});" class="dealisc er" style="float: right;margin:3px 30px 0 0;color: #4A4747; font-size: 12px;">删除</span>
+                  <a onclick="delModel({link:'{url:/ucenter/address_delete/id/$item[id]}'})"  href="javascript:;">
                   <img style="float:right;" class="dealisc" src="{skin:images/trash.png}"></a>
                           <div style="float: right;" onclick='address_edit(this);' >
                           <input type='hidden' name='json_data_{$item["id"]}' value='{echo:JSON::encode($item)}' />
