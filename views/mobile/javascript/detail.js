@@ -153,6 +153,7 @@ function show_comments_list(_this){
 	if($('#comments .content').text()==''){
 	comment_ajax_list('all',1);
 	}
+    
 }
 /**
  * 获取评论数据(详情首页)
@@ -163,7 +164,7 @@ function comment_ajax(type)
 	var url = comments_url;
 	$.getJSON(url,{type:type,pageSize:3},function(json){
 		for(var item in json.comment_list)
-		{
+		{ 
 			var commentHtml = template.render('commentRowTemplate',json.comment_list[item]);
 			$('#commentBox').prepend(commentHtml);
 		}
@@ -182,11 +183,11 @@ function show_comments(){
  * @param type 评论类型
  * @param statics bool 是否加载统计数据
  */
-function comment_ajax_list(type,statics){
+function comment_ajax_list(type,statics){ 
 	var url = comments_url;
 	var page = parseInt($('input[name=comment_page]').val());
 	$.getJSON(url,{type:type,page:page,pageSize:7},function(json)
-	{//window.alt(JSON.stringify(json));
+	{//window.alt(JSON.stringify(json));   
 	if(json==0)return false;
 		json.point_grade.comment_total=json.comment_total;
 		if(statics){
@@ -196,8 +197,8 @@ function comment_ajax_list(type,statics){
 				$('#comments .content ul').remove();
 				$('#comments .content hr').remove();
 				$('#comments .current').removeClass('current').addClass('other');
-				$(this).removeClass('other').addClass('current');
-				 $('input[name=comment_page]').val('1');
+				$(this).removeClass('other').addClass('current');     
+				 $('input[name=comment_page]').val('1');    
 				comment_ajax_list($(this).attr('type'));
 			})
 		}
