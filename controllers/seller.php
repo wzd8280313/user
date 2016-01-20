@@ -59,7 +59,12 @@ class Seller extends IController
 		{
 			die("没有找到相关商品！");
 		}
-
+        //获取运费计算方式
+        $delivery = new IQuery('delivery as d');
+        $delivery->join = 'left join delivery_extend as de on d.id = de.delivery_id';
+        $delivery->where = 'd.is_delete=0 and de.seller_id='.$this->seller['seller_id'];
+        $delivery->fields = 'd.id,d.name';
+        $this->delivery = $delivery->find();
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');
 	}
@@ -1341,6 +1346,8 @@ class Seller extends IController
 	 */
     public function delivery_update()
     {
+        //计量方式
+        $type   = IFilter::act(IReq::get('type'),'int');
         //首重重量
         $first_weight = IFilter::act(IReq::get('first_weight'),'float');
         //续重重量
@@ -1379,6 +1386,7 @@ class Seller extends IController
         }
 
         $data = array(
+            'type'         => $type,
         	'first_weight' => $first_weight,
         	'second_weight'=> $second_weight,
         	'first_price'  => $first_price,
