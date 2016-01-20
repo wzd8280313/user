@@ -45,8 +45,16 @@ function comment_ajax(page, type, _b)
                     html += '<div class="btnbox">';   
                     html += '<button type="button" data-nick="'+_name+'" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz js_reply_submit" js_data='+_id+'>提交回复</button>';
                     html += '</div></div><hr/></div>';
+                    
                     for(var i = 0; i < json.data.length; i ++){
-                        html += '<p><span class="replys J-reply-trigger">'+json.data[i]['username']+':</span><span class="gray">'+json.data[i]['contents']+'</span><span class="times">'+json.data[i]['comment_time']+'</span></p>';
+                        if(json.data[i]['user_id'] == -1)
+                        {
+                            html += '<p><span class="colors">'+json.data[i]['username']+'：</span><span class="red">'+json.data[i]['contents']+'</span><span class="times">'+json.data[i]['comment_time']+'</span></p>'
+                        }
+                        else
+                        {
+                           html += '<p><span class="replys J-reply-trigger">'+json.data[i]['username']+':</span><span class="gray">'+json.data[i]['contents']+'</span><span class="times">'+json.data[i]['comment_time']+'</span></p>'; 
+                        }
                         html += '<p class="js_replay_comment" js_data="'+json.data[i]['id']+'" js_name="'+json.data[i]['username']+'"><span class="replys J-reply-trigger" id="hf_'+json.data[i]['id']+'">回复（'+json.data[i]['reply']+'）</span></p><div class="js_comment_list_'+json.data[i]['id']+'"></div>';
                     }
                     html += '</div>';
@@ -289,7 +297,6 @@ function refer_ajax(page, _b)
 				    </div>
 				    <hr/>
 					<!--修改评价-->
-						
 						
 					</dl>
 					<div class="corner b"></div>

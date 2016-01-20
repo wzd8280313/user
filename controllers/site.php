@@ -815,7 +815,7 @@ class Site extends IController
 
 		//购买前咨询
 		$tb_refer    = new IModel('refer');
-		$refeer_info = $tb_refer->getObj('goods_id='.$goods_id,'count(*) as totalNum');
+		$refeer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0','count(*) as totalNum');
 		$goods_info['refer'] = 0;
 		if($refeer_info)
 		{
@@ -1019,18 +1019,17 @@ class Site extends IController
         $data     = $commentDB->find();
         $pageHtml = $commentDB->getPageBar("javascript:void(0);",'onclick="comment_ajax([page])"');
         $comment = new IModel('comment');
+        $seller = new IModel('seller');
         foreach($data as $k =>$v)
-        {
+        {              
             $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid='.$v['id'], 'count(1) as num');
             $data[$k]['reply'] = !!$temp ? $temp[0]['num'] : 0;
-        }
-        /*foreach($dataList as $item){
-            if(isset($data[$item['pid']])){
-                $data[$item['pid']]['son'][] = $data[$item['id']];
-            }else{
-                $dataArr[] = $data[$item['id']];
+            if($v['user_id'] == -1)
+            {
+                $name = $seller->getField('id='.$v['sellerid'], 'seller_name');
+                $data[$k]['username'] = $name ? $name : '山城速购';
             }
-        }*/    
+        }
         echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
     }
     
