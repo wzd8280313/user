@@ -60,11 +60,14 @@ class Seller extends IController
 			die("没有找到相关商品！");
 		}
         //获取运费计算方式
-        $delivery = new IQuery('delivery as d');
+        /*$delivery = new IQuery('delivery as d');
         $delivery->join = 'left join delivery_extend as de on d.id = de.delivery_id';
         $delivery->where = 'd.is_delete=0 and de.seller_id='.$this->seller['seller_id'];
         $delivery->fields = 'd.id,d.name';
-        $this->delivery = $delivery->find();
+        $this->delivery = $delivery->find(); */
+        $delivery = new IModel('delivery');
+        $list = $delivery->query("is_delete=0", 'id,name');
+        $this->delivery = $list;
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');
 	}

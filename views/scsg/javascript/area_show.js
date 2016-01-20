@@ -95,20 +95,27 @@ function get_delivery_fee(name){
 	var buyNums = $('#buyNums').val();
     var productId = $('#product_id').val();
 	var deliveryId = $('#delivery_id').val();
-	$.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"distribution":deliveryId,"productId":productId,"num":buyNums},function(content){
-		var delivery_fee = 99999;
-        if(content.if_delivery)
-        {
-           if(content.price<delivery_fee){
-                delivery_fee = content.price;
-           }
-           if(delivery_fee!=99999){
-               $('span[name=fee_box').text('运费：'+delivery_fee);
-           } 
-        }
-		
-		
-	})
+    if(deliveryId != 0)
+    {
+        $.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"distribution":deliveryId,"productId":productId,"num":buyNums},function(content){
+            var delivery_fee = 99999;
+            if(content.if_delivery)
+            {
+               if(content.price<delivery_fee){
+                    delivery_fee = content.price;
+               }
+               if(delivery_fee!=99999){
+                   $('span[name=fee_box').text('运费：'+delivery_fee);
+               } 
+            }
+            
+            
+        })
+    }
+	else
+    {
+        $('span[name=fee_box').text('运费：0');
+    }
 }
 //运费初始化
 function delivery_init(){
@@ -117,6 +124,19 @@ function delivery_init(){
 	$('[name=area_show]').text('城区');
 	$('input[name=area_id]').val('140302');
 	get_delivery_fee();
+}
+
+/**
+ * 计算运费
+ * @param provinceId
+ * @param provinceName
+ */
+ 
+function delivery(provinceId,provinceName)
+{
+    $('.sel_area').text(provinceName);
+
+   get_delivery_fee();
 }
 $(function(){
 	$('#store-selector').append(provinceHtml);

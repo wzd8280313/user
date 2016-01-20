@@ -66,6 +66,11 @@ class Delivery
      */
     public static function getDelivery($area,$delivery_id,$goods_id,$product_id = 0,$num = 1)
     {
+        //特殊化原始数据
+        if(!$delivery_id)
+        {
+            return array('price' => 0, 'protect_price' => 0, 'if_delivery' => 0);
+        }
         $goodsRow = $product_id > 0 ? Api::run("getProductInfo",array('#id#',$product_id)) : Api::run("getGoodsInfo",array('#id#',$goods_id));
 
         //获取默认的配送方式信息
