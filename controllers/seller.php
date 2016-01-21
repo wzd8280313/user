@@ -229,27 +229,81 @@ class Seller extends IController
 		$goodsDB->setData(array('sort' => $sort));
 		$goodsDB->update("id = {$id} and seller_id = ".$this->seller['seller_id']);
 	}
+    
+    //咨询详情
+    public function refer_edit()
+    {
+        $id = IFilter::act(IReq::get('id'), 'int');
+        if(!$id)
+        {
+            IError::show('咨询不存在');
+        }
+        $refer = new IQuery('refer as r');
+        $refer->join = 'left join user as u on r.user_id = u.id';
+        $refer->where = "r.id = {$id}";   
+        $refer->fields = 'u.id as uid,u.username,u.head_ico,r.*';                                        
+        $reply = $refer->find();
+        
+        $referDB = new IQuery('refer as r');
+        $referDB->join = 'left join user as u on r.user_id = u.id';
+        $referDB->where = "r.p_id LIKE '%,{$id},%'";
+        $referDB->order = 'r.p_id asc';
+        $referDB->fields = 'u.id as uid,u.username,u.head_ico,r.*';                                        
+        $replyList = $referDB->find();
+        foreach($replyList as $key => $val)
+        {
+            if($val['user_id'] == '-1')
+            {
+                $seller_name = API::run('getSellerInfo',$val['seller_id'],'true_name');              
+                $replyList[$key]['username'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+            }                          
+            
+            if(!$replyList[$key]['username'])
+            {
+                $replyList[$key]['username'] = '游客';
+            }                                                    
+        }                        
+        $this->reply = $reply[0];                         
+        $this->replyList = $replyList;                            
+        $this->redirect('refer_edit',false);
+    }
 
 	//咨询回复
 	public function refer_reply()
-	{
+	{                                                
 		$rid     = IFilter::act(IReq::get('refer_id'),'int');
-		$content = IFilter::act(IReq::get('content'),'text');
+        $content = IFilter::act(IReq::get('content'),'text');   
+        if(!trim($content))
+        {
+            $message = array('status' => 0, 'msg' => '咨询内容不能为空');
+            echo JSON::encode($message);exit;
+        }
+        
+        $refer = new IModel('refer');
+        $data = $refer->getObj('id='.$rid);
+        if(!$data)
+        {
+            $message = array('status' => 0, 'msg' => '系统错误');
+            echo JSON::encode($message);exit;
+        }
+        $admin_id = $this->admin['admin_id'];//管理员id
+        unset($data['id']);    
+        $data['question'] = $content;
+        $data['pid'] = $rid;
+        $data['admin_id'] = $admin_id;
+        $data['p_id'] = $data['p_id'].$rid.',';
+        $data['status'] = 1;
+        $data['user_id'] = -1;
+        $data['seller_id'] = $this->seller['seller_id'];
+        $data['time'] = ITime::getDateTime();
 
-		if($rid && $content)
-		{
-			$tb_refer = new IModel('refer');
-			$seller_id = $this->seller['seller_id'];//商户id
-			$data = array(
-				'answer' => $content,
-				'reply_time' => date('Y-m-d H:i:s'),
-				'seller_id' => $seller_id,
-				'status' => 1
-			);
-			$tb_refer->setData($data);
-			$tb_refer->update("id=".$rid);
-		}
-		$this->redirect('refer_list');
+        $refer->setData($data);
+        $res = $refer->add();
+        if($res)
+        {
+            $this->redirect('refer_list', false);
+        }        
+        
 	}
 	/**
 	 * @brief查看订单
@@ -888,23 +942,33 @@ class Seller extends IController
 			$this->comment_list();
 			return false;
 		}
-		$query = new IQuery("comment as c");
-		$query->join = "left join goods as goods on c.goods_id = goods.id left join user as u on c.user_id = u.id";
-		$query->fields = "c.*,u.username,goods.name,goods.seller_id";
-		$query->where = "c.id=".$cid." and goods.seller_id = ".$this->seller['seller_id'];
-		$items = $query->find();
+		$comment = new IQuery('comment as c');
+        $comment->join = 'left join goods as goods on c.goods_id = goods.id left join user as u on c.user_id = u.id';
+        $comment->where = "c.id = {$cid}";   
+        $comment->fields = 'u.id as uid,u.username,u.head_ico,c.*,goods.name';                                        
+        $commentInfo = $comment->find();
 
-		if($items)
-		{
-			$this->comment = current($items);
-			$this->redirect('comment_edit');
-		}
-		else
-		{
-			$this->comment_list();
-			$msg = '没有找到相关记录！';
-			Util::showMessage($msg);
-		}
+		$query = new IQuery("comment as c");
+        $query->join = "left join user as u on c.user_id = u.id";
+        $query->fields = "c.*,u.username";
+        $query->where = "c.p_id LIKE '%,{$cid},%'";
+        $commentList = $query->find();
+        foreach($commentList as $key => $val)
+        {
+            if($val['user_id'] == '-1')
+            {
+                $seller_name = API::run('getSellerInfo',$val['sellerid'],'true_name');              
+                $commentList[$key]['username'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+            }                          
+            
+            if(!$commentList[$key]['username'])
+            {
+                $commentList[$key]['username'] = '游客';
+            }                                                    
+        }                        
+        $this->comment = $commentInfo[0];                         
+        $this->commentList = $commentList;
+        $this->redirect('comment_edit');
 	}
 
 	/**
@@ -924,16 +988,31 @@ class Seller extends IController
 			{
 				IError::show(403,'该商品不属于您，无法对其评论进行回复');
 			}
-
-			$updateData = array(
-				'recontents' => $recontent,
-				'recomment_time' => ITime::getDateTime(),
-			);
-			$commentDB = new IModel('comment');
-			$commentDB->setData($updateData);
-			$commentDB->update('id = '.$id);
 		}
-		$this->redirect('comment_list');
+        $comment = new IModel('comment');
+        $data = $comment->getObj('id='.$id);
+        if(!$data)
+        {
+            $message = array('status' => 0, 'msg' => '系统错误');
+            echo JSON::encode($message);exit;
+        }
+        unset($data['id']);
+        $data['pid'] = $id;
+        $data['p_id'] = $data['p_id'].$id.',';
+        $data['contents'] = $recontent;
+        
+        $data['status'] = 1;
+        $data['user_id'] = -1;
+        $data['point'] = 0;
+        $data['sellerid'] = $this->seller['seller_id'];
+        $data['comment_time'] = ITime::getDateTime();
+
+        $comment->setData($data);
+        $res = $comment->add(); 
+        if($res)
+        {
+            $this->redirect('comment_list');
+        }
 	}
 
 	//商品退款详情

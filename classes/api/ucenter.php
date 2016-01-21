@@ -28,30 +28,60 @@ class APIUcenter
 		$query->order = 'id desc';
 		return $query;
 	}
-	//用户中心-商品讨论
-	public function getUcenterConsult($userid)
-	{
-		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
-		$query = new IQuery('refer as r');
-		$query->join   = "join goods as go on r.goods_id = go.id ";
-		$query->where  = "r.user_id =". $userid;
-		$query->fields = "time,name,question,status,answer,admin_id,go.id as gid";
-		$query->page   = $page;
-		$query->order = 'r.id desc';
-		return $query;
-	}
+    //用户中心-商品讨论
+    public function getUcenterConsult($userid)
+    {
+        $page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+        $query = new IQuery('refer as r');
+        $query->join   = "join goods as go on r.goods_id = go.id ";
+        $query->where  = "r.user_id =". $userid.' and r.pid=0';
+        $query->fields = "r.id,time,name,question,status,answer,admin_id,go.id as gid";
+        $query->page   = $page;
+        $query->order = 'r.id desc';
+        return $query;
+    }
+    //用户中心-商品讨论回复
+    public function getUcenterConsultReply($id,$pid=0)
+    {                                                                          
+        $query = new IModel('refer');
+        if($pid)
+        {                   
+            $data = $query->query("p_id LIKE '%,{$id},%' and user_id=-1", 'id,time','time','desc',1);    
+            return end($data);
+        }
+        else
+        {
+            return $query->getObj("p_id LIKE '%,{$id},%'");
+        }
+        
+    }
 	//用户中心-商品评价
 	public function getUcenterEvaluation($userid,$status = '')
 	{
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		$query = new IQuery('comment as c');
 		$query->join   = "left join order_goods as og on c.order_id=og.order_id and c.goods_id=og.goods_id left join goods as go on c.goods_id = go.id ";
-		$query->where  = ($status === '') ? "c.user_id = ".$userid : "c.user_id = ".$userid." and c.status = ".$status;
+		$query->where  = ($status === '') ? "c.user_id = ".$userid.' and c.pid=0' : "c.user_id = ".$userid." and c.status = ".$status.' and c.pid=0';
 		$query->fields = "go.name,go.img,c.*";
 		$query->page   = $page;
 		$query->order = 'c.id desc';
 		return $query;
 	}
+    //用户中心-商品评价回复
+    public function getUcenterCommentReply($id,$pid=0)
+    {                                                                          
+        $query = new IModel('comment');
+        if($pid)
+        {                   
+            $data = $query->query("p_id LIKE '%,{$id},%' and user_id=-1", 'id,comment_time','comment_time','desc',1);    
+            return end($data);
+        }
+        else
+        {
+            return $query->getObj("p_id LIKE '%,{$id},%'");
+        }
+        
+    }
 
 	//用户中心-用户信息
 	public function getMemberInfo($userid){

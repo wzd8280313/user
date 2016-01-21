@@ -502,11 +502,19 @@ return array(
 		'file' => 'ucenter.php','class' => 'APIUcenter'
 	),
 	//用户中心-商品讨论
-	'getUcenterConsult' => array(
+    'getUcenterConsult' => array(
+        'file' => 'ucenter.php','class' => 'APIUcenter'
+    ),
+    //用户中心-商品讨论回复
+	'getUcenterConsultReply' => array(
 		'file' => 'ucenter.php','class' => 'APIUcenter'
 	),
+    //用户中心-商品评价
+    'getUcenterEvaluation' => array(
+        'file' => 'ucenter.php','class' => 'APIUcenter'
+    ),
 	//用户中心-商品评价
-	'getUcenterEvaluation' => array(
+	'getUcenterCommentReply' => array(
 		'file' => 'ucenter.php','class' => 'APIUcenter'
 	),
 	//用户中心-收藏夹

@@ -297,7 +297,17 @@ function refer_ajax(page, _b)
 				    </div>
 				    <hr/>
 					<!--修改评价-->
-						
+					<%if(replyData){%>
+                        <%for(i = 0; i < replyData.length; i ++) {%>
+                        <p class="bg_gray"><img src="{skin:images/front/answer.gif}" width="16px" height="17px" />
+                        <b class="orange"><%=replyData[i]['seller_name']%>回复：</b><span class="f_r"><%=comment_time%></span></p>
+                        <p class="indent bg_gray"><%=replyData[i]['contents']%></p>
+                        <div class="ts">
+                            <p class="js_replay_comment" js_data="<%=replyData[i]['id']%>" js_name="<%=replyData[i]['seller_name']%>"><span class="replys J-reply-trigger re-hf" id="hf_<%=replyData[i]['id']%>" >回复（<%=replyData[i]['reply']%>）</span></p>
+                            <div class="js_comment_list_<%=replyData[i]['id']%>"></div>
+                        </div>
+                        <%}%>
+                        <%}%>	
 					</dl>
 					<div class="corner b"></div>
 
@@ -384,7 +394,17 @@ function refer_ajax(page, _b)
 				    </div>
 				   <!--增加咨询回复-->
 						<hr />
-						
+						<%if(replyData){%>
+                        <%for(i = 0; i < replyData.length; i ++) {%>
+                        <p class="bg_gray"><img src="{skin:images/front/answer.gif}" width="16px" height="17px" />
+                        <b class="orange"><%=replyData[i]['seller_name']%>回复：</b><span class="f_r"><%=reply_time%></span></p>
+                        <p class="indent bg_gray"><%=replyData[i]['question']%></p>
+                        <div class="ts">
+                            <p class="js_replay_question" js_data="<%=replyData[i]['id']%>" js_name="<%=replyData[i]['seller_name']%>"><span class="replys J-reply-trigger re-hf" id="hf_<%=replyData[i]['id']%>" >回复（<%=replyData[i]['reply']%>）</span></p>
+                            <div class="js_question_list_<%=replyData[i]['id']%>"></div>
+                        </div>
+                        <%}%>
+                        <%}%>
 					</dl>
 					<div class="corner b"></div>
 					<div class="corner tl"></div>

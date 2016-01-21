@@ -1990,5 +1990,31 @@ class Ucenter extends IController
     	}
     	$this->redirect("preorder_detail/id/$id");
     }
+    
+    //查询个人中心咨询回复
+    public function refer_reply()
+    {
+        $id = IFilter::act(IReq::get('id'), 'int');
+        $referDB = new IQuery('refer as r');
+        $referDB->join = 'left join user as u on r.user_id = u.id';
+        $referDB->where = "r.p_id LIKE '%,{$id},%'";
+        $referDB->order = 'r.p_id asc';
+        $referDB->fields = 'u.username,u.head_ico,r.*';                                        
+        $reply = $referDB->find();
+        foreach($reply as $key => $val)
+        {
+            if($val['user_id'] == '-1')
+            {
+                $seller_name = API::run('getSellerInfo',$val['seller_id'],'true_name');              
+                $reply[$key]['username'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+            }                          
+            
+            if(!$reply[$key]['username'])
+            {
+                $reply[$key]['username'] = '游客';
+            }     
+        }               
+        echo JSON::encode($reply);
+    }
  
 }

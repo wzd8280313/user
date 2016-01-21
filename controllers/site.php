@@ -630,7 +630,8 @@ class Site extends IController
     	{
 			$dataArray = array(
 				'question' => $question,
-				'goods_id' => $goods_id,
+                'goods_id' => $goods_id,
+				'seller_id' => $goodsRow['seller_id'],
 				'type'=>$type,
 				'user_id'  => isset($this->user['user_id']) ? $this->user['user_id'] : 0,
 				'time'     => ITime::getDateTime(),
@@ -1001,34 +1002,46 @@ class Site extends IController
         switch($type)
         {
             case 'good': 
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point = 5 and c.pid = '.$pid;
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point = 5 and c.pid = '.$pid.' and c.user_id <> -1';
                 break;
             case 'middle': 
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 5 and c.point > 1 and c.pid = '.$pid;
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 5 and c.point > 1 and c.pid = '.$pid.' and c.user_id <> -1';
                 break;
             case 'bad': 
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 2 and c.pid = '.$pid;
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 2 and c.pid = '.$pid.' and c.user_id <> -1';
                 break;
             default:
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.pid = '.$pid;
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.pid = '.$pid.' and c.user_id <> -1';
                 break;   
         }
         
         $commentDB->order  = 'c.id desc';
         $commentDB->page   = $page;
         $data     = $commentDB->find();
-        $pageHtml = $commentDB->getPageBar("javascript:void(0);",'onclick="comment_ajax([page])"');
+        $pageHtml = $commentDB->getPageBar("javascript:void(0);",'onclick="cir_comment_ajax([page])"');
         $comment = new IModel('comment');
-        $seller = new IModel('seller');
         foreach($data as $k =>$v)
         {              
-            $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid='.$v['id'], 'count(1) as num');
+            $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid='.$v['id'].' and user_id <> -1', 'count(1) as num');
             $data[$k]['reply'] = !!$temp ? $temp[0]['num'] : 0;
-            if($v['user_id'] == -1)
+            
+            //后台回复内容
+            if($pid == 0)
             {
-                $name = $seller->getField('id='.$v['sellerid'], 'seller_name');
-                $data[$k]['username'] = $name ? $name : '山城速购';
+                $reply = $comment->query("goods_id = $goods_id and p_id LIKE '%,{$v['id']}%' and user_id = -1");
+                foreach($reply as $key => $val)
+                {
+                    if($val['sellerid'])
+                    {
+                        $seller_name = API::run('getSellerInfo',$val['sellerid'],'true_name');
+                    }
+                    $reply[$key]['seller_name'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+                    $temp = $comment->query('goods_id = '.$goods_id.' and pid='.$val['id'].' and user_id <> -1', 'count(1) as num');
+                    $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+                }
+                $data[$k]['replyData'] =  $reply;
             }
+            $data[$k]['username'] = $v['username'] ? $v['username'] : '游客';
         }
         echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
     }
@@ -1065,7 +1078,9 @@ class Site extends IController
        }
        unset($data['id']);                         
        $data['pid'] = $pid;
+       $data['p_id'] = $data['p_id'].$pid.',';
        $data['contents'] = $content;
+       $data['point'] = 0;
        $data['user_id'] = $this->user['user_id'];
 
        $data['comment_time'] = date("Y-m-d",ITime::getNow());
@@ -1074,20 +1089,6 @@ class Site extends IController
 
         if($res)
         {                                                   
-            /*$goodsDB = new IModel('goods');
-            $goodsDB->setData(array(
-                'comments' => 'comments + 1',
-                'grade'    => 'grade + '.$data['point'],
-            ));
-            $goodsDB->update('id = '.$data['goods_id'],array('grade','comments'));
-        
-            //更新seller表，point 、num
-            $sellerDB = new IModel('seller');
-            $sellerDB->setData(array(
-                'point'=>'point + '.$data['point'],
-                'num'=>'num + 1',
-            ));
-            $sellerDB->update('id = '.$data['sellerid'],array('point','num')); */
             $message = array('status' => 1, 'msg' => '评论成功');
         }
         else
@@ -1173,19 +1174,36 @@ class Site extends IController
 
         $referDB = new IQuery('refer as r');
         $referDB->join = 'left join user as u on r.user_id = u.id';
-        $referDB->where = 'r.goods_id = '.$goods_id.' and r.pid='.$pid;
+        $referDB->where = 'r.goods_id = '.$goods_id.' and r.pid='.$pid.' and r.user_id <> -1';
         $referDB->order = 'r.id desc';
         $referDB->fields = 'u.username,u.head_ico,r.id,r.time,r.question,r.reply_time,r.answer';
         $referDB->page = $page;
-
         $data = $referDB->find();
         $refer = new IModel('refer');
         foreach($data as $k =>$v)
         {
-            $temp = $refer->query('goods_id = '.$goods_id.' and pid='.$v['id'], 'count(1) as num');
+            $temp = $refer->query('goods_id = '.$goods_id.' and pid='.$v['id'].' and user_id <> -1', 'count(1) as num');
             $data[$k]['reply'] = !!$temp ? $temp[0]['num'] : 0;
-        }
-        $pageHtml = $referDB->getPageBar("javascript:void(0);",'onclick="refer_ajax([page])"');
+            
+            //后台回复内容
+            if($pid == 0)
+            {
+                $reply = $refer->query("goods_id = $goods_id and p_id LIKE '%,{$v['id']}%' and user_id = -1");
+                foreach($reply as $key => $val)
+                {
+                    if($val['seller_id'])
+                    {
+                        $seller_name = API::run('getSellerInfo',$val['seller_id'],'true_name');
+                    }
+                    $reply[$key]['seller_name'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+                    $temp = $refer->query('goods_id = '.$goods_id.' and pid='.$val['id'].' and user_id <> -1', 'count(1) as num');
+                    $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+                }
+                $data[$k]['replyData'] =  $reply;
+            }
+            $data[$k]['username'] = $v['username'] ? $v['username'] : '游客';
+        }  
+        $pageHtml = $referDB->getPageBar("javascript:void(0);",'onclick="cir_refer_ajax([page])"');
         echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
     }
     
@@ -1210,6 +1228,7 @@ class Site extends IController
         unset($data['id']);
         $data['question'] = $question;
         $data['pid'] = $pid;
+        $data['p_id'] = $data['p_id'].$pid.',';
         $data['user_id'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
         $data['time'] = ITime::getDateTime();
 
@@ -1222,7 +1241,7 @@ class Site extends IController
         }
         else
         {
-            $message = array('status' => 1, 'msg' => '回复失败');
+            $message = array('status' => 0, 'msg' => '回复失败');
         }
         echo JSON::encode($message);
     }

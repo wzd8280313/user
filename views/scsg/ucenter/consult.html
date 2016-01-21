@@ -13,18 +13,15 @@
 				
 					{set:$queryConsultList = Api::run('getUcenterConsult',$user_id)}
 					{foreach:items = $queryConsultList->find()}
+                    {set:$queryReply = Api::run('getUcenterConsultReply',$item['id'])}
 					<tr>
 						<td><a href="{url:/site/products/id/$item[gid]}" target="_black">{$item['name']}</a></td>
 						<td>{$item['question']}</td>
 						<td>{echo:substr($item['time'],0,10)}</td>
-						<td>{if:$item['status']==1}<a class="blue bold" href="javascript:void(0);" onclick="show_msg(this,'{$item['reply_time']}','{$item['answer']}')">查看</a>{else:}未回复{/if}</td>
+						<td>{if:$queryReply}<a class="blue bold" href="javascript:void(0);" js_data="{$item['id']}" onclick="show_msg(this)">查看</a>{else:}未回复{/if}</td>
 					</tr>
+                    <tr class="show"></tr>
 					{/foreach}
-					{if:isset($item['time'])}
-					<tr id='show_msg' class="show" style="display:none">
-						<td colspan="4"><i class="close f_r" onclick='$(this).parent().parent().css("display","none")'></i> 管理员在 [<span>{echo:$item['time'];}</span>] 给您做了如下解答:<p class="gray indent mt_10" id='re_content'></p></td>
-					</tr>
-					{/if}
 				</tbody>
 				<tfoot><tr><td colspan="4" class="t_l">{$queryConsultList->getPageBar()}</td></tr></tfoot>
 			</table>
@@ -32,11 +29,29 @@
 	</div>
 </div>
 <script type="text/javascript">
-function show_msg(obj,re_time,re_content)
+function show_msg(obj)
 {
-    $('#show_msg').css('display','').insertAfter($(obj).parent().parent())
-    $('#show_msg #re_time').text(re_time);
-    $('#show_msg #re_content').text(re_content);
+    var id = $(obj).attr('js_data');
+    $.ajax({
+         type: "GET",
+         url: "{url:/ucenter/refer_reply}",
+         data: {id:id},
+         dataType: "json",
+         success: function(data){
+             var html = '<td colspan="4"><i class="close f_r" onclick="bClose(this)"></i>';
+             for(var i = 0; i < data.length; i++)
+             {
+                 html += data[i]['username']+'在['+data[i]['time']+']给您做了如下解答:';
+                 html += '<p class="gray indent mt_10">'+data[i]['question']+'</p>';
+             }
+             html += '</td>';
+             $(obj).parents('tr').next('.show').html(html);
+          }
+     });
 
+}
+function bClose(obj)
+{
+    $(obj).parents('.show').html('');
 }
 </script>

@@ -115,7 +115,7 @@ class Comment extends IController
 	function comment_list()
 	{
 		$search = IFilter::act(IReq::get('search'),'strict');
-		$where  = 'c.status = 1';
+		$where  = ' pid = 0';
 		if($search && $appendString = Util::search($search))
 		{
 			$where .= " and ".$appendString;
@@ -139,23 +139,33 @@ class Comment extends IController
 			$this->comment_list();
 			return false;
 		}
+        
+        $comment = new IQuery('comment as c');
+        $comment->join = 'left join goods as goods on c.goods_id = goods.id left join user as u on c.user_id = u.id';
+        $comment->where = "c.id = {$cid}";   
+        $comment->fields = 'u.id as uid,u.username,u.head_ico,c.*,goods.name';                                        
+        $commentInfo = $comment->find();
 		$query = new IQuery("comment as c");
-		$query->join = "left join goods as goods on c.goods_id = goods.id left join user as u on c.user_id = u.id";
-		$query->fields = "c.*,u.username,goods.name,goods.seller_id";
-		$query->where = "c.id=".$cid;
-		$items = $query->find();
-
-		if($items)
-		{
-			$this->comment = current($items);
-			$this->redirect('comment_edit');
-		}
-		else
-		{
-			$this->comment_list();
-			$msg = '没有找到相关记录！';
-			Util::showMessage($msg);
-		}
+		$query->join = "left join user as u on c.user_id = u.id";
+		$query->fields = "c.*,u.username";
+		$query->where = "c.p_id LIKE '%,{$cid},%'";
+		$commentList = $query->find();
+        foreach($commentList as $key => $val)
+        {
+            if($val['user_id'] == '-1')
+            {
+                $seller_name = API::run('getSellerInfo',$val['sellerid'],'true_name');              
+                $commentList[$key]['username'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+            }                          
+            
+            if(!$commentList[$key]['username'])
+            {
+                $commentList[$key]['username'] = '游客';
+            }                                                    
+        }                        
+        $this->comment = $commentInfo[0];                         
+        $this->commentList = $commentList;
+		$this->redirect('comment_edit');
 	}
 
 	/**
@@ -186,18 +196,37 @@ class Comment extends IController
 	function comment_update()
 	{
 		$id = IFilter::act(IReq::get('id'),'int');
-		$recontent = IFilter::act(IReq::get('recontents'));
-		if($id)
-		{
-			$updateData = array(
-				'recontents' => $recontent,
-				'recomment_time' => ITime::getDateTime(),
-			);
-			$commentDB = new IModel('comment');
-			$commentDB->setData($updateData);
-			$commentDB->update('id = '.$id);
-		}
-		$this->redirect('comment_list');
+		$recontent = IFilter::act(IReq::get('recontents'), 'text');
+        if(!trim($recontent))
+        {
+            $message = array('status' => 0, 'msg' => '回复不能为空');
+            echo JSON::encode($message);exit;
+        }
+        
+        $comment = new IModel('comment');
+        $data = $comment->getObj('id='.$id);
+        if(!$data)
+        {
+            $message = array('status' => 0, 'msg' => '系统错误');
+            echo JSON::encode($message);exit;
+        }
+        unset($data['id']);
+        $data['pid'] = $id;
+        $data['p_id'] = $data['p_id'].$id.',';
+        $data['contents'] = $recontent;
+        
+        $data['status'] = 1;
+        $data['user_id'] = -1;
+        $data['point'] = 0;
+        $data['sellerid'] = 0;
+        $data['comment_time'] = ITime::getDateTime();
+
+        $comment->setData($data);
+        $res = $comment->add(); 
+        if($res)
+        {
+            $this->comment_list();
+        }
 	}
 
 	/**
@@ -301,8 +330,8 @@ class Comment extends IController
 	{
 		$search   = IFilter::act(IReq::get('search'),'strict');
 		$keywords = IFilter::act(IReq::get('keywords'),'text');
-		$status   = IFilter::act(IReq::get('status'),'int');
-		$where = ' 1 ';
+		/*$status   = IFilter::act(IReq::get('status'),'int');*/
+		$where = ' pid=0 ';
 		if($search && $keywords)
 		{
 			$where .= " and $search like '%{$keywords}%' ";
@@ -334,14 +363,53 @@ class Comment extends IController
 		{
 			$where .= ' and r.time < "'.$endTime.'"';
 		}
-		if($status=='0')
+		/*if($status=='0')
 		{
 			$where .= ' and r.status = 0';
-		}
+		}  */                         
 		$this->data['where'] = $where;
 		$this->setRenderData($this->data);
 		$this->redirect('refer_list',false);
 	}
+    
+    //咨询详情
+    public function refer_edit()
+    {
+        $id = IFilter::act(IReq::get('id'), 'int');
+        if(!$id)
+        {
+            $this->refer_list();
+            return false;
+        }
+        $refer = new IQuery('refer as r');
+        $refer->join = 'left join user as u on r.user_id = u.id';
+        $refer->where = "r.id = {$id}";   
+        $refer->fields = 'u.id as uid,u.username,u.head_ico,r.*';                                        
+        $reply = $refer->find();
+        
+        $referDB = new IQuery('refer as r');
+        $referDB->join = 'left join user as u on r.user_id = u.id';
+        $referDB->where = "r.p_id LIKE '%,{$id},%'";
+        $referDB->order = 'r.p_id asc';
+        $referDB->fields = 'u.id as uid,u.username,u.head_ico,r.*';                                        
+        $replyList = $referDB->find();
+        foreach($replyList as $key => $val)
+        {
+            if($val['user_id'] == '-1')
+            {
+                $seller_name = API::run('getSellerInfo',$val['seller_id'],'true_name');              
+                $replyList[$key]['username'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+            }                          
+            
+            if(!$replyList[$key]['username'])
+            {
+                $replyList[$key]['username'] = '游客';
+            }                                                    
+        }                        
+        $this->reply = $reply[0];                         
+        $this->replyList = $replyList;                            
+        $this->redirect('refer_edit',false);
+    }
 
 	/**
 	 * @brief 删除咨询信息
@@ -368,23 +436,39 @@ class Comment extends IController
 	 */
 	function refer_reply()
 	{
-		$rid     = IFilter::act(IReq::get('refer_id'),'int');
-		$content = IFilter::act(IReq::get('content'),'text');
+        $rid     = IFilter::act(IReq::get('refer_id'),'int');
+        $content = IFilter::act(IReq::get('content'),'text');   
+        if(!trim($content))
+        {
+            $message = array('status' => 0, 'msg' => '回复不能为空');
+            echo JSON::encode($message);exit;
+        }
+        
+        $refer = new IModel('refer');
+        $data = $refer->getObj('id='.$rid);
+        if(!$data)
+        {
+            $message = array('status' => 0, 'msg' => '系统错误');
+            echo JSON::encode($message);exit;
+        }
+        $admin_id = $this->admin['admin_id'];//管理员id
+        unset($data['id']);
+        $data['question'] = $content;
+        $data['pid'] = $rid;
+        $data['admin_id'] = $admin_id;
+        $data['p_id'] = $data['p_id'].$rid.',';
+        $data['status'] = 1;
+        $data['user_id'] = -1;
+        $data['seller_id'] = 0;
+        $data['time'] = ITime::getDateTime();
 
-		if($rid && $content)
-		{
-			$tb_refer = new IModel('refer');
-			$admin_id = $this->admin['admin_id'];//管理员id
-			$data     = array(
-				'answer' => $content,
-				'reply_time' => date('Y-m-d H:i:s'),
-				'admin_id' => $admin_id,
-				'status' => 1
-			);
-			$tb_refer->setData($data);
-			$tb_refer->update("id=".$rid);
-		}
-		$this->refer_list();
+        $refer->setData($data);
+        $res = $refer->add(); 
+        if($res)
+        {
+            $this->refer_list();
+        }       
+		
 	}
 	/**
 	 * 添加、编辑咨询类型
