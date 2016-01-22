@@ -58,17 +58,17 @@
                     <td>
                         <label class='attr'>
                             首数计数
-                            <input type="text" name="first_weight" pattern='int' {if: $data['type'] == 2} value="{$data['first_weight']}" {/if} >
+                            <input type="text" name="first_num" pattern='int' {if: $data['type'] == 2} value="{$data['first_weight']}" {/if} >
                         </label>
 
-                        <label class='attr'>首数费用<input class='tiny' name="first_price"  {if: $data['type'] == 2} value="{$data['first_price']}"{/if}  pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
+                        <label class='attr'>首数费用<input class='tiny' name="first_num_price"  {if: $data['type'] == 2} value="{$data['first_price']}"{/if}  pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
 
                         <label class='attr'>
                             增加个数
-                            <input type="text" name="second_weight" pattern='int' {if: $data['type'] == 2} value="{$data['second_weight']}"{/if}>
+                            <input type="text" name="second_num" pattern='int' {if: $data['type'] == 2} value="{$data['second_weight']}"{/if}>
                         </label>
 
-                        <label class='attr'>增加费用<input class='tiny' name="second_price" {if: $data['type'] == 2} value="{$data['second_price']}"{/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
+                        <label class='attr'>增加费用<input class='tiny' name="second_num_price" {if: $data['type'] == 2} value="{$data['second_price']}"{/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元</label>
 
                         <p><label>根据个数来计算运费，超过部分按照《增加个数》和《增加费用》乘积来计算</label></p>
                     </td>

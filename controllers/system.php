@@ -195,15 +195,29 @@ class System extends IController
         }  
                                       
         //计量方式
-        $type   = IFilter::act(IReq::get('type'),'int');
-        //首重重量
-        $first_weight = IFilter::act(IReq::get('first_weight'),'float');
-        //续重重量
-        $second_weight = IFilter::act(IReq::get('second_weight'),'float');
-        //首重价格
-        $first_price = IFilter::act(IReq::get('first_price'),'float');
-        //续重价格
-        $second_price = IFilter::act(IReq::get('second_price'),'float');
+        $type   = IReq::get('type') ? IFilter::act(IReq::get('type'),'int') : 1;
+        if($type == 1)
+        {
+            //首重重量
+            $first_weight = IFilter::act(IReq::get('first_weight'),'float');
+            //续重重量
+            $second_weight = IFilter::act(IReq::get('second_weight'),'float');
+            //首重价格
+            $first_price = IFilter::act(IReq::get('first_price'),'float');
+            //续重价格
+            $second_price = IFilter::act(IReq::get('second_price'),'float');
+        }
+        else
+        {
+            //首重重量
+            $first_weight = IFilter::act(IReq::get('first_num'),'float');
+            //续重重量
+            $second_weight = IFilter::act(IReq::get('second_num'),'float');
+            //首重价格
+            $first_price = IFilter::act(IReq::get('first_num_price'),'float');
+            //续重价格
+            $second_price = IFilter::act(IReq::get('second_num_price'),'float');
+        }
         //是否支持物流保价
         $is_save_price = IFilter::act(IReq::get('is_save_price'),'int');
         //地区费用类型
