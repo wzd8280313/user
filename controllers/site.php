@@ -1178,7 +1178,7 @@ class Site extends IController
 
         $referDB = new IQuery('refer as r');
         $referDB->join = 'left join user as u on r.user_id = u.id';
-        $referDB->where = 'r.goods_id = '.$goods_id.' and r.pid='.$pid.' and r.user_id <> -1';
+        $referDB->where = 'r.goods_id = '.$goods_id.' and r.pid='.$pid.' and r.user_id <> -1 and r.type=10';
         $referDB->order = 'r.id desc';
         $referDB->fields = 'u.username,u.head_ico,r.id,r.time,r.question,r.reply_time,r.answer';
         $referDB->page = $page;

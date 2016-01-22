@@ -272,10 +272,10 @@ class Seller extends IController
 	public function refer_reply()
 	{                                                
 		$rid     = IFilter::act(IReq::get('refer_id'),'int');
-        $content = IFilter::act(IReq::get('content'),'text');   
-        if(!trim($content))
+        $content = IFilter::act(IReq::get('content'));   
+        if(!trim($content, ' '))
         {
-            $message = array('status' => 0, 'msg' => '咨询内容不能为空');
+            $message = array('status' => 0, 'msg' => '回复内容不能为空');
             echo JSON::encode($message);exit;
         }
         

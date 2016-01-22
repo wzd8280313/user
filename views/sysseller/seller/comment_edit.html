@@ -72,13 +72,26 @@
 
 		<footer>
 			<div class="submit_link">
-				<input type="submit" class="alt_btn" value="确 定" />
+				<input type="submit" class="alt_btn" onclick="return checkForm()" value="确 定" />
 				<input type="reset" value="重 置" />
 			</div>
 		</footer>
 	</form>
 </article>
 <script type="text/javascript">
+function checkForm()
+{
+    var _c = $.trim($('textarea[name="recontents"]').val());
+    if(_c.length > 0)
+    {
+        return true;
+    }
+    else
+    {
+        alert('回复不能为空');
+        return false;
+    }
+}
 $(document).on('click', '.js_reply_select', function(){
     var _id = $(this).attr('js_data');
     $(this).css('color', 'red');

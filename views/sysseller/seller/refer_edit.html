@@ -49,20 +49,33 @@
 			<fieldset>
 				<label>回复</label>
 				<div class="box">
-					<textarea name="content" rows="" cols="">{$item['answer']}</textarea>
+					<textarea name="content" rows="" cols=""></textarea>
 				</div>
 			</fieldset>
 		</div>
 
 		<footer>
 			<div class="submit_link">
-				<input type="submit" class="alt_btn" value="回 复" />
+				<input type="submit" class="alt_btn" onclick="return checkForm()" value="回 复" />
 				<input type="reset" value="重 置" />
 			</div>
 		</footer>
 	</form>
 </article>
 <script type="text/javascript">
+    function checkForm()
+    {
+        var _c = $.trim($('textarea[name="content"]').val());
+        if(_c.length > 0)
+        {
+            return true;
+        }
+        else
+        {
+            alert('回复不能为空');
+            return false;
+        }
+    }
     $(document).on('click', '.js_reply_select', function(){
         var _id = $(this).attr('js_data');
         $(this).css('color','red');

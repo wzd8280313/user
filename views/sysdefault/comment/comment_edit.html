@@ -73,7 +73,7 @@
 				<tr>
 					<th></th>
 					<td>
-						<button type='submit' class='submit'><span>确定</span></button>
+						<button type='submit' class='submit' onclick="return checkForm()"><span>确定</span></button>
 						<button type='reset' class='submit'><span>重置</span></button>
 					</td>
 				</tr>
@@ -82,6 +82,20 @@
 	</div>
 </div>  
 <SCRIPT LANGUAGE="JavaScript">
+//提交表单前的检查
+function checkForm()
+{
+    var _c = $.trim($('textarea[name="recontents"]').val());
+    if(_c.length > 0)
+    {
+        return true;
+    }
+    else
+    {
+        alert('回复不能为空');
+        return false;
+    }
+}
 function reclaim()
 {
 	art.dialog({

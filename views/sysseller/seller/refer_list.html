@@ -34,7 +34,7 @@
 			<tbody>
 				{set:$seller_id = $this->seller['seller_id']}
 				{set:$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1}
-				{query:name=refer as re join=left join goods as go on go.id eq re.goods_id left join user as u on u.id eq re.user_id left join admin as a on a.id eq re.admin_id left join seller as se on se.id eq re.seller_id fields=se.seller_name,a.admin_name,u.username,re.*,go.name where=go.seller_id eq $seller_id and re.pid eq 0 page=$page id=$referObj}
+				{query:name=refer as re join=left join goods as go on go.id eq re.goods_id left join user as u on u.id eq re.user_id left join admin as a on a.id eq re.admin_id left join seller as se on se.id eq re.seller_id fields=se.seller_name,a.admin_name,u.username,re.*,go.name where=go.seller_id eq $seller_id and re.pid eq 0 page=$page id=$referObj order=re.id desc}
                 {set:$queryReply = Api::run('getUcenterConsultReply',$item['id'],1)}
 				<tr>
 					<td><input name="id[]" type="checkbox" value="{$item['id']}" /></td>

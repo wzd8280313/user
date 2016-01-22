@@ -32,12 +32,12 @@
 
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-			{query: name=comment as c join=left join goods as goods on c.goods_id eq goods.id left join user as u on c.user_id eq u.id fields=c.*,u.username,goods.id as goods_id,goods.name as goods_name page=$page where=goods.seller_id eq $seller_id and c.pid eq 0 and c.status eq 1 $where order = c.id desc}
+			{query: name=comment as c join=left join goods as goods on c.goods_id eq goods.id left join user as u on c.user_id eq u.id fields=c.*,u.username,goods.id as goods_id,goods.name as goods_name page=$page where=goods.seller_id eq $seller_id and c.pid eq 0 and c.status eq 1 $where order = c.comment_time desc}
             {set:$queryReply = Api::run('getUcenterCommentReply',$item['id'],1)}
 			<tr>
 				<td>{if:$item['username']}{$item['username']}{else:}游客{/if}</td>
 				<td><a href="{url:/site/products/id/$item[goods_id]}" target="_blank">{$item['goods_name']}</a></td>
-				<td>{$item['time']}</td>
+				<td>{$item['comment_time']}</td>
 				<td>{if:$queryReply}<span style="color: green;">已回复</span>{else:}未回复{/if}</td>
 				<td><a href="{url:/seller/comment_edit/cid/$item[id]}"><img src="{skin:images/main/icn_settings.png}" alt="查看" /></a></td>
 			</tr>

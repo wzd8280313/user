@@ -138,7 +138,7 @@ class Comment extends IController
 		{
 			$this->comment_list();
 			return false;
-		}
+		}                       
         
         $comment = new IQuery('comment as c');
         $comment->join = 'left join goods as goods on c.goods_id = goods.id left join user as u on c.user_id = u.id';
@@ -200,10 +200,10 @@ class Comment extends IController
 	function comment_update()
 	{
 		$id = IFilter::act(IReq::get('id'),'int');
-		$recontent = IFilter::act(IReq::get('recontents'), 'text');
-        if(!trim($recontent))
-        {
-            $message = array('status' => 0, 'msg' => '回复不能为空');
+		$recontent = IFilter::act(IReq::get('recontents'), 'text');  
+        if(!trim($recontent, ' '))
+        {   
+            $message = array('status' => 0, 'msg' => '回复不能为空');            
             echo JSON::encode($message);exit;
         }
         
@@ -229,7 +229,7 @@ class Comment extends IController
         $res = $comment->add(); 
         if($res)
         {
-            $this->comment_list();
+            $this->redirect('comment_list');
         }
 	}
 
@@ -442,7 +442,7 @@ class Comment extends IController
 	{
         $rid     = IFilter::act(IReq::get('refer_id'),'int');
         $content = IFilter::act(IReq::get('content'),'text');   
-        if(!trim($content))
+        if(!trim($content, ' '))
         {
             $message = array('status' => 0, 'msg' => '回复不能为空');
             echo JSON::encode($message);exit;
@@ -469,8 +469,8 @@ class Comment extends IController
         $refer->setData($data);
         $res = $refer->add(); 
         if($res)
-        {
-            $this->refer_list();
+        {  
+            $this->redirect('refer_list');
         }       
 		
 	}

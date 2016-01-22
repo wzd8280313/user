@@ -33,6 +33,7 @@ function comment_ajax(page, type, _b)
                 _name = _this.attr('js_name'),
                 _url = '{url:/site/cir_comment_ajax/page/1/pid/@pid@/goods_id/$id}';
             _url = _url.replace("@pid@",_id);
+            _this.attr('class', 'js_hide_reply_comment');
             $.getJSON(_url,function(json){
                 var html = "<div class='bg-hf'>";
                     html += "<div class='reply-textarea J-reply-con' style='margin-bottom: 10px;display:block;'>";
@@ -90,6 +91,10 @@ function comment_ajax(page, type, _b)
         })
     });
 }
+
+$(document).on('click', '.js_hide_reply_comment',function(){
+    $(this).attr('class', 'js_replay_comment').next('div').html('');
+})
 
 /**
  * 获取购买前咨询数据
@@ -424,7 +429,7 @@ $(document).on('click', '.js_hide_big_photo', function(){
 						<%if(replyData){%>
                         <%for(i = 0; i < replyData.length; i ++) {%>
                         <p class="bg_gray"><img src="{skin:images/front/answer.gif}" width="16px" height="17px" />
-                        <b class="orange"><%=replyData[i]['seller_name']%>回复：</b><span class="f_r"><%=reply_time%></span></p>
+                        <b class="orange"><%=replyData[i]['seller_name']%>回复：</b><span class="f_r"><%=replyData[i]['time']%></span></p>
                         <p class="indent bg_gray"><%=replyData[i]['question']%></p>
                         <div class="ts">
                             <p class="js_replay_question" js_data="<%=replyData[i]['id']%>" js_name="<%=replyData[i]['seller_name']%>"><span class="replys J-reply-trigger re-hf" id="hf_<%=replyData[i]['id']%>" >回复（<%=replyData[i]['reply']%>）</span></p>
