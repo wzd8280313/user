@@ -47,6 +47,13 @@
 						<p class="clearfix"><b>评分：</b><span class="grade"><i style="width:{echo:Common::gradeWidth($item['point'])}px"></i></span><span class="light_gray">{$dateline}</span><label></label></p>
 						<hr />
 						<p><b>评语：</b><span class="gray">{$item['contents']}</span></p>
+                        {if: $item['photo']}
+                        <p class="js_photo">
+                        {foreach: items=$item['photo'] item=$photo}
+                            <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
+                        {/foreach}
+                        <p></p>
+                        {/if}
 					</dl>
 					<div class="corner b"></div>
 					<div class="corner tl"></div>
@@ -58,7 +65,14 @@
 		</div>
 	</div>
 </div>
-
+<style type="text/css">
+    .js_show_big_photo{
+        width: 50px; height: 50px; border: 2px solid #F0F0F0;
+    }
+    .js_show_big_photo:hover{
+         border: 2px solid #FF6600;
+    }
+</style>
 <script type='text/javascript'>
 //DOM加载完毕
 $(function()
@@ -68,4 +82,14 @@ $(function()
 	var tabIndex = {"all":0,"good":1,"middle":2,"bad":3};
 	$('.tabs_menu>label:eq('+tabIndex[urlType]+')').addClass('current');
 });
+$(document).on('click', '.js_show_big_photo', function(){
+    var _u = new Image();
+    _u.src = $(this).attr('src')
+    var _w = _u.width > 500 ? 500 : _u.width
+        ,html = '<p class="js_hide_big_photo" style="margin-top:10px;width:26px; height:20px; border:1px solid gray;cursor:pointer;">关闭</p><br/><img src='+_u.src+' width='+_w+'/>';
+    $(this).parents('.js_photo').next('p').html(html);
+})
+$(document).on('click', '.js_hide_big_photo', function(){
+    $(this).parents('p').html('');
+})
 </script>

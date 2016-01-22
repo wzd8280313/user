@@ -63,14 +63,13 @@ class Comment_Class
 		$data  = array();
 		$query = new IQuery("comment");
 		$query->fields = "COUNT(*) AS num,point";
-		$query->where  = "goods_id = {$id} AND status=1 ";
+		$query->where  = "goods_id = {$id} AND status=1 AND pid = 0";
 		$query->group  = "point";
 
 		$data['point_grade'] = array('none'=>0,'good'=>0,'middle'=>0,'bad'=>0);
 		$config = array(0=>'bad',1=>'bad',2=>'middle',3=>'middle',4=>'middle',5=>'good');
-		$data['point_total'] = 0;
-
-		foreach( $query->find() AS $value )
+		$data['point_total'] = 0;            
+		foreach( $query->find() AS $key => $value )
 		{
 			if($value['point']>=0 && $value['point']<=5)
 			{
@@ -108,7 +107,7 @@ class Comment_Class
 		$query = new IQuery("comment AS a");
 		$query->fields = "a.*,b.username,b.email,b.phone,b.head_ico";
 		$query->join = "left join user AS b ON a.user_id=b.id";
-		$query->where = " a.goods_id = {$id} ";
+		$query->where = " a.goods_id = {$id} AND a.pid=0 ";
 		
 		if($type!==null)
 			$query->where = " a.goods_id={$id} AND a.status=1  AND a.point IN ($type)";
@@ -123,8 +122,8 @@ class Comment_Class
 		if($query->page==0){return 0;}
 		if($controller){
 			$controller->comment_query = $query;
-		}
-		
+		}                                
+        $photo = new IModel('comment_photo');
 		if($data['comment_list'])
 		{
 			$user_ids = array();
@@ -136,7 +135,10 @@ class Comment_Class
 				}else if($value['email']){
 					$data['comment_list'][$key]['user_show'] = user_like::getSecretEmail($value['email']);
 				}else 
-					$data['comment_list'][$key]['user_show'] = user_like::getSecretPhone($value['phone']);
+				{
+                      $data['comment_list'][$key]['user_show'] = user_like::getSecretPhone($value['phone']);
+                }
+                $data['comment_list'][$key]['photo'] = $photo->query('comment_id='.$value['id'], 'img', 'sort', 'desc');
 			}
 			$user_ids = implode(",", array_unique( $user_ids ) );
 			$query = new IQuery("member AS a");
@@ -150,7 +152,7 @@ class Comment_Class
 			{
 				$data['comment_list'][$key]['user_group_name']=isset($user_info[$value['user_id']]['group_name']) ? $user_info[$value['user_id']]['group_name'] : '';
 			}
-		}
+		}                                
 		return array_merge($data, self::get_comment_info($id) );
 	}
 }

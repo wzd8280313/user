@@ -3,6 +3,12 @@
     .pthf{
         color:#13BFF3;
     }
+    .js_show_big_photo{
+        width: 50px; height: 50px; border: 2px solid #F0F0F0;
+    }
+    .js_show_big_photo:hover{
+         border: 2px solid #FF6600;
+    }
 </style>
 <article class="module width_full">
 	<header>
@@ -33,13 +39,20 @@
                     <div class="">
                         <p><span>{if: $comment['username']}{$comment['username']}{else:}游客{/if}：</span>
                             <span>{$comment['comment_time']}</span></p>
-                        <p>{$comment['contents']}</p>    
+                        <p>{$comment['contents']}</p>
+                        {if: $comment['photo']}
+                        <p class="js_photo">
+                        {foreach: items=$comment['photo'] item=$photo}
+                            <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
+                        {/foreach}
+                        <p></p>
+                        {/if}    
                     </div>
                     {foreach:items=$this->commentList}
                     <div class="box js_reply_select" js_data="{$item['id']}">
                         <p><span {if:$item['user_id']==-1} class="pthf" {/if}>{$item['username']}：</span>
                             <span>{$item['comment_time']}</span></p>
-                        <p>{$item['contents']}</p>
+                        <p>{$item['contents']}</p> 
                     </div>
                     {/foreach}
                 </div>
@@ -71,5 +84,15 @@ $(document).on('click', '.js_reply_select', function(){
     $(this).css('color', 'red');
     $(this).siblings().css('color','black');
     $("input[name=id]").val(_id);
+})
+$(document).on('click', '.js_show_big_photo', function(){
+    var _u = new Image();
+    _u.src = $(this).attr('src')
+    var _w = _u.width > 500 ? 500 : _u.width
+        ,html = '<p class="js_hide_big_photo" style="margin-top:10px;width:26px; height:20px; border:1px solid gray;cursor:pointer;">关闭</p><br/><img src='+_u.src+' width='+_w+'/>';
+    $(this).parents('.js_photo').next('p').html(html);
+})
+$(document).on('click', '.js_hide_big_photo', function(){
+    $(this).parents('p').html('');
 })
 </script>

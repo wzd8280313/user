@@ -173,7 +173,26 @@ function refer_ajax(page, _b)
         })
     });
 }
+
+$(document).on('click', '.js_show_big_photo', function(){
+    var _u = new Image();
+    _u.src = $(this).attr('src')
+    var _w = _u.width > 500 ? 500 : _u.width
+        ,html = '<p class="js_hide_big_photo" style="margin-top:10px;width:26px; height:20px; border:1px solid gray;cursor:pointer;">关闭</p><br/><img src='+_u.src+' width='+_w+'/>';
+    $(this).parents('.js_photo').next('p').html(html);
+})
+$(document).on('click', '.js_hide_big_photo', function(){
+    $(this).parents('p').html('');
+})
 </script>
+<style type="text/css">
+    .js_show_big_photo{
+        width: 50px; height: 50px; border: 2px solid #F0F0F0;
+    }
+    .js_show_big_photo:hover{
+         border: 2px solid #FF6600;
+    }
+</style>
 <!--滑动面tab标签-->
 	<div class="main f_r" style="overflow:hidden; width:950px;">
 
@@ -290,6 +309,14 @@ function refer_ajax(page, _b)
 						</p>
 						<hr />
 						<p><b>评价：</b><span class="gray"><%=contents%></span></p>
+                        <%if(photo){%>
+                        <p class="js_photo">
+                        <%for(i = 0; i < photo.length; i ++) {%>
+                            <img src="{webroot:<%=photo[i]['img']%>}" class="js_show_big_photo"/>
+                        <%}%>
+                        </p>
+                        <p></p>
+                        <%}%>
 						<!--修改评价-->
 						<div class="huifu">
 						<p class="js_replay_comment" js_data="<%=id%>" js_name="<%=username%>"><span class="replys J-reply-trigger" id="hf_<%=id%>">回复（<%=reply%>）</span></p>

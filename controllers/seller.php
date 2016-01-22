@@ -928,7 +928,7 @@ class Seller extends IController
 		}
 
 		die(JSON::encode($result));
-	}
+	}               
 
 	/**
 	 * @brief 显示评论信息
@@ -947,6 +947,10 @@ class Seller extends IController
         $comment->where = "c.id = {$cid}";   
         $comment->fields = 'u.id as uid,u.username,u.head_ico,c.*,goods.name';                                        
         $commentInfo = $comment->find();
+        
+        //查询评论图片
+        $photo = new IModel('comment_photo');
+        $commentInfo[0]['photo'] = $photo->query('comment_id='.$cid, 'img', 'sort', 'desc'); 
 
 		$query = new IQuery("comment as c");
         $query->join = "left join user as u on c.user_id = u.id";

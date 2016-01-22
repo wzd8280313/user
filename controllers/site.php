@@ -1020,14 +1020,15 @@ class Site extends IController
         $data     = $commentDB->find();
         $pageHtml = $commentDB->getPageBar("javascript:void(0);",'onclick="cir_comment_ajax([page])"');
         $comment = new IModel('comment');
+        $photo = new IModel('comment_photo');
         foreach($data as $k =>$v)
         {              
             $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid='.$v['id'].' and user_id <> -1', 'count(1) as num');
             $data[$k]['reply'] = !!$temp ? $temp[0]['num'] : 0;
             
-            //后台回复内容
             if($pid == 0)
             {
+                //后台回复内容
                 $reply = $comment->query("goods_id = $goods_id and p_id LIKE '%,{$v['id']}%' and user_id = -1");
                 foreach($reply as $key => $val)
                 {
@@ -1040,6 +1041,9 @@ class Site extends IController
                     $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
                 }
                 $data[$k]['replyData'] =  $reply;
+                
+                //查询评论图片
+                $data[$k]['photo'] = $photo->query('comment_id='.$v['id'], 'img', 'sort', 'desc');
             }
             $data[$k]['username'] = $v['username'] ? $v['username'] : '游客';
         }
@@ -1318,7 +1322,8 @@ class Site extends IController
 		$data             = array();
 		$data['point']    = IFilter::act(IReq::get('point'),'float');
 		$data['contents'] = IFilter::act(IReq::get("contents"),'content');
-		$data['sellerid'] = IFilter::act(IReq::get('sellerid'),'int');
+        $data['sellerid'] = IFilter::act(IReq::get('sellerid'),'int');
+		$imgList = IFilter::act(IReq::get('imgList'),'string');
 		$data['status']   = 1;
 
 		if($data['point']==0)
@@ -1359,6 +1364,21 @@ class Site extends IController
 				'num'=>'num + 1',
 			));
 			$sellerDB->update('id = '.$data['sellerid'],array('point','num'));
+            
+            //处理评论图片
+            if($imgList)
+            {
+                $imgListArr = explode(',', $imgList);
+                $photo = new IModel('comment_photo');
+                foreach($imgListArr as $k => $v)
+                {
+                    $para['comment_id'] = $id;
+                    $para['img'] = $v;
+                    $para['sort'] = $k;
+                    $photo->setData($para);
+                    $photo->add();
+                }
+            }
 			echo "success";
 		}
 		else
