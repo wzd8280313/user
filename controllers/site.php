@@ -1299,9 +1299,36 @@ class Site extends IController
 		$goods_id=$this->comment['goods_id'];
 		$goods_db = new IModel('goods');
 		$this->goodsRow = $goods_db->getObj('id='.$goods_id);
+        $this->upload_url = 'site/comment_img_upload';
 		//print_r($this->comment);
 		$this->redirect("comments");
 	}
+    
+    /**
+     * @brief 商品添加中图片上传的方法
+     */
+    public function comment_img_upload()
+    {
+        //获得配置文件中的数据
+        $config = new Config("site_config");
+
+         //调用文件上传类
+        $photoObj = new PhotoUpload();
+        $photo    = current($photoObj->run());  
+        //判断上传是否成功，如果float=1则成功
+        if($photo['flag'] == 1)
+        {
+            $result = array(
+                'flag'=> 1,
+                'img' => $photo['img']
+            );
+        }
+        else
+        {
+            $result = array('flag'=> $photo['flag']);
+        }                
+        echo JSON::encode($result);
+    }
 
 	/**
 	 * @brief 进行商品评论 ajax操作

@@ -2,7 +2,8 @@
 {set:$id = $this->comment['id'];}
 {set:$item=$this->goodsRow;}
 {set:$goods_id=$this->comment['goods_id']}
-{set:$swfloadObject = new Swfupload();$swfloadObject->show();}
+{set:$url=$this->upload_url}  
+{set:$swfloadObject = new Swfupload("$url");$swfloadObject->show();}
 <style type="text/css">
     input.middle {
         height: 22px;
