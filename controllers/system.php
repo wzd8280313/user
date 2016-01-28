@@ -170,6 +170,9 @@ class System extends IController
 			$delivery->setData(array('is_delete'=>1));
 			if($delivery->update('id in('.$id.')'))
 			{
+                $goods = new IModel('goods');
+                $goods->setData(array('delivery_id'=>1));
+                $goods->update('delivery_id in('.$id.')');
 				$logObj->write('operation',array("管理员:".$this->admin['admin_name'],"把配送方式移除到回收站中","被移除到回收站中的配送方式为：".join(',',$deliveryName)));
 			}
 
@@ -189,7 +192,7 @@ class System extends IController
 		//配送方式名称
 		$name = IFilter::act(IReq::get('name')); 
             
-        if(!!$delivery->getObj(" name = '".$name."' and id <> ".$id,'id'))
+        if(!!$delivery->getObj(" name = '".$name."' and id <> ".$id.' and is_delete = 0','id'))
         {
             $message = '配送方式名称重复';
         }  

@@ -521,7 +521,7 @@ class CountSum
             
             //商品保价计算
             //    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
-            if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$k]) ) )
+            if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$key]) ) )
             {
                 $result['insuredPrice'] += $deliveryRow['protect_price'];
             }

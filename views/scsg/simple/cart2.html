@@ -138,7 +138,7 @@ function get_delivery()
 	{
 		return;
 	}                     
-	$('span[id^=deliveryfee_]').each(function(){
+	$('span[id^=deliveryfee_]').each(function(i){
 		var _this = $(this)
             ,price = 0;
         _this.parents('table').find('.js_goods_delivery').each(function(){
@@ -168,7 +168,8 @@ function get_delivery()
                             //允许保价
                             if(content.protect_price > 0)
                             {
-                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+                                
+                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+i+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
                             }
                             _t.html(html);
                         }

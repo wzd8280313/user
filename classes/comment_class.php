@@ -110,9 +110,9 @@ class Comment_Class
 		$query->where = " a.goods_id = {$id} AND a.pid=0 ";
 		
 		if($type!==null)
-			$query->where = " a.goods_id={$id} AND a.status=1  AND a.point IN ($type)";
+			$query->where = " a.goods_id={$id} AND a.status=1  AND a.point IN ($type) AND a.pid=0 ";
 		else
-			$query->where = "a.goods_id={$id} AND a.status=1 ";
+			$query->where = "a.goods_id={$id} AND a.status=1 AND a.pid=0";
 		
 		$query->order    = "a.id DESC";
 		$query->page     = IReq::get('page') ? intval(IReq::get('page')):1;

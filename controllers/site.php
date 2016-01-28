@@ -1256,7 +1256,7 @@ class Site extends IController
 		$id   = IFilter::act(IReq::get("id"),'int');
 		$type = IFilter::act(IReq::get("type"));
 
-		$this->data=Comment_Class::get_comment_byid($id,$type,3,$this);
+		$this->data=Comment_Class::get_comment_byid($id,$type,10,$this);
 
 		$this->redirect('comments_list');
 	}

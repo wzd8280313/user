@@ -12,6 +12,7 @@ Class Refunds_Class{
 	 * @$orderGoodsRow array 包含order_goods 和order表数据
 	 */
 	public static function order_goods_refunds($orderGoodsRow){
+        var_dump($orderGoodsRow);exit;
 		if($orderGoodsRow['order_amount']==0)return false;
 		if($orderGoodsRow['refunds_status']==0 && in_array($orderGoodsRow['status'],array(2,7,8,9)))
 			return true;
