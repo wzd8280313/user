@@ -156,7 +156,7 @@
 					{if:$item['comment_id']!=-1 && $item['comment_id'] && $item['comment_status']==0}
 						<a href="{url:/site/comments/id/$item['comment_id']}"  class='btn_gray btn_small'>评价</a>
 					{elseif :$item['comment_id']!=-1 && $item['comment_id'] && $item['comment_status']==1}
-						<b class="orange">已评价</b>
+						<b class="orange">已评价</b><a href=""><b class="orange_vs">追加评价</b></a>
 					{/if}</p>	
 				</td>
             </tr>

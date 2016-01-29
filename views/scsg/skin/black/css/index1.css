@@ -11,7 +11,8 @@ hr{height:1px;border:none;border-top:1px solid #e4e4e4;overflow:hidden;margin:10
 hr.dashed{border-top:1px dashed #e4e4e4}
 a.hidefocus{outline:none}
 button.hidefocus::-moz-focus-inner{border:none}
-.green{color:#8fc21d}
+.green{color:#ABA9A9}
+.blue_vs{color:#46a0fe; font-weight: bold;margin-left: 10px;}
 .brown{color:#db054b}
 .gray{color:#4f4f4f}
 .normal_gray{color:#666}
@@ -21,7 +22,8 @@ button.hidefocus::-moz-focus-inner{border:none}
 .orange{color:#d66b03}
 .red{color:#ff3200}
 a.red2,.red2{color:#db054b}
-a.orange,.orange{color:#626262}
+a.orange,.orange{color:#ABA9A9;margin-right: 15px;}
+a.orange,.orange_vs{color:#46a0fe;}
 a.blue,.blue{color:#36c}
 a.line{text-decoration:underline}
 .normal,a.normal{font-weight:normal}
