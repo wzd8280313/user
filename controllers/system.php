@@ -85,7 +85,7 @@ class System extends IController
 	{
 		$data = array();
         $id = IFilter::act(IReq::get('id'),'int');
-        $type = IFilter::act(IReq::get('type'),'int');     
+        $deli_type = IFilter::act(IReq::get('deli_type'),'int');     
         if($id)
         {
             $delivery = new IModel('delivery');
@@ -106,7 +106,7 @@ class System extends IController
             $this->area = $area;
 		}
 
-        $this->type = $type;
+        $this->deli_type = $deli_type;
         
 		//获取省份
 		
@@ -198,7 +198,7 @@ class System extends IController
         }  
                                       
         //计量方式
-        $type   = IReq::get('type') ? IFilter::act(IReq::get('type'),'int') : 1;
+        $type   = IReq::get('deli_type') ? IFilter::act(IReq::get('deli_type'),'int') : 1;
         if($type == 1)
         {
             //首重重量
@@ -245,7 +245,7 @@ class System extends IController
         $low_price = IFilter::act(IReq::get('low_price'),'float');
         $data = array(
             'name'         => $name,
-        	'type'         => $type,
+        	'deli_type'    => $type,
         	'first_weight' => $first_weight,
         	'second_weight'=> $second_weight,
         	'first_price'  => $first_price,

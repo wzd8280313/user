@@ -103,7 +103,7 @@ class Delivery
         //print_r($area_groupid);
          if($deliveryRow['price_type'] == 0 || !is_array($area_groupid))
          {
-            if($deliveryRow['type'] == 2)
+            if($deliveryRow['deli_type'] == 2)
             {
                 $deliveryRow['price'] = self::getFeeByNum($num,$deliveryRow['first_price'],$deliveryRow['second_price']);
             }
@@ -154,7 +154,7 @@ class Delivery
                 $firstprice  = unserialize($deliveryRow['firstprice']);
                 $secondprice = unserialize($deliveryRow['secondprice']);
                 
-                if($deliveryRow['type'] == 2)
+                if($deliveryRow['deli_type'] == 2)
                 {
                     $deliveryRow['price'] = self::getFeeByNum($num,$firstprice[$matchKey],$secondprice[$matchKey]);
                 }
@@ -168,7 +168,7 @@ class Delivery
                  //判断是否设置默认费用了
                  if($deliveryRow['open_default'] == 1)
                  {
-                    if($deliveryRow['type'] == 2)
+                    if($deliveryRow['deli_type'] == 2)
                     {
                         $deliveryRow['price'] = self::getFeeByNum($num,$deliveryRow['first_price'],$deliveryRow['second_price']);
                     }

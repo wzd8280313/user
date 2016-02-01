@@ -271,7 +271,7 @@ class Site extends IController
         
         //购买前咨询
         $tb_refer    = new IModel('refer');
-        $refeer_info = $tb_refer->getObj('goods_id='.$goods_id,'count(*) as totalNum');
+        $refeer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type=10','count(*) as totalNum');
         $goods_info['refer'] = 0;
         if($refeer_info)
         {
@@ -816,7 +816,7 @@ class Site extends IController
 
 		//购买前咨询
 		$tb_refer    = new IModel('refer');
-		$refeer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0','count(*) as totalNum');
+		$refeer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type=10','count(*) as totalNum');
 		$goods_info['refer'] = 0;
 		if($refeer_info)
 		{

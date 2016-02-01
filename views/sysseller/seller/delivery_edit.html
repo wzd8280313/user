@@ -1,6 +1,5 @@
 {set:$data=$this->data_info}
 {js:artTemplate}
-
 <article class="module width_full">
 	<header>
 		<h3 class="tabs_involved">货款结算单编辑</h3>
@@ -13,42 +12,42 @@
             <fieldset>
                 <label>计费方式:</label>
                 <div class="box">
-                   <label class='attr'><input name="type" type="radio" value="1" {if: $data && $data['type'] == 1} checked {/if} />重量计算</label>
-                    <label class='attr'><input name="type" type="radio" value="2" {if: $data && $data['type'] == 2} checked {/if} />数量计算</label> 
+                   <label class='attr'><input name="deli_type" type="radio" value="1" {if: $data && $data['deli_type'] == 1} checked {/if} />重量计算</label>
+                    <label class='attr'><input name="deli_type" type="radio" value="2" {if: $data && $data['deli_type'] == 2} checked {/if} />数量计算</label> 
                 </div>
             </fieldset>
-			<fieldset class="js_set" id="js_set_1" {if: $data && $data['type'] <> 1} style="display: none;" {/if}>
+			<fieldset class="js_set" id="js_set_1" {if: $data && $data['deli_type'] <> 1} style="display: none;" {/if}>
 				<label>重量设置</label>
 				<div class="box">
 					首重重量
-                    <input type="text" class='tiny' name="first_weight" pattern='int' {if: $data && $data['type'] == 1} value="{$data['first_weight']}" {/if}>克
+                    <input type="text" class='tiny' name="first_weight" pattern='int' {if: $data && $data['deli_type'] == 1} value="{$data['first_weight']}" {/if}>克
 
 					首重费用
-                    <input class='tiny' name="first_price" {if: $data && $data['type'] == 1} value="{$data['first_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元，
+                    <input class='tiny' name="first_price" {if: $data && $data['deli_type'] == 1} value="{$data['first_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元，
 
 					续重重量
-                    <input type="text" class='tiny' name="second_weight" pattern='int' {if: $data && $data['type'] == 1} value="{$data['second_weight']}" {/if} >克
+                    <input type="text" class='tiny' name="second_weight" pattern='int' {if: $data && $data['deli_type'] == 1} value="{$data['second_weight']}" {/if} >克
 
 					续重费用
-					<input class='tiny' name="second_price" {if: $data && $data['type'] == 1} value="{$data['second_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元
+					<input class='tiny' name="second_price" {if: $data && $data['deli_type'] == 1} value="{$data['second_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元
 				</div>
 				<label class="tip">根据重量来计算运费，当物品不足《首重重量》时，按照《首重费用》计算，超过部分按照《续重重量》和《续重费用》乘积来计算</label>
 			</fieldset>
             
-            <fieldset class="js_set" id="js_set_2" {if: $data && $data['type'] <> 2} style="display: none;" {/if}>
+            <fieldset class="js_set" id="js_set_2" {if: $data && $data['deli_type'] <> 2} style="display: none;" {/if}>
                 <label>个数设置</label>
                 <div class="box">
                     首数计数
-                    <input type="text" class='tiny' name="first_weight" pattern='int' {if: $data && $data['type'] == 2} value="{$data['first_weight']}" {/if}>
+                    <input type="text" class='tiny' name="first_num" pattern='int' {if: $data && $data['deli_type'] == 2} value="{$data['first_weight']}" {/if}>
 
                     首数费用
-                    <input class='tiny' name="first_price" {if: $data && $data['type'] == 2} value="{$data['first_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元，
+                    <input class='tiny' name="first_num_price" {if: $data && $data['deli_type'] == 2} value="{$data['first_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元，
 
                     增加个数
-                    <input type="text" class='tiny' name="second_weight" pattern='int' {if: $data && $data['type'] == 2} value="{$data['second_weight']}" {/if} >
+                    <input type="text" class='tiny' name="second_num" pattern='int' {if: $data && $data['deli_type'] == 2} value="{$data['second_weight']}" {/if} >
 
                     增加费用
-                    <input class='tiny' name="second_price" {if: $data && $data['type'] == 2} value="{$data['second_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元
+                    <input class='tiny' name="second_num_price" {if: $data && $data['deli_type'] == 2} value="{$data['second_price']}" {/if} pattern="float" alt="该项必填且只允许填写数字金额" type="text">元
                 </div>
                 <label class="tip">根据个数来计算运费，超过部分按照《增加个数》和《增加费用》乘积来计算</label>
             </fieldset>
@@ -107,8 +106,8 @@
 							{/foreach}
 						</select>
 						<button type="button" class="btn" onclick='addProvince(this);'><span class="add">添加</span></button>
-						<label>首重费用：<input class="tiny" name="firstprice[]" value="<%=firstprice%>" pattern="float" alt="该项必填且只允许填写数字金额" type="text" /></label>
-						<label>续重费用：<input class="tiny" name="secondprice[]" value="<%=secondprice%>" pattern="float" alt="该项必填且只允许填写数字金额" type="text" /></label>
+						<label><span class="js_desc_text_1">首重费用</span>：<input class="tiny" name="firstprice[]" value="<%=firstprice%>" pattern="float" alt="该项必填且只允许填写数字金额" type="text" /></label>
+						<label><span class="js_desc_text_2">续重费用</span>：<input class="tiny" name="secondprice[]" value="<%=secondprice%>" pattern="float" alt="该项必填且只允许填写数字金额" type="text" /></label>
 						<label><a href="javascript:void(0)" onclick="$(this).parent().parent().remove();"><img alt="删除" src="{skin:images/main/icn_del.png}" class="operator"/></a></label>
 						<textarea name="areaName" readonly="readonly" disabled='disabled' style='width:85%;float:none;margin-left:0px;display:block'><%=areaname%></textarea>已选择的地区
 					</div>
@@ -133,7 +132,7 @@ $(function()
 {
     //设置计费方式
     {if: $data}
-    var id = {$data['type']};
+    var id = {$data['deli_type']};
     {else:}
     var id = 0;
     {/if}
@@ -142,7 +141,7 @@ $(function()
     $('#js_set_'+id).siblings('.js_set').hide();
     $('#js_set_'+id).siblings('.js_set').find('input').attr('disabled', 'disabled');
     
-    $('input[name=type]').each(function(){
+    $('input[name=deli_type]').each(function(){
         $(this).click(function(){
             var _id = $(this).val();
             $('#js_set_'+_id).siblings('.js_set').hide();
@@ -193,7 +192,18 @@ $(function()
 function addArea()
 {
 	var areaHtml = template.render('areaTemplate',{});
+    var deli_type =  $("input[name='deli_type']:checked").val();
 	$('#deliveryAreaBox').append(areaHtml);
+    if(deli_type == 2)
+    {
+        $('.js_desc_text_1').html('首数费用');
+        $('.js_desc_text_2').html('增加费用');
+    }
+    else
+    {
+        $('.js_desc_text_1').html('首重费用');
+        $('.js_desc_text_2').html('续重费用');
+    }
 }
 
 //获取省份名称

@@ -1433,15 +1433,29 @@ class Seller extends IController
     public function delivery_update()
     {
         //计量方式
-        $type   = IFilter::act(IReq::get('type'),'int');
-        //首重重量
-        $first_weight = IFilter::act(IReq::get('first_weight'),'float');
-        //续重重量
-        $second_weight = IFilter::act(IReq::get('second_weight'),'float');
-        //首重价格
-        $first_price = IFilter::act(IReq::get('first_price'),'float');
-        //续重价格
-        $second_price = IFilter::act(IReq::get('second_price'),'float');
+        $deli_type   = IFilter::act(IReq::get('deli_type'),'int');
+        if($deli_type == 1)
+        {
+            //首重重量
+            $first_weight = IFilter::act(IReq::get('first_weight'),'float');
+            //续重重量
+            $second_weight = IFilter::act(IReq::get('second_weight'),'float');
+            //首重价格
+            $first_price = IFilter::act(IReq::get('first_price'),'float');
+            //续重价格
+            $second_price = IFilter::act(IReq::get('second_price'),'float');
+        }
+        else
+        {
+            //首重重量
+            $first_weight = IFilter::act(IReq::get('first_num'),'float');
+            //续重重量
+            $second_weight = IFilter::act(IReq::get('second_num'),'float');
+            //首重价格
+            $first_price = IFilter::act(IReq::get('first_num_price'),'float');
+            //续重价格
+            $second_price = IFilter::act(IReq::get('second_num_price'),'float');
+        }
         //是否支持物流保价
         $is_save_price = IFilter::act(IReq::get('is_save_price'),'int');
         //地区费用类型
@@ -1472,7 +1486,7 @@ class Seller extends IController
         }
 
         $data = array(
-            'type'         => $type,
+            'deli_type'    => $deli_type,
         	'first_weight' => $first_weight,
         	'second_weight'=> $second_weight,
         	'first_price'  => $first_price,
