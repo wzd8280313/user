@@ -432,7 +432,7 @@ class Preorder_Class extends Order_Class{
 			);
 
 			//非货到付款的支付方式
-			if($orderRow['pay_type'] != 0)
+			if($orderRow['pay_type'] != 0 && $type == 1)
 			{
 				//减少库存量
 				$orderGoodsDB = new IModel('order_goods');
