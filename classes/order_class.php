@@ -1447,15 +1447,30 @@ class Order_Class
 			$order_goods_query->group = 'og.order_id';
 			
 			if($order_goods_data = $order_goods_query ->find()){//存在退货
+                $point_add = 0;
+                //计算积分
+                $order_goods_query->join = 'left join products as p on p.id=og.product_id';
+                $order_goods_query->fields = 'SUM(p.point) as point';
+                $order_goods_query->where  = 'og.order_id='.$order_id.' and og.is_send!=2 and og.product_id != 0';
+                if($point = $order_goods_query->find())
+                {
+                    $point_add += $point[0]['point'];
+                }
+                $order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
+                $order_goods_query->fields = 'SUM(g.point) as point';
+                $order_goods_query->where  = 'og.order_id='.$order_id.' and og.is_send!=2 and og.product_id = 0';
+                if($point = $order_goods_query->find())
+                {
+                    $point_add += $point[0]['point'];
+                }
+                $point_add = $point_add<0 ? 0 : $point_add;
 				$order_goods_query->join = 'left join goods as g on g.id=og.goods_id';
-				$order_goods_query->fields = 'SUM(g.point) as point ,SUM(g.exp) as exp,SUM(og.real_price*og.goods_nums) as real_amount';
+				$order_goods_query->fields = 'SUM(g.exp) as exp,SUM(og.real_price*og.goods_nums) as real_amount';
 				$order_goods_query->where  = 'og.order_id='.$order_id.' and og.is_send!=2';
 				
 				if($order_goods_add = $order_goods_query->find()){
 					$exp_add = $order_goods_add[0]['exp'];
 					$exp_add = $exp_add<0 ? 0 :$exp_add;
-					$point_add = $order_goods_add[0]['point'];
-					$point_add = $point_add<0 ? 0 : $point_add;
 					$real_amount = $order_goods_add[0]['real_amount'];
 				}else{
 					return false;
