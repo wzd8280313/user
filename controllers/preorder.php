@@ -240,7 +240,7 @@ class Preorder extends IController
 		//拼接sql
 		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
-		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
+		$orderHandle->fields = "o.*,u.username,p.name as payment_name";
 		$orderHandle->page   = $page;
 		$orderHandle->where  = $where.' and o.type=4';
 		$orderHandle->join   = $join;
@@ -355,7 +355,7 @@ class Preorder extends IController
 		//拼接sql
 		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
-		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
+		$orderHandle->fields = "o.*,u.username,p.name as payment_name";
 		$orderHandle->join   = $join;
 		$orderHandle->where  = $where;
 		$orderList = $orderHandle->find();

@@ -79,7 +79,8 @@
 						<th>市场价格</th>
 						<th>销售价格</th>
 						<th>成本价格</th>
-						<th>重量(克)</th>    
+                        <th>重量(克)</th>    
+						<th>购买成功增加积分</th>    
 						<%if(isProduct == true){%>
 						<th>操作</th>
 						<%}%>
@@ -116,7 +117,8 @@
 							<input type="button" onclick="memberPrice(this);" value="会员组价格 <%if(item['groupPrice']){%>*<%}%>" />
 						</td>
 						<td><input class="tiny" name="_cost_price[<%=i%>]" type="text" pattern="float" empty value="<%=item['cost_price']%>" /></td>
-						<td><input class="tiny" name="_weight[<%=i%>]" type="text" pattern="float" empty value="<%=item['weight']%>" /></td>
+                        <td><input class="tiny" name="_weight[<%=i%>]" type="text" pattern="float" empty value="<%=item['weight']%>" /></td>
+						<td><input class="tiny" name="_point[<%=i%>]" type="text" pattern="float" empty value="<%=item['point']%>" /></td>
                         <%if(isProduct == true){%>
 						<td><a href="javascript:void(0)" onclick="delProduct(this);"><img src="{skin:images/main/icn_trash.png}" alt="删除" /></a></td>
 						<%}%>
@@ -133,6 +135,15 @@
                         {foreach: items=$this->delivery}
                         <option value="{$item['id']}">{$item['name']}</option>
                         {/foreach}
+                    </select>
+                </div>
+            </fieldset>
+            <fieldset>
+                <label>库存减少方式</label>
+                <div class="box">
+                    <select name="store_type">         
+                        <option value="1">拍下宝贝即减库存</option>
+                        <option value="2">付款后才减少库存</option>
                     </select>
                 </div>
             </fieldset>

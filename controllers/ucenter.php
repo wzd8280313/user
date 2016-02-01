@@ -652,6 +652,12 @@ class Ucenter extends IController
         			Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
         		}
         		Order_Class::ordergoods_status_refunds(0,$goodsOrderRow,$type);
+                $good = new IModel('goods');
+                $temp = $good->getField('id = '.$goodsOrderRow['goods_id'], 'store_type');
+                if($temp == 1)
+                {
+                    Order_Class::updateStore($order_goods_id, 'add');
+                }
         		$this->redirect('/site/success');
         		exit;
         	

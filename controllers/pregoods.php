@@ -580,7 +580,7 @@ class Pregoods extends IController
 	
 		/*将订单中的商品插入到order_goods表*/
 		$orderInstance = new Order_Class();
-		$orderInstance->insertOrderGoods($this->order_id,$orderData['goodsResult']);
+		$orderInstance->insertOrderGoods($this->order_id,$orderData['goodsResult'],$payment);
 	
 		//记录用户默认习惯的数据
 		if(!isset($memberRow['custom']))

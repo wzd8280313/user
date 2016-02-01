@@ -37,14 +37,14 @@ abstract class IDB
 	 * @param string $sql 要执行的SQL语句
 	 * @return int or bool SQL语句执行的结果
 	 */
-    public function query($sql)
+    public function query($sql, $b=false)
     {
 		//取得SQL类型
-        self::$sqlType = $this->getSqlType($sql);
+        self::$sqlType = $this->getSqlType($sql);   
 
 		//读方式
         if(self::$sqlType=='select' || self::$sqlType=='show')
-        {
+        {   
             if(self::$rTarget == NULL)
             {
 				//多数据库支持并且读写分离
@@ -73,7 +73,7 @@ abstract class IDB
         {
             if(self::$wTarget == NULL)
             {
-				//多数据库支持并且读写分离
+				//多数据库支持并且读写分离                    
                 if(isset(IWeb::$app->config['DB']['write']))
                 {
                 	self::$wTarget = $this->connect(IWeb::$app->config['DB']['write']);
@@ -96,6 +96,10 @@ abstract class IDB
 				throw new IException("{$sql}\n -- ".$errorMsg);
 				return false;
             }
+            if($b)
+            {
+                $this->commit();
+            }  
             return $result;
         }
     }

@@ -829,7 +829,7 @@ class Order extends IController
 
     	//同步order_goods表
     	$orderInstance = new Order_Class();
-    	$orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult']);
+    	$orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
 
     	$this->redirect('order_list');
     }
@@ -1829,7 +1829,7 @@ class Order extends IController
 		//拼接sql
 		$orderHandle = new IQuery('order as o');
 		$orderHandle->order  = "o.id desc";
-		$orderHandle->fields = "o.*,d.name as distribute_name,u.username,p.name as payment_name";
+		$orderHandle->fields = "o.*,u.username,p.name as payment_name";
 		$orderHandle->join   = $join;
 		$orderHandle->where  = $where;
 		$orderList = $orderHandle->find();

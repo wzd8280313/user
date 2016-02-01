@@ -132,7 +132,7 @@ class IModel
 	 * @brief 添加
 	 * @return int or bool int:插入的自动增长值 bool:false错误
 	 */
-	public function add()
+	public function add($b = false)
 	{
 		//获取插入的数据
 		$tableObj = $this->tableData;
@@ -145,7 +145,7 @@ class IModel
 			$insertVal[] = '\''.$val.'\'';
 		}
 		$sql = 'INSERT INTO '.$this->tableName.' ( '.join(',',$insertCol).' ) VALUES ( '.join(',',$insertVal).' ) ';
-		return $this->db->query($sql);
+		return $this->db->query($sql, $b);
 	}
 
 	/**

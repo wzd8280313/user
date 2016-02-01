@@ -151,11 +151,19 @@ class Order_Class
 				$orderGoodsDB = new IModel('order_goods');
 				$orderGoodsList = $orderGoodsDB->query('order_id = '.$orderRow['id']);
 				$orderGoodsListId = array();
+                $good = new IModel('goods');
 				foreach($orderGoodsList as $key => $val)
 				{
-					$orderGoodsListId[] = $val['id'];
+                    $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
+                    if($temp <> 1)
+                    {
+                        $orderGoodsListId[] = $val['id'];
+                    }
 				}
-				self::updateStore($orderGoodsListId,'reduce');
+                if($orderGoodsListId)
+                {
+                    self::updateStore($orderGoodsListId,'reduce');
+                }
 			}
 
 			//自提点短信发送
@@ -230,7 +238,6 @@ class Order_Class
 		$productObj    = new IModel('products');
 		if(!is_array($orderGoodsId))$orderGoodsId = array($orderGoodsId);
 		$goodsList     = $orderGoodsObj->query('id in('.join(",",$orderGoodsId).') and is_send = 0','goods_id,product_id,goods_nums');
-
 		foreach($goodsList as $key => $val)
 		{
 			//货品库存更新
@@ -519,8 +526,9 @@ class Order_Class
 	 * @brief 把订单商品同步到order_goods表中
 	 * @param $order_id 订单ID
 	 * @param $goodsInfo 商品和货品信息（购物车数据结构,countSum 最终生成的格式）
+     * @param $payment  支付方式
 	 */
-	public function insertOrderGoods($order_id,$goodsResult = array())
+	public function insertOrderGoods($order_id,$goodsResult = array(),$payment)
 	{
 		$orderGoodsObj = new IModel('order_goods');
 
@@ -529,11 +537,13 @@ class Order_Class
 
 		$goodsArray = array(
 			'order_id' => $order_id
-		);                                  
+		);                                 
 		if(isset($goodsResult['goodsList']))
 		{
+            $orderGoodsListId = array();
+            $good = new IModel('goods');
 			foreach($goodsResult['goodsList'] as $key => $val)
-			{
+			{ 
 				//拼接商品名称和规格数据
 				$specArray = array('name' => $val['name'],'goodsno' => $val['goods_no'],'value' => '');
 
@@ -560,8 +570,18 @@ class Order_Class
                 $goodsArray['tax']         = $val['taxPrice'];
 				$goodsArray['seller_id']   = $val['seller_id'];
 				$orderGoodsObj->setData($goodsArray);
-				$orderGoodsObj->add();
+				$insert_id = $orderGoodsObj->add(true);
+                $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
+                //下单就减少库存或者支付方式为货到付款的时候下单就减少库存
+                if($temp == 1 || $payment == 0)
+                {
+                    $orderGoodsListId[] = $insert_id;
+                }
 			}
+            if($orderGoodsListId)
+            {
+                self::updateStore($orderGoodsListId,'reduce');
+            }
 		}
 	}
 	/**
@@ -999,11 +1019,11 @@ class Order_Class
 		$tbOrderRow = $tb_order->getObj('id = '.$order_id);
 
 		//如果支付方式为货到付款，则减少库存
-		if($tbOrderRow['pay_type'] == 0)
+		/*if($tbOrderRow['pay_type'] == 0)
 		{
 		 	//减少库存量
 		 	self::updateStore($order_goods_relation,'reduce');
-		}
+		}*/
 
 		//更新发货状态
 	 	$orderGoodsDB = new IModel('order_goods');
@@ -1345,8 +1365,11 @@ class Order_Class
 		
 		$order_goods_id = $orderGoodsRow['id'];
 		
+        $good = new IModel('goods');
+        $temp = $good->getField('id = '.$refundsRow['goods_id'], 'store_type');
+
 		//未发货的情况下还原商品库存
-		if($orderGoodsRow['is_send'] == 0)
+		if($orderGoodsRow['is_send'] == 0 && $temp <> 1)
 		{
 			self::updateStore($order_goods_id,'add');
 		}

@@ -57,8 +57,7 @@
 			<col width="160px" />
 			<col width="80px" />
 			<col width="80px" />
-			<col width="80px" />
-			<col width="80px" />
+			<col width="80px" /> 
 			<col width="115px" />
 			<col width="80px" />
 			<col />
@@ -69,7 +68,6 @@
 					<th>订单状态</th>
 					<th>支付状态</th>
 					<th>发货状态</th>
-					<th>配送方式</th>
 					<th>打印</th>
 					<th>支付方式</th>
 					<th>用户名</th>
@@ -88,8 +86,7 @@
 			<col width="160px" />
 			<col width="80px" />
 			<col width="80px" />
-			<col width="80px" />
-			<col width="80px" />
+			<col width="80px" /> 
 			<col width="115px" />
 			<col width="80px" />
 			<col />
@@ -101,7 +98,6 @@
 					<td >{echo:preorder_Class::getOrderStatus($item)}</td>
 					<td><span name="payStatusColor{$item['pay_status']}">{echo:preorder_Class::getOrderPayStatusText($item)}</span></td>
 					<td><span name="disStatusColor{$item['distribution_status']}">{echo:Order_Class::getOrderDistributionStatusText($item)}</span></td>
-					<td title="{$item['distribute_name']}">{$item['distribute_name']}</td>
 					<td>
 						<span class="prt" title="购物清单打印" onclick="window.open('{url:/order/shop_template/id/$item[id]/type/pre}');">购</span>
 						<span class="prt" title="配货单打印" onclick="window.open('{url:/order/pick_template/id/$item[id]/type/pre}');">配</span>
