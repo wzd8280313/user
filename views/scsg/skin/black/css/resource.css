@@ -455,21 +455,19 @@ li{float:left;width:350px;padding:20px;position:relative}
 .group_fuwu
 .fuwu_desc{font-size:14px;left:140px;position:absolute;top:56px}
 
-.left_group{width:860px;float:left}
+.left_group{width:860px;float:left; margin-bottom:-35px;}
 
 .right_group{width:300px;float:right;min-height:500px;background-color:#fff}
 
 .right_group img{margin-bottom:20px;}
 
-.today-deals-con{background:none repeat scroll 0 0 #fff;margin-bottom:20px;overflow:hidden;padding:10px;width:840px;border:1px solid #fff;}
-
-.today_end_time{background:url("/templates/etuan/images/index/timeion_bg.png") no-repeat scroll 9px center #fff2f2;color:#333;display:block;font-family:Arial;font-size:24px;font-weight:700;height:62px;line-height:62px;margin:18px
-18px 0 28px;text-indent:34px}
+.today-deals-con{background:#f3f3f3;/*none repeat scroll 0 0 #fff;*/margin-bottom:20px;/*overflow:hidden;*/padding:10px;width:840px;}
+.home_timer.today_end_time{color:#333;display:block;font-family:Arial;font-size:13px;font-weight:700;text-indent:-1px;font-weight:700;border-bottom:#CCC dotted 1px; padding:0px;}
 
 .today_end_time.qg{font-size:14px}
 
 .today_end_time
-.icon{font-family:Tahoma,Geneva,sans-serif;font-size:14px;font-weight:400}
+.icon{font-family:Tahoma,Geneva,sans-serif; background:url(../images/naon.png);background-repeat: no-repeat;background-position: left center; display:block; background-size:23px 23px; width:23px; height:23px; float:left; margin:0 3px 15px 3px; }
 
 .time_end_style{font-size:14px;font-weight:400}
 
@@ -497,26 +495,26 @@ li{float:left;width:350px;padding:20px;position:relative}
 .deal-img-wrap
 .buhuo_tip{background:none repeat scroll 0 0 rgba(3, 172, 179, 0.6) !important;color:#fff;font-size:14px;height:30px;line-height:30px;overflow:hidden;text-align:center;width:350px}
 
-.deal-summary{display:inline;float:right;height:348px;overflow:hidden;position:relative;width:411px}
+.deal-summary{display:inline;float:left;height:350px;overflow:hidden;position:relative;width:455px; background:#fffff5;}
 
 .deal-summary a:hover{text-decoration:none}
 
 .deal-summary
-.tit{color:#2b2b2b;font-family:"微软雅黑";font-size:16px;height:156px;line-height:26px;overflow:hidden;text-align:left}
+.tit{color:#2b2b2b;font-family:"微软雅黑";font-size:16px;line-height:26px;overflow:hidden;text-align:left; margin:0 0 0 15px;}
 
-.deal-summary .tit
-em{color:#FF9600}
+.cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .tit em{color:#FF9600}
+.cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .tit b{ font-weight:normal; font-size:14px;}
 
-.deal-summary .price-wrap{padding-top:15px;text-align:left}
+.deal-summary .price-wrap{padding-top:18px;text-align:left}
 
 .deal-summary
-.price{color:#FF9600;font-family:arial;font-size:42px}
+.price{color:#ffffff;font-family:arial;font-size:30px;margin:3px 0 0 65px;}
 
 .deal-summary .price
 em{font-size:20px;margin-right:2px}
 
 .deal-summary
-.dis{color:#727272;margin:5px}
+.dis{color:#ffffff;margin:5px;}
 
 .deal-summary
 .other{color:#1c1c1c;height:40px;line-height:28px;padding-top:10px}
@@ -535,13 +533,13 @@ solid #eee;display:inline-block;height:16px;line-height:16px;margin-right:8px;pa
 .deal-summary .flag
 img{height:45px;width:134px}
 
-.deal-btn{background:url("/templates/etuan/images/index/btnbg_v2.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);bottom:100px;color:#fff;display:block;font-size:16px;height:37px;left:50%;line-height:38px;margin:0
+.deal-btn{background:url("/templates/etuan/images/index/btnbg_v2.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);bottom:100px;color:#6F6868;display:block;font-size:16px;height:37px;left:50%;line-height:38px;margin:0
 auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
 
 .koubei-rating
 .rating{background-position:0 0;display:block;height:13px;left:0;position:absolute;top:0}
 
-.buy_num_con{color:#959595;float:right}
+.buy_num_con{color:#959595;position: absolute; top: 88px;left:343px;}
 
 .buy_num_xinyuan{color:#1c1c1c}
 
@@ -552,8 +550,107 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
 .hid_hashid{display:none}
 
 .today-deals-con:hover,.group-list
-.hover{border:1px solid #f15a24}
+.hover{background:#f15a24; }
 
 .deal-summary
-.other{color:#1c1c1c;height:40px;line-height:28px;padding-top:10px;width:100%}
+.other{color:#1c1c1c;height:200px;line-height:28px;padding-top:10px;width:100%}
+.clearfix_left{ width:275px; float:left; border-right:#f3f3f3 1px solid; height:200px;}
+.clearfix_right{ width:179px; float:left;height:200px;}
 
+
+
+.cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary h2{margin: 15px 0 0 15px;font-size: 18px;}
+.cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .shop_poto{ background-image:url(../images/yigou.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 85%;}
+
+.clearfix_left .now_buy {
+    background: #e65b08;
+    line-height: 35px;
+    border: none;
+    padding: 0 30px;
+    margin-top: 40px;
+    float: initial;
+    position: absolute;
+    color: #fff;
+    font-size: 16px;
+    left: 11px;
+}
+.clearfix_left .in_join {
+    background: #ff9024;
+    line-height: 35px;
+    border: none;
+    padding: 0 22px;
+    margin-top: 40px;
+    float: initial;
+    position: absolute;
+    color: #fff;
+    font-size: 16px;
+    left: 145px;
+}
+
+.hpl_ypl {
+    position: relative;
+    top: 42px;
+    left: -25px;
+}
+.hpl_ypl img{float:left;}
+.hpl_ypl p{ float:left;}
+.hpl_ypl p i{color: chocolate;}
+.hpl_ypl .blue{ color:#09F; margin-left:10px; position: absolute; right: -18px;}
+.hpl_ypl .blue .blues{ font-style:normal; color:#09F; }
+
+.tuangou_list{ width:1190px; height:auto; overflow:hidden; margin:0 auto;}
+.tuangou_list .tuangou{ height:auto; width:1210px;}
+.cnt.w1190 .brand_list .brand li .brand_poto{width:290px; height:195px; text-align: center;}
+.tuangou_list .tuangou li{ border:#CCC 1px solid;height:275px;width:290px; margin:0 7px 15px 0; float:left;}
+.tuangou_list .tuangou li h3{ display:block; height:35px;line-height:50px;overflow:hidden;width: 283px;margin-left:7px;}
+.cnt.w1190 .tuangou_list .tuangou li .tuan_title .price{ float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;   font-style: normal;}
+.cnt.w1190 .tuangou_list .tuangou li .tuan_title .price b{ font-size:20px; margin-right:7px;}
+.cnt.w1190 .tuangou_list .tuangou li .tuan_title .price del{ text-decoration:line-through; font-weight:normal; color:#999;}
+.cnt.w1190 .tuangou_list .tuangou li .tuan_title .qiangg{ position: relative; top: 10px;left:55px; color:#999; float:left; font-style:normal;}
+.cnt.w1190 .tuangou_list .tuangou li .tuan_title .msqing{position: relative; top: 3px;left:63px;background: rgb(227, 55, 58); border-radius:3px;
+    line-height: 35px;
+    border: none;
+    padding:5px 15px;
+    float: initial;
+    color: #fff;
+    font-size: 12px;
+	font-style: normal;
+    }
+.tuangou_list .tuangou li:hover{ border:#F00 1px solid;}
+
+/*品牌团*/
+.cnt.w1190 .brand_list .brand li .brand_title{ font-style:normal;}
+.brand_list{ width:1190px; height:auto; overflow:hidden; margin:0 auto;}
+.brand_list .brand{ height:auto; width:1210px;}
+.cnt.w1190 .brand_list .brand li .brand_poto{width:385px; height:195px; text-align: center;}
+.brand_list .brand li{ border:#CCC 1px solid;height:275px;width:385px; margin:0 14px 15px 0; float:left;}
+.brand_list .brand li h3{ display:block; height:35px;line-height:50px;overflow:hidden;width: 378px;margin-left:7px;}
+.cnt.w1190 .brand_list .brand li .brand_title .price{ float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
+.cnt.w1190 .brand_list .brand li .brand_title .price b{ font-size:20px; margin-right:10px;}
+.cnt.w1190 .brand_list .brand li .brand_title .price del{ text-decoration:line-through; font-weight:normal; color:#999;}
+.cnt.w1190 .brand_list .brand li .brand_title .qiangg{ position: relative; top: 10px;left:138px; color:#999; float:left;}
+.cnt.w1190 .brand_list .brand li .brand_title .msqing{position: relative; top: 3px;left:155px;background: rgb(227, 55, 58); border-radius:3px;
+    line-height: 35px;
+    border: none;
+    padding:5px 15px;
+    float: initial;
+    color: #fff;
+    font-size: 12px;
+    }
+.brand_list .brand li:hover{ border:#F00 1px solid;}
+
+.cnt.w1190 .pp_tm_con_fr h5{ background-image:url(../images/zdt.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 97%; height:64px;background-position: 0 -1px;border-top: 1px dashed #f789b5; }
+.cnt.w1190 .pp_tm_con_fr.one{ height:110px; border:none; margin-bottom:10px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_left{ width:396px; float:left;text-align: center;margin: 13px;color: #fff;font-size: 13px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_right{width: 396px;float: right;text-align: center;font-weight: bold;font-size: 13px;
+   position: relative;left: 17px;top:13px;color: #cc6721;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center{ float:left;text-align: center;color:#fff;font-size: 13px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center b {position: relative;top: 22px;left: 120px; font-size: 18px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center .ju_stop{    position: relative; color:#9d59bc;
+    top: 12px;
+    left: 141px;
+    font-size: 13px;}
+.cnt.w1190 .pp_tm_con_fr.one h5 .con_fr_center .ju_stop i {
+    position: relative;
+    left: 36px;
+    font-weight: bold;}

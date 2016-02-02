@@ -1,6 +1,13 @@
 <link href="{skin:css/tm.css}" rel="stylesheet">
+<link rel="stylesheet" type='text/css' href="{skin:css/buynmb_css/jquery.spinner.css}">
+
+<script type='text/javascript' src="{theme:javascript/sales_js/jquery-1.11.1.min.js}" ></script>
+<script type='text/javascript' src="{theme:javascript/buynmb_js/jquery.spinner.js}" ></script>
 <script type="text/javascript" src="{theme:javascript/shan/shan.js}"></script>
+                
 <div class="cnt w1190">
+
+
 <style type="text/css">
 	h1{font-family:"微软雅黑";font-size:20px;margin-top:20px;letter-spacing:2px;}
 
@@ -51,33 +58,58 @@
 		{set:$end= strtotime($item['end_time']) - time()}
 		{set:$zhe = 10*round($item['regiment_price']/$item['sell_price'],2)}
 	        <div class="today-deals-con">
+            
+            <div style=" border: 1px solid;border-color:#eaeae2; width: 805px; height: 350px;">
 		        <div class="deal-img-wrap">
 		            <a title="" href="{url:/site/tuan_product/active/$item['id']}" target="_blank"><img src="{url:$item['img']}" alt=""  width="350" height="350"></a>
 		            <div class="all_bicon_box"></div>
 		        </div>
-		        <div class="deal-summary"> 
-				<span class="bk-timeleft home_timer today_end_time countdown" id="timeRemaining-{$key}">
-					<span class="icon">距团购结束</span>
+		        <div class="deal-summary">
+                <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
+                <h2>Wyeth/惠氏 启赋幼儿配方奶粉（3段1-3岁）</h2></a>
+                 
+				
+		            <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
+		                <p class="tit"> <em>{$zhe}折/</em>{$item['intro']}<b>纯进口适合婴幼纯进口适合婴幼纯进口</b></p>
+                        <div class="shop_poto">
+                            <p class="price-wrap">
+		                    <span class="price"><em>¥</em>{$item['regiment_price']}</span>
+		                    <span class="dis">参考价<del style="text-decoration: blink;">¥{$item['sell_price']}</del></span> 
+                            <span class="buy_num_con"><span class="buy_number">{$item['sum_count']}</span>人已经购买</span>
+		                      </p> 
+                            </div>
+                               </a>
+		                <div class="other clearfix">
+		                  <div class="clearfix_left">
+                  <span style="float:left; margin-left:20px;">数量：</span>
+                     <input type="text" class="spinnerExample"/> 
+                              
+                    <a class="now_buy" target="_blank" href="#">立即购买</a>
+                    <a class="in_join" target="_blank" href="#"> 加入购物车</a>               
+                             </div>
+                    <div class="clearfix_right"> 
+                              
+                      <span class="bk-timeleft home_timer today_end_time countdown" id="timeRemaining-{$key}">
+					<span class="icon"></span>
 					<span id='cd_day_{$key}'></span>天
 					<span id='cd_hour_{$key}'></span>小时
 					<span id='cd_minute_{$key}'></span>分
 					<span id='cd_second_{$key}'></span>秒	
 					<input name='endTime' type='hidden' value='{$end}' />
-				</span>
-		            <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
-		                <p class="tit"> <em>{$zhe}折/</em>{$item['intro']}</p>
-		                <p class="price-wrap">
-		                    <span class="price"><em>¥</em>{$item['regiment_price']}</span>
-		                    <span class="dis"><del>¥{$item['sell_price']}</del></span> 
-		                </p>
-		                <div class="other clearfix">
-		                  <span class="buy_num_con"><span class="buy_number">{$item['sum_count']}</span>人已经购买</span>
+				</span> 
+                          <div class="hpl_ypl">  
+                         <img src="{skin:images/nice.png}" style=" width:20px; height:20px;" alt="好评" /><p>好评率<i>90%</i></p> 
+                           <p class="blue"><i class="blues">1122</i>人评论</p>
+                            </div>
+                         
+                          </div>
 		                </div>
-		                <p class="summary-btn"> <span class="deal-btn">去看看</span>
-		                </p>
-		            </a>
+		            
 		        </div>
-	   		 </div>
+           </div>    
+      <img style="width:30px; height:51px;float:right;position:relative;bottom: 285px;left: -4px;" border="0" src="{skin:images/yigo.png}" >   
+                
+	    </div>
 		{/foreach} 
 	</div>
     <div class="right_group">
@@ -100,6 +132,158 @@
 	.pp_tm_con_se_l{width:1190px;}
 	.width { width:1200px;margin:0 auto;}
 </style>
+
+<div class="pp_tm_con_fr one">
+	<a name="floor-1"></a>
+		<h3>整点团购</h3>
+        <h5>
+           <div class="con_fr_left"><span>已结束<br/><b>24:00</b></span></div>
+           <div class="con_fr_center"><b>10:10:10</b><span class="ju_stop">距结束<br/><i>12:00<i/></span></div>
+           <div class="con_fr_right"><span>已结束<br/><b>24:00</b></span></div>
+            </h5>
+</div>               
+  <div class="tuangou_list">
+  <ul class="tuangou">
+  
+  <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+  <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="tuan_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+   
+  
+   
+        
+       
+            </ul>
+               </div>
+
+
+
+
+ <div class="pp_tm_con_fr" style="margin-top:5px;">
+	<a name="floor-1"></a>
+		<h3>品牌团Brand</h3>
+</div>               
+  <div class="brand_list">
+  <ul class="brand">
+  
+  <li><div class="brand_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+  <li><div class="brand_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="brand_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="brand_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="brand_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+    <li><div class="brand_poto">
+     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
+        </div>
+  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
+    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
+       <a class="msqing" href="#">马上抢</a>
+     </div>
+    </li>
+            </ul>
+               </div>
+               
+               
+
+
+
+
+
 {if:isset($this->brandList)&&$this->brandList}
 <div class="pp_tm_con">
 		  <div class="pp_tm_con_fr"><a name="floor-2"></a>
@@ -162,7 +346,7 @@
 		<div class="clear"></div>
 		<div class="next_more" style='margin-top:20px;'>
 			<span class="next_more_btn" id="nextgroup" onclick="loadPromotion('{url:/site/getMoreTuan}');">
-				<span class="next_more_text">查看下一组</span>
+				<!--<span class="next_more_text">查看下一组</span>-->
 			</span>
 		</div> 
 </div>
@@ -207,3 +391,12 @@
 		</div>
 	</li>
 </script>
+
+<!--购置数量加减-->
+    <script type="text/javascript">
+                    $('.spinnerExample').spinner({});
+                         </script>
+                         
+                         
+                         
+         

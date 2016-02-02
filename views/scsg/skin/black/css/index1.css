@@ -1130,8 +1130,8 @@ ol,ul{list-style:none}
 }
 
 /*广告链接光标*/
-.admanage .ad_box{
-	cursor: pointer;
+.admanage .ad_box{     
+	cursor: pointer;   display:none;
 }
 /*详细页面评价样式*/
 .m-tab-trigger-wrap {
@@ -1248,4 +1248,4 @@ background-color: #f5f5f5;
 }
 .times{
 	padding: 0 20px;
-}
+}                           
