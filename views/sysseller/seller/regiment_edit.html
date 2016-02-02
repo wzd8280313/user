@@ -1,6 +1,24 @@
 {js:my97date}
 {set:$seller_id = $this->seller['seller_id']}
-
+<script type="text/javascript">
+    $(function(){
+        $('input[name=type]').each(function(){
+            $(this).click(function(){
+                var _i = $(this).val();
+                if(_i == 2)
+                {
+                    $('.js_show_1').hide().find('input').attr('disabled', 'disabled');
+                    $('.js_show_2').show().find('input').removeAttr('disabled');
+                }
+                else
+                {
+                    $('.js_show_2').hide().find('input').attr('disabled', 'disabled');
+                    $('.js_show_1').show().find('input').removeAttr('disabled');
+                }
+            })
+        })
+    })
+</script>
 <article class="module width_full">
 	<header>
 		<h3 class="tabs_involved">团购编辑</h3>
@@ -16,8 +34,15 @@
 					<label class="tip">* 填写团购名称</label>
 				</div>
 			</fieldset>
-
-			<fieldset>
+            <fieldset>
+                <label>团购类型：</label>
+                <div class="box">
+                    <label class='attr'><input type="radio" name="type" value="0" />TOP</label>
+                    <label class='attr'><input type="radio" name="type" value="1" />品牌团</label>
+                    <label class='attr'><input type="radio" name="type" value="2" />整点团</label>
+                </div>
+            </fieldset>
+			<fieldset class="js_show_1" {if:$this->regimentRow['type'] == 2} style="display:none" {/if}>
 				<label>团购时间：</label>
 				<div class="box">
 					<input type='text' class="normal" name='start_time' pattern='datetime' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' />
@@ -25,6 +50,15 @@
 				</div>
 				<label class="tip">* 此团购的时间段</label>
 			</fieldset>
+            
+            <fieldset class="js_show_2" {if:$this->regimentRow['type'] <> 2} style="display:none" {/if}>
+                <label>团购时间：</label>
+                <div class="box">
+                    <input type='text' class="normal" name='start_time1' pattern='datetime' {if:$this->regimentRow['type'] == 2} value="{$this->regimentRow['start_time']}" {/if} onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" alt='请填写一个日期' />
+                    <input type='text' class="normal" name='end_time1' pattern='datetime' {if:$this->regimentRow['type'] == 2} value="{$this->regimentRow['end_time']}" {/if} onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" alt='请填写一个日期' />
+                </div>
+                <label class="tip">* 此团购的时间段</label>
+            </fieldset>
 			<fieldset>
 				<label>是否开启</label>
 				<div class="box">

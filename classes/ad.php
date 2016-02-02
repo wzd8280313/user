@@ -73,7 +73,7 @@ class Ad
 	 * @return string
 	 */
 	public static function show($position,$goods_cat_id = 0,$nav=0)
-	{
+	{   
 		$positionObject = array();
 		$adArray        = array();
 
@@ -87,7 +87,7 @@ class Ad
 				$val['height'] = $positionObject['height'];
 				$adArray[] = self::display($val);
 			}
-		}
+		}                   
 
 		//有广告内容数据
 		if($adArray)
@@ -114,6 +114,7 @@ class Ad
 				(new adLoader()).load({$positionJson},{$adJson},"{$adPositionJsId}",$nav);
 			</script>
 OEF;
+            
 			echo $htmlOutput;
 		}
 

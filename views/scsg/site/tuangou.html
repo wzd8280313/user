@@ -53,8 +53,9 @@
 </div>
 <div class="mb10 warp-all group-list">
 	<input name='start' type='hidden' value='{$this->count}'/>
-	  <div class="left_group">
-	  	{foreach:items = $this->todayList}
+	  <div class="left_group"> 
+        {if:$this->topList}
+	  	{foreach:items = $this->topList}
 		{set:$end= strtotime($item['end_time']) - time()}
 		{set:$zhe = 10*round($item['regiment_price']/$item['sell_price'],2)}
 	        <div class="today-deals-con">
@@ -66,11 +67,11 @@
 		        </div>
 		        <div class="deal-summary">
                 <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
-                <h2>Wyeth/惠氏 启赋幼儿配方奶粉（3段1-3岁）</h2></a>
+                <h2>{$item['title']}</h2></a>
                  
 				
 		            <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
-		                <p class="tit"> <em>{$zhe}折/</em>{$item['intro']}<b>纯进口适合婴幼纯进口适合婴幼纯进口</b></p>
+		                <p class="tit"> <em>{$zhe}折/</em><b>{$item['intro']}</b></p>
                         <div class="shop_poto">
                             <p class="price-wrap">
 		                    <span class="price"><em>¥</em>{$item['regiment_price']}</span>
@@ -84,8 +85,8 @@
                   <span style="float:left; margin-left:20px;">数量：</span>
                      <input type="text" class="spinnerExample"/> 
                               
-                    <a class="now_buy" target="_blank" href="#">立即购买</a>
-                    <a class="in_join" target="_blank" href="#"> 加入购物车</a>               
+                    <a class="now_buy" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">立即购买</a>
+                    <a class="in_join" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}"> 加入购物车</a>               
                              </div>
                     <div class="clearfix_right"> 
                               
@@ -110,15 +111,12 @@
       <img style="width:30px; height:51px;float:right;position:relative;bottom: 285px;left: -4px;" border="0" src="{skin:images/yigo.png}" >   
                 
 	    </div>
-		{/foreach} 
+		{/foreach}
+        {/if} 
 	</div>
     <div class="right_group">
-		<a href="" target="_blank">
-			<img id="pic_adv_297" style="width:300px;height:333px" border="0" src="{skin:images/tuan1.png}" alt="团购右侧1">
-		</a>   
-		 <a href="" target="_blank">
-		 <!--<img id="pic_adv_298" style="width:300px;height:333px" border="0" src="{skin:images/tuan2.jpg}" alt="">-->
-		 </a>  
+		{echo:Ad::show("团购右侧上")}
+        {echo:Ad::show("团购右侧下")}  
 	</div>
 </div>
 
@@ -132,270 +130,66 @@
 	.pp_tm_con_se_l{width:1190px;}
 	.width { width:1200px;margin:0 auto;}
 </style>
-
+{if:$this->onTimeList}
 <div class="pp_tm_con_fr one">
 	<a name="floor-1"></a>
 		<h3>整点团购</h3>
         <h5>
-           <div class="con_fr_left"><span>已结束<br/><b>24:00</b></span></div>
-           <div class="con_fr_center"><b>10:10:10</b><span class="ju_stop">距结束<br/><i>12:00<i/></span></div>
-           <div class="con_fr_right"><span>已结束<br/><b>24:00</b></span></div>
+        {foreach:items = $this->timeList}
+            {set:$time = date('H:i', strtotime($item['start_time']))}
+            {if:strtotime($item['start_time']) < time()}
+            <div class="con_fr_left"><b>10:10:10</b><span class="ju_stop">距结束<br/><i>{$time}<i/></span></div>
+            {else:}
+            <div class="con_fr_right"><span>将开始<br/><b>{$time}</b></span></div>
+            {/if}
+        {/foreach}
+           
             </h5>
 </div>               
   <div class="tuangou_list">
   <ul class="tuangou">
-  
+  {foreach:items = $this->onTimeList}
   <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
+     <a href="{url:/site/tuan_product/active/$item['id']}"><img src="{url:$item['img']}" style="width:290px; height:195px; border:none;" alt="{$item['title']}" /></a>
         </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
+  <div class="tuan_title"><a href="{url:/site/tuan_product/active/$item['id']}"><h3>{$item['title']}</h3></a>    
+    <span class="price">¥<b>{$item['regiment_price']}</b><del>¥<em>{$item['sell_price']}</em></del></span>  <span class="qiangg">{$item['sum_count']}人抢购</span>
+       <a class="msqing" href="{url:/site/tuan_product/active/$item['id']}">马上抢</a>
      </div>
     </li>
-  <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="tuan_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:290px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="tuan_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-   
-  
-   
-        
-       
-            </ul>
-               </div>
+  {/foreach}
+  </ul>
+</div>
+{/if}
 
 
-
-
+{if:$this->brandList}
  <div class="pp_tm_con_fr" style="margin-top:5px;">
 	<a name="floor-1"></a>
 		<h3>品牌团Brand</h3>
 </div>               
   <div class="brand_list">
   <ul class="brand">
-  
+  {foreach:items = $this->brandList}
   <li><div class="brand_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
+     <a href="{url:/site/tuan_product/active/$item['id']}"><img src="{url:$item['img']}" style="width:385px; height:195px; border:none;" alt="{$item['title']}" /></a>
         </div>
-  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
+  <div class="brand_title"><a href="{url:/site/tuan_product/active/$item['id']}"><h3>{$item['title']}</h3></a>    
+    <span class="price">¥<b>{$item['regiment_price']}</b><del>¥<em>{$item['sell_price']}</em></del></span>  <span class="qiangg">{$item['sum_count']}人抢购</span>
+       <a class="msqing" href="{url:/site/tuan_product/active/$item['id']}">马上抢</a>
      </div>
     </li>
-  <li><div class="brand_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="brand_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="brand_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="brand_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-    <li><div class="brand_poto">
-     <a href="#"><img src="{skin:images/tuan_poto.jpg}" style="width:385px; height:195px; border:none;" alt="图片" /></a>
-        </div>
-  <div class="brand_title"><a href="#"><h3>舒比奇动动乐宝宝拉拉裤 超薄透气 婴儿纸尿裤拉拉裤尿不湿 M码 22片</h3></a>    
-    <span class="price">¥<b>120</b><del>¥<em>150</em></del></span>  <span class="qiangg">123人抢购</span>
-       <a class="msqing" href="#">马上抢</a>
-     </div>
-    </li>
-            </ul>
-               </div>
-               
-               
-
-
-
-
-
-{if:isset($this->brandList)&&$this->brandList}
-<div class="pp_tm_con">
-		  <div class="pp_tm_con_fr"><a name="floor-2"></a>
-			<h3>品牌团<i>Brand</i></h3>
-		  </div>
-			<div class="pp_tm_con_se">
-				<div class="pp_tm_con_se_l">
-				  <!--品牌特卖 -->
-					<div class="shan-brand width">
-						<ul class="shan-all-li">
-							{foreach:items = $this->brandList}
-							{set:$end=strtotime($item['end_time']) - time();$k=$key+2;}
-								<li style="margin-top:0;">
-									<dl>
-										<dt class="brand-img">
-											<a href="{url:/site/tuan_product/active/$item['id']}" target="_blank" title="{$item['title']}">
-												<img class="lazyload img"  src="{url:$item['img']}" alt="{$item['title']}">
-											</a>
-										</dt>
-										<dd>
-											<div class="fl">
-												<p class="name">
-													<a href="{url:/site/tuan_product/active/$item['id']}" title="{$item['title']}" target="_blank">{$item['title']}</a>
-												</p>
-														<p class="explain" title="&#160;">
-															<span class="gzmc_k"></span>
-															<span class="gzmc_z"></span>
-														</p>
-														<p class="prom" title="">
-																已有<span class="dazhe">{$item['sum_count']}</span>人团
-														</p>
-											</div>
-											<div class="fr">
-												<p class="brand-logo">
-												</p>
-												<p class="surplus countdown" id="timeRemaining-{$k}">
-													<span class="icon">剩余</span>
-													<span id='cd_day_{$k}'></span>天
-													<span id='cd_hour_{$k}'></span>小时
-													<span id='cd_minute_{$k}'></span>分
-													<span id='cd_second_{$k}'></span>秒	
-													<input name='endTime' type='hidden' value='{$end}' />
-												</p>
-											</div>
-											<div class="clear"></div>
-										</dd>
-									</dl>
-									<div class="brand-icon" id="brandsale_sold-out-_0">
-										<div class="clear"></div>
-									</div>
-								</li>
-							{/foreach}
-						</ul>
-						<div class="clear"></div>
-					</div>
-				</div>
-		</div>
+  {/foreach}
+  </ul>
+  </div>
+  {/if} 
 </div>
-{/if}
-		<div class="clear"></div>
-		<div class="next_more" style='margin-top:20px;'>
-			<span class="next_more_btn" id="nextgroup" onclick="loadPromotion('{url:/site/getMoreTuan}');">
-				<!--<span class="next_more_text">查看下一组</span>-->
-			</span>
-		</div> 
-</div>
-<script type='text/html' id='promotion_box'>
-	<li style="margin-top:0;">
-		<dl>
-			<dt class="brand-img">
-				<a href="{url:/site/tuan_product/active/}/<%=id%>" target="_blank" title="<%=title%>">
-					<img class="lazyload img"  src="{url:<%=img%>}" alt="<%=title%>">
-				</a>
-			</dt>
-			<dd>
-				<div class="fl">
-					<p class="name">
-						<a href="{url:/site/tuan_product/active/}/<%=id%>" title="<%=title%>" target="_blank"><%=title%></a>
-					</p>
-							<p class="explain" title="&#160;">
-								<span class="gzmc_k"></span>
-								<span class="gzmc_z"></span>
-							</p>
-							<p class="prom" title="">
-									已有<span class="dazhe"><%=sum_count%></span>人团
-							</p>
-				</div>
-				<div class="fr">
-					<p class="brand-logo">
-					</p>
-					<p class="surplus countdown" id="timeRemaining-<%=key%>">
-						<span class="icon">剩余</span>
-						<span id='cd_day_<%=key%>'></span>天
-						<span id='cd_hour_<%=key%>'></span>小时
-						<span id='cd_minute_<%=key%>'></span>分
-						<span id='cd_second_<%=key%>'></span>秒	
-						<input name='endTime' type='hidden' value='<%=end%>' />
-					</p>
-				</div>
-				<div class="clear"></div>
-			</dd>
-		</dl>
-		<div class="brand-icon" id="brandsale_sold-out-_0">
-			<div class="clear"></div>
-		</div>
-	</li>
-</script>
+
 
 <!--购置数量加减-->
-    <script type="text/javascript">
-                    $('.spinnerExample').spinner({});
-                         </script>
+<script type="text/javascript">
+$('.spinnerExample').spinner({});
+</script>
                          
                          
                          

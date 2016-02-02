@@ -736,8 +736,7 @@ class Seller extends IController
 		$dataArray = array(
 			'id'        	=> $id,
 			'title'     	=> IFilter::act(IReq::get('title','post')),
-			'start_time'	=> IFilter::act(IReq::get('start_time','post')),
-			'end_time'  	=> IFilter::act(IReq::get('end_time','post')),
+            'type'          => IFilter::act(IReq::get('type','post'),'int'), 
 			'is_close'      => IFilter::act(IReq::get('is_close','post'),'int'),
 			'intro'     	=> IFilter::act(IReq::get('intro','post')),
 			'goods_id'      => $goodsId,
@@ -748,6 +747,16 @@ class Seller extends IController
 			'regiment_price'=> IFilter::act(IReq::get('regiment_price','post')),
 			'seller_id'     => $this->seller['seller_id']
 		);
+        if($dataArray['type']==2)
+        {
+            $dataArray['start_time'] = IFilter::act(IReq::get('start_time1','post'));
+            $dataArray['end_time'] = IFilter::act(IReq::get('end_time1','post'));
+        }
+        else
+        {
+            $dataArray['start_time'] = IFilter::act(IReq::get('start_time','post'));
+            $dataArray['end_time'] = IFilter::act(IReq::get('end_time','post'));
+        }
 
 		if($goodsId)
 		{

@@ -62,11 +62,20 @@ return array(
 			'order' => 'id desc',
 		)
 	),
-	 //椐据ID团购
-	'getRegimentRowById' => array(
+     //椐据ID团购
+    'getRegimentRowById' => array(
+        'query' => array(
+            'name'  => 'regiment',
+            'where' => 'id = #id# and NOW() between start_time and end_time AND is_close = 0',
+            'type'  => 'row',
+            
+        )
+    ),
+	 //椐据ID获取整点团购
+	'getRegimentOnTimeRowById' => array(
 		'query' => array(
 			'name'  => 'regiment',
-			'where' => 'id = #id# and NOW() between start_time and end_time AND is_close = 0',
+			'where' => 'id = #id# and NOW() < end_time AND is_close = 0',
 			'type'  => 'row',
 			
 		)

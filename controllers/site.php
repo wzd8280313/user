@@ -100,23 +100,51 @@ class Site extends IController
 	//团购页面
 	public function tuangou(){
 		$this->logoUrl = 'images/tglogo.png';
-		$this->tuangou = 1;
-		$this->todayList = array();
+		//$this->tuangou = 1;
+		$this->topList = array();
+        $this->onTimeList = array();
 		$this->brandList = array();
-		 $tuan = new IQuery('regiment as r');
+		$tuan = new IQuery('regiment as r');
+        //TOP
 		$tuan->join = 'left join goods as g on r.goods_id=g.id';
         $tuan->fields = 'r.*';
-        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0 and r.type=0';
         $tuan->order = 'r.sort asc';
-        $tuan->limit = 11;
-        $tuanList = $tuan->find();
-		$this->count = count($tuanList);
-		if($this->count>2){
-			$this->todayList = array(array_shift($tuanList),array_shift($tuanList));
-			$this->brandList = $tuanList;
-		}else{
-			$this->todayList = $tuanList;
-		}
+        $tuan->limit = 2;
+        $this->topList = $tuan->find();
+        //品牌团
+        $tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0 and r.type=1';
+        $tuan->order = 'r.sort asc';
+        $tuan->limit = 9;
+        $this->brandList = $tuan->find();
+        //整点团
+        $mod = new IModel('regiment');
+        $timeList = $mod->query('is_close = 0 AND NOW() < start_time and type=2', 'distinct(start_time)', 'start_time', 'ASC', 3);
+        $time = $mod->query('is_close = 0 AND NOW() between start_time and end_time and type=2', 'start_time', 'start_time', 'DESC', 1);
+        if($time)
+        {
+            array_unshift($timeList, $time[0]);
+            if(count($timeList) > 3)
+            {
+                array_pop($timeList);
+            } 
+        }
+        else
+        {
+            $time = reset($timeList);
+        }
+        if($timeList)
+        {
+            $this->timeList = $timeList;
+            $tuan->join = 'left join goods as g on r.goods_id=g.id';
+            $tuan->fields = 'r.*';
+            $tuan->where = "r.is_close = 0 AND r.start_time='{$time[0]['start_time']}' and NOW() < r.end_time and g.is_del=0 and r.type=2";
+            $tuan->order = 'r.sort asc';
+            $tuan->limit = 6;
+            $this->onTimeList = $tuan->find();
+        }          
 		$this->redirect('tuangou');
 	}
     //获取更多团购
@@ -146,8 +174,11 @@ class Site extends IController
             IError::show(403,"传递的参数不正确");
             exit;
         }
-        $tuanData = Api::run('getRegimentRowById',array('#id#',$id));
-        
+        $tuanData = Api::run('getRegimentOnTimeRowById',array('#id#',$id));
+        if($tuanData['type'] <> 2)
+        {
+            $tuanData = array();
+        }
         if(!$tuanData){
             IError::show(403,"团购不存在");
             exit;

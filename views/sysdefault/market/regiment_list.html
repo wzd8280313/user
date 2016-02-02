@@ -29,6 +29,7 @@ $search = IFilter::act(IReq::get('search'),'strict');
 				<col width="40px" />
 				<col />
 				<col width="280px" />
+                <col width="100px" />
 				<col width="80px" />
 				<col width="80px" />
 				<col width="90px" />
@@ -38,8 +39,9 @@ $search = IFilter::act(IReq::get('search'),'strict');
 			<thead>
 				<tr>
 					<th>选择</th>
-					<th>标题</th>
-					<th>团购时间</th>
+                    <th>标题</th> 
+                    <th>团购时间</th>
+					<th>团购类型</th>
 					<th>排序</th>
 					<th>状态</th>
 					<th>销售情况</th>
@@ -57,7 +59,8 @@ $search = IFilter::act(IReq::get('search'),'strict');
 			<colgroup>
 				<col width="40px" />
 				<col />
-				<col width="280px" />
+                <col width="280px" />
+				<col width="100px" />
 				<col width="80px" />
 				<col width="80px" />
 				<col width="90px" />
@@ -70,7 +73,8 @@ $search = IFilter::act(IReq::get('search'),'strict');
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
 					<td><a href='{url:/site/tuan_product/active/$item[id]}' target='_blank' class="orange" title="{$item['title']}">{$item['title']}</a></td>
-					<td>{$item['start_time']} ～ {$item['end_time']}</td>
+                    <td>{$item['start_time']} ～ {$item['end_time']}</td>
+					<td>{if:$item['type']==1}品牌团{elseif:$item['type']==2}整点团{else:}TOP{/if}</td>
 					<td>{$item['sort']}</td>
 					<td>{echo:($item['is_close']==1) ? '关闭':'开启'}</td>
 					<td>{$item['sum_count']}/{$item['store_nums']}</td>

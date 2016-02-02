@@ -710,8 +710,7 @@ class Market extends IController
 		$dataArray = array(
 			'id'        	=> $id,
 			'title'     	=> IFilter::act(IReq::get('title','post')),
-			'start_time'	=> IFilter::act(IReq::get('start_time','post')),
-			'end_time'  	=> IFilter::act(IReq::get('end_time','post')),
+			'type'        	=> IFilter::act(IReq::get('type','post'), 'int'),
 			'is_close'      => IFilter::act(IReq::get('is_close','post')),
 			'intro'     	=> IFilter::act(IReq::get('intro','post')),
 			'goods_id'      => $goodsId,
@@ -721,7 +720,17 @@ class Market extends IController
 			'limit_max_count' => IFilter::act(IReq::get('limit_max_count','post'),'int'),
 			'regiment_price'=> IFilter::act(IReq::get('regiment_price','post')),
 			'sort'          => IFilter::act(IReq::get('sort','post')),
-		);
+		);      
+        if($dataArray['type']==2)
+        {
+            $dataArray['start_time'] = IFilter::act(IReq::get('start_time1','post'));
+            $dataArray['end_time'] = IFilter::act(IReq::get('end_time1','post'));
+        }
+        else
+        {
+            $dataArray['start_time'] = IFilter::act(IReq::get('start_time','post'));
+            $dataArray['end_time'] = IFilter::act(IReq::get('end_time','post'));
+        }
 
 		if($goodsId)
 		{

@@ -500,7 +500,7 @@ li{float:left;width:350px;padding:20px;position:relative}
 .deal-summary a:hover{text-decoration:none}
 
 .deal-summary
-.tit{color:#2b2b2b;font-family:"微软雅黑";font-size:16px;line-height:26px;overflow:hidden;text-align:left; margin:0 0 0 15px;}
+.tit{color:#2b2b2b;font-family:"微软雅黑";font-size:16px;line-height:26px;overflow:hidden;text-align:left; margin:0 0 0 15px;text-overflow: ellipsis;white-space: nowrap;}
 
 .cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .tit em{color:#FF9600}
 .cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .tit b{ font-weight:normal; font-size:14px;}
@@ -559,7 +559,7 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
 
 
 
-.cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary h2{margin: 15px 0 0 15px;font-size: 18px;}
+.cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary h2{margin: 15px 0 0 15px;font-size: 18px;text-overflow: ellipsis;white-space: nowrap;}
 .cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .shop_poto{ background-image:url(../images/yigou.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 85%;}
 
 .clearfix_left .now_buy {
