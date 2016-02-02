@@ -237,7 +237,7 @@ input.search{width:240px;height:23px;padding-left:27px;border:1px solid #d2d2d2;
 input.radio{vertical-align:middle;margin-right:5px}
 input.sbtn{width:37px;height:19px;margin:0 5px;border:none;color:#666;background:url(../images/front/ucenter/sbtn_bg.gif) no-repeat}
 input.sreset{border:none;background:none;color:#aaa}
-textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;border:1px #7f9db9 solid;line-height:18px}
+textarea{width:616px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;border:1px #7f9db9 solid;line-height:18px}
 .form_table{margin-bottom:20px;padding:20px 0 0;background-color:#fff}
 	.form_table th{text-align:right;color:#545454}
 	.form_table td{height:30px;padding:6px 0 5px 10px}
@@ -561,7 +561,7 @@ span.sel{padding-right:18px;background:url(../images/front/ucenter/sel.gif) righ
 	.wrap_box .tips{color:#999;margin-bottom:5px}
 	.wrap_box table.form_table{color:#555;margin-top:20px;margin-bottom:30px}
 		.wrap_box table.form_table th{font-weight:normal;font-size:14px;vertical-align:top;padding-top:25px}
-		.wrap_box table.form_table td{height:30px;padding:20px 0 6px 5px}
+		.wrap_box table.form_table td{height:30px;padding:24px 0 6px 5px}
 		.wrap_box table.form_table tr.low td{padding-top:0}
 		.wrap_box table.form_table tr.low th{padding-top:5px}
 		.wrap_box table.form_table label.hint{display:inline-block;height:22px;border:1px solid #a1caf3;margin:0 11px;padding:5px 10px 0 25px;color:#4c4c4c;background:#f0f9fe url(../images/front/tips_bg.gif) 5px 5px no-repeat}
@@ -1249,3 +1249,67 @@ background-color: #f5f5f5;
 .times{
 	padding: 0 20px;
 }
+
+
+/* 追评 */
+    input.middle {
+        height: 22px;
+        line-height: 22px;
+        padding-left: 5px;
+        width: 210px;
+        border: 1px #d7d7d7 solid;
+        margin-right: 5px;
+    }
+    .upload_btn {
+        display: inline;
+        padding: 4px 0 3px 5px;
+        border: 1px solid #e1e1e1;                                                         
+        color: #707070;
+        cursor: pointer;
+        overflow: hidden;
+    }
+    .form_table .pic {
+        float: left;
+        margin-right: 10px;
+        text-align: center;
+    }
+    #SWFUpload_0{
+        position: relative;
+        top:8px;
+    }
+ .alread_pl{position: relative;left: 300px;    padding: 1px 3px;}
+ .already_hide {
+    background: #fcfffa;
+    border: 1px solid #d0e4c2;
+    padding: 10px 5px 10px 5px;
+    text-align: left;
+    position: relative;
+    zoom: 1;
+    margin-top: 15px;
+    height: auto;
+    overflow: visible;
+    width: 610px;
+    display: none;
+}   
+.already_hide .top_photo {
+    position: relative;
+    float: right;
+    bottom: 22px;
+    right: 158px;
+}
+
+.pingyu_{ display: block;
+    float: none;}
+ .pingyu_ span{
+    margin-left: 40px;
+    display: block;
+}
+.pingyu_ b{
+    position: relative;
+    top: 17px;
+}
+.fine_wor{
+    font-size: 14px;
+    color: #7D7D7D;
+}
+.add_zpig {margin-top: 30px;}   
