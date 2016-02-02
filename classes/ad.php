@@ -84,11 +84,11 @@ class Ad
 			foreach($adList as $key => $val)
 			{
 				$val['width']  = $positionObject['width'];
-				$val['height'] = $positionObject['height'];
+                $val['height'] = $positionObject['height'];
+				$val['set-mode'] = $positionObject['set-mode'];
 				$adArray[] = self::display($val);
-			}
+			}    
 		}                   
-
 		//有广告内容数据
 		if($adArray)
 		{
@@ -129,13 +129,21 @@ OEF;
 	{
 		$result = array();
 		$linkHtml = $adData['link'] ? "onclick=window.open('".IUrl::creatUrl($adData['link'])."')" : "";
-
+        
 		switch($adData['type'])
 		{
 			//图片
 			case 1:
 			{
-				$size = ($adData['width'] > 0 && $adData['height'] > 0) ? 'width:'.$adData['width'].'px;height:'.$adData['height'].'px' : '';
+                if($adData['set-mode'])
+                {
+                    $size = $adData['width'] > 0 ? 'width:'.$adData['width'].'%;' : '';
+                    $size .= $adData['height'] > 0 ? 'height:'.$adData['height'].'%' : '';
+                }
+                else
+                {
+                    $size = ($adData['width'] > 0 && $adData['height'] > 0) ? 'width:'.$adData['width'].'px;height:'.$adData['height'].'px' : '';
+                }
 				$result = array
 				(
 					'type' => 1,
@@ -147,7 +155,15 @@ OEF;
 			//flash
 			case 2:
 			{
-				$size = ($adData['width'] > 0 && $adData['height'] > 0) ? 'width='.$adData['width'].' height='.$adData['height'] : '';
+                if($adData['set-mode'])
+                {
+                    $size = $adData['width'] > 0 ? 'width='.$adData['width'].'% ' : '';
+                    $size .= $adData['height'] > 0 ? 'height='.$adData['height'].'%' : '';
+                }
+                else
+                {
+                    $size = ($adData['width'] > 0 && $adData['height'] > 0) ? 'width='.$adData['width'].' height='.$adData['height'] : '';
+                }
 				$result = array
 				(
 					'type' => 2,

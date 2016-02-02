@@ -17,7 +17,7 @@
 				<span class="t36">事</span>
 				<span>正品价更优</span>
 			</li> -->
-			<li><img src="{skin:images/footer.png}" style="border:0px;" width="1190px" height="109px"></li>
+			<li><img src="{webroot:}{echo:IFilter::addSlash($siteConfig->site_help_code)}" style="border:0px;" width="1190px" height="109px" /></li>
 		</ul>
 	</div>
 <!-- help-->
@@ -26,7 +26,7 @@
 		{set:$cls=array('help-new','help-delivery','help-pay','help-user','help-service');}
 		{foreach:items=Api::run('getHelpCategoryFoot') item=$helpCat key=$k}
 		<dl class="{$cls[$key]}">
-			<dt class="t14">{$helpCat['name']}</dt>
+			<dt class="t14"><img src="{webroot:}{$helpCat['image']}" style="width: 20px;margin-right: 8px;" alt="">{$helpCat['name']}</dt>
 			{foreach:items=Api::run('getHelpListByCatidAll',array('#cat_id#',$helpCat['id']))}
 			{if:$item['link']!=''}
 			<dd><a href="{url:$item['link']}" style='color:#333;' target="_blank">{$item['name']}</a></dd>
@@ -185,28 +185,11 @@ function joinCart_list(id)
 
 <div class="bottom">
 <div class="pic_link">
-<a href="http://www.yqrtv.com/" target="_blank" rel="nofollow">
-<img src="{skin:images/1yqtvt.jpg}" alt="">
+{foreach:items=Api::run('getLinkList') item=$link}
+<a href="{$link['link']}" target="_blank" rel="nofollow">
+<img src="{webroot:}{$link['image']}" alt="{$link['name']}">
 </a>
-
-<a href="http://www.yqrtv.com/app/" target="_blank" rel="nofollow">
-<img src="{skin:images/2wifiyq.png}" alt="">
-</a>
-
-
-<a href="https://online.unionpay.com/" target="_blank" rel="nofollow">
-<img src="{skin:images/5yl.jpg}" alt="">
-</a>
-
-<a href="https://www.alipay.com/" target="_blank" rel="nofollow">
-<img src="{skin:images/6alipay.jpg}" alt="">
-</a>
-
-<a href="http://www.yqccb.com/" target="_blank" rel="nofollow">
-<img src="{skin:images/7yqbank.jpg}" alt="">
-</a>
-
-
+{/foreach}
 </div><br/></div>
 
 <script type="text/javascript">

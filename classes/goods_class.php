@@ -553,8 +553,9 @@ class goods_class
 		{
 			if($catRow)
 			{
-				array_unshift($result,array('id' => $catRow['id'],'name' => $catRow['name']));
-				$catRow = $catDB->getObj('id = '.$catRow['parent_id']);
+                $catRow['cate'] = Api::run('getCategoryByParentid', array('#parent_id#', $catRow['parent_id']));
+				array_unshift($result,array('id' => $catRow['id'],'name' => $catRow['name'],'cate' => $catRow['cate']));
+				$catRow = $catDB->getObj('id = '.$catRow['parent_id']);                                                                                    
 			}
 			else
 			{
