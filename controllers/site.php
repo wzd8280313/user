@@ -166,7 +166,7 @@ class Site extends IController
             exit;
         }
         $tuanData = Api::run('getRegimentOnTimeRowById',array('#id#',$id));
-        if($tuanData['type'] <> 2)
+        if($tuanData['type'] <> 2 && strtotime($tuanData['start_time']) > time())
         {
             $tuanData = array();
         }
@@ -719,12 +719,18 @@ class Site extends IController
 	function products()
 	{
 		$goods_id = IFilter::act(IReq::get('id'),'int');
-
+        
 		if(!$goods_id)
 		{
 			IError::show(403,"传递的参数不正确");
 			exit;
 		}
+        $tuan = new IModel('regiment');
+        $obj = $tuan->getObj('goods_id='.$goods_id.' and is_close=0 and NOW() between start_time and end_time');
+        if($obj)
+        {
+            $this->redirect('/site/tuan_product/active/'.$obj['id']);
+        }
 		$user_id = $this->user ? $this->user['user_id'] : 0;
 		user_like::set_user_history($goods_id,$user_id);
 		
