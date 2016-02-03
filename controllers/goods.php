@@ -227,7 +227,7 @@ class Goods extends IController
         
         //获取运费计算方式
         $delivery = new IModel('delivery');
-        $list = $delivery->query("is_delete=0", 'id,name');
+        $list = $delivery->query("is_delete=0", 'id,name','sort','asc');
         $this->delivery = $list;       
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');

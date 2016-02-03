@@ -54,6 +54,16 @@
                             {/foreach}
                             <p></p>
                             {/if}
+                            {if:isset($comment['replySelf'])}
+                             <p><b>追加评语：</b><span class="gray">{$comment['replySelf']['contents']}</span></p>
+                                {if: isset($comment['replySelfPhoto'])}
+                                <p class="js_photo">
+                                {foreach: items=$comment['replySelfPhoto'] item=$photo}
+                                    <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
+                                {/foreach}                      
+                                <p></p>
+                                {/if}
+                              {/if}
 						</div>
                         {foreach:items=$this->commentList}
                         <div class="js_reply_select" js_data="{$item['id']}">
@@ -68,7 +78,7 @@
 				
 				
 					<th>回复评价：</th>
-					<td><textarea class='normal' name='recontents'>{$items['recontents']}</textarea><label>卖家对买家评论的回复</label></td>
+					<td><textarea class='normal' name='recontents'></textarea><label>卖家对买家评论的回复</label></td>
 				</tr>
 				<tr>
 					<th></th>

@@ -115,7 +115,7 @@ class Comment extends IController
 	function comment_list()
 	{
 		$search = IFilter::act(IReq::get('search'),'strict');
-		$where  = ' status=1 and pid = 0';
+		$where  = ' status<>0 and pid = 0';
 		if($search && $appendString = Util::search($search))
 		{
 			$where .= " and ".$appendString;
@@ -148,7 +148,16 @@ class Comment extends IController
         
         //查询评论图片
         $photo = new IModel('comment_photo');
-        $commentInfo[0]['photo'] = $photo->query('comment_id='.$cid, 'img', 'sort', 'desc'); 
+        $commentInfo[0]['photo'] = $photo->query('comment_id='.$cid, 'img', 'sort', 'desc');
+        
+        //追评 
+        $comment_DB = new IModel('comment');
+        $temp = $comment_DB->getObj("id='{$commentInfo[0]['recontents']}'");        
+        if($temp)
+        {
+            $commentInfo[0]['replySelf'] = $temp;
+            $commentInfo[0]['replySelfPhoto'] = $photo->query('comment_id='.$temp['id'], 'img', 'sort', 'desc');
+        }                               
 		$query = new IQuery("comment as c");
 		$query->join = "left join user as u on c.user_id = u.id";
 		$query->fields = "c.*,u.username";

@@ -166,7 +166,7 @@ class Site extends IController
             exit;
         }
         $tuanData = Api::run('getRegimentOnTimeRowById',array('#id#',$id));
-        if($tuanData['type'] <> 2 && strtotime($tuanData['start_time']) > time())
+        if($tuanData && $tuanData['type'] <> 2 && strtotime($tuanData['start_time']) > time())
         {
             $tuanData = array();
         }
@@ -267,16 +267,16 @@ class Site extends IController
         
         //评论条数
         $comment = new IModel('comment');
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
         $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
         $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
         $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
         $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
         //购买记录
@@ -818,16 +818,16 @@ class Site extends IController
         
         //评论条数
         $comment = new IModel('comment');
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
         $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
         $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
         $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
         
-        $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
         $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
 
 		//购买记录
@@ -1030,16 +1030,16 @@ class Site extends IController
         switch($type)
         {
             case 'good': 
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point = 5 and c.pid = '.$pid.' and c.user_id <> -1';
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status <> 0 and c.point = 5 and c.pid = '.$pid.' and c.user_id <> -1 and c.p_id <> "0"';
                 break;
             case 'middle': 
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 5 and c.point > 1 and c.pid = '.$pid.' and c.user_id <> -1';
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status <> 0 and c.point < 5 and c.point > 1 and c.pid = '.$pid.' and c.user_id <> -1 and c.p_id <> "0"';
                 break;
             case 'bad': 
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.point < 2 and c.pid = '.$pid.' and c.user_id <> -1';
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status <> 0 and c.point < 2 and c.pid = '.$pid.' and c.user_id <> -1 and c.p_id <> "0"';
                 break;
             default:
-                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status = 1 and c.pid = '.$pid.' and c.user_id <> -1';
+                $commentDB->where  = 'c.goods_id = '.$goods_id.' and c.status <> 0 and c.pid = '.$pid.' and c.user_id <> -1 and c.p_id <> "0"';
                 break;   
         }
         
@@ -1051,7 +1051,7 @@ class Site extends IController
         $photo = new IModel('comment_photo');
         foreach($data as $k =>$v)
         {              
-            $temp = $comment->query('status = 1 and goods_id = '.$goods_id.' and pid='.$v['id'].' and user_id <> -1', 'count(1) as num');
+            $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid='.$v['id'].' and user_id <> -1 and p_id <> "0"', 'count(1) as num');
             $data[$k]['reply'] = !!$temp ? $temp[0]['num'] : 0;
             
             if($pid == 0)
@@ -1072,6 +1072,17 @@ class Site extends IController
                 
                 //查询评论图片
                 $data[$k]['photo'] = $photo->query('comment_id='.$v['id'], 'img', 'sort', 'desc');
+                
+                //追评
+                if(!!$v['recontents'])
+                {
+                    $temp = $comment->getObj("id='{$v['recontents']}'");
+                    if($temp)
+                    {
+                        $data[$k]['replySelf'] = $temp;
+                        $data[$k]['replySelfPhoto'] = $photo->query('comment_id='.$temp['id'], 'img', 'sort', 'desc');
+                    }
+                }
             }
             $data[$k]['username'] = $v['username'] ? $v['username'] : '游客';
         }
@@ -1097,7 +1108,7 @@ class Site extends IController
        
        if(!$content)
        {      
-           $message = array('status' => 0, 'msg' => '请输入评论内容');
+           $message = array('status' => 0, 'msg' => '请输入内容');
            echo JSON::encode($message);exit;
        }
        
@@ -1323,6 +1334,11 @@ class Site extends IController
 
 		$this->can_submit   = $can_submit[0]==1;//true值
 		$this->comment      = $can_submit[1]; //评论数据
+        if($this->comment['status'] == 1)
+        {
+            $photo = new IModel('comment_photo');
+            $this->photoList = $photo->query('comment_id='.$this->comment['id'], 'img', 'sort', 'desc');
+        }
 		$this->comment_info = Comment_Class::get_comment_info($this->comment['goods_id']);
 		$goods_id=$this->comment['goods_id'];
 		$goods_db = new IModel('goods');
@@ -1441,6 +1457,76 @@ class Site extends IController
 			die("评论失败");
 		}
 	}
+    
+    /**
+     * @brief 进行商品追评 ajax操作
+     */
+    public function comment_replySelf()
+    {
+        if(!isset($this->user['user_id']) || $this->user['user_id']===null)
+        {
+            die("未登录用户不能评论");
+        }
+
+        if(IReq::get('pid')===null)
+        {
+            die("传递的参数不完整");
+        }                   
+        $tb_comment = new IModel("comment");
+        $content = IFilter::act(IReq::get("contents"),'content');      
+        $pid               = IFilter::act(IReq::get('pid'),'int');
+        $data = $tb_comment->getObj('id='.$pid);
+        if(!$data)
+        {
+            die("系统错误");
+        }
+        unset($data['id']);                         
+        $data['pid'] = $pid;
+        $data['p_id'] = 0;
+        $data['point'] = 0;                       
+        $data['comment_time'] = date("Y-m-d",ITime::getNow());      
+        $data['contents'] = $content;                                 
+        $imgList = IFilter::act(IReq::get('imgList'),'string');
+        $data['status']   = 1;          
+
+        if(!$content && !$imgList)
+        {
+            die('请输入内容');
+        }
+        $can_submit = Comment_Class::can_comment($pid,$this->user['user_id']);
+        if($can_submit[0]!=1)
+        {
+            die("您不能评论此件商品");
+        }                                    
+        $tb_comment->setData($data);
+        $re = $tb_comment->add();        
+        if($re)
+        {
+            $comment['status'] = 2;
+            $comment['recontents'] = $re;
+            $tb_comment->setData($comment);
+            $tb_comment->update('id='.$pid);           
+            //处理评论图片
+            if($imgList)
+            {
+                $imgListArr = explode(',', $imgList);
+                $photo = new IModel('comment_photo');
+                foreach($imgListArr as $k => $v)
+                {
+                    $para['comment_id'] = $re;
+                    $para['img'] = $v;
+                    $para['sort'] = $k;
+                    $photo->setData($para);
+                    $photo->add();
+                }
+            }
+            echo "success";
+        }
+        else
+        {
+            die("评论失败");
+        }
+    }
 
 	function pic_show()
 	{

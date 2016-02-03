@@ -54,16 +54,16 @@
                         {/foreach}                      
                         <p></p>
                         {/if}
-
-                     <p><b>追加评语：</b><span class="gray">{$item['contents']}</span></p>
-                        {if: $item['photo']}
+                     {if:isset($item['replySelf'])}
+                     <p><b>追加评语：</b><span class="gray">{$item['replySelf']['contents']}</span></p>
+                        {if: isset($item['replySelfPhoto'])}
                         <p class="js_photo">
-                        {foreach: items=$item['photo'] item=$photo}
+                        {foreach: items=$item['replySelfPhoto'] item=$photo}
                             <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
                         {/foreach}                      
                         <p></p>
                         {/if}
-
+                      {/if}
 					</dl>
 					<div class="corner b"></div>
 					<div class="corner tl"></div>

@@ -15,14 +15,16 @@
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
 			{set:$user_id = $this->user['user_id']}
 			{set:$queryIevaluationList = Api::run('getUcenterEvaluation',$user_id,1)}
-			{foreach:items = $queryIevaluationList->find()}
+			{foreach:items = $queryIevaluationList->find()}      
 			<tr>
 				<td><a href="{url:/site/comments_list/id/$item[goods_id]}" target="_block">{$item['name']}</a></td>
 				<td><a href='{url:/ucenter/order_detail/id/$item["order_id"]}'>{$item['order_no']}</a></td>
 				<td>{$item['comment_time']}</td>
 				<td>{$item['point']}</td>
 				<td><span class="green bold">已评价</span>
-				<a href=""><span class="blue_vs">追加评价</span></a>
+                {if:$item['status'] == 1}
+				<a href="{url:/site/comments/id/$item[id]}"><span class="blue_vs">追加评价</span></a>             
+                {/if}
 			 </td>
 			</tr>
 			{/query}

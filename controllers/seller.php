@@ -66,7 +66,7 @@ class Seller extends IController
         $delivery->fields = 'd.id,d.name';
         $this->delivery = $delivery->find(); */
         $delivery = new IModel('delivery');
-        $list = $delivery->query("is_delete=0", 'id,name');
+        $list = $delivery->query("is_delete=0", 'id,name','sort','asc');
         $this->delivery = $list;
 		$this->setRenderData($data);
 		$this->redirect('goods_edit');
@@ -959,7 +959,16 @@ class Seller extends IController
         
         //查询评论图片
         $photo = new IModel('comment_photo');
-        $commentInfo[0]['photo'] = $photo->query('comment_id='.$cid, 'img', 'sort', 'desc'); 
+        $commentInfo[0]['photo'] = $photo->query('comment_id='.$cid, 'img', 'sort', 'desc');
+        
+        //追评 
+        $comment_DB = new IModel('comment');
+        $temp = $comment_DB->getObj("id='{$commentInfo[0]['recontents']}'");        
+        if($temp)
+        {
+            $commentInfo[0]['replySelf'] = $temp;
+            $commentInfo[0]['replySelfPhoto'] = $photo->query('comment_id='.$temp['id'], 'img', 'sort', 'desc');
+        }         
 
 		$query = new IQuery("comment as c");
         $query->join = "left join user as u on c.user_id = u.id";

@@ -31,7 +31,7 @@ class Comment_Class
 			return array(-1,"没有这条数据");
 		}
 
-		if($comment['status'] != 0)
+		if($comment['status'] == 2)
 		{
 			return array(-2,$comment);
 		}
@@ -63,7 +63,7 @@ class Comment_Class
 		$data  = array();
 		$query = new IQuery("comment");
 		$query->fields = "COUNT(*) AS num,point";
-		$query->where  = "goods_id = {$id} AND status=1 AND pid = 0";
+		$query->where  = "goods_id = {$id} AND status<>0 AND pid = 0";
 		$query->group  = "point";
 
 		$data['point_grade'] = array('none'=>0,'good'=>0,'middle'=>0,'bad'=>0);
@@ -110,9 +110,9 @@ class Comment_Class
 		$query->where = " a.goods_id = {$id} AND a.pid=0 ";
 		
 		if($type!==null)
-			$query->where = " a.goods_id={$id} AND a.status=1  AND a.point IN ($type) AND a.pid=0 ";
+			$query->where = " a.goods_id={$id} AND a.status<>0  AND a.point IN ($type) AND a.pid=0 ";
 		else
-			$query->where = "a.goods_id={$id} AND a.status=1 AND a.pid=0";
+			$query->where = "a.goods_id={$id} AND a.status<>0 AND a.pid=0";
 		
 		$query->order    = "a.id DESC";
 		$query->page     = IReq::get('page') ? intval(IReq::get('page')):1;
@@ -126,6 +126,7 @@ class Comment_Class
         $photo = new IModel('comment_photo');
 		if($data['comment_list'])
 		{
+            $comment = new IModel('comment');
 			$user_ids = array();
 			foreach($data['comment_list'] as $key=>$value)
 			{
@@ -139,6 +140,16 @@ class Comment_Class
                       $data['comment_list'][$key]['user_show'] = user_like::getSecretPhone($value['phone']);
                 }
                 $data['comment_list'][$key]['photo'] = $photo->query('comment_id='.$value['id'], 'img', 'sort', 'desc');
+                if(!!$value['recontents'])
+                {
+                    $temp = $comment->getObj("id='{$value['recontents']}'");
+                    if($temp)
+                    {
+                        $data['comment_list'][$key]['replySelf'] = $temp;
+                        $data['comment_list'][$key]['replySelfPhoto'] = $photo->query('comment_id='.$temp['id'], 'img', 'sort', 'desc');
+                    }
+                }
+                
 			}
 			$user_ids = implode(",", array_unique( $user_ids ) );
 			$query = new IQuery("member AS a");

@@ -1299,15 +1299,12 @@ background-color: #f5f5f5;
 }
 
 .pingyu_{ display: block;
-    float: none;}
+    float: none;
+line-height: 40px;}
  .pingyu_ span{
     margin-left: 40px;
     display: block;
-}
-.pingyu_ b{
-    position: relative;
-    top: 17px;
-}
+}   
 .fine_wor{
     font-size: 14px;
     color: #7D7D7D;

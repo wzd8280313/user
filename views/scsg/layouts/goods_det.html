@@ -326,6 +326,17 @@ $(document).on('click', '.js_hide_big_photo', function(){
                         </p>
                         <p></p>
                         <%}%>
+                        <%if(replySelf){%>
+                        <p><b>追加评价：</b><span class="gray"><%=replySelf['contents']%></span></p>
+                        <%if(replySelfPhoto){%>
+                        <p class="js_photo">
+                        <%for(i = 0; i < replySelfPhoto.length; i ++) {%>
+                            <img src="{webroot:<%=replySelfPhoto[i]['img']%>}" class="js_show_big_photo"/>
+                        <%}%>
+                        </p>
+                        <%}%>
+                        <p></p>
+                        <%}%>
 						<!--修改评价-->
 						<div class="huifu">
 						<p class="js_replay_comment" js_data="<%=id%>" js_name="<%=username%>"><span class="replys J-reply-trigger" id="hf_<%=id%>">回复（<%=reply%>）</span></p>
