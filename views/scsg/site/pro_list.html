@@ -22,12 +22,12 @@ $seller_arr[0]='平台自营';
 	<a href="{url:}">首页</a>
     {foreach:items=$breadGuide item=$cate} »
     <div style="display: inline-block;"> 
-    <a href="javascript:;" class="js_show_on_off">{$cate['name']}</a>
-    <ul style="display: none;">
+    <a href="{url:/site/pro_list/cat/$cate[id]}" class="js_show_on_off">{$cate['name']}</a>
+    <!--<ul style="display: none;">
     {foreach:items=$cate['cate']}
     <li><a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a></li>
     {/foreach}
-    </ul>
+    </ul>-->
     </div>
     {/foreach}
 </div>
