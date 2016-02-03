@@ -51,9 +51,19 @@
                         <p class="js_photo">
                         {foreach: items=$item['photo'] item=$photo}
                             <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
-                        {/foreach}
+                        {/foreach}                      
                         <p></p>
                         {/if}
+
+                     <p><b>追加评语：</b><span class="gray">{$item['contents']}</span></p>
+                        {if: $item['photo']}
+                        <p class="js_photo">
+                        {foreach: items=$item['photo'] item=$photo}
+                            <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
+                        {/foreach}                      
+                        <p></p>
+                        {/if}
+
 					</dl>
 					<div class="corner b"></div>
 					<div class="corner tl"></div>
