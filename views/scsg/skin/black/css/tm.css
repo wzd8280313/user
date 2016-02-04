@@ -57,10 +57,10 @@
 
 .deal-summary .price-wrap{padding-top:18px;text-align:left}
 .cnt.w1190 .pp_tm_con .pp_tm_con_se .pp_tm_con_se_l .today-deals-con div .deal-summary .deal-summary-link .shop_poto.one{ background-image:url(../images/yusale.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 85%;}
-.brand_list .brand li .brand_title .price{ float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
+.brand_list .brand li .brand_title .price{width: 80px; float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
 .brand_list .brand li .brand_title .price b{ font-size:20px; margin-right:10px;}
 .brand_list .brand li .brand_title .price del{ text-decoration:line-through; font-weight:normal; color:#999;}
-.brand_list .brand li .brand_title .qiangg{ position: relative; top: 10px;left:138px; color:#999; float:left;}
+.brand_list .brand li .brand_title .qiangg{width: 71px; position: relative; top: 10px;left:138px; color:#999; float:left;}
 .brand_list .brand li .brand_title .msqing{position: relative; top: 3px;left:155px;background: rgb(227, 55, 58); border-radius:3px;
     line-height: 35px;
     border: none;
