@@ -112,8 +112,8 @@ class Site extends IController
         $this->brandList = $tuan->find();
         //整点团
         $mod = new IModel('regiment');
-        $timeList = $mod->query('is_close = 0 AND NOW() < start_time and type=2', 'distinct(start_time)', 'start_time', 'ASC', 3);
-        $time = $mod->query('is_close = 0 AND NOW() between start_time and end_time and type=2', 'start_time', 'start_time', 'DESC', 1);
+        $timeList = $mod->query('is_close = 0 AND NOW() < start_time and type=2 and unix_timestamp(start_time) <='.strtotime(date('Y-m-d', strtotime('+1 day'))), 'distinct(start_time),end_time', 'start_time', 'ASC', 3);
+        $time = $mod->query('is_close = 0 AND NOW() between start_time and end_time and type=2', 'start_time,end_time', 'start_time', 'DESC', 1);
         if($time)
         {
             array_unshift($timeList, $time[0]);
@@ -126,18 +126,37 @@ class Site extends IController
         {
             $time = reset($timeList);
         }
+        if(count($timeList) < 3)
+        {
+            $temp = $mod->query('is_close = 0 AND NOW() > start_time and start_time <> "'.$time[0]['start_time'].'" and type=2 and unix_timestamp(start_time) >='.strtotime(date('Y-m-d', strtotime('-1 day'))), 'distinct(start_time),end_time', 'start_time', 'DESC', 3-count($timeList));
+            foreach($temp as $v)
+            array_unshift($timeList, $v);
+        }
         if($timeList)
         {
             $this->timeList = $timeList;
-            $tuan->join = 'left join goods as g on r.goods_id=g.id';
-            $tuan->fields = 'r.*';
-            $tuan->where = "r.is_close = 0 AND r.start_time='{$time[0]['start_time']}' and NOW() < r.end_time and g.is_del=0 and r.type=2";
-            $tuan->order = 'r.sort asc';
-            $tuan->limit = 6;
-            $this->onTimeList = $tuan->find();
-        }          
+            $this->time = $time[0]['start_time']; 
+        }         
 		$this->redirect('tuangou');
 	}
+    //获取整点团购数据
+    public function getOnTimeList()
+    {
+        $time = IReq::get('time');
+        $sign = IReq::get('sign');
+        $tuan = new IQuery('regiment as r');
+        $tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = "r.is_close = 0 AND r.start_time='{$time}' and g.is_del=0 and r.type=2";
+        $tuan->order = 'r.sort asc';
+        $tuan->limit = 6;
+        $data = $tuan->find();
+        foreach($data as $k => $v)
+        {
+            $data[$k]['sign'] = $sign;
+        }
+        echo JSON::encode(array('data' => $data));
+    }
     //获取更多团购
     public function getMoreTuan(){
         $start = IFilter::act(IReq::get('start'),'int');

@@ -6,7 +6,7 @@
 <script type="text/javascript" src="{theme:javascript/shan/shan.js}"></script>
                 
 <div class="cnt w1190">
-
+{set: $t = isset($this->time)}
 
 <style type="text/css">
 	h1{font-family:"微软雅黑";font-size:20px;margin-top:20px;letter-spacing:2px;}
@@ -130,39 +130,96 @@
 	.pp_tm_con_se_l{width:1190px;}
 	.width { width:1200px;margin:0 auto;}
 </style>
-{if:$this->onTimeList}
 <div class="pp_tm_con_fr one">
 	<a name="floor-1"></a>
-		<h3>整点团购</h3>
-        <h5>
-        {foreach:items = $this->timeList}
-            {set:$time = date('H:i', strtotime($item['start_time']))}
-            {if:strtotime($item['start_time']) < time()}
-            <div class="con_fr_left"><b>10:10:10</b><span class="ju_stop">距结束<br/><i>{$time}<i/></span></div>
-            {else:}
-            <div class="con_fr_right"><span>将开始<br/><b>{$time}</b></span></div>
+		<h3>整点团购</h3>  
+</div> 
+  <div class="tuangou_list">       
+
+   <!-- tab标签代码begin -->
+<div class="tab1">
+	<div class="menu">      
+		<ul id="nav">
+        {foreach:items = $this->timeList}  
+        {set:$time = date('H:i', strtotime($item['start_time']))}
+        {set:$sign = $key+1}
+        {if:strtotime($item['start_time']) < time() && strtotime($item['end_time']) > time()}
+        {set:$end=strtotime($item['end_time'])-time()}
+        <li id="one1" onclick="getOnTimeList('{$item['start_time']}',1)">
+             <span class="bk-timeleft home_timer today_end_time countdown one" id="timeRemaining-{$key}">
+    					<!-- <span id='cd_day_{$key}'>1</span>天 -->
+    					<span id='cd_hour_{$key}'></span>:
+    					<span id='cd_minute_{$key}'></span>:
+    					<span id='cd_second_{$key}'></span>	
+    					<input name='endTime' type='hidden' value='{$end}' />
+    				</span>      
+              <div  class="jjistp"><span> 距结束</span><p class=jjsop>{$time}</p></div>
+           </li>
+           {elseif:strtotime($item['start_time']) > time()}
+           <li id="one3" onclick="getOnTimeList('{$item['start_time']}',2)">
+                <div class="start_sig"><span> 将开始</span><p class="start_sin">{$time}</p></div>
+           </li>
+           {else:}
+           <li id="one2" onclick="getOnTimeList('{$item['start_time']}',0)">
+             <div  class="jjistp pop"><span> 已结束</span><p class="jjsop sad">{$time}</p></div>
+            </li>
             {/if}
-        {/foreach}
-           
-            </h5>
-</div>               
-  <div class="tuangou_list">
-  <ul class="tuangou">
-  {foreach:items = $this->onTimeList}
-  <li><div class="tuan_poto">
-     <a href="{url:/site/tuan_product/active/$item['id']}"><img src="{url:$item['img']}" style="width:290px; height:195px; border:none;" alt="{$item['title']}" /></a>
-        </div>
-  <div class="tuan_title"><a href="{url:/site/tuan_product/active/$item['id']}"><h3>{$item['title']}</h3></a>    
-    <span class="price">¥<b>{$item['regiment_price']}</b><del>¥<em>{$item['sell_price']}</em></del></span>  <span class="qiangg">{$item['sum_count']}人抢购</span>
-       <a class="msqing" href="{url:/site/tuan_product/active/$item['id']}">马上抢</a>
-     </div>
-    </li>
-  {/foreach}
-  </ul>
+           {/foreach}         
+    </ul>
+		
+	</div>
+    
+    
+      <div class="menudiv">
+      
+      <ul class="tuangou" id="onTimeList">
+      </ul>
+    </div>
+    
 </div>
-{/if}
+<!-- tab标签代码end -->
+</div>
+<script type='text/html' id='onTimeListTuan'>
+     <li><div class="tuan_poto">
+        <a href="{url:/site/tuan_product/active/<%=id%>}"><img src="{webroot:<%=img%>}" style="width:290px; height:195px; border:none;" alt="<%=title%>" /></a>
+       </div>
+     <div class="tuan_title"><a href="{url:/site/tuan_product/active/<%=id%>}"><h3><%=title%></h3></a>    
+       <span class="price">¥<b><%=regiment_price%></b><del>¥<em><%=sell_price%></em></del></span>  <span class="qiangg"><%=sum_count%>人抢购</span>
+       <%if(sign==1){%>
+          <a class="msqing" href="{url:/site/tuan_product/active/<%=id%>}">马上抢</a>
+          <%}else if(sign==2){%>
+          <a class="msqing" href="javascript:;">未开始</a>
+          <%}else{%>
+          <a class="msqing" href="javascript:;">已结束</a>
+          <%}%>
+        </div>
+          </li>
+</script>
+<script type="text/javascript">
+$(function(){
+    if({$t})
+    {
+        getOnTimeList('{$this->time}',1);
+    }
+})
+function getOnTimeList(time, sign)
+{
+    var url = '{url:/site/getOnTimeList/time/@time@/sign/@sign@}';
+    url = url.replace("@time@",time);
+    url = url.replace("@sign@",sign);
+    $.getJSON(url,function(json)
+    {
+        $('#onTimeList').empty();
 
-
+        for(var item in json.data)
+        {
+            var html = template.render('onTimeListTuan',json.data[item]);
+            $('#onTimeList').append(html);
+        }
+    });
+}
+</script>
+                           
 {if:$this->brandList}
  <div class="pp_tm_con_fr" style="margin-top:5px;">
 	<a name="floor-1"></a>

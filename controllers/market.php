@@ -706,7 +706,8 @@ class Market extends IController
 	{
 		$id      = IFilter::act(IReq::get('id'),'int');
 		$goodsId = IFilter::act(IReq::get('goods_id'),'int');
-		
+		                                     
+        $regimentObj = new IModel('regiment');
 		$dataArray = array(
 			'id'        	=> $id,
 			'title'     	=> IFilter::act(IReq::get('title','post')),
@@ -725,6 +726,12 @@ class Market extends IController
         {
             $dataArray['start_time'] = IFilter::act(IReq::get('start_time1','post'));
             $dataArray['end_time'] = IFilter::act(IReq::get('end_time1','post'));
+            if($regimentObj->getObj('type=2 and is_close=0 and end_time>"'.$dataArray['start_time'].'" and start_time < "'.$dataArray['start_time'].'"') || $regimentObj->getObj('type=2 and is_close=0 and start_time<"'.$dataArray['end_time'].'" and end_time > "'.$dataArray['end_time'].'"'))
+            {
+                $this->regimentRow = $dataArray;
+                $this->redirect('regiment_edit',false);
+                Util::showMessage('该时间段已有整点团购，不能开启新的团购');
+            }
         }
         else
         {
@@ -763,8 +770,7 @@ class Market extends IController
 			$this->redirect('regiment_edit',false);
 			Util::showMessage('请选择要关联的商品');
 		}
-
-		$regimentObj = new IModel('regiment');
+         
 		$regimentObj->setData($dataArray);
 
 		if($id)
