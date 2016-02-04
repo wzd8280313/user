@@ -121,15 +121,18 @@ $(function(){
 		{/if}
 
 		//锁定字段一旦注册无法修改
-		var lockCols = ['email','username','phone'];
-		for(var index in lockCols)
-		{
-			var input = $('input:text[name="'+lockCols[index]+'"]');
-			if(input.val()!=''){
-				input.addClass('readonly').attr('readonly',true);
-			}
-			
-		}
+        {if:!isset($this->userInfo['error'])}
+            var lockCols = ['email','username','phone'];
+            for(var index in lockCols)
+            {
+                var input = $('input:text[name="'+lockCols[index]+'"]');
+                if(input.val()!=''){
+                    input.addClass('readonly').attr('readonly',true);
+                }
+                
+            }
+        {/if}
+		
 	{else:}
 		createAreaSelect('province',0,'');
 	{/if}

@@ -78,10 +78,24 @@ class Member extends IController
 		{
 			$errorMsg = '两次输入的密码不一致！';
 		}
+        if(!IValidate::email($email))
+        {
+            $errorMsg = '邮箱格式不正确！';
+        }
+        if(!IValidate::phone($mobile))
+        {
+            $errorMsg = '请输入正确的手机号码！';
+        }                  
+        $userDB   = new IModel("user");
+           
+        if(empty($user_id) && !!$userDB->getObj("email = '{$email}' || phone = '{$mobile}'",'id')){
+            $errorMsg = '该邮箱或手机号码已被注册！';
+        }
 
 		//操作失败表单回填
 		if(isset($errorMsg))
 		{
+            $_POST['error'] = 1;
 			$this->userInfo = $_POST;
 			$this->redirect('member_edit',false);
 			Util::showMessage($errorMsg);
@@ -103,8 +117,7 @@ class Member extends IController
 			'status'       => $status,
 		);
 
-		//创建会员操作类
-		$userDB   = new IModel("user");
+		//创建会员操作类               
 		$memberDB = new IModel("member");
 
 		//添加新会员
