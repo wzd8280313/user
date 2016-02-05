@@ -102,48 +102,73 @@ class Site extends IController
         $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0 and r.type=0';
         $tuan->order = 'r.sort asc';
         $tuan->limit = 2;
-        $this->topList = $tuan->find();
+        $topList = $tuan->find();
+        if($topList)
+        {
+            foreach($topList as $k => $v)
+            {
+                $data = Comment_Class::get_comment_info($v['goods_id']);
+                $topList[$k]['comment_num'] = $data['comment_total'] ;
+                $topList[$k]['comment_rate'] = $data['comment_total'] ? ($data['point_grade']['good']/$data['comment_total'])*100 : 0;
+            }
+        }
+        $this->topList=$topList;
         //品牌团
         $tuan->join = 'left join goods as g on r.goods_id=g.id';
         $tuan->fields = 'r.*';
         $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0 and r.type=1';
         $tuan->order = 'r.sort asc';
         $tuan->limit = 9;
-        $this->brandList = $tuan->find();
+        $brandList = $tuan->find();
+        if($brandList)
+        {
+            foreach($brandList as $k => $v)
+            {
+                $brandList[$k]['regiment_price'] = (int)$v['regiment_price'];
+                $brandList[$k]['sell_price'] = (int)$v['sell_price'];
+            }
+        }
+        $this->brandList = $brandList;
         //整点团
         $mod = new IModel('regiment');
         $timeList = $mod->query('is_close = 0 AND NOW() < start_time and type=2 and unix_timestamp(start_time) <='.strtotime(date('Y-m-d', strtotime('+1 day'))), 'distinct(start_time),end_time', 'start_time', 'ASC', 3);
         $time = $mod->query('is_close = 0 AND NOW() between start_time and end_time and type=2', 'start_time,end_time', 'start_time', 'DESC', 1);
         if($time)
         {
-            array_unshift($timeList, $time[0]);
+            $time = $time[0];
+            array_unshift($timeList, $time);
             if(count($timeList) > 3)
             {
                 array_pop($timeList);
-            } 
-        }
-        else
+            }
+            $sign = 1; 
+        }               
+        if(count($timeList) < 3 && count($timeList) > 0)
         {
-            $time = reset($timeList);
-        }
-        if(count($timeList) < 3)
-        {
-            $temp = $mod->query('is_close = 0 AND NOW() > start_time and start_time <> "'.$time[0]['start_time'].'" and type=2 and unix_timestamp(start_time) >='.strtotime(date('Y-m-d', strtotime('-1 day'))), 'distinct(start_time),end_time', 'start_time', 'DESC', 3-count($timeList));
+            $temp = $mod->query('is_close = 0 AND NOW() > start_time and start_time <> "'.$timeList[0]['start_time'].'" and type=2 and unix_timestamp(start_time) >='.strtotime(date('Y-m-d')), 'distinct(start_time),end_time', 'start_time', 'DESC', 3-count($timeList));
             foreach($temp as $v)
-            array_unshift($timeList, $v);
+            {
+                array_unshift($timeList, $v);
+            }
         }
         if($timeList)
         {
+            if(!$time)
+            {
+               $time = reset($timeList); 
+               $sign = 0; 
+            }   
             $this->timeList = $timeList;
-            $this->time = $time[0]['start_time']; 
-        }         
+            $this->time = $time['start_time'];
+        }
+        $this->sign = isset($sign) ? $sign : 2;                          
 		$this->redirect('tuangou');
 	}
     //获取整点团购数据
     public function getOnTimeList()
     {
         $time = IReq::get('time');
-        $sign = IReq::get('sign');
+        $sign = IReq::get('sign');  
         $tuan = new IQuery('regiment as r');
         $tuan->join = 'left join goods as g on r.goods_id=g.id';
         $tuan->fields = 'r.*';
@@ -154,7 +179,9 @@ class Site extends IController
         foreach($data as $k => $v)
         {
             $data[$k]['sign'] = $sign;
-        }
+            $data[$k]['regiment_price'] = (int)$v['regiment_price'];
+            $data[$k]['sell_price'] = (int)$v['sell_price'];
+        }                
         echo JSON::encode(array('data' => $data));
     }
     //获取更多团购
