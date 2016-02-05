@@ -116,7 +116,7 @@ span.grade{display:inline-block;width:70px;height:15px;background:url(../images/
 		.hotwords a:hover,.hotwords a:active{color:#333}
 /* searchbar style end */
 /* position style start */
-.position{padding:0 5px 8px;text-align:left}
+.position{padding:0;text-align:left}
 	.position a{color:#0b3b8b}
 /* position style end */
 .wrapper{margin-bottom:10px}
@@ -225,6 +225,11 @@ ul.logolist li.s{width:100px;height:35px;margin:5px 2px}
 /* form table style start */
 label input{cursor:pointer}
 .form_table label{margin-right:5px;vertical-align:middle;color:#a6a6a6}
+.leftcsd{float: left;}
+.shaiodr{display: block;
+    clear: both;
+    margin-bottom: 10px;
+    }
 .form_table label.attr{color:#1d1d1d}
 
 input.normal,input.middle,input.small,input.tiny,input.mini{width:230px;height:27px;line-height:27px;border:1px solid #7f9db9;padding:0 5px;margin-right:14px;vertical-align:middle}
@@ -551,7 +556,9 @@ dl.sorting{ position:relative;border-bottom:1px solid #e5e5e5;padding:5px 60px 3
 	.comment_list .item .tl{position:absolute;left:112px;top:16px;width:17px;height:29px}
 	.comment_list .item .b{height:2px;background-position:0 -29px}
 	.comment_list .item .reply{margin:3px 0 0;padding:5px 14px;text-align:left;background:#f7f7f7}
+	.fl_tpiu{float: left;}
 	.comment_list .item p{padding:0 5px;line-height:20px}
+	.zhuipng{ margin-top: 10px;}
 	.comment_list .item span.light_gray{margin-left:10px}
 /* comment_list item style end */
 span.sel{padding-right:18px;background:url(../images/front/ucenter/sel.gif) right 1px no-repeat}
@@ -1281,26 +1288,28 @@ background-color: #f5f5f5;
  .already_hide {
     background: #fcfffa;
     border: 1px solid #d0e4c2;
-    padding: 10px 5px 10px 5px;
+    padding: 8px 5px 8px 8px;
     text-align: left;
     position: relative;
     zoom: 1;
     margin-top: 15px;
     height: auto;
-    overflow: visible;
+    overflow: hidden;
     width: 610px;
     display: none;
 }   
 .already_hide .top_photo {
     position: relative;
     float: right;
-    bottom: 22px;
+    bottom: 17px;
     right: 158px;
 }
 
 .pingyu_{ display: block;
+	height: 40px;
     float: none;
 line-height: 40px;}
+.pingyu_ b{ float: left;}
  .pingyu_ span{
     margin-left: 40px;
     display: block;
@@ -1309,4 +1318,282 @@ line-height: 40px;}
     font-size: 14px;
     color: #7D7D7D;
 }
-.add_zpig {margin-top: 30px;}      
+.add_zpig {margin-top: 30px;}     
+ /*面包屑导航*/
+body,
+div {
+    margin: 0px;
+    padding: 0px;
+}
+
+ol,
+ul {
+    list-sdisplay: block;tyle: none
+}
+
+.breadcrumb {
+    width: 1190px;
+    margin: 0 auto;
+}
+
+.breadcrumb div {}
+
+.crumbs-bar {
+    position: relative;
+    margin-bottom: 10px;
+    z-index: 5;
+}
+
+.crumbs-nav {
+    height: 24px;
+    line-height: 24px;
+}
+
+.crumbs-nav-item {
+    float: left;
+    margin-right: 8px;
+}
+
+.one-level .crumbs-link {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: "microsoft yahei";
+}
+
+.one-level a:hover {
+    color: red;
+}
+
+.crumbs-arrow {
+    font-family: simsun;
+    font-style: normal;
+}
+
+.crumbs-nav-item {
+    float: left;
+    margin-right: 8px;
+}
+
+.crumbs-link,
+.crumbs-nav-item .menu-drop,
+.crumbs-nav-item .selector-set {
+    float: left;
+    margin-right: 5px;
+}
+
+.menu-drop .trigger {
+	width: 84px;
+    display: inline-block;
+    height: 22px;
+    padding: 0 4px 0 8px;
+    border: 1px solid #ddd;
+    line-height: 22px;
+    vertical-align: top;
+}
+
+.menu-drop .trigger .curr {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.menu-drop .menu-drop-arrow {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    background: url(../images/search.ele.png) no-repeat 4px 7px;
+    -webkit-transition: background-position .15s ease-in-out;
+    -moz-transition: background-position .15s ease-in-out;
+    transition: background-position .15s ease-in-out;
+}
+
+.menu-drop-main {
+    display: none;
+    width: 350px;
+    padding: 10px 0 10px 8px;
+    position: absolute;
+    left: inherit;
+    top: 24px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.menu-drop-list li {
+    float: left;
+    width: 65px;
+    height: 24px;
+    overflow: hidden;
+    line-height: 24px;
+    margin-right: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.breadcrumb a {
+    color: #666;
+    text-decoration: none;
+}
+
+.crumbs-arrow {
+    font-family: simsun;
+    font-style: normal;
+}
+
+.crumbs-nav-item {
+    float: left;
+    margin-right: 8px;
+}
+
+.crumbs-link,
+.crumbs-nav-item .menu-drop,
+.crumbs-nav-item .selector-set {
+    float: left;
+    margin-right: 5px;
+}
+
+.menu-drop .trigger {
+    display: inline-block;
+    height: 22px;
+    padding: 0 4px 0 8px;
+    border: 1px solid #ddd;
+    line-height: 22px;
+    vertical-align: top;
+    text-align: center;
+
+}
+
+.menu-drop .trigger .curr {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.menu-drop .menu-drop-arrow {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    background: url(../images/search.ele.png) no-repeat 4px 7px;
+    -webkit-transition: background-position .15s ease-in-out;
+    -moz-transition: background-position .15s ease-in-out;
+    transition: background-position .15s ease-in-out;
+}
+
+.menu-drop:hover .trigger {
+    border: 1px solid red;
+    border-bottom: 1px solid red;
+
+}
+.menu-drop:hover i {
+background: url(../images/search.ele.png) no-repeat 4px -45px;
+
+}
+
+.menu-drop-main:before {
+    content: "";
+    position: absolute;
+    width: 94px;
+    background: white;
+    height: 1px;
+    top: -2px;
+    left: 0px;
+    border: 1px solid white;
+    z-index: 100
+}
+
+.menu-drop:hover .menu-drop-main {
+    display: block;
+    border: red 1px solid;
+}
+
+.menu-drop-list li {
+    float: left;
+    width: 65px;
+    height: 24px;
+    overflow: hidden;
+    line-height: 24px;
+    margin-right: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.menu-drop-list a {
+    color: #666;
+    text-decoration: none;
+}
+
+.crumbs-arrow {
+    font-family: simsun;
+    font-style: normal;
+}
+
+.crumbs-nav-item {
+    float: left;
+    margin-right: 8px;
+}
+
+.crumbs-nav-item .selector-set {
+    float: left;
+    margin-right: 5px;
+}
+
+.selector-set .ss-item {
+    position: relative;
+    display: inline-block;
+    height: 22px;
+    line-height: 22px;
+    border: 1px solid #DDD;
+    font-size: 12px;
+    vertical-align: top;
+    margin: 0 5px 5px 0;
+    padding: 0 26px 0 4px;
+    cursor: pointer;
+}
+
+.selector-set {
+    font-size: 0;
+}
+
+.selector-set .ss-item b {
+    font-weight: 400;
+}
+
+.selector-set .ss-item em {
+    color: #e4393c;
+	font-style:normal;
+}
+
+.selector-set .ss-item i {
+    display: block;
+    position: absolute;
+    width: 25px;
+    height: 22px;
+    right: 0;
+    top: 0;
+    background: url(../images/search.ele.png) no-repeat 7px -140px;
+}
+
+.menu-drop-list a:hover {
+    color: red;
+}
+
+.btn-default {
+    float: right;
+    display: inline-block;
+    line-height: 14px;
+    height: 14px;
+    border-radius: 2px;
+    background: #F7F7F7;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #DDD;
+    padding: 4px 13px 5px;
+    color: #666;
+    background-color: #f7f7f7;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(top, #f7f7f7, #f2f2f2);
+    background-image: -webkit-linear-gradient(top, #f7f7f7, #f2f2f2);
+    background-image: -o-linear-gradient(top, #f7f7f7, #f2f2f2);
+    background-image: linear-gradient(top, #f7f7f7, #f2f2f2);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#f2f2f2', GradientType=0);
+}
