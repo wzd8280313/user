@@ -846,7 +846,7 @@ $('[name="showButton"]>label').click(function(){
 		
 				case (3+add):
 				{
-					refer_ajax();
+					refer_ajax(1,false,{$this->type});
 				}
 				break;
 		
@@ -976,33 +976,6 @@ function history_ajax(page)
 			$('#historyBox').append(historyHtml);
 		}
 		$('#historyBox').parent().after(json.pageHtml);
-	});
-}
-
-/**
- * 获取购买记录数据
- * @page 分页数
- */
-function refer_ajax(page)
-{
-	if(!page && $.trim($('#referBox').text()))
-	{
-		return;
-	}
-	page = page ? page : 1;
-	var url = '{url:/site/cir_refer_ajax/page/@page@/goods_id/$id}';
-	url = url.replace("@page@",page);
-	$.getJSON(url,function(json)
-	{
-		//清空评论数据
-		$('#referBox').empty();
-
-		for(var item in json.data)
-		{
-			var commentHtml = template.render('referRowTemplate',json.data[item]);
-			$('#referBox').append(commentHtml);
-		}
-		$('#referBox').append(json.pageHtml);
 	});
 }
 

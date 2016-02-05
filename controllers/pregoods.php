@@ -161,14 +161,24 @@ class Pregoods extends IController
 			$goods_info['buy_num'] = $shop_info[0]['totalNum'];
 		}
 	
-		//购买前咨询
 		$tb_refer    = new IModel('refer');
-		$refeer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type=10','count(*) as totalNum');
-		$goods_info['refer'] = 0;
-		if($refeer_info)
-		{
-			$goods_info['refer'] = $refeer_info['totalNum'];
-		}
+        //咨询条数
+        $num = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0','count(*) as totalNum');
+        $goods_info['refer_num'] = $num ? $num['totalNum'] : 0;
+        //咨询类型
+        $refer_type = new IModel('refer_type');
+        $dataList = $refer_type->query('is_open=1', '*', 'sort', 'ASC');
+        if($dataList)
+        {
+            foreach($dataList as $k => $v)
+            {
+                $refer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type='.$v['id'],'count(*) as totalNum');
+                $dataList[$k]['num'] = $refer_info ? $refer_info['totalNum'] : 0;
+            }
+            $temp = current($dataList);
+            $this->type = $temp['id'];
+        }
+        $goods_info['refer'] = $dataList;
 	
 	
 		//获得商品的价格区间
