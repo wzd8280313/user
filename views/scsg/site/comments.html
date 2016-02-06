@@ -50,12 +50,15 @@
 
                     <label class="pingyu_"><b>评语：</b><span>{$this->comment['contents']}</span></label>
                     
-                    <label><b>晒单：</b>   </label> 
-                    <!--{if:isset($this->photoList)}
+                    <label class="shaiodr"><b class="leftcsd">晒单：</b>   
+                    <div>
+                    {if:isset($this->photoList)}
                     {foreach:items=$this->photoList}
                     <img src="{webroot:$item['img']}" class="js_show_big_photo" style="width: 60px;height: 60px;"/>
                     {/foreach}
-                    {/if}-->
+                    {/if}
+                        </div> 
+                       </label>   
                       </div>
 
                      </td>                    
