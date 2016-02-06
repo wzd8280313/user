@@ -175,7 +175,7 @@ class Pregoods extends IController
                 $refer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type='.$v['id'],'count(*) as totalNum');
                 $dataList[$k]['num'] = $refer_info ? $refer_info['totalNum'] : 0;
             }
-            $temp = current($dataList);
+            $temp = $dataList[0];
             $this->type = $temp['id'];
         }
         $goods_info['refer'] = $dataList;
