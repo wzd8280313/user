@@ -500,7 +500,7 @@ li{float:left;width:350px;padding:20px;position:relative}
 .deal-summary a:hover{text-decoration:none}
 
 .deal-summary
-.tit{color:#2b2b2b;font-family:"微软雅黑";font-size:16px;line-height:26px;overflow:hidden;text-align:left; margin:0 0 0 15px;text-overflow: ellipsis;white-space: nowrap;}
+.tit{color:#2b2b2b;font-family:"微软雅黑";font-size:16px;line-height:26px;overflow:hidden;text-align:left; margin:0 0 0 15px;text-overflow: ellipsis;white-space: nowrap;height: 27px;}
 
 .cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .tit em{color:#FF9600}
 .cnt.w1190 .mb10.warp-all.group-list .left_group .today-deals-con .deal-summary .deal-summary-link .tit b{ font-weight:normal; font-size:14px;}
@@ -625,11 +625,11 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
 .cnt.w1190 .brand_list .brand li .brand_poto{width:385px; height:195px; text-align: center;}
 .brand_list .brand li{ border:#CCC 1px solid;height:275px;width:385px; margin:0 14px 15px 0; float:left;}
 .brand_list .brand li h3{ display:block; height:35px;line-height:50px;overflow:hidden;width: 378px;margin-left:7px;}
-.cnt.w1190 .brand_list .brand li .brand_title .price{width: 65px; float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
+.cnt.w1190 .brand_list .brand li .brand_title .price{display:block;  width: 120px; float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
 .cnt.w1190 .brand_list .brand li .brand_title .price b{ font-size:20px; margin-right:10px;}
 .cnt.w1190 .brand_list .brand li .brand_title .price del{ text-decoration:line-through; font-weight:normal; color:#999;}
-.cnt.w1190 .brand_list .brand li .brand_title .qiangg{width: 80px; position: relative; top: 10px;left:138px; color:#999; float:left;}
-.cnt.w1190 .brand_list .brand li .brand_title .msqing{position: relative; top: 3px;left:155px;background: rgb(227, 55, 58); border-radius:3px;
+.cnt.w1190 .brand_list .brand li .brand_title .qiangg{width: 80px; position: relative; top: 10px;left:95px; color:#999; float:left;}
+.cnt.w1190 .brand_list .brand li .brand_title .msqing{position: relative; top: 3px;left:105px;background: rgb(227, 55, 58); border-radius:3px;
     line-height: 35px;
     border: none;
     padding:5px 15px;
