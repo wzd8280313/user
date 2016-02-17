@@ -48,8 +48,9 @@
 .next_more .next_more_btn span { width:500px; padding:12px 0; display:inline-block}
 .next_more .loading span { text-indent:-3000px; background:url(../images/spinner-small.gif) no-repeat center;}
 
-.shop_poto{ background-image:url(../images/yigou.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 85%;}
-.deal-summary h2{margin: 15px 0 0 15px;font-size: 18px;}
+.shop_poto{ background-image:url(../images/yigou.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 85%;}  
+.shop_poto{background-image: url(../images/yigou.png);height:60px; background-repeat: no-repeat;background-position: left top; background-size:100% 85%;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/yigou.png',sizingMethod='scale');}/*兼容ie8以下*/
+.deal-summary h2{margin: 15px 0 0 15px;font-size: 18px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
 .deal-summary-link .tit em{color:#FF9600}
 .deal-summary
 .tit{color:#2b2b2b;font-family:"微软雅黑";font-size:16px;line-height:26px;overflow:hidden;text-align:left; margin:0 0 0 15px;}
@@ -57,7 +58,8 @@
 
 .deal-summary .price-wrap{padding-top:18px;text-align:left}
 .cnt.w1190 .pp_tm_con .pp_tm_con_se .pp_tm_con_se_l .today-deals-con div .deal-summary .deal-summary-link .shop_poto.one{ background-image:url(../images/yusale.png); height:60px; background-repeat: no-repeat;background-position: left top; background-size: 100% 85%;}
-.brand_list .brand li .brand_title .price{width: 80px; float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
+.brand_list .brand_poto{width: 385px;height: 195px;}
+.brand_list .brand li .brand_title .price{width: 120px; float:left;font-size: 14px; color: crimson; position: relative; top: 10px;left: 20px; font-weight:bold;}
 .brand_list .brand li .brand_title .price b{ font-size:20px; margin-right:10px;}
 .brand_list .brand li .brand_title .price del{ text-decoration:line-through; font-weight:normal; color:#999;}
 .brand_list .brand li .brand_title .qiangg{width: 71px; position: relative; top: 10px;left:138px; color:#999; float:left;}

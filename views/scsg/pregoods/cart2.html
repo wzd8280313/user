@@ -654,7 +654,7 @@ function selectTakeself(deliveryId)
 					<table width="100%" class="form_table t_l">
 						<col width="220px" />
 						<col />
-						<col width="250px" />
+						<col  />
 						<tr>
 							<td>是否需要发票？(税金:￥{$this->goodsTax}) <input class="radio" onclick="orderFormInstance.doAccount();$('#tax_title').toggle();" name="taxes" type="checkbox" value="{$this->goodsTax}" /></td>
 						<td class="t_r"><b class="price f14 gray">合计：<span >￥<b id='final_sum'>{$this->final_sum}</b></span>元</b></td>
@@ -672,7 +672,7 @@ function selectTakeself(deliveryId)
 					<table width="100%" class="form_table t_l">
 						<col width="220px" />
 						<col />
-						<col width="250px" />
+						<col  />
 						<tr>
 						<td class="t_r"><b class="price f14">预付款：<span class="red2">￥<b id='final_sum'>{$this->pre_sum}</b></span>元</b></td>
 						</tr>
