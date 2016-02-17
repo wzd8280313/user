@@ -155,7 +155,7 @@ class Order_Class
 				foreach($orderGoodsList as $key => $val)
 				{
                     $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
-                    if($temp <> 1)
+                    if($temp <> 1 || $val['is_change'] == 0)
                     {
                         $orderGoodsListId[] = $val['id'];
                     }
@@ -258,16 +258,12 @@ class Order_Class
 				$productObj->update('id = '.$val['product_id'],'store_nums');
 				
 			}
-		}
-		foreach($goodsList as $key=>$val)
-		{
-			
-			if($val['product_id'] == 0){
-				
-				if(!isset($updateGoodsId[$val['goods_id']]))$updateGoodsId[$val['goods_id']] = 0;
-				$updateGoodsId[$val['goods_id']] += $val['goods_nums'];
-				
-			}
+            else{
+                
+                if(!isset($updateGoodsId[$val['goods_id']]))$updateGoodsId[$val['goods_id']] = 0;
+                $updateGoodsId[$val['goods_id']] += $val['goods_nums'];
+                
+            }
 		}
 		//更新统计goods的库存
 		if($updateGoodsId)
@@ -277,8 +273,12 @@ class Order_Class
 			{
 				if($type=='add'){
 					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` +  '.$val.', sale = sale - '.$val.' where id = '.$key;
+                    $orderGoodsObj->setData(array('is_change'=>0));
+                    $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
 				}else{
 					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` -  '.$val.', sale = sale + '.$val.' where id = '.$key;
+                    $orderGoodsObj->setData(array('is_change'=>1));
+                    $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
 				}
 				$goodsObj->db_query($sql);
 				
@@ -1369,7 +1369,7 @@ class Order_Class
         $temp = $good->getField('id = '.$refundsRow['goods_id'], 'store_type');
 
 		//未发货的情况下还原商品库存
-		if($orderGoodsRow['is_send'] == 0 && $temp <> 1)
+		if(($orderGoodsRow['is_send'] == 0 && $temp <> 1) || ($orderGoodsRow['is_send'] == 0 && $orderGoodsRow['is_change'] == 1))
 		{
 			self::updateStore($order_goods_id,'add');
 		}
@@ -1604,7 +1604,7 @@ class Order_Class
 		$new_order_good['goods_array'] = self::order_goods_spec($resData);
 	
 		$orderGoodsDB->setData($new_order_good);
-		$new_goods_id = $orderGoodsDB->add();
+		$new_goods_id = $orderGoodsDB->add(true);
 		
 		self::updateStore($new_goods_id,'reduce');
 

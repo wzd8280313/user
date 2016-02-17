@@ -58,9 +58,9 @@
 							<!--分类数据显示-->
 							<script id="categoryButtonTemplate" type="text/html">
 							<button class="btn" type="button" onclick="return confirm('确定删除此分类？') ? $(this).remove() : '';">
-								<input type="hidden" value="<%=templateData['id']%>" name="_goods_category[]" />
 								<span class="del"><%=templateData['name']%></span>
 							</button>
+                            <input type="hidden" value="<%=templateData['id']%>" name="_goods_category[]" />
 							</script>
 
 							<button class="btn" type="button" onclick="selectGoodsCategory('{url:/block/goods_category/type/checkbox}','_goods_category[]')"><span class="add">设置分类</span></button>

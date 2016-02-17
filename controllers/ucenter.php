@@ -325,7 +325,7 @@ class Ucenter extends IController
                     
                     //修改库存
                     $og = new IModel('order_goods');
-                    $goods = $og->query('order_id='.$id, 'id,goods_id');
+                    $goods = $og->query('order_id='.$id.' and is_change = 1', 'id,goods_id');
                     if($goods)
                     {
                         $gd = new IModel('goods');
@@ -672,7 +672,7 @@ class Ucenter extends IController
         		Order_Class::ordergoods_status_refunds(0,$goodsOrderRow,$type);
                 $good = new IModel('goods');
                 $temp = $good->getField('id = '.$goodsOrderRow['goods_id'], 'store_type');
-                if($temp == 1)
+                if($temp == 1 && $goodsOrderRow['is_change'] == 1)
                 {
                     Order_Class::updateStore($order_goods_id, 'add');
                 }

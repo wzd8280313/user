@@ -86,12 +86,12 @@
 <script type="text/javascript">
 //编辑器载入
 KindEditorObj = KindEditor.create('#content',
-{
+{                                             
 	items : [
 		'fontsize', '|', 'forecolor','bold', 'italic', 'underline',
 		'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 		'insertunorderedlist', '|', 'emoticons', 'image', 'link']
-});
+},afterBlur: function(){this.sync();});
 
 //提交表单检查
 function checkForm()

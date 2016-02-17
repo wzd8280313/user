@@ -3,11 +3,10 @@
 		<h3 class="tabs_involved">咨询列表</h3>
 		<ul class="tabs">
 			<li><input type="button" class="alt_btn" onclick="selectAll('id[]');" value="全选" /></li>
-			<li><input type="button" class="alt_btn" onclick="goods_del();" value="批量删除" /></li>
+			<li><input type="button" class="alt_btn" onclick="delModel({form:'refer_list',msg:'确定要删除选中的记录吗？'})" value="批量删除" /></li>
 		</ul>
 	</header>
-
-	<form action="{url:/seller/refer_del}" method="post" name="goodsForm">
+    <form action="{url:/seller/refer_del}" method="post" name="refer_list" onsubmit="return checkboxCheck('check[]','尚未选中任何记录！')">
 		<table class="tablesorter" cellspacing="0">
 			<colgroup>
 				<col width="25px" />

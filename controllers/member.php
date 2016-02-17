@@ -28,7 +28,7 @@ class Member extends IController
 			$userDB = new IQuery('user as u');
 			$userDB->join = 'left join member as m on u.id = m.user_id';
 			$userDB->where= 'u.id = '.$uid;
-			$userInfo = $userDB->find();
+			$userInfo = $userDB->find();    
 
 			if($userInfo)
 			{
@@ -143,8 +143,8 @@ class Member extends IController
 		{
 			$userData = array(
 					'phone'=>$mobile,
-					'username'=>$user_name
-			
+					'username'=>$user_name,
+			        'email'=>$email
 			);
 			//修改密码
 			if($password)

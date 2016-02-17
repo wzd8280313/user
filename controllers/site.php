@@ -1273,7 +1273,7 @@ class Site extends IController
 		echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
 	}
     
-    //买前咨询数据ajax获取
+    //咨询数据ajax获取
     function cir_refer_ajax()
     {
         $goods_id = IFilter::act(IReq::get('goods_id'),'int');
@@ -1309,6 +1309,7 @@ class Site extends IController
                         $seller_name = API::run('getSellerInfo',$val['seller_id'],'true_name');
                     }
                     $reply[$key]['seller_name'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+                    unset($seller_name);
                     $temp = $refer->query('goods_id = '.$goods_id.' and pid='.$val['id'].' and user_id <> -1', 'count(1) as num');
                     $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
                 }

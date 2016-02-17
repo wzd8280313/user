@@ -301,10 +301,29 @@ class Seller extends IController
         $res = $refer->add();
         if($res)
         {
-            $this->redirect('refer_list', false);
+            $this->redirect('refer_list');
         }        
         
 	}
+    
+    //删除咨询
+    function refer_del()
+    {
+        $refer_ids = IReq::get('id');
+        $refer_ids = is_array($refer_ids) ? $refer_ids : array($refer_ids);
+        if($refer_ids)
+        {
+            $refer_ids = IFilter::act($refer_ids,'int');
+            $ids = implode(',',$refer_ids);
+            if($ids)
+            {
+                $tb_refer = new IModel('refer');
+                $where = "id in (".$ids.")";
+                $tb_refer->del($where);
+            }
+        }
+        $this->redirect('refer_list');
+    }
 	/**
 	 * @brief查看订单
 	 */
