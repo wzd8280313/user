@@ -109,7 +109,7 @@ class Site extends IController
             {
                 $data = Comment_Class::get_comment_info($v['goods_id']);
                 $topList[$k]['comment_num'] = $data['comment_total'] ;
-                $topList[$k]['comment_rate'] = $data['comment_total'] ? ($data['point_grade']['good']/$data['comment_total'])*100 : 0;
+                $topList[$k]['comment_rate'] = $data['comment_total'] ? (round($data['point_grade']['good']/$data['comment_total'],4))*100 : 0;
             }
         }
         $this->topList=$topList;
@@ -172,7 +172,14 @@ class Site extends IController
         $tuan = new IQuery('regiment as r');
         $tuan->join = 'left join goods as g on r.goods_id=g.id';
         $tuan->fields = 'r.*';
-        $tuan->where = "r.is_close = 0 AND r.start_time='{$time}' and g.is_del=0 and r.type=2";
+        if($sign == 1)
+        {
+            $tuan->where = "r.is_close = 0 AND r.start_time='{$time}' and r.end_time > NOW() and g.is_del=0 and r.type=2";
+        }
+        else
+        {
+            $tuan->where = "r.is_close = 0 AND r.start_time='{$time}' and g.is_del=0 and r.type=2";
+        }
         $tuan->order = 'r.sort asc';
         $tuan->limit = 6;
         $data = $tuan->find();

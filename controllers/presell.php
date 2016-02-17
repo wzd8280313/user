@@ -54,17 +54,7 @@ class Presell extends IController
 		$wei_type  = IFilter::act(IReq::get('wei_type'),'int');
 		$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
 		
-		if($goods_id){
-			$tuan_db = new IModel('regiment');
-			if($tuan_db->getObj('goods_id='.$goods_id,'id')){
-				$this->redirect('presell_edit',false);
-				Util::showMessage('已参加团购商品，不能参加预售');
-			}
-		}
-		else{
-			$this->redirect('presell_edit',false);
-			Util::showMessage('请选择要关联的商品');
-		}
+        $presell_db = new IModel('presell');   
 		$dataArray = array(
 			'name'  => IFilter::act(IReq::get('name')),
 			'money_rate' => IFilter::act(IReq::get('money_rate'),'float'),
@@ -77,7 +67,7 @@ class Presell extends IController
 			'wei_type' => $wei_type,
 			'sure_type'=> $sure_type
 		);
-		
+		    
 		if($sure_type==1){//时间段
 			$dataArray['sure_start'] = IFilter::act(IReq::get('sure_start'));
 			$dataArray['sure_end'] = IFilter::act(IReq::get('sure_end'));
@@ -94,7 +84,25 @@ class Presell extends IController
 		if(isset($_FILES['presell_img'])&&$_FILES['presell_img']['name']!='')
 			$dataArray['presell_img'] = uploadHandle('presell_img');
 		
-		$presell_db = new IModel('presell');
+        if($goods_id){
+            $tuan_db = new IModel('regiment');
+            if($tuan_db->getObj('goods_id='.$goods_id.' and is_close = 0','id')){
+                $this->presellRow = $dataArray;
+                $this->redirect('presell_edit',false);
+                Util::showMessage('已参加团购商品，不能参加预售');
+            }
+            
+            if($presell_db->getObj('goods_id='.$goods_id.' and is_close = 0 and id <>'.$id,'id')){
+                $this->presellRow = $dataArray;
+                $this->redirect('presell_edit',false);
+                Util::showMessage('该商品已参加预售');
+            }
+        }
+        else{
+            $this->presellRow = $dataArray;
+            $this->redirect('presell_edit',false);
+            Util::showMessage('请选择要关联的商品');
+        }                                        
 		
 		
 		if($id){

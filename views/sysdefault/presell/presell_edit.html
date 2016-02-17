@@ -153,6 +153,15 @@
 						$('.red').text('该商品已参加团购，不能参加预售');
 						is_tuan = 1;
 					}
+                    else if(data==2){
+                        $('.red').text('该商品已参加预售');
+                        is_tuan = 1;
+                    }
+                    else
+                    {
+                        $('.red').text('');
+                        is_tuan = 0; 
+                    }
 				},
 				error:function(){
 					

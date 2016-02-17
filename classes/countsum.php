@@ -94,14 +94,24 @@ class CountSum
 		);
 		$priceInfo = $this->goodsCount($buyInfo);
 		$presell_db = new IModel('presell');
-		$priceInfo['pre_rate']=$presell_db->getField('id='.$active_id.' and TIMESTAMPDIFF(second,yu_end_time,NOW())<=0','money_rate');
+		$temp=$presell_db->getObj('id='.$active_id.' and TIMESTAMPDIFF(second,yu_end_time,NOW())<=0','*');
+        $priceInfo['pre_rate'] = $temp ? $temp['money_rate'] : '';
 		if(!$priceInfo['pre_rate']){
 			return '该预售不存在';
 		}else{
 			$priceInfo['pre_sum'] = $priceInfo['final_sum']* $priceInfo['pre_rate'] /100;
 			$priceInfo['pre_sum'] = $priceInfo['pre_sum'] < 0.01 ? 0.01 : $priceInfo['pre_sum'];
 		}
-		
+        if($temp)
+        {
+            if($temp['wei_type']==1){
+                $priceInfo['wei_text'] = $temp['wei_start_time'].'至'.$temp['wei_end_time'].'支付尾款';
+                
+            }else{
+                $priceInfo['wei_text'] = '预付款支付后'.$temp['wei_days'].'天内支付尾款';
+            }
+        }
+        
 		return $priceInfo;
 		
 		
@@ -571,7 +581,7 @@ class CountSum
      * @param $discount float 订单的加价或者减价
      * @return $result 最终的返回数组
      */
-    public static function countOrderFeePresell($goodsResult,$province_id,$delivery_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
+    public static function countOrderFeePresell($goodsResult,$province_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
     {
     	$goodsFinalSum = $goodsResult['final_sum'];
 
@@ -601,7 +611,7 @@ class CountSum
 
 		foreach($goodsResult['goodsList'] as $key => $val)
 		{
-			$deliveryRow = Delivery::getDelivery($province_id,$delivery_id,$val['goods_id'],$val['product_id'],$val['count']);
+			$deliveryRow = Delivery::getDelivery($province_id,$val['delivery_id'],$val['goods_id'],$val['product_id'],$val['count']);
 
 			//商品无法送达
 			if($deliveryRow['if_delivery'] == 1)

@@ -32,7 +32,7 @@ class Pregoods extends IController
             {
                 $data = Comment_Class::get_comment_info($v['goods_id']);
                 $topList[$k]['comment_num'] = $data['comment_total'] ;
-                $topList[$k]['comment_rate'] = $data['comment_total'] ? ($data['point_grade']['good']/$data['comment_total'])*100 : 0;
+                $topList[$k]['comment_rate'] = $data['comment_total'] ? (round($data['point_grade']['good']/$data['comment_total'],4))*100 : 0;
             }
         }               
         $this->topList = $topList;    
@@ -370,7 +370,8 @@ class Pregoods extends IController
 		$this->reduce      = $result['reduce'];
 		$this->weight      = $result['weight'];
 		$this->freeFreight = $result['freeFreight'];
-		$this->pre_sum     = $result['pre_sum'];
+        $this->pre_sum     = $result['pre_sum'];
+		$this->wei_text     = $result['wei_text'];
 		
 		//判断是否支持货到付款
 		$this->freight_collect=0;
@@ -417,7 +418,6 @@ class Pregoods extends IController
 		$mobile        = IFilter::act(IReq::get('mobile'));
 		$telphone      = IFilter::act(IReq::get('telphone'));
 		$zip           = IFilter::act(IReq::get('zip'));
-		$delivery_id   = IFilter::act(IReq::get('delivery_id'),'int');
 		$accept_time   = IFilter::act(IReq::get('accept_time'));
 		$payment       = IFilter::act(IReq::get('payment'),'int');
 		$order_message = IFilter::act(IReq::get('message'));
@@ -454,16 +454,7 @@ class Pregoods extends IController
 			IError::show(403,'请填写收货地址的省市地区');
 		}
 	
-		if($delivery_id == 0)
-		{
-			IError::show(403,'请选择配送方式');
-		}
-	
 		$user_id = ($this->user['user_id'] == null) ? 0 : $this->user['user_id'];
-	
-		//配送方式,判断是否为货到付款
-		$deliveryObj = new IModel('delivery');
-		$deliveryRow = $deliveryObj->getObj('id = '.$delivery_id);
 	
 		//计算费用
 		$countSumObj = new CountSum($user_id);
@@ -516,7 +507,7 @@ class Pregoods extends IController
 		$paymentType= $paymentRow['type'];
 	
 		//最终订单金额计算
-		$orderData = $countSumObj->countOrderFeePresell($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
+		$orderData = $countSumObj->countOrderFeePresell($goodsResult,$area,$payment,$insured,$taxes);
 		
 		
 		if(is_string($orderData))
@@ -527,8 +518,7 @@ class Pregoods extends IController
 	
 		//生成的订单数据
 		$dataArray = array(
-		'accept_name'         => $accept_name,
-		'distribution'        => $delivery_id,
+        'accept_name'         => $accept_name,
 		'postcode'            => $zip,
 		'telphone'            => $telphone,
 		'province'            => $province,
@@ -616,7 +606,6 @@ class Pregoods extends IController
 				'custom' => serialize(
 						array(
 								'payment'  => $payment,
-								'delivery' => $delivery_id,
 								'takeself' => $takeself,
 						)
 				),
@@ -684,8 +673,6 @@ class Pregoods extends IController
 		$this->final_sum   = $dataArray['order_amount'];
 		$this->payment     = $paymentName;
 		$this->paymentType = $paymentType;
-		$this->delivery    = $deliveryRow['name'];
-		$this->deliveryType= $deliveryRow['type'];
 		$this->pre_sum     = $goodsResult['pre_sum'];
 	
 		//订单金额为0时，订单自动完成

@@ -73,7 +73,7 @@ tuan_spec_show.buy_now = function()
 	var max_num = this.max_num;
 	//设置必要参数
 	var buyNums  = parseFloat($.trim($('#buyNums').val()));
-	if(min_num!=0 && buyNums<min_num || max_num!=0&&buyNums>max_num ){
+	if((min_num!=0 && buyNums<min_num) || (max_num!=0&&buyNums>max_num) ){
 		tips('商品数量不能超过'+max_num+',不能少于'+min_num);
 		return;
 	}
