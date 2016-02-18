@@ -722,16 +722,20 @@ class Market extends IController
 			'regiment_price'=> IFilter::act(IReq::get('regiment_price','post')),
 			'sort'          => IFilter::act(IReq::get('sort','post')),
 		);      
-        if($dataArray['type']==2 && $dataArray['is_close'])
+        if($dataArray['type']==2)
         {
             $dataArray['start_time'] = IFilter::act(IReq::get('start_time1','post'));
             $dataArray['end_time'] = IFilter::act(IReq::get('end_time1','post'));
-            if($regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and end_time>"'.$dataArray['start_time'].'" and start_time < "'.$dataArray['start_time'].'"') || $regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and start_time<"'.$dataArray['end_time'].'" and end_time > "'.$dataArray['end_time'].'"'))
+            if(!$dataArray['is_close'])
             {
-                $this->regimentRow = $dataArray;
-                $this->redirect('regiment_edit',false);
-                Util::showMessage('该时间段已有整点团购，不能开启新的团购');
+                if($regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and end_time>"'.$dataArray['start_time'].'" and start_time < "'.$dataArray['start_time'].'"') || $regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and start_time<"'.$dataArray['end_time'].'" and end_time > "'.$dataArray['end_time'].'"'))
+                {
+                    $this->regimentRow = $dataArray;
+                    $this->redirect('regiment_edit',false);
+                    Util::showMessage('该时间段已有整点团购，不能开启新的团购');
+                }
             }
+            
         }
         else
         {
