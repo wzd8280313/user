@@ -62,24 +62,16 @@ class APIUcenter
 	//用户中心-个人主页统计
 	public function getMemberTongJi($userid){
 		$query = new IQuery('order');
-
+		
 		$query->fields = "sum(order_amount) as amount,count(id) as num";
-		$query->where  = "user_id = ".$userid." and (pay_status != 0 and type !=4 OR type = 4  and pay_status =2)";
-		$info = $query->find();
-
-		$query->fields = "sum(pre_amount) as amount,count(id) as num";//支付预付款，未付尾款的预售订单
-		$query->where  = "user_id = ".$userid." and type =4 and pay_status =1 ";
-		$info1 = $query->find();
-
-
+		$query->where  = "user_id = ".$userid." and pay_status != 0 and if_del = 0";
 		$refund = new IQuery('refundment_doc');
 		$refund->where = 'user_id = '.$userid.' and pay_status=2';
 		$refund->fields = 'sum(amount) as refunds_sum';
-
+		$info = $query->find();
 		$info_refunds = $refund->find();
-		$info[0]['amount'] = $info[0]['amount'] + $info1[0]['amount'] - $info_refunds[0]['refunds_sum'];
-		$info[0]['num'] = $info[0]['num'] + $info1[0]['num'];
-//$refund_db = new I
+		$info[0]['amount'] = $info[0]['amount'] - $info_refunds[0]['refunds_sum'];
+		//$refund_db = new I
 		return $info[0];
 	}
 	//用户中心-个人主页统计
