@@ -2024,4 +2024,9 @@ class Simple extends IController
 		$this->layout = '';
 		$this->redirect('upbrower');
 	}
+    
+    //生成二维码
+    function makeCode(){
+        
+    }
 }
