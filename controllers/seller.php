@@ -21,12 +21,17 @@ class Seller extends IController
     function checkCode(){
         $order_id = IFilter::act(IReq::get('id'), 'int');
         $good_id = IFilter::act(IReq::get('gId'), 'int');
+        $seller_id = IFilter::act(IReq::get('sId'), 'int');
         $good = new IModel('goods');
         $time = $good->getField('id='.$good_id, 'past_time');
         if($time <> '0000-00-00' && $time < date('Y-m-d'))
         {
             exit('该商品已过期');
-        }                                 
+        }
+        if($seller_id <> $this->seller['seller_id'])
+        {
+            exit('当前登录商家无权限操作该订单');
+        }                                                        
         $this->order_deliver($order_id, $good_id);
     }
 	/**
