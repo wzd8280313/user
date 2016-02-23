@@ -16,6 +16,19 @@ class Seller extends IController
 	{
 		IInterceptor::reg('CheckRights@onCreateAction');
 	}
+    
+    //验证二维码
+    function checkCode(){
+        $order_id = IFilter::act(IReq::get('id'), 'int');
+        $good_id = IFilter::act(IReq::get('gId'), 'int');
+        $good = new IModel('goods');
+        $time = $good->getField('id='.$good_id, 'past_time');
+        if($time <> '0000-00-00' && $time < date('Y-m-d'))
+        {
+            exit('该商品已过期');
+        }                                 
+        $this->order_deliver($order_id, $good_id);
+    }
 	/**
 	 * @brief 商品添加中图片上传的方法
 	 */
@@ -276,17 +289,18 @@ class Seller extends IController
 	/**
 	 * @brief 发货订单页面
 	 */
-	public function order_deliver()
-	{
-		$order_id = IFilter::act(IReq::get('id'),'int');
+	public function order_deliver($order_id = '', $good_id = '')
+	{                                                 
+        $order_id = $order_id ? $order_id : IFilter::act(IReq::get('id'),'int');          
 		$data = array();
 		if($order_id)
 		{
 			$order_show = new Order_Class();
 			$data = $order_show->getOrderShow($order_id);
+            $this->good_id = $good_id;
 		}
 		$this->setRenderData($data);
-		$this->redirect('order_deliver');
+		$this->redirect('order_deliver',false);
 	}
 	/**
 	 * @brief 发货操作
