@@ -51,7 +51,9 @@
                 </div>
                 {foreach:items=$this->og_data item=$good}
                 {set:$good_info = JSON::decode($good['goods_array'])}
-                {set:$sign = $good['type']}        
+                {if:$good['type'] == 1}
+                {set:$sign = 1}
+                {/if}        
                 <div class="qrdd qrdds">
                     <div class="sj"><img {if:isset($good['seller_logo'])} src="{webroot:}{$good['seller_logo']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$good['seller_name']}</a></div>
                  <!-- 商品详情-->
@@ -79,15 +81,17 @@
                    <!-- 商品详情结束 -->
                   
                 </div>                    
-                {/foreach}                             
+                {/foreach}
+                {if:$sign<>1}                             
                <p style="padding:5px 16px;">配送费用：<span id="deliveryfee_0_500_192}" style="float:right;">￥{$this->order_info['real_freight']}</span></p>
+               {/if}
                <p style="color:red;padding:0px 15px;">
                   实付款：<b style="float:right;">￥{$this->order_info['order_amount']}</b>
                 </p>
                  <div class="qrdd qrdds" style="">
                      <div class="dxq">
                         <p><span>订单号:</span><i>{$this->order_info['order_no']}</i>
-                        {if:$sign==1 && $orderStatus==4}
+                        {if:$sign==1 && in_array($orderStatus,array(1,4))}
 						<a href="{url:/ucenter/makeCode/id/$this->order_info['id']}" style="
 							margin-left: 10px;
 							backg: #DD6109;

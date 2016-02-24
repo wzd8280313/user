@@ -19,7 +19,7 @@ class Order extends IController
         $good_id = IFilter::act(IReq::get('gId'), 'int');
         $good = new IModel('goods');
         $time = $good->getField('id='.$good_id, 'past_time');
-        if($time <> '0000-00-00' && $time < date('Y-m-d'))
+        if($time && $time <> '0000-00-00' && $time < date('Y-m-d'))
         {
             exit('该商品已过期');
         }         
