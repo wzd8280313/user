@@ -50,7 +50,9 @@ jQuery(function(){
 
 	//配送方式初始化
 	orderFormInstance.deliveryInit("{$this->custom['delivery']}");
-
+    {if:$this->good_type}
+    orderFormInstance.paymentInit("{$this->custom['payment']}");
+    {/if}
 	
 
 	
@@ -458,7 +460,7 @@ function selectTakeself(deliveryId)
 				<!--配送方式 结束-->
 
 				<!--支付方式 开始-->
-				<div class="wrap_box" id='paymentBox' style='display:none'>
+				<div class="wrap_box" id='paymentBox' {if:!$this->good_type}  style='display:none' {/if}>
 					<h3>
 						<span class="orange">支付方式</span>
 						<a class="normal f12" href="javascript:void(0)" id='paymentToggleButton' onclick="orderFormInstance.paymentModToggle();">[关闭]</a>
