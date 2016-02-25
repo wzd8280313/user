@@ -21,7 +21,7 @@
 .show_hidden_l .l_time {background:url(../images/pp_tm.png) no-repeat -74px -48px; display:inline-block; padding-left:20px; }
 .show_hidden_r { position:absolute; right:0; bottom:-1px; width:510px; text-align:center; color:#fff; font-family:"΢���ź�"; line-height:30px; font-size:14px}
 .tm_cn {  border:1px solid #d25428; margin-bottom:20px;width:246px;float:right;}
-.tm_wb {float:right;}
+.tm_wb {float:right;margin-top: 22px;}
 .tm_cn img { display:block;}
 .pp_tm_ad_lb { width:246px; height:320px; overflow:hidden; position:relative; margin-bottom:20px;}
 .pp_tm_ad_lb ul { position:absolute;}
