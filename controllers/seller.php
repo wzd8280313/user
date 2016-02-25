@@ -97,7 +97,18 @@ class Seller extends IController
 		//初始化商品数据
 		unset($_POST['id']);
 		unset($_POST['callback']);
-
+        if($_POST['type'] == 0)
+        {
+            unset($_POST['past_time']);
+        }      
+        else
+        {
+            $_POST['past_time'] = $_POST['past_time'] ? $_POST['past_time'] : '0000-00-00';
+            if($_POST['is_del']==3 && $_POST['past_time'] <> '0000-00-00' && $_POST['past_time'] < date('Y-m-d'))
+            {
+                die('该商品已过期,不能申请上架');                  
+            }
+        }
 		$goodsObject = new goods_class($this->seller['seller_id']);
 		$goodsObject->update($id,$_POST);
 
