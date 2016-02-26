@@ -249,7 +249,7 @@ function selectProtect(obj)
 							{set:$type='product';$id=$item['product_id']}
 						{/if}
 						<input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
-		     		<a href="{url:/site/products/id/$item['goods_id']}">
+		     		<a href="{url:/site/products/id/$item['goods_id']}" style="display:block;">
 		     			<div class="tjxq_img" style="margin-top:-5px;">
 		     				<img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}"/>
 		     			</div>
@@ -278,6 +278,7 @@ function selectProtect(obj)
                             <p style="float: right;padding-right: 16px;">配送费用<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}}'></span></p>
                             {/if}
 			     		</div>
+						<div style="clear:both;"></div>
 			     	</a>
 					</div>
 				{/if}
