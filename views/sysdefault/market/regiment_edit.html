@@ -133,6 +133,11 @@
 						$('.red').text('该商品已参加预售，不能参加团购');
 						is_presell = 1;
 					}
+                    else
+                    {
+                        $('.red').text('');
+                        is_presell = 0; 
+                    }
 				},
 				error:function(){
 					

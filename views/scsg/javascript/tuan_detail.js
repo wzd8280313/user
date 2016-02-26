@@ -73,10 +73,27 @@ tuan_spec_show.buy_now = function()
 	var max_num = this.max_num;
 	//设置必要参数
 	var buyNums  = parseFloat($.trim($('#buyNums').val()));
-	if((min_num!=0 && buyNums<min_num) || (max_num!=0&&buyNums>max_num) ){
-		tips('商品数量不能超过'+max_num+',不能少于'+min_num);
-		return;
-	}
+    var _tip = '';
+    if(max_num!=0 && buyNums>max_num)
+    {
+        _tip += '购买商品数量不能超过'+max_num;
+    }
+    if(min_num!=0 && buyNums<min_num)
+    {
+        if(_tip.length > 0)
+        {
+            _tip += ',';
+        }
+        else
+        {
+            _tip += '购买商品数量';
+        }
+        _tip += '不能少于'+min_num;
+    }
+    if(_tip.length > 0){
+        tips(_tip);
+        return;
+    }
 	
 	var id = this.goods_id;
 	var type = 'goods';

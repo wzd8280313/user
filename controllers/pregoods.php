@@ -24,8 +24,8 @@ class Pregoods extends IController
 		$presell_db->order = 'p.id DESC';
         $list = $presell_db->find();
         $topList = array();
-        count($list)>0 ? $topList[] = array_shift($list) : $topList = array();
-        count($list)>0 ? $topList[] = array_shift($list) : $topList = array();               
+        $topList[] = count($list)>0 ? array_shift($list) : array();
+        count($list)>0 ? $topList[] = array_shift($list) : $topList = $topList;               
         if($topList)
         {
             foreach($topList as $k => $v)
@@ -34,7 +34,7 @@ class Pregoods extends IController
                 $topList[$k]['comment_num'] = $data['comment_total'] ;
                 $topList[$k]['comment_rate'] = $data['comment_total'] ? (round($data['point_grade']['good']/$data['comment_total'],4))*100 : 0;
             }
-        }               
+        }              
         $this->topList = $topList;    
 		$this->dataList = $list;               
 		$this->redirect('presell_list');

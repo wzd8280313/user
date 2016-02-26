@@ -186,8 +186,8 @@ class Site extends IController
         foreach($data as $k => $v)
         {
             $data[$k]['sign'] = $sign;
-            $data[$k]['regiment_price'] = (int)$v['regiment_price'];
-            $data[$k]['sell_price'] = (int)$v['sell_price'];
+            $data[$k]['regiment_price'] = (int)$v['regiment_price'] == $v['regiment_price'] ? (int)$v['regiment_price'] : $v['regiment_price'];
+            $data[$k]['sell_price'] = (int)$v['sell_price'] == $v['sell_price'] ? (int)$v['sell_price'] : $v['sell_price'];
         }                
         echo JSON::encode(array('data' => $data));
     }

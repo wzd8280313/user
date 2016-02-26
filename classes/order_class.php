@@ -155,7 +155,7 @@ class Order_Class
 				foreach($orderGoodsList as $key => $val)
 				{
                     $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
-                    if($temp <> 1 || $val['is_change'] == 0)
+                    if(($temp <> 1 && $val['is_change'] == 0) || $val['is_change'] == 0)
                     {
                         $orderGoodsListId[] = $val['id'];
                     }
@@ -1366,10 +1366,9 @@ class Order_Class
 		$order_goods_id = $orderGoodsRow['id'];
 		
         $good = new IModel('goods');
-        $temp = $good->getField('id = '.$refundsRow['goods_id'], 'store_type');
 
 		//未发货的情况下还原商品库存
-		if(($orderGoodsRow['is_send'] == 0 && $temp <> 1) || ($orderGoodsRow['is_send'] == 0 && $orderGoodsRow['is_change'] == 1))
+		if($orderGoodsRow['is_change'] == 1)
 		{
 			self::updateStore($order_goods_id,'add');
 		}
@@ -1698,8 +1697,12 @@ class Order_Class
 		if($goodsOrderRow['delivery_id'] == 0 )
 		{
 			if(empty($send_data)){
-				$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price']  ;
+				$otherFee += $goodsOrderRow['delivery_fee'];
 			}
+            if($orderRow['if_insured'])
+            {
+                $otherFee += $goodsOrderRow['save_price'];
+            }
 			$otherFee += $goodsOrderRow['tax'];
 		}
 		
