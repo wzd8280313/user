@@ -97,18 +97,19 @@ $(document).on('click', '.js_hide_reply_comment',function(){
 })
 
 /**
- * 获取购买前咨询数据
+ * 获取咨询数据
  * @page 分页数
  */
-function refer_ajax(page, _b)
+function refer_ajax(page, _b, type)
 {
     if(!page && $.trim($('#referBox').text()))
     {
         return;
     }
     page = page ? page : 1;
-    var url = '{url:/site/cir_refer_ajax/page/@page@/goods_id/$id}';
+    var url = '{url:/site/cir_refer_ajax/page/@page@/type/@type@/goods_id/$id}';
     url = url.replace("@page@",page);
+    url = url.replace("@type@",type);
     $.getJSON(url,function(json)
     {
         $('#referBox').empty();
@@ -171,7 +172,7 @@ function refer_ajax(page, _b)
                         }
                         else
                         {
-                            refer_ajax(1, true);
+                            refer_ajax(1, true, type);
                             return;
                         }
                     }
@@ -212,7 +213,7 @@ $(document).on('click', '.js_hide_big_photo', function(){
 			{/if}
 			<label id='point'><span>顾客评价({$comment_num})</span></label>
 			<label id='buyHistory'><span>购买记录({$buy_num})</span></label>
-			<label><span>购买前咨询({$refer})</span></label>
+			<label><span>咨询({$refer_num})</span></label>
 		</div>
 
 		<div name="showBox">
@@ -412,9 +413,31 @@ $(document).on('click', '.js_hide_big_photo', function(){
 
 			<!-- 购买前咨询 start -->
 			<div class="hidden comment_list box">
-				<div class="title3">
-					<span class="f_r f12 normal"><a class="comm_btn" href="{url:/site/consult/id/$id}" target="_blank">我要咨询</a></span>
-					<img src="{skin:images/front/cart.gif}" width="16" height="16" />购买前咨询<span class="f12 normal">（共<b class="red2">{$refer}</b>记录）</span>
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        /*选择咨询*/
+                        $(".m-tab-trigger .trig-item-refer").click(function(){
+                            $(".m-tab-trigger .trig-item-refer").removeClass("curr");
+                            $(this).addClass("curr");
+                            var _type = $(this).attr('js_data');
+                            refer_ajax(1, false, _type);
+                        });
+
+                    });
+                </script>
+				<div class="mt-inner m-tab-trigger-wrap clearfix">
+                    <span class="f_r normal"><a class="comm_btn" style="margin: 3px 5px;" href="{url:/site/consult/id/$id}" target="_blank">我要咨询</a></span>
+                    {if:$refer}
+                    <ul class="m-tab-trigger">
+                    {foreach: items=$refer}
+                    {if:$item['id']==$this->type}
+                        <li class="ui-switchable-item trig-item trig-item-refer curr" js_data="{$item['id']}"><a href="javascript:;">{$item['name']}<em>({$item['num']})</em></a></li>
+                    {else:}
+                        <li class="ui-switchable-item trig-item trig-item-refer" js_data="{$item['id']}"><a href="javascript:;">{$item['name']}<em>({$item['num']})</em></a></li>
+                    {/if}
+                    {/foreach}
+                    </ul>
+                    {/if}
 				</div>
 
 				<div id='referBox'></div>

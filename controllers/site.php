@@ -337,14 +337,24 @@ class Site extends IController
             $goods_info['buy_num'] = $shop_info[0]['totalNum'];
         }
         
-        //购买前咨询
         $tb_refer    = new IModel('refer');
-        $refeer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type=10','count(*) as totalNum');
-        $goods_info['refer'] = 0;
-        if($refeer_info)
+        //咨询条数
+        $num = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0','count(*) as totalNum');
+        $goods_info['refer_num'] = $num ? $num['totalNum'] : 0;
+        //咨询类型
+        $refer_type = new IModel('refer_type');
+        $dataList = $refer_type->query('is_open=1', '*', 'sort', 'ASC');
+        if($dataList)
         {
-            $goods_info['refer'] = $refeer_info['totalNum'];
+            foreach($dataList as $k => $v)
+            {
+                $refer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type='.$v['id'],'count(*) as totalNum');
+                $dataList[$k]['num'] = $refer_info ? $refer_info['totalNum'] : 0;
+            }
+            $temp = $dataList[0];
+            $this->type = $temp['id'];
         }
+        $goods_info['refer'] = $dataList;
     
         
         
@@ -888,15 +898,24 @@ class Site extends IController
 			$goods_info['buy_num'] = $shop_info[0]['totalNum'];
 		}
 
-		//购买前咨询
-		$tb_refer    = new IModel('refer');
-		$refeer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type=10','count(*) as totalNum');
-		$goods_info['refer'] = 0;
-		if($refeer_info)
-		{
-			$goods_info['refer'] = $refeer_info['totalNum'];
-		}
-
+        $tb_refer    = new IModel('refer');
+        //咨询条数
+        $num = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0','count(*) as totalNum');
+        $goods_info['refer_num'] = $num ? $num['totalNum'] : 0;
+        //咨询类型
+        $refer_type = new IModel('refer_type');
+        $dataList = $refer_type->query('is_open=1', '*', 'sort', 'ASC');
+        if($dataList)
+        {
+            foreach($dataList as $k => $v)
+            {
+                $refer_info = $tb_refer->getObj('goods_id='.$goods_id.' and pid=0 and type='.$v['id'],'count(*) as totalNum');
+                $dataList[$k]['num'] = $refer_info ? $refer_info['totalNum'] : 0;
+            }
+            $temp = $dataList[0];
+            $this->type = $temp['id'];
+        }
+		$goods_info['refer'] = $dataList;
 
 		//获得商品的价格区间
 		$tb_product = new IModel('products');
@@ -1260,10 +1279,15 @@ class Site extends IController
         $goods_id = IFilter::act(IReq::get('goods_id'),'int');
         $page     = IFilter::act(IReq::get('page'),'int') ? IReq::get('page') : 1;
         $pid     = IFilter::act(IReq::get('pid'),'int') ? IReq::get('pid') : 0;
+        
+        //咨询类型
+        $refer_type = new IModel('refer_type');
+        $tid = $refer_type->query('is_open=1', 'id', 'sort', 'ASC', 1);
+        $type = IReq::get('type') ? IFilter::act(IReq::get('type'),'int') : $tid[0]['id'];
 
         $referDB = new IQuery('refer as r');
         $referDB->join = 'left join user as u on r.user_id = u.id';
-        $referDB->where = 'r.goods_id = '.$goods_id.' and r.pid='.$pid.' and r.user_id <> -1 and r.type=10';
+        $referDB->where = 'r.goods_id = '.$goods_id.' and r.pid='.$pid.' and r.user_id <> -1 and r.type='.$type;
         $referDB->order = 'r.id desc';
         $referDB->fields = 'u.username,u.head_ico,r.id,r.time,r.question,r.reply_time,r.answer';
         $referDB->page = $page;

@@ -25,37 +25,23 @@ $seller_arr[0]='平台自营';
         <div class="crumbs-bar clearfix">
             <div class="crumbs-nav">
                 <div class="crumbs-nav-main clearfix">
-                    <div class="crumbs-nav-item one-level"> <a href="" class="crumbs-link">礼品箱包</a> <i class="crumbs-arrow">&gt;</i></div>
+                    <div class="crumbs-nav-item one-level"> <a href="javascript;:" class="crumbs-link">首页</a> </div>
+                    {foreach:items=$breadGuide item=$cate}
                     <div class="crumbs-nav-item">
+                    <i class="crumbs-arrow" style="float: left;margin-right: 10px">&gt;</i>
                         <div class="menu-drop">
-                            <div class="trigger"><span class="curr">精品男包</span><i class="menu-drop-arrow"></i></div>
+                            <div class="trigger"><span class="curr">{$cate['name']}</span><i class="menu-drop-arrow"></i></div>
                             <div class="menu-drop-main">
                                 <ul class="menu-drop-list">
-                                    <li><a href="">潮流女包</a></li>
-                                    <li><a href="">精品男包</a></li>
-                                    <li><a href="">功能箱包</a></li>
-                                    <li><a href="">礼品</a></li>
-                                    <li><a href="">奢侈品</a></li>
-                                    <li><a href="">婚庆</a></li>
+                                    {foreach:items=$cate['cate']}
+                                    <li><a href="{url:/site/pro_list/cat/$item[id]}">{$item['name']}</a></li>
+                                    {/foreach}
                                 </ul>
                             </div>
-                        </div> <i class="crumbs-arrow">&gt;</i></div>
-                    <div class="crumbs-nav-item"> 
-                        <div class="menu-drop ">
-                            <div class="trigger"><span class="curr">男士手包</span><i class="menu-drop-arrow"></i></div>
-                            <div class="menu-drop-main">
-                                <ul class="menu-drop-list clearfix">
-                                    <li><a href=""  >钱包/卡包</a></li>
-                                    <li><a href=""  >男士手包</a></li>
-                                    <li><a href=""  >商务公文包</a></li>
-                                    <li><a href=""  >双肩包</a></li>
-                                    <li><a href=""  >单肩/斜挎包</a></li>
-                                    <li><a href=""  >钥匙包</a></li>
-                                </ul>
-                            </div>
-                        </div> <i class="crumbs-arrow">&gt;</i></div>
+                        </div></div>
+                    {/foreach}
                     <!-- navExpands start -->
-                    <div class="crumbs-nav-item">
+                    <!--<div class="crumbs-nav-item">
                         <div class="selector-set">
                             <a class="ss-item" title="七匹狼（SEPTWOLVES） " href="" >
                                 <b>品牌： </b>
@@ -64,7 +50,7 @@ $seller_arr[0]='平台自营';
                             </a>
                         </div>
                     </div>
-                    <a class="btn btn-default fr" href="">全部撤消</a>   <!-- 不用就删掉 -->
+                    <a class="btn btn-default fr" href="">全部撤消</a> -->  <!-- 不用就删掉 -->
                 </div>
             </div>
         </div>
