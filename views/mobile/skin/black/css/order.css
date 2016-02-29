@@ -86,7 +86,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
     margin-right: 5px;
     display: inline-block;
     width: 75px;
-    text-align: right;
+   /* text-align: right;*/
 }
 .pages .qrdds .qrdds_zf h4 i{
 	color: red;
@@ -94,9 +94,9 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
     padding-right: 5px;
 }
 .pages .qrdds .qrdds_zf select{
-	width:65%;
-	height:30px;
-	margin: 10px 0px;
+	/*width:65%;
+	height:30px;*/
+	/*margin: 10px 0px;*/
 	padding: 0 5px;
 	color: #A9A4A4;
 }
@@ -285,7 +285,7 @@ padding: 0 10px;
 	line-height: 30px;
 }
 .ermimg .ermtu{
-	width: 125px;
+	width: 140px;
 	margin: 0 auto;
 	border: 1px solid #c0c0c0;
 }
