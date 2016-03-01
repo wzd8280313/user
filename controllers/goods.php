@@ -434,6 +434,18 @@ class Goods extends IController
 		$this->goodsHandle = $goodsHandle;
 		$this->redirect("goods_list");
 	}
+    
+    //平台商品
+    public function goods_list_plat()
+    {
+        $this->redirect('goods_list/plat/plat');
+    }
+    
+    //商户商品
+    public function goods_list_seller()
+    {
+        $this->redirect('goods_list/plat/seller');
+    }
 
 	//商品导出 Excel
 	public function goods_report()

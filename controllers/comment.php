@@ -135,7 +135,19 @@ class Comment extends IController
 		$this->data['search']= $search;
 		$this->setRenderData($this->data);
 		$this->redirect('comment_list',false);
-	}
+	}   
+    
+    //平台评论
+    function comment_list_plat()
+    {
+        $this->redirect('comment_list/plat/plat');
+    }
+    
+    //商户评论
+    function comment_list_seller()
+    {
+        $this->redirect('comment_list/plat/seller');
+    }
 
 	/**
 	 * @brief 显示评论信息
@@ -270,11 +282,13 @@ class Comment extends IController
 		$username = IFilter::act(IReq::get('username'));
 		$goodsname = IFilter::act(IReq::get('goodsname'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
-		$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+		$plat = IFilter::act(IReq::get('plat'));
 		$this->data['username'] = $username;
 		$this->data['goodsname'] = $goodsname;
 		$this->data['beginTime'] = $beginTime;
-		$this->data['endTime'] = $endTime;
+        $this->data['endTime'] = $endTime;
+		$this->data['plat'] = $plat;
 		if($username)
 		{
 			$where .= ' and u.username like "%'.$username.'%"';
@@ -291,10 +305,30 @@ class Comment extends IController
 		{
 			$where .= ' and d.time < "'.$endTime.'"';
 		}
+        if($plat == 'plat')
+        {
+            $where .= ' and goods.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and goods.seller_id <> 0';
+        }
 		$this->data['where'] = $where;
 		$this->setRenderData($this->data);
 		$this->redirect('discussion_list',false);
 	}
+    
+    //平台讨论
+    function discussion_list_plat()
+    {
+        $this->redirect('discussion_list/plat/plat');
+    }
+    
+    //商户讨论
+    function discussion_list_seller()
+    {
+        $this->redirect('discussion_list/plat/seller');
+    }
 
 	/**
 	 * @brief 显示讨论信息
@@ -404,6 +438,18 @@ class Comment extends IController
 		$this->setRenderData($this->data);
 		$this->redirect('refer_list',false);
 	}
+    
+    //平台咨询
+    public function refer_list_plat()
+    {
+        $this->redirect('refer_list/plat/plat');
+    }
+    
+    //商户咨询
+    public function refer_list_seller()
+    {
+        $this->redirect('refer_list/plat/seller');
+    }
     
     //咨询详情
     public function refer_edit()

@@ -59,7 +59,7 @@ $main_name = $config->name;
 			</colgroup>
 			<tbody>
 				{set:$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query: name=order_fapiao as f join=left join order as o on o.id eq f.order_id left join seller as s on s.id eq f.seller_id left join user as u on u.id eq f.user_id  where=f.status eq 0   order=f.id desc page=$page fields=s.true_name,u.username,o.order_no,o.id as order_id,f.*}
+				{query: name=order_fapiao as f join=left join order as o on o.id eq f.order_id left join seller as s on s.id eq f.seller_id left join user as u on u.id eq f.user_id  where=f.status eq 0 $this->where  order=f.id desc page=$page fields=s.true_name,u.username,o.order_no,o.id as order_id,f.*}
 				
 				<tr>
 					<td class="t_c"><input name="id[]" type="checkbox" value="{$item['id']}" /></td>
