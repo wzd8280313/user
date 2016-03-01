@@ -107,9 +107,11 @@ class Order extends IController
 		//筛选、
 		$beginTime = IFilter::act(IReq::get('beginTime'));
 		$endTime = IFilter::act(IReq::get('endTime'));
+        $plat = IFilter::act(IReq::get('plat'));
 		$data['beginTime'] = $beginTime;
 		$data['endTime'] = $endTime;
 		$data['order_no'] = $order_no;
+        $data['plat'] = $plat;
 		
 		if($beginTime)
 		{
@@ -122,6 +124,14 @@ class Order extends IController
 		if($order_no){
 			$where .= ' and rd.order_no = "'.$order_no.'"';
 		}
+        if($plat == 'plat')
+        {
+            $where .= ' and rd.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and rd.seller_id <> 0';
+        }
 		$this->setRenderData($data);
 		$this->where = $where;
 		$this->redirect('refundment_list');

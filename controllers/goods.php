@@ -408,9 +408,16 @@ class Goods extends IController
 	function goods_list()
 	{
 		//搜索条件
-		$search = IFilter::act(IReq::get('search'),'strict');
-		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
-
+		$search = IFilter::act(IReq::get('search'),'strict');  
+        if(IReq::get('plat') == 'plat')
+        {
+            $search['seller_id'] = '=0';
+        }
+        elseif(IReq::get('plat') == 'seller')
+        {
+            $search['seller_id'] = '!=0';
+        }
+		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;  
 		//条件筛选处理
 		list($join,$where) = goods_class::getSearchCondition($search);
 

@@ -113,14 +113,24 @@ class Comment extends IController
 	 * @brief 评论信息列表
 	 */
 	function comment_list()
-	{
+	{                                                                
 		$search = IFilter::act(IReq::get('search'),'strict');
+        $plat = IReq::get('plat');      
 		$where  = ' status<>0 and pid = 0';
+        if($plat == 'plat')
+        {
+            $where .= ' and sellerid=0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and sellerid <> 0';
+        }
 		if($search && $appendString = Util::search($search))
 		{
 			$where .= " and ".$appendString;
 		}
 
+        $search['plat'] = $plat;
 		$this->data['where'] = $where;
 		$this->data['search']= $search;
 		$this->setRenderData($this->data);
@@ -355,11 +365,13 @@ class Comment extends IController
 		$username = IFilter::act(IReq::get('username'));
 		$goodsname = IFilter::act(IReq::get('goodsname'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
-		$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+		$plat = IFilter::act(IReq::get('plat'));
 		$this->data['username'] = $username;
 		$this->data['goodsname'] = $goodsname;
 		$this->data['beginTime'] = $beginTime;
-		$this->data['endTime'] = $endTime;
+        $this->data['endTime'] = $endTime;
+		$this->data['plat'] = $plat;
 		if($username)
 		{
 			$where .= ' and u.username like "%'.$username.'%"';
@@ -376,6 +388,14 @@ class Comment extends IController
 		{
 			$where .= ' and r.time < "'.$endTime.'"';
 		}
+        if($plat == 'plat')
+        {
+            $where .= ' and r.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and r.seller_id <> 0';
+        }
 		/*if($status=='0')
 		{
 			$where .= ' and r.status = 0';

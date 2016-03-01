@@ -47,7 +47,9 @@ class Menu
 	private static $menu = array(
 		'商品'=>array(
 			'商品管理'=>array(
-				'/goods/goods_list' => '商品列表',
+                '/goods/goods_list' => '商品列表',
+                '/goods/goods_list/plat/plat' => '平台商品列表',
+				'/goods/goods_list/plat/seller' => '商户商品列表',
 				'/goods/goods_edit' => '商品添加',
 				'/goods/goods_in' => '库存添加'
 			),
@@ -85,18 +87,24 @@ class Menu
 				'/member/seller_edit' => '添加商户',
 			),
 			'信息处理' => array(
-				'/comment/suggestion_list'  => '建议管理',
-				'/comment/refer_list'		=> '咨询管理',
-				'/comment/discussion_list'	=> '讨论管理',
-				'/comment/comment_list'		=> '评价管理',
-				'/comment/message_list'		=> '站内消息',
-				'/message/notify_list'      => '到货通知',
+				'/comment/suggestion_list'              => '建议管理',
+                '/comment/refer_list'                   => '咨询管理',
+                '/comment/refer_list/plat/plat'         => '平台咨询管理',
+				'/comment/refer_list/plat/seller'		=> '商户咨询管理',
+				'/comment/discussion_list'	            => '讨论管理',
+                '/comment/comment_list'                 => '评价管理',
+                '/comment/comment_list/plat/plat'       => '平台评价管理',
+				'/comment/comment_list/plat/seller'		=> '商户评价管理',
+				'/comment/message_list'		            => '站内消息',
+				'/message/notify_list'                  => '到货通知',
 			),
 		),
 
 	   '订单'=>array(
         	'订单管理'=>array(
                 '/order/order_list' => '普通订单',
+                '/order/order_list/plat/plat' => '平台订单',
+                '/order/order_list/plat/seller' => '商户订单',
                 '/order/order_edit' => '添加订单',
                  '/preorder/preorder_list' => '预售订单',
         	),
@@ -105,7 +113,9 @@ class Menu
              	'/order/order_refundment_list'  => '退货单',
              	'/order/order_refundment_chg_list'=>'换货单',
         		'/order/order_delivery_list'    => '发货单',
-        		'/order/refundment_list'        => '退货申请',
+                '/order/refundment_list'        => '退货申请',
+                '/order/refundment_list/plat/plat'        => '平台退货申请',
+        		'/order/refundment_list/plat/seller'        => '商户退货申请',
         		'/order/refundment_chg_list'    => '换货申请',
         		'/order/fapiao_list'            => '已开发票',
         		'/order/fapiao'                 => '发票申请'
