@@ -252,7 +252,8 @@ class Ucenter extends IController
         $data = $tb_order_goods->find();
         IWeb::autoload('phpqrcode');
         $currUrl = IUrl::getUrl();
-        $temp = parse_url($currUrl); 
+        $temp = parse_url($currUrl);
+        $conn = isset($temp['port']) ? ':'.$temp['port'] : '';
         foreach($data as $k => $v)
         {
             if($v['type'] == 1)
@@ -260,11 +261,11 @@ class Ucenter extends IController
                 $filename = $this->order_no.'_'.$v['id'];
                 if($v['seller_id'])
                 {
-                    $url = 'http://'.$temp['host'].IUrl::creatUrl("")."seller/checkCode/id/{$v['order_id']}/gId/{$v['id']}/sId/{$v['seller_id']}";
+                    $url = 'http://'.$temp['host'].$conn.IUrl::creatUrl("")."seller/checkCode/id/{$v['order_id']}/gId/{$v['id']}/sId/{$v['seller_id']}";
                 }
                 else
                 {
-                    $url = 'http://'.$temp['host'].IUrl::creatUrl("")."order/checkCode/id/{$v['order_id']}/gId/{$v['id']}";
+                    $url = 'http://'.$temp['host'].$conn.IUrl::creatUrl("")."order/checkCode/id/{$v['order_id']}/gId/{$v['id']}";
                 }               
                 $data[$k]['code'] = $filename;
                 $data[$k]['url'] = $url;
