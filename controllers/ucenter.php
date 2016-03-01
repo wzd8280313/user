@@ -250,7 +250,9 @@ class Ucenter extends IController
         $tb_order_goods->group = 'og.id';
         $tb_order_goods->fields = 'g.id,g.name,g.type,g.past_time,g.seller_id,og.order_id';
         $data = $tb_order_goods->find();
-        IWeb::autoload('phpqrcode');    
+        IWeb::autoload('phpqrcode');
+        $currUrl = IUrl::getUrl();
+        $temp = parse_url($currUrl); 
         foreach($data as $k => $v)
         {
             if($v['type'] == 1)
@@ -258,12 +260,12 @@ class Ucenter extends IController
                 $filename = $this->order_no.'_'.$v['id'];
                 if($v['seller_id'])
                 {
-                    $url = IUrl::creatUrl("")."seller/checkCode/id/{$v['order_id']}/gId/{$v['id']}/sId/{$v['seller_id']}";
+                    $url = 'http://'.$temp['host'].IUrl::creatUrl("")."seller/checkCode/id/{$v['order_id']}/gId/{$v['id']}/sId/{$v['seller_id']}";
                 }
                 else
                 {
-                    $url = IUrl::creatUrl("")."order/checkCode/id/{$v['order_id']}/gId/{$v['id']}";
-                }  
+                    $url = 'http://'.$temp['host'].IUrl::creatUrl("")."order/checkCode/id/{$v['order_id']}/gId/{$v['id']}";
+                }               
                 $data[$k]['code'] = $filename;
                 $data[$k]['url'] = $url;
                 $this->qrcode($url, $filename);
@@ -273,7 +275,7 @@ class Ucenter extends IController
                 unset($data[$k]);
             }
             
-        }
+        }               
         $this->og_data = $data;   
         //$h = $this->qrcode();
         $this->redirect('makeCode');
