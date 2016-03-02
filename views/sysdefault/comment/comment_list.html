@@ -6,6 +6,7 @@
 			<form name="searchInput" action="{url:/}" method="get">
 				<input type='hidden' name='controller' value='comment' />
 				<input type='hidden' name='action' value='comment_list' />
+                <input type="hidden" name="plat" value="{$search['plat']}">
 				<select name="search[like]">
 					<option value="u.username">评价人</option>
 					<option value="goods.name">评价商品</option>
@@ -21,6 +22,7 @@
 	<form name="searchSelect" method="get" action="{url:/}">
 		<input type='hidden' name='controller' value='comment' />
 		<input type='hidden' name='action' value='comment_list' />
+        <input type="hidden" name="plat" value="{$search['plat']}">
 		<div class="searchbar">
 			购买时间：<input class="small" type="text" name="search[c.time>=]" onfocus="WdatePicker()" />
 			截止时间：<input class="small" type="text" name="search[c.time<=]" onfocus="WdatePicker()" />

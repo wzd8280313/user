@@ -11,6 +11,7 @@
 	<form name="filter_form" method="get" action="{url:/}">
 		<input type='hidden' name='controller' value='comment' />
 		<input type='hidden' name='action' value='refer_list' />
+        <input type="hidden" name="plat" value="{$plat}">
 		<div class="searchbar">
 			咨询人：<input class="small" type="text" name="username" value="{$username}" />
 			咨询商品：<input class="small" type="text" name="goodsname" value="{$goodsname}" />

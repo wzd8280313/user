@@ -6,6 +6,7 @@
 			<form name="serachuser" action="{url:/}" method="get">
 			<input type='hidden' name='controller' value='comment' />
 			<input type='hidden' name='action' value='discussion_list' />
+        <input type="hidden" name="plat" value="{$plat}">
 			<select class="normal" name="search">
 				<option value="u.username" {if:(isset($search) && $search=='u.username')}selected{/if}>讨论人</option>
 				<option value="goods.name" {if:(isset($search) && $search=='goods.name')}selected{/if}>讨论商品</option>
@@ -20,6 +21,7 @@
 	<form name="filter_form" method="get" action="{url:/}">
 		<input type='hidden' name='controller' value='comment' />
 		<input type='hidden' name='action' value='discussion_list' />
+        <input type="hidden" name="plat" value="{$plat}">
 		<div class="searchbar">
 			讨论人：<input class="small" type="text" name="username" value="{$username}" />
 			讨论商品：<input class="small" type="text" name="goodsname" value="{$goodsname}" />
