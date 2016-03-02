@@ -1384,7 +1384,6 @@ class Simple extends IController
             //IInterceptor::reg("cart@onFinishAction");
         }
         //print_r($goodsResult);echo '</br>';
-
         //判断商品商品是否存在
         if(is_string($goodsResult) || empty($goodsResult['goodsList']))
         {
@@ -1428,13 +1427,11 @@ class Simple extends IController
 
         //最终订单金额计算
         $orderData = $countSumObj->countOrderFeeee($goodsResult,$area,$payment,$insured,$taxes);
-    
         if(is_string($orderData))
         {
             IError::show(403,$orderData);
             exit;
         }
-
         //生成的订单数据
         $dataArray = array(
             'order_no'            => $order_no,
@@ -1495,7 +1492,11 @@ class Simple extends IController
         );
 
         $dataArray['order_amount'] = $dataArray['order_amount'] <= 0 ? 0 : $dataArray['order_amount'];
-
+        
+        if(count($orderData['order_extend']) == 1)
+        {
+            $dataArray['seller_id'] = key($orderData['order_extend']);
+        }
         $orderObj  = new IModel('order');
         $orderObj->setData($dataArray);
 
@@ -1505,12 +1506,79 @@ class Simple extends IController
         {
             IError::show(403,'订单生成错误');
         }
-        
 
         /*将订单中的商品插入到order_goods表*/
         $orderInstance = new Order_Class();
         $orderInstance->insertOrderGoods($this->order_id,$orderData['goodsResult'],$payment);
+        //拆分订单
+        if(count($orderData['order_extend']) > 1)
+        {
+            foreach($orderData['order_extend'] as $k => $v)
+            {
+                $temp = Order_Class::createOrderNum();
+                $data = array(
+                    'order_no'            => $temp,
+                    'user_id'             => $user_id,
+                    'accept_name'         => $accept_name,
+                    'pay_type'            => $payment,
+                    'postcode'            => $zip,
+                    'telphone'            => $telphone,
+                    'province'            => $province,
+                    'city'                => $city,
+                    'area'                => $area,
+                    'address'             => $address,
+                    'mobile'              => $mobile,
+                    'create_time'         => ITime::getDateTime(),
+                    'postscript'          => $order_message,
+                    'accept_time'         => $accept_time,
+                    'exp'                 => $goodsResult['extend'][$k]['exp'],
+                    'point'               => $goodsResult['extend'][$k]['point'],
+                    'type'                => $order_type,
 
+                    //红包道具
+                    'prop'                => isset($dataArray['prop']) ? $dataArray['prop'] : null,
+                    //商品价格
+                    'payable_amount'      => $goodsResult['extend'][$k]['sum'],//商品原总价
+                    'real_amount'         => $goodsResult['extend'][$k]['sum']-$goodsResult['extend'][$k]['reduce'],//商品元总价-促销优惠-闪购/会员价优惠    （未减去红包金额）
+
+                    //运费价格
+                    'payable_freight'     => $v['deliveryOrigPrice'],
+                    'real_freight'        => $v['deliveryPrice'],
+
+                    //手续费
+                    'pay_fee'             => $orderData['paymentPrice'],
+
+                    //税金
+                    'invoice'             => $invoice,
+                    'taxes'               => $v['taxPrice'], //优惠价格（包括闪购、会员价差价，红包，促销活动减价）
+                    'promotions'          => $goodsResult['proReduce'] + $goodsResult['extend'][$k]['reduce'] + (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
+
+                    //促销活动优惠
+                    'pro_reduce'         => $goodsResult['proReduce'] ,
+                    //红包减免金额
+                    'ticket_reduce'      => isset($ticketRow['value']) ? $ticketRow['value'] : 0,
+                    //订单应付总额（商品final_num加上，税金，运费，再减去红包）
+                    'order_amount'        => $goodsResult['extend'][$k]['sum']-$goodsResult['extend'][$k]['reduce']+$v['deliveryPrice'] + $v['insuredPrice'] + $v['taxPrice'] + $orderData['paymentPrice'] - (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
+
+                    //订单保价
+                    'if_insured'          => $insured ? 1 : 0,
+                    'insured'             => $v['insuredPrice'],
+
+                    //自提点ID
+                    'takeself'            => $takeself,
+
+                    //促销活动ID
+                    'active_id'           => $active_id,
+                    'pid'                 => $this->order_id,
+                    'seller_id'           => $k
+                );
+                $data['order_amount'] = $data['order_amount'] <= 0 ? 0 : $data['order_amount'];
+                $orderObj->setData($data);
+                $oId = $orderObj->add();
+                //$orderInstance->insertOrderGoods($oId,$orderData['goodsResult'],$payment,$k);
+            }
+        }
+            
         //记录用户默认习惯的数据
         if(!isset($memberRow['custom']))
         {
