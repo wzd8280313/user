@@ -112,7 +112,7 @@
 								<th>操作</th>
 							</thead>
 							<tbody>
-							{query: name=order as o join=left join delivery as d on o.distribution eq d.id left join payment as p on o.pay_type eq p.id left join user as u on u.id eq o.user_id fields=o.id as oid,d.name as dname,p.name as pname,o.order_no,o.accept_name,o.pay_status,o.distribution_status,u.username,o.create_time,o.status,o.order_amount where=o.status l 3 and if_del eq 0 order=o.id desc limit=10}
+							{query: name=order as o join=left join delivery as d on o.distribution eq d.id left join payment as p on o.pay_type eq p.id left join user as u on u.id eq o.user_id fields=o.id as oid,d.name as dname,p.name as pname,o.order_no,o.accept_name,o.pay_status,o.distribution_status,u.username,o.create_time,o.status,o.order_amount where=o.status l 3 and if_del eq 0 and o.seller_id IS NOT NULL order=o.id desc limit=10}
 							<tr>
 								<td>{$item['order_no']}</td>
 								<td><b>{$item['accept_name']}</b></td>
