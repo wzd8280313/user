@@ -18,7 +18,8 @@ class Order extends IController
 	public function order_show()
 	{
 		//获得post传来的值
-		$order_id = IFilter::act(IReq::get('id'),'int');
+        $order_id = IFilter::act(IReq::get('id'),'int');
+		$pid = IFilter::act(IReq::get('pid'),'int');
 		$data = array();
 		if($order_id)
 		{
@@ -33,7 +34,6 @@ class Order extends IController
 
 		 		//获取地区
 		 		$data['area_addr'] = join('&nbsp;',area::name($data['province'],$data['city'],$data['area']));
-
 			 	$this->setRenderData($data);
 				$this->redirect('order_show',false);
 			}
@@ -795,7 +795,8 @@ class Order extends IController
     public function order_update()
     {
     	//获取必要数据
-    	$order_id = IFilter::act(IReq::get('id'),'int');
+        $order_id = IFilter::act(IReq::get('id'),'int');
+    	$pid = IFilter::act(IReq::get('pid'),'int');
 
     	//生成order数据
     	$dataArray['invoice_title'] = IFilter::act(IReq::get('invoice_title'));
@@ -894,7 +895,8 @@ class Order extends IController
     	else
     	{
     		$dataArray['create_time'] = date('Y-m-d H:i:s');
-    		$dataArray['order_no']    = Order_Class::createOrderNum();
+            $dataArray['order_no']    = Order_Class::createOrderNum();
+    		$dataArray['seller_id']   = $this->seller['id'];
 
     		$orderDB->setData($dataArray);
     		$order_id = $orderDB->add();
@@ -906,7 +908,17 @@ class Order extends IController
 
     	//同步order_goods表
     	$orderInstance = new Order_Class();
-    	$orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
+        if($pid)
+        {
+            $orderInstance->insertOrderGoods($pid,$orderFee['goodsResult'],$dataArray['pay_type'],$orderRow['seller_id']);
+            $other = $orderDB->getObj('pid='.$pid, 'sum(payable_amount) as payable_amount, sum(real_freight) as real_freight, sum(insured) as insured,sum(order_amount) as order_amount');
+            $orderDB->setData($other);
+            $orderDB->update('id='.$pid);
+        }
+    	else
+        {
+            $orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
+        }
 
     	$this->redirect('order_list');
     }
@@ -929,7 +941,14 @@ class Order extends IController
 			$orderGoodsDB         = new IQuery('order_goods as og');
 			$orderGoodsDB->join   = "left join goods as go on og.goods_id = go.id left join products as p on p.id = og.product_id";
 			$orderGoodsDB->fields = "go.id,go.name,p.spec_array,p.id as product_id,og.real_price,og.goods_nums";
-			$orderGoodsDB->where  = "og.order_id = ".$order_id;
+            if($data['pid'])
+            {
+                $orderGoodsDB->where  = "og.order_id = ".$data['pid'].' and og.seller_id = '.$data['seller_id'];
+            }
+            else
+            {
+                $orderGoodsDB->where  = "og.order_id = ".$order_id;
+            }
 			$this->orderGoods     = $orderGoodsDB->find();
 
 			//获取用户名
@@ -950,6 +969,18 @@ class Order extends IController
 		//搜索条件
 		$search = IFilter::act(IReq::get('search'),'strict');
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+        if(IReq::get('plat') == 'plat')
+        {
+            $search['seller_id'] = '=0';
+        }
+        elseif(IReq::get('plat') == 'seller')
+        {
+            $search['seller_id'] = '!=0';
+        }
+        else
+        {
+            $search['pid'] = 0;
+        }
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
 		//$join = $join.' left join refundment_doc as r on r.order_id=o.id and r.if_del=0 ';

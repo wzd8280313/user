@@ -113,9 +113,9 @@
 					<td>{echo:$item['username']=='' ? '游客' : $item['username']}</td>
 					<td title="{$item['create_time']}">{$item['create_time']}</td>
 					<td>
-						<a href="{url:/order/order_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a>
+						<a href="{url:/order/order_show/id/$item[id]/pid/$item[pid]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a>
 						{if:Order_class::getOrderStatus($item) < 3}
-						<a href="{url:/order/order_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
+						<a href="{url:/order/order_edit/id/$item[id]/pid/$item[pid]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
 						{/if}
 						<a href="javascript:void(0)" onclick="delModel({link:'{url:/order/order_del/id/$item[id]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" title="删除"/></a>
 						{if:isset($this->order_refund[$item['id']][0]['refunding'])}
