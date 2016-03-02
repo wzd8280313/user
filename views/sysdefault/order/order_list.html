@@ -12,7 +12,8 @@
 	<div class="searchbar">
 		<form action="{url:/}" method="get" name="order_list">
 			<input type='hidden' name='controller' value='order' />
-			<input type='hidden' name='action' value='order_list' />
+            <input type='hidden' name='action' value='order_list' />
+			<input type='hidden' name='plat' value='{$this->plat}' />
 			<input type='hidden' name='ids' />
 			<select name="search[pay_status]" class="auto">
 				<option value="">选择支付状态</option>

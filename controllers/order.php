@@ -969,11 +969,12 @@ class Order extends IController
 		//搜索条件
 		$search = IFilter::act(IReq::get('search'),'strict');
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
-        if(IReq::get('plat') == 'plat')
+        $plat = IReq::get('plat');
+        if($plat == 'plat')
         {
             $search['seller_id'] = '=0';
         }
-        elseif(IReq::get('plat') == 'seller')
+        elseif($plat == 'seller')
         {
             $search['seller_id'] = '!=0';
         }
@@ -994,7 +995,8 @@ class Order extends IController
 		$orderHandle->where  = $where.' and o.type !=4 ';
 		$orderHandle->join   = $join;
 		$orderHandle->group = 'o.id';
-		$this->search      = $search;
+        $this->search      = $search;
+		$this->plat      = $plat;
 		$this->orderHandle = $orderHandle;
 		
 		$order_list = $orderHandle->find();
