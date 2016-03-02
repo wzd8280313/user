@@ -690,6 +690,14 @@ class goods_class
 		{
 			$where .= " and go.seller_id ".$search['seller_id'];
 		}
+        if(isset($search['beginTime']) && $search['beginTime'])
+        {
+            $where .= " and unix_timestamp(go.create_time) >=".strtotime($search['beginTime']);
+        }
+        if(isset($search['endTime']) && $search['endTime'])
+        {
+            $where .= " and unix_timestamp(go.create_time) <=".strtotime($search['endTime']);
+        }
 		$results = array($join,$where);
 		unset($join,$where);
 		return $results;

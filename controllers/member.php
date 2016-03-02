@@ -184,14 +184,26 @@ class Member extends IController
 	function member_list()
 	{
 		$search = IFilter::act(IReq::get('search'),'strict');
-		$keywords = IFilter::act(IReq::get('keywords'));
+        $keywords = IFilter::act(IReq::get('keywords'));
+        $beginTime = IFilter::act(IReq::get('beginTime'));
+		$endTime = IFilter::act(IReq::get('endTime'));
 		$where = ' 1 ';
 		if($search && $keywords)
 		{
 			$where .= " and $search like '%{$keywords}%' ";
 		}
+        if($beginTime)
+        {
+            $where .= " and unix_timestamp(m.time) >=".strtotime($beginTime);
+        }
+        if($endTime)
+        {
+            $where .= " and unix_timestamp(m.time) <=".strtotime($endTime);
+        }
 		$this->data['search'] = $search;
-		$this->data['keywords'] = $keywords;
+        $this->data['keywords'] = $keywords;
+        $this->data['beginTime'] = $beginTime;
+		$this->data['endTime'] = $endTime;
 		$this->data['where'] = $where;
 		$tb_user_group = new IModel('user_group');
 		$data_group = $tb_user_group->query();

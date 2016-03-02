@@ -1182,10 +1182,17 @@ class Order_Class
 					break;
 				}
 			}
-
+            if(isset($search['beginTime']) && $search['beginTime'])
+            {
+                $where .= " and unix_timestamp(o.create_time) >=".strtotime($search['beginTime']);
+            }
+            if(isset($search['endTime']) && $search['endTime'])
+            {
+                $where .= " and unix_timestamp(o.create_time) <=".strtotime($search['endTime']);
+            }
 			foreach($search as $key => $val)
 			{
-				if(!in_array($key,array('keywords','name')) && $val!='')
+				if(!in_array($key,array('keywords','name', 'beginTime', 'endTime')) && $val!='')
 				{
 					$where .= " and o.".$key." = ".$val;
 				}
