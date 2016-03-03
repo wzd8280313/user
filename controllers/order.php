@@ -914,13 +914,22 @@ class Order extends IController
             $other = $orderDB->getObj('pid='.$pid, 'sum(payable_amount) as payable_amount, sum(real_freight) as real_freight, sum(insured) as insured,sum(order_amount) as order_amount');
             $orderDB->setData($other);
             $orderDB->update('id='.$pid);
+            if($orderRow['seller_id'] == 0)
+            {
+                 $turnUrl =  'order_list/plat/plat';
+            }
+            else
+            {
+                $turnUrl = 'order_list/plat/seller';
+            }
         }
     	else
         {
             $orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
+            $turnUrl = 'order_list/plat/plat';
         }
 
-    	$this->redirect('order_list');
+    	$this->redirect($turnUrl);
     }
 	/**
 	 * @brief 修改订单
