@@ -51,7 +51,7 @@ select.middle{width:95px;height:24px;padding:3px 3px 2px 3px;margin-right:5px;bo
 select.small{width:45px;height:24px;padding:3px 3px 2px 3px;margin-right:5px;border:1px solid #e1e1e1;color:#7a7a7a}
 textarea.normal{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;border:1px #d2d2d2 solid;line-height:24px}
 .btn{margin-right:6px;border:1px #e1e1e1 solid;color:#707070;cursor:pointer;vertical-align:bottom\9;overflow:hidden;background:url(../images/admin/admin_bg.gif) 0 -228px repeat-x}
-.submit{margin:10px 10px 10px 0;border:1px #e35c00 solid;font-weight:bold;color:#fff;cursor:pointer;background:url(../images/admin/admin_bg.gif) 0 -271px repeat-x}
+.submit{margin:10px 10px 10px 0;border:1px #e35c00 solid;font-weight:bold;color:#fff;cursor:pointer;background:url(../images/admin/admin_bg.gif) 0 -271px repeat-x;margin-top: 28px;}
 .pages_bar .submit{margin:5px auto}
 	button span{display:block;height:20px;line-height:20px;height:18px\9;padding:0 5px;white-space:nowrap;background:url(../images/admin/icon.gif) 0 -1000px no-repeat}
 	button.submit span{height:27px;line-height:27px;background-image:none}
@@ -184,7 +184,7 @@ img.operator{width:12px;height:12px;margin:0 6px;cursor:pointer; vertical-align:
 /* form_table common style end */
 /* list_table style start */
 .list_table{width:100%;border:1px #dddddd solid;table-layout:fixed;background-color:#fff}
-.field .list_table{margin-top:6px;border-width:0}
+.field .list_table{margin-top:6px;border-width:0;background: #f6f6f6;}
 	.list_table th{background:#f6f6f6;font-weight:bold}
 	.list_table thead th{white-space:nowrap;padding-left:5px;border-width:0;text-align:left;overflow:hidden}
 	.list_table tbody th{text-align:right}
@@ -343,6 +343,129 @@ border:1px solid #ccc;
 vertical-align:middle;
 }
 .hide{display:none;}
+.total_wid {
+    width: 190px;
+    height: auto;
+    overflow: hidden;
+    border: #ddd 1px solid;
+}
+#imghead{
+	margin-top: 10px;
+    
+    border: 1px solid #999;
+}
+.total_wid input{
+    margin: 7px 10px;
+    cursor: pointer;
+}
+#preview {
+    overflow: hidden;
+    text-align: center;
+}
+
+
+.total_wid_ {
+    width: 190px;
+    height: auto;
+    overflow: hidden;
+    border: #ddd 1px solid;
+}
+#imghead_{
+	margin-top: 10px;
+    
+    border: 1px solid #999;
+}
+.total_wid_ input{
+    margin: 7px 10px;
+    cursor: pointer;
+}
+#preview_ {
+    overflow: hidden;
+    text-align: center;
+}
+
+
+.total_wids {
+    width: 190px;
+    height: auto;
+    overflow: hidden;
+    border: #ddd 1px solid;
+}
+#imgheads{
+	margin-top: 10px;
+    
+    border: 1px solid #999;
+}
+.total_wids input{
+    margin: 7px 10px;
+    cursor: pointer;
+}
+#previews {
+    overflow: hidden;
+    text-align: center;
+}
+
+
+
+
+.js_show {
+	cursor: pointer;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 100px;
+    background: #ddd;
+    border: 1px solid #999;
+    border-radius: 3px;
+}
+.js_show span {
+    margin-left: 5px;
+    font-size: 18px;
+    position: relative;
+    top: 1px;
+}
+.mupohot{clear: both;}
+.mupohot b{line-height: 36px;}
+
+.total_inpt span{ display: block;float: left; line-height: 60px;}
+.total_inpt span b{ display: block;float: left;}
+.paixlie{ clear: both;}
+.paixlie input{margin: 18px 0 0 24px;}
+
+.delfenzu{
+	color: #666;
+    margin-left: 270px;
+    display: block;
+    padding: 6px 8px;
+    background: #ddd;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    border: 1px #999 solid;
+    position: relative;
+    top: 24px;
+    border-radius: 3px;
+}
+
+ .bdtonne{
+    margin-left: 20px;
+    display: block;
+    padding: 6px 8px;
+    background: #ddd;
+    height: 29px;
+    text-align: center;
+    border: 1px #999 solid;
+    position: relative;
+    top: 24px;
+    border-radius: 3px;
+    color: orange;
+}
+
+
+
+
+
 
 /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
 @media screen and (max-width: 730px){

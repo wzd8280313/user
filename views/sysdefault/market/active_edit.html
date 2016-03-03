@@ -1,0 +1,506 @@
+{js:my97date}
+<script type="text/javascript" src="{theme:javascript/event.js}"></script>
+<script type="text/javascript" src="{theme:javascript/jquery-1.7.2.js}"></script>
+
+
+<script type="text/javascript">
+    $(function(){
+        $('input[name=type]').each(function(){
+            $(this).click(function(){
+                var _i = $(this).val();
+                if(_i == 2)
+                {
+                    $('.js_show_1').hide().find('input').attr('disabled', 'disabled');
+                    $('.js_show_2').show().find('input').removeAttr('disabled');
+                }
+                else
+                {
+                    $('.js_show_2').hide().find('input').attr('disabled', 'disabled');
+                    $('.js_show_1').show().find('input').removeAttr('disabled');
+                }
+            })
+        })
+    })
+</script>
+
+
+
+<div class="headbar">
+	<div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>{if:isset($this->regimentRow['id'])}编辑{else:}添加{/if}活动</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/active/_edit_act}"  method="post" name='regiment_edit' enctype='multipart/form-data'>
+			<input type='hidden' name='id' value=''/>
+			<table class="form_table">
+				<col width="150px" />
+				<col />
+				<tr>
+					<th>活动标题：</th>
+					<td><input type='text' class='normal' name='title' pattern='required' alt='请填写活动标题' /><label>* 填写活动名称</label></td>
+				</tr>
+                <tr>
+                    <th>活动类型</th>
+                    <td>
+                        <label class='attr'><input type="radio" name="type" value="0" />TOP</label>
+                        <label class='attr'><input type="radio" name="type" value="1" />有奖活动</label>
+                        <label class='attr'><input type="radio" name="type" value="2" />抽奖活动</label> 
+                    </td>
+                </tr>
+				<!-- <tr class="js_show_1" {if:$this->regimentRow['type'] == 2} style="display:none" {/if}>
+					<th>活动时间：</th>
+					<td>
+						<input type='text' name='start_time' class='Wdate' onblur="FireEvent(this,'onchange');" pattern='datetime' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' /> ～
+						<input type='text' name='end_time' class='Wdate' onblur="FireEvent(this,'onchange');" pattern='datetime' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' />
+						<label>* 此活动的时间段</label>
+					</td>
+				</tr> -->
+                <tr class="js_show_2" {if:$this->regimentRow['type'] <> 2} style="display:none" {/if}>
+                    <th>活动时间：</th>
+                    <td>
+                        <input type='text' name='start_time1' class='Wdate' onblur="FireEvent(this,'onchange');" pattern='datetime' {if:$this->regimentRow['type'] == 2} value="{$this->regimentRow['start_time']}" {/if} onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" alt='请填写一个日期' /> ～
+                        <input type='text' name='end_time1' class='Wdate' onblur="FireEvent(this,'onchange');" pattern='datetime' {if:$this->regimentRow['type'] == 2} value="{$this->regimentRow['end_time']}" {/if} onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" alt='请填写一个日期' />
+                        <label>* 此活动的时间段</label>
+                    </td>
+                </tr>
+				<tr>
+					<th>是否开启：</th>
+					<td>
+						<label class='attr'><input type='radio' name='is_close' value='0' />是</label>
+						<label class='attr'><input type='radio' name='is_close' value='1' checked=checked />否</label>
+					</td>
+				</tr>
+				 <tr>
+					<th>是否区分规格：</th>
+					<td>
+						<label class='attr' name='spec_diff'><input type='radio' name='spec' value='0' />是</label>
+						<label class='attr' name='spec_diff'><input type='radio' name='spec' value='1' checked=checked />否</label>
+					</td>
+				</tr>　
+				<!-- <tr>
+					<th>设置活动商品：</th>
+					<td>
+						<table class='border_table'>
+							<col width="100px" />
+							<col />
+							<input type='hidden' name='goods_id' />
+				
+							<tbody id='regiment_box'>
+							</tbody>
+				
+							<tr><td colspan=2><button type='button' class='btn' onclick=''><span>添加商品</span></button><label>* 添加要活动的商品</label></td></tr>
+						</table>
+					</td>
+				</tr> -->
+
+            
+             <!--增加背景图片上传  -->
+             <tr>
+             <th>设置背景图片：</th>
+					<td>
+						<div class="total_wid">
+             <div id="preview">
+    
+            </div>
+             <input type="file" onchange="previewImage(this)" />
+
+            </div>
+
+            </td>
+				</tr>
+             <!--增加顶部图片上传  -->
+             <tr>
+             <th>设置顶部图片：</th>
+					<td>
+						<div class="total_wid_">
+             <div id="preview_">
+    
+            </div>
+             <input type="file" onchange="previewImg(this)" />
+
+            </div>
+
+            </td>
+				</tr>
+
+            
+           <tr>
+					<th>排序：</th>
+					<td>
+						<input type='text' class='small' name='sort' />
+					</td>
+				</tr>
+
+            <!-- 添加分组 -->
+            
+             <tr><td></td><td>
+             	
+             
+	    <div class="js_show">添加分组<span>+</span></div>
+           <div class="total_inpt" style="display:none">
+
+              
+					<span><b>分组名称：</b>
+					<input type='text' class='normal' name='title' pattern='required' alt='请填写活动标题' /><label>* 填写活动名称</label></span>
+
+				
+                 <span class="mupohot"><b>设置图片：</b>
+						<div class="total_wids">
+                         <div id="previews">
+                           </div>
+                       <input type="file" onchange="previewImages(this)" />
+                        </div>
+                   </span>
+           
+                  <span class="paixlie"><b>排序：</b>
+					
+						<input type='text' class='small' name='sort' />
+					
+                   </span>
+
+                   <span><a style="color: #666;" class="delfenzu" href="javascript:;">删除分组</a>
+					
+                   </span>
+
+                  <span>
+                  <button type='button' class='bdtonne' onclick=''>添加商品</button>
+                    </span> 
+                    
+                
+                 <tr class="stylenone" style="display:none"> 
+					<th>设置闪购商品：</th>
+					<td>
+						<table class='border_table' style='width:70%'>
+							<col width="150px" />
+							<col width="250px" />
+								<col width="100px" />
+									<col width="100px" />
+							<col />
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>名称</th>
+									<th>价格</th>
+									<th>序号</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr id='speed_goods' class='td_c'></tr>
+								<tr>
+									<td colspan='5'>
+										<button type='button' class='btn'><span>选择商品</span></button>
+										<label>* 设置要闪购的商品，仅能设置一种商品</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+
+               <script type="text/javascript">
+                     $(document).ready(function(){
+                       $(".bdtonne").click(function(){
+                       $(".stylenone").slideToggle();
+                      });
+                    });
+            </script>
+
+
+
+
+
+
+
+
+                 </div>
+
+
+
+
+ 
+      <script type="text/javascript">
+       $(document).ready(function(){
+       $('.js_show').click(function(){
+		if($(this).next('div').is(":hidden"))
+		{
+			$(this).next('div').show();
+			$(this).find('span').html('-');
+		}
+		else
+		{
+			$(this).next('div').hide();
+			$(this).find('span').html('+');
+		}
+	})
+	  });
+            </script>
+
+
+
+
+
+
+             	</td>
+             </tr>
+            
+
+
+                      
+
+
+
+
+
+
+
+
+
+
+
+
+				<tr><td></td><td><button class="submit" type='submit'><span>确 定</span></button><span class='red'></span></td></tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+
+
+<!--原团购编辑ＪＳ  -->
+<script type='text/javascript'>
+	//输入筛选商品的条件
+	function searchGoodsCallback(goodsList)
+	{
+		goodsList.each(function()
+		{
+			var temp = $.parseJSON($(this).attr('data'));
+			
+			if (!temp.product_id) {
+				temp.product_id = 0;
+				var spec_str = '所有';
+			}else{
+				var spec_str = getSpec(temp.spec_array);
+			}
+			var goods_id = temp.goods_id;
+			var is_presell = 0;
+			$.ajax({
+				type:'post',
+				async:false,
+				data:{'goods_id':goods_id},
+				url:'{url:market/is_presell}',
+				beforeSend:function(){
+					
+				},
+				success:function(data){
+					if(data==1){
+						$('.red').text('该商品已参加预售，不能参加活动');
+						is_presell = 1;
+					}
+				},
+				error:function(){
+					
+				},
+				complete:function(){
+				
+				},
+				timeout:1000,
+				
+			})
+			if(is_presell==1)return false;
+			var content = {
+				"data":
+				{
+					"goods_id":temp.goods_id,
+					"product_id":temp.product_id,
+					"name":temp.name,
+					"img":temp.img,
+					"spec":spec_str,
+					"sell_price":temp.sell_price,
+					"store_nums":temp.store_nums
+				}
+			};
+			relationCallBack(content);
+		});
+	}
+
+	//关联商品回调处理函数
+	function relationCallBack(content,regimentImg)
+	{
+		if(content)
+		{
+			regimentImg = !regimentImg ? content['data']['img'] : regimentImg;
+
+			var imgUrl = "{webroot:@url@}";
+			imgUrl     = imgUrl.replace("@url@",regimentImg);
+
+			var html = '<input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
+							'<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/>'+
+						'<tr><th>商品名称：</th><td>'+content['data']['name']+'</td></tr>'
+						  +'<tr><th>展示图片：</th><td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /><br /><input type="file" class="file" name="img" /></td></tr>'
+					  	  +'<tr><th>商品规格：</th><td>'+content['data']['spec']+'<label></label></td></tr>'
+							+'<tr><th>活动价格：</th><td><input type="text" class="small" name="regiment_price" pattern="float" alt="填写数字" />，  目前原价：'+content['data']['sell_price']+'<label>* 设置活动价格</label></td></tr>'
+							 +'<tr><th>活动库存量：</th><td><input type="text" class="small" name="store_nums" pattern="int" alt="填写数字" />，  目前库存：'+content['data']['store_nums']+'<label>* 活动出售的最大数量</label></td></tr>'
+						  +'<tr><th>每人活动最小量：</th><td><input type="text" class="small" name="limit_min_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最小数量，少于这个数量则无法购买，0表示不限制</label></td></tr>'
+						  +'<tr><th>每人活动最大量：</th><td><input type="text" class="small" name="limit_max_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最大数量，大于这个数量则无法购买，0表示不限制</label></td></tr>';
+
+			$('#regiment_box').html(html);
+		}
+	}
+
+	//关联商品信息
+	{if:isset($this->regimentRow['goodsRow'])}
+	var goodsRow = {$this->regimentRow['goodsRow']};
+	goodsRow['data']['spec'] = getSpec(goodsRow['data']['spec_array']);
+	goodsRow['data']['spec'] = goodsRow['data']['spec'] ? goodsRow['data']['spec'] : '所有';
+	relationCallBack(goodsRow,"{$this->regimentRow['img']}");
+	{/if}
+
+	//表单回填
+	var formObj = new Form('regiment_edit');
+	formObj.init({echo:JSON::encode($this->regimentRow)});
+	
+	$(function(){
+		$('label[name=spec_diff]').click(function(){
+			var is_spec = $(this).find('input[type=radio]').val();
+			$('button.btn').off('click');
+			if(is_spec==0){
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/is_products/1/seller_id/0}',searchGoodsCallback);})
+			}else{
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/seller_id/0}',searchGoodsCallback);})
+			}
+			
+		})
+		{if:isset($this->regimentRow['product_id'])&&$this->regimentRow['product_id']>0}
+			$('label[name=spec_diff]').eq(0).trigger('click');
+		{else:}
+			$('label[name=spec_diff]').eq(1).trigger('click');
+		{/if}
+		
+	})
+</script>
+
+
+
+
+<!--闪购移过来ＪＳ  -->
+<script type='text/javascript'>
+	//输入筛选商品的条件
+	function searchGoodsCallback(goodsList)
+	{
+		goodsList.each(function()
+		{
+			var temp = $.parseJSON($(this).attr('data'));
+			
+			if(!temp.product_id){
+				temp.product_id = 0;
+				var spec_str = '所有';
+			}else{
+				var spec_str = getSpec(temp.spec_array);
+			}
+			
+			var content = {
+				"data":
+				{
+					"goods_id":temp.goods_id,
+					"product_id":temp.product_id,
+					"name":temp.name,
+					"img":temp.img,
+					"spec":spec_str,
+					"sell_price":temp.sell_price
+				}
+			};
+			relationCallBack(content);
+		});
+	}
+
+	//关联商品回调处理函数
+	function relationCallBack(content)
+	{
+		if(content)
+		{
+			var imgUrl = "{webroot:@url@}";
+			imgUrl     = imgUrl.replace("@url@",content['data']['img']);
+
+			var html =   '<td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /></td>'
+						+'<td>'+content['data']['name']+'</td>'
+						+'<td>'+content['data']['spec']+'</td>'
+						+'<td>'+content['data']['sell_price']+'</td>'
+						+'<td><input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
+							'<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/><a href="">删除</a> </td>';
+
+			$('#speed_goods').html(html);
+		}
+	}
+
+	//选择参与人群
+	function select_all()
+	{
+		var is_checked = $('[name="group_all"]').attr('checked');
+		if(is_checked ==  true)
+		{
+			var checkedVal  = true;
+			var disabledVal = true;
+		}
+		else
+		{
+			var checkedVal  = false;
+			var disabledVal = false;
+		}
+
+		$('input:checkbox[name="user_group[]"]').each(
+			function(i)
+			{
+				$(this).attr('checked',checkedVal);
+				$(this).attr('disabled',disabledVal);
+			}
+		);
+	}
+
+	
+	//预定义商品绑定
+	{if:isset($this->promotionRow['goodsRow'])}
+		var goodsData = {$this->promotionRow['goodsRow']};
+		goodsData['data']['spec'] = getSpec(goodsData['data']['spec_array']);
+		relationCallBack(goodsData);
+		//表单回填
+		var formObj = new Form('pro_edit');
+		formObj.init
+		({
+			'id':'{$this->promotionRow['id']}',
+			'name':'{$this->promotionRow['name']}',
+			'start_time':'{$this->promotionRow['start_time']}',
+			'end_time':'{$this->promotionRow['end_time']}',
+			'group_all':"{$this->promotionRow['user_group']}",
+			'is_close':'{$this->promotionRow['is_close']}',
+			'condition':'{$this->promotionRow['condition']}',
+			'award_value':'{$this->promotionRow['award_value']}'
+		});
+		
+	{/if}
+	
+	//
+	$(function(){
+		$('label[name=spec_diff]').click(function(){
+			var is_spec = $(this).find('input[type=radio]').val();
+			$('button.btn').off('click');
+			if(is_spec==0){
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/is_products/1/seller_id/0}',searchGoodsCallback);})
+			}else{
+				$('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/seller_id/0}',searchGoodsCallback);})
+			}
+			
+		})
+		{if:isset($this->promotionRow['product_id'])&&$this->promotionRow['product_id']>0}
+			$('label[name=spec_diff]').eq(0).trigger('click');
+		{else:}
+			$('label[name=spec_diff]').eq(1).trigger('click');
+		{/if}
+		
+	})
+		
+				
+	
+	
+</script>

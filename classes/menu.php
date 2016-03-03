@@ -124,6 +124,7 @@ class Menu
         		'/presell/presell_list' => '预售',
         		'/market/pro_speed_list' => '闪购',
         		'/market/regiment_list' => '团购',
+        		'/market/active_list' => '活动',
         	),
         	'代金券管理'=>array(
         		'/market/ticket_list'       => '代金券列表',
