@@ -262,8 +262,8 @@ class ProRule
                 {
                     $area_groupid = unserialize($v['area_groupid']);
                     foreach($area_groupid as $key => $val)
-                    {
-                        if(strpos($val, ';'.$area.';') === false)
+                    { 
+                        if(strpos($val, ';'.$area.';') === false && strpos($val,';'.substr($area,0,2).'0000;') === false)
                         {
                             unset($proList[$k]);
                         }
