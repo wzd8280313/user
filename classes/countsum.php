@@ -143,6 +143,7 @@ class CountSum
     	$goodsList    = array();
     	$productList  = array();//
         $order_extend = array();
+        $goodsIdList = array();
 		/*开始计算goods和product的优惠信息 , 会根据条件分析出执行以下哪一种情况:
 		 *(1)查看此商品(货品)是否已经根据不同会员组设定了优惠价格;
 		 *(2)当前用户是否属于某个用户组中的成员，并且此用户组享受折扣率;
@@ -215,6 +216,7 @@ class CountSum
 		    	$this->reduce += $current_reduce_all;
 		    	$this->count  += $goodsList[$key]['count'];
 		    	$this->tax    += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id']);
+                $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
 		    }
     	}
 
@@ -283,25 +285,24 @@ class CountSum
 		    	$this->reduce += $current_reduce_all;
 		    	$this->count  += $productList[$key]['count'];
 		    	$this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id']);
+                $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
 		    }
     	}
 		$final_sum = $this->sum - $this->reduce;
-		
     	//总金额满足的促销规则
     	if($user_id&&$prom)
     	{
 	    	$proObj = new ProRule($final_sum);
 	    	$proObj->setUserGroup($group_id);
 	    	$this->isFreeFreight = $proObj->isFreeFreight();
-	    	$this->promotion = $proObj->getInfo();
-	    	$this->proReduce = $final_sum - $proObj->getSum();
+	    	$this->promotion = $proObj->getInfo($goodsIdList);
+	    	$this->proReduce = $final_sum - $proObj->getSum($goodsIdList);
     	}
     	else
     	{
 	    	$this->promotion = array();
 	    	$this->proReduce = 0;
     	}
-
     	$this->final_sum = $final_sum - $this->proReduce;
         $this->extend  = $order_extend;
     	return array(

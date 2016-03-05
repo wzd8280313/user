@@ -6,8 +6,7 @@
 	$seo_data['description']=$description;
 	seo::set($seo_data);
 	
-}
-
+}               
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
 {foreach:items=$promotion}

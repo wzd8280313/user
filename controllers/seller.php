@@ -1707,5 +1707,123 @@ class Seller extends IController
 		$this->redirect('fapiao_apply');
 	}
     
-    
+    //[促销活动] 添加修改 [单页]
+    function pro_rule_edit()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');
+        if($id)
+        {
+            $promotionObj = new IModel('promotion');
+            $where = 'id = '.$id;
+            $promotionRow = $promotionObj->getObj($where);                              
+            if($promotionRow['goods_id'])
+            {
+                $goods = new IModel('goods');
+                $goodsList = $goods->query('id in ('.$promotionRow['goods_id'].')', 'id as goods_id,name,img,goods_no');
+            }                       
+            $this->goodsList = $goodsList;
+            $this->promotionRow = $promotionRow;                          
+        }
+        //获取省份
+        $areaData = array();
+        $areaDB = new IModel('areas');
+        $areaList = $areaDB->query('parent_id = 0');
+        foreach($areaList as $val)
+        {
+            $areaData[$val['area_id']] = $val['area_name'];
+        }
+        $this->areaList  = $areaList;
+        $this->area      = $areaData;
+        $this->redirect('pro_rule_edit');
+    }
+
+    //[促销活动] 添加修改 [动作]
+    function pro_rule_edit_act()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');
+        $award_type = IFilter::act(IReq::get('award_type','post'));
+        $promotionObj = new IModel('promotion');
+
+        $group_all    = IReq::get('group_all','post');
+        if($group_all == 'all')
+        {
+            $user_group_str = 'all';
+        }
+        else
+        {
+            $user_group = IFilter::act(IReq::get('user_group','post'),'int');
+            $user_group_str = '';
+            if($user_group)
+            {
+                $user_group_str = join(',',$user_group);
+                $user_group_str = ','.$user_group_str.',';
+            }
+        }                         
+        $gId = $award_type == 6 ? array() : IReq::get('goods_id');  
+        if(IReq::get('select_all'))
+        {
+            $goods_id = '';
+        }
+        else
+        {
+            $gId = array_unique($gId);
+            $goods_id = join(',', $gId);  
+        }                                  
+        //支持免费配送的地区ID                   
+        $area_groupid = $award_type == 6 ? serialize(IReq::get('area_groupid')) : '';
+        $dataArray = array(
+            'name'          => IFilter::act(IReq::get('name','post')),
+            'condition'     => IFilter::act(IReq::get('condition','post')),
+            'is_close'      => IFilter::act(IReq::get('is_close','post')),
+            'start_time'    => IFilter::act(IReq::get('start_time','post')),
+            'end_time'      => IFilter::act(IReq::get('end_time','post')),
+            'intro'         => IFilter::act(IReq::get('intro','post'),'text'),
+            'award_type'    => $award_type,
+            'type'          => 0,
+            'user_group'    => $user_group_str,
+            'award_value'   => IFilter::act(IReq::get('award_value','post')),
+            'seller_id'      => $this->seller['seller_id'],
+            'goods_id'      => $goods_id,
+            'area_groupid'  => $area_groupid,
+        );
+
+        $promotionObj->setData($dataArray);
+
+        if($id)
+        {
+            $where = 'id = '.$id;
+            $promotionObj->update($where);
+        }
+        else
+        {
+            $promotionObj->add();
+        }
+        $this->redirect('pro_rule_list');
+    }
+
+    //[促销活动] 删除
+    function pro_rule_del()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');
+        if(!empty($id))
+        {
+            $promotionObj = new IModel('promotion');
+            if(is_array($id))
+            {
+                $idStr = join(',',$id);
+                $where = ' id in ('.$idStr.')';
+            }
+            else
+            {
+                $where = 'id = '.$id;
+            }
+            $promotionObj->del($where);
+            $this->redirect('pro_rule_list');
+        }
+        else
+        {
+            $this->redirect('pro_rule_list',false);
+            Util::showMessage('请选择要删除的促销活动');
+        }
+    }
 }

@@ -434,7 +434,27 @@ class Market extends IController
 		{
 			$promotionObj = new IModel('promotion');
 			$where = 'id = '.$id;
-			$this->promotionRow = $promotionObj->getObj($where);
+			$promotionRow = $promotionObj->getObj($where);
+            $promotionRow['area_groupid'] = unserialize($promotionRow['area_groupid']) ;
+            $area = array();
+            if( $promotionRow['area_groupid']){
+                    
+                foreach($promotionRow['area_groupid'] as $key=>$val){
+                    $tem_arr = explode(';',$val);
+                    foreach($tem_arr as $v){
+                        if($v!='')
+                            $area[$v] = area::getNameStr($v);
+                    }
+                }
+            }
+            $this->area = $area;
+            if($promotionRow['goods_id'])
+            {
+                $goods = new IModel('goods');
+                $goodsList = $goods->query('id in ('.$promotionRow['goods_id'].')', 'id as goods_id,name,img,goods_no');
+            }                       
+            $this->goodsList = $goodsList;
+            $this->promotionRow = $promotionRow;                          
 		}
 		$this->redirect('pro_rule_edit');
 	}
@@ -442,7 +462,8 @@ class Market extends IController
 	//[促销活动] 添加修改 [动作]
 	function pro_rule_edit_act()
 	{
-		$id = IFilter::act(IReq::get('id'),'int');
+        $id = IFilter::act(IReq::get('id'),'int');
+		$award_type = IFilter::act(IReq::get('award_type','post'));
 		$promotionObj = new IModel('promotion');
 
 		$group_all    = IReq::get('group_all','post');
@@ -459,19 +480,34 @@ class Market extends IController
 				$user_group_str = join(',',$user_group);
 				$user_group_str = ','.$user_group_str.',';
 			}
-		}
-
+		}                         
+        $gId = $award_type == 6 ? array() : IReq::get('goods_id');               
+        //$gId = $award_type == 5 ? array() : '';
+        if(IReq::get('select_all'))
+        {
+            $goods_id = '';
+        }
+        else
+        {
+            $gId = array_unique($gId);
+            $goods_id = join(',', $gId);  
+        }                                  
+        //支持免费配送的地区ID
+        $area_groupid = $award_type == 6 ? serialize(IReq::get('area_groupid')) : '';
 		$dataArray = array(
-			'name'       => IFilter::act(IReq::get('name','post')),
-			'condition'  => IFilter::act(IReq::get('condition','post')),
-			'is_close'   => IFilter::act(IReq::get('is_close','post')),
-			'start_time' => IFilter::act(IReq::get('start_time','post')),
-			'end_time'   => IFilter::act(IReq::get('end_time','post')),
-			'intro'      => IFilter::act(IReq::get('intro','post'),'text'),
-			'award_type' => IFilter::act(IReq::get('award_type','post')),
-			'type'       => 0,
-			'user_group' => $user_group_str,
-			'award_value'=> IFilter::act(IReq::get('award_value','post')),
+			'name'          => IFilter::act(IReq::get('name','post')),
+			'condition'     => IFilter::act(IReq::get('condition','post')),
+			'is_close'      => IFilter::act(IReq::get('is_close','post')),
+			'start_time'    => IFilter::act(IReq::get('start_time','post')),
+			'end_time'      => IFilter::act(IReq::get('end_time','post')),
+			'intro'         => IFilter::act(IReq::get('intro','post'),'text'),
+			'award_type'    => $award_type,
+			'type'          => 0,
+			'user_group'    => $user_group_str,
+			'award_value'   => IFilter::act(IReq::get('award_value','post')),
+            'seller_id'      => 0,
+            'goods_id'      => $goods_id,
+            'area_groupid'  => $area_groupid,
 		);
 
 		$promotionObj->setData($dataArray);

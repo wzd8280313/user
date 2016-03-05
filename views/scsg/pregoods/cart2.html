@@ -140,7 +140,7 @@ function get_delivery()
                 $.ajax({
                     type:'post',
                     async:false,
-                    data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
+                    data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3],'final_sum':{$this->final_sum}},
                     dataType:'json',
                     url:"{url:/block/order_delivery_count}",
                     

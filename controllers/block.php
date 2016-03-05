@@ -158,6 +158,7 @@ class Block extends IController
     	$area     = IFilter::act(IReq::get("area"),'int');
     	$distribution = IFilter::act(IReq::get("distribution"),'int');//配送方式
     	$num          = IReq::get("num") ? IFilter::act(IReq::get("num"),'int') : 1;
+        $final_sum = IReq::get('final_sum') ? IReq::get('final_sum') : 0;
 		$data         = array();
 		
 		if($distribution)
@@ -172,7 +173,11 @@ class Block extends IController
 			{
 				$data[$item['id']] = Delivery::getDelivery($area,$item['id'],$goodsId,$productId,$num);
 			}
-		}
+		}                    
+        $group_id     = $this->group_id;
+        $proObj = new ProRule($final_sum);
+        $proObj->setUserGroup($group_id);
+        $data['isFreeFreight'] = $proObj->isFreeFreight($area);
     	echo JSON::encode($data);
     }
     /**
@@ -202,7 +207,12 @@ class Block extends IController
            $area     = IFilter::act(IReq::get("area"),'int');
            $deliveryId = IFilter::act(IReq::get("deliveryId"),'int');//配送方式
            $num = IFilter::act(IReq::get('num'),'int');
-           $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);                
+           $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);
+           $final_sum = IReq::get('final_sum') ? IReq::get('final_sum') : 0;
+           $group_id     = $this->group_id;
+           $proObj = new ProRule($final_sum);
+           $proObj->setUserGroup($group_id);
+           $data['isFreeFreight'] = $proObj->isFreeFreight($area);                 
            echo JSON::encode($data);
        }
        

@@ -108,16 +108,16 @@ function orderFormClass()
 			var _this = $(this)
             ,obj = _this.attr('js_data')
             ,dataArray = obj.split("_")
-            ,_u = _url;  
+            ,_u = _url
+            ,final_sum = $('#final_sums').text();  
             $.ajax({
                 type:'post',
                 async:false,
-                data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
+                data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3],final_sum:final_sum},
                 dataType:'json',
                 url: _u,
                 success:function(content)
                 {
-                    console.info(content);
                     //地区无法送达
                     if(content.if_delivery == 1)
                     {

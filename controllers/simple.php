@@ -881,8 +881,8 @@ class Simple extends IController
     	$this->count       = $result['count'];
     	$this->reduce      = $result['reduce'];
     	$this->weight      = $result['weight'];
-    	$this->freeFreight = $result['freeFreight'];
-    	
+    	$this->freeFreight = $result['freeFreight'] ? 1 : 0;
+
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
         
