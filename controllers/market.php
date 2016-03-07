@@ -437,6 +437,7 @@ class Market extends IController
 			$promotionRow = $promotionObj->getObj($where);
             $promotionRow['area_groupid'] = unserialize($promotionRow['area_groupid']) ;
             $area = array();
+            $goodsList = array();
             if( $promotionRow['area_groupid']){
                     
                 foreach($promotionRow['area_groupid'] as $key=>$val){

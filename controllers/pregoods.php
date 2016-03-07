@@ -24,7 +24,7 @@ class Pregoods extends IController
 		$presell_db->order = 'p.id DESC';
         $list = $presell_db->find();
         $topList = array();
-        $topList[] = count($list)>0 ? array_shift($list) : array();
+        count($list)>0 ? $topList[] = array_shift($list) : $topList = array();
         count($list)>0 ? $topList[] = array_shift($list) : $topList = $topList;               
         if($topList)
         {
