@@ -148,6 +148,8 @@ class goods_class
 		$goodsUpdateData['cost_price']   = isset($postData['_cost_price'])   ? current($postData['_cost_price'])   : 0;
         $goodsUpdateData['weight']       = isset($postData['_weight'])       ? current($postData['_weight'])       : 0;
         $goodsUpdateData['point']        = isset($postData['_point'])        ? current($postData['_point'])        : 0;
+        $goodsUpdateData['tax']        = isset($postData['_tax'])        ? current($postData['_tax'])        : 0;
+        $goodsUpdateData['default_tax']        = isset($postData['_default_tax'])        ? current($postData['_default_tax'])        : 0;
 		//$goodsUpdateData['unit_num']     = isset($postData['_unit_num'])      ? (current($postData['_unit_num']) ? current($postData['_unit_num']) : 1)   : 1;
 		unset($goodsUpdateData['product_id']);
 		//处理商品
@@ -218,6 +220,8 @@ class goods_class
 					'cost_price' => $postData['_cost_price'][$key],
                     'weight' => $postData['_weight'][$key],
                     'point'  => $postData['_point'][$key],
+                    'tax'  => $postData['_tax'][$key],
+                    'default_tax'  => isset($postData['_default_tax'][$key]) ? $postData['_default_tax'][$key] : 0,
 					//'unit_num' => $postData['_unit_num'][$key],
 					'spec_array' => "[".join(',',$postData['_spec_array'][$key])."]"
 				);

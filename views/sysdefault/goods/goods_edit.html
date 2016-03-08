@@ -129,6 +129,7 @@
 										<th>成本价格</th>
                                         <th>重量(克)</th>      
                                         <th>购买成功增加积分</th>      
+                                        <th>税率</th>      
 										<%if(isProduct == true){%>
 										<th>操作</th>
 										<%}%>
@@ -169,6 +170,7 @@
 										<td><input class="tiny" name="_cost_price[<%=i%>]" type="text" pattern="float" empty value="<%=item['cost_price']%>" /></td>
                                         <td><input class="tiny" name="_weight[<%=i%>]" type="text" pattern="float" empty value="<%=item['weight']%>" /></td>
                                         <td><input class="tiny" name="_point[<%=i%>]" type="text" pattern="float" empty value="<%=item['point']%>" /></td>
+                                        <td><input class="tiny" name="_tax[<%=i%>]" type="text" pattern="float" empty value="<%=item['tax']%>" /><input class="" name="_default_tax[<%=i%>]" type="checkbox" value="1" <%if(item['default_tax'] == 1){%>checked='checked' <%}%> />使用默认税率</td>
 										<%if(isProduct == true){%>
 										<td><a href="javascript:void(0)" onclick="delProduct(this);"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a></td>
 										<%}%>
