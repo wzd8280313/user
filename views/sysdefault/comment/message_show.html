@@ -16,12 +16,19 @@
 		<table class="form_table">
 			<col width="150px" />
 			<col />
+            {if:$item['type'] == 1}
 			<tr>
 				<th>标题：</th>
 				<td>{$item['title']}</td>
 			</tr>
+            {/if}
 			<tr>
-				<th>发布时间：</th><td>{$item['time']}</td>
+				{if:$item['type']==1}
+                <th>发布时间：</th>
+                {else:}
+                <th>发送时间：</th>
+                {/if}
+                <td>{$item['time']}</td>
 			</tr>
 			<tr>
 				<th>内容：</th><td>{$item['content']}</td>

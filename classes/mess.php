@@ -105,21 +105,60 @@ class Mess
 		$this->save();
 	}
 
+    /**
+     * 直接发站内信到用户
+     * 这个地方直接调用了Mysql的操作类
+     * @param $userIds string 用户Id的串
+     * @param $content 信件内容 array('title' => '标题','content' => '内容')
+     */
+    public static function sendToUser($userIds,$content)
+    {
+        set_time_limit(0);
+
+        //插入$content
+        $data = array(
+            'title'   => $content['title'],
+            'content' => $content['content'],
+            'time'    => date('Y-m-d H:i:s'),
+        );
+
+        $msgDB = new IModel("message");
+        $msgDB->setData($data);
+        $id = $msgDB->add();
+
+        if($id === false)
+        {
+            return false;
+        }
+        else
+        {
+            $db = IDBFactory::getDB();
+            $tableName = IWeb::$app->config['DB']['tablePre']."member";
+            if($userIds)
+            {
+                $sql = "UPDATE `{$tableName}` SET message_ids = CONCAT( IFNULL(message_ids,'') ,'{$id},') WHERE user_id in ({$userIds})";
+            }
+            else
+            {
+                $sql = "UPDATE `{$tableName}` SET message_ids = CONCAT( IFNULL(message_ids,'') ,'{$id},')";
+            }
+            return $db->query($sql);
+        }
+    }
+
 	/**
-	 * 直接发站内信到用户
+	 * 发短信
 	 * 这个地方直接调用了Mysql的操作类
 	 * @param $userIds string 用户Id的串
-	 * @param $content 信件内容 array('title' => '标题','content' => '内容')
+	 * @param $content 信件内容
 	 */
-	public static function sendToUser($userIds,$content)
-	{
-		set_time_limit(0);
-
+	public static function sendShortMessageToUser($userIds,$content)
+	{                                         
 		//插入$content
-		$data = array(
-			'title'   => $content['title'],
-			'content' => $content['content'],
+		$data = array(                      
+			'content' => $content,
 			'time'    => date('Y-m-d H:i:s'),
+            'type'    => 2
 		);
 
 		$msgDB = new IModel("message");
@@ -132,17 +171,21 @@ class Mess
 		}
 		else
 		{
-			$db = IDBFactory::getDB();
-			$tableName = IWeb::$app->config['DB']['tablePre']."member";
-			if($userIds)
-			{
-				$sql = "UPDATE `{$tableName}` SET message_ids = CONCAT( IFNULL(message_ids,'') ,'{$id},') WHERE user_id in ({$userIds})";
-			}
-			else
-			{
-				$sql = "UPDATE `{$tableName}` SET message_ids = CONCAT( IFNULL(message_ids,'') ,'{$id},')";
-			}
-			return $db->query($sql);
+			$userDB = new IQuery('user as u');
+            $userDB->join  = 'left join member as m on u.id = m.user_id';
+            $userDB->fields= 'u.phone';
+            if($userIds)
+            {
+                $userDB->where = 'id in ('.$userIds.')';
+            }  
+            $userData      = $userDB->find();
+            foreach($userData as $key => $item)
+            {
+                if($v['phone'])
+                {
+                    Hsms::send($v['phone'],$content);
+                }
+            }                                                          
 		}
 	}
 

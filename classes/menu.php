@@ -82,6 +82,7 @@ class Menu
 	     		'/member/group_list' => '会员组列表',
 	     		'/member/withdraw_list'=>'会员提现管理',
                 '/comment/message_list' => '站内消息',
+                '/comment/short_message_list' => '短信',
 			),
 			'商户管理' => array(
 				'/member/seller_list' => '商户列表',

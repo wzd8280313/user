@@ -612,12 +612,49 @@ class Comment extends IController
 		$refer_type->del(' id in('.$idstr.')');
 		$this->redirect('refer_type_list');
 	}
+    
+    /**
+     * @brief 短信列表
+     */
+    function short_message_list()
+    {
+        $where = ' 1 and status=1 and type=2';
+        //筛选、
+        $beginTime = IFilter::act(IReq::get('beginTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+        $this->data['beginTime'] = $beginTime;
+        $this->data['endTime'] = $endTime;
+        if($beginTime)
+        {
+            $where .= ' and time > "'.$beginTime.'"';
+        }
+        if($endTime)
+        {
+            $where .= ' and time < "'.$endTime.'"';
+        }
+        
+        $this->where = $where;
+        $this->setRenderData($this->data);
+        $tb_user_group = new IModel('user_group');
+        $data_group = $tb_user_group->query();
+        $data_group = is_array($data_group) ? $data_group : array();
+        $group      = array();
+        foreach($data_group as $value)
+        {
+            $group[$value['id']] = $value['group_name'];
+        }
+        $this->data['group'] = $group;
+
+        $this->setRenderData($this->data);
+        $this->redirect('short_message_list');
+    }
+    
 	/**
 	 * @brief 站内消息列表
 	 */
 	function message_list()
 	{
-		$where = ' 1 ';
+		$where = ' 1 and status=1 and type=1';
 		//筛选、
 		$beginTime = IFilter::act(IReq::get('beginTime'));
 		$endTime = IFilter::act(IReq::get('endTime'));
@@ -661,8 +698,9 @@ class Comment extends IController
 			if($ids)
 			{
 				$tb_refer = new IModel('message');
+                $tb_refer->setData(array('status'=>0));
 				$where = "id in (".$ids.")";
-				$tb_refer->del($where);
+				$tb_refer->update($where, array('status'));
 			}
 		}
 		$this->message_list();
@@ -675,7 +713,16 @@ class Comment extends IController
 	{
 		$this->layout = '';
 		$this->redirect('message_send');
-	}
+	}   
+    
+    /**
+     * 发送短信
+     */
+    function short_message_send()
+    {
+        $this->layout = '';
+        $this->redirect('short_message_send');
+    }
 
 	/**
 	 * @brief 发送信件
@@ -694,4 +741,19 @@ class Comment extends IController
 		Mess::sendToUser($toUser,array('title' => $title,'content' => $content));
 		die('<script type="text/javascript">parent.startMessageCallback(1);</script>');
 	}
+    
+    /**
+     * @brief 发送短信
+     */
+    function send_short_message()
+    {
+        $toUser  = IFilter::act(IReq::get('toUser'));  
+        $content = IFilter::act(IReq::get('content'),'text');           
+        if(!$content)
+        {
+            die('<script type="text/javascript">parent.startMessageCallback(0);</script>');
+        }
+        Mess::sendShortMessageToUser($toUser,$content);             
+        die('<script type="text/javascript">parent.startMessageCallback(1);</script>');
+    }
 }
