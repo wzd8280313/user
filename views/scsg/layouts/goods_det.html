@@ -126,8 +126,9 @@ function refer_ajax(page, _b, type)
             var _this = $(this),
                 _id = _this.attr('js_data'),
                 _name = _this.attr('js_name'),
-                _url = '{url:/site/cir_refer_ajax/page/1/pid/@pid@/goods_id/$id}';
+                _url = '{url:/site/cir_refer_ajax/page/1/pid/@pid@/goods_id/$id/type/@type@}';
             _url = _url.replace("@pid@",_id);
+            _url = _url.replace("@type@",type);
             _this.attr('class', 'js_hide_reply_question');
             $.getJSON(_url,function(json){
                 var html = "<div class='bg-hf'>";
@@ -149,9 +150,8 @@ function refer_ajax(page, _b, type)
                 _this.siblings('.js_question_list_'+_id).html(html);
             })
         })
-        
-        //回复咨询
         if(_b){return;}
+        //回复咨询      
         $(document).on('click', '.js_reply_question_submit', function(){
             var _this = $(this)
                 ,_pid = _this.attr('js_data')
@@ -173,7 +173,6 @@ function refer_ajax(page, _b, type)
                         else
                         {
                             refer_ajax(1, true, type);
-                            return;
                         }
                     }
                 })

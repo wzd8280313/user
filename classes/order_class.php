@@ -1407,16 +1407,19 @@ class Order_Class
 		$refundDB->update('id = '.$refundId);
 		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
-		
 		$order_goods_id = $orderGoodsRow['id'];
 		
         $good = new IModel('goods');
 
-		//未发货的情况下还原商品库存
 		if($orderGoodsRow['is_change'] == 1)
 		{
 			self::updateStore($order_goods_id,'add');
 		}
+        $orderType = $orderDB->getField('id='.$order_id,'type');
+        if($orderType != 0)
+        {
+            Active::refundCallback($order_id,$orderType);
+        }
 		//更新order表状态
 		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and id != '.$order_goods_id.' and is_send != 2');
 		$orderStatus = 6;//全部退款

@@ -1139,6 +1139,7 @@ class Site extends IController
                     $reply[$key]['seller_name'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
                     $temp = $comment->query('goods_id = '.$goods_id.' and pid='.$val['id'].' and user_id <> -1', 'count(1) as num');
                     $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+                    unset($seller_name);
                 }
                 $data[$k]['replyData'] =  $reply;
                 

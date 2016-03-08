@@ -249,19 +249,19 @@ class Menu
 		'/market/ticket_edit' => '/market/ticket_list',
 		'/market/bill_edit' => '/market/bill_list',
 
-		'/order/collection_show' => '/order/order_collection_list',
-		'/order/refundment_show' => '/order/order_refundment_list',
-		'/order/delivery_show' => '/order/order_delivery_list',
-		'/order/refundment_doc_show' => '/order/order_refundment_list',
-		'/order/refundment_chg_show' => '/order/refundment_chg_list',
-			'/order/refundment_chged_show' => '/order/order_refundment_chg_list',
-			'/order/refundment_apply_show' => '/order/refundment_list',
-		'/order/print_template' => '/order/order_list',
-		'/order/collection_recycle_list' => '/order/order_collection_list',
-		'/order/delivery_recycle_list' => '/order/order_delivery_list',
+		'/order/collection_show' => '/order/order_collection_list_plat',
+		'/order/refundment_show' => '/order/order_refundment_list_plat',
+		'/order/delivery_show' => '/order/order_delivery_list_plat',
+		'/order/refundment_doc_show' => '/order/order_refundment_list_plat',
+		'/order/refundment_chg_show' => '/order/refundment_chg_list_plat',
+			'/order/refundment_chged_show' => '/order/order_refundment_chg_list_plat',
+			'/order/refundment_apply_show' => '/order/refundment_list_plat',
+		'/order/print_template' => '/order/order_list_plat',
+		'/order/collection_recycle_list' => '/order/order_collection_plat',
+		'/order/delivery_recycle_list' => '/order/order_delivery_list_plat',
 		'/order/ship_recycle_list'	=>	'/order/ship_info_list',
-		'/order/expresswaybill_edit' => '/order/order_list',
-		'/order/order_show' => '/order/order_list',
+		'/order/expresswaybill_edit' => '/order/order_list_plat',
+		'/order/order_show' => '/order/order_list_plat',
 	);
 
     /**
@@ -385,7 +385,10 @@ class Menu
 		{
 			return $this->submenu(true);
 		}
-
+        if(IReq::get('plat'))
+        {
+            $this->current = '/'.$controller.'/'.$action.'_'.IReq::get('plat');
+        }
 		return JSON::encode($result);
 	}
 }

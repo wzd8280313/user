@@ -236,10 +236,16 @@ class IPaging
         $href = $baseUrl.($flag?$this->getIndex()+1:'');
 		if($this->lastpage<$this->totalpage)$tem.="<a href='{$href}' {$attr}>下一页</a>";
 
-		if($this->totalpage==0)$this->index=1;
-		$attr = str_replace('[page]',$this->totalpage,$attrs);
-		$href = $baseUrl.($flag?$this->totalpage:'');
-		return $tem."<a href='{$href}' {$attr}>尾页</a><span>当前第{$this->index}页/共{$this->totalpage}页</span></div>";
+		if($this->totalpage<>0)/*$this->index=1;*/
+		{
+            $attr = str_replace('[page]',$this->totalpage,$attrs);
+		    $href = $baseUrl.($flag?$this->totalpage:'');
+		    return $tem."<a href='{$href}' {$attr}>尾页</a><span>当前第{$this->index}页/共{$this->totalpage}页</span></div>";
+        }
+        else
+        {
+            return '';
+        }
 	}
 }
 ?>

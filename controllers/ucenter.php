@@ -228,13 +228,12 @@ class Ucenter extends IController
         $tb_refundment->order = 'r.id DESC';
         $tb_refundment->group = 'r.id';
         $this->refunds = $tb_refundment->find();
-       
         //获取商品信息
         $tb_order_goods = new IQuery('order_goods as og');
         $tb_order_goods->join = 'left join goods as g on og.goods_id=g.id';
         $tb_order_goods->where = 'og.order_id='.$id;
         $tb_order_goods->group = 'og.id';
-        $tb_order_goods->fields = 'g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,g.seller_id';
+        $tb_order_goods->fields = 'og.product_id,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,g.seller_id';
         $og_data = $tb_order_goods->find();
         foreach($og_data as $key=>$val){       
             if($val['seller_id'] <> 0)
@@ -248,7 +247,23 @@ class Ucenter extends IController
             {
                 $og_data[$key]['seller_name'] = '平台自营';
             }
-            
+            //判断所买商品是否分规格
+            if($val['product_id'])
+            {
+                $product = new IModel('products');
+                $sell_price = $product->getField('id='.$val['product_id'], 'sell_price');
+                $point = $product->getField('id='.$val['product_id'], 'point');
+                $og_data[$key]['sell_price'] = $sell_price ? $sell_price : 0;
+                $og_data[$key]['point'] = $point ? $point : 0;
+            }
+            else
+            {
+                $goods = new IModel('goods');
+                $sell_price = $goods->getField('id='.$val['goods_id'], 'sell_price');
+                $point = $goods->getField('id='.$val['goods_id'], 'point');
+                $og_data[$key]['sell_price'] = $sell_price ? $sell_price : 0;
+                $og_data[$key]['point'] = $point ? $point : 0;
+            }
         }
         $this->og_data = $og_data;
        	$this->redirect('order_detail',false);

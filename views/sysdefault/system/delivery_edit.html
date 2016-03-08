@@ -177,6 +177,16 @@ $(function()
             $('#js_set_'+_id).siblings('.js_set').find('input').attr('disabled', 'disabled');
             $('#js_set_'+_id).show();
             $('#js_set_'+_id).find('input').removeAttr('disabled');
+            if(_id == 2)
+            {
+                $('.js_desc_text_1').html('首数费用');
+                $('.js_desc_text_2').html('增加费用');
+            }
+            else
+            {
+                $('.js_desc_text_1').html('首重费用');
+                $('.js_desc_text_2').html('续重费用');
+            }
         })
     })
     

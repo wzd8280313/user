@@ -575,8 +575,12 @@ class CountSum
             {
                 $result['deliveryPrice'] += $deliveryRow['price'];
                 $order_extend[$val['seller_id']]['deliveryPrice'] += $deliveryRow['price'];
+                $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
             }
-            $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
+            else
+            {
+                $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+            }
             $goodsResult['goodsList'][$key]['insuredPrice'] = $deliveryRow['protect_price'];
             
             //商品税金计算
