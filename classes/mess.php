@@ -178,12 +178,12 @@ class Mess
             {
                 $userDB->where = 'id in ('.$userIds.')';
             }  
-            $userData      = $userDB->find();
+            $userData      = $userDB->find();          
             foreach($userData as $key => $item)
             {
-                if($v['phone'])
+                if($item['phone'])
                 {
-                    Hsms::send($v['phone'],$content);
+                    Hsms::send($item['phone'],$content);
                 }
             }                                                          
 		}
