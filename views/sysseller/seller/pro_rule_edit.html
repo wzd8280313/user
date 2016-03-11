@@ -87,6 +87,7 @@
 							<th class="header">图片</th>
 							<th class="header">货号</th>
                             <th class="header">名称</th>
+                            <th class="header">操作</th>
 						</tr>
 					</thead>
 					<tbody id='speed_goods'>
@@ -96,7 +97,11 @@
                                     <td><img src="{webroot:{$item['img']}}" style="max-width:140px;max-height:50px;" /></td>
                                     <td>{$item['goods_no']}</td>
                                     <td>{$item['name']}
-                                        <input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/></td>
+                                        <input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" onclick="remove_goods(this)">移除</a>
+                                    </td>
                                 </tr>
                              {/foreach}
                         {/if}	
@@ -165,15 +170,28 @@
 	{
 		if(content)
 		{
-			var imgUrl = "{webroot:@url@}";
-			imgUrl     = imgUrl.replace("@url@",content['data']['img']);
+            var ids = [];
+            $("input[name^=goods_id]").each(function(){
+                ids.push($(this).val());
+            })
+            if($.inArray(content['data']['goods_id'],ids) == -1)
+            {
+                var imgUrl = "{webroot:@url@}";
+                imgUrl     = imgUrl.replace("@url@",content['data']['img']);
 
-			var html =   '<tr  class="td_c">'+
-						'<td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /></td>'
-                        +'<td>'+content['data']['goods_no']+'</td>'
-						+'<td>'+content['data']['name']
-                        +'<input type="hidden" name="goods_id[]" value="'+content['data']['goods_id']
-                        +'"/></td></tr>';
+                var html =   '<tr  class="td_c">'+
+                            '<td><img src="'+imgUrl+'" style="max-width:140px;" /></td>'
+                            +'<td>'+content['data']['goods_no']+'</td>'
+                            +'<td>'+content['data']['name']
+                            +'<input type="hidden" name="goods_id[]" value="'+content['data']['goods_id']
+                            +'"/></td>'
+                            +'<td><a href="javascript:;" onclick="remove_goods(this)">移除</a></td>'
+                            +'</tr>';
+            }
+			else
+            {
+                alert('商品不能重复添加');
+            }
 
 			$('#speed_goods').append(html);
 		}
@@ -236,6 +254,12 @@
     {
         var areaNameList = {echo:JSON::encode($this->area)};
         return areaNameList[provinceId];
+    }
+    
+    //移除所选商品
+    function remove_goods(obj)
+    {
+        $(obj).parent().parent().remove();
     }
 
     //添加省份

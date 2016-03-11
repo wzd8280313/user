@@ -484,15 +484,16 @@ class Market extends IController
 		}                         
         $gId = $award_type == 6 ? array() : IReq::get('goods_id');               
         //$gId = $award_type == 5 ? array() : '';
-        if(IReq::get('select_all'))
+        if(IReq::get('select_all') || (empty($gId) && $award_type <> 6))
         {
-            $goods_id = '';
+            $goods = new IModel('goods');
+            $gId = $goods->getFields(array('is_del'=>0,'seller_id'=>0), 'id');          
         }
         else
         {
-            $gId = array_unique($gId);
-            $goods_id = join(',', $gId);  
-        }                                  
+            $gId = array_unique($gId);   
+        }     
+        $goods_id = join(',', $gId);                             
         //支持免费配送的地区ID
         $area_groupid = $award_type == 6 ? serialize(IReq::get('area_groupid')) : '';
 		$dataArray = array(

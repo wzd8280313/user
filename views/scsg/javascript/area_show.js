@@ -98,7 +98,7 @@ function get_delivery_fee(name){
     var price = $("#real_price").html();
     if(deliveryId != 0)
     {
-        $.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"distribution":deliveryId,"productId":productId,"num":buyNums,'final_sum':price},function(content){
+        $.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"distribution":deliveryId,"productId":productId,"num":buyNums,'final_sum':price*buyNums},function(content){
             var delivery_fee = 99999;
             if(content.if_delivery)
             {

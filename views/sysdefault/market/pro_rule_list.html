@@ -49,7 +49,7 @@ $where = getSearchCondition($this->search);
 			<col />
 			<col width="100px" />
 			<tbody>
-				{query:name=promotion where=type eq 0 and $where}
+				{query:name=promotion where=type eq 0 and seller_id eq 0 and $where}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
 					<td>{$item['name']}</td>

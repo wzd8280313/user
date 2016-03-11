@@ -29,7 +29,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>允许参与人群：</th>
+					<th valign="top">允许参与人群：</th>
 					<td>
 						<ul class='attr_list clearfix'>
 							<li><label class='attr'><input type='checkbox' name='group_all' value='all' onclick='select_all();' />全部</label></li>
@@ -94,7 +94,9 @@
                                             <td><img src="{webroot:{$item['img']}}" style="max-width:140px;max-height:50px;" /></td>
                                             <td>{$item['goods_no']}</td>
                                             <td>{$item['name']}
-                                                <input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/></td>
+                                                <input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/>
+                                            </td>
+                                            <td><a href="javascript:;" onclick="remove_goods(this)">移除</a></td>
                                         </tr>
                                      {/foreach}
                                 {/if}
@@ -158,16 +160,26 @@
         //var n = $('#store_list>tr').length;
         if(content)
         {
-           // $('[name="condition"]').val(content['data']['id']);
-            var imgUrl = "{webroot:@url@}";
-            imgUrl     = imgUrl.replace("@url@",content['data']['img']);
+            var ids = [];
+            $("input[name^=goods_id]").each(function(){
+                ids.push($(this).val());
+            })
+            if($.inArray(content['data']['goods_id'],ids) == -1)
+            {
+                var imgUrl = "{webroot:@url@}";
+                imgUrl     = imgUrl.replace("@url@",content['data']['img']);
 
-            var html =  '<tr  class="td_c">'+
-             '<td><img src="'+imgUrl+'" style="max-width:140px;max-height:50px;" /></td>'
-                        +'<td>'+content['data']['goods_no']+'</td>'
-                        +'<td>'+content['data']['name']
-                        +'<input type="hidden" name="goods_id[]" value="'+content['data']['goods_id']+'"/></td>'
-                        +'</tr>';
+                var html =  '<tr  class="td_c">'+
+                 '<td><img src="'+imgUrl+'" style="max-width:140px;max-height:50px;" /></td>'
+                            +'<td>'+content['data']['goods_no']+'</td>'
+                            +'<td>'+content['data']['name']
+                            +'<input type="hidden" name="goods_id[]" value="'+content['data']['goods_id']+'"/></td>'
+                            +'<td><a href="javascript:;" onclick="remove_goods(this)">移除</a></td>'
+                            +'</tr>';
+            }
+            else{
+                alert('商品不能重复添加');
+            }
             appendTo.append(html);
         }
     }
@@ -201,6 +213,12 @@
     {
         $(_t).parent().parent().remove();
         $('.js_add_area').show();
+    }
+    
+    //移除所选商品
+    function remove_goods(obj)
+    {
+        $(obj).parent().parent().remove();
     }
     function createAreaSelect(name,parent_id,select_id,next)
     {
