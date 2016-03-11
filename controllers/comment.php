@@ -218,7 +218,7 @@ class Comment extends IController
 	function comment_del()
 	{
 		$comment_ids = IReq::get('check');
-		$comment_ids = is_array($comment_ids) ? $comment_ids : array($comment_ids);
+		$comment_ids = is_array($comment_ids) ? $comment_ids : array($comment_ids); 
 		if($comment_ids)
 		{
 			$comment_ids =  IFilter::act($comment_ids,'int');
@@ -711,6 +711,7 @@ class Comment extends IController
 	{
 		$refer_ids = IReq::get('check');
 		$refer_ids = is_array($refer_ids) ? $refer_ids : array($refer_ids);
+        $type = IReq::get('type');
 		if($refer_ids)
 		{
 			$ids = implode(',',$refer_ids);
@@ -721,8 +722,15 @@ class Comment extends IController
 				$where = "id in (".$ids.")";
 				$tb_refer->update($where, array('status'));
 			}
-		}
-		$this->message_list();
+		}                    
+        if($type == 2)
+        {
+            $this->short_message_list(); 
+        }
+        else
+        {
+            $this->message_list();
+        }  
 	}
 
 	/**
