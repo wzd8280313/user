@@ -234,7 +234,7 @@ class statistics
 	}
     public static function referWaitCountDiff($plat=1)
     {
-        $where = "pid = 0";
+        $where = "pid = 0 and status = 0";
         if($plat)
         {
             $where .= " and seller_id = 0";
@@ -245,19 +245,7 @@ class statistics
         }
         $DB = new IModel('refer');
         $data = $DB->query($where, 'id');
-        $list = array();
-        foreach($data as $v)
-        {
-             if($DB->query("p_id LIKE '%,{$v['id']},%' and user_id=-1", 'id'))
-             {
-                 continue;
-             }
-             else
-             {
-                 $list[] = $v;
-             }
-        }
-        return count($list);
+        return count($data);
     }
 
 	/**
@@ -267,7 +255,7 @@ class statistics
 	 */
 	public static function commentCount($seller_id = '')
 	{
-		$where = "co.status = 1 and co.goods_id = go.id and co.recomment_time<=0";
+		$where = "co.status <> 1 and co.goods_id = go.id and co.recomment_time<=0";
 		if($seller_id)
 		{
 			$where .= " and go.seller_id = {$seller_id}";
@@ -279,7 +267,7 @@ class statistics
     
     public static function commentCountDiff($plat = 1)
     {
-        $where = "status<>0 and pid = 0";
+        $where = "status<>0 and pid = 0 and recomment_time<=0";
         if($plat)
         {
             $where .= " and sellerid = 0";
@@ -290,19 +278,7 @@ class statistics
         }
         $DB = new IModel('comment');
         $data = $DB->query($where, 'id');
-        $list = array();
-        foreach($data as $v)
-        {
-             if($DB->query("p_id LIKE '%,{$v['id']},%' and user_id=-1", 'id'))
-             {
-                 continue;
-             }
-             else
-             {
-                 $list[] = $v;
-             }
-        }
-        return count($list);
+        return count($data);
     }
 
 	/**

@@ -54,13 +54,13 @@
 							<tbody>
                                 <tr><th>产品数量</th><td><a href="{url:/goods/goods_list_plat}"><b class="red3 f14">{echo:statistics::goodsCountDiff(1)}</b></a> 个</td></tr>
                                 <tr><th>订单数量</th><td>{query:name=order fields=count(id) as countNums where=if_del eq 0 and seller_id eq 0}<a href="{url:/order/order_list_plat}"><b class="f14 red3">{$item['countNums']}</b></a> 个{/query}</td></tr>
-								<tr><th>待回复评论</th><td><a href="{url:/comment/comment_list_plat}"><b class="red3 f14">{echo:statistics::commentCountDiff(1)}</b></a> 个</td></tr>
-								<tr><th>待回复建议</th><td>{query:name=suggestion where=re_time is null fields=count(*) as countNums}<a href='{url:/comment/suggestion_list}'><b class="red3 f14">{$item['countNums']}</b></a>{/query} 个</td></tr>
-								<tr><th>待回复咨询</th><td><a href="{url:/comment/refer_list_plat}"><b class="red3 f14">{echo:statistics::referWaitCountDiff(1)}</b></a> 个</td></tr>
+								<tr><th>待回复评论</th><td><a href="{url:/comment/comment_list_plat/replyStatus/1}"><b class="red3 f14">{echo:statistics::commentCountDiff(1)}</b></a> 个</td></tr>
+								<tr><th>待回复建议</th><td>{query:name=suggestion where=re_time is null fields=count(*) as countNums}<a href='{url:/comment/suggestion_list/replyStatus/1}'><b class="red3 f14">{$item['countNums']}</b></a>{/query} 个</td></tr>
+								<tr><th>待回复咨询</th><td><a href="{url:/comment/refer_list_plat/replyStatus/1}"><b class="red3 f14">{echo:statistics::referWaitCountDiff(1)}</b></a> 个</td></tr>
 								<tr><th>未发货订单</th><td>{query:name=order fields=count(id) as countNums where=distribution_status eq 0 and if_del eq 0 and seller_id eq 0}<a href="{url:/order/order_list_plat/distribution_status/0}"><b class="f14 red3">{$item['countNums']}</b></a> 个{/query}</td></tr>
 								<tr><th>退款申请</th><td><a href="{url:/order/refundment_list_plat}"><b class="red3 f14">{echo:statistics::refundsCountDiff(1)}</b></a> 个</td></tr>
-								<tr><th>待审商家</th><td>{query:name=seller fields=count(id) as countNums where=is_lock eq 1}<a href="{url:/member/seller_list/search[is_lock]/1}"><b class="red3 f14">{$item['countNums']}</b></a> 个{/query}</td></tr>
-								<tr><th>待审商品</th><td>{query:name=goods fields=count(id) as countNums where=is_del eq 3}<a href="{url:/goods/goods_list/search[is_del]/3}"><b class="red3 f14">{$item['countNums']}</b></a> 个{/query}</td></tr>
+								<tr><th>待审商家</th><td>{query:name=seller fields=count(id) as countNums where=is_lock eq 1}<a href="{url:/member/seller_list/is_lock/1}"><b class="red3 f14">{$item['countNums']}</b></a> 个{/query}</td></tr>
+								<tr><th>待审商品</th><td>{query:name=goods fields=count(id) as countNums where=is_del eq 3}<a href="{url:/goods/goods_list/is_del/3}"><b class="red3 f14">{$item['countNums']}</b></a> 个{/query}</td></tr>
 							</tbody>
 						</table>
 					</td>
@@ -84,8 +84,8 @@
                             <tbody>
                                 <tr><th>产品数量</th><td><a href="{url:/goods/goods_list_seller}"><b class="red3 f14">{echo:statistics::goodsCountDiff(0)}</b></a> 个</td></tr>
                                 <tr><th>订单数量</th><td>{query:name=order fields=count(id) as countNums where=if_del eq 0 and seller_id neq 0}<a href="{url:/order/order_list_seller}"><b class="f14 red3">{$item['countNums']}</b></a> 个{/query}</td></tr>
-                                <tr><th>待回复评论</th><td><a href="{url:/comment/comment_list_seller}"><b class="red3 f14">{echo:statistics::commentCountDiff(0)}</b></a> 个</td></tr>
-                                <tr><th>待回复咨询</th><td><a href="{url:/comment/refer_list_seller}"><b class="red3 f14">{echo:statistics::referWaitCountDiff(0)}</b></a> 个</td></tr>
+                                <tr><th>待回复评论</th><td><a href="{url:/comment/comment_list_seller/replyStatus/1}"><b class="red3 f14">{echo:statistics::commentCountDiff(0)}</b></a> 个</td></tr>
+                                <tr><th>待回复咨询</th><td><a href="{url:/comment/refer_list_seller/replyStatus/1}"><b class="red3 f14">{echo:statistics::referWaitCountDiff(0)}</b></a> 个</td></tr>
                                 <tr><th>未发货订单</th><td>{query:name=order fields=count(id) as countNums where=distribution_status eq 0 and if_del eq 0 and seller_id neq 0}<a href="{url:/order/order_list_seller/distribution_status/0}"><b class="f14 red3">{$item['countNums']}</b></a> 个{/query}</td></tr>
                                 <tr><th>退款申请</th><td><a href="{url:/order/refundment_list_seller}"><b class="red3 f14">{echo:statistics::refundsCountDiff(0)}</b></a> 个</td></tr>
                             </tbody>

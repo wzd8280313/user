@@ -1333,7 +1333,7 @@ class Site extends IController
     function question_reply()
     {
         $pid     = IFilter::act(IReq::get('pid'),'int');
-        $question = IFilter::act(IReq::get('question'),'content');
+        $question = IFilter::act(IReq::get('question'),'content');    
         if(!trim($question))
         {
             $message = array('status' => 0, 'msg' => '咨询内容不能为空');

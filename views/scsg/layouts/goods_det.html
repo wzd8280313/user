@@ -4,7 +4,7 @@
  * 获取评论数据
  * @page 分页数
  */
-function comment_ajax(page, type, _b)
+function comment_ajax(page, type)
 {
     if(!page && $.trim($('#commentBox').text()))
     {
@@ -62,33 +62,6 @@ function comment_ajax(page, type, _b)
                 _this.siblings('.js_comment_list_'+_id).html(html);
             })
         })
-        
-        if(_b){return;}
-        //回复评论
-        $(document).on('click', '.js_reply_submit', function(){
-            var _this = $(this)
-                ,_pid = _this.attr('js_data')
-                ,_c = _this.parents('.js_inner').find('textarea').val();
-                if(_c.length == 0){
-                    alert('请输入评论内容');return;
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "{url:site/comment_reply}",
-                    data: {pid: _pid, content: _c},
-                    dataType: "json",
-                    success: function(data){
-                        if(!data.status)
-                        {
-                            alert(data.msg);
-                        }
-                        else
-                        {
-                            comment_ajax(1, 'all', true);
-                        }
-                    }
-                })
-        })
     });
 }
 
@@ -96,11 +69,37 @@ $(document).on('click', '.js_hide_reply_comment',function(){
     $(this).attr('class', 'js_replay_comment').next('div').html('');
 })
 
+//回复评论
+$(document).on('click', '.js_reply_submit', function(){
+    var _this = $(this)
+        ,_pid = _this.attr('js_data')
+        ,_c = _this.parents('.js_inner').find('textarea').val();
+        if(_c.length == 0){
+            alert('请输入评论内容');return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "{url:site/comment_reply}",
+            data: {pid: _pid, content: _c},
+            dataType: "json",
+            success: function(data){
+                if(!data.status)
+                {
+                    alert(data.msg);
+                }
+                else
+                {
+                    comment_ajax(1, 'all');
+                }
+            }
+        })
+})
+
 /**
  * 获取咨询数据
  * @page 分页数
  */
-function refer_ajax(page, _b, type)
+function refer_ajax(page, type)
 {
     if(!page && $.trim($('#referBox').text()))
     {
@@ -140,7 +139,7 @@ function refer_ajax(page, _b, type)
                     html += '<div class="inner js_inner">';   
                     html += '<textarea class="reply-input" name="question" placeholder="回复 '+_name+'："></textarea>';   
                     html += '<div class="btnbox">';   
-                    html += '<button type="button" data-nick="'+_name+'" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz js_reply_question_submit" js_data='+_id+'>提交回复</button>';
+                    html += '<button type="button" data-nick="'+_name+'" data-guid="033e3bec-d2aa-42d1-9168-095d92f6793f" data-replyid="1198778752" class="reply-submit J-submit-reply J-submit-reply-lz js_reply_question_submit" js_data='+_id+' js_type='+type+'>提交回复</button>';
                     html += '</div></div><hr/></div>';
                     for(var i = 0; i < json.data.length; i ++){
                         html += '<p><span class="replys J-reply-trigger">'+json.data[i]['username']+':</span><span class="gray">'+json.data[i]['question']+'</span><span class="times">'+json.data[i]['time']+'</span></p>';
@@ -149,40 +148,39 @@ function refer_ajax(page, _b, type)
                     html += '</div>';
                 _this.siblings('.js_question_list_'+_id).html(html);
             })
-        })
-        if(_b){return;}
-        //回复咨询      
-        $(document).on('click', '.js_reply_question_submit', function(){
-            var _this = $(this)
-                ,_pid = _this.attr('js_data')
-                ,_c = _this.parents('.js_inner').find('textarea').val();
-                if(_c.length == 0){
-                    alert('请输入回复内容');return;
-                }
-                $.ajax({
-                    type: "POST",
-                    url: "{url:site/question_reply}",
-                    data: {pid: _pid, question: _c},
-                    dataType: "json",
-                    success: function(data){
-                        if(!data.status)
-                        {
-                            alert(data.msg);
-                            return;
-                        }
-                        else
-                        {
-                            refer_ajax(1, true, type);
-                        }
-                    }
-                })
-        })
+        })     
+        
     });
 }
 $(document).on('click', '.js_hide_reply_question',function(){
     $(this).attr('class', 'js_replay_question').next('div').html('');
 })
-
+$(document).on('click', '.js_reply_question_submit', function(){
+    var _this = $(this)
+        ,_pid = _this.attr('js_data')
+        ,_type = _this.attr('js_type')
+        ,_c = _this.parents('.js_inner').find('textarea').val();
+        if(_c.length == 0){
+            alert('请输入回复内容');return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "{url:site/question_reply}",
+            data: {pid: _pid, question: _c},
+            dataType: "json",
+            success: function(data){
+                if(!data.status)
+                {
+                    alert(data.msg);
+                    return;
+                }
+                else
+                {
+                    refer_ajax(1, _type);
+                }
+            }
+        })
+})
 $(document).on('click', '.js_show_big_photo', function(){
     var _u = new Image();
     _u.src = $(this).attr('src')
@@ -413,13 +411,13 @@ $(document).on('click', '.js_hide_big_photo', function(){
 			<!-- 购买前咨询 start -->
 			<div class="hidden comment_list box">
                 <script type="text/javascript">
-                    $(document).ready(function(){
+                    $(function(){
                         /*选择咨询*/
                         $(".m-tab-trigger .trig-item-refer").click(function(){
                             $(".m-tab-trigger .trig-item-refer").removeClass("curr");
                             $(this).addClass("curr");
                             var _type = $(this).attr('js_data');
-                            refer_ajax(1, false, _type);
+                            refer_ajax(1, _type);
                         });
 
                     });

@@ -76,8 +76,8 @@ class System extends IController
 			$diffArray  = array_diff($advContrl,$baseContrl);
 			echo JSON::encode($diffArray);
 		}
-	}
-
+	}   
+    
 	/**
 	 * @brief 配送方式修改
 	 */

@@ -12,6 +12,7 @@
 		<input type='hidden' name='controller' value='comment' />
 		<input type='hidden' name='action' value='refer_list' />
         <input type="hidden" name="plat" value="{$plat}">
+        <input type="hidden" name="replyStatus" value="{$replyStatus}">
 		<div class="searchbar">
 			咨询人：<input class="small" type="text" name="username" value="{$username}" />
 			咨询商品：<input class="small" type="text" name="goodsname" value="{$goodsname}" />
@@ -58,14 +59,13 @@
 			<tbody>
 				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
 				{query: name=refer as r join=left join goods as goods on r.goods_id eq goods.id left join user as u on r.user_id eq u.id left join admin as admin on r.admin_id eq admin.id left join seller as se on se.id eq r.seller_id fields=r.*,u.username,goods.name as goods_name,goods.id as goods_id,admin.admin_name,se.seller_name page=$page where=$where order=r.id desc}
-                {set:$queryReply = Api::run('getUcenterConsultReply',$item['id'],1)}
 				<tr>
 					<td class="t_c"><input name="check[]" type="checkbox" value="{$item['id']}" /></td>
 					<td><a class="orange" title="{$item['goods_name']}" href="{url:/site/products/id/$item[goods_id]}" target='_blank'>{$item['goods_name']}</a></td>
 					<td>{if:$item['username']}{$item['username']}{else:}游客{/if}</td>
 					<td>{$item['time']}</td>
-					<td>{if:$queryReply}<span style="color: green;">已回复</span>{else:}未回复{/if}</td>
-					<td>{if:$queryReply}{$queryReply['time']}{/if}</td>
+					<td>{if:$item['status']}<span style="color: green;">已回复</span>{else:}未回复{/if}</td>
+					<td>{if:$item['status']}{$item['reply_time']}{/if}</td>
 					<td>
 						<a href="{url:/comment/refer_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" /></a>
 						<a href="javascript:void(0)" onclick="delModel({link:'{url:/comment/refer_del/check/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>

@@ -910,6 +910,10 @@ class Member extends IController
 	//商户列表
 	public function seller_list(){
 		$search = IReq::get('search');
+        if(IReq::get('is_lock'))
+        {
+            $search['is_lock'] = IReq::get('is_lock');
+        }                                
 		if(is_array($search)){
 			foreach($search as $k=>$v){
 				$k = IFilter::act($k,'strict');
@@ -922,6 +926,7 @@ class Member extends IController
 			$keywords = IFilter::act(IReq::get('keywords'));
 			$this->where    = ($search && $keywords) ? $search.' = "'.$keywords.'"' : 1;
 		}
+        $this->is_lock = $search['is_lock'];
 		$this->redirect('seller_list');
 	}
 

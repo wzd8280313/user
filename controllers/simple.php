@@ -1322,7 +1322,7 @@ class Simple extends IController
         $payment       = IFilter::act(IReq::get('payment'),'int');
         $order_message = IFilter::act(IReq::get('message'));
         $ticket_id     = IFilter::act(IReq::get('ticket_id'),'int');
-        $taxes         = IFilter::act(IReq::get('taxes'),'int');
+        $taxes         = IFilter::act(IReq::get('taxes'),'float');
         $insured       = IFilter::act(IReq::get('insured'));
         $gid           = IFilter::act(IReq::get('direct_gid'),'int');
         $num           = IFilter::act(IReq::get('direct_num'),'int');

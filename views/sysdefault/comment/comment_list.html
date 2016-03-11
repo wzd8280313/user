@@ -70,13 +70,12 @@
 		<tbody>
 			{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
 			{query: name=comment as c join=left join goods as goods on c.goods_id eq goods.id left join user as u on c.user_id eq u.id fields=c.id,c.comment_time,u.id as userid,u.username,goods.id as goods_id,goods.name as goods_name,c.recomment_time page=$page where=$where order = c.comment_time desc}
-            {set:$queryReply = Api::run('getUcenterCommentReply',$item['id'],1)}
 			<tr>
 				<td class="t_c"><input name="check[]" type="checkbox" value="{$item['id']}" /></td>
                 <td>{if:$item['username']}{$item['username']}{else:}游客{/if}</td>
 				<td><a href="{url:/site/products/id/$item[goods_id]}" target="_blank">{$item['goods_name']}</a></td>
 				<td>{$item['comment_time']}</td>
-				<td>{if:$queryReply}<span style="color: green;">已回复</span>{else:}未回复{/if}</td>
+				<td>{if:$item['recomment_time'] > 0}<span style="color: green;">已回复</span>{else:}未回复{/if}</td>
 				<td>
 					<a href="{url:/comment/comment_edit/cid/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" alt="查看" /></a>
 					<a href="javascript:void(0)" onclick="delModel({link:'{url:/comment/comment_del/check/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>

@@ -991,6 +991,7 @@ class Order extends IController
         {
             $search['pid'] = 0;
         }
+        $search['distribution_status'] = IReq::get('distribution_status');
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
 		//$join = $join.' left join refundment_doc as r on r.order_id=o.id and r.if_del=0 ';
@@ -1041,13 +1042,13 @@ class Order extends IController
     //平台订单
     public function order_list_plat()
     {
-        $this->redirect('order_list/plat/plat');
+        $this->redirect('order_list/plat/plat/distribution_status/'.IReq::get('distribution_status'));
     }
     
     //商户订单
     public function order_list_seller()
     {
-        $this->redirect('order_list/plat/seller');
+        $this->redirect('order_list/plat/seller/distribution_status/'.IReq::get('distribution_status'));
     }
    
     /**

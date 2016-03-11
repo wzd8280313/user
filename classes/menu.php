@@ -250,7 +250,7 @@ class Menu
 		'/market/ticket_edit' => '/market/ticket_list',
 		'/market/bill_edit' => '/market/bill_list',
 
-		'/order/collection_show' => '/order/order_collection_list_plat',
+		'/order/collection_show' => '/order/order_collection_list',
 		'/order/refundment_show' => '/order/order_refundment_list_plat',
 		'/order/delivery_show' => '/order/order_delivery_list_plat',
 		'/order/refundment_doc_show' => '/order/order_refundment_list_plat',
@@ -389,6 +389,10 @@ class Menu
         if(IReq::get('plat'))
         {
             $this->current = '/'.$controller.'/'.$action.'_'.IReq::get('plat');
+        }
+        if(IReq::get('deli_type'))
+        {
+            $this->current = '/'.$controller.'/'.$action.'/deli_type/'.IReq::get('deli_type');
         }
 		return JSON::encode($result);
 	}

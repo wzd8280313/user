@@ -66,22 +66,7 @@ class APIUcenter
 		$query->page   = $page;
 		$query->order = 'c.id desc';
 		return $query;
-	}
-    //用户中心-商品评价回复
-    public function getUcenterCommentReply($id,$pid=0)
-    {                                                                          
-        $query = new IModel('comment');
-        if($pid)
-        {                   
-            $data = $query->query("p_id LIKE '%,{$id},%' and user_id=-1", 'id,comment_time','comment_time','desc',1);    
-            return end($data);
-        }
-        else
-        {
-            return $query->getObj("p_id LIKE '%,{$id},%'");
-        }
-        
-    }
+	}      
 
 	//用户中心-用户信息
 	public function getMemberInfo($userid){

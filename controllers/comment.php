@@ -19,6 +19,7 @@ class Comment extends IController
 	{
 		$where = ' 1 ';
 		//筛选
+        $replyStatus = IReq::get('replyStatus');
 		$username = IFilter::act(IReq::get('username'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
 		$endTime = IFilter::act(IReq::get('endTime'));
@@ -37,7 +38,11 @@ class Comment extends IController
 		{
 			$where .= ' and a.time < "'.$endTime.'"';
 		}
-
+        if($replyStatus)
+        {
+            $where .= ' and a.re_time IS NULL';
+        }
+        $this->replyStatus = $replyStatus;
 		$this->where = $where;
 		$this->setRenderData($this->data);
 
@@ -115,7 +120,12 @@ class Comment extends IController
 	function comment_list()
 	{                                                                
 		$search = IFilter::act(IReq::get('search'),'strict');
-        $plat = IReq::get('plat');      
+        $plat = IReq::get('plat');          
+        $replyStatus = IReq::get('replyStatus');
+        if($replyStatus)
+        {
+            $search['c.recomment_time'] = '=0';
+        }      
 		$where  = ' status<>0 and pid = 0';
         if($plat == 'plat')
         {
@@ -128,9 +138,8 @@ class Comment extends IController
 		if($search && $appendString = Util::search($search))
 		{
 			$where .= " and ".$appendString;
-		}
-
-        $search['plat'] = $plat;
+		}                                          
+        $search['plat'] = $plat;               
 		$this->data['where'] = $where;
 		$this->data['search']= $search;
 		$this->setRenderData($this->data);
@@ -140,13 +149,13 @@ class Comment extends IController
     //平台评论
     function comment_list_plat()
     {
-        $this->redirect('comment_list/plat/plat');
+        $this->redirect('comment_list/plat/plat/replyStatus/'.IReq::get('replyStatus'));
     }
     
     //商户评论
     function comment_list_seller()
     {
-        $this->redirect('comment_list/plat/seller');
+        $this->redirect('comment_list/plat/seller/replyStatus/'.IReq::get('replyStatus'));
     }
 
 	/**
@@ -260,6 +269,8 @@ class Comment extends IController
         $res = $comment->add(); 
         if($res)
         {
+            $comment->setData(array('recomment_time'=>ITime::getDateTime('Y-m-d')));
+            $comment->update('id='.$id);
             $this->redirect('comment_list');
         }
 	}
@@ -387,6 +398,7 @@ class Comment extends IController
 	{
 		$search   = IFilter::act(IReq::get('search'),'strict');
 		$keywords = IFilter::act(IReq::get('keywords'),'text');
+        $replyStatus = IReq::get('replyStatus');
 		/*$status   = IFilter::act(IReq::get('status'),'int');*/
 		$where = ' pid=0 ';
 		if($search && $keywords)
@@ -405,7 +417,8 @@ class Comment extends IController
 		$this->data['goodsname'] = $goodsname;
 		$this->data['beginTime'] = $beginTime;
         $this->data['endTime'] = $endTime;
-		$this->data['plat'] = $plat;
+        $this->data['plat'] = $plat;
+		$this->data['replyStatus'] = $replyStatus;
 		if($username)
 		{
 			$where .= ' and u.username like "%'.$username.'%"';
@@ -422,6 +435,10 @@ class Comment extends IController
 		{
 			$where .= ' and r.time < "'.$endTime.'"';
 		}
+        if($replyStatus)
+        {
+            $where .= ' and r.status = 0';
+        }
         if($plat == 'plat')
         {
             $where .= ' and r.seller_id = 0';
@@ -442,13 +459,13 @@ class Comment extends IController
     //平台咨询
     public function refer_list_plat()
     {
-        $this->redirect('refer_list/plat/plat');
+        $this->redirect('refer_list/plat/plat/replyStatus/'.IReq::get('replyStatus'));
     }
     
     //商户咨询
     public function refer_list_seller()
     {
-        $this->redirect('refer_list/plat/seller');
+        $this->redirect('refer_list/plat/seller/replyStatus/'.IReq::get('replyStatus'));
     }
     
     //咨询详情
@@ -545,6 +562,8 @@ class Comment extends IController
         $res = $refer->add(); 
         if($res)
         {  
+            $refer->setData(array('reply_time'=>ITime::getDateTime(), 'status'=>1));
+            $refer->update('id='.$rid, array('id'));
             $this->redirect('refer_list');
         }       
 		

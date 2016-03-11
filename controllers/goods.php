@@ -417,6 +417,10 @@ class Goods extends IController
         {
             $search['seller_id'] = '!=0';
         }
+        if(IReq::get('is_del'))
+        {
+            $search['is_del'] = IReq::get('is_del');
+        }
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;  
 		//条件筛选处理
 		list($join,$where) = goods_class::getSearchCondition($search);
