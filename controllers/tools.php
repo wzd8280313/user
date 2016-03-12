@@ -794,6 +794,71 @@ class Tools extends IController
 		$this->redirect("ad_list");
 	}
     
+    //首页楼层广告设置页面
+    function ad_floor_edit()
+    {
+        //广告位
+        $model = new IModel('ad_position ');
+        $position = $model->query('status = 1 and name LIKE "%首页楼层%"', 'id,name');
+        
+        //广告
+        $query = new IQuery('ad_manage as am');
+        $query->join = "join ad_position as ap on am.position_id=ap.id";
+        $query->where = 'ap.status =1 and ap.name LIKE "%首页楼层%" and am.type = 1';
+        $query->fields = 'am.*,ap.name as ap_name';
+        $adList = $query->find();  
+        //var_dump($position);
+       // var_dump($adList);exit;
+        $this->position = $position;
+        $this->adList = $adList;
+        $this->redirect('ad_floor_edit');
+    }
+    
+    function ad_floor_save()
+    {
+        $data = array();
+        $img = array();
+        if(isset($_FILES['img']) )
+        {
+            $uploadObj = new PhotoUpload();
+            $uploadObj->setIterance(false);
+            $imgInfo = $uploadObj->run();
+
+            if(isset($imgInfo['img']['flag']))
+            {
+                $imgInfo['img'] = array($imgInfo['slide_pic']);
+            }
+
+            if(isset($imgInfo['img']))
+            {
+                foreach($imgInfo['img'] as $key=>$value)
+                {
+
+                    if($value['flag']==1)
+                    {
+                        $img[$key]['img']=$value['img'];
+                    }
+                }
+            }
+        }               
+        $adObj = new IModel('ad_manage');
+        foreach($_POST['id'] as $k => $v)
+        {
+            $dataArray = array(
+                'content'     => isset($img[$k]['img']) ? IFilter::addSlash($img[$k]['img']) : $_POST['content'][$k],
+                'name'        => $_POST['name'][$k],
+                'position_id' => $_POST['position_id'][$k],          
+                'link'        => $_POST['link'][$k],
+                'start_time'  => $_POST['start_time'][$k],
+                'end_time'    => $_POST['end_time'][$k],                         
+                'order'       => $_POST['order'][$k],                        
+            );
+            $adObj->setData($dataArray);
+            $adObj->update('id='.$_POST['id'][$k]);
+        }
+        $this->ad_floor_edit();   
+    }
+    
     //[友情链接] 删除
     function link_del()
     {
