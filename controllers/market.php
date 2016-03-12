@@ -98,7 +98,9 @@ class Market extends IController
 			'value'     => IFilter::act(IReq::get('value','post')),
 			'start_time'=> IFilter::act(IReq::get('start_time','post')),
 			'end_time'  => IFilter::act(IReq::get('end_time','post')),
-			'point'     => IFilter::act(IReq::get('point','post')),
+            'point'     => IFilter::act(IReq::get('point','post')),
+            'type'     => IFilter::act(IReq::get('type','post'), 'int'),
+			'condition'     => IReq::get('condition','post') ? IFilter::act(IReq::get('condition','post'), 'int') : 0,
 		);
 
 		$ticketObj->setData($dataArray);
