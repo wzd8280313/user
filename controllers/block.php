@@ -635,7 +635,8 @@ class Block extends IController
     	$isError = true;
 
     	$ticket_num = IFilter::act(IReq::get('ticket_num'));
-    	$ticket_pwd = IFilter::act(IReq::get('ticket_pwd'));
+        $ticket_pwd = IFilter::act(IReq::get('ticket_pwd'));
+    	$final_num = IFilter::act(IReq::get('num'));
 
     	$propObj = new IModel('prop');
     	$propRow = $propObj->getObj('card_name = "'.$ticket_num.'" and card_pwd = "'.$ticket_pwd.'" and type = 0 and is_userd = 0 and is_send = 1 and is_close = 0 and NOW() between start_time and end_time');
@@ -646,41 +647,50 @@ class Block extends IController
     	}
     	else
     	{
-    		//登录用户
-    		if($this->user['user_id'])
-    		{
-	    		$memberObj = new IModel('member');
-	    		$memberRow = $memberObj->getObj('user_id = '.$this->user['user_id'],'prop');
-	    		if(stripos($memberRow['prop'],','.$propRow['id'].',') !== false)
-	    		{
-	    			$message = '代金券已经存在，不能重复添加';
-	    		}
-	    		else
-	    		{
-		    		$isError = false;
-		    		$message = '添加成功';
+            $ticketObj = new IModel('ticket');
+            $ticketRow = $ticketObj->getObj('id='.$propRow['condition']);
+            if($ticketRow['type'] == 2 && $ticketRow['condition'] > $final_num)
+            {
+                $message = '消费达到'.$ticketRow['condition'].'才能使用该代金券';
+            }
+            else
+            {
+                //登录用户
+                if($this->user['user_id'])
+                {
+                    $memberObj = new IModel('member');
+                    $memberRow = $memberObj->getObj('user_id = '.$this->user['user_id'],'prop');
+                    if(stripos($memberRow['prop'],','.$propRow['id'].',') !== false)
+                    {
+                        $message = '代金券已经存在，不能重复添加';
+                    }
+                    else
+                    {
+                        $isError = false;
+                        $message = '添加成功';
 
-		    		if($memberRow['prop'] == '')
-		    		{
-		    			$propUpdate = ','.$propRow['id'].',';
-		    		}
-		    		else
-		    		{
-		    			$propUpdate = $memberRow['prop'].$propRow['id'].',';
-		    		}
+                        if($memberRow['prop'] == '')
+                        {
+                            $propUpdate = ','.$propRow['id'].',';
+                        }
+                        else
+                        {
+                            $propUpdate = $memberRow['prop'].$propRow['id'].',';
+                        }
 
-		    		$dataArray = array('prop' => $propUpdate);
-		    		$memberObj->setData($dataArray);
-		    		$memberObj->update('user_id = '.$this->user['user_id']);
-	    		}
-    		}
-    		//游客方式
-    		else
-    		{
-				$isError = false;
-				$message = '添加成功';
-    			ISafe::set("ticket_".$propRow['id'],$propRow['id']);
-    		}
+                        $dataArray = array('prop' => $propUpdate);
+                        $memberObj->setData($dataArray);
+                        $memberObj->update('user_id = '.$this->user['user_id']);
+                    }
+                }
+                //游客方式
+                else
+                {
+                    $isError = false;
+                    $message = '添加成功';
+                    ISafe::set("ticket_".$propRow['id'],$propRow['id']);
+                }
+            }
     	}
 
     	$result = array(

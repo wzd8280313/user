@@ -206,7 +206,8 @@ function selectProtect(obj)
 function add_ticket()
 {
 	var ticket_num = $('#ticket_num').val();
-	var ticket_pwd = $('#ticket_pwd').val();
+    var ticket_pwd = $('#ticket_pwd').val();
+	var final_num = {$this->final_sum};
 
 	if(ticket_num == '' || ticket_pwd == '')
 	{
@@ -214,7 +215,7 @@ function add_ticket()
 		return '';
 	}
 
-	$.getJSON('{url:/block/add_download_ticket}',{"ticket_num":ticket_num,"ticket_pwd":ticket_pwd},function(content){
+	$.getJSON('{url:/block/add_download_ticket}',{"ticket_num":ticket_num,"ticket_pwd":ticket_pwd,'num':final_num},function(content){
 		if(content.isError == false)
 		{
 			is_success = true;
