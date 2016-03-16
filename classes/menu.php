@@ -53,6 +53,10 @@ class Menu
 				'/goods/goods_edit' => '商品添加',
 				'/goods/goods_in' => '库存添加'
 			),
+            '组合管理'=>array(
+                '/goods/combine_list' => '组合列表',
+                '/goods/combine_edit' => '组合添加'
+            ),
 			'商品分类'=>array(
 				'/goods/category_list'	=>	'分类列表',
 				'/goods/category_edit'	=>	'添加分类'
@@ -80,9 +84,9 @@ class Menu
 			'会员管理'=>array(
 	    		'/member/member_list' => '会员列表',
 	     		'/member/group_list' => '会员组列表',
-	     		'/member/withdraw_list'=>'会员提现管理',
+	     		'/member/withdraw_list'=>'会员提现管理',   
                 '/comment/message_list' => '站内消息',
-                '/comment/short_message_list' => '短信',
+                '/comment/short_message_list' => '短信',          
 			),
 			'商户管理' => array(
 				'/member/seller_list' => '商户列表',

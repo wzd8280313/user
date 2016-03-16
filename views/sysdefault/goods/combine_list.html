@@ -1,0 +1,80 @@
+<div class="headbar">
+	<div class="position"><span>商品</span><span>></span><span>商品组合管理</span><span>></span><span>组合列表</span></div>
+	<div class="operating">
+		<a href="javascript:;"><button class="operating_btn" type="button" onclick="window.location='{url:/goods/combine_edit}'"><span class="addition">添加组合</span></button></a>
+	</div>
+	<div class="field">
+		<table class="list_table">
+			<col width="15%" />
+            <col width="25%" />
+            <col />
+            <col width="15%" />
+            <col width="15%" />
+			<thead>
+				<tr>
+					<th>排序</th>
+					<th>组合名称</th>
+                    <th>主商品</th>
+					<th>状态</th>      
+					<th>操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+<div class="content">
+	<table id="list_table" class="list_table">
+		<col width="15%" />
+		<col width="25%" />
+		<col />
+		<col width="15%" />
+		<col width="15%" />
+		<tbody>
+			{set:$list = array()}
+			{query: name = goods}
+				{set:$list[$item['id']] = $item['name']}
+			{/query}
+            {if: $this->QB->find()}
+			{foreach:items=$this->QB->find()}
+			<tr>
+				<td><input class="tiny" id="sort{$item['id']}" type="text" onblur="toSort({$item['id']});" value="{$item['sort']}" pattern='int' /></td>
+				<td>{$item['name']}</td>
+				<td>{$list[$item['goods_id']]}</td>
+				<td>
+				{if:$item['status']=='1'}<span class="green">固定搭配</span>{elseif:$item['status']=='2'}<span class="brown">自由搭配</span>{else:}<span class="red">已删除</span>{/if}
+				</td>
+				<td><a href="{url:/goods/combine_edit/cid/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="修改" /></a>{if:$item['status']!='3'}<a href="javascript:void(0)" onclick="delModel({link:'{url:/goods/combine_del/cid/$item[id]}'})"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" /></a>{/if}</td>
+			</tr>
+			{/foreach}
+            {/if}
+		</tbody>
+	</table>
+	{$this->QB->getPageBar()}
+</div>
+
+<script language="javascript">
+//排序
+function toSort(id)
+{
+	if(id!='')
+	{
+		var va = $('#sort'+id).val();
+		var part = /^\d+$/i;
+		if(va!='' && va!=undefined && part.test(va))
+		{
+			$.get("{url:/goods/combine_sort}",{'id':id,'sort':va}, function(data)
+			{
+				if(data=='1')
+				{
+					alert('修改组合排序成功!');
+				}else
+				{
+					alert('修改组合排序错误!');
+				}
+			});
+		}
+	}
+}
+
+</script>
