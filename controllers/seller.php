@@ -1760,8 +1760,8 @@ class Seller extends IController
                 $user_group_str = ','.$user_group_str.',';
             }
         }                         
-        $gId = $award_type == 6 ? array() : IReq::get('goods_id');  
-        if(IReq::get('select_all') || (empty($gId) && $award_type <> 6))
+        $gId = IReq::get('goods_id');  
+        if(IReq::get('select_all') || empty($gId))
         {
             $goods = new IModel('goods');
             $list = $goods->query('(is_del=0 or is_del=4) and seller_id='.$this->seller['seller_id'], 'id');     

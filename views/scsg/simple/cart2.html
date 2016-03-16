@@ -152,7 +152,7 @@ function get_delivery()
                     url:"{url:/block/order_delivery_count}",
                     
                     success:function(content)
-                    {                          
+                    {                         
                         //地区无法送达
                         if(content.if_delivery == 1)
                         {
@@ -164,9 +164,13 @@ function get_delivery()
                             if(!content.isFreeFreight)
                             {
                                 $('.js_data_6').hide();
+                                orderFormInstance.deliveryPrice += parseFloat(content.price);
                             }
-                            orderFormInstance.deliveryPrice += parseFloat(content.price);
-                            orderFormInstance.freeFreight = content.isFreeFreight;
+                            else
+                            {
+                                $('.js_data_6').show();
+                            }
+                            //orderFormInstance.freeFreight = content.isFreeFreight;
                             price += (content.price);
                             var html = parseFloat(content.price).toFixed(2);
                             //允许保价

@@ -173,11 +173,43 @@ class Block extends IController
 			{
 				$data[$item['id']] = Delivery::getDelivery($area,$item['id'],$goodsId,$productId,$num);
 			}
-		}                    
+		}
+        if($productId)
+        {
+            $model = new IModel('products');
+            $sell_price = $model->getField('id='.$productId, 'sell_price');
+            $goodsList[$goodsId]['sum'] = $sell_price * $num;
+            
+            $countSumObj = new CountSum($this->user['user_id']);
+            $groupPrice  = $countSumObj->getGroupPrice($productId,'product');
+            if($groupPrice){
+                $minPrice = $groupPrice;
+            }else{
+                $minPrice = $sell_price;
+            }
+            $minPrice = min($minPrice,$sell_price);
+            $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+        }
+        if($goodsId)
+        {
+            $model = new IModel('goods');
+            $sell_price = $model->getField('id='.$goodsId, 'sell_price');
+            $goodsList[$goodsId]['sum'] = $sell_price * $num;
+            
+            $countSumObj = new CountSum($this->user['user_id']);
+            $groupPrice  = $countSumObj->getGroupPrice($goodsId,'goods');
+            if($groupPrice){
+                $minPrice = $groupPrice;
+            }else{
+                $minPrice = $sell_price;
+            }
+            $minPrice = min($minPrice,$sell_price);
+            $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+        }                    
         $group_id     = $this->group_id;
         $proObj = new ProRule($final_sum);
         $proObj->setUserGroup($group_id);
-        $data['isFreeFreight'] = $proObj->isFreeFreight($area);
+        $data['isFreeFreight'] = $proObj->isFreeFreight($area, $goodsList);
     	echo JSON::encode($data);
     }
     /**
@@ -208,11 +240,43 @@ class Block extends IController
            $deliveryId = IFilter::act(IReq::get("deliveryId"),'int');//配送方式
            $num = IFilter::act(IReq::get('num'),'int');
            $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);
+           if($productId)
+            {
+                $model = new IModel('products');
+                $sell_price = $model->getField('id='.$productId, 'sell_price');
+                $goodsList[$goodsId]['sum'] = $sell_price * $num;
+                
+                $countSumObj = new CountSum($this->user['user_id']);
+                $groupPrice  = $countSumObj->getGroupPrice($productId,'product');
+                if($groupPrice){
+                    $minPrice = $groupPrice;
+                }else{
+                    $minPrice = $sell_price;
+                }
+                $minPrice = min($minPrice,$sell_price);
+                $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+            }
+            if($goodsId)
+            {
+                $model = new IModel('goods');
+                $sell_price = $model->getField('id='.$goodsId, 'sell_price');
+                $goodsList[$goodsId]['sum'] = $sell_price * $num;
+                
+                $countSumObj = new CountSum($this->user['user_id']);
+                $groupPrice  = $countSumObj->getGroupPrice($goodsId,'goods');
+                if($groupPrice){
+                    $minPrice = $groupPrice;
+                }else{
+                    $minPrice = $sell_price;
+                }
+                $minPrice = min($minPrice,$sell_price);
+                $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+            } 
            $final_sum = IReq::get('final_sum') ? IReq::get('final_sum') : 0;
            $group_id     = $this->group_id;
            $proObj = new ProRule($final_sum);
            $proObj->setUserGroup($group_id);
-           $data['isFreeFreight'] = $proObj->isFreeFreight($area);                 
+           $data['isFreeFreight'] = $proObj->isFreeFreight($area, $goodsList);                 
            echo JSON::encode($data);
        }
        

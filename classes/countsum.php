@@ -293,7 +293,7 @@ class CountSum
     	{
 	    	$proObj = new ProRule($final_sum);
 	    	$proObj->setUserGroup($group_id);
-	    	$this->isFreeFreight = $proObj->isFreeFreight(null);
+	    	$this->isFreeFreight = $proObj->isFreeFreight(null,$goodsIdList);
 	    	$this->promotion = $proObj->getInfo($goodsIdList);
 	    	$this->proReduce = $final_sum - $proObj->getSum($goodsIdList);
     	}

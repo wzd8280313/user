@@ -1,5 +1,5 @@
 {set:$data=$this->data_info}
-{set:$type=$this->deli_type}
+{set:$type=$this->data_info['deli_type']} 
 {js:artTemplate}
 <script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 <div class="headbar">
@@ -164,12 +164,11 @@
 $(function()
 {
     //设置计费方式
-    var id = {$type};
+    var id = {$type};     
     $('#js_set_'+id).show();
     $('#js_set_'+id).find('input').removeAttr('disabled');
     $('#js_set_'+id).siblings('.js_set').hide();
     $('#js_set_'+id).siblings('.js_set').find('input').attr('disabled', 'disabled');
-    
     $('input[name=deli_type]').each(function(){
         $(this).click(function(){
             var _id = $(this).val();
@@ -231,6 +230,17 @@ $(function()
 	//初始化地域联动
 	template.compile("areaTemplate",areaTemplate);
 	createAreaSelect('province',0,'');
+    
+    if(id == 2)
+    {
+        $('.js_desc_text_1').html('首数费用');
+        $('.js_desc_text_2').html('增加费用');
+    }
+    else
+    {
+        $('.js_desc_text_1').html('首重费用');
+        $('.js_desc_text_2').html('续重费用');
+    }
 });
 /**
  * 生成地域js联动下拉框

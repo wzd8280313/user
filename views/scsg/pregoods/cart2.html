@@ -154,7 +154,16 @@ function get_delivery()
                         }
                         else
                         {
-                            orderFormInstance.deliveryPrice += parseFloat(content.price);
+                            if(!content.isFreeFreight)
+                            {
+                                $('.js_data_6').hide();
+                                orderFormInstance.deliveryPrice += parseFloat(content.price);
+                            }
+                            else
+                            {
+                                $('.js_data_6').show();
+                            }
+                            //orderFormInstance.deliveryPrice += parseFloat(content.price);
                             price += (content.price);
                             var html = parseFloat(content.price).toFixed(2);
                             //允许保价

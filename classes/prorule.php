@@ -181,14 +181,14 @@ class ProRule
 			break;
 		}
 	}
-
+         
 	/**
 	 * @brief 是否减免订单的运费
 	 * @return bool true:减免; false:不减免
 	 */
-	public function isFreeFreight($area)
+	public function isFreeFreight($area = null, $goodsList = array())
 	{
-		$proList = $this->satisfyPromotion(6, array(), $area);
+		$proList = $this->satisfyPromotion(6, $goodsList, $area);
 		if(!empty($proList))
 		{
 			return true;
@@ -204,11 +204,13 @@ class ProRule
 	 * @param int $award_type 奖励类别 1减金额 2奖励折扣 3赠送积分 4赠送代金券 5赠送赠品 6免运费 7赠送经验
 	 * @return array 促销规则信息
 	 */
-	private function satisfyPromotion($award_type = null, $goodsIdList = array(), $area = null)
+	private function satisfyPromotion($award_type = null, $goodsIdList = array(), $area = null, $sum = null)
 	{
+        $final_sum = $sum ? $sum : $this->sum;
+        
 		$datetime = ITime::getDateTime();
 		$proObj   = new IModel('promotion');
-		$where    = '`condition` between 0 and '.$this->sum.' and type = 0 and is_close = 0 and start_time <= "'.$datetime.'" and end_time >= "'.$datetime.'"';
+		$where    = '`condition` between 0 and '.$final_sum.' and type = 0 and is_close = 0 and start_time <= "'.$datetime.'" and end_time >= "'.$datetime.'"';
 		//奖励类别分析
 		if($award_type != null)
 		{
@@ -225,7 +227,8 @@ class ProRule
 			$where.=' and user_group = "all" ';
 		}
 		$proList = $proObj->query($where,'*','`condition`');
-        if($goodsIdList)
+        
+        if(!$sum)
         {
             $proListTemp = $proList;
             $temp = array_keys($goodsIdList);
@@ -235,7 +238,7 @@ class ProRule
                 {
                     $gId = explode(',', $v['goods_id']);
                     $common = array_intersect($temp, $gId);
-                    if($common)
+                    if($common && count($temp) > count($common))
                     {
                         $sumNum = 0;
                         $reduceNum = 0;
@@ -244,18 +247,19 @@ class ProRule
                             $sumNum += $goodsIdList[$val]['sum'];
                             $reduceNum += $goodsIdList[$val]['reduce'];
                         }
-                        $this->sum = $sumNum - $reduceNum;
+                        self::satisfyPromotion($award_type, $goodsIdList, $area, $sumNum - $reduceNum);
                     }
-                    else
+                    elseif(empty($common))
                     {
                         unset($proList[$k]);
                     }
                 }
             }
-        }
+        }                
         if($area)
         {
             $proListTemp = $proList;
+            $temp = array_keys($goodsIdList); 
             foreach($proListTemp as $k => $v)
             {
                 if($v['area_groupid'])
@@ -268,9 +272,9 @@ class ProRule
                             unset($proList[$k]);
                         }
                     }
-                }
+                }  
             }
-        }
+        }                    
 		return $proList;
 	}
 	/**

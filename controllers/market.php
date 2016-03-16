@@ -484,9 +484,9 @@ class Market extends IController
 				$user_group_str = ','.$user_group_str.',';
 			}
 		}                         
-        $gId = $award_type == 6 ? array() : IReq::get('goods_id');               
+        $gId = IReq::get('goods_id');               
         //$gId = $award_type == 5 ? array() : '';
-        if(IReq::get('select_all') || (empty($gId) && $award_type <> 6))
+        if(IReq::get('select_all') || empty($gId))
         {
             $goods = new IModel('goods');
             $gId = $goods->getFields(array('is_del'=>0,'seller_id'=>0), 'id');          

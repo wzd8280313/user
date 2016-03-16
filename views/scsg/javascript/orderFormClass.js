@@ -57,10 +57,10 @@ function orderFormClass()
 		this.ticketPrice = $('input:radio[name="ticket_id"]:checked').length > 0 ? $('input:radio[name="ticket_id"]:checked').attr('alt') : 0;
 		//最终金额
 		this.orderAmount = parseFloat(this.goodsSum) - parseFloat(this.ticketPrice) + parseFloat(this.paymentPrice) + parseFloat(this.taxPrice) + parseFloat(this.protectPrice);
-        if(!this.freeFreight)
-        {
+        /*if(!this.freeFreight)
+        {*/
             this.orderAmount += parseFloat(this.deliveryPrice);
-        }
+        /*}*/
 		this.orderAmount = this.orderAmount <=0 ? 0 : this.orderAmount.toFixed(2);         
 		//刷新DOM数据
 		$('#final_sum').text(this.orderAmount);

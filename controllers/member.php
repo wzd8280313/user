@@ -913,6 +913,7 @@ class Member extends IController
         if(IReq::get('is_lock'))
         {
             $search['is_lock'] = IReq::get('is_lock');
+            $this->is_lock = $search['is_lock'];
         }                                
 		if(is_array($search)){
 			foreach($search as $k=>$v){
@@ -925,8 +926,7 @@ class Member extends IController
 			$search = IFilter::act($search,'strict');
 			$keywords = IFilter::act(IReq::get('keywords'));
 			$this->where    = ($search && $keywords) ? $search.' = "'.$keywords.'"' : 1;
-		}
-        $this->is_lock = $search['is_lock'];
+		}                                   
 		$this->redirect('seller_list');
 	}
 
