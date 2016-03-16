@@ -55,7 +55,7 @@ class Simple extends IController
 		if(!$phone)$res['errorCode']==15;
 		if($res['errorCode']==0){
 			$text = rand(100000,999999);
-			ISafe::set('mobileValidateReg',array('phone'=>$phone,'num'=>$text,'time'=>time()));
+			ISafe::set('mobileValidateReg',array('phone'=>$phone,'num'=>$text,'time'=>time(),'ip'=>Iclient::getIp()));
 			$text = smsTemplate::checkCode(array('{mobile_code}'=>$text));
 			if(!hsms::send($phone,$text))
 				$res['errorCode']=-1;
