@@ -55,7 +55,7 @@ class Simple extends IController
 		if(!$phone)$res['errorCode']==15;
 		if($res['errorCode']==0){
 			$text = rand(100000,999999);
-			ISafe::set('mobileValidateReg',array('num'=>$text,'time'=>time()));
+			ISafe::set('mobileValidateReg',array('phone'=>$phone,'num'=>$text,'time'=>time()));
 			$text = smsTemplate::checkCode(array('{mobile_code}'=>$text));
 			if(!hsms::send($phone,$text))
 				$res['errorCode']=-1;
@@ -64,12 +64,19 @@ class Simple extends IController
 		
 		
 	}
-	//验证手机验证码
-	function checkMobileValidateCode($num){
+	//
+	/**
+	 *
+	 * 验证手机验证码
+	 * @param $phone
+	 * @param $num
+	 * @return int
+	 */
+	function checkMobileValidateCode($phone,$num){
 		if($mobileValidateSess = Isafe::get('mobileValidateReg')){
 			if(time() - $mobileValidateSess['time']>=1800){//session过期
 				return 41;
-			}else if($mobileValidateSess['num']!=$num){
+			}else if($mobileValidateSess['num']!=$num || $mobileValidateSess['phone']!=$phone){
 				return 2;//错误
 			}else return 0;//正确
 		}
@@ -100,7 +107,7 @@ class Simple extends IController
 	   		$data['errorCode']=4;
 	  	}
        	if($data['errorCode']==0){
-       		$data['errorCode'] = self::checkMobileValidateCode($validPhoneCode);
+       		$data['errorCode'] = self::checkMobileValidateCode($phone,$validPhoneCode);
        	}
 	  	
     	if($data['errorCode']==0 ){
