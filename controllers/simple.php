@@ -49,7 +49,7 @@ class Simple extends IController
     //设置手机验证码
 	function getMobileValidateCode(){
 		
-		$phone = IFilter::act(IReq::get('phone'));
+		$phone = IFilter::act(IReq::get('phone','post'));
 		$res = array('errorCode'=>0);
 		if($phone=='')$res['errorCode']==1;
 		if(!$phone)$res['errorCode']==15;
