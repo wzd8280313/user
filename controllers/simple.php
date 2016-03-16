@@ -57,10 +57,10 @@ class Simple extends IController
 		$res = array('errorCode'=>0);
 		$safeCode = ISafe::get(md5(IClient::getIp()));
 		if($safeCode==null || $safeCode!= $code){
-			$res['errorCode']==13;
+			$res['errorCode']=13;
 		}
-		if($phone=='')$res['errorCode']==1;
-		if(!$phone)$res['errorCode']==15;
+		if($phone=='')$res['errorCode']=1;
+		if(!$phone)$res['errorCode']=15;
 		if($res['errorCode']==0){
 			$text = rand(100000,999999);
 			ISafe::set('mobileValidateReg',array('phone'=>$phone,'num'=>$text,'time'=>time(),'ip'=>Iclient::getIp()));
