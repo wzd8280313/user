@@ -36,6 +36,9 @@ class Simple extends IController
 	}
 	
 	function reg(){
+		$ip = IClient::getIp();
+		ISafe::set(md5($ip),sha1(rand(1,999999)));
+		$this->safe_code = ISafe::get(md5($ip));
 		$this->layout = 'site_reg';
 		$this->redirect('reg');
 	}
@@ -50,7 +53,12 @@ class Simple extends IController
 	function getMobileValidateCode(){
 		
 		$phone = IFilter::act(IReq::get('phone','post'));
+		$code  = IFilter::act(IReq::get('check_code','post'));
 		$res = array('errorCode'=>0);
+		$safeCode = ISafe::get(md5(IClient::getIp()));
+		if($safeCode==null || $safeCode!= $code){
+			$res['errorCode']==13;
+		}
 		if($phone=='')$res['errorCode']==1;
 		if(!$phone)$res['errorCode']==15;
 		if($res['errorCode']==0){

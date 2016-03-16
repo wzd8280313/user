@@ -37,12 +37,13 @@ function showPhoneTipWhenBlur(){
     }
 	$(".receive_code").addClass('reacquire_code');
 	var phone = $('#mobile').val();
+     var checkCode = $('input[name=check_code]').val();
     $.ajax({
         type: "POST",
         url: getMobileCodeUrl,
 		dataType:'json',
         async: false,
-		data : {phone:phone},
+		data : {phone:phone,check_code:checkCode},
         success: function(a) {
             if (a) {
                 if (0 == a.errorCode) {

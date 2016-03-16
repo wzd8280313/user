@@ -3992,7 +3992,8 @@ var jsRegistFed = {
 			dataType:'json',
             async: true,
             data: {
-                phone: encrypt.encrypt($("#phone").val())
+                phone: encrypt.encrypt($("#phone").val()),
+                check_code : $('input[name=check_code').val(),
               //  validCode: $("#validCodeMobile").val(),
                // sig: $("#validateSig").val()
             },
@@ -4016,6 +4017,11 @@ var jsRegistFed = {
                             d.css("background", "")
                         }
                     } else {
+                        if(c.errorCode==13){
+                            showPhoneError("请刷新页面重新获取");
+                            return false;
+                        }
+
                         if (c.errorCode == 15) {
                             showPhoneError("格式错误，请输入正确的手机号码")
                         } else {
@@ -5234,6 +5240,7 @@ function bindEvent() {
                 Captcha.sendMobileCaptchaWithParam(getMobileCodeUrl, {
                     //validCode: $(".email_register_form .img_code .ipt_code").val(),
                   //  sig: $("#emailValidateSig").val(),
+                        check_code : $('input[name=check_code').val(),
                     phone: encrypt.encrypt($(".phone_num").val())
                 },
                 on_send_mobile_captcha_success, on_send_mobile_captcha_fail)

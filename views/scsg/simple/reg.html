@@ -114,7 +114,7 @@
 	                <ul class="clearfix">
 	                    <li>
 	                        <div class="form_item">
-	                            <label>邮箱：</label>
+	                            <label>邮箱：</label><input type="hidden" name="check_code" value="{$this->safe_code}" />
 	                            <input type="text" class="ipt gay_text ipt_username" value="请输入邮箱地址" id="email" name="user.email" autocomplete="off" maxlength="100" onkeyup="showoff(&#39;email_desc&#39;);" onblur="checkEmailOnBlur();" onfocus="hideOtherTips(&#39;email&#39;)" ;="">
 	                        </div>
 	                        <div class="tips_box regist_tips" id="email_tip">
