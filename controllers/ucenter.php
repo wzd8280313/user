@@ -1510,7 +1510,7 @@ class Ucenter extends IController
     function chgPhone()
     {
     	$user_id = $this->user['user_id'];
-    
+
     	$userObj       = new IModel('user');
     	$where         = 'id = '.$user_id;
     	$this->data = array('user_phone'=>$userObj->getField($where,'phone'));
@@ -1523,6 +1523,7 @@ class Ucenter extends IController
      * 获取手机验证码
      */
     public function getMobileCode(){
+
     	$phone = IFilter::act(IReq::get('phone'));
     	if(!IValidate::phone($phone)){
     		$res['errorCode']==1;
@@ -1533,7 +1534,15 @@ class Ucenter extends IController
 		$res = array('errorCode'=>0);
 		
 		$code = rand(100000,999999);
-		ISafe::set('mobileValidate',array('code'=>$code,'phone'=>$phone,'time'=>time()));
+		$sess_arr = array(
+			'code'=>$code,
+			'phone'=>$phone,
+			'time'=>time(),
+			'user_phone'=>$this->user['phone'],
+			'user_id'=>$this->user['id'],
+			'user_username'=>$this->user['username']
+		);
+		ISafe::set('mobileValidate',array($sess_arr));
 		$text = smsTemplate::checkCode(array('{mobile_code}'=>$code)); 
 		if(!hsms::send($phone,$text)){
 			$res['errorCode']=-1;
