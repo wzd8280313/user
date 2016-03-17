@@ -1523,33 +1523,45 @@ class Ucenter extends IController
      * 获取手机验证码
      */
     public function getMobileCode(){
+		if(IS_AJAX){
+			$phone = IFilter::act(IReq::get('phone','post'));
+			$check_code  = IFilter::act(IReq::get('check_code','post'));
+			$res = array('errorCode'=>0);
+			if(!IValidate::phone($phone)){
+				$res= array();
+				$res['errorCode']==1;
+				$res['mess']='手机号码填写错误';
+				echo JSON::encode($res);
+				exit();
+			}
+			$checkRes = ISafe::checkSafeCode($check_code);
+			if(isset($checkRes['succ']) && $checkRes['succ']==0){
+				$res['errorCode']=13;
+				$res['mess']='获取验证码错误，请重新获取';
+			}
+			$res['check_code'] = $checkRes['new'];
+			if($res['errorCode']==0){
+				$code = rand(100000,999999);
+				$sess_arr = array(
+					'code'=>$code,
+					'phone'=>$phone,
+					'time'=>time(),
+					'user_phone'=>$this->user['phone'],
+					'user_id'=>$this->user['id'],
+					'user_username'=>$this->user['username']
+				);
+				ISafe::set('mobileValidate',array($sess_arr));
+				$text = smsTemplate::checkCode(array('{mobile_code}'=>$code));
+				if(!hsms::send($phone,$text)){
+					$res['errorCode']=-1;
+					$res['mess']='系统繁忙，请稍候再试';
+				}
+			}
 
-    	$phone = IFilter::act(IReq::get('phone'));
-    	if(!IValidate::phone($phone)){
-    		$res['errorCode']==1;
-    		$res['mess']='手机号码填写错误';
-    		echo JSON::encode($res);
-    		exit();
-    	}
-		$res = array('errorCode'=>0);
-		
-		$code = rand(100000,999999);
-		$sess_arr = array(
-			'code'=>$code,
-			'phone'=>$phone,
-			'time'=>time(),
-			'user_phone'=>$this->user['phone'],
-			'user_id'=>$this->user['id'],
-			'user_username'=>$this->user['username']
-		);
-		ISafe::set('mobileValidate',array($sess_arr));
-		$text = smsTemplate::checkCode(array('{mobile_code}'=>$code)); 
-		if(!hsms::send($phone,$text)){
-			$res['errorCode']=-1;
-			$res['mess']='系统繁忙，请稍候再试';
+
+			echo JSON::encode($res);
 		}
-		
-		echo JSON::encode($res);
+
     }
     
     
@@ -1600,12 +1612,18 @@ class Ucenter extends IController
     		return false;
     	}
     }
+
+	public function toChgPhone1(){
+		$this->safeCode = ISafe::getSafeCode();
+		$this->redirect('toChgPhone1');
+	}
     /**
      * 修改手机号第二步
      */
     public function toChgPhone2(){
     	$firstCheck = $this->checkFirstStep();
     	if($firstCheck){
+			$this->safeCode = ISafe::getSafeCode();
     		$this->redirect('toChgPhone2');
     	}else{
     		$this->redirect('toChgPhone1');
