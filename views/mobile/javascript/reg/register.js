@@ -29,10 +29,14 @@ function showPhoneTipWhenBlur(){
 		})
     }
 }
+function resetCheckCode(code){
+    $('input[name=check_code]').val(code);
+}
+
  function receiveCode(){
 
     if ($(".receive_code").hasClass("reacquire_code")) {
-        return false
+        return false;
 
     }
 	$(".receive_code").addClass('reacquire_code');
@@ -45,6 +49,7 @@ function showPhoneTipWhenBlur(){
         async: false,
 		data : {phone:phone,check_code:checkCode},
         success: function(a) {
+            resetCheckCode(a.check_code);
             if (a) {
                 if (0 == a.errorCode) {
                     var d = $(".receive_code");
@@ -67,7 +72,12 @@ function showPhoneTipWhenBlur(){
                     if (-1 == a.errorCode) {
                         showErrInfo('网络繁忙，请稍候再试');
                         return
-                    } else {
+                    }
+                    else if(a.errorCode == 13){
+                        showErrInfo('请重新获取验证码');
+                        return
+                    }
+                    else {
                         showErrInfo('手机号码格式不正确');
                         return
                     }

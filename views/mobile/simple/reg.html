@@ -57,7 +57,7 @@ var getMobileCodeUrl = '{url:/simple/getMobileValidateCode}';
 
     <form id="register-form" class="reg-form" method="post" novalidate>
 		<div class="reg-error-box" id='errorInfo'></div>
-        <input name="check_code" type="hidden" value="{$this->safe_code}" />
+        <input name="check_code" type="hidden" value="{$this->safeCode}" />
         <div class="field username">
             <div class="field-relative">
                 <input id="mobile" class="reg-input icon-reg icon-reg-phone" type="text" name="mobile" onblur='showPhoneTipWhenBlur()' onfocus='hideErrInfo()' placeholder="请输入手机号" value="" autocomplete="off">

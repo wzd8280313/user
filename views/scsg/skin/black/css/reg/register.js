@@ -3986,6 +3986,7 @@ var jsRegistFed = {
     getMobileRecvCode: function(b) {
         phone_phone_code = true;
         var a = false;
+        var code = $('input[name=check_code]').val();
         $.ajax({
             type: "POST",
             url: getMobileCodeUrl,
@@ -3993,11 +3994,12 @@ var jsRegistFed = {
             async: true,
             data: {
                 phone: encrypt.encrypt($("#phone").val()),
-                check_code : $('input[name=check_code').val(),
+                check_code : code,
               //  validCode: $("#validCodeMobile").val(),
                // sig: $("#validateSig").val()
             },
             success: function(c) {
+                resetCheckCode(c.check_code);
                 if (c.errorCode == 1) {
                     showPhoneError("不能为空")
 
@@ -5240,7 +5242,7 @@ function bindEvent() {
                 Captcha.sendMobileCaptchaWithParam(getMobileCodeUrl, {
                     //validCode: $(".email_register_form .img_code .ipt_code").val(),
                   //  sig: $("#emailValidateSig").val(),
-                        check_code : $('input[name=check_code').val(),
+                        check_code : $('input[name=check_code]').val(),
                     phone: encrypt.encrypt($(".phone_num").val())
                 },
                 on_send_mobile_captcha_success, on_send_mobile_captcha_fail)
@@ -5311,6 +5313,7 @@ Captcha = {
             data: g,
             async: false,
             success: function(b) {
+                resetCheckCode(b.check_code);
                 if (b) {
                     if (b.errorCode != 0) {
                         var a = b.errorCode;
@@ -5617,6 +5620,9 @@ function showEmailError(b) {
 function showPhoneError(b) {
     jQuery("#phone_tip").hide();
     showErrorInfo("phone_error", b)
+}
+function resetCheckCode(code){
+    $('input[name=check_code]').val(code);
 }
 function checkCodeOnBlur(c) {
     var d = jQuery("#" + c).val();

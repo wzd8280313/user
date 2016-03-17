@@ -36,9 +36,9 @@ class Simple extends IController
 	}
 	
 	function reg(){
-		$ip = IClient::getIp();
-		ISafe::set(md5($ip),sha1(rand(1,999999)));
-		$this->safe_code = ISafe::get(md5($ip));
+
+		$this->safeCode = ISafe::getSafeCode();
+
 		$this->layout = 'site_reg';
 		$this->redirect('reg');
 	}
@@ -49,26 +49,31 @@ class Simple extends IController
     	ISafe::clearAll();
     	$this->redirect('login');
     }
+
     //设置手机验证码
 	function getMobileValidateCode(){
-		
-		$phone = IFilter::act(IReq::get('phone','post'));
-		$code  = IFilter::act(IReq::get('check_code','post'));
-		$res = array('errorCode'=>0);
-		$safeCode = ISafe::get(md5(IClient::getIp()));
-		if($safeCode==null || $safeCode!= $code){
-			$res['errorCode']=13;
+
+		if(IS_AJAX){
+			$phone = IFilter::act(IReq::get('phone','post'));
+			$code  = IFilter::act(IReq::get('check_code','post'));
+			$res = array('errorCode'=>0);
+			$checkRes = ISafe::checkSafeCode($code);
+			if(isset($checkRes['succ']) && $checkRes['succ']==0){
+				$res['errorCode']=13;
+			}
+			$res['check_code'] = $checkRes['new'];
+			if($phone=='')$res['errorCode']=1;
+			if(!$phone)$res['errorCode']=15;
+			if($res['errorCode']==0){
+				$text = rand(100000,999999);
+				ISafe::set('mobileValidateReg',array('phone'=>$phone,'num'=>$text,'time'=>time(),'ip'=>Iclient::getIp()));
+				$text = smsTemplate::checkCode(array('{mobile_code}'=>$text));
+				if(!hsms::send($phone,$text))
+					$res['errorCode']=-1;
+			}
+			echo JSON::encode($res);
 		}
-		if($phone=='')$res['errorCode']=1;
-		if(!$phone)$res['errorCode']=15;
-		if($res['errorCode']==0){
-			$text = rand(100000,999999);
-			ISafe::set('mobileValidateReg',array('phone'=>$phone,'num'=>$text,'time'=>time(),'ip'=>Iclient::getIp()));
-			$text = smsTemplate::checkCode(array('{mobile_code}'=>$text));
-			if(!hsms::send($phone,$text))
-				$res['errorCode']=-1;
-		}
-		echo JSON::encode($res);
+
 		
 		
 	}
