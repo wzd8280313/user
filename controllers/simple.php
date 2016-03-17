@@ -51,7 +51,7 @@ class Simple extends IController
     }
 
     //设置手机验证码
-	function getMobileValidateCode(){
+	function getMobileValidateNum(){
 
 		if(IS_AJAX){
 			$phone = IFilter::act(IReq::get('phone','post'));
