@@ -6,8 +6,8 @@
 <link href="{skin:css/reg/register-2.0.css}" rel="stylesheet" type="text/css">
 <script src="{skin:css/reg/register.js}" type="text/javascript"></script>
 
-	
-  
+
+<input type="hidden" name="check_code" value="{$this->safeCode}" />
 <div class="regist_wrap">
     <div class="mod_regist_wrap">
     	<div class="regist_border clearfix">
@@ -15,7 +15,7 @@
 	        	<input type="hidden" name="activities" value="0" id="activities">
 	        	<input type="hidden" id="lockEmail" name="lockEmail" value="0">
 	        	
-	        	<input id="emailValidateSig" type="hidden" value="tvxzlk6RYdjICwzP5QRWnhe4CaVJIbdpJ8XVHFjpuV5MChP3">
+	        	<input id="emailValidateSig" type="hidden" value="">
 	        	<input id="validateSig" type="hidden">
 	        	
 	        	<input type="hidden" name="returnUrl" value="" id="returnUrl">
@@ -115,7 +115,7 @@
 	                <ul class="clearfix">
 	                    <li>
 	                        <div class="form_item">
-	                            <label>邮箱：</label><input type="hidden" name="check_code" value="{$this->safeCode}" />
+	                            <label>邮箱：</label>
 	                            <input type="text" class="ipt gay_text ipt_username" value="请输入邮箱地址" id="email" name="user.email" autocomplete="off" maxlength="100" onkeyup="showoff(&#39;email_desc&#39;);" onblur="checkEmailOnBlur();" onfocus="hideOtherTips(&#39;email&#39;)" ;="">
 	                        </div>
 	                        <div class="tips_box regist_tips" id="email_tip">

@@ -128,7 +128,14 @@ class ISafe
 		//$ip = IClient::getIp();
 		$ip = IClient::getIp();
 		$ip = $ip == null ? self::id() : $ip;
-		return self::get(md5($ip)) ?self::get(md5($ip)) : self::set(md5($ip),sha1(rand(1,999999)));
+
+		$code = self::get(md5($ip));
+		if($code==null){
+			self::set(md5($ip),sha1(rand(1,999999)));
+			$code = self::get(md5($ip));
+		}
+
+		return $code;
 	}
 
 	public static function setSafeCode(){
