@@ -378,7 +378,7 @@ if($("#actionimg").length>0){
 					{foreach:items=$categoryTop key=$keyT item=$valT}
 					
 					{set:$k=$keyT+1;}
-					<li class="list-item" style='position:static;'>
+					<li class="list-item" style='position:static;' js_data="{$valT['id']}">
 						<h3 class="cat-type-{$k}">
 							<a href="{url:/site/pro_list/cat/$valT[id]}" class='underline-a' target="_blank">{$valT['name']}</a>
 						</h3>
@@ -421,7 +421,7 @@ if($("#actionimg").length>0){
 					</li>
 					{/foreach}
 				
-					<div  id='nav-ad' style="float:right;display:none;">{echo:Ad::show("导航右侧")}</div>
+					<div  id='nav-ad' style="float:right;display:none;"></div>
 				</ul>
 				<!--cat-list-->
 	

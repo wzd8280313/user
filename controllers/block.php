@@ -988,4 +988,10 @@ class Block extends IController
 		$data = $sear->query('word like "'.$word.'%"','word as keyword','goods_nums', 'DESC',10);
 		echo JSON::encode($data);
 	}
+    
+    public function showCatAd()
+    {
+        $id = IReq::get('id') ? IReq::get('id') : 0;         
+        echo JSON::encode(ad::show('导航右侧', $id, 0, true));
+    }
 }

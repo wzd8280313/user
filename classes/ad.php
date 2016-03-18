@@ -72,7 +72,7 @@ class Ad
 	 * @param $goods_cat_id 商品分类ID
 	 * @return string
 	 */
-	public static function show($position,$goods_cat_id = 0,$nav=0)
+	public static function show($position,$goods_cat_id = 0,$nav=0, $json = false)
 	{   
 		$positionObject = array();
 		$adArray        = array();
@@ -115,7 +115,14 @@ class Ad
 			</script>
 OEF;
             
-			echo $htmlOutput;
+			if($json)
+            {
+                return $htmlOutput;
+            }
+            else
+            {
+                echo $htmlOutput;
+            }
 		}
 
 	}

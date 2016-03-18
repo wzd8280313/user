@@ -59,6 +59,17 @@
 						<label>*在选择的广告位置内进行展示（必选）</label>
 					</td>
 				</tr>
+                <tr>
+                    <th>所属分类：</th>
+                    <td>
+                        <select name='goods_cat_id' class='normal'>
+                            <option value=''>请选择</option>
+                            {query:name=category where=parent_id eq 0 fields=id,name order=sort asc}
+                            <option value='{$item['id']}'>{$item['name']}</option>
+                            {/query}
+                        </select>                                          
+                    </td>
+                </tr>
 				<tr>
 					<th>链接地址：</th>
 					<td>
@@ -158,12 +169,5 @@ function defaultShowType()
 //表单回显
 defaultShowType();
 var FromObj = new Form('ad');
-FromObj.init({echo:JSON::encode($this->adRow)});
-
-//商品分类回填
-{if:isset($this->adRow['goods_cat_id'])}
-{set:$categoryId = $this->adRow['goods_cat_id']}
-{query:name=category items=$categoryData where=id in ($categoryId)}{/query}
-createGoodsCategory({echo:JSON::encode($categoryData)});
-{/if}
+FromObj.init({echo:JSON::encode($this->adRow)});   
 </script>

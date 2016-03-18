@@ -83,6 +83,14 @@ $(function()
 	$("#jCat .list-item").hover(function(){
 	    $(this).addClass("cat-hover");
 	  	$(this).children(".cat-pop").show().append($('#nav-ad').clone().css('display','block'));
+        var _id = $(this).attr('js_data')
+            ,url = '{url:/block/showCatAd/id/@id@}';
+        url = url.replace("@id@",_id);
+        $.getJSON(url,function(data)
+        {
+            $('#nav-ad').empty();
+            $('#nav-ad').append(data);
+        });
 	  },function(){
 		 $(this).removeClass("cat-hover");
 		 $(this).children(".cat-pop").hide().find('#nav-ad').remove();
