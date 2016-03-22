@@ -557,7 +557,7 @@ dl.sorting{ position:relative;border-bottom:1px solid #e5e5e5;padding:5px 60px 3
 	.comment_list .item .b{height:2px;background-position:0 -29px}
 	.comment_list .item .reply{margin:3px 0 0;padding:5px 14px;text-align:left;background:#f7f7f7}
 	.fl_tpiu{float: left;}
-	.comment_list .item p{padding:0 5px;line-height:20px}
+	.comment_list .item p{padding:3px;line-height:20px;clear: both}
 	.zhuipng{ margin-top: 10px;}
 	.comment_list .item span.light_gray{margin-left:10px}
 /* comment_list item style end */
