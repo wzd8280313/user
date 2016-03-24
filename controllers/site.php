@@ -440,6 +440,28 @@ class Site extends IController
         unset($tuanData);
         $goods_info['goods_id'] = $goods_id;
         $goods_info['product_id']=$product_id;
+        
+        //组合销售
+        $combine = new IModel('combine_goods');
+        $combineList = $combine->query('goods_id = '.$goods_id.' and status <> 3', '*', 'sort', 'asc');
+        foreach($combineList as $k => $v)
+        {
+            if(!$v['combine'])
+            {
+                unset($combineList[$k]);
+                continue;
+            }
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
+            if($goodsList)
+            {
+                $combineList[$k]['goodsList'] = $goodsList;
+            }
+            else
+            {
+                unset($combineList[$k]);
+            }   
+        }                       
+        $this->combineList = $combineList;
         $this->setRenderData($goods_info);
         $this->redirect('tuan_product');
         
@@ -979,6 +1001,28 @@ class Site extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
+        
+        //组合销售
+        $combine = new IModel('combine_goods');
+        $combineList = $combine->query('goods_id = '.$goods_id.' and status <> 3', '*', 'sort', 'asc');
+        foreach($combineList as $k => $v)
+        {
+            if(!$v['combine'])
+            {
+                unset($combineList[$k]);
+                continue;
+            }
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
+            if($goodsList)
+            {
+                $combineList[$k]['goodsList'] = $goodsList;
+            }
+            else
+            {
+                unset($combineList[$k]);
+            }   
+        }                        
+        $this->combineList = $combineList;
 	//	print_r($goods_info);
 	//	print_r($specArray);
 		$this->setRenderData($goods_info);
