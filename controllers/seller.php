@@ -1746,7 +1746,7 @@ class Seller extends IController
         $promotionObj = new IModel('promotion');
 
         $group_all    = IReq::get('group_all','post');
-        if($group_all == 'all')
+        if($group_all == 'all' || empty($group_all))
         {
             $user_group_str = 'all';
         }
