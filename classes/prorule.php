@@ -104,14 +104,14 @@ class ProRule
 
 		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce, $goodsIdList);
 		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce, $goodsIdList);
-
-		$allInfo  = array_merge($cashInfo,$giftInfo);
-       // var_dump($allInfo);
+		$allInfo  = array_merge($cashInfo,$giftInfo);   
 		foreach($allInfo as $key => $val)
 		{
+            $explain[$key]['id'] = $val['id'];
 			$explain[$key]['type'] = $val['award_type'];
 			$explain[$key]['plan'] = $val['name'];
-			$explain[$key]['info'] = $this->typeExplain($val['award_type'],$val['condition'],$val['award_value']);
+            $explain[$key]['info'] = $this->typeExplain($val['award_type'],$val['condition'],$val['award_value']);
+			$explain[$key]['hide'] = isset($val['hide']) ? $val['hide'] : 0;
 		}
 		return $explain;
 	}
@@ -190,8 +190,15 @@ class ProRule
 	{
 		$proList = $this->satisfyPromotion(6, $goodsList, $area);
 		if(!empty($proList))
-		{
-			return true;
+		{                   
+            foreach($proList as $v)
+            {
+                if(!isset($v['hide']))
+                {
+                    $list[] = $v['id'];
+                }  
+            }
+			return isset($list) ? $list : false;
 		}
 		else
 		{
@@ -225,15 +232,14 @@ class ProRule
 		else
 		{
 			$where.=' and user_group = "all" ';
-		}
-		$proList = $proObj->query($where,'*','`condition`');
-        
+		}                  
+		$proList = $proObj->query($where,'*','`condition`');   
         if(!$sum)
         {
             $proListTemp = $proList;
             $temp = array_keys($goodsIdList);
             foreach($proListTemp as $k => $v)
-            {
+            {                             
                 if($v['goods_id'])
                 {
                     $gId = explode(',', $v['goods_id']);
@@ -251,11 +257,11 @@ class ProRule
                     }
                     elseif(empty($common))
                     {
-                        unset($proList[$k]);
+                        $proList[$k]['hide'] = 1;
                     }
                 }
             }
-        }                
+        }                                                             
         if($area)
         {
             $proListTemp = $proList;
@@ -269,12 +275,12 @@ class ProRule
                     { 
                         if(strpos($val, ';'.$area.';') === false && strpos($val,';'.substr($area,0,2).'0000;') === false)
                         {
-                            unset($proList[$k]);
+                            $proList[$k]['hide'] = 1;
                         }
                     }
                 }  
             }
-        }                    
+        }                                                      
 		return $proList;
 	}
 	/**
@@ -322,24 +328,27 @@ class ProRule
 		$sum = $this->sum;
 		foreach($cashArray as $val)
 		{
-			$award_type  = $val['award_type'];
-			$award_value = $val['award_value'];
+            if(!isset($val['hide']))
+            {
+			    $award_type  = $val['award_type'];
+			    $award_value = $val['award_value'];
 
-			switch($award_type)
-			{
-				//减少总额数
-				case "1":
-				{
-					$sum = $sum - $award_value;
-				}
-				break;
+			    switch($award_type)
+			    {
+				    //减少总额数
+				    case "1":
+				    {
+					    $sum = $sum - $award_value;
+				    }
+				    break;
 
-				//减少百分比
-				case "2":
-				{
-					$sum = $sum - ($sum * ($award_value/100));
-				}
-				break;
+				    //减少百分比
+				    case "2":
+				    {
+					    $sum = $sum - ($sum * ($award_value/100));
+				    }
+				    break;
+                }
 			}
 		}
 		return $sum;

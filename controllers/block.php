@@ -233,7 +233,7 @@ class Block extends IController
     /**
      * 计算运费价格ajax
      */
-       public function order_delivery_count(){
+    public function order_delivery_count(){
            $goodsId = IFilter::act(IReq::get('goodsId'),'int');
            $productId = IFilter::act(IReq::get('productId'),'int');
            $area     = IFilter::act(IReq::get("area"),'int');

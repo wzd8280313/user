@@ -168,7 +168,9 @@ function get_delivery()
                             }
                             else
                             {
-                                $('.js_data_6').show();
+                                for(var i = 0; i < content.isFreeFreight.length; i ++){
+                                    $("#js_data_"+content.isFreeFreight[i]).show();
+                                }
                             }
                             //orderFormInstance.freeFreight = content.isFreeFreight;
                             price += (content.price);
@@ -484,7 +486,7 @@ function selectTakeself(deliveryId)
 					<div class="cart_prompt f14 t_l m_10" {if:empty($this->promotion)}style="display:none"{/if}>
 						<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
 						{foreach:items = $this->promotion}
-						<p class="indent blue js_data_{$item['type']}">{$item['plan']}，{$item['info']}</p>
+						<p class="indent blue js_data_{$item['type']}" id="js_data_{$item['id']}" {if:$item['hide']} style="display:none;" {/if}>{$item['plan']}，{$item['info']}</p>
 						{/foreach}
 					</div>
 						{foreach:items=$this->goodsList item=$value}

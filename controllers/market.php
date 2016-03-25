@@ -102,7 +102,15 @@ class Market extends IController
             'type'     => IFilter::act(IReq::get('type','post'), 'int'),
 			'condition'     => IReq::get('condition','post') ? IFilter::act(IReq::get('condition','post'), 'int') : 0,
 		);
-
+        if(IFilter::act(IReq::get('start_time','post')) >= IFilter::act(IReq::get('end_time','post')))
+        {
+            $ticketObj       = new IModel('ticket');
+            $where           = 'id = '.$id;
+            $this->ticketRow = $ticketObj->getObj($where);
+            $this->redirect('ticket_edit', false);
+            Util::showMessage('请填写正确的时间');         
+            return;
+        }
 		$ticketObj->setData($dataArray);
 		if($id)
 		{

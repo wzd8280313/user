@@ -29,7 +29,7 @@
             <fieldset>
                 <label>允许参与人群：</label>
                 <div class="box">
-                        <label class='attr'><input type='checkbox' name='group_all' value='all' onclick='select_all();' />全部</label>
+                        <label class='attr'><input type='checkbox' name='group_all' value='all' {if:$this->promotionRow['user_group']=='all'} checked=checked {/if} onclick='select_all();' />全部</label>
                         {query:name=user_group}
                         <label class='attr'><input type='checkbox' {if:in_array($item['id'],explode(',',$this->promotionRow['user_group']))}checked=checked{/if} name='user_group[]' value='{$item['id']}' />{$item['group_name']}</label>
                         {/query}
