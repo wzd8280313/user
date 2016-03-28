@@ -1,3 +1,4 @@
+{js:my97date}
 <div class="headbar">
 	<div class="position"><span>会员</span><span>></span><span>会员管理</span><span>></span><span>会员列表</span></div>
 	
@@ -14,6 +15,9 @@
 					<option value="u.email">Email</option>
 				</select>
 				<input class="small" name="keywords" type="text" value="{$keywords}" />
+                
+                开始时间：<input class="small" type="text" name="beginTime" onfocus="WdatePicker()"  value='{$beginTime}'/>
+                截止时间：<input class="small" type="text" name="endTime" onfocus="WdatePicker()" value='{$endTime}'/>
 				<button class="btn" type="submit"><span class="sch">搜 索</span></button>
 			</form>
 		</div>
@@ -26,7 +30,6 @@
 		<a href="{url:/member/bad_member_list}" ><button class="operating_btn" type="button"><span class="delete">恶意会员</span></button></a>
 		
 	</div>
-	
 	<div class="field">
 		<table class="list_table">
 			<colgroup>

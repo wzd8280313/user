@@ -50,14 +50,18 @@
     </div>
 	
 </div>
-
+{query:name=search order=num DESC fields=keyword limit=1}
+{set:$temp=$item['keyword']}
+{/query}
+{set:$ks=IReq::get('word') ? IFilter::act(IReq::get('word'),'text') : ($siteConfig->default_keywords ? $siteConfig->default_keywords : ($temp ? $temp : '输入关键字...'))}
 
 <!-- help-->
 
 <script type="text/javascript">
 $(function()
 {
-		$('input:text[name="word"]').val("输入关键字...");
+    var _k = '{$ks}';
+		$('input:text[name="word"]').val(_k);
 
 	$('input:text[name="word"]').bind({
 		keyup:function(){autoComplete('/site/autoComplete','/search.html?word=@word@','');}
@@ -79,6 +83,14 @@ $(function()
 	$("#jCat .list-item").hover(function(){
 	    $(this).addClass("cat-hover");
 	  	$(this).children(".cat-pop").show().append($('#nav-ad').clone().css('display','block'));
+        var _id = $(this).attr('js_data')
+            ,url = '{url:/block/showCatAd/id/@id@}';
+        url = url.replace("@id@",_id);
+        $.getJSON(url,function(data)
+        {
+            $('#nav-ad').empty();
+            $('#nav-ad').append(data);
+        });
 	  },function(){
 		 $(this).removeClass("cat-hover");
 		 $(this).children(".cat-pop").hide().find('#nav-ad').remove();

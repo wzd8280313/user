@@ -71,9 +71,25 @@ class Order_Class
 		{
 			return false;
 		}
+        if($orderRow['pid'] == 0)
+        {
+            $orderList = $orderObj->query('pid='.$orderRow['id'], 'id,status');
+            foreach($orderList as $v)
+            {
+                 $data = array(
+                    'status'     => ($v['status'] == 5) ? 5 : 2,
+                    'pay_time'   => ITime::getDateTime(),
+                    'pay_status' => 1
+                );
 
+                $orderObj->setData($data);
+                $orderObj->update('id = "'.$v['id'].'"');
+            }
+            
+        }
 		if($orderRow['pay_status'] == 1)
 		{
+            
 			return $orderRow['id'];
 		}
 		else if($orderRow['pay_status'] == 0)
@@ -155,7 +171,7 @@ class Order_Class
 				foreach($orderGoodsList as $key => $val)
 				{
                     $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
-                    if($temp <> 1)
+                    if(($temp <> 1 && $val['is_change'] == 0) || $val['is_change'] == 0)
                     {
                         $orderGoodsListId[] = $val['id'];
                     }
@@ -258,16 +274,12 @@ class Order_Class
 				$productObj->update('id = '.$val['product_id'],'store_nums');
 				
 			}
-		}
-		foreach($goodsList as $key=>$val)
-		{
-			
-			if($val['product_id'] == 0){
-				
-				if(!isset($updateGoodsId[$val['goods_id']]))$updateGoodsId[$val['goods_id']] = 0;
-				$updateGoodsId[$val['goods_id']] += $val['goods_nums'];
-				
-			}
+            else{
+                
+                if(!isset($updateGoodsId[$val['goods_id']]))$updateGoodsId[$val['goods_id']] = 0;
+                $updateGoodsId[$val['goods_id']] += $val['goods_nums'];
+                
+            }
 		}
 		//更新统计goods的库存
 		if($updateGoodsId)
@@ -277,8 +289,12 @@ class Order_Class
 			{
 				if($type=='add'){
 					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` +  '.$val.', sale = sale - '.$val.' where id = '.$key;
+                    $orderGoodsObj->setData(array('is_change'=>0));
+                    $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
 				}else{
 					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` -  '.$val.', sale = sale + '.$val.' where id = '.$key;
+                    $orderGoodsObj->setData(array('is_change'=>1));
+                    $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
 				}
 				$goodsObj->db_query($sql);
 				
@@ -349,7 +365,15 @@ class Order_Class
 
 	 		//获取商品总重量和总金额
 	 		$tb_order_goods = new IModel('order_goods');
-	 		$order_goods_info = $tb_order_goods->query('order_id='.$order_id);
+            if($data['pid'])
+            {                     
+                $order_goods_info = $tb_order_goods->query('order_id='.$data['pid'].' and seller_id = '.$data['seller_id']);
+            }
+            else
+            {
+                $order_goods_info = $tb_order_goods->query('order_id='.$order_id);
+            } 
+            //var_dump($order_goods_info);
 	 		$data['goods_amount'] = 0;
 	 		$data['goods_weight'] = 0;
 
@@ -527,14 +551,21 @@ class Order_Class
 	 * @param $order_id 订单ID
 	 * @param $goodsInfo 商品和货品信息（购物车数据结构,countSum 最终生成的格式）
      * @param $payment  支付方式
+     * @param $seller_id  卖家id
 	 */
-	public function insertOrderGoods($order_id,$goodsResult = array(),$payment)
+	public function insertOrderGoods($order_id,$goodsResult = array(),$payment, $seller_id = null)
 	{
 		$orderGoodsObj = new IModel('order_goods');
 
 		//清理旧的关联数据
-		$orderGoodsObj->del('order_id = '.$order_id);
-
+        if(is_null($seller_id))
+        {
+            $orderGoodsObj->del('order_id = '.$order_id);
+        }
+        else
+		{
+            $orderGoodsObj->del('order_id = '.$order_id.' and seller_id = '.$seller_id);
+        }
 		$goodsArray = array(
 			'order_id' => $order_id
 		);                                 
@@ -543,39 +574,42 @@ class Order_Class
             $orderGoodsListId = array();
             $good = new IModel('goods');
 			foreach($goodsResult['goodsList'] as $key => $val)
-			{ 
-				//拼接商品名称和规格数据
-				$specArray = array('name' => $val['name'],'goodsno' => $val['goods_no'],'value' => '');
+			{
+                if(is_null($seller_id) || (!is_null($seller_id) && $val['seller_id'] == $seller_id))
+                { 
+				    //拼接商品名称和规格数据
+				    $specArray = array('name' => $val['name'],'goodsno' => $val['goods_no'],'value' => '');
 
-				if(isset($val['spec_array']))
-				{
-					$spec = block::show_spec($val['spec_array']);
-					foreach($spec as $skey => $svalue)
-					{
-						$specArray['value'] .= $skey.':'.$svalue.',';
-					}
-					$specArray['value'] = trim($specArray['value'],',');
-				}
+				    if(isset($val['spec_array']))
+				    {
+					    $spec = block::show_spec($val['spec_array']);
+					    foreach($spec as $skey => $svalue)
+					    {
+						    $specArray['value'] .= $skey.':'.$svalue.',';
+					    }
+					    $specArray['value'] = trim($specArray['value'],',');
+				    }
 
-				$goodsArray['product_id']  = $val['product_id'];
-				$goodsArray['goods_id']    = $val['goods_id'];
-				$goodsArray['img']         = $val['img'];
-				$goodsArray['goods_price'] = $val['sell_price'];
-				$goodsArray['real_price']  = $val['sell_price'] - $val['reduce'];
-				$goodsArray['goods_nums']  = $val['count'];
-				$goodsArray['goods_weight']= $val['weight'];
-				$goodsArray['goods_array'] = IFilter::addSlash(JSON::encode($specArray));
-				$goodsArray['delivery_fee']= $val['deliveryPrice'];
-				$goodsArray['save_price']  = $val['insuredPrice'];
-                $goodsArray['tax']         = $val['taxPrice'];
-				$goodsArray['seller_id']   = $val['seller_id'];
-				$orderGoodsObj->setData($goodsArray);
-				$insert_id = $orderGoodsObj->add(true);
-                $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
-                //下单就减少库存或者支付方式为货到付款的时候下单就减少库存
-                if($temp == 1 || $payment == 0)
-                {
-                    $orderGoodsListId[] = $insert_id;
+				    $goodsArray['product_id']  = $val['product_id'];
+				    $goodsArray['goods_id']    = $val['goods_id'];
+				    $goodsArray['img']         = $val['img'];
+				    $goodsArray['goods_price'] = $val['sell_price'];
+				    $goodsArray['real_price']  = $val['sell_price'] - $val['reduce'];
+				    $goodsArray['goods_nums']  = $val['count'];
+				    $goodsArray['goods_weight']= $val['weight'];
+				    $goodsArray['goods_array'] = IFilter::addSlash(JSON::encode($specArray));
+				    $goodsArray['delivery_fee']= $val['deliveryPrice'];
+				    $goodsArray['save_price']  = $val['insuredPrice'];
+                    $goodsArray['tax']         = $val['taxPrice'];
+				    $goodsArray['seller_id']   = $val['seller_id'];
+				    $orderGoodsObj->setData($goodsArray);
+				    $insert_id = $orderGoodsObj->add(true);
+                    $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
+                    //下单就减少库存或者支付方式为货到付款的时候下单就减少库存
+                    if($temp == 1 || $payment == 0)
+                    {
+                        $orderGoodsListId[] = $insert_id;
+                    }
                 }
 			}
             if($orderGoodsListId)
@@ -1182,10 +1216,21 @@ class Order_Class
 					break;
 				}
 			}
-
+            if(isset($search['beginTime']) && $search['beginTime'])
+            {
+                $where .= " and unix_timestamp(o.create_time) >=".strtotime($search['beginTime']);
+            }
+            if(isset($search['endTime']) && $search['endTime'])
+            {
+                $where .= " and unix_timestamp(o.create_time) <=".strtotime($search['endTime']);
+            }
+            if(isset($search['seller_id']) && $search['seller_id'])
+            {
+                $where .= " and o.seller_id ".$search['seller_id'];
+            }                               
 			foreach($search as $key => $val)
 			{
-				if(!in_array($key,array('keywords','name')) && $val!='')
+				if(!in_array($key,array('keywords','name', 'beginTime', 'endTime', 'seller_id')) && $val!='')
 				{
 					$where .= " and o.".$key." = ".$val;
 				}
@@ -1362,17 +1407,19 @@ class Order_Class
 		$refundDB->update('id = '.$refundId);
 		
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
-		
 		$order_goods_id = $orderGoodsRow['id'];
 		
         $good = new IModel('goods');
-        $temp = $good->getField('id = '.$refundsRow['goods_id'], 'store_type');
 
-		//未发货的情况下还原商品库存
-		if($orderGoodsRow['is_send'] == 0 && $temp <> 1)
+		if($orderGoodsRow['is_change'] == 1)
 		{
 			self::updateStore($order_goods_id,'add');
 		}
+        $orderType = $orderDB->getField('id='.$order_id,'type');
+        if($orderType != 0)
+        {
+            Active::refundCallback($order_id,$orderType);
+        }
 		//更新order表状态
 		$isSendData = $orderGoodsDB->getObj('order_id = '.$order_id.' and id != '.$order_goods_id.' and is_send != 2');
 		$orderStatus = 6;//全部退款
@@ -1604,7 +1651,7 @@ class Order_Class
 		$new_order_good['goods_array'] = self::order_goods_spec($resData);
 	
 		$orderGoodsDB->setData($new_order_good);
-		$new_goods_id = $orderGoodsDB->add();
+		$new_goods_id = $orderGoodsDB->add(true);
 		
 		self::updateStore($new_goods_id,'reduce');
 
@@ -1698,8 +1745,12 @@ class Order_Class
 		if($goodsOrderRow['delivery_id'] == 0 )
 		{
 			if(empty($send_data)){
-				$otherFee += $goodsOrderRow['delivery_fee'] + $goodsOrderRow['save_price']  ;
+				$otherFee += $goodsOrderRow['delivery_fee'];
 			}
+            if($orderRow['if_insured'])
+            {
+                $otherFee += $goodsOrderRow['save_price'];
+            }
 			$otherFee += $goodsOrderRow['tax'];
 		}
 		

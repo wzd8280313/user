@@ -94,14 +94,24 @@ class CountSum
 		);
 		$priceInfo = $this->goodsCount($buyInfo);
 		$presell_db = new IModel('presell');
-		$priceInfo['pre_rate']=$presell_db->getField('id='.$active_id.' and TIMESTAMPDIFF(second,yu_end_time,NOW())<=0','money_rate');
+		$temp=$presell_db->getObj('id='.$active_id.' and TIMESTAMPDIFF(second,yu_end_time,NOW())<=0','*');
+        $priceInfo['pre_rate'] = $temp ? $temp['money_rate'] : '';
 		if(!$priceInfo['pre_rate']){
 			return '该预售不存在';
 		}else{
 			$priceInfo['pre_sum'] = $priceInfo['final_sum']* $priceInfo['pre_rate'] /100;
 			$priceInfo['pre_sum'] = $priceInfo['pre_sum'] < 0.01 ? 0.01 : $priceInfo['pre_sum'];
 		}
-		
+        if($temp)
+        {
+            if($temp['wei_type']==1){
+                $priceInfo['wei_text'] = $temp['wei_start_time'].'至'.$temp['wei_end_time'].'支付尾款';
+                
+            }else{
+                $priceInfo['wei_text'] = '预付款支付后'.$temp['wei_days'].'天内支付尾款';
+            }
+        }
+        
 		return $priceInfo;
 		
 		
@@ -126,18 +136,19 @@ class CountSum
     	$this->exp           = 0;       //增加经验
     	$this->isFreeFreight = false;   //是否免运费
         $this->tax           = 0;       //商品税金
+        $this->extend        = 0;       //拆分订单数据
 
 		$user_id      = $this->user_id;
 		$group_id     = $this->group_id;
     	$goodsList    = array();
     	$productList  = array();//
-
+        $order_extend = array();
+        $goodsIdList = array();
 		/*开始计算goods和product的优惠信息 , 会根据条件分析出执行以下哪一种情况:
 		 *(1)查看此商品(货品)是否已经根据不同会员组设定了优惠价格;
 		 *(2)当前用户是否属于某个用户组中的成员，并且此用户组享受折扣率;
 		 *(3)优惠价等于商品(货品)原价;
 		 */
-
 		//获取商品或货品数据
 		/*Goods 拼装商品优惠价的数据*/
     	if(isset($buyInfo['goods']['id']) && $buyInfo['goods']['id'])
@@ -149,6 +160,13 @@ class CountSum
     		//开始优惠情况判断
     		foreach($goodsList as $key => $val)
     		{
+                $order_extend[$val['seller_id']]['sum'] = 0;
+                $order_extend[$val['seller_id']]['weight'] = 0;
+                $order_extend[$val['seller_id']]['point'] = 0;
+                $order_extend[$val['seller_id']]['tax'] = 0;
+                $order_extend[$val['seller_id']]['exp'] = 0;
+                $order_extend[$val['seller_id']]['count'] = 0;
+                $order_extend[$val['seller_id']]['reduce'] = 0;
 //     			//检查库存
 //     			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
 //     			{
@@ -182,6 +200,13 @@ class CountSum
     			$current_reduce_all        = $goodsList[$key]['reduce']     * $goodsList[$key]['count'];
     			$goodsList[$key]['sum']    = $current_sum_all - $current_reduce_all;
 
+                $order_extend[$val['seller_id']]['sum'] += $current_sum_all;
+                $order_extend[$val['seller_id']]['weight'] += $val['weight'] * $goodsList[$key]['count'];
+                $order_extend[$val['seller_id']]['point'] += $val['point']  * $goodsList[$key]['count'];
+                $order_extend[$val['seller_id']]['tax'] += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id'],$val['goods_id'],'goods');
+                $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $goodsList[$key]['count'];
+                $order_extend[$val['seller_id']]['count'] += $goodsList[$key]['count'];
+                $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
     			//全局统计
 		    	$this->weight += $val['weight'] * $goodsList[$key]['count'];
 		    	$this->point  += $val['point']  * $goodsList[$key]['count'];
@@ -189,7 +214,8 @@ class CountSum
 		    	$this->sum    += $current_sum_all;
 		    	$this->reduce += $current_reduce_all;
 		    	$this->count  += $goodsList[$key]['count'];
-		    	$this->tax    += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id']);
+		    	$this->tax    += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id'],$val['goods_id'],'goods');
+                $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
 		    }
     	}
 
@@ -205,6 +231,13 @@ class CountSum
     		//开始优惠情况判断
     		foreach($productList as $key => $val)
     		{
+                $order_extend[$val['seller_id']]['sum'] = 0;
+                $order_extend[$val['seller_id']]['weight'] = 0;
+                $order_extend[$val['seller_id']]['point'] = 0;
+                $order_extend[$val['seller_id']]['tax'] = 0;
+                $order_extend[$val['seller_id']]['exp'] = 0;
+                $order_extend[$val['seller_id']]['count'] = 0;
+                $order_extend[$val['seller_id']]['reduce'] = 0;
     			//检查库存
 //     			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
 //     			{
@@ -236,7 +269,13 @@ class CountSum
                 {
                    $productList[$key]['delivery']  += $delivery['price']; 
                 }
-                
+                $order_extend[$val['seller_id']]['sum'] += $current_sum_all;
+                $order_extend[$val['seller_id']]['weight'] += $val['weight'] * $productList[$key]['count'];
+                $order_extend[$val['seller_id']]['point'] += $val['point']  * $productList[$key]['count'];
+                $order_extend[$val['seller_id']]['tax'] += self::getGoodsTax($productList[$key]['sum'],$val['seller_id'],$val['product_id'],'product');
+                $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $productList[$key]['count'];
+                $order_extend[$val['seller_id']]['count'] += $productList[$key]['count'];
+                $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
     			//全局统计
 		    	$this->weight += $val['weight'] * $productList[$key]['count'];
 		    	$this->point  += $val['point']  * $productList[$key]['count'];
@@ -244,28 +283,27 @@ class CountSum
 		    	$this->sum    += $current_sum_all;
 		    	$this->reduce += $current_reduce_all;
 		    	$this->count  += $productList[$key]['count'];
-		    	$this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id']);
+		    	$this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id'],$val['product_id'],'product');
+                $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
 		    }
     	}
 		$final_sum = $this->sum - $this->reduce;
-		
     	//总金额满足的促销规则
     	if($user_id&&$prom)
     	{
 	    	$proObj = new ProRule($final_sum);
 	    	$proObj->setUserGroup($group_id);
-	    	$this->isFreeFreight = $proObj->isFreeFreight();
-	    	$this->promotion = $proObj->getInfo();
-	    	$this->proReduce = $final_sum - $proObj->getSum();
+	    	$this->isFreeFreight = $proObj->isFreeFreight(null,$goodsIdList);
+	    	$this->promotion = $proObj->getInfo($goodsIdList);
+	    	$this->proReduce = $final_sum - $proObj->getSum($goodsIdList);
     	}
     	else
     	{
 	    	$this->promotion = array();
 	    	$this->proReduce = 0;
     	}
-
     	$this->final_sum = $final_sum - $this->proReduce;
-
+        $this->extend  = $order_extend;
     	return array(
     		'final_sum'  => $this->final_sum,//减去会员减价和促销减价后的总价
     		'promotion'  => $this->promotion,//促销信息
@@ -279,6 +317,7 @@ class CountSum
     		'point'      => $this->point,
     		'exp'        => $this->exp,
     		'tax'        => $this->tax,
+            'extend'     => $this->extend,
     	);
 	}
 	//获取闪购价
@@ -506,9 +545,15 @@ class CountSum
 
             //商品列表
             'goodsResult' => array(),
+            'order_extend' => array()
         );
         $goods_seller_data = array();
+        $order_extend = array();
         foreach($goodsResult['goodsList'] as $key => $val){
+            $order_extend[$val['seller_id']]['deliveryOrigPrice'] = 0;
+            $order_extend[$val['seller_id']]['insuredPrice'] = 0;
+            $order_extend[$val['seller_id']]['deliveryPrice'] = 0;
+            $order_extend[$val['seller_id']]['taxPrice'] = 0;
             $deliveryRow = Delivery::getDelivery($area_id, $val['delivery_id'], $val['goods_id'], $val['product_id'], $val['count']);
             
             if(is_string($deliveryRow) || $deliveryRow['if_delivery'] == 1)
@@ -516,34 +561,47 @@ class CountSum
                 return "您所选购的商品：".$val['name']."，无法送达";
             }
             $result['deliveryOrigPrice'] += $deliveryRow['price'];
+            $order_extend[$val['seller_id']]['deliveryOrigPrice'] += $deliveryRow['price'];
             
             //商品保价计算
             //    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
             if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$key]) ) )
             {
                 $result['insuredPrice'] += $deliveryRow['protect_price'];
+                $order_extend[$val['seller_id']]['insuredPrice'] += $deliveryRow['protect_price'];
             }
             if(!$goodsResult['freeFreight'])
             {
                 $result['deliveryPrice'] += $deliveryRow['price'];
+                $order_extend[$val['seller_id']]['deliveryPrice'] += $deliveryRow['price'];
+                $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
             }
-            $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
+            else
+            {
+                $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+            }
             $goodsResult['goodsList'][$key]['insuredPrice'] = $deliveryRow['protect_price'];
-            
+
             //商品税金计算
             if($is_invoice == true)
             {
-                
-                $tempTax = self::getGoodsTax($val['sum'],$val['seller_id']);
+                if($val['product_id'])
+                {
+                    $tempTax = self::getGoodsTax($val['sum'],$val['seller_id'],$val['product_id'], 'product');
+                }
+                else
+                {
+                    $tempTax = self::getGoodsTax($val['sum'],$val['seller_id'],$val['goods_id'], 'goods');
+                }
                 $goodsResult['goodsList'][$key]['taxPrice'] = $tempTax;
                 $result['taxPrice'] += $tempTax;
+                $order_extend[$val['seller_id']]['taxPrice'] += $tempTax;
                  
             }
             else{
                 $goodsResult['goodsList'][$key]['taxPrice'] = 0;
             }
         }
-        
         //非货到付款的线上支付方式手续费
         if($payment_id != 0)
         {
@@ -556,6 +614,7 @@ class CountSum
 
         //订单商品刷新
         $result['goodsResult'] = $goodsResult;
+        $result['order_extend'] = $order_extend;
 
         return $result;
     }
@@ -571,7 +630,7 @@ class CountSum
      * @param $discount float 订单的加价或者减价
      * @return $result 最终的返回数组
      */
-    public static function countOrderFeePresell($goodsResult,$province_id,$delivery_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
+    public static function countOrderFeePresell($goodsResult,$province_id,$payment_id,$is_insured,$is_invoice,$discount = 0)
     {
     	$goodsFinalSum = $goodsResult['final_sum'];
 
@@ -601,7 +660,7 @@ class CountSum
 
 		foreach($goodsResult['goodsList'] as $key => $val)
 		{
-			$deliveryRow = Delivery::getDelivery($province_id,$delivery_id,$val['goods_id'],$val['product_id'],$val['count']);
+			$deliveryRow = Delivery::getDelivery($province_id,$val['delivery_id'],$val['goods_id'],$val['product_id'],$val['count']);
 
 			//商品无法送达
 			if($deliveryRow['if_delivery'] == 1)
@@ -631,11 +690,17 @@ class CountSum
 				$result['deliveryPrice'] += $deliveryRow['price'];
 				$goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
 			}
-
 			//商品税金计算
 	    	if($is_invoice == true)
 	    	{
-	    		$tempTax = self::getGoodsTax($val['sum'],$val['seller_id']);
+                if($val['product_id'])
+                {
+                    $tempTax = self::getGoodsTax($val['sum'],$val['seller_id'],$val['product_id'],'products');
+                }
+	    		else
+                {
+                    $tempTax = self::getGoodsTax($val['sum'],$val['seller_id'],$val['goods_id'],'goods');
+                }
 	    		$goodsResult['goodsList'][$key]['taxPrice'] = $tempTax;
 	    		$result['taxPrice'] += $tempTax;
 	    	}
@@ -664,22 +729,62 @@ class CountSum
      * 获取商品的税金
      * @param $goodsSum float 商品总价格
      * @param $seller_id int 商家ID
+     * @param $id int 商品 or 货品ID
+     * @param $type string 类型
      * @return $goodsTaxPrice float 商品的税金
      */
-    public static function getGoodsTax($goodsSum,$seller_id = 0)
+    public static function getGoodsTax($goodsSum,$seller_id = 0, $id = 0, $type='goods')
     {
-    	if($seller_id)
-    	{
-    		$sellerDB = new IModel('seller');
-    		$sellerRow= $sellerDB->getObj('id = '.$seller_id);
-    		$tax_per  = $sellerRow['tax'];
-    	}
+        if($type == 'goods')
+        {
+            $model = new IModel('goods');
+            $default_tax = $model->getField('id='.$id, 'default_tax');
+            if($default_tax)
+            {
+                if($seller_id)
+                {
+                    $sellerDB = new IModel('seller');
+                    $sellerRow= $sellerDB->getObj('id = '.$seller_id);
+                    $tax_per  = $sellerRow['tax'];
+                }
+                else
+                {
+                    $siteConfigObj = new Config("site_config");
+                    $site_config   = $siteConfigObj->getInfo();
+                    $tax_per       = isset($site_config['tax']) ? $site_config['tax'] : 0;
+                }
+            }
+            else
+            {
+                $tax = $model->getField('id='.$id, 'tax');
+                $tax_per = $tax ? $tax : 0;
+            }
+        }
     	else
-    	{
-			$siteConfigObj = new Config("site_config");
-			$site_config   = $siteConfigObj->getInfo();
-			$tax_per       = isset($site_config['tax']) ? $site_config['tax'] : 0;
-    	}
+        {
+            $model = new IModel('products');
+            $default_tax = $model->getField('id='.$id, 'default_tax');
+            if($default_tax)
+            {
+                if($seller_id)
+                {
+                    $sellerDB = new IModel('seller');
+                    $sellerRow= $sellerDB->getObj('id = '.$seller_id);
+                    $tax_per  = $sellerRow['tax'];
+                }
+                else
+                {
+                    $siteConfigObj = new Config("site_config");
+                    $site_config   = $siteConfigObj->getInfo();
+                    $tax_per       = isset($site_config['tax']) ? $site_config['tax'] : 0;
+                }
+            }
+            else
+            {
+                $tax = $model->getField('id='.$id, 'tax');
+                $tax_per = $tax ? $tax : 0;
+            }
+        }
 		$goodsTaxPrice = $goodsSum * ($tax_per * 0.01);
 		return round($goodsTaxPrice,2);
     }

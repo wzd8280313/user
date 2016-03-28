@@ -408,9 +408,20 @@ class Goods extends IController
 	function goods_list()
 	{
 		//搜索条件
-		$search = IFilter::act(IReq::get('search'),'strict');
-		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
-
+		$search = IFilter::act(IReq::get('search'),'strict');       
+        if(IReq::get('plat') == 'plat')
+        {
+            $search['seller_id'] = '=0';
+        }
+        elseif(IReq::get('plat') == 'seller')
+        {
+            $search['seller_id'] = '!=0';
+        }
+        if(IReq::get('is_del'))
+        {
+            $search['is_del'] = IReq::get('is_del');
+        }
+		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;  
 		//条件筛选处理
 		list($join,$where) = goods_class::getSearchCondition($search);
 
@@ -427,6 +438,18 @@ class Goods extends IController
 		$this->goodsHandle = $goodsHandle;
 		$this->redirect("goods_list");
 	}
+    
+    //平台商品
+    public function goods_list_plat()
+    {
+        $this->redirect('goods_list/plat/plat');
+    }
+    
+    //商户商品
+    public function goods_list_seller()
+    {
+        $this->redirect('goods_list/plat/seller');
+    }
 
 	//商品导出 Excel
 	public function goods_report()

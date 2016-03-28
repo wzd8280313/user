@@ -201,6 +201,21 @@ class statistics
 		return isset($data['num']) ? $data['num'] : 0;
 	}
 
+    public static function goodsCountDiff($plat=1)
+    {
+        $where = "is_del != 1";
+        if($plat)
+        {
+            $where .= " and seller_id = 0 ";
+        }
+        else
+        {
+            $where .= " and seller_id <> 0 ";
+        }
+        $goodsDB = new IModel('goods');
+        $data = $goodsDB->getObj($where,'count(*) as num');
+        return isset($data['num']) ? $data['num'] : 0;
+    }
 	/**
 	 * @brief 等待商品咨询回复数量
 	 * @param int $seller_id 商家ID
@@ -217,6 +232,21 @@ class statistics
 		$data = $goodsDB->getObj($where,'count(*) as num');
 		return isset($data['num']) ? $data['num'] : 0;
 	}
+    public static function referWaitCountDiff($plat=1)
+    {
+        $where = "pid = 0 and status = 0";
+        if($plat)
+        {
+            $where .= " and seller_id = 0";
+        }
+        else
+        {
+            $where .= " and seller_id <> 0";
+        }
+        $DB = new IModel('refer');
+        $data = $DB->query($where, 'id');
+        return count($data);
+    }
 
 	/**
 	 * @brief 等待商品评论回复数量
@@ -225,7 +255,7 @@ class statistics
 	 */
 	public static function commentCount($seller_id = '')
 	{
-		$where = "co.status = 1 and co.goods_id = go.id and co.recomment_time<=0";
+		$where = "co.status <> 1 and co.goods_id = go.id and co.recomment_time<=0";
 		if($seller_id)
 		{
 			$where .= " and go.seller_id = {$seller_id}";
@@ -234,6 +264,22 @@ class statistics
 		$data = $goodsDB->getObj($where,'count(*) as num');
 		return isset($data['num']) ? $data['num'] : 0;
 	}
+    
+    public static function commentCountDiff($plat = 1)
+    {
+        $where = "status<>0 and pid = 0 and recomment_time<=0";
+        if($plat)
+        {
+            $where .= " and sellerid = 0";
+        }
+        else
+        {
+            $where .= " and sellerid <> 0";
+        }
+        $DB = new IModel('comment');
+        $data = $DB->query($where, 'id');
+        return count($data);
+    }
 
 	/**
 	 * @brief 商户的商品销售量
@@ -323,4 +369,22 @@ class statistics
 		$data = $refundDB->find();
 		return $data[0]['num'];
 	}
+    
+    public static function refundsCountDiff($plat = 1)
+    {
+        $refundDB = new IQuery('refundment_doc');
+        $where = 'pay_status = 0 and if_del = 0';
+        if($plat)
+        {
+            $where .= ' and seller_id = 0';
+        }
+        else
+        {
+            $where .= ' and seller_id <> 0';
+        }
+        $refundDB->where  = $where;
+        $refundDB->fields = 'count(*) as num';
+        $data = $refundDB->find();
+        return $data[0]['num'];
+    }
 }

@@ -183,12 +183,44 @@ class Active
 		return isset($result[$this->promo]) ? $result[$this->promo] : 0;
 	}
 
+    /**
+     * @brief 订单付款后的回调
+     * @param $orderNo string 订单号
+     * @param $orderType 订单类型 1:团购; 2:抢购;
+     */
+    public static function payCallback($orderNo,$orderType)
+    {
+        switch($orderType)
+        {
+            //团购
+            case "1":
+            {
+                $tableModel = new IModel('order as o,order_goods as og');
+                $orderRow   = $tableModel->getObj("o.order_no = '{$orderNo}' and o.id = og.order_id and o.type = 1","og.goods_nums,o.active_id");
+                if($orderRow)
+                {
+                    $regimentModel = new IModel('regiment');
+                    $regimentModel->setData(array('sum_count' => 'sum_count + '.$orderRow['goods_nums']));
+                    $regimentModel->update('id = '.$orderRow['active_id'],array('sum_count'));
+                }
+            }
+            break;
+
+            //抢购
+            case "2":
+            {
+
+            }
+            break;
+        }
+    }
+
 	/**
-	 * @brief 订单付款后的回调
-	 * @param $orderNo string 订单号
+	 * @brief 订单退款后的回调
+	 * @param $orderId string 订单ID
 	 * @param $orderType 订单类型 1:团购; 2:抢购;
 	 */
-	public static function payCallback($orderNo,$orderType)
+	public static function refundCallback($orderId,$orderType)
 	{
 		switch($orderType)
 		{
@@ -196,12 +228,12 @@ class Active
 			case "1":
 			{
 				$tableModel = new IModel('order as o,order_goods as og');
-				$orderRow   = $tableModel->getObj("o.order_no = '{$orderNo}' and o.id = og.order_id and o.type = 1","og.goods_nums,o.active_id");
+				$orderRow   = $tableModel->getObj("o.id = '{$orderId}' and o.id = og.order_id and o.type = 1","og.goods_nums,o.active_id");
 				if($orderRow)
 				{
 					$regimentModel = new IModel('regiment');
-					$regimentModel->setData(array('sum_count' => 'sum_count + '.$orderRow['goods_nums']));
-					$regimentModel->update('id = '.$orderRow['active_id'],array('sum_count'));
+					$regimentModel->setData(array('sum_count' => 'sum_count - '.$orderRow['goods_nums']));
+					$regimentModel->update('id = '.$orderRow['active_id'], array('sum_count'));
 				}
 			}
 			break;

@@ -54,8 +54,7 @@ jQuery(function(){
 	//orderFormInstance.deliveryInit("{$this->custom['delivery']}");
 	
 	//设置是否免运费
-	orderFormInstance.freeFreight = {echo:$this->freeFreight ? 1 : 0};
-
+	orderFormInstance.freeFreight = {$this->freeFreight};
 	//支付方式
 	orderFormInstance.paymentInit("{$this->custom['payment']}");
 
@@ -133,7 +132,7 @@ function get_delivery()
 	var province = $('[name="province"]').val();
 	var city     = $('[name=city]').val();
 	var area     = $('[name=area]').val();
-              
+      
 	if(!area)
 	{
 		return;
@@ -148,12 +147,12 @@ function get_delivery()
                 $.ajax({
                     type:'post',
                     async:false,
-                    data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
+                    data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3],'final_sum':{$this->final_sum}},
                     dataType:'json',
                     url:"{url:/block/order_delivery_count}",
                     
                     success:function(content)
-                    {
+                    {                         
                         //地区无法送达
                         if(content.if_delivery == 1)
                         {
@@ -162,7 +161,18 @@ function get_delivery()
                         }
                         else
                         {
-                            orderFormInstance.deliveryPrice += parseFloat(content.price);
+                            if(!content.isFreeFreight)
+                            {
+                                $('.js_data_6').hide();
+                                orderFormInstance.deliveryPrice += parseFloat(content.price);
+                            }
+                            else
+                            {
+                                for(var i = 0; i < content.isFreeFreight.length; i ++){
+                                    $("#js_data_"+content.isFreeFreight[i]).show();
+                                }
+                            }
+                            //orderFormInstance.freeFreight = content.isFreeFreight;
                             price += (content.price);
                             var html = parseFloat(content.price).toFixed(2);
                             //允许保价
@@ -202,7 +212,8 @@ function selectProtect(obj)
 function add_ticket()
 {
 	var ticket_num = $('#ticket_num').val();
-	var ticket_pwd = $('#ticket_pwd').val();
+    var ticket_pwd = $('#ticket_pwd').val();
+	var final_num = {$this->final_sum};
 
 	if(ticket_num == '' || ticket_pwd == '')
 	{
@@ -210,7 +221,7 @@ function add_ticket()
 		return '';
 	}
 
-	$.getJSON('{url:/block/add_download_ticket}',{"ticket_num":ticket_num,"ticket_pwd":ticket_pwd},function(content){
+	$.getJSON('{url:/block/add_download_ticket}',{"ticket_num":ticket_num,"ticket_pwd":ticket_pwd,'num':final_num},function(content){
 		if(content.isError == false)
 		{
 			is_success = true;
@@ -475,7 +486,7 @@ function selectTakeself(deliveryId)
 					<div class="cart_prompt f14 t_l m_10" {if:empty($this->promotion)}style="display:none"{/if}>
 						<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
 						{foreach:items = $this->promotion}
-						<p class="indent blue">{$item['plan']}，{$item['info']}</p>
+						<p class="indent blue js_data_{$item['type']}" id="js_data_{$item['id']}" {if:$item['hide']} style="display:none;" {/if}>{$item['plan']}，{$item['info']}</p>
 						{/foreach}
 					</div>
 						{foreach:items=$this->goodsList item=$value}
@@ -531,7 +542,7 @@ function selectTakeself(deliveryId)
 										</p>
 										{/if}
 									</td>
-									<td>{$item['point']}</td>
+									<td>{echo:$item['point']*$item['count']}</td>
 									<td><b>￥{$item['sell_price']}</b></td>
 									<td>减￥{$item['reduce']}</td>
 									<td>{$item['count']}</td>
@@ -616,7 +627,7 @@ function selectTakeself(deliveryId)
 								
 							<!--<label id="tax_title" class='attr' style='display:none'>发票抬头：<input type='text' class='normal' name='tax_title' /></label>-->
 							</td>
-							<td class="t_r"><b class="price f14">应付总额：<span class="red2">￥<b id='final_sum'>{$this->final_sum}</b></span>元</b></td>
+							<td class="t_r"><b class="price f14">应付总额：<span class="red2">￥<b id='final_sum'></b></span>元</b></td>
 						</tr>
 					</table>
 					

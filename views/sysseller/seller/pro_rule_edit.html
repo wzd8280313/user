@@ -1,0 +1,410 @@
+{js:my97date}
+{js:artTemplate}
+{set:$seller_id = $this->seller['seller_id']}
+{set:$area_groupid=$this->promotionRow['area_groupid']}
+<article class="module width_full">
+	<header>
+		<h3 class="tabs_involved">促销活动编辑</h3>
+	</header>
+
+	<form action="{url:/seller/pro_rule_edit_act}"  method="post" name='pro_rule_edit' enctype='multipart/form-data'>
+		<input type='hidden' name='id' />
+		<div class="module_content">
+			<fieldset>
+				<label>活动名称：</label>
+				<div class="box">
+					<input type='text' class='normal' name='name' pattern='required' alt='请填写活动名称' />
+					<label class="tip">* 填写活动名称</label>
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<label>活动时间：</label>
+				<div class="box">
+					<input type='text' name='start_time' class='normal' pattern='datetime' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  alt='请填写一个日期' /> ～
+                    <input type='text' name='end_time' class='normal' pattern='datetime' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' />
+				</div>
+				<label class="tip">* 此活动的时间段</label>
+			</fieldset>
+            <fieldset>
+                <label>允许参与人群：</label>
+                <div class="box">
+                        <label class='attr'><input type='checkbox' name='group_all' value='all' {if:$this->promotionRow['user_group']=='all'} checked=checked {/if} onclick='select_all();' />全部</label>
+                        {query:name=user_group}
+                        <label class='attr'><input type='checkbox' {if:in_array($item['id'],explode(',',$this->promotionRow['user_group']))}checked=checked{/if} name='user_group[]' value='{$item['id']}' />{$item['group_name']}</label>
+                        {/query}
+                </div>
+                <label class="tip">* 此活动允许参加的用户组</label>
+            </fieldset>
+			<fieldset>
+				<label>是否开启</label>
+				<div class="box">
+					<label class='attr' ><input type='radio' name='is_close' value='0' checked="checked" />开启</label>
+					<label class='attr' ><input type='radio' name='is_close' value='1' />关闭</label>
+				</div>
+			</fieldset>
+            <fieldset>
+                <label>活动介绍：</label>
+                <div class="box"><textarea name='intro' class='textarea'>{$this->promotionRow['intro']}</textarea></div>
+            </fieldset>
+            <fieldset>
+                <label>购物车总金额条件：</label>
+                <div class="box">
+                <input type='text' name='condition' class='small' pattern='float' alt='请填写一个金额数字' />元 
+                </div>
+                <label class="tip">* 当购物车总金额达到所填写的现金额度时规则生效</label>
+            </fieldset>
+            <fieldset>
+                <label>活动规则：</label>
+                <div>
+                    <select class='normal' name='award_type' pattern='required' alt='请选择一种规则' onchange="change_rule(this.value);">
+                        <option value=''>请选择</option>
+                        <option value='1'>当购物车金额满 M 元时,优惠 N 元</option>
+                        <option value='2'>当购物车金额满 M 元时,优惠 N% </option>
+                        <option value='3'>当购物车金额满 M 元时,赠送 N 个积分</option>
+                        <!--<option value='4'>当购物车金额满 M 元时,赠送一张面值 N 元的代金券</option>-->
+                        <option value='6'>当购物车金额满 M 元时,免运费</option>
+                        <option value='7'>当购物车金额满 M 元时,赠送 N 经验值</option>
+                    </select>
+                    
+                </div>
+            <label class="tip">* 选择一种活动规则</label>
+            </fieldset>
+            <fieldset id='rule_box'></fieldset>
+			<fieldset class="js_select_goods" style="display: none;">
+				<label>选择商品</label>
+				<table class="tablesorter" cellspacing="0">
+					<colgroup>
+						<col width="100px" />
+						<col width="80px" />
+						<col width="150px" />
+						<col width="100px" />
+						<col width="100px" />
+					</colgroup>
+			
+					<thead>
+						<tr>
+							<th class="header">图片</th>
+							<th class="header">货号</th>
+                            <th class="header">名称</th>
+                            <th class="header">操作</th>
+						</tr>
+					</thead>
+					<tbody id='speed_goods'>
+				        {if:$this->goodsList}
+                             {foreach:items=$this->goodsList}
+                                <tr class="td_c">
+                                    <td><img src="{webroot:{$item['img']}}" style="max-width:140px;max-height:50px;" /></td>
+                                    <td>{$item['goods_no']}</td>
+                                    <td>{$item['name']}
+                                        <input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" onclick="remove_goods(this)">移除</a>
+                                    </td>
+                                </tr>
+                             {/foreach}
+                        {/if}	
+					</tbody>
+				</table>
+					<button type='button'  class='btn js_select_goods_btn'><span>选择商品</span></button>
+                    <label><input type="checkbox" name="select_all" value="1" {if:!$this->promotionRow['goods_id']} checked {/if}>本店所有商品</label>
+			</fieldset>
+            <fieldset id="areaBox" style='display:none' class="js_select_area">
+                <label>支持免运费的地区</label>
+                <div class="box">
+                    <div id="deliveryAreaBox"></div>
+
+                    <!--地域设定模板-->
+                    <script type='text/html' id='areaTemplate'>
+                    <div style='padding:6px;border: 1px solid #BBBBBB;margin-bottom:10px;'>
+                        <input type='hidden' name='area_groupid[]' value='<%=area_groupid%>' />
+                        选择地区：
+                        <select class="auto">
+                            {foreach:items = $this->areaList}
+                                <option value="{$item['area_id']}">{$item['area_name']}</option>
+                            {/foreach}
+                        </select>
+                        <button type="button" class="btn" onclick='addProvince(this);'><span class="add">添加</span></button>
+                        <label><a href="javascript:void(0)" onclick="js_remove(this)"><img alt="删除" src="{skin:images/main/icn_del.png}" class="operator"/></a></label>
+                        <textarea name="areaName" readonly="readonly" disabled='disabled' style='width:85%;float:none;margin-left:0px;display:block'><%=areaname%></textarea>已选择的地区
+                    </div>
+                    </script>
+                </div>
+                <div class="box"><button type="button" class="btn js_add_area" onclick='addArea(this)'><span class="add">添加地区</span></button><label>不选表示全部地区</label></div>
+            </fieldset>
+		</div>
+		<footer>
+			<div class="submit_link">
+				<input type="submit" class="alt_btn" value="确 定" />
+				<input type="reset" value="重 置" />
+			</div>
+		</footer>
+	</form>
+</article>
+			
+
+<script type='text/javascript'>
+	//输入筛选商品的条件
+	function searchGoodsCallback(goodsList)
+	{
+		goodsList.each(function()
+		{
+			var temp = $.parseJSON($(this).attr('data'));
+			
+			var content = {
+				"data":
+				{
+					"goods_id":temp.goods_id,
+					"name":temp.name,
+					"img":temp.img,
+                    'goods_no':temp.goods_no
+				}
+			};
+			relationCallBack(content);
+		});
+	}
+
+	//关联商品回调处理函数
+	function relationCallBack(content)
+	{
+		if(content)
+		{
+            var ids = [];
+            $("input[name^=goods_id]").each(function(){
+                ids.push($(this).val());
+            })
+            if($.inArray(content['data']['goods_id'],ids) == -1)
+            {
+                var imgUrl = "{webroot:@url@}";
+                imgUrl     = imgUrl.replace("@url@",content['data']['img']);
+
+                var html =   '<tr  class="td_c">'+
+                            '<td><img src="'+imgUrl+'" style="max-width:140px;" /></td>'
+                            +'<td>'+content['data']['goods_no']+'</td>'
+                            +'<td>'+content['data']['name']
+                            +'<input type="hidden" name="goods_id[]" value="'+content['data']['goods_id']
+                            +'"/></td>'
+                            +'<td><a href="javascript:;" onclick="remove_goods(this)">移除</a></td>'
+                            +'</tr>';
+            }
+			else
+            {
+                alert('商品不能重复添加');
+            }
+
+			$('#speed_goods').append(html);
+		}
+	}
+
+	//预定义商品绑定
+	{if:isset($this->promotionRow['goodsRow'])}
+		var goodsData = {$this->promotionRow['goodsRow']};
+		goodsData['data']['spec'] = getSpec(goodsData['data']['spec_array']);
+		relationCallBack(goodsData);
+		
+	{/if}
+	function js_remove(_t)
+    {
+        $(_t).parent().parent().remove();
+        $('.js_add_area').show();
+    }
+    //DOM加载完毕
+    $(function()
+    {
+        $('button.js_select_goods_btn').on('click',function(){searchGoods('{url:/block/search_goods/type/checkbox/seller_id/$seller_id}',searchGoodsCallback);})
+        
+        
+        //初始化表单
+        var formInstance = new Form('pro_rule_edit');
+        formInstance.init({echo:JSON::encode($this->promotionRow)});
+
+        //具有特殊省份设置
+        {if:isset($this->promotionRow['area_groupid']) && $this->promotionRow['area_groupid']!=''}
+        var area_groupid = {echo:JSON::encode(unserialize($area_groupid))};
+        for(var index in area_groupid)
+        {
+            var areaname = [];
+            var idArray  = area_groupid[index].split(';');
+            for(var i in idArray)
+            {
+                if(idArray[i])
+                {
+                    areaname.push(getAreaName(idArray[i]));
+                }
+            }
+            var areaHtml = template.render('areaTemplate',{"area_groupid":area_groupid[index],"areaname":areaname.join(',')});
+            $('#deliveryAreaBox').append(areaHtml);
+            $('.js_add_area').hide();
+        }
+        {/if}
+    });
+
+    //添加地域项
+    function addArea(_t)
+    {
+        var areaHtml = template.render('areaTemplate',{});
+        $('#deliveryAreaBox').append(areaHtml);
+        //$('#deliveryAreaBox').find('.content_box:last').find('[name=area_box]').append($('.area').eq(0).clone(true).css('display','inline'));
+        $(_t).hide();
+    }
+
+    //获取省份名称
+    function getAreaName(provinceId)
+    {
+        var areaNameList = {echo:JSON::encode($this->area)};
+        return areaNameList[provinceId];
+    }
+    
+    //移除所选商品
+    function remove_goods(obj)
+    {
+        $(obj).parent().parent().remove();
+    }
+
+    //添加省份
+    function addProvince(_self)
+    {
+        var parentObject = $(_self).parent();
+        var selectObj    = parentObject.find('select');
+
+        //当前选中的地区ID
+        var areaGroupId = parentObject.find('input[name="area_groupid[]"]').val();
+
+        //当前选中的地区NAME
+        var areaGroupName = parentObject.find('textarea[name="areaName"]').val();
+
+        //填写areaId
+        if(areaGroupId == '')
+        {
+            parentObject.find('input[name="area_groupid[]"]').val(";" + selectObj.val() + ";");
+        }
+        else if(areaGroupId.indexOf(";" + selectObj.val() + ";") == -1)
+        {
+            parentObject.find('input[name="area_groupid[]"]').val(areaGroupId + selectObj.val() + ";");
+        }
+        else
+        {
+            alert('省份已经添加，不要重复添加');
+            return;
+        }
+
+        //添加areaName
+        areaGroupName = areaGroupName == '' ? selectObj.find('option:selected').text() : areaGroupName + "," + selectObj.find('option:selected').text();
+        parentObject.find('textarea[name="areaName"]').val(areaGroupName);
+    }
+	//修改规则
+    function change_rule(selectVal)
+    {
+        //判断是否为真正的onchange事件
+        if(selectVal != $('#rule_box').data('index'))
+        {
+            $('#rule_box').data('index',selectVal);
+        }
+        else
+        {
+            return;
+        }
+
+        var html = '';
+        switch(selectVal)
+        {
+            case "1":
+            {
+                html = "<label>优惠金额：</label>"
+                        +"<div class='box'><input type='text' name='award_value' class='normal' pattern='float' alt='请填写一个金额数字' />元</div>"
+                        +"<label class='tip'>* 优惠的金额，从购物车总金额中减掉此部分金额</label>";
+            }
+            break;
+
+            case "2":
+            {
+                html = "<label>优惠百分比：</label>"
+                        +"<div class='box'><input type='text' name='award_value' class='normal' pattern='float' alt='请填写一个数字' />%</div>"
+                        +"<label class='tip'>* 优惠的百分比，从购物车总金额中的折扣百分比，如输入9则表示优惠9%</label>";
+            }
+            break;
+
+            case "3":
+            {
+                html = "<label>赠送积分：</label>"
+                        +"<div class='box'><input type='text' name='award_value' class='normal' pattern='int' alt='请填写一个数字' /></div>"
+                        +"<label class='tip'>* 赠送的积分</label>";
+            }
+            break;
+
+            /*case "4":
+            {
+                html = "<label>设置代金券：</label>"
+                        +"<div class='box'><select class='normal' name='award_value' pattern='required'><option value=''>请选择</option></select></div>"
+                        +"<label class='tip'>* 选择一个代金券</label>";
+
+                //异步获取代金券
+                $.getJSON('{url:/market/getTicketList}',function(content){
+                    for(pro in content)
+                    {
+                        var expire = content[pro]['expire'] ? '(已过期)' : '';
+                        $('select[name="award_value"]').append('<option value="'+content[pro]['id']+'">'+content[pro]['name']+'   面值:'+content[pro]['value']+'元'+expire+'</option>');
+                    }
+                    //获取后设置默认的代金券选择
+                    {set:$value=intval($this->promotionRow["award_value"])}
+                    formObj.setValue('award_value',"{$value}");
+                });
+            }
+            break;*/
+
+            case "5":
+            {
+                html = "<th>选择赠品：</th>"
+                        +"<td>暂无此功能"
+                        +"<label>* 购物车总额</label></td>";
+            }
+            break;
+            
+            case "7":
+            {
+                html = "<label>赠送经验：</label>"
+                        +"<div class='box'><input type='text' name='award_value' class='normal' pattern='int' alt='请填写一个数字' /></div>"
+                        +"<label class='tip'>* 赠送的经验</label>";
+            }
+            break;
+        }
+        $('#rule_box').html(html);
+        $('input[name=award_value]').val({$this->promotionRow['award_value']});
+        if(selectVal == 6)
+        {
+            $('.js_select_goods').hide();
+            $('.js_select_area').show();
+        }
+        else
+        {
+            $('.js_select_goods').show();
+            $('.js_select_area').hide();
+        }
+    }
+
+    //选择参与人群
+    function select_all()
+    {
+        var is_checked = $('[name="group_all"]').attr('checked');
+        if(is_checked ==  true)
+        {
+            var checkedVal  = true;
+            var disabledVal = true;
+        }
+        else
+        {
+            var checkedVal  = false;
+            var disabledVal = false;
+        }
+
+        $('input:checkbox[name="user_group[]"]').each(
+            function(i)
+            {
+                $(this).attr('checked',checkedVal);
+                $(this).attr('disabled',disabledVal);
+            }
+        );
+    }
+    change_rule("{$this->promotionRow['award_type']}");
+</script>

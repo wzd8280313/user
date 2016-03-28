@@ -28,7 +28,7 @@ class Member extends IController
 			$userDB = new IQuery('user as u');
 			$userDB->join = 'left join member as m on u.id = m.user_id';
 			$userDB->where= 'u.id = '.$uid;
-			$userInfo = $userDB->find();
+			$userInfo = $userDB->find();    
 
 			if($userInfo)
 			{
@@ -143,8 +143,8 @@ class Member extends IController
 		{
 			$userData = array(
 					'phone'=>$mobile,
-					'username'=>$user_name
-			
+					'username'=>$user_name,
+			        'email'=>$email
 			);
 			//修改密码
 			if($password)
@@ -184,14 +184,26 @@ class Member extends IController
 	function member_list()
 	{
 		$search = IFilter::act(IReq::get('search'),'strict');
-		$keywords = IFilter::act(IReq::get('keywords'));
+        $keywords = IFilter::act(IReq::get('keywords'));
+        $beginTime = IFilter::act(IReq::get('beginTime'));
+		$endTime = IFilter::act(IReq::get('endTime'));
 		$where = ' 1 ';
 		if($search && $keywords)
 		{
 			$where .= " and $search like '%{$keywords}%' ";
 		}
+        if($beginTime)
+        {
+            $where .= " and unix_timestamp(m.time) >=".strtotime($beginTime);
+        }
+        if($endTime)
+        {
+            $where .= " and unix_timestamp(m.time) <=".strtotime($endTime);
+        }
 		$this->data['search'] = $search;
-		$this->data['keywords'] = $keywords;
+        $this->data['keywords'] = $keywords;
+        $this->data['beginTime'] = $beginTime;
+		$this->data['endTime'] = $endTime;
 		$this->data['where'] = $where;
 		$tb_user_group = new IModel('user_group');
 		$data_group = $tb_user_group->query();
@@ -898,6 +910,11 @@ class Member extends IController
 	//商户列表
 	public function seller_list(){
 		$search = IReq::get('search');
+        if(IReq::get('is_lock'))
+        {
+            $search['is_lock'] = IReq::get('is_lock');
+            $this->is_lock = $search['is_lock'];
+        }                                
 		if(is_array($search)){
 			foreach($search as $k=>$v){
 				$k = IFilter::act($k,'strict');
@@ -909,7 +926,7 @@ class Member extends IController
 			$search = IFilter::act($search,'strict');
 			$keywords = IFilter::act(IReq::get('keywords'));
 			$this->where    = ($search && $keywords) ? $search.' = "'.$keywords.'"' : 1;
-		}
+		}                                   
 		$this->redirect('seller_list');
 	}
 

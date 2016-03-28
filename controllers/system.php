@@ -76,8 +76,8 @@ class System extends IController
 			$diffArray  = array_diff($advContrl,$baseContrl);
 			echo JSON::encode($diffArray);
 		}
-	}
-
+	}   
+    
 	/**
 	 * @brief 配送方式修改
 	 */
@@ -105,8 +105,6 @@ class System extends IController
             $this->data_info = $data;
             $this->area = $area;
 		}
-
-        $this->deli_type = $deli_type;
         
 		//获取省份
 		

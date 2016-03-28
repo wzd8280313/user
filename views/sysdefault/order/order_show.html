@@ -43,6 +43,31 @@
 			</thead>
 			<tbody>
 				{set:$show_deli=0}
+                {if:$pid}
+                {query:name=order_goods where=order_id eq $pid and seller_id eq $seller_id}
+                {if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
+                {set:$show_deli = 1;}
+                {/if}
+                <tr>
+                    <td>
+                        {set:$goodsRow = JSON::decode($item['goods_array'])}
+                        {$goodsRow['name']} &nbsp;&nbsp; {$goodsRow['value']}
+                    </td>
+                    <td>￥{$item['delivery_fee']}</td>
+                    <td>￥{$item['save_price']}</td>
+                    <td>￥{$item['tax']}</td>
+                    <td>￥{$item['goods_price']}</td>
+                    <td>￥{$item['real_price']}</td>
+                    <td>{$item['goods_nums']}</td>
+                    <td>
+                        {echo:Order_Class::goodsSendStatus($item['is_send'])}
+                        {if:$item['delivery_id']}
+                        <button class="btn" onclick="freightLine({$item['delivery_id']})">快递跟踪</button>
+                        {/if}
+                    </td>
+                </tr>
+                {/query}
+                {else:}
 				{query:name=order_goods where=order_id eq $order_id}
 				{if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
 				{set:$show_deli = 1;}
@@ -66,6 +91,7 @@
 					</td>
 				</tr>
 				{/query}
+                {/if}
 			</tbody>
 		</table>
 

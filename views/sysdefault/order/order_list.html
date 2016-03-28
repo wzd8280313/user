@@ -1,3 +1,4 @@
+{js:my97date}
 <div class="headbar">
 	<div class="position">订单<span>></span><span>订单管理</span><span>></span><span>订单列表</span></div>
 	<div class="operating">
@@ -11,7 +12,8 @@
 	<div class="searchbar">
 		<form action="{url:/}" method="get" name="order_list">
 			<input type='hidden' name='controller' value='order' />
-			<input type='hidden' name='action' value='order_list' />
+            <input type='hidden' name='action' value='order_list' />
+			<input type='hidden' name='plat' value='{$this->plat}' />
 			<input type='hidden' name='ids' />
 			<select name="search[pay_status]" class="auto">
 				<option value="">选择支付状态</option>
@@ -44,6 +46,8 @@
 				<option value="seller_name">商户真实名称</option>
 			</select>
 			<input class="small" name="search[keywords]" type="text" value="" />
+            开始时间：<input class="small" type="text" name="search[beginTime]" onfocus="WdatePicker()"  value='{$beginTime}'/>
+            截止时间：<input class="small" type="text" name="search[endTime]" onfocus="WdatePicker()" value='{$endTime}'/>
 			<button class="btn" type="submit"  onclick='changeAction(false)'><span class="sel">筛 选</span></button>
 			<button class="btn" onclick='changeAction(true)'><span class="sel">导出Excel</span></button>
 		</form>
@@ -110,9 +114,9 @@
 					<td>{echo:$item['username']=='' ? '游客' : $item['username']}</td>
 					<td title="{$item['create_time']}">{$item['create_time']}</td>
 					<td>
-						<a href="{url:/order/order_show/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a>
+						<a href="{url:/order/order_show/id/$item[id]/pid/$item[pid]}"><img class="operator" src="{skin:images/admin/icon_check.gif}" title="查看" /></a>
 						{if:Order_class::getOrderStatus($item) < 3}
-						<a href="{url:/order/order_edit/id/$item[id]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
+						<a href="{url:/order/order_edit/id/$item[id]/pid/$item[pid]}"><img class="operator" src="{skin:images/admin/icon_edit.gif}" title="编辑"/></a>
 						{/if}
 						<a href="javascript:void(0)" onclick="delModel({link:'{url:/order/order_del/id/$item[id]}'})" ><img class="operator" src="{skin:images/admin/icon_del.gif}" title="删除"/></a>
 						{if:isset($this->order_refund[$item['id']][0]['refunding'])}

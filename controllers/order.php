@@ -18,7 +18,8 @@ class Order extends IController
 	public function order_show()
 	{
 		//获得post传来的值
-		$order_id = IFilter::act(IReq::get('id'),'int');
+        $order_id = IFilter::act(IReq::get('id'),'int');
+		$pid = IFilter::act(IReq::get('pid'),'int');
 		$data = array();
 		if($order_id)
 		{
@@ -33,7 +34,6 @@ class Order extends IController
 
 		 		//获取地区
 		 		$data['area_addr'] = join('&nbsp;',area::name($data['province'],$data['city'],$data['area']));
-
 			 	$this->setRenderData($data);
 				$this->redirect('order_show',false);
 			}
@@ -107,9 +107,11 @@ class Order extends IController
 		//筛选、
 		$beginTime = IFilter::act(IReq::get('beginTime'));
 		$endTime = IFilter::act(IReq::get('endTime'));
+        $plat = IFilter::act(IReq::get('plat'));
 		$data['beginTime'] = $beginTime;
 		$data['endTime'] = $endTime;
 		$data['order_no'] = $order_no;
+        $data['plat'] = $plat;
 		
 		if($beginTime)
 		{
@@ -122,19 +124,41 @@ class Order extends IController
 		if($order_no){
 			$where .= ' and rd.order_no = "'.$order_no.'"';
 		}
+        if($plat == 'plat')
+        {
+            $where .= ' and rd.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and rd.seller_id <> 0';
+        }
 		$this->setRenderData($data);
 		$this->where = $where;
 		$this->redirect('refundment_list');
 	}
+    
+    //平台退款申请
+    public function refundment_list_plat()
+    {
+        $this->redirect('refundment_list/plat/plat');
+    }
+    
+    //商户退款申请
+    public function refundment_list_seller()
+    {
+        $this->redirect('refundment_list/plat/seller');
+    }
 	public function refundment_chg_list(){
 		$where = ' and  1 ';
 		$order_no = IFilter::act(IReq::get('order_no'));
 		//筛选、
 		$beginTime = IFilter::act(IReq::get('beginTime'));
-		$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+		$plat = IFilter::act(IReq::get('plat'));
 		$data['beginTime'] = $beginTime;
 		$data['endTime'] = $endTime;
-		$data['order_no'] = $order_no;
+        $data['order_no'] = $order_no;
+		$data['plat'] = $plat;
 	
 		if($beginTime)
 		{
@@ -147,34 +171,87 @@ class Order extends IController
 		if($order_no){
 			$where .= ' and rd.order_no = "'.$order_no.'"';
 		}
+        if($plat == 'plat')
+        {
+            $where .= ' and rd.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and rd.seller_id <> 0';
+        }
 		$this->setRenderData($data);
 		$this->where = $where;
 		$this->redirect('refundment_chg_list');
 	}
+    public function refundment_chg_list_plat()
+    {
+        $this->redirect('refundment_chg_list/plat/plat');
+    }
+    public function refundment_chg_list_seller()
+    {
+        $this->redirect('refundment_chg_list/plat/seller');
+    }
 	public function fapiao_list(){
 		$where = ' and  1 ';
-		$order_no = IFilter::act(IReq::get('order_no'));
-		$data['order_no'] = $order_no;
+        $order_no = IFilter::act(IReq::get('order_no'));
+		$plat = IFilter::act(IReq::get('plat'));
+        $data['order_no'] = $order_no;
+		$data['plat'] = $plat;
 		
 		if($order_no){
 			$where .= ' and o.order_no = "'.$order_no.'"';
 		}
+        
+        if($plat == 'plat')
+        {
+            $where .= ' and f.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and f.seller_id <> 0';
+        }
 		$this->setRenderData($data);
 		$this->where = $where;
 		$this->redirect('fapiao_list');
 	}
+    public function fapiao_list_plat()
+    {
+        $this->redirect('fapiao_list/plat/plat');
+    }
+    public function fapiao_list_seller()
+    {
+        $this->redirect('fapiao_list/plat/seller');
+    }
 	public function fapiao(){
 		$where = ' and  1 ';
-		$order_no = IFilter::act(IReq::get('order_no'));
-		$data['order_no'] = $order_no;
-		
+        $order_no = IFilter::act(IReq::get('order_no'));
+		$plat = IFilter::act(IReq::get('plat'));
+        $data['order_no'] = $order_no;
+		$data['plat'] = $plat;  
 		if($order_no){
 			$where .= ' and o.order_no = "'.$order_no.'"';
 		}
+        
+        if($plat == 'plat')
+        {
+            $where .= ' and f.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and f.seller_id <> 0';
+        } 
 		$this->setRenderData($data);
 		$this->where = $where;
 		$this->redirect('fapiao');
 	}
+    public function fapiao_plat()
+    {
+        $this->redirect('fapiao/plat/plat');
+    }
+    public function fapiao_seller()
+    {
+        $this->redirect('fapiao/plat/seller');
+    }
 	/**
 	 * @brief查看申请退款单
 	 */
@@ -718,7 +795,8 @@ class Order extends IController
     public function order_update()
     {
     	//获取必要数据
-    	$order_id = IFilter::act(IReq::get('id'),'int');
+        $order_id = IFilter::act(IReq::get('id'),'int');
+    	$pid = IFilter::act(IReq::get('pid'),'int');
 
     	//生成order数据
     	$dataArray['invoice_title'] = IFilter::act(IReq::get('invoice_title'));
@@ -817,7 +895,8 @@ class Order extends IController
     	else
     	{
     		$dataArray['create_time'] = date('Y-m-d H:i:s');
-    		$dataArray['order_no']    = Order_Class::createOrderNum();
+            $dataArray['order_no']    = Order_Class::createOrderNum();
+    		$dataArray['seller_id']   = $this->seller['id'];
 
     		$orderDB->setData($dataArray);
     		$order_id = $orderDB->add();
@@ -829,9 +908,28 @@ class Order extends IController
 
     	//同步order_goods表
     	$orderInstance = new Order_Class();
-    	$orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
+        if($pid)
+        {
+            $orderInstance->insertOrderGoods($pid,$orderFee['goodsResult'],$dataArray['pay_type'],$orderRow['seller_id']);
+            $other = $orderDB->getObj('pid='.$pid, 'sum(payable_amount) as payable_amount, sum(real_freight) as real_freight, sum(insured) as insured,sum(order_amount) as order_amount');
+            $orderDB->setData($other);
+            $orderDB->update('id='.$pid);
+            if($orderRow['seller_id'] == 0)
+            {
+                 $turnUrl =  'order_list/plat/plat';
+            }
+            else
+            {
+                $turnUrl = 'order_list/plat/seller';
+            }
+        }
+    	else
+        {
+            $orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
+            $turnUrl = 'order_list/plat/plat';
+        }
 
-    	$this->redirect('order_list');
+    	$this->redirect($turnUrl);
     }
 	/**
 	 * @brief 修改订单
@@ -852,7 +950,14 @@ class Order extends IController
 			$orderGoodsDB         = new IQuery('order_goods as og');
 			$orderGoodsDB->join   = "left join goods as go on og.goods_id = go.id left join products as p on p.id = og.product_id";
 			$orderGoodsDB->fields = "go.id,go.name,p.spec_array,p.id as product_id,og.real_price,og.goods_nums";
-			$orderGoodsDB->where  = "og.order_id = ".$order_id;
+            if($data['pid'])
+            {
+                $orderGoodsDB->where  = "og.order_id = ".$data['pid'].' and og.seller_id = '.$data['seller_id'];
+            }
+            else
+            {
+                $orderGoodsDB->where  = "og.order_id = ".$order_id;
+            }
 			$this->orderGoods     = $orderGoodsDB->find();
 
 			//获取用户名
@@ -873,6 +978,20 @@ class Order extends IController
 		//搜索条件
 		$search = IFilter::act(IReq::get('search'),'strict');
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+        $plat = IReq::get('plat');
+        if($plat == 'plat')
+        {
+            $search['seller_id'] = '=0';
+        }
+        elseif($plat == 'seller')
+        {
+            $search['seller_id'] = '!=0';
+        }
+        else
+        {
+            $search['pid'] = 0;
+        }
+        $search['distribution_status'] = IReq::get('distribution_status');
 		//条件筛选处理
 		list($join,$where) = order_class::getSearchCondition($search);
 		//$join = $join.' left join refundment_doc as r on r.order_id=o.id and r.if_del=0 ';
@@ -886,7 +1005,8 @@ class Order extends IController
 		$orderHandle->where  = $where.' and o.type !=4 ';
 		$orderHandle->join   = $join;
 		$orderHandle->group = 'o.id';
-		$this->search      = $search;
+        $this->search      = $search;
+		$this->plat      = $plat;
 		$this->orderHandle = $orderHandle;
 		
 		$order_list = $orderHandle->find();
@@ -917,6 +1037,18 @@ class Order extends IController
 		$this->order_refund = $order_refund;
 	
 		$this->redirect("order_list");
+    }
+    
+    //平台订单
+    public function order_list_plat()
+    {
+        $this->redirect('order_list/plat/plat/distribution_status/'.IReq::get('distribution_status'));
+    }
+    
+    //商户订单
+    public function order_list_seller()
+    {
+        $this->redirect('order_list/plat/seller/distribution_status/'.IReq::get('distribution_status'));
     }
    
     /**
@@ -1070,11 +1202,13 @@ class Order extends IController
     	 
     	//筛选、
     	$beginTime = IFilter::act(IReq::get('beginTime'));
-    	$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+    	$plat = IFilter::act(IReq::get('plat'));
     	$data['beginTime'] = $beginTime;
     	$data['endTime'] = $endTime;
     	$data['order_no'] = $order_no;
-    	$data['username'] = $username;
+        $data['username'] = $username;
+    	$data['plat'] = $plat;
     	 
     	if($beginTime)
     	{
@@ -1090,9 +1224,26 @@ class Order extends IController
     	if($username){
     		$where .= ' and u.username = "'.$username.'"';
     	}
+        if($plat == 'plat')
+        {
+            $where .= ' and c.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and c.seller_id <> 0';
+        }
     	$this->setRenderData($data);
     	$this->where = $where;
     	$this->redirect('order_refundment_list');
+    }
+     
+    public function order_refundment_list_plat()
+    {
+        $this->redirect('order_refundment_list/plat/plat');
+    }
+    public function order_refundment_list_seller()
+    {
+        $this->redirect('order_refundment_list/plat/seller');
     }
     /**
      * 换货单列表
@@ -1103,11 +1254,13 @@ class Order extends IController
     	$username = IFilter::act(IReq::get('username'));
     	 //筛选、
     	$beginTime = IFilter::act(IReq::get('beginTime'));
-    	$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+    	$plat = IFilter::act(IReq::get('plat'));
     	$data['beginTime'] = $beginTime;
     	$data['endTime'] = $endTime;
     	$data['order_no'] = $order_no;
-    	$data['username'] = $username;
+        $data['username'] = $username;
+    	$data['plat'] = $plat;
     
     	if($beginTime)
     	{
@@ -1123,9 +1276,27 @@ class Order extends IController
     	if($username){
     		$where .= ' and u.username = "'.$username.'"';
     	}
+        if($plat == 'plat')
+        {
+            $where .= ' and c.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and c.seller_id <> 0';
+        }
     	$this->setRenderData($data);
     	$this->where = $where;
     	$this->redirect('order_refundment_chg_list');
+    }
+    
+     
+    public function order_refundment_chg_list_plat()
+    {
+        $this->redirect('order_refundment_chg_list/plat/plat');
+    }
+    public function order_refundment_chg_list_seller()
+    {
+        $this->redirect('order_refundment_chg_list/plat/seller');
     }
 	/**
 	 * @brief 退款单删除功能_删除到回收站
@@ -1232,11 +1403,13 @@ class Order extends IController
     	$username = IFilter::act(IReq::get('username'));
     	//筛选、
     	$beginTime = IFilter::act(IReq::get('beginTime'));
-    	$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+    	$plat = IFilter::act(IReq::get('plat'));
     	$data['beginTime'] = $beginTime;
     	$data['endTime'] = $endTime;
     	$data['order_no'] = $order_no;
-    	$data['username'] = $username;
+        $data['username'] = $username;
+    	$data['plat'] = $plat;
     	
     	if($beginTime)
     	{
@@ -1252,9 +1425,26 @@ class Order extends IController
     	if($username){
     		$where .= ' and m.username = "'.$username.'"';
     	}
+        if($plat == 'plat')
+        {
+            $where .= ' and c.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and c.seller_id <> 0';
+        }
     	$this->setRenderData($data);
     	$this->where = $where;
     	$this->redirect('order_delivery_list');
+    }
+       
+    public function order_delivery_list_plat()
+    {
+        $this->redirect('order_delivery_list/plat/plat');
+    }
+    public function order_delivery_list_seller()
+    {
+        $this->redirect('order_delivery_list/plat/seller');
     }
 	/**
      * @brief 发货单删除功能_删除回收站中的数据，彻底删除

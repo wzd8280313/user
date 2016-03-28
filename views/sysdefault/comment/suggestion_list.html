@@ -8,7 +8,8 @@
 
 	<form name="filter_form" id="filter_form" method="get" action="{url:/}">
 		<input type='hidden' name='controller' value='comment' />
-		<input type='hidden' name='action' value='suggestion_list' />
+        <input type='hidden' name='action' value='suggestion_list' />
+		<input type='hidden' name='replyStatus' value='{$this->replyStatus}' />
 		<div class="searchbar">
 			建议人：<input class="small" type="text" name="username" value="{$username}" />
 			开始时间：<input class="small" type="text" name="beginTime" onfocus="WdatePicker()" value="{$beginTime}" />

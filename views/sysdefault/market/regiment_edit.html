@@ -133,6 +133,11 @@
 						$('.red').text('该商品已参加预售，不能参加团购');
 						is_presell = 1;
 					}
+                    else
+                    {
+                        $('.red').text('');
+                        is_presell = 0; 
+                    }
 				},
 				error:function(){
 					
@@ -176,7 +181,7 @@
 						  +'<tr><th>展示图片：</th><td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /><br /><input type="file" class="file" name="img" /></td></tr>'
 					  	  +'<tr><th>商品规格：</th><td>'+content['data']['spec']+'<label></label></td></tr>'
 							+'<tr><th>团购价格：</th><td><input type="text" class="small" name="regiment_price" pattern="float" alt="填写数字" />，  目前原价：'+content['data']['sell_price']+'<label>* 设置团购价格</label></td></tr>'
-							 +'<tr><th>团购库存量：</th><td><input type="text" class="small" name="store_nums" pattern="int" alt="填写数字" />，  目前库存：'+content['data']['store_nums']+'<label>* 团购出售的最大数量</label></td></tr>'
+							 +'<tr><th>团购库存量：</th><td><input type="text" class="small" name="store_nums" pattern="int" alt="填写数字" />，  目前库存：'+content['data']['store_nums']+'<label>* 团购出售的最大数量</label><input type="hidden" name="goods_store_nums" value="'+content['data']['store_nums']+'"></td></tr>'
 						  +'<tr><th>每人团购最小量：</th><td><input type="text" class="small" name="limit_min_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最小数量，少于这个数量则无法购买，0表示不限制</label></td></tr>'
 						  +'<tr><th>每人团购最大量：</th><td><input type="text" class="small" name="limit_max_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最大数量，大于这个数量则无法购买，0表示不限制</label></td></tr>';
 

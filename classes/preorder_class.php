@@ -24,20 +24,6 @@ class Preorder_Class extends Order_Class{
 		{
 			$data['order_id'] = $order_id;
 	
-			//获取配送方式
-			$tb_delivery = new IModel('delivery');
-			$delivery_info = $tb_delivery->getObj('id='.$data['distribution']);
-			if($delivery_info)
-			{
-				$data['delivery'] = $delivery_info['name'];
-	
-				//自提点读取
-				if($data['takeself'])
-				{
-					$data['takeself'] = self::getTakeselfInfo($data['takeself']);
-				}
-			}
-	
 			$areaData = area::name($data['province'],$data['city'],$data['area']);
 			$data['province_str'] = $areaData[$data['province']];
 			$data['city_str']     = $areaData[$data['city']];
@@ -47,19 +33,7 @@ class Preorder_Class extends Order_Class{
 			$tb_delivery_doc = new IQuery('delivery_doc as dd');
 			$tb_delivery_doc->join   = 'left join freight_company as fc on dd.freight_id = fc.id';
 			$tb_delivery_doc->fields = 'dd.delivery_code,fc.freight_name';
-			$tb_delivery_doc->where  = 'order_id = '.$order_id;
-			$delivery_info = $tb_delivery_doc->find();
-			if($delivery_info)
-			{
-				$temp = array('freight_name' => array(),'delivery_code' => array());
-				foreach($delivery_info as $key => $val)
-				{
-					$temp['freight_name'][]  = $val['freight_name'];
-					$temp['delivery_code'][] = $val['delivery_code'];
-				}
-				$data['freight']['freight_name']  = join(",",$temp['freight_name']);
-				$data['freight']['delivery_code'] = join(",",$temp['delivery_code']);
-			}
+			$tb_delivery_doc->where  = 'order_id = '.$order_id;   
 	
 			//获取支付方式
 			$tb_payment = new IModel('payment');

@@ -19,6 +19,7 @@ class Comment extends IController
 	{
 		$where = ' 1 ';
 		//筛选
+        $replyStatus = IReq::get('replyStatus');
 		$username = IFilter::act(IReq::get('username'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
 		$endTime = IFilter::act(IReq::get('endTime'));
@@ -37,7 +38,11 @@ class Comment extends IController
 		{
 			$where .= ' and a.time < "'.$endTime.'"';
 		}
-
+        if($replyStatus)
+        {
+            $where .= ' and a.re_time IS NULL';
+        }
+        $this->replyStatus = $replyStatus;
 		$this->where = $where;
 		$this->setRenderData($this->data);
 
@@ -113,19 +118,45 @@ class Comment extends IController
 	 * @brief 评论信息列表
 	 */
 	function comment_list()
-	{
+	{                                                                
 		$search = IFilter::act(IReq::get('search'),'strict');
+        $plat = IReq::get('plat');          
+        $replyStatus = IReq::get('replyStatus');
+        if($replyStatus)
+        {
+            $search['c.recomment_time'] = '=0';
+        }      
 		$where  = ' status<>0 and pid = 0';
+        if($plat == 'plat')
+        {
+            $where .= ' and sellerid=0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and sellerid <> 0';
+        }
 		if($search && $appendString = Util::search($search))
 		{
 			$where .= " and ".$appendString;
-		}
-
+		}                                          
+        $search['plat'] = $plat;               
 		$this->data['where'] = $where;
 		$this->data['search']= $search;
 		$this->setRenderData($this->data);
 		$this->redirect('comment_list',false);
-	}
+	}   
+    
+    //平台评论
+    function comment_list_plat()
+    {
+        $this->redirect('comment_list/plat/plat/replyStatus/'.IReq::get('replyStatus'));
+    }
+    
+    //商户评论
+    function comment_list_seller()
+    {
+        $this->redirect('comment_list/plat/seller/replyStatus/'.IReq::get('replyStatus'));
+    }
 
 	/**
 	 * @brief 显示评论信息
@@ -187,7 +218,7 @@ class Comment extends IController
 	function comment_del()
 	{
 		$comment_ids = IReq::get('check');
-		$comment_ids = is_array($comment_ids) ? $comment_ids : array($comment_ids);
+		$comment_ids = is_array($comment_ids) ? $comment_ids : array($comment_ids); 
 		if($comment_ids)
 		{
 			$comment_ids =  IFilter::act($comment_ids,'int');
@@ -238,6 +269,8 @@ class Comment extends IController
         $res = $comment->add(); 
         if($res)
         {
+            $comment->setData(array('recomment_time'=>ITime::getDateTime('Y-m-d')));
+            $comment->update('id='.$id);
             $this->redirect('comment_list');
         }
 	}
@@ -260,11 +293,13 @@ class Comment extends IController
 		$username = IFilter::act(IReq::get('username'));
 		$goodsname = IFilter::act(IReq::get('goodsname'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
-		$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+		$plat = IFilter::act(IReq::get('plat'));
 		$this->data['username'] = $username;
 		$this->data['goodsname'] = $goodsname;
 		$this->data['beginTime'] = $beginTime;
-		$this->data['endTime'] = $endTime;
+        $this->data['endTime'] = $endTime;
+		$this->data['plat'] = $plat;
 		if($username)
 		{
 			$where .= ' and u.username like "%'.$username.'%"';
@@ -281,10 +316,30 @@ class Comment extends IController
 		{
 			$where .= ' and d.time < "'.$endTime.'"';
 		}
+        if($plat == 'plat')
+        {
+            $where .= ' and goods.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and goods.seller_id <> 0';
+        }
 		$this->data['where'] = $where;
 		$this->setRenderData($this->data);
 		$this->redirect('discussion_list',false);
 	}
+    
+    //平台讨论
+    function discussion_list_plat()
+    {
+        $this->redirect('discussion_list/plat/plat');
+    }
+    
+    //商户讨论
+    function discussion_list_seller()
+    {
+        $this->redirect('discussion_list/plat/seller');
+    }
 
 	/**
 	 * @brief 显示讨论信息
@@ -343,6 +398,7 @@ class Comment extends IController
 	{
 		$search   = IFilter::act(IReq::get('search'),'strict');
 		$keywords = IFilter::act(IReq::get('keywords'),'text');
+        $replyStatus = IReq::get('replyStatus');
 		/*$status   = IFilter::act(IReq::get('status'),'int');*/
 		$where = ' pid=0 ';
 		if($search && $keywords)
@@ -355,11 +411,14 @@ class Comment extends IController
 		$username = IFilter::act(IReq::get('username'));
 		$goodsname = IFilter::act(IReq::get('goodsname'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
-		$endTime = IFilter::act(IReq::get('endTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+		$plat = IFilter::act(IReq::get('plat'));
 		$this->data['username'] = $username;
 		$this->data['goodsname'] = $goodsname;
 		$this->data['beginTime'] = $beginTime;
-		$this->data['endTime'] = $endTime;
+        $this->data['endTime'] = $endTime;
+        $this->data['plat'] = $plat;
+		$this->data['replyStatus'] = $replyStatus;
 		if($username)
 		{
 			$where .= ' and u.username like "%'.$username.'%"';
@@ -376,6 +435,18 @@ class Comment extends IController
 		{
 			$where .= ' and r.time < "'.$endTime.'"';
 		}
+        if($replyStatus)
+        {
+            $where .= ' and r.status = 0';
+        }
+        if($plat == 'plat')
+        {
+            $where .= ' and r.seller_id = 0';
+        }
+        elseif($plat == 'seller')
+        {
+            $where .= ' and r.seller_id <> 0';
+        }
 		/*if($status=='0')
 		{
 			$where .= ' and r.status = 0';
@@ -384,6 +455,18 @@ class Comment extends IController
 		$this->setRenderData($this->data);
 		$this->redirect('refer_list',false);
 	}
+    
+    //平台咨询
+    public function refer_list_plat()
+    {
+        $this->redirect('refer_list/plat/plat/replyStatus/'.IReq::get('replyStatus'));
+    }
+    
+    //商户咨询
+    public function refer_list_seller()
+    {
+        $this->redirect('refer_list/plat/seller/replyStatus/'.IReq::get('replyStatus'));
+    }
     
     //咨询详情
     public function refer_edit()
@@ -479,6 +562,8 @@ class Comment extends IController
         $res = $refer->add(); 
         if($res)
         {  
+            $refer->setData(array('reply_time'=>ITime::getDateTime(), 'status'=>1));
+            $refer->update('id='.$rid, array('id'));
             $this->redirect('refer_list');
         }       
 		
@@ -546,12 +631,49 @@ class Comment extends IController
 		$refer_type->del(' id in('.$idstr.')');
 		$this->redirect('refer_type_list');
 	}
+    
+    /**
+     * @brief 短信列表
+     */
+    function short_message_list()
+    {
+        $where = ' 1 and status=1 and type=2';
+        //筛选、
+        $beginTime = IFilter::act(IReq::get('beginTime'));
+        $endTime = IFilter::act(IReq::get('endTime'));
+        $this->data['beginTime'] = $beginTime;
+        $this->data['endTime'] = $endTime;
+        if($beginTime)
+        {
+            $where .= ' and time > "'.$beginTime.'"';
+        }
+        if($endTime)
+        {
+            $where .= ' and time < "'.$endTime.'"';
+        }
+        
+        $this->where = $where;
+        $this->setRenderData($this->data);
+        $tb_user_group = new IModel('user_group');
+        $data_group = $tb_user_group->query();
+        $data_group = is_array($data_group) ? $data_group : array();
+        $group      = array();
+        foreach($data_group as $value)
+        {
+            $group[$value['id']] = $value['group_name'];
+        }
+        $this->data['group'] = $group;
+
+        $this->setRenderData($this->data);
+        $this->redirect('short_message_list');
+    }
+    
 	/**
 	 * @brief 站内消息列表
 	 */
 	function message_list()
 	{
-		$where = ' 1 ';
+		$where = ' 1 and status=1 and type=1';
 		//筛选、
 		$beginTime = IFilter::act(IReq::get('beginTime'));
 		$endTime = IFilter::act(IReq::get('endTime'));
@@ -589,17 +711,26 @@ class Comment extends IController
 	{
 		$refer_ids = IReq::get('check');
 		$refer_ids = is_array($refer_ids) ? $refer_ids : array($refer_ids);
+        $type = IReq::get('type');
 		if($refer_ids)
 		{
 			$ids = implode(',',$refer_ids);
 			if($ids)
 			{
 				$tb_refer = new IModel('message');
+                $tb_refer->setData(array('status'=>0));
 				$where = "id in (".$ids.")";
-				$tb_refer->del($where);
+				$tb_refer->update($where, array('status'));
 			}
-		}
-		$this->message_list();
+		}                    
+        if($type == 2)
+        {
+            $this->short_message_list(); 
+        }
+        else
+        {
+            $this->message_list();
+        }  
 	}
 
 	/**
@@ -609,7 +740,16 @@ class Comment extends IController
 	{
 		$this->layout = '';
 		$this->redirect('message_send');
-	}
+	}   
+    
+    /**
+     * 发送短信
+     */
+    function short_message_send()
+    {
+        $this->layout = '';
+        $this->redirect('short_message_send');
+    }
 
 	/**
 	 * @brief 发送信件
@@ -628,4 +768,19 @@ class Comment extends IController
 		Mess::sendToUser($toUser,array('title' => $title,'content' => $content));
 		die('<script type="text/javascript">parent.startMessageCallback(1);</script>');
 	}
+    
+    /**
+     * @brief 发送短信
+     */
+    function send_short_message()
+    {
+        $toUser  = IFilter::act(IReq::get('toUser'));  
+        $content = IFilter::act(IReq::get('content'),'text');           
+        if(!$content)
+        {
+            die('<script type="text/javascript">parent.startMessageCallback(0);</script>');
+        }
+        Mess::sendShortMessageToUser($toUser,$content);             
+        die('<script type="text/javascript">parent.startMessageCallback(1);</script>');
+    }
 }

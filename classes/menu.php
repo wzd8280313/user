@@ -47,7 +47,9 @@ class Menu
 	private static $menu = array(
 		'商品'=>array(
 			'商品管理'=>array(
-				'/goods/goods_list' => '商品列表',
+                '/goods/goods_list' => '商品列表',
+                '/goods/goods_list_plat' => '平台商品列表',
+				'/goods/goods_list_seller' => '商户商品列表',
 				'/goods/goods_edit' => '商品添加',
 				'/goods/goods_in' => '库存添加'
 			),
@@ -79,37 +81,53 @@ class Menu
 	    		'/member/member_list' => '会员列表',
 	     		'/member/group_list' => '会员组列表',
 	     		'/member/withdraw_list'=>'会员提现管理',
+                '/comment/message_list' => '站内消息',
+                '/comment/short_message_list' => '短信',
 			),
 			'商户管理' => array(
 				'/member/seller_list' => '商户列表',
 				'/member/seller_edit' => '添加商户',
 			),
-			'信息处理' => array(
-				'/comment/suggestion_list'  => '建议管理',
-				'/comment/refer_list'		=> '咨询管理',
-				'/comment/discussion_list'	=> '讨论管理',
-				'/comment/comment_list'		=> '评价管理',
-				'/comment/message_list'		=> '站内消息',
-				'/message/notify_list'      => '到货通知',
+			'平台信息处理' => array(
+				'/comment/suggestion_list'              => '建议管理',
+                '/comment/refer_list_plat'              => '咨询管理',    
+				'/comment/discussion_list_plat'         => '讨论管理',
+                '/comment/comment_list_plat'            => '评价管理',     
+				'/message/notify_list'                  => '到货通知',
 			),
+            '商户信息处理' => array(   
+                '/comment/refer_list_seller'              => '咨询管理',    
+                '/comment/discussion_list_seller'         => '讨论管理',  
+                '/comment/comment_list_seller'            => '评价管理', 
+            ),
 		),
 
 	   '订单'=>array(
-        	'订单管理'=>array(
-                '/order/order_list' => '普通订单',
+        	'订单管理'=>array(                    
+                '/order/order_list_plat' => '平台订单',
+                '/order/order_list_seller' => '商户订单',
                 '/order/order_edit' => '添加订单',
                  '/preorder/preorder_list' => '预售订单',
         	),
-        	'单据管理'=>array(
-             	'/order/order_collection_list'  => '收款单',
-             	'/order/order_refundment_list'  => '退货单',
-             	'/order/order_refundment_chg_list'=>'换货单',
-        		'/order/order_delivery_list'    => '发货单',
-        		'/order/refundment_list'        => '退货申请',
-        		'/order/refundment_chg_list'    => '换货申请',
-        		'/order/fapiao_list'            => '已开发票',
-        		'/order/fapiao'                 => '发票申请'
+        	'平台单据管理'=>array(
+             	'/order/order_collection_list'          => '收款单',
+             	'/order/order_refundment_list_plat'     => '退货单',
+             	'/order/order_refundment_chg_list_plat' =>'换货单',
+        		'/order/order_delivery_list_plat'       => '发货单',
+                '/order/refundment_list_plat'           => '退货申请',
+        		'/order/refundment_chg_list_plat'       => '换货申请',
+        		'/order/fapiao_list_plat'               => '已开发票',
+        		'/order/fapiao_plat'                    => '发票申请'
         	),
+            '商户单据管理' =>array( 
+                 '/order/order_refundment_list_seller'     => '退货单',
+                 '/order/order_refundment_chg_list_seller' =>'换货单',
+                 '/order/order_delivery_list_seller'       => '发货单',
+                 '/order/refundment_list_seller'           => '退货申请',
+                 '/order/refundment_chg_list_seller'       => '换货申请',
+                 '/order/fapiao_list_seller'               => '已开发票',
+                 '/order/fapiao_seller'                    => '发票申请'
+            ),
         	'发货地址'=>array(
         		'/order/ship_info_list'         => '发货地址管理',
         	),
@@ -199,7 +217,8 @@ class Menu
 
    			'广告管理'=>array(
    				'/tools/ad_position_list'=> '广告位列表',
-   				'/tools/ad_list'=> '广告列表'
+                '/tools/ad_list'=> '广告列表',
+   				'/tools/ad_floor_edit'=> '首页楼层广告设置'
    			),
             
             '友情链接'=>array(                         
@@ -234,18 +253,18 @@ class Menu
 		'/market/bill_edit' => '/market/bill_list',
 
 		'/order/collection_show' => '/order/order_collection_list',
-		'/order/refundment_show' => '/order/order_refundment_list',
-		'/order/delivery_show' => '/order/order_delivery_list',
-		'/order/refundment_doc_show' => '/order/order_refundment_list',
-		'/order/refundment_chg_show' => '/order/refundment_chg_list',
-			'/order/refundment_chged_show' => '/order/order_refundment_chg_list',
-			'/order/refundment_apply_show' => '/order/refundment_list',
-		'/order/print_template' => '/order/order_list',
-		'/order/collection_recycle_list' => '/order/order_collection_list',
-		'/order/delivery_recycle_list' => '/order/order_delivery_list',
+		'/order/refundment_show' => '/order/order_refundment_list_plat',
+		'/order/delivery_show' => '/order/order_delivery_list_plat',
+		'/order/refundment_doc_show' => '/order/order_refundment_list_plat',
+		'/order/refundment_chg_show' => '/order/refundment_chg_list_plat',
+			'/order/refundment_chged_show' => '/order/order_refundment_chg_list_plat',
+			'/order/refundment_apply_show' => '/order/refundment_list_plat',
+		'/order/print_template' => '/order/order_list_plat',
+		'/order/collection_recycle_list' => '/order/order_collection_plat',
+		'/order/delivery_recycle_list' => '/order/order_delivery_list_plat',
 		'/order/ship_recycle_list'	=>	'/order/ship_info_list',
-		'/order/expresswaybill_edit' => '/order/order_list',
-		'/order/order_show' => '/order/order_list',
+		'/order/expresswaybill_edit' => '/order/order_list_plat',
+		'/order/order_show' => '/order/order_list_plat',
 	);
 
     /**
@@ -369,7 +388,14 @@ class Menu
 		{
 			return $this->submenu(true);
 		}
-
+        if(IReq::get('plat'))
+        {
+            $this->current = '/'.$controller.'/'.$action.'_'.IReq::get('plat');
+        }
+        if(IReq::get('deli_type'))
+        {
+            $this->current = '/'.$controller.'/'.$action.'/deli_type/'.IReq::get('deli_type');
+        }
 		return JSON::encode($result);
 	}
 }

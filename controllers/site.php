@@ -109,7 +109,7 @@ class Site extends IController
             {
                 $data = Comment_Class::get_comment_info($v['goods_id']);
                 $topList[$k]['comment_num'] = $data['comment_total'] ;
-                $topList[$k]['comment_rate'] = $data['comment_total'] ? ($data['point_grade']['good']/$data['comment_total'])*100 : 0;
+                $topList[$k]['comment_rate'] = $data['comment_total'] ? (round($data['point_grade']['good']/$data['comment_total'],4))*100 : 0;
             }
         }
         $this->topList=$topList;
@@ -172,15 +172,22 @@ class Site extends IController
         $tuan = new IQuery('regiment as r');
         $tuan->join = 'left join goods as g on r.goods_id=g.id';
         $tuan->fields = 'r.*';
-        $tuan->where = "r.is_close = 0 AND r.start_time='{$time}' and g.is_del=0 and r.type=2";
+        if($sign == 1)
+        {
+            $tuan->where = "r.is_close = 0 AND r.start_time='{$time}' and r.end_time > NOW() and g.is_del=0 and r.type=2";
+        }
+        else
+        {
+            $tuan->where = "r.is_close = 0 AND r.start_time='{$time}' and g.is_del=0 and r.type=2";
+        }
         $tuan->order = 'r.sort asc';
         $tuan->limit = 6;
         $data = $tuan->find();
         foreach($data as $k => $v)
         {
             $data[$k]['sign'] = $sign;
-            $data[$k]['regiment_price'] = (int)$v['regiment_price'];
-            $data[$k]['sell_price'] = (int)$v['sell_price'];
+            $data[$k]['regiment_price'] = (int)$v['regiment_price'] == $v['regiment_price'] ? (int)$v['regiment_price'] : $v['regiment_price'];
+            $data[$k]['sell_price'] = (int)$v['sell_price'] == $v['sell_price'] ? (int)$v['sell_price'] : $v['sell_price'];
         }                
         echo JSON::encode(array('data' => $data));
     }
@@ -1132,6 +1139,7 @@ class Site extends IController
                     $reply[$key]['seller_name'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
                     $temp = $comment->query('goods_id = '.$goods_id.' and pid='.$val['id'].' and user_id <> -1', 'count(1) as num');
                     $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+                    unset($seller_name);
                 }
                 $data[$k]['replyData'] =  $reply;
                 
@@ -1273,7 +1281,7 @@ class Site extends IController
 		echo JSON::encode(array('data' => $data,'pageHtml' => $pageHtml));
 	}
     
-    //买前咨询数据ajax获取
+    //咨询数据ajax获取
     function cir_refer_ajax()
     {
         $goods_id = IFilter::act(IReq::get('goods_id'),'int');
@@ -1309,6 +1317,7 @@ class Site extends IController
                         $seller_name = API::run('getSellerInfo',$val['seller_id'],'true_name');
                     }
                     $reply[$key]['seller_name'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+                    unset($seller_name);
                     $temp = $refer->query('goods_id = '.$goods_id.' and pid='.$val['id'].' and user_id <> -1', 'count(1) as num');
                     $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
                 }
@@ -1324,7 +1333,7 @@ class Site extends IController
     function question_reply()
     {
         $pid     = IFilter::act(IReq::get('pid'),'int');
-        $question = IFilter::act(IReq::get('question'),'content');
+        $question = IFilter::act(IReq::get('question'),'content');    
         if(!trim($question))
         {
             $message = array('status' => 0, 'msg' => '咨询内容不能为空');

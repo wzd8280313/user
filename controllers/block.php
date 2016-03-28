@@ -158,6 +158,7 @@ class Block extends IController
     	$area     = IFilter::act(IReq::get("area"),'int');
     	$distribution = IFilter::act(IReq::get("distribution"),'int');//配送方式
     	$num          = IReq::get("num") ? IFilter::act(IReq::get("num"),'int') : 1;
+        $final_sum = IReq::get('final_sum') ? IReq::get('final_sum') : 0;
 		$data         = array();
 		
 		if($distribution)
@@ -173,6 +174,42 @@ class Block extends IController
 				$data[$item['id']] = Delivery::getDelivery($area,$item['id'],$goodsId,$productId,$num);
 			}
 		}
+        if($productId)
+        {
+            $model = new IModel('products');
+            $sell_price = $model->getField('id='.$productId, 'sell_price');
+            $goodsList[$goodsId]['sum'] = $sell_price * $num;
+            
+            $countSumObj = new CountSum($this->user['user_id']);
+            $groupPrice  = $countSumObj->getGroupPrice($productId,'product');
+            if($groupPrice){
+                $minPrice = $groupPrice;
+            }else{
+                $minPrice = $sell_price;
+            }
+            $minPrice = min($minPrice,$sell_price);
+            $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+        }
+        if($goodsId)
+        {
+            $model = new IModel('goods');
+            $sell_price = $model->getField('id='.$goodsId, 'sell_price');
+            $goodsList[$goodsId]['sum'] = $sell_price * $num;
+            
+            $countSumObj = new CountSum($this->user['user_id']);
+            $groupPrice  = $countSumObj->getGroupPrice($goodsId,'goods');
+            if($groupPrice){
+                $minPrice = $groupPrice;
+            }else{
+                $minPrice = $sell_price;
+            }
+            $minPrice = min($minPrice,$sell_price);
+            $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+        }                    
+        $group_id     = $this->group_id;
+        $proObj = new ProRule($final_sum);
+        $proObj->setUserGroup($group_id);
+        $data['isFreeFreight'] = $proObj->isFreeFreight($area, $goodsList);
     	echo JSON::encode($data);
     }
     /**
@@ -196,13 +233,50 @@ class Block extends IController
     /**
      * 计算运费价格ajax
      */
-       public function order_delivery_count(){
+    public function order_delivery_count(){
            $goodsId = IFilter::act(IReq::get('goodsId'),'int');
            $productId = IFilter::act(IReq::get('productId'),'int');
            $area     = IFilter::act(IReq::get("area"),'int');
            $deliveryId = IFilter::act(IReq::get("deliveryId"),'int');//配送方式
            $num = IFilter::act(IReq::get('num'),'int');
-           $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);                
+           $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);
+           if($productId)
+            {
+                $model = new IModel('products');
+                $sell_price = $model->getField('id='.$productId, 'sell_price');
+                $goodsList[$goodsId]['sum'] = $sell_price * $num;
+                
+                $countSumObj = new CountSum($this->user['user_id']);
+                $groupPrice  = $countSumObj->getGroupPrice($productId,'product');
+                if($groupPrice){
+                    $minPrice = $groupPrice;
+                }else{
+                    $minPrice = $sell_price;
+                }
+                $minPrice = min($minPrice,$sell_price);
+                $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+            }
+            if($goodsId)
+            {
+                $model = new IModel('goods');
+                $sell_price = $model->getField('id='.$goodsId, 'sell_price');
+                $goodsList[$goodsId]['sum'] = $sell_price * $num;
+                
+                $countSumObj = new CountSum($this->user['user_id']);
+                $groupPrice  = $countSumObj->getGroupPrice($goodsId,'goods');
+                if($groupPrice){
+                    $minPrice = $groupPrice;
+                }else{
+                    $minPrice = $sell_price;
+                }
+                $minPrice = min($minPrice,$sell_price);
+                $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
+            } 
+           $final_sum = IReq::get('final_sum') ? IReq::get('final_sum') : 0;
+           $group_id     = $this->group_id;
+           $proObj = new ProRule($final_sum);
+           $proObj->setUserGroup($group_id);
+           $data['isFreeFreight'] = $proObj->isFreeFreight($area, $goodsList);                 
            echo JSON::encode($data);
        }
        
@@ -625,7 +699,8 @@ class Block extends IController
     	$isError = true;
 
     	$ticket_num = IFilter::act(IReq::get('ticket_num'));
-    	$ticket_pwd = IFilter::act(IReq::get('ticket_pwd'));
+        $ticket_pwd = IFilter::act(IReq::get('ticket_pwd'));
+    	$final_num = IFilter::act(IReq::get('num'));
 
     	$propObj = new IModel('prop');
     	$propRow = $propObj->getObj('card_name = "'.$ticket_num.'" and card_pwd = "'.$ticket_pwd.'" and type = 0 and is_userd = 0 and is_send = 1 and is_close = 0 and NOW() between start_time and end_time');
@@ -636,41 +711,50 @@ class Block extends IController
     	}
     	else
     	{
-    		//登录用户
-    		if($this->user['user_id'])
-    		{
-	    		$memberObj = new IModel('member');
-	    		$memberRow = $memberObj->getObj('user_id = '.$this->user['user_id'],'prop');
-	    		if(stripos($memberRow['prop'],','.$propRow['id'].',') !== false)
-	    		{
-	    			$message = '代金券已经存在，不能重复添加';
-	    		}
-	    		else
-	    		{
-		    		$isError = false;
-		    		$message = '添加成功';
+            $ticketObj = new IModel('ticket');
+            $ticketRow = $ticketObj->getObj('id='.$propRow['condition']);
+            if($ticketRow['type'] == 2 && $ticketRow['condition'] > $final_num)
+            {
+                $message = '消费达到'.$ticketRow['condition'].'才能使用该代金券';
+            }
+            else
+            {
+                //登录用户
+                if($this->user['user_id'])
+                {
+                    $memberObj = new IModel('member');
+                    $memberRow = $memberObj->getObj('user_id = '.$this->user['user_id'],'prop');
+                    if(stripos($memberRow['prop'],','.$propRow['id'].',') !== false)
+                    {
+                        $message = '代金券已经存在，不能重复添加';
+                    }
+                    else
+                    {
+                        $isError = false;
+                        $message = '添加成功';
 
-		    		if($memberRow['prop'] == '')
-		    		{
-		    			$propUpdate = ','.$propRow['id'].',';
-		    		}
-		    		else
-		    		{
-		    			$propUpdate = $memberRow['prop'].$propRow['id'].',';
-		    		}
+                        if($memberRow['prop'] == '')
+                        {
+                            $propUpdate = ','.$propRow['id'].',';
+                        }
+                        else
+                        {
+                            $propUpdate = $memberRow['prop'].$propRow['id'].',';
+                        }
 
-		    		$dataArray = array('prop' => $propUpdate);
-		    		$memberObj->setData($dataArray);
-		    		$memberObj->update('user_id = '.$this->user['user_id']);
-	    		}
-    		}
-    		//游客方式
-    		else
-    		{
-				$isError = false;
-				$message = '添加成功';
-    			ISafe::set("ticket_".$propRow['id'],$propRow['id']);
-    		}
+                        $dataArray = array('prop' => $propUpdate);
+                        $memberObj->setData($dataArray);
+                        $memberObj->update('user_id = '.$this->user['user_id']);
+                    }
+                }
+                //游客方式
+                else
+                {
+                    $isError = false;
+                    $message = '添加成功';
+                    ISafe::set("ticket_".$propRow['id'],$propRow['id']);
+                }
+            }
     	}
 
     	$result = array(
@@ -904,4 +988,10 @@ class Block extends IController
 		$data = $sear->query('word like "'.$word.'%"','word as keyword','goods_nums', 'DESC',10);
 		echo JSON::encode($data);
 	}
+    
+    public function showCatAd()
+    {
+        $id = IReq::get('id') ? IReq::get('id') : 0;         
+        echo JSON::encode(ad::show('导航右侧', $id, 0, true));
+    }
 }

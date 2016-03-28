@@ -140,7 +140,7 @@
 		<ul id="nav">
         {foreach:items = $this->timeList}  
         {set:$time = date('H:i', strtotime($item['start_time']))}
-        {set:$sign = $key+1}
+        {set:$sign = $key+3}
         {if:strtotime($item['start_time']) < time() && strtotime($item['end_time']) > time()}
         {set:$end=strtotime($item['end_time'])-time()}
         <li id="one1" onclick="getOnTimeList('{$item['start_time']}',1)">

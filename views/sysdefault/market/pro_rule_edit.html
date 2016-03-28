@@ -1,4 +1,6 @@
 {js:my97date}
+{js:artTemplate}
+<script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 <script type="text/javascript" src="{theme:javascript/event.js}"></script>
 <div class="headbar">
 	<div class="position"><span>营销</span><span>></span><span>促销活动管理</span><span>></span><span>{if:isset($this->promotionRow['id'])}编辑{else:}添加{/if}促销活动</span></div>
@@ -9,7 +11,7 @@
 </div>
 <div class="content_box">
 	<div class="content form_content">
-		<form action="{url:/market/pro_rule_edit_act}"  method="post" name='pro_rule_edit'" callback='invalid_callback("rule_table");'>
+		<form action='{url:/market/pro_rule_edit_act}' method="post" name="pro_rule_edit" callback="invalid_callback('rule_table');">
 			<input type='hidden' name='id' />
 			<table class="form_table" name="rule_table">
 				<col width="150px" />
@@ -27,7 +29,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th>允许参与人群：</th>
+					<th valign="top">允许参与人群：</th>
 					<td>
 						<ul class='attr_list clearfix'>
 							<li><label class='attr'><input type='checkbox' name='group_all' value='all' onclick='select_all();' />全部</label></li>
@@ -75,6 +77,54 @@
 				</tr>
 				<tr id='rule_box'>
 				</tr>
+                <tr class="js_select_goods" style="display: none;">
+                <th>选择活动商品：</th>
+                <td><button type='button' onclick="searchGoods('{url:/block/search_goods/type/checkbox/is_products/0/seller_id/0}',storeNumsCallback);" class='btn'><span>选择商品</span></button>
+                <label><input type="checkbox" name="select_all" value="1" {if:!$this->promotionRow['goods_id']} checked {/if}>所有平台商品</label>
+                </td>
+                </tr>
+                <tr class="js_select_goods" style="display: none;">
+                    <th></th>
+                    <td>
+                        <table class='border_table' style='width:65%'>
+                            <tbody id='store_list'>
+                                {if:$this->goodsList}
+                                     {foreach:items=$this->goodsList}
+                                        <tr class="td_c">
+                                            <td><img src="{webroot:{$item['img']}}" style="max-width:140px;max-height:50px;" /></td>
+                                            <td>{$item['goods_no']}</td>
+                                            <td>{$item['name']}
+                                                <input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/>
+                                            </td>
+                                            <td><a href="javascript:;" onclick="remove_goods(this)">移除</a></td>
+                                        </tr>
+                                     {/foreach}
+                                {/if}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="js_select_area" style="display: none;">
+                    <th>支持的免运费的地区:</th>
+                    <td>
+                        <div id="deliveryAreaBox"></div>
+
+                        <!--地域设定模板-->
+                        <script type='text/html' id='deliveryTemplate'>
+                        <div class='content_box' style='padding:6px'>
+                            <input type='hidden' name='area_groupid[]' value='<%=area_groupid%>' />
+                            选择地区：
+                            <div name='area_box' style='display:inline'>
+                                
+                            </div>
+                            <button type="button" class="btn" onclick='addProvince(this);'><span class="add">添加</span></button>
+                            <label class='attr'><a href="javascript:void(0)" onclick="js_remove(this)"><img alt="删除" src="{skin:images/admin/icon_del.gif}" class="operator"/></a></label>
+                            <p><textarea name="areaName" readonly="readonly" disabled='disabled' style='width:85%'><%=areaname%></textarea>已选择的地区</p>
+                        </div>
+                        </script>
+                        <button type="button" class="btn js_add_area" onclick='addArea(this)'><span class="add">添加地区</span></button><label>不选表示全部地区</label>
+                    </td>
+                </tr>
 			</table>
 			<button class="submit" type='submit'><span>确 定</span></button>
 		</form>
@@ -82,7 +132,191 @@
 </div>
 
 <script type='text/javascript'>
+    //输入筛选商品的条件
+    function storeNumsCallback(goodsList)
+    {
+        goodsList.each(function()
+        {
+            var temp = $.parseJSON($(this).attr('data'));
+            if(!temp.product_id)temp.product_id = 0;
+            //var spec_str = getSpec(temp.spec_array);
+            var content = {
+                "data":
+                {
+                    "goods_id":temp.goods_id,
+                    "goods_no":temp.goods_no,
+                    "name":temp.name,
+                    "img":temp.img,
+                }
+            };
+            //window.realAlert(key);
+            relationCallBack(content);
+        });
+    }
+    //关联商品回调处理函数
+    function relationCallBack(content)
+    {
+        var appendTo = $('#store_list');
+        //var n = $('#store_list>tr').length;
+        if(content)
+        {
+            var ids = [];
+            $("input[name^=goods_id]").each(function(){
+                ids.push($(this).val());
+            })
+            if($.inArray(content['data']['goods_id'],ids) == -1)
+            {
+                var imgUrl = "{webroot:@url@}";
+                imgUrl     = imgUrl.replace("@url@",content['data']['img']);
 
+                var html =  '<tr  class="td_c">'+
+                 '<td><img src="'+imgUrl+'" style="max-width:140px;max-height:50px;" /></td>'
+                            +'<td>'+content['data']['goods_no']+'</td>'
+                            +'<td>'+content['data']['name']
+                            +'<input type="hidden" name="goods_id[]" value="'+content['data']['goods_id']+'"/></td>'
+                            +'<td><a href="javascript:;" onclick="remove_goods(this)">移除</a></td>'
+                            +'</tr>';
+            }
+            else{
+                alert('商品不能重复添加');
+            }
+            appendTo.append(html);
+        }
+    }
+    $(function(){
+        {if:isset($this->promotionRow['area_groupid']) && $this->promotionRow['area_groupid']!=''}
+        var area_groupid = {echo:JSON::encode($this->promotionRow['area_groupid'])};
+        for(var index in area_groupid)
+        {
+            var areaname = [];
+            var idArray  = area_groupid[index].split(';');
+            for(var i in idArray)
+            {
+                if(idArray[i])
+                {
+                    areaname.push(getAreaName(idArray[i]));
+                }
+            }
+            var areaHtml = template.render('deliveryTemplate',{"area_groupid":area_groupid[index],"areaname":areaname.join(',')});
+            $('#deliveryAreaBox').append(areaHtml);
+            
+        }
+        $('[name=area_box]').append($('.area').eq(0).clone(true).css('display','inline'));
+        $('.js_add_area').hide();
+        {/if}
+        
+        //初始化地域联动
+        template.compile("areaTemplate",areaTemplate);
+        createAreaSelect('province',0,'');
+    })
+    function js_remove(_t)
+    {
+        $(_t).parent().parent().remove();
+        $('.js_add_area').show();
+    }
+    
+    //移除所选商品
+    function remove_goods(obj)
+    {
+        $(obj).parent().parent().remove();
+    }
+    function createAreaSelect(name,parent_id,select_id,next)
+    {
+        //生成地区
+        $.getJSON("{url:/block/area_child}",{"aid":parent_id,"random":Math.random()},function(json)
+        {
+            if(next){
+                next.html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
+            }else
+            $('[name="'+name+'"]').html(template.render('areaTemplate',{"select_id":select_id,"data":json}));
+        });
+    }
+    /**
+     * 切换城市地区
+     * @param _self 地域对象
+     */
+    function areaChangeCallback_more(_self)
+    {
+        var parent_id = _self.value;
+        var childName = $(_self).attr('child');
+        var next = $(_self).next('select');
+
+        if(!childName)
+        {
+            return;
+        }
+
+        //拆分子对象
+        var childArray = childName.split(',');
+        for(var index in childArray)
+        {
+            $(_self).parent().find('select[name="'+childArray[index]+'"]').empty();
+        }
+
+        //生成js联动菜单
+        createAreaSelect(childArray[0],parent_id,'',next);
+    }
+    //添加地域项
+    function addArea(_t)
+    {
+        $(_t).hide();
+        var areaHtml = template.render('deliveryTemplate',{});
+        $('#deliveryAreaBox').append(areaHtml);
+        $('#deliveryAreaBox').find('.content_box:last').find('[name=area_box]').append($('.area').eq(0).clone(true).css('display','inline'));
+        
+    }
+
+    //获取省份名称
+    function getAreaName(provinceId)
+    {
+        var areaNameList = {echo:JSON::encode($this->area)};
+        return areaNameList[provinceId];
+    }
+
+    //添加省份城市区域
+    function addProvince(_self)
+    {
+        var parentObject = $(_self).parent();
+        var selectObj    = parentObject.find('select');
+        var selectPro = parentObject.find('select[name=province]');
+        var selectCity = parentObject.find('select[name=city]');
+        var selectArea = parentObject.find('select[name=area]');
+        var selectAreaId = '';
+        if(selectArea.val()){
+            selectAreaId = selectArea.val();
+        }else if(selectCity.val()){
+            selectAreaId = selectCity.val();
+        }else if(selectPro.val()){
+            selectAreaId = selectPro.val();
+        }
+        if(selectAreaId=='')return false;
+        
+        //当前选中的地区ID
+        var areaGroupId = parentObject.find('input[name="area_groupid[]"]').val();
+
+        //当前选中的地区NAME
+        var areaGroupName = parentObject.find('textarea[name="areaName"]').val();
+
+        //填写areaId
+        if(areaGroupId == '')
+        {
+            parentObject.find('input[name="area_groupid[]"]').val(";" + selectAreaId + ";");
+        }
+        else if(areaGroupId.indexOf(";" + selectAreaId + ";") == -1)
+        {
+            parentObject.find('input[name="area_groupid[]"]').val(areaGroupId + selectAreaId + ";");
+        }
+        else
+        {
+            alert('该区域已经添加，不要重复添加');
+            return;
+        }
+
+        //添加areaName
+        areaGroupName = areaGroupName == '' ? selectObj.find('option:selected').text() : areaGroupName + "," + selectObj.find('option:selected').text();
+        areaGroupName = areaGroupName.replace(/请选择/g,'');
+        parentObject.find('textarea[name="areaName"]').val(areaGroupName);
+    }
 	//校验回调
 	function invalid_callback(nameVal)
 	{
@@ -163,7 +397,7 @@
 						+"<label>* 购物车总额</label></td>";
 			}
 			break;
-
+            
 			case "7":
 			{
 				html = "<th>赠送经验：</th>"
@@ -174,6 +408,16 @@
 		}
 		$('#rule_box').html(html);
 		formObj.setValue('award_value',"{$this->promotionRow['award_value']}");
+        if(selectVal == 6)
+        {
+            $('.js_select_goods').hide();
+            $('.js_select_area').show();
+        }
+        else
+        {
+            $('.js_select_goods').show();
+            $('.js_select_area').hide();
+        }
 	}
 
 	//选择参与人群
@@ -229,3 +473,8 @@
 		$('ul[name="conf_menu"] li:eq('+indexVal+')').attr('class','selected');
 	}
 </script>
+<div class='area ' style='display:none'>
+<select name="province" child="city,area" onchange="areaChangeCallback_more(this);"></select>
+<select name="city" child="area" parent="province" onchange="areaChangeCallback_more(this);"></select>
+<select name="area" parent="city"></select>
+</div>

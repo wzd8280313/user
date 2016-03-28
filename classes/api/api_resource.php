@@ -531,11 +531,7 @@ return array(
     //用户中心-商品评价
     'getUcenterEvaluation' => array(
         'file' => 'ucenter.php','class' => 'APIUcenter'
-    ),
-	//用户中心-商品评价
-	'getUcenterCommentReply' => array(
-		'file' => 'ucenter.php','class' => 'APIUcenter'
-	),
+    ), 
 	//用户中心-收藏夹
 	'getUcenterFavoriteByCatid'=>array(
 		'query'=>array(

@@ -6,8 +6,7 @@
 	$seo_data['description']=$description;
 	seo::set($seo_data);
 	
-}
-
+}               
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
 {foreach:items=$promotion}
@@ -857,7 +856,7 @@ $('[name="showButton"]>label').click(function(){
 		
 				case (3+add):
 				{
-					refer_ajax(1,false,{$this->type});
+					refer_ajax(1,{$this->type});
 				}
 				break;
 		

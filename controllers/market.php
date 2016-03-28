@@ -98,9 +98,19 @@ class Market extends IController
 			'value'     => IFilter::act(IReq::get('value','post')),
 			'start_time'=> IFilter::act(IReq::get('start_time','post')),
 			'end_time'  => IFilter::act(IReq::get('end_time','post')),
-			'point'     => IFilter::act(IReq::get('point','post')),
+            'point'     => IFilter::act(IReq::get('point','post')),
+            'type'     => IFilter::act(IReq::get('type','post'), 'int'),
+			'condition'     => IReq::get('condition','post') ? IFilter::act(IReq::get('condition','post'), 'int') : 0,
 		);
-
+        if(IFilter::act(IReq::get('start_time','post')) >= IFilter::act(IReq::get('end_time','post')))
+        {
+            $ticketObj       = new IModel('ticket');
+            $where           = 'id = '.$id;
+            $this->ticketRow = $ticketObj->getObj($where);
+            $this->redirect('ticket_edit', false);
+            Util::showMessage('请填写正确的时间');         
+            return;
+        }
 		$ticketObj->setData($dataArray);
 		if($id)
 		{
@@ -434,7 +444,28 @@ class Market extends IController
 		{
 			$promotionObj = new IModel('promotion');
 			$where = 'id = '.$id;
-			$this->promotionRow = $promotionObj->getObj($where);
+			$promotionRow = $promotionObj->getObj($where);
+            $promotionRow['area_groupid'] = unserialize($promotionRow['area_groupid']) ;
+            $area = array();
+            $goodsList = array();
+            if( $promotionRow['area_groupid']){
+                    
+                foreach($promotionRow['area_groupid'] as $key=>$val){
+                    $tem_arr = explode(';',$val);
+                    foreach($tem_arr as $v){
+                        if($v!='')
+                            $area[$v] = area::getNameStr($v);
+                    }
+                }
+            }
+            $this->area = $area;
+            if($promotionRow['goods_id'])
+            {
+                $goods = new IModel('goods');
+                $goodsList = $goods->query('id in ('.$promotionRow['goods_id'].')', 'id as goods_id,name,img,goods_no');
+            }                       
+            $this->goodsList = $goodsList;
+            $this->promotionRow = $promotionRow;                          
 		}
 		$this->redirect('pro_rule_edit');
 	}
@@ -442,7 +473,8 @@ class Market extends IController
 	//[促销活动] 添加修改 [动作]
 	function pro_rule_edit_act()
 	{
-		$id = IFilter::act(IReq::get('id'),'int');
+        $id = IFilter::act(IReq::get('id'),'int');
+		$award_type = IFilter::act(IReq::get('award_type','post'));
 		$promotionObj = new IModel('promotion');
 
 		$group_all    = IReq::get('group_all','post');
@@ -459,19 +491,35 @@ class Market extends IController
 				$user_group_str = join(',',$user_group);
 				$user_group_str = ','.$user_group_str.',';
 			}
-		}
-
+		}                         
+        $gId = IReq::get('goods_id');               
+        //$gId = $award_type == 5 ? array() : '';
+        if(IReq::get('select_all') || empty($gId))
+        {
+            $goods = new IModel('goods');
+            $gId = $goods->getFields(array('is_del'=>0,'seller_id'=>0), 'id');          
+        }
+        else
+        {
+            $gId = array_unique($gId);   
+        }     
+        $goods_id = join(',', $gId);                             
+        //支持免费配送的地区ID
+        $area_groupid = $award_type == 6 ? serialize(IReq::get('area_groupid')) : '';
 		$dataArray = array(
-			'name'       => IFilter::act(IReq::get('name','post')),
-			'condition'  => IFilter::act(IReq::get('condition','post')),
-			'is_close'   => IFilter::act(IReq::get('is_close','post')),
-			'start_time' => IFilter::act(IReq::get('start_time','post')),
-			'end_time'   => IFilter::act(IReq::get('end_time','post')),
-			'intro'      => IFilter::act(IReq::get('intro','post'),'text'),
-			'award_type' => IFilter::act(IReq::get('award_type','post')),
-			'type'       => 0,
-			'user_group' => $user_group_str,
-			'award_value'=> IFilter::act(IReq::get('award_value','post')),
+			'name'          => IFilter::act(IReq::get('name','post')),
+			'condition'     => IFilter::act(IReq::get('condition','post')),
+			'is_close'      => IFilter::act(IReq::get('is_close','post')),
+			'start_time'    => IFilter::act(IReq::get('start_time','post')),
+			'end_time'      => IFilter::act(IReq::get('end_time','post')),
+			'intro'         => IFilter::act(IReq::get('intro','post'),'text'),
+			'award_type'    => $award_type,
+			'type'          => 0,
+			'user_group'    => $user_group_str,
+			'award_value'   => IFilter::act(IReq::get('award_value','post')),
+            'seller_id'      => 0,
+            'goods_id'      => $goods_id,
+            'area_groupid'  => $area_groupid,
 		);
 
 		$promotionObj->setData($dataArray);
@@ -726,23 +774,51 @@ class Market extends IController
         {
             $dataArray['start_time'] = IFilter::act(IReq::get('start_time1','post'));
             $dataArray['end_time'] = IFilter::act(IReq::get('end_time1','post'));
-            if($regimentObj->getObj('type=2 and is_close=0 and end_time>"'.$dataArray['start_time'].'" and start_time < "'.$dataArray['start_time'].'"') || $regimentObj->getObj('type=2 and is_close=0 and start_time<"'.$dataArray['end_time'].'" and end_time > "'.$dataArray['end_time'].'"'))
+            if(!$dataArray['is_close'])
             {
-                $this->regimentRow = $dataArray;
-                $this->redirect('regiment_edit',false);
-                Util::showMessage('该时间段已有整点团购，不能开启新的团购');
+                if($regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and end_time>"'.$dataArray['start_time'].'" and start_time < "'.$dataArray['start_time'].'"') || $regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and start_time<"'.$dataArray['end_time'].'" and end_time > "'.$dataArray['end_time'].'"'))
+                {
+                    $this->regimentRow = $dataArray;
+                    $this->redirect('regiment_edit',false);
+                    Util::showMessage('该时间段已有整点团购，不能开启新的团购');
+                }
             }
+            
         }
         else
         {
             $dataArray['start_time'] = IFilter::act(IReq::get('start_time','post'));
             $dataArray['end_time'] = IFilter::act(IReq::get('end_time','post'));
         }
-
+        if($dataArray['end_time'] <= $dataArray['start_time'])
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('结束时间不能早于开始时间');
+        }
+        $goods_store_nums = IFilter::act(IReq::get('goods_store_nums', 'post'), 'int');
+        if($dataArray['store_nums'] > $goods_store_nums)
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('团购库存量不能大于商品库存量'); 
+        }
+        if($dataArray['limit_max_count'] <> 0 && $dataArray['limit_max_count'] > $dataArray['store_nums'])
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('团购最大量不能大于团购库存量');
+        }
+        if($dataArray['limit_max_count'] <> 0 && $dataArray['limit_max_count'] < $dataArray['limit_min_count'])
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('团购最小量不能大于团购最大量');
+        }
 		if($goodsId)
 		{
 			$presell_db = new IModel('presell');
-			if($presell_db->getObj('goods_id='.$goodsId,'id')){
+			if($presell_db->getObj('goods_id='.$goodsId.' and is_close = 0','id')){
 				$this->redirect('regiment_edit',false);
 				Util::showMessage('已参加预售商品不能参加团购');
 			}
@@ -1122,9 +1198,12 @@ class Market extends IController
 	} 
 	public function is_tuan(){
 		$goods_id = IFilter::act(IReq::get('goods_id'),'int');
-		$tuan_db = new IModel('regiment');
-		if($tuan_db->getObj('goods_id='.$goods_id,'id'))
+        $tuan_db = new IModel('regiment');
+		$presell_db = new IModel('presell');
+		if($tuan_db->getObj('goods_id='.$goods_id.' and is_close = 0','id'))
 			echo 1;
+        elseif($presell_db->getObj('goods_id='.$goods_id.' and is_close = 0','id'))
+            echo 2;
 		else echo 0;
 	}
 	//营销参数编辑

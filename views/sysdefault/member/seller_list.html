@@ -29,7 +29,8 @@
 	<div class="searchbar">
 		<form action="{url:/}" method="get" name="searchListForm">
 			<input type='hidden' name='controller' value='member' />
-			<input type='hidden' name='action' value='seller_list' />
+            <input type='hidden' name='action' value='seller_list' />
+			<input type='hidden' name='search[is_lock]' value='{$this->is_lock}' />
 			<select class="auto" name="search[is_recom]">
 				<option value="">选择会员</option>
 				<option value="1">推荐商户</option>

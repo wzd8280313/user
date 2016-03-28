@@ -17,10 +17,21 @@
 						<label>* 请为此组代金券命名</label>
 					</td>
 				</tr>
+                <tr>
+                    <th>代金券面额：</th>
+                    <td><input type='text' class='small' pattern='float' alt='必须填写数字' name='value' />元<label>* 请填写此组代金券所能抵销的金额</label></td>
+                </tr>
 				<tr>
-					<th>代金券面额：</th>
-					<td><input type='text' class='small' pattern='float' alt='必须填写数字' name='value' />元<label>* 请填写此组代金券所能抵销的金额</label></td>
+					<th>代金券类型：</th>
+					<td>
+                    <label class='attr'><input type='radio' name='type' value='1' />阳券</label>
+                    <label class='attr'><input type='radio' name='type' value='2' />泉券</label>
+                    </td>
 				</tr>
+                <tr style="display: none;">
+                    <th>购物车总金额条件：</th>
+                    <td><input type='text' name='condition' class='small' pattern='float' alt='请填写一个金额数字' />元 <label>* 当购物车总金额达到所填写的现金额度时规则生效</label></td>
+                </tr>
 				<tr>
 					<th>有效时间段：</th>
 					<td>
@@ -49,8 +60,13 @@
 		'start_time':'{$this->ticketRow['start_time']}',
 		'end_time':'{$this->ticketRow['end_time']}',
 		'value':'{$this->ticketRow['value']}',
-		'point':'{$this->ticketRow['point']}'
+        'point':'{$this->ticketRow['point']}',
+        'type':'{$this->ticketRow['type']}',
+		'condition':'{$this->ticketRow['condition']}'
 	});
+    $(function(){
+        js_change({$this->ticketRow['type']});
+    })
 
 	//当修改操作时禁止修改金额
 	if($('[name="id"]').val())
@@ -58,4 +74,19 @@
 		$('[name="value"]').attr('readonly',true);
 		$('[name="value"]').css('background','#bbb');
 	}
+    $('input[name=type]').click(function(){
+        var _id = $(this).val();
+        js_change(_id);
+    })
+    function js_change(id)
+    {
+        if(id == 1)
+        {
+            $('input[name=condition]').attr('disabled', 'disabled').parents('tr').hide();
+        }
+        else
+        {
+            $('input[name=condition]').removeAttr('disabled').parents('tr').show();
+        }
+    }
 </script>
