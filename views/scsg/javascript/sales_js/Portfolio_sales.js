@@ -24,6 +24,39 @@ $(document).ready(function(){
 
 })
    
+
+
+/*组合销售遮罩层*/
+	
+$(document).ready(function(){
+     $(".liji").click(function(){
+      $(".mask_layer,.port_overlay").css("display","block");
+      $(".J_ComboBuy").show();
+      $(".J_ComboAddCart").hide();
+
+  });
+     $(".overlay_close,.mask_layer").click(function(){
+      $(".mask_layer,.port_overlay").css("display","none");
+  });
+    $(".gouwu").click(function(){
+      $(".mask_layer,.port_overlay").css("display","block"); 
+      $(".J_ComboBuy").hide();
+      $(".J_ComboAddCart").show();
+  });
+});
+	
+
+	
+	/*规格选择*/	
+
+
+	$(document).ready(function(){
+  $(".chooice_clor").click(function(){
+   $(this).toggleClass("have_style");
+  
+  });            
+});
+
         
 
 

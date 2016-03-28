@@ -139,3 +139,309 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
     display: block;
     margin: 10px 0;
 }
+
+
+/* 遮罩层 */
+.mask_layer{width: 100%; left: 0px; top: 0px; height: 100%; position: fixed; -webkit-user-select: none; 
+ z-index: 999;background-color: #000;opacity: 0.6;}
+.port_overlay {
+    z-index: 9999;
+    width: 990px;
+    height: 550px;
+    left: 15%;
+    top: 100px;
+    position: fixed;
+}
+.overlay-content{background-color: #fff;}
+.portialog .portheader {
+    padding: 10px 20px;
+}
+.port_body {
+    padding-left: 20px;
+    background-color: #f5f5f5;
+}
+.port_title{line-height:50px;
+    color: #666;} 
+.port_title b{ color: red; margin-right: 3px;}
+.port_scroll {
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    height: 360px;
+}
+.port_item {
+    background-color: #fff;
+    width: 455px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+}
+.item_img {
+    float: left;
+    width: 60px;
+    margin: 10px;
+    text-align: center;
+    margin-top: 15px;
+}
+.port_meta {
+    float: left;
+    width: 365px;
+}
+.port_meta dl {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+.port_meta .prot_prop {
+    padding-bottom: 4px;
+    padding-top: 4px;
+    line-height: 20px;
+    clear: both;
+}
+
+.prot_prop dt {
+    float: left;
+    margin-top: 4px;
+}
+.port_meta .prot_prop dd {
+    width: 270px;
+    margin-left: 85px;
+    float: none;
+}
+.prot_prop dd {
+    width: 420px;
+    float: left;
+}
+ul, ol {
+    list-style: none;
+}
+.prot_color li {
+    float: left;
+    position: relative;
+    margin: 0 4px 4px 0;
+    line-height: 20px;
+    vertical-align: middle;
+    padding: 1px;
+}
+.prot_color li.pt_img a{
+    width: 32px!important;
+    height: 32px;
+    padding: 0;
+    line-height: 32px;
+    background-repeat: no-repeat;
+    outline: 0;
+    background-position: center center;
+    margin: -2px;
+}         
+
+
+.prot_prop li a:hover {
+    border: 2px solid #f15a25;
+    margin: -3px;
+} 
+.prot_prop li a {
+    background-color: #fff;
+    border: 1px solid #b8b7bd;
+    color: #000;
+    float: left;
+    min-width: 10px;
+    padding: 0 9px;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    width: auto !important;
+}
+
+.prot_meta li.pt_img span {
+    display: block;
+    text-indent: -9999em;
+}
+.prot_meta li.pt_img span {
+    padding-left: 1px;
+}
+
+.pt_img a {
+    width: 32px!important;
+    height: 32px;
+    padding: 0;
+    line-height: 32px;
+    background-repeat: no-repeat;
+    outline: 0;
+    background-position: center center;
+}
+.port_meta .prot_prop dd.kucunl {
+    width: 305px;
+    float: left;
+    margin: 0px;
+    line-height: 30px;
+}
+
+.pt_img a img{width: 32px;height: 32px}
+.port_footer {
+    height: 60px;
+    width: 100%;
+    background-color: #000;
+    color: #999;
+}
+.port_footer .ft_buy {
+    float: right;
+    margin: 10px;
+    line-height: 40px;
+    position: relative;
+    z-index: 1;
+}
+ .port_footer .ft_buy input {
+    width: 35px;
+    line-height: 20px;
+    margin: 0 5px;
+}
+.port_footer .ft_buy .ft_totalprice i {
+    font-family: arial,verdana,sans-serif!important;
+    font-style: normal;
+    font-weight: bolder;
+    color: #c40000;
+}
+.port_footer .ft_buy .ft_totalprice s {
+    text-decoration: none;
+    font-weight: bolder;
+    font-size: 18px;
+    color: #c40000;
+}
+.port_footer .ft_buy button {
+    line-height: 40px;
+    background-color: #c40000;
+    overflow: visible;
+    border: 0;
+    color: #fff;
+    padding: 0 15px;
+    border-radius: 1px;
+    cursor: pointer;
+}
+.port_footer .ft_buy .ft_notice {
+    background-color: #fee;
+    color: #c40000;
+    border: 1px solid #f9b3ac;
+    position: absolute;
+    right: 0;
+    top: -37px;
+    line-height: 20px;
+}
+.overlay_close i {width: 44px!important;
+    height: 40px;
+    padding: 0;
+    line-height: 32px;
+    background-repeat: no-repeat;
+    outline: 0;
+    background-position: center center;
+    display: block;
+    position: absolute;
+    right: -40px;
+}
+
+
+
+ .yListr {
+               
+                font-family: "微软雅黑";
+                margin: 12px auto 0 auto;
+}
+
+            .yListr ul {
+                padding-bottom: 10px;
+                margin-bottom: 8px;
+            }
+
+            .yListr ul li {
+                height: 22px;
+                margin-bottom: 15px;
+            }
+
+            .yListr ul li span {
+                color: #000000;
+                font-size: 14px;
+                line-height: 36px;
+                display: inline-block;
+                width: 42px;
+                padding-left: 4px;
+            }
+
+            .yListr ul li em {
+    cursor: pointer;
+    color: #666666;
+    font-size: 12px;
+    display: inline-block;
+    padding: 0 10px;
+    font-style: normal;
+    border: 1px solid #dcdcdc;
+    line-height: 25px;
+    height: 25px;
+}
+
+           .yListr ul li em.yListrclickem {
+    line-height: 25px;
+    border: 2px solid #e9630a;
+    height: 25px;
+    position: relative;
+    padding: 0 9px;
+}
+
+            .yListr ul li em.yListrclickem i {
+                display: block;
+                width: 15px;
+                height: 14px;
+               /*  background: url(../images/sales_img/righbt.png) no-repeat 0 0 ;*/
+               background-position: 0 0;
+               background-repeat: no-repeat ;
+                right: -1px;
+                bottom: -1px;
+                position: absolute;
+            }
+
+            .yListr .colorp00 {
+                color: #333333;
+                font-size: 18px;
+                line-height: 50px;
+            }
+
+            .yListr .colorp00 span {
+                color: #ed610c;
+                font-size: 14px;
+                padding-left: 20px;
+            }
+
+            .yListr .colorp00 em {
+                font-style: normal;
+            }
+
+            .yListr form input, .yListr form select {
+                outline: none;
+                border: 1px solid #dcdcdc;
+                width: 86px;
+                height: 34px;
+                font-size: 14px;
+                color: #333333;
+                padding-left: 8px;
+            }
+
+            .yListr form select {
+                height: 36px;
+            }
+
+            .yListr form .YImmediatelyininstallment {
+                font-size: 24px;
+                color: #ffffff;
+                text-align: center;
+                display: block;
+                width: 332px;
+                height: 50px;
+                line-height: 50px;
+                border-radius: 3px;
+                background: #e9630a;
+                margin-top: 42px;
+            }
+
+            .yListr ul li em img{height: 25px; width: 25px;}
