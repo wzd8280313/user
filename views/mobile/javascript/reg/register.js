@@ -36,14 +36,15 @@ function showPhoneTipWhenBlur(){
 
     }
 	$(".receive_code").addClass('reacquire_code');
-	var phone = $('#mobile').val();
+    var phone = $('#mobile').val();
+	var captcha = $('#validCaptcha').val();
     $.ajax({
         type: "POST",
         url: getMobileCodeUrl,
 		dataType:'json',
         async: false,
-		data : {phone:phone},
-        success: function(a) {
+		data : {phone:phone,captcha:captcha},
+        success: function(a) {    
             if (a) {
                 if (0 == a.errorCode) {
                     var d = $(".receive_code");
@@ -67,8 +68,17 @@ function showPhoneTipWhenBlur(){
                         showErrInfo('网络繁忙，请稍候再试');
                         return
                     } else {
-                        showErrInfo('手机号码格式不正确');
-                        return
+                        if(100001 == a.errorCode)
+                        {
+                            showErrInfo('请输入正确的验证码');
+                            return;
+                        }
+                        else
+                        {
+                            showErrInfo('手机号码格式不正确');
+                            return;
+                        }
+                        
                     }
                 }
             }
