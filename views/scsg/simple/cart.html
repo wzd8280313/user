@@ -84,7 +84,7 @@
 			<tr class="stats">
 
 				<td><input id="ckAll" class="checks" type="checkbox"/>全部</td>
-				<td colspan="2" style="text-align:right;">
+				<td colspan="2" style="text-align:right;border-right: 1px #c5c5c5 solid;">
                     <b id='delivery' style="display: none;">0</b>
 					<!--<span>商品总重量：<b id='weight'>0</b>g</span>--><span>商品总金额：￥<b id='origin_price'>0</b> - 商品优惠：￥<b id='discount_price'>0</b> - 促销活动优惠：￥<b id='promotion_price'>0</b></span><br />
                     金额总计（不含运费）：￥<b class="orange" id='sum_price'>0</b><br />
@@ -101,7 +101,7 @@
 				</td>
 				<td colspan="6" class="t_r">
 					{set:$callback = IFilter::act(IReq::get('callback'),'text');}
-					<a class="btn_gray btn_small mr_10" href="{url:$callback}" style="float:right;">继续购物</a>
+					<a class="btn_gray btn_small mr_10" href="{url:$callback}" style="float:right;margin: 0 10px;">继续购物</a>
 					{if:$this->goodsList}
 					<a class="btn_brown btn_big mr_20" onclick="check_finish();" href='javascript:void(0)'>去结算</a>
 					{/if}
