@@ -1694,5 +1694,90 @@ class Site extends IController
 	function ce(){
 		print_r($_SESSION);
 	}
+    
+    //获取组合销售商品信息
+    function getCombineInfo()
+    {
+        $goods_id = IReq::get('id');
+        $ids = IReq::get('ids');
+        
+        $tb_goods = new IModel('goods');
+        $product_db = new IModel('products');
+      /*  $tb_attribute_goods = new IQuery('goods_attribute as g');
+        $tb_attribute_goods->join  = 'left join attribute as a on a.id=g.attribute_id ';
+        $tb_attribute_goods->fields=' a.name,g.attribute_value ';
+        $tb_attribute_goods->order = "g.id asc";
+        $tb_goods_photo = new IQuery('goods_photo_relation as g');
+        $tb_goods_photo->fields = 'p.id AS photo_id,p.img ';
+        $tb_goods_photo->join = 'left join goods_photo as p on p.id=g.photo_id ';*/
+        
+        //主商品信息
+        $goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)", 'id,name,img,spec_array,store_nums,combine_price,sell_price');
+        $product_db = new IModel('products');
+        $goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
+        $goods_info['product'] = JSON::encode($goods_info['product']);
+        $spec = 0;
+        if($goods_info['spec_array'])
+        {
+            $spec = 1;
+            $specArray = JSON::decode($goods_info['spec_array']);
+            foreach($specArray as $k=>$v)
+            {
+                $specArray[$k]['specVal'] = explode(',',trim($v['value'],','));
+            }
+            $goods_info['spec_array'] = $specArray;
+        }
+    
+        //商品图片
+       /* $tb_goods_photo->where =' g.goods_id='.$goods_id;
+        $goods_info['photo'] = $tb_goods_photo->find();
+        foreach($goods_info['photo'] as $key => $val)
+        {
+            //对默认第一张图片位置进行前置
+            if($val['img'] == $goods_info['img'])
+            {
+                $temp = $goods_info['photo'][0];
+                $goods_info['photo'][0] = $val;
+                $goods_info['photo'][$key] = $temp;
+            }
+        }
+        //获得扩展属性
+        $tb_attribute_goods->where = "goods_id='".$goods_id."' and attribute_id!=''";
+        $goods_info['attribute'] = $tb_attribute_goods->find();        */
+        
+        $goodsList = $tb_goods->query('id in ('.$ids.') AND (is_del=0 or is_del=4)', 'id,name,img,spec_array,store_nums,combine_price,sell_price');
+        foreach($goodsList as $k=>$v)
+        {
+            $v['product'] = $product_db->query('goods_id='.$v['id'],'id,spec_array,store_nums');
+            $goodsList[$k]['product'] = JSON::encode($v['product']); 
+            if($v['spec_array'])
+            {
+                $spec = 1;
+                $specArray = JSON::decode($v['spec_array']);
+                foreach($specArray as $key=>$val)
+                {
+                    $specArray[$key]['specVal'] = explode(',',trim($val['value'],','));
+                }
+                $goodsList[$k]['spec_array'] = $specArray;
+            }                              
+           /* $tb_goods_photo->where =' g.goods_id='.$v['id'];
+            $photo = $tb_goods_photo->find();
+            foreach($photo as $key => $val)
+            {
+                //对默认第一张图片位置进行前置
+                if($val['img'] == $v['img'])
+                {
+                    $temp = $photo[0];
+                    $photo[0] = $val;
+                    $photo[$key] = $temp;
+                }
+            }
+            $goodsList[$k]['photo'] = $photo;
+            $tb_attribute_goods->where = "goods_id='".$v['id']."' and attribute_id!=''";
+            $goodsList[$k]['attribute'] = $tb_attribute_goods->find();*/
+        }                
+        array_unshift($goodsList, $goods_info);
+        echo JSON::encode(array('data' => $goodsList, 'spec' => $spec));
+    }
 	
 }

@@ -23,26 +23,57 @@ $(document).ready(function(){
 	})
 
 })
-   
-
-
 /*组合销售遮罩层*/
-	
 $(document).ready(function(){
-     $(".liji").click(function(){
-      $(".mask_layer,.port_overlay").css("display","block");
-      $(".J_ComboBuy").show();
-      $(".J_ComboAddCart").hide();
-
-  });
+     $(".js_show_chooice").click(function(){
+         var _obj = $(this)
+            ,_id = $(this).attr('js_data');
+         _obj.parent('.sales').siblings('.js_post_data').each(function(){
+             if($(this).hasClass('show'))
+             {
+                var chk_value =[];//定义一个数组      
+                $('input[name="chooise"]:checked').each(function(){   
+                    chk_value.push($(this).val());     
+                });
+                if(chk_value.length == 0)
+                {
+                    return false;
+                }
+                else
+                {                      
+                    var url = _url + '/ids/'+chk_value+'/id/'+_id;
+                    $.getJSON(url,function(json)
+                    {
+                        if(json.spec == 1)
+                        {
+                            $('#combineInfoBox').empty();
+                            for(var item in json.data)
+                            {                                   
+                                var html = template.render('combineInfoTemplate',json.data[item]);      
+                                $('#combineInfoBox').append(html);                    
+                            }
+                            $(".mask_layer,.port_overlay").css("display","block");
+                            if(_obj.hasClass('liji'))
+                            {
+                                $(".J_ComboBuy").show();
+                                $(".J_ComboAddCart").hide();
+                            }
+                            else
+                            {
+                                 $(".J_ComboBuy").hide();
+                                 $(".J_ComboAddCart").show();
+                            }
+                        }
+                    });
+                    
+                }
+             }
+         })
+         
+     });
      $(".overlay_close,.mask_layer").click(function(){
-      $(".mask_layer,.port_overlay").css("display","none");
-  });
-    $(".gouwu").click(function(){
-      $(".mask_layer,.port_overlay").css("display","block"); 
-      $(".J_ComboBuy").hide();
-      $(".J_ComboAddCart").show();
-  });
+        $(".mask_layer,.port_overlay").css("display","none");
+     }); 
 });
 	
 
@@ -54,7 +85,7 @@ $(document).ready(function(){
   $(".chooice_clor").click(function(){
    $(this).toggleClass("have_style");
   
-  });            
+  });               
 });
 
         
