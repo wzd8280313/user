@@ -1,7 +1,7 @@
 function Spec_combine_show(){
     this.product = {};
-    this.new_product =null;
-    this.buy_now_url = buy_now_url;
+    this.new_product =null; 
+    this.buy_now_combine_url = buy_now_combine_url; 
     this.join_cart_url = join_cart_url; 
     this.goods_id    = goods_id; 
     this.init = function(_obj,goods_id,product){
@@ -260,84 +260,117 @@ function Spec_combine_show(){
             }
         }
         //立即购买按钮
-    this.buy_now = function ()
+    this.buy_now = function (obj)
     {
-        var _this = this;
+        var _this = this
+            ,comId = $(obj).attr('js_data')
+            ,error=0;
         //对规格的检查
         $('.yListr').find('ul').each(function(){
             if(!_this.checkSpecSelected(this))
             {
-                $(this).prepend('<li style="color:red">请选择商品的规格</li>');
-                return;
+                if($(this).find('p').length == 0)
+                {
+                    $(this).prepend('<p style="color:red">请选择商品的规格</p>');
+                }
+                error=1;
+            }
+            else
+            {
+                $(this).find('p').remove();
             }
         })
         
-    
-        //设置必要参数
-        var buyNums  = $('#J_SComboAmount').val()
-            ,ids=[]
-            ,type=[];
-        $('.port_item').each(function(){
-            var _p = $(this).attr('js_product_id');
-            if(_p)
-            {
-                ids.push(_p);
-                type.push('product');
-            }
-            else
-            {
-                ids.push($(this).attr('js_goods_id'));
-                type.push('goods');
-            }
-        })
-        var url = this.buy_now_url;
-        url = url.replace('@id@',id).replace('@buyNums@',buyNums).replace('@type@',type);
-    
-        //页面跳转
-        window.location.href = url;
+        if(error == 0)
+        {
+            //设置必要参数
+            var buyNums  = parseInt($('#J_SComboAmount').val())
+                ,ids=''
+                ,type='';
+            $('.port_item').each(function(){
+                var _p = $(this).attr('js_product_id');
+                if(_p != 0)
+                {
+                    ids += '$'+_p;
+                    type += '$product';
+                }
+                else
+                {
+                    ids += '$'+$(this).attr('js_goods_id');
+                    type += '$goods';
+                }
+            })
+            var url = this.buy_now_combine_url;
+            url = url.replace('@id@',ids).replace('@buyNums@',buyNums).replace('@type@',type).replace('@comId@',comId);
+            //页面跳转
+            window.location.href = url;
+        }
     }
     
     //商品加入购物车
-    this.joinCart = function ()
+    this.joinCart = function (obj)
     {
-        var _this=this;
+        var _this=this
+            ,comId = $(obj).attr('js_data')
+            ,error=0
+            ,msg=''
+            ,buyNums=parseInt($('#J_SComboAmount').val());
         $('.yListr').find('ul').each(function(){
             if(!_this.checkSpecSelected(this))
             {
-                $(this).prepend('<li style="color:red">请选择商品的规格</li>');
-                return;
-            }
-        })
-    
-        var buyNums   = parseInt($.trim($('#buyNums').val()));
-        var price     = parseFloat($.trim($('#real_price').text()));
-        var productId = $('#product_id').val();
-        var type      = productId ? 'product' : 'goods';
-        var goods_id  = (type == 'product') ? productId :  this.goods_id;
-    
-        $.getJSON(this.join_cart_url,{"goods_id":goods_id,"type":type,"goods_num":buyNums,"random":Math.random},function(content){
-            
-            if(content.isError == false)
-            {
-                //获取购物车信息
-                $.getJSON(_this.show_cart_url,{"random":Math.random},function(json)
-                {//window.realAlert(JSON.stringify(json));
-                $('#product_myCart').show();
-                    $('[name="mycart_count"]').text(json.count);
-                    $('[name="mycart_sum"]').text(json.sum);
-    
-                    //展示购物车清单
-                    $('#product_myCart').show();
-    
-                    //暂闭加入购物车按钮
-                    $('#joinCarButton').attr('disabled','disabled');
-                });
+                if($(this).find('p').length == 0)
+                {
+                    $(this).prepend('<p style="color:red">请选择商品的规格</p>');
+                }
+                error = 1;
             }
             else
             {
-                alert(content.message);
+                $(this).find('p').remove();
             }
-        });
+        })
+        if(error == 0)
+        {
+            $('.port_item').each(function(){
+                var _p = $(this).attr('js_product_id')
+                    ,goods_id = _p != 0 ? _p : $(this).attr('js_goods_id')
+                    ,type = _p != 0 ? 'product' : 'goods'
+                    ,info = [];
+                $.getJSON(_this.join_cart_url,{"goods_id":goods_id,"type":type,"goods_num":buyNums,"random":Math.random,'comId':comId},function(content){
+                    if(content.isError == false)
+                    {
+                        
+                        //获取购物车信息
+                        /*$.getJSON(_this.show_cart_url,{"random":Math.random},function(json)
+                        {//window.realAlert(JSON.stringify(json));
+                        $('#product_myCart').show();
+                            $('[name="mycart_count"]').text(json.count);
+                            $('[name="mycart_sum"]').text(json.sum);
+            
+                            //展示购物车清单
+                            $('#product_myCart').show();
+            
+                            //暂闭加入购物车按钮
+                            $('#joinCarButton').attr('disabled','disabled');
+                        });*/
+                    }
+                    else
+                    {
+                        msg += ','+content.message;
+                    }
+                });
+                if(msg.length > 0)
+                {
+                    $(".mask_layer,.port_overlay").hide();  
+                    alert(msg)
+                }
+                else
+                {
+                    $(".mask_layer,.port_overlay").hide();
+                    tips('成功加入购物车');  
+                }
+            })
+        }
     }
     
 }

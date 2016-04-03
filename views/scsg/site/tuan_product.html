@@ -24,6 +24,7 @@
 <script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
 <script type='text/javascript' src="{theme:javascript/piczoom.js}"></script>
 <script type='text/javascript' src="{theme:javascript/detail.js}" ></script>
+<script type='text/javascript' src="{theme:javascript/combine.js}" ></script>
 
 <script type='text/javascript' >
 	var product = {$product};
@@ -31,6 +32,7 @@
 	var join_cart_url = '{url:/simple/joinCart}';
 	var goods_id = {$goods_id};
 	var show_cart_url = '{url:/simple/showCart}';
+    var buy_now_combine_url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@/comId/@comId@}';
 	var product_id = {$product_id};
 	var get_product_url = '{url:/site/getProduct}';
 	var max_num = '{$this->tuanData["limit_max_count"]}';
@@ -39,6 +41,7 @@
 	//获取地区
 	var area_url = '{url:/block/area_child}';
 	var delivery_fee_url = '{url:/block/order_delivery}';
+    var spec_combine_show_obj = new Spec_combine_show();
 </script>
 <script type='text/javascript' src="{theme:javascript/tuan_detail.js}" ></script>
 
@@ -328,11 +331,97 @@
 
 {if:!empty($this->combineList)}
 <!--组合销售开始-->
+
+<!-- 遮罩层start -->
+<div class="mask_layer" style="display:none;"></div>
+
+    <div class="port_overlay" style="display:none;">     
+       <a href="javascript:void('close')" class="overlay_close">
+        <i style="background: url({skin:images/sales_img/close_g.png}) center no-repeat;}"></i>
+       </a>
+    
+    <div class="overlay-content">
+        
+    <div class="portialog">
+        <!-- <div class="portheader"></div>   -->
+        <div class="port_body">
+        <div class="port_title"><b>!</b>请选择套餐内的商品信息</div>
+        <div class="port_scroll">
+            <div id='combineInfoBox'></div>
+            <script type='text/html' id='combineInfoTemplate'>
+            <div class="port_item js_data_<%=id%>" <%if(combine_price && combine_price != '0.00'){%> js_data="<%=combine_price%>" <%}else{%>js_data="<%=sell_price%>" <%}%> js_product_id="0" js_goods_id="<%=id%>" >
+                <div class="item_img"><a href="javascript:;" target="_blank" title="<%=name%>" alt="<%=name%>"><img src="{webroot:<%=img%>}"></a>
+                </div>
+                <div class="port_meta">                          
+                    <div class="container">
+                       <div class="demo">
+                       
+                           <div class="yListr">
+                               <%if(spec_array){%>
+                               <ul>
+                                    <%for(var i in spec_array) {%>
+                                    <li><span><%=spec_array[i].name%></span>
+                                    <%if(spec_array[i].type == 1){%>
+                                    <%for(j = 0; j < spec_array[i].specVal.length; j ++) {%>
+                                    <%if(spec_array[i].specVal.length == 1){%>
+                                    <em class="yListrclickem allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><%=spec_array[i].specVal[j]%><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}else{%>
+                                    <em class="allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><%=spec_array[i].specVal[j]%><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}%>
+                                    <%}%>
+                                   <%}else{%>
+                                   <%for(j = 0; j < spec_array[i].specVal.length; j ++) {%>
+                                    <%if(spec_array[i].specVal.length == 1){%>
+                                    <em class="yListrclickem allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><img src="{webroot:<%=spec_array[i].specVal[j]%>}"><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}else{%>
+                                    <em class="allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><img src="{webroot:<%=spec_array[i].specVal[j]%>}"><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}%>
+                                    
+                                    <%}%>
+                                   
+                                   <%}%>
+                                   </li>
+                                   <%}%>
+                               </ul>
+                               <%}%>
+                           </div>
+                       </div>
+                    </div>      
+                </div>
+             </div>
+             </script>
+        </div>    
+     </div>    
+   <!-- 底部结算栏start -->
+         <div class="port_footer">         
+             <div class="ft_buy">        购买<input id="J_SComboAmount" onblur="spec_combine_show_obj.count_price();" value="1">套         
+                 <span class="ft_totalprice">合计<i>¥</i><s class="js_combine_price_data">0.00</s></span>         
+                 <button class="J_ComboBuy js_buyNowButton" onclick="spec_combine_show_obj.buy_now(this);">确定购买套餐</button>
+                 <!--<button class="J_ComboAddCart js_joinCarButton" onclick="spec_combine_show_obj.joinCart(this)" style="display: none;" >确定加入购物车</button> -->        
+                 <span class="ft_notice"></span>     
+         </div> </div>
+         
+      <!-- 底部结算栏end -->
+
+
+
+        </div>
+           </div>
+
+
+
+
+        </div>
+<!-- 遮罩层end -->
+<script type="text/javascript">
+    var _url = '{url:/site/getCombineInfo/}'
+</script>
 <div class="portfolio_sales">
 
 <div class="portfolio">
   <div class="title cf">
-   <ul class="title-list fr cf ">
+ 
+    <ul class="title-list fr cf ">
         {set:$k=0}
         {foreach:$items=$this->combineList item=$combine}
         {set:$k=$k+1}
@@ -346,8 +435,8 @@
    <dd><a href="javascript:;"><img src="{url:/pic/thumb/img/$item[img]/w/60/h/60}" width="150" height="150" alt="" /></a></dd>
    <dd><p class="mt10"> <a href="javascript:;"> {$name} </a></p></dd>
    <dd>
-   <input class="fuxuan" name="combine_id[]" type="checkbox" readonly="readonly" value="{$id}" checked>
-   <p class="pb10">¥<b>{if:$combine_price}{$combine_price}{else:}{$this->tuanData['regiment_price']}{/if}</b></p> </dd>       
+   <input class="fuxuan" name="" type="checkbox" onclick="return false;" value="{$id}" checked>
+   <p class="pb10">¥<b>{if:$combine_price}{$combine_price}{else:}{$sell_price}{/if}</b></p> </dd>       
   </dl>
   <dl class="jiahao">
   <dd><img src="{skin:images/sales_img/jiahao.jpg}" width="30" height="30" alt="加"></dd>
@@ -355,7 +444,7 @@
     {set:$k=0}
     {foreach:$items=$this->combineList item=$combine}
     {set:$k=$k+1}
-    <div class="product {if:$k==1} show {/if}">       
+    <div class="product js_post_data {if:$k==1} show {/if}" js_data="{$combine['id']}">
  
 
     <div class="friend">
@@ -367,14 +456,14 @@
                 <li><a href="{url:/site/products/id/$goods[id]}">
                 <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" width="150" height="150" alt=""></a>
                 <p class="mt10"> <a href="{url:/site/products/id/$goods[id]}">{$goods['name']} </a></p>
-                <input class="fuxuan"  name="combine_id[]" type="checkbox" value="{$goods['id']}" {if:$combine['status']==1} readonly="readonly" checked{/if}>
+                <input class="fuxuan"  name="chooise" type="checkbox" value="{$goods['id']}" {if:$combine['type'] == 1}onclick="return false;" checked="checked"{/if}>
                 <p class="pb10">¥<b>{if:$goods['combine_price']}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</b></p>
                 </li>
             {/foreach}
             </ul>
         </div>
          <div class="mr_frBtnR next"><img src="{skin:images/sales_img/imageNavLeft.gif}" width="50" height="30"></div>
-	<div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
+    <div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
        
     </div>
     
@@ -383,10 +472,10 @@
     </div>
     {/foreach}
       <div class="sales">
-   <a class="combo-price" href="#">套餐价：<i>¥</i><s>5326.00</s></a>
+   <!--<a class="combo-price" href="javascript:;">套餐价：<i>¥</i><s>5326.00</s></a>-->
     
-    <a class="liji" href="#">立即购买</a>
-     <a class="gouwu" href="#">加入购物车</a>
+    <a class="liji js_show_chooice" href="javascript:;" js_data="{$id}">立即购买</a>
+     <!--<a class="gouwu js_show_chooice" href="javascript:;" js_data="{$id}">加入购物车</a>-->
     
           </div>
   </div>

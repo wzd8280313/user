@@ -41,7 +41,7 @@ function check_goods(_this){
 		var delivery = parseFloat($('#delivery').text());
 		var sum_price = parseFloat($('#sum_price').text());
         var delivery_price = parseInt($('#'+dataObj.type+'_delivery_'+dataObj.id).text());
-        var new_count = parseInt($('#'+dataObj.type+'_count_'+dataObj.id).val());
+        var new_count = parseInt($('#'+dataObj.type+'_count_'+dataObj.id).val());                 
 		var goods_price = mathMul(parseFloat(dataObj.sell_price),new_count);//选中商品的价格*数量
 		var goods_reduce = mathMul(parseFloat(dataObj.reduce),new_count);
 		if($(_this).prop('checked')){//
@@ -255,4 +255,29 @@ function cart_reduce(obj)
 		countInput.val(parseInt(countInput.val()) - 1);
 		cartCount(obj,oldCount);
 	}
+}
+
+function checkAllCombine(obj)
+{
+    $(obj).siblings('table').find("input[name^='sub']").prop("checked", $(obj).is(':checked'));
+    if(!$(obj).is(':checked')) {   
+             $('#origin_price').text(0);
+             $('#discount_price').text(0);    
+             $('#delivery').text(0);    
+    }else{
+        var total_price = total_discount = delivery = 0;
+        $(obj).siblings('table').find("input[name^='sub']").each(function(){      
+            var json = JSON.parse($(this).attr('data-json'));  
+            var num = $('#'+json.type+'_count_'+json.id).val();               
+            total_price +=mathMul(parseFloat(json.sell_price),num);
+            total_discount += mathMul(parseFloat(json.reduce),num);
+            delivery += parseFloat(json.delivery);
+        })
+        $('#origin_price').text(total_price.toFixed(2));
+         $('#discount_price').text(total_discount);    
+         $('#delivery').text(delivery);    
+            
+    }
+    prom_ajax();              
+    
 }

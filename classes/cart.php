@@ -15,7 +15,7 @@ class Cart extends IInterceptorBase
 	/*购物车简单cookie存储结构
 	* array [goods]=>array(商品主键=>数量) , [product]=>array( 货品主键=>数量 )
 	*/
-	private $cartStruct = array( 'goods' => array() , 'product' => array() );
+	private $cartStruct = array( 0=> array('goods' => array() , 'product' => array(), 'count' => 0, 'sum' => 0) );
 
 	/*购物车复杂存储结构
 	* [id]   :array  商品id值;
@@ -23,7 +23,7 @@ class Cart extends IInterceptorBase
 	* [info] :array  商品信息 [goods]=>array( ['id']=>商品ID , ['data'] => array( [商品ID]=>array ( [sell_price]价格, [count]购物车中此商品的数量 ,[type]类型goods,product ,[goods_id]商品ID值 ) ) ) , [product]=>array( 同上 ) , [count]购物车商品和货品数量 , [sum]商品和货品总额 ;
 	* [sum]  :int    商品总价格;
 	*/
-	private $cartExeStruct = array('goods' => array('id' => array(), 'data' => array() ),'product' => array( 'id' => array() , 'data' => array()),'count' => 0,'sum' => 0);
+	private $cartExeStruct = array(0=>array('goods' => array('id' => array(), 'data' => array() ),'product' => array( 'id' => array() , 'data' => array()),'count' => 0,'sum' => 0));
 
 	//购物车名字前缀
 	private $cartName    = 'shoppingcart';
@@ -51,42 +51,62 @@ class Cart extends IInterceptorBase
 	 * @param $num 数量
 	 * @param $type goods 或者 product
 	 */
-	public function getUpdateCartData($cartInfo,$gid,$num,$type)
+	public function getUpdateCartData($cartInfoList,$gid,$num,$type,$comId=0)
 	{
 		$gid = intval($gid);
 		$num = intval($num);
 		if($type != 'goods')
 		{
 			$type = 'product';
-		}
-
+		}                                      
 		//获取基本的商品数据
 		$goodsRow = $this->getGoodInfo($gid,$type);
 		if($goodsRow)
 		{
-			//购物车中已经存在此类商品
-			if(isset($cartInfo[$type][$gid]))
-			{
-				if($goodsRow['store_nums'] < $cartInfo[$type][$gid] + $num)
-				{
-					$this->error = '该商品库存不足';
-					return false;
-				}
-				$cartInfo[$type][$gid] += $num;
-			}
+            $cartId = array_keys($cartInfoList);
+            if(in_array($comId, $cartId))
+            {
+                if(isset($cartInfoList[$comId][$type]['data'][$gid]))
+                {
+                    if($goodsRow['store_nums'] < $cartInfoList[$comId][$type]['data'][$gid] + $num)
+                    {
+                        $this->error = '该商品库存不足';
+                        return false;
+                    }
+                    if(!in_array($gid, $cartInfoList[$comId][$type]['id']))
+                    {
+                        $cartInfoList[$comId][$type]['id'][] = $gid;
+                    }
+                    $cartInfoList[$comId][$type]['data'][$gid] += $num;
+                    $cartInfoList[$comId][$type]['count'] += $num;
+                }
 
-			//购物车中不存在此类商品
-			else
-			{
-				if($goodsRow['store_nums'] < $num)
-				{
-					$this->error = '该商品库存不足';
-					return false;
-				}
-				$cartInfo[$type][$gid] = $num;
-			}
-
-			return $cartInfo;
+                //购物车中不存在此类商品
+                else
+                {
+                    if($goodsRow['store_nums'] < $num)
+                    {
+                        $this->error = '该商品库存不足';
+                        return false;
+                    }
+                    $cartInfoList[$comId][$type]['id'][] = $gid;
+                    $cartInfoList[$comId][$type]['data'][$gid] = $num;
+                    $cartInfoList[$comId][$type]['count'] = $num;
+                }
+            }
+            else
+            {
+                $cartInfoList[$comId] = array('goods' => array('id' => array(), 'data' => array() ),'product' => array( 'id' => array() , 'data' => array()),'count' => 0,'sum' => 0);
+                if($goodsRow['store_nums'] < $num)
+                {
+                    $this->error = '该商品库存不足';
+                    return false;
+                }
+                $cartInfoList[$comId][$type]['id'][] = $gid;
+                $cartInfoList[$comId][$type]['data'][$gid] = $num;
+                $cartInfoList[$comId][$type]['count'] = $num;
+            }			
+			return $cartInfoList;
 		}
 		else
 		{
@@ -101,19 +121,18 @@ class Cart extends IInterceptorBase
 	 * @param $num  购买数量
 	 * @param $type 加入类型 goods商品; product:货品;
 	 */
-	public function add($gid, $num = 1 ,$type = 'goods')
+	public function add($gid, $num = 1 ,$type = 'goods', $comId = 0)
 	{
 		//购物车中已经存在此商品
 		$cartInfo = $this->getMyCartStruct();
-
-		if($this->getCartSort($cartInfo) >= $this->maxCount)
+		if($this->getCartSort($cartInfo, $comId) >= $this->maxCount)
 		{
 			$this->error = '加入购物车失败,购物车中最多只能容纳'.$this->maxCount.'种商品';
 			return false;
 		}
 		else
 		{
-			$cartInfo = $this->getUpdateCartData($cartInfo,$gid,$num,$type);
+			$cartInfo = $this->getUpdateCartData($cartInfo,$gid,$num,$type,$comId);
 			if($cartInfo === false)
 			{
 				return false;
@@ -126,38 +145,43 @@ class Cart extends IInterceptorBase
 	}
 
 	//计算商品的种类
-	private function getCartSort($mycart)
+	private function getCartSort($mycart, $comId=0)
 	{
 		$sumSort   = 0;
 		$sortArray = array('goods','product');
 
 		foreach($sortArray as $sort)
 		{
-			$sumSort += count($mycart[$sort]);
+            if(isset($mycart[$comId]))
+            {
+                $sumSort += count($mycart[$comId][$sort]);
+            }
 		}
 		return $sumSort;
 	}
 
 	//删除商品
-	public function del($gid , $type = 'goods')
+	public function del($combine_id = 0, $para = '')
 	{
 		$cartInfo = $this->getMyCartStruct();
-		if($type != 'goods')
-		{
-			$type = 'product';
-		}
-
-		//删除商品数据
-		if(isset($cartInfo[$type][$gid]))
-		{
-			unset($cartInfo[$type][$gid]);
-			$this->setMyCart($cartInfo);
-		}
-		else
-		{
-			$this->error = '购物车中没有此商品';
-			return false;
-		}
+		
+        //删除商品数据
+        if($para == '')
+        {
+            unset($cartInfo[$combine_id]);
+            $this->setMyCart($cartInfo);
+        }
+        else
+        {
+            $tem = explode('-', $para);
+            unset($cartInfo[$combine_id][$tem[0]]['data'][$tem[1]]);
+            $k = array_search($tem[1], $cartInfo[$combine_id][$tem[0]]['id']);
+            if($k !== false)
+            {
+                unset($cartInfo[$combine_id][$tem[0]]['id'][$k]);
+            }
+            $this->setMyCart($cartInfo);
+        }
 	}
 	/**
 	 * @brief
@@ -167,7 +191,17 @@ class Cart extends IInterceptorBase
 	public function del_many($del_arr){
 		if(!empty($del_arr)){
 			foreach($del_arr as $key=>$val){
-				$this->del($del_arr[$key][1],$del_arr[$key][0]);
+                if($key <> 0)
+                {
+                    $this->del($key);
+                }
+				else
+                {
+                    foreach($val as $k => $v)
+                    {
+                        $this->del($key, $v);
+                    }
+                }
 			}
 			return true;
 		}else{
@@ -238,8 +272,8 @@ class Cart extends IInterceptorBase
 	 * @return 获取cartExeStruct数据结构
 	 */
 	public function getMyCart($cartData=null)
-	{
-		$cartName  = $this->getCartName();
+	{                         
+		$cartName  = $this->getCartName();     
 		if($this->saveType == 'session')
 		{
 			$cartValue = ISession::get($cartName);
@@ -247,8 +281,7 @@ class Cart extends IInterceptorBase
 		else
 		{
 			$cartValue = ICookie::get($cartName);
-		}
-
+		}                     
 		if($cartValue == null)
 		{
 			return $this->cartExeStruct;
@@ -261,8 +294,6 @@ class Cart extends IInterceptorBase
 			else{
 				$cartValue = JSON::decode(str_replace(array('&','$'),array('"',','),$cartValue));
 			}
-			//print_r($cartValue);
-			
 			if(is_array($cartValue))
 			{
 				return $this->cartFormat($cartValue);
@@ -297,7 +328,7 @@ class Cart extends IInterceptorBase
 
 	//写入购物车
 	public function setMyCart($goodsInfo)
-	{
+	{                         
 		$goodsInfo = str_replace(array('"',','),array('&','$'),JSON::encode($goodsInfo));
 		$cartName = $this->getCartName();
 		if($this->saveType == 'session')
@@ -316,88 +347,109 @@ class Cart extends IInterceptorBase
 	 * @param  $cartValue 购物车cookie存储结构
 	 * @return array : [goods]=>array( ['id']=>商品ID , ['data'] => array( [商品ID]=>array ([name]商品名称 , [img]图片地址 , [sell_price]价格, [count]购物车中此商品的数量 ,[type]类型goods,product , [goods_id]商品ID值 ) ) ) , [product]=>array( 同上 ) , [count]购物车商品和货品数量 , [sum]商品和货品总额 ;
 	 */
-	private function cartFormat($cartValue)
+	private function cartFormat($cartValueList)
 	{
 		//初始化结果
 		$result = $this->cartExeStruct;
-
 		$goodsIdArray = array();
+        foreach($cartValueList as $com=>$cartValue)
+        {
+		    if(isset($cartValue['goods']['id']) && $cartValue['goods']['id'])
+		    {
+			    $goodsIdArray = $cartValue['goods']['id'];
+			    $result[$com]['goods']['id'] = $goodsIdArray;
+			    foreach($goodsIdArray as $gid)
+			    {
+				    $result[$com]['goods']['data'][$gid] = array(
+					    'id'       => $gid,
+					    'type'     => 'goods',
+					    'goods_id' => $gid,
+					    'count'    => $cartValue['goods']['data'][$gid],
+				    );
 
-		if(isset($cartValue['goods']) && $cartValue['goods'])
-		{
-			$goodsIdArray = array_keys($cartValue['goods']);
-			$result['goods']['id'] = $goodsIdArray;
-			foreach($goodsIdArray as $gid)
-			{
-				$result['goods']['data'][$gid] = array(
-					'id'       => $gid,
-					'type'     => 'goods',
-					'goods_id' => $gid,
-					'count'    => $cartValue['goods'][$gid],
-				);
+				    //购物车中的种类数量累加
+                    if(isset($result[$com]['count']))
+                    {
+                        $result[$com]['count'] += $cartValue['goods']['data'][$gid];
+                    }
+                    else
+                    {
+                        $result[$com]['count'] = $cartValue['goods']['data'][$gid];
+                    }
+			    }
+		    }
 
-				//购物车中的种类数量累加
-				$result['count'] += $cartValue['goods'][$gid];
-			}
-		}
+		    if(isset($cartValue['product']['id']) && $cartValue['product']['id'])
+		    {
+			    $productIdArray          = $cartValue['product']['id'];
+			    $result[$com]['product']['id'] = $productIdArray;
 
-		if(isset($cartValue['product']) && $cartValue['product'])
-		{
-			$productIdArray          = array_keys($cartValue['product']);
-			$result['product']['id'] = $productIdArray;
+			    $productObj     = new IModel('products');
+			    $productData    = $productObj->query('id in ('.join(",",$productIdArray).')','id,goods_id,sell_price');
+			    foreach($productData as $proVal)
+			    {
+				    $result[$com]['product']['data'][$proVal['id']] = array(
+					    'id'         => $proVal['id'],
+					    'type'       => 'product',
+					    'goods_id'   => $proVal['goods_id'],
+					    'count'      => $cartValue['product']['data'][$proVal['id']],
+					    'sell_price' => $proVal['sell_price'],
+				    );
 
-			$productObj     = new IModel('products');
-			$productData    = $productObj->query('id in ('.join(",",$productIdArray).')','id,goods_id,sell_price');
-			foreach($productData as $proVal)
-			{
-				$result['product']['data'][$proVal['id']] = array(
-					'id'         => $proVal['id'],
-					'type'       => 'product',
-					'goods_id'   => $proVal['goods_id'],
-					'count'      => $cartValue['product'][$proVal['id']],
-					'sell_price' => $proVal['sell_price'],
-				);
+				    if(!in_array($proVal['goods_id'],$goodsIdArray))
+				    {
+					    $goodsIdArray[] = $proVal['goods_id'];
+				    }
 
-				if(!in_array($proVal['goods_id'],$goodsIdArray))
-				{
-					$goodsIdArray[] = $proVal['goods_id'];
-				}
+				    //购物车中的种类数量累加
+                    if(isset($result[$com]['count']))
+                    {
+                        $result[$com]['count'] += $cartValue['product']['data'][$proVal['id']];
+                    }
+                    else
+                    {
+                        $result[$com]['count'] = $cartValue['product']['data'][$proVal['id']];
+                    }
+			    }
+		    } 
+            if($goodsIdArray) 
+            {
+                $goodsArray = array();
 
-				//购物车中的种类数量累加
-				$result['count'] += $cartValue['product'][$proVal['id']];
-			}
-		}
+                $goodsObj   = new IModel('goods');
+                $goodsData  = $goodsObj->query('id in ('.join(",",$goodsIdArray).')','id,name,img,sell_price');
+                foreach($goodsData as $goodsVal)
+                {
+                    $goodsArray[$goodsVal['id']] = $goodsVal;
+                }
 
-		if($goodsIdArray)
-		{
-			$goodsArray = array();
+                foreach($result[$com]['goods']['data'] as $key => $val)
+                {
+                    $result[$com]['goods']['data'][$key]['img']        = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
+                    $result[$com]['goods']['data'][$key]['name']       = $goodsArray[$val['goods_id']]['name'];
+                    $result[$com]['goods']['data'][$key]['sell_price'] = $goodsArray[$val['goods_id']]['sell_price'];
 
-			$goodsObj   = new IModel('goods');
-			$goodsData  = $goodsObj->query('id in ('.join(",",$goodsIdArray).')','id,name,img,sell_price');
-			foreach($goodsData as $goodsVal)
-			{
-				$goodsArray[$goodsVal['id']] = $goodsVal;
-			}
+                    //购物车中的金额累加
+                    if(isset($result[$com]['sum']))
+                    {
+                        $result[$com]['sum']   += $goodsArray[$val['goods_id']]['sell_price'] * $val['count'];
+                    }
+                    else
+                    {
+                        $result[$com]['sum']   = $goodsArray[$val['goods_id']]['sell_price'] * $val['count'];
+                    }
+                }
 
-			foreach($result['goods']['data'] as $key => $val)
-			{
-				$result['goods']['data'][$key]['img']        = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
-				$result['goods']['data'][$key]['name']       = $goodsArray[$val['goods_id']]['name'];
-				$result['goods']['data'][$key]['sell_price'] = $goodsArray[$val['goods_id']]['sell_price'];
+                foreach($result[$com]['product']['data'] as $key => $val)
+                {
+                    $result[$com]['product']['data'][$key]['img']  = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
+                    $result[$com]['product']['data'][$key]['name'] = $goodsArray[$val['goods_id']]['name'];
 
-				//购物车中的金额累加
-				$result['sum']   += $goodsArray[$val['goods_id']]['sell_price'] * $val['count'];
-			}
-
-			foreach($result['product']['data'] as $key => $val)
-			{
-				$result['product']['data'][$key]['img']  = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
-				$result['product']['data'][$key]['name'] = $goodsArray[$val['goods_id']]['name'];
-
-				//购物车中的金额累加
-				$result['sum']   += $result['product']['data'][$key]['sell_price'] * $val['count'];
-			}
-		}
+                    //购物车中的金额累加
+                    $result[$com]['sum']   += $result[$com]['product']['data'][$key]['sell_price'] * $val['count'];
+                }
+            }
+        }
 		return $result;
 	}
 

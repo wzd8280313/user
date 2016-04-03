@@ -443,7 +443,7 @@ class Site extends IController
         
         //组合销售
         $combine = new IModel('combine_goods');
-        $combineList = $combine->query('goods_id = '.$goods_id.' and status <> 3', '*', 'sort', 'asc');
+        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
         foreach($combineList as $k => $v)
         {
             if(!$v['combine'])
@@ -1004,7 +1004,7 @@ class Site extends IController
         
         //组合销售
         $combine = new IModel('combine_goods');
-        $combineList = $combine->query('goods_id = '.$goods_id.' and status <> 3', '*', 'sort', 'asc');
+        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
         foreach($combineList as $k => $v)
         {
             if(!$v['combine'])

@@ -275,10 +275,11 @@ class Simple extends IController
     	$goods_id   = intval(IReq::get('goods_id'));
     	$goods_num  = IReq::get('goods_num') === null ? 1 : intval(IReq::get('goods_num'));
     	$type       = IFilter::act(IReq::get('type'));
+        $comId = IReq::get('comId') ? IFilter::act(IReq::get('comId'), 'int') : 0;
 
 		//加入购物车
     	$cartObj   = new Cart();
-    	$addResult = $cartObj->add($goods_id,$goods_num,$type);
+    	$addResult = $cartObj->add($goods_id,$goods_num,$type,$comId);
     
     	if($link != '')
     	{
@@ -410,12 +411,21 @@ class Simple extends IController
     function showCart()
     {
     	$cartObj  = new Cart();
-    	$cartList = $cartObj->getMyCart();
-    	
-    	$data['data'] = array_merge($cartList['goods']['data'],$cartList['product']['data']);
-    	$data['count']= $cartList['count'];
-    	$data['sum']  = $cartList['sum'];
-    	echo JSON::encode($data);
+    	$cartListCombine = $cartObj->getMyCart();
+        $data = array();
+        $dataList = array('count' => 0, 'sum' => 0);
+        foreach($cartListCombine as $key=>$cartList)
+        {
+            $data[$key]['data'] = array_merge($cartList['goods']['data'],$cartList['product']['data']);
+            $data[$key]['count']= $cartList['count'];
+            $data[$key]['sum']  = $cartList['sum'];
+        }
+        foreach($data as $v)
+        {
+            $dataList['count'] += $v['count'];
+            $dataList['sum'] += $v['sum'];
+        }
+    	echo JSON::encode($dataList);
     }
 
     //购物车页面及商品价格计算[复杂]
@@ -438,9 +448,8 @@ class Simple extends IController
     	$this->count     = $result['count'];
     	$this->reduce    = $result['reduce'];
     	$this->weight    = $result['weight'];
-    
     	//将商品按商家分开
-    	$this->goodsList = $this->goodsListBySeller($this->goodsList);	  
+    	$this->goodsList = $this->goodsListBySeller($this->goodsList); 
     	//print_r($this->goodsList);
 		//渲染视图                  
     	$this->redirect('cart',$redirect);
@@ -448,27 +457,32 @@ class Simple extends IController
     /*将商品列表按商家分开
      * @return array array('seller_name'=>商家名，'weight'=>商品重量,'total_price'=>总价,[0]=>array(商品数据),)
      */
-    private function goodsListBySeller($goodsList){
-    	$goodsListSeller = array();
-    	foreach($goodsList as $key => $value){
-    		if(!isset($goodsListSeller[$value['seller_id']])){
-    			$goodsListSeller[$value['seller_id']]['weight'] = 0;
-                $goodsListSeller[$value['seller_id']]['total_price'] = 0;
-                $goodsListSeller[$value['seller_id']]['delivery'] = 0;
+    private function goodsListBySeller($goodsListCombine){
+        $goodsListSeller = array();
+    	$result = array();
+        foreach($goodsListCombine as $buy=>$goodsList)
+        {
+    	    foreach($goodsList as $key => $value){
+    		if(!isset($goodsListSeller[$buy][$value['seller_id']])){
+    			$goodsListSeller[$buy][$value['seller_id']]['weight'] = 0;
+                $goodsListSeller[$buy][$value['seller_id']]['total_price'] = 0;
+                $goodsListSeller[$buy][$value['seller_id']]['delivery'] = 0;
     			if($value['seller_id']==0){
-    				$goodsListSeller[$value['seller_id']]['seller_name'] = '平台';
+    				$goodsListSeller[$buy][$value['seller_id']]['seller_name'] = '平台';
     			}else{
                     $seller_data = API::run('getSellerInfo',$value['seller_id'],'true_name');
     				$seller_logo = API::run('getSellerInfo',$value['seller_id'],'logo_img');
-                    $goodsListSeller[$value['seller_id']]['seller_name'] = $seller_data['true_name'];
-    				$goodsListSeller[$value['seller_id']]['logo_img'] = $seller_logo['logo_img'];
+                    $goodsListSeller[$buy][$value['seller_id']]['seller_name'] = $seller_data['true_name'];
+    				$goodsListSeller[$buy][$value['seller_id']]['logo_img'] = $seller_logo['logo_img'];
     			}
     		}
-    		$goodsListSeller[$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
-            $goodsListSeller[$value['seller_id']]['weight'] += $value['weight']*$value['count'];
-            $goodsListSeller[$value['seller_id']]['delivery'] += $value['delivery'];
-    		$goodsListSeller[$value['seller_id']][] = $value;
+    		$goodsListSeller[$buy][$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
+            $goodsListSeller[$buy][$value['seller_id']]['weight'] += $value['weight']*$value['count'];
+            $goodsListSeller[$buy][$value['seller_id']]['delivery'] += $value['delivery'];
+    		$goodsListSeller[$buy][$value['seller_id']][] = $value;
+            $result = $goodsListSeller;
     	}
+        }
     	return $goodsListSeller;
     }
 
@@ -714,8 +728,17 @@ class Simple extends IController
     {
     //	$paymentList=Api::run('getSellerDelivery',array('#seller_id#'=>1));
     	//print_r($paymentList);exit();
-		$id        = IFilter::act(IReq::get('id'),'int');
-		$type      = IFilter::act(IReq::get('type'));//goods,product
+        $cid = IFilter::act(IReq::get('comId'), 'int');
+        if($cid)
+        {
+            $id = IReq::get('id');  //string
+            $type = IReq::get('type');   //string
+        }
+        else
+        {
+            $id        = IFilter::act(IReq::get('id'),'int');
+            $type      = IFilter::act(IReq::get('type'));//goods,product
+        }
 		$promo     = IFilter::act(IReq::get('promo'));
 		$active_id = IFilter::act(IReq::get('active_id'),'int');
 		$buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
@@ -751,7 +774,7 @@ class Simple extends IController
     		}
     		else
     		{
-    			$url  = '/simple/login?tourist&callback=/simple/cart2/id/'.$id.'/type/'.$type.'/num/'.$buy_num;
+    			$url  = '/simple/login?tourist&callback=/simple/cart2/id/'.$id.'/type/'.$type.'/num/'.$buy_num.'/comId/'.$cid;
     			$url .= $promo     ? '/promo/'.$promo         : '';
     			$url .= $active_id ? '/active_id/'.$active_id : '';
     			$this->redirect($url);
@@ -767,13 +790,22 @@ class Simple extends IController
 		
 		if($id && $type)//立即购买
 		{
-			$result = $countSumObj->direct_count($id,$type,$buy_num,$promo,$active_id);
-		
-			$this->gid       = $id;
-			$this->type      = $type;
-			$this->num       = $buy_num;
-			$this->promo     = $promo;
-			$this->active_id = $active_id;
+            if(is_numeric($id))
+            {
+                $result = $countSumObj->direct_count($id,$type,$buy_num,$promo,$active_id);
+        
+            }
+			else
+            {
+                $result = $countSumObj->direct_count($id,$type,$buy_num,'','',$cid);
+        
+                $this->cid = $cid;
+            }
+            $this->gid       = $id;
+            $this->type      = $type;
+            $this->num       = $buy_num;
+            $this->promo     = $promo;
+            $this->active_id = $active_id;
 		}
 		else//购物车
 		{
@@ -798,12 +830,10 @@ class Simple extends IController
                     $cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
                 }
 			}
-            
 			//计算购物车中的商品价格
 			$result = $countSumObj->cart_count($cartData);
 			
 		}
-		
 		//检查商品合法性或促销活动等有错误
 		if( is_string($result))
 		{
@@ -893,17 +923,14 @@ class Simple extends IController
     	$this->reduce      = $result['reduce'];
     	$this->weight      = $result['weight'];
     	$this->freeFreight = $result['freeFreight'] ? 1 : 0;
-
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
-        
     	//判断所选商品商家是否支持货到付款,有一个商家不支持则不显示
     	$sellerObj = new IModel('seller');
     	$this->freight_collect=1;
     	$where = array('id'=>array_keys($this->goodsList));
     	$sellerStr = implode(',',$where['id']);//2,1,0
     	//print_r($where);
-    	
     	//判断是否支持货到付款
     	if($sellerStr && $sellerObj->query('id in ('.$sellerStr.') and freight_collect = 0')){
     		$this->freight_collect=0;
@@ -1335,7 +1362,7 @@ class Simple extends IController
         $ticket_id     = IFilter::act(IReq::get('ticket_id'),'int');
         $taxes         = IFilter::act(IReq::get('taxes'),'float');
         $insured       = IFilter::act(IReq::get('insured'));
-        $gid           = IFilter::act(IReq::get('direct_gid'),'int');
+        $gid           = IFilter::act(IReq::get('direct_gid'));
         $num           = IFilter::act(IReq::get('direct_num'),'int');
         $type          = IFilter::act(IReq::get('direct_type'));//商品或者货品
         $promo         = IFilter::act(IReq::get('direct_promo'));
@@ -1374,7 +1401,16 @@ class Simple extends IController
         if($type && $gid)
         {
             //计算$gid商品
-            $goodsResult = $countSumObj->direct_count($gid,$type,$num,$promo,$active_id);
+            if(is_numeric($gid))
+            {
+                $goodsResult = $countSumObj->direct_count($gid,$type,$num,$promo,$active_id);
+            }
+            else
+            {
+                $cid = IReq::get('direct_cid');
+                $goodsResult = $countSumObj->direct_count($gid,$type,$num,'','',$cid,$area);
+            }
+            
         }
         else
         {
@@ -1384,8 +1420,10 @@ class Simple extends IController
             $delCart = array();
             foreach($goodsData as $val){
                 $tem =explode('-',$val);
-                $cartData[$tem[0]][$tem[1]] = $tem[2];
-                $delCart[] = array($tem[0],$tem[1]);
+                $cartData[$tem[0]][$tem[1]]['id'][] = $tem[2];
+                $cartData[$tem[0]][$tem[1]]['data'][$tem[2]] = $tem[3];
+                //$cartData[$tem[0]][$tem[1]] = $tem[2];
+                $delCart[$tem[0]][] = $tem[1].'-'.$tem[2];
             }
             //计算购物车中的商品价格$goodsResult
             $goodsResult = $countSumObj->cart_count($cartData);
@@ -1435,8 +1473,17 @@ class Simple extends IController
         $paymentName= $paymentRow['name'];
         $paymentType= $paymentRow['type'];
         //$goodsResult['goodsList'] = $this->goodsListBySeller($goodsResult['goodsList']);
-
         //最终订单金额计算
+        $temp = array();
+        foreach($goodsResult['goodsList'] as $key=>$val)
+        {
+            foreach($val as $value)
+            {
+                $temp[] = $value;
+            }
+        }
+        unset($goodsResult['goodsList']);
+        $goodsResult['goodsList'] = $temp;
         $orderData = $countSumObj->countOrderFeeee($goodsResult,$area,$payment,$insured,$taxes);
         if(is_string($orderData))
         {
@@ -1670,7 +1717,6 @@ class Simple extends IController
         $siteConfigObj = new Config("site_config");
         $site_config   = $siteConfigObj->getInfo();
         $this->stockup_time = isset($site_config['stockup_time'])?$site_config['stockup_time']:2;
-
         //数据渲染
         $this->order_num   = $dataArray['order_no'];
         $this->final_sum   = $dataArray['order_amount'];

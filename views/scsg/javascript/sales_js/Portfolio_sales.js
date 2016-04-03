@@ -29,10 +29,11 @@ $(document).ready(function(){
          var _obj = $(this)
             ,_id = $(this).attr('js_data');
          _obj.parent('.sales').siblings('.js_post_data').each(function(){
-             if($(this).hasClass('show'))
+             if($(this).is(":visible"))
              {
-                var chk_value =[];//定义一个数组      
-                $('input[name="chooise"]:checked').each(function(){   
+                var  _comId = $(this).attr('js_data')
+                    ,chk_value =[];//定义一个数组      
+                $(this).find('input[name="chooise"]:checked').each(function(){   
                     chk_value.push($(this).val());     
                 });
                 if(chk_value.length == 0)
@@ -52,16 +53,16 @@ $(document).ready(function(){
                                 var html = template.render('combineInfoTemplate',json.data[item]);      
                                 $('#combineInfoBox').append(html);                    
                             }
-                            $(".mask_layer,.port_overlay").css("display","block");
+                            $(".mask_layer,.port_overlay").css("display","block");  
                             if(_obj.hasClass('liji'))
                             {
-                                $(".J_ComboBuy").show();
+                                $(".J_ComboBuy").show().attr('js_data', _comId);
                                 $(".J_ComboAddCart").hide();
                             }
                             else
                             {
                                  $(".J_ComboBuy").hide();
-                                 $(".J_ComboAddCart").show();
+                                 $(".J_ComboAddCart").show().attr('js_data', _comId);
                             }
                         }
                     });

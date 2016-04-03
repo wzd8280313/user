@@ -123,7 +123,7 @@ class CountSum
 	 * @param float $disPrice 商品的活动价格
 	 * @return array or bool
 	 */
-	public function goodsCount($buyInfo,$prom=true)
+	public function goodsCount($buyInfoList,$area=null,$prom=true)
 	{
 		$this->sum           = 0;       //原始总额(优惠前)
 		$this->final_sum     = 0;       //应付总额(优惠后)
@@ -151,149 +151,158 @@ class CountSum
 		 */
 		//获取商品或货品数据
 		/*Goods 拼装商品优惠价的数据*/
-    	if(isset($buyInfo['goods']['id']) && $buyInfo['goods']['id'])
-    	{
-    		//购物车中的商品数据
-    		$goodsIdStr = join(',',$buyInfo['goods']['id']);
-    		$goodsObj   = new IModel('goods as go');
-    		$goodsList  = $goodsObj->query('go.id in ('.$goodsIdStr.')','go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id,go.delivery_id');
-    		//开始优惠情况判断
-    		foreach($goodsList as $key => $val)
-    		{
-                $order_extend[$val['seller_id']]['sum'] = 0;
-                $order_extend[$val['seller_id']]['weight'] = 0;
-                $order_extend[$val['seller_id']]['point'] = 0;
-                $order_extend[$val['seller_id']]['tax'] = 0;
-                $order_extend[$val['seller_id']]['exp'] = 0;
-                $order_extend[$val['seller_id']]['count'] = 0;
-                $order_extend[$val['seller_id']]['reduce'] = 0;
-//     			//检查库存
-//     			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
-//     			{
-//     				return "商品：".$val['name']."购买数量超出库存，请重新调整购买数量";
-//     			}
-				if(isset($buyInfo['goods']['data'][$val['goods_id']]['active_price']) && $buyInfo['goods']['data'][$val['goods_id']]['active_price']){//如果存在活动价格
-					$minPrice = $buyInfo['goods']['data'][$val['goods_id']]['active_price'];
-				}
-				else{
-					$groupPrice                = $this->getGroupPrice($val['goods_id'],'goods');
-					if($groupPrice){
-						$minPrice = $groupPrice;
-					}else{
-						$minPrice = $val['sell_price'];
-					}
-				}
-                
-    			$minPrice = min($minPrice,$val['sell_price']);
-    			$goodsList[$key]['reduce'] = $val['sell_price'] - $minPrice;
-    			$goodsList[$key]['count']  = $buyInfo['goods']['data'][$val['goods_id']]['count'];
-                
-                //计算运费
-                $delivery = Delivery::getDelivery(0, $val['delivery_id'], $val['goods_id'], $val['product_id'], $goodsList[$key]['count']);
-                $goodsList[$key]['delivery'] = 0;
-                if(isset($delivery['price']))
-                {
-                   $goodsList[$key]['delivery']  += $delivery['price']; 
+        $goodsListFinal = array();
+        foreach($buyInfoList as $buy=>$buyInfo)
+        {
+    	    if(isset($buyInfo['goods']['id']) && $buyInfo['goods']['id'])
+    	    {
+    		    //购物车中的商品数据
+    		    $goodsIdStr = join(',',$buyInfo['goods']['id']);
+    		    $goodsObj   = new IModel('goods as go');
+    		    $goodsList  = $goodsObj->query('go.id in ('.$goodsIdStr.')','go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id,go.delivery_id,go.combine_price');
+    		    //开始优惠情况判断
+    		    foreach($goodsList as $key => $val)
+    		    {
+                    $order_extend[$val['seller_id']]['sum'] = 0;
+                    $order_extend[$val['seller_id']]['weight'] = 0;
+                    $order_extend[$val['seller_id']]['point'] = 0;
+                    $order_extend[$val['seller_id']]['tax'] = 0;
+                    $order_extend[$val['seller_id']]['exp'] = 0;
+                    $order_extend[$val['seller_id']]['count'] = 0;
+                    $order_extend[$val['seller_id']]['reduce'] = 0;
+    //     			//检查库存
+    //     			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
+    //     			{
+    //     				return "商品：".$val['name']."购买数量超出库存，请重新调整购买数量";
+    //     			}
+				    if(isset($buyInfo['goods']['data'][$val['goods_id']]['active_price']) && $buyInfo['goods']['data'][$val['goods_id']]['active_price'] && $buy == 0){//如果存在活动价格
+					    $minPrice = $buyInfo['goods']['data'][$val['goods_id']]['active_price'];
+				    }
+				    else{
+					    $groupPrice                = $this->getGroupPrice($val['goods_id'],'goods');
+                        $minPrice = ($val['combine_price'] && $val['combine_price'] <> '0.00') ? $val['combine_price'] : ($groupPrice ? $groupPrice : $val['sell_price']);
+				    }
+                    
+    			    $minPrice = min($minPrice,$val['sell_price']);
+                    if($buy)
+                    {
+                        $comObj = new IModel('combine_goods');
+                        $goodsList[$key]['combine'] = $comObj->getField('id='.$buy, 'name');
+                    }
+    			    $goodsList[$key]['reduce'] = $val['sell_price'] - $minPrice;
+    			    $goodsList[$key]['count']  = $buyInfo['goods']['data'][$val['goods_id']]['count'];
+                    $goodsList[$key]['combine_id'] = $buy;
+                    
+                    //计算运费
+                    $delivery = Delivery::getDelivery(0, $val['delivery_id'], $val['goods_id'], $val['product_id'], $goodsList[$key]['count']);
+                    $goodsList[$key]['delivery'] = 0;
+                    if(isset($delivery['price']))
+                    {
+                       $goodsList[$key]['delivery']  += $delivery['price']; 
+                    }
+                    
+    			    $current_sum_all           = $goodsList[$key]['sell_price'] * $goodsList[$key]['count'];
+    			    $current_reduce_all        = $goodsList[$key]['reduce']     * $goodsList[$key]['count'];
+    			    $goodsList[$key]['sum']    = $current_sum_all - $current_reduce_all;
+
+                    $order_extend[$val['seller_id']]['sum'] += $current_sum_all;
+                    $order_extend[$val['seller_id']]['weight'] += $val['weight'] * $goodsList[$key]['count'];
+                    $order_extend[$val['seller_id']]['point'] += $val['point']  * $goodsList[$key]['count'];
+                    $order_extend[$val['seller_id']]['tax'] += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id'],$val['goods_id'],'goods');
+                    $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $goodsList[$key]['count'];
+                    $order_extend[$val['seller_id']]['count'] += $goodsList[$key]['count'];
+                    $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
+    			    //全局统计
+		    	    $this->weight += $val['weight'] * $goodsList[$key]['count'];
+		    	    $this->point  += $val['point']  * $goodsList[$key]['count'];
+		    	    $this->exp    += $val['exp']    * $goodsList[$key]['count'];
+		    	    $this->sum    += $current_sum_all;
+		    	    $this->reduce += $current_reduce_all;
+		    	    $this->count  += $goodsList[$key]['count'];
+		    	    $this->tax    += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id'],$val['goods_id'],'goods');
+                    $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
+                    $goodsListFinal[$buy][] = $goodsList[$key];
+		        }
+    	    }
+
+		    /*Product 拼装商品优惠价的数据*/
+    	    if(isset($buyInfo['product']['id']) && $buyInfo['product']['id'])
+    	    {
+    		    //购物车中的货品数据
+    		    $productIdStr = join(',',$buyInfo['product']['id']);
+    		    $productObj   = new IQuery('products as pro,goods as go');
+    		    $productObj->where  = 'pro.id in ('.$productIdStr.') and go.id = pro.goods_id';
+    		    $productObj->fields = 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,pro.point,pro.combine_price,go.exp,go.img,go.seller_id,go.delivery_id';
+    		    $productList  = $productObj->find();
+    		    //开始优惠情况判断
+    		    foreach($productList as $key => $val)
+    		    {
+                    $order_extend[$val['seller_id']]['sum'] = 0;
+                    $order_extend[$val['seller_id']]['weight'] = 0;
+                    $order_extend[$val['seller_id']]['point'] = 0;
+                    $order_extend[$val['seller_id']]['tax'] = 0;
+                    $order_extend[$val['seller_id']]['exp'] = 0;
+                    $order_extend[$val['seller_id']]['count'] = 0;
+                    $order_extend[$val['seller_id']]['reduce'] = 0;
+    			    //检查库存
+    //     			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
+    //     			{
+    //     				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
+    //     			}
+
+    			    if(isset($buyInfo['product']['data'][$val['product_id']]['active_price']) && $buyInfo['product']['data'][$val['product_id']]['active_price']){//如果存在活动价格
+					    $minPrice = $buyInfo['product']['data'][$val['product_id']]['active_price'];
+				    }else{
+	    			    $groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
+                        $minPrice = ($val['combine_price'] && $val['combine_price'] <> '0.00') ? $val['combine_price'] : ($groupPrice ? $groupPrice : $val['sell_price']);
+				    }
+    			    $minPrice = min($minPrice,$val['sell_price']);
+    			    if($buy)
+                    {
+                        $comObj = new IModel('combine_goods');
+                        $productList[$key]['combine'] = $comObj->getField('id='.$buy, 'name');
+                    }
+				    $productList[$key]['reduce'] = $val['sell_price'] - $minPrice;
+    			    $productList[$key]['count']  = $buyInfo['product']['data'][$val['product_id']]['count'];
+                    $productList[$key]['combine_id'] = $buy;
+    			    $current_sum_all             = $productList[$key]['sell_price']  * $productList[$key]['count'];
+    			    $current_reduce_all          = $productList[$key]['reduce']      * $productList[$key]['count'];
+    			    $productList[$key]['sum']    = $current_sum_all - $current_reduce_all;
+
+                    //计算运费
+                    $delivery = Delivery::getDelivery(0, $val['delivery_id'], $val['goods_id'], $val['product_id'], $productList[$key]['count']);
+                    $productList[$key]['delivery'] = 0;
+                    if(isset($delivery['price']))
+                    {
+                       $productList[$key]['delivery']  += $delivery['price']; 
+                    }
+                    $order_extend[$val['seller_id']]['sum'] += $current_sum_all;
+                    $order_extend[$val['seller_id']]['weight'] += $val['weight'] * $productList[$key]['count'];
+                    $order_extend[$val['seller_id']]['point'] += $val['point']  * $productList[$key]['count'];
+                    $order_extend[$val['seller_id']]['tax'] += self::getGoodsTax($productList[$key]['sum'],$val['seller_id'],$val['product_id'],'product');
+                    $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $productList[$key]['count'];
+                    $order_extend[$val['seller_id']]['count'] += $productList[$key]['count'];
+                    $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
+    			    //全局统计
+		    	    $this->weight += $val['weight'] * $productList[$key]['count'];
+		    	    $this->point  += $val['point']  * $productList[$key]['count'];
+		    	    $this->exp    += $val['exp']    * $productList[$key]['count'];
+		    	    $this->sum    += $current_sum_all;
+		    	    $this->reduce += $current_reduce_all;
+		    	    $this->count  += $productList[$key]['count'];
+		    	    $this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id'],$val['product_id'],'product');
+                    $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
+		            $goodsListFinal[$buy][] = $productList[$key];
                 }
-                
-    			$current_sum_all           = $goodsList[$key]['sell_price'] * $goodsList[$key]['count'];
-    			$current_reduce_all        = $goodsList[$key]['reduce']     * $goodsList[$key]['count'];
-    			$goodsList[$key]['sum']    = $current_sum_all - $current_reduce_all;
-
-                $order_extend[$val['seller_id']]['sum'] += $current_sum_all;
-                $order_extend[$val['seller_id']]['weight'] += $val['weight'] * $goodsList[$key]['count'];
-                $order_extend[$val['seller_id']]['point'] += $val['point']  * $goodsList[$key]['count'];
-                $order_extend[$val['seller_id']]['tax'] += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id'],$val['goods_id'],'goods');
-                $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $goodsList[$key]['count'];
-                $order_extend[$val['seller_id']]['count'] += $goodsList[$key]['count'];
-                $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
-    			//全局统计
-		    	$this->weight += $val['weight'] * $goodsList[$key]['count'];
-		    	$this->point  += $val['point']  * $goodsList[$key]['count'];
-		    	$this->exp    += $val['exp']    * $goodsList[$key]['count'];
-		    	$this->sum    += $current_sum_all;
-		    	$this->reduce += $current_reduce_all;
-		    	$this->count  += $goodsList[$key]['count'];
-		    	$this->tax    += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id'],$val['goods_id'],'goods');
-                $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
-		    }
-    	}
-
-		/*Product 拼装商品优惠价的数据*/
-    	if(isset($buyInfo['product']['id']) && $buyInfo['product']['id'])
-    	{
-    		//购物车中的货品数据
-    		$productIdStr = join(',',$buyInfo['product']['id']);
-    		$productObj   = new IQuery('products as pro,goods as go');
-    		$productObj->where  = 'pro.id in ('.$productIdStr.') and go.id = pro.goods_id';
-    		$productObj->fields = 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,pro.point,go.exp,go.img,go.seller_id,go.delivery_id';
-    		$productList  = $productObj->find();
-    		//开始优惠情况判断
-    		foreach($productList as $key => $val)
-    		{
-                $order_extend[$val['seller_id']]['sum'] = 0;
-                $order_extend[$val['seller_id']]['weight'] = 0;
-                $order_extend[$val['seller_id']]['point'] = 0;
-                $order_extend[$val['seller_id']]['tax'] = 0;
-                $order_extend[$val['seller_id']]['exp'] = 0;
-                $order_extend[$val['seller_id']]['count'] = 0;
-                $order_extend[$val['seller_id']]['reduce'] = 0;
-    			//检查库存
-//     			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
-//     			{
-//     				return "货品：".$val['name']."购买数量超出库存，请重新调整购买数量";
-//     			}
-
-    			if(isset($buyInfo['product']['data'][$val['product_id']]['active_price']) && $buyInfo['product']['data'][$val['product_id']]['active_price']){//如果存在活动价格
-					$minPrice = $buyInfo['product']['data'][$val['product_id']]['active_price'];
-				}else{
-	    			$groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
-	    			if($groupPrice){
-	    				$minPrice = $groupPrice;
-	    			}else{
-	    				$minPrice = $val['sell_price'];
-	    			}
-				}
-    			$minPrice = min($minPrice,$val['sell_price']);
-    			
-				$productList[$key]['reduce'] = $val['sell_price'] - $minPrice;
-    			$productList[$key]['count']  = $buyInfo['product']['data'][$val['product_id']]['count'];
-    			$current_sum_all             = $productList[$key]['sell_price']  * $productList[$key]['count'];
-    			$current_reduce_all          = $productList[$key]['reduce']      * $productList[$key]['count'];
-    			$productList[$key]['sum']    = $current_sum_all - $current_reduce_all;
-
-                //计算运费
-                $delivery = Delivery::getDelivery(0, $val['delivery_id'], $val['goods_id'], $val['product_id'], $productList[$key]['count']);
-                $productList[$key]['delivery'] = 0;
-                if(isset($delivery['price']))
-                {
-                   $productList[$key]['delivery']  += $delivery['price']; 
-                }
-                $order_extend[$val['seller_id']]['sum'] += $current_sum_all;
-                $order_extend[$val['seller_id']]['weight'] += $val['weight'] * $productList[$key]['count'];
-                $order_extend[$val['seller_id']]['point'] += $val['point']  * $productList[$key]['count'];
-                $order_extend[$val['seller_id']]['tax'] += self::getGoodsTax($productList[$key]['sum'],$val['seller_id'],$val['product_id'],'product');
-                $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $productList[$key]['count'];
-                $order_extend[$val['seller_id']]['count'] += $productList[$key]['count'];
-                $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
-    			//全局统计
-		    	$this->weight += $val['weight'] * $productList[$key]['count'];
-		    	$this->point  += $val['point']  * $productList[$key]['count'];
-		    	$this->exp    += $val['exp']    * $productList[$key]['count'];
-		    	$this->sum    += $current_sum_all;
-		    	$this->reduce += $current_reduce_all;
-		    	$this->count  += $productList[$key]['count'];
-		    	$this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id'],$val['product_id'],'product');
-                $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
-		    }
-    	}
+    	    }
+        }
 		$final_sum = $this->sum - $this->reduce;
     	//总金额满足的促销规则
     	if($user_id&&$prom)
     	{
 	    	$proObj = new ProRule($final_sum);
 	    	$proObj->setUserGroup($group_id);
-	    	$this->isFreeFreight = $proObj->isFreeFreight(null,$goodsIdList);
+	    	$this->isFreeFreight = $proObj->isFreeFreight($area,$goodsIdList);
 	    	$this->promotion = $proObj->getInfo($goodsIdList);
 	    	$this->proReduce = $final_sum - $proObj->getSum($goodsIdList);
     	}
@@ -309,7 +318,7 @@ class CountSum
     		'promotion'  => $this->promotion,//促销信息
     		'proReduce'  => $this->proReduce,//促销规则减价
     		'sum'        => $this->sum,//原总价
-    		'goodsList'  => array_merge($goodsList,$productList),
+    		'goodsList'  => $goodsListFinal,
     		'count'      => $this->count,
     		'reduce'     => $this->reduce,//会员价减价
     		'weight'     => $this->weight,
@@ -346,7 +355,7 @@ class CountSum
     }
 
     //计算非购物车中的商品
-    public function direct_count($id,$type,$buy_num = 1,$promo='',$active_id='')
+    public function direct_count($id,$type,$buy_num = 1,$promo='',$active_id='',$cid='',$area=null)
     {
     	
     	/*开启促销活动*/
@@ -367,7 +376,7 @@ class CountSum
 	    		
 				//设置优惠价格，如果不存在则优惠价等于商品原价
 				
-				$result = $this->goodsCount($buyInfo);
+				$result = $this->goodsCount($buyInfo,$area);
 				
 				return $result;
 	    	}
@@ -380,10 +389,26 @@ class CountSum
     	/*正常购买流程*/
     	else
     	{
-    		$buyInfo = array(
-    			$type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num)),'count' => $buy_num)
-    		);
-    		return $this->goodsCount($buyInfo);
+            if(is_numeric($id))
+            {
+                $buyInfo[0] = array(
+                    $type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num)),'count' => $buy_num)
+                );
+            }
+    		else
+            {
+                $buyInfo = array();
+                $idList = explode('$', $id);
+                array_shift($idList);
+                $typeList = explode('$', $type);
+                array_shift($typeList);
+                foreach($idList as $k=>$v)
+                {
+                    $buyInfo[$cid][$typeList[$k]]['id'][] = $v;
+                    $buyInfo[$cid][$typeList[$k]]['data'][$v] = array('count'=>$buy_num);
+                }
+            }
+    		return $this->goodsCount($buyInfo,$area);
     	}
     }
 
@@ -578,7 +603,31 @@ class CountSum
             }
             else
             {
-                $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+                if(is_array($goodsResult['freeFreight']))
+                {
+                    $proModel = new IModel('promotion');
+                    $freeFreight = implode(',', $goodsResult['freeFreight']);
+                    $goods = $proModel->query('id in ('.$freeFreight.')', 'goods_id');
+                    $goodsList = '';
+                    foreach($goods as $v)
+                    {
+                        $goodsList .= ','.$v['goods_id'];
+                    }
+                    if(in_array($val['goods_id'], explode(',',$goodsList)))
+                    {
+                        $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+                    }
+                    else
+                    {
+                        $result['deliveryPrice'] += $deliveryRow['price'];
+                        $order_extend[$val['seller_id']]['deliveryPrice'] += $deliveryRow['price'];
+                        $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
+                    }
+                }
+                else
+                {
+                    $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+                }
             }
             $goodsResult['goodsList'][$key]['insuredPrice'] = $deliveryRow['protect_price'];
 

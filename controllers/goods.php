@@ -724,7 +724,8 @@ class Goods extends IController
         $goods_id = IFilter::act(IReq::get('goods_id'),'int'); 
         $ids = isset($_POST['ids']) ? $_POST['ids'] : '';
         $sort = IFilter::act(IReq::get('sort'),'int');
-        $status = IFilter::act(IReq::get('status'),'int', 1);
+        $status = IFilter::act(IReq::get('status'),'int', 0);
+        $type = IFilter::act(IReq::get('type'),'int', 2);
         
         if(!$name)
         {
@@ -739,7 +740,8 @@ class Goods extends IController
             'goods_id' => $goods_id,
             'combine' => $combine,
             'sort'      => $sort,
-            'status'=> $status
+            'status'=> $status,
+            'type'=> $type
         );        
         $tb->setData($info);
         if($id)                                   

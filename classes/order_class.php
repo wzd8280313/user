@@ -601,7 +601,8 @@ class Order_Class
 				    $goodsArray['delivery_fee']= $val['deliveryPrice'];
 				    $goodsArray['save_price']  = $val['insuredPrice'];
                     $goodsArray['tax']         = $val['taxPrice'];
-				    $goodsArray['seller_id']   = $val['seller_id'];
+                    $goodsArray['seller_id']   = $val['seller_id'];
+				    $goodsArray['combine_id']   = $val['combine_id'];
 				    $orderGoodsObj->setData($goodsArray);
 				    $insert_id = $orderGoodsObj->add(true);
                     $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
@@ -637,9 +638,7 @@ class Order_Class
 		if(isset($goodsResult['goodsList']))
 		{
 			foreach($goodsResult['goodsList'] as $key => $val)
-			{
-				
-	
+			{       
 				$goodsArray['product_id']  = $val['product_id'];
 				$goodsArray['goods_id']    = $val['goods_id'];
 				$goodsArray['img']         = $val['img'];
@@ -1753,7 +1752,34 @@ class Order_Class
             }
 			$otherFee += $goodsOrderRow['tax'];
 		}
-		
+		if($goodsOrderRow['combine_id'])
+        {
+            $combineObj = new IModel('combine_goods');
+            $type = $combineObj->getField('id='.$goodsOrderRow['combine_id'], 'type');
+            $orderGoodsObj = new IModel('order_goods');
+            $otherGoods = $orderGoodsObj->query('order_id='.$goodsOrderRow['order_id'].' and goods_id <>'.$goodsOrderRow['goods_id'].' and product_id <>'.$goodsOrderRow['product_id'], 'sum(goods_price) as price, count(*) as count');
+            if($type == 1)
+            {
+                if($otherGoods)
+                {
+                    $amount = $orderRow['order_amount'] - $otherGoods[0]['price'];
+                }
+            }
+            else
+            {
+                if($otherGoods)
+                {
+                    if($otherGoods[0]['count'] > 1)
+                    {
+                        $amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
+                    }
+                    else
+                    {
+                        $amount = $orderRow['order_amount'] - $otherGoods[0]['price'];
+                    }
+                }
+            }
+        }
 		$amount = $goodsOrderRow['real_price'] * $goodsOrderRow['goods_nums'];
 		//退款额计算：将促销优惠和红包优惠平均分配
 		$order_reduce = $orderRow['pro_reduce'] + $orderRow['ticket_reduce'];

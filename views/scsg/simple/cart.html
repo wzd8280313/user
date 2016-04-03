@@ -18,11 +18,15 @@
 		<caption>查看购物车</caption>
 		<thead></thead>
 		<tbody>
-			<tr>
+            {foreach:items = $this->goodsList key=$k item=$goods}
+			<tr>                                                 
 				<td colspan="8">
-					
-					{foreach:items = $this->goodsList item=$value}
-					<table class="cart_table m_10" width='100%'>
+					                                                     
+                    {query:name=combine_goods where=id eq $k fields=name}
+                    <input type="checkbox" onclick="checkAllCombine(this)">优惠套餐：{$item['name']}
+                    {/query}
+                    {foreach:items = $goods item=$value key=$buy}
+					    <table class="cart_table m_10" width='100%'>
 						<col width="115px" />
 						<col />
 						<col width="80px" />
@@ -36,7 +40,7 @@
 							<tr><th>图片</th><th>商品名称</th><th>赠送积分</th><th>单价</th><th>优惠</th><th>数量</th><th>运费</th><th>小计</th><th class="last">操作</th></tr>
 						</thead>
 						<tbody>
-							{foreach:items=$value key=$k}
+							{foreach:items=$value key=$in}
 							
 							{if:is_array($item)}
 							{set:$type=isset($item['spec_array'])?'product':'goods'}
@@ -45,7 +49,7 @@
 							{set:$item_json = JSON::encode($item)}
 							<tr>
 								<td>
-									<input type='checkbox' name='sub[]' data-json='{$item_json}' value="{$type}-{$item['id']}" />
+									<input type='checkbox' name='sub[]' {if:$k <> 0} style="display:none;"{/if} data-json='{$item_json}' value="{$k}-{$type}-{$item['id']}" />
 									<img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" />
 								</td>
 								<td class="t_l">
@@ -63,11 +67,15 @@
 								<td><b>￥{$item['sell_price']}</b></td>
 								<td>减￥{$item['reduce']}</td>
 								<td>
+                                    {if:$k <> 0}
+                                    <input class="tiny" type="text" readonly="readonly" name='{$type}-{$item["id"]}' id="{$type}_count_{$item['id']}" value="{$item['count']}" />
+                                    {else:}
 									<div class="num">
 										<a class="reduce" href="javascript:void(0)" onclick='cart_reduce({$item_json});'>-</a>
 										<input class="tiny" value="{$item['count']}" onblur='cartCount({$item_json});' name='{$type}-{$item["id"]}' type="text" id="{$type}_count_{$item['id']}" />
 										<a class="add" href="javascript:void(0)" onclick='cart_increase({$item_json});'>+</a>
 									</div>
+                                    {/if}
 								</td>
                                 <td>￥<b class="red2" id="{$type}_delivery_{$item['id']}">{$item['delivery']}</b></td>
 								<td>￥<b class="red2" id="{$type}_sum_{$item['id']}">{$item['sum']}</b></td>
@@ -77,10 +85,10 @@
 							{/foreach}
 						</tbody>
 					</table>
-					{/foreach}
-				</td>
+                    {/foreach}  
+				</td>       
 			</tr>
-
+            {/foreach}
 			<tr class="stats">
 
 				<td><input id="ckAll" class="checks" type="checkbox"/>全部</td>

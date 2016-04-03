@@ -311,8 +311,9 @@ function selectTakeself(deliveryId)
 		<input type='hidden' name='direct_num' value='{$this->num}' />
 		<input type='hidden' name='direct_promo' value='{$this->promo}' />
 		<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
-		
-
+        {if:isset($this->cid)}
+		<input type="hidden" name="direct_cid" value="{$this->cid}">
+        {/if}
 		<div class="cart_box m_10">
 			<div class="title">填写核对订单信息</div>
 			<div class="cont">
@@ -489,8 +490,8 @@ function selectTakeself(deliveryId)
 						<p class="indent blue js_data_{$item['type']}" id="js_data_{$item['id']}" {if:$item['hide']} style="display:none;" {/if}>{$item['plan']}，{$item['info']}</p>
 						{/foreach}
 					</div>
-						{foreach:items=$this->goodsList item=$value}
-						
+                        {foreach:items=$this->goodsList key=$buy item=$goods}
+						{foreach:items=$goods item=$value}
 						<table width="100%" class="cart_table t_c" >
 							<colgroup>
 								<col width="115px" />
@@ -531,7 +532,7 @@ function selectTakeself(deliveryId)
 										{else:}
 											{set:$type='product';$id=$item['product_id']}
 										{/if}
-										<input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
+										<input type='hidden' name='goods[]' value='{$buy}-{$type}-{$id}-{$item["count"]}' />
 										<a href="{url:/site/products/id/$item[goods_id]}" class="blue">{$item['name']}</a>
 										{if:isset($item['spec_array'])}
 										<p>
@@ -544,7 +545,7 @@ function selectTakeself(deliveryId)
 									</td>
 									<td>{echo:$item['point']*$item['count']}</td>
 									<td><b>￥{$item['sell_price']}</b></td>
-									<td>减￥{$item['reduce']}</td>
+									<td>{if:isset($item['combine'])}<span>优惠套餐:{$item['combine']}</span>{/if}减￥{$item['reduce']}</td>
 									<td>{$item['count']}</td>
                                     <td>￥<b class="red2 js_goods_delivery" js_data="{$item['delivery_id']}_{$item['goods_id']}_{$item['product_id']}_{$item['count']}">{$item['delivery']}</b></td>
 									<td><b class="red2">￥{$item['sum']}</b></td>
@@ -554,6 +555,7 @@ function selectTakeself(deliveryId)
 								<!-- 商品展示 结束-->
 							</tbody>
 						</table>
+                        {/foreach}
 						{/foreach}
 					
 				</div>

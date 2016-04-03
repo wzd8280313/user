@@ -1,5 +1,5 @@
 {set:
-	$myCartObj  = new Cart();
+	$myCartObj  = new Cart();                   
 	$myCartInfo = $myCartObj->getMyCart();
 	$siteConfig = new Config("site_config");
 	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
@@ -322,8 +322,12 @@ if($("#actionimg").length>0){
 		<!--logo-->
 
 		<!--cart f-r-->
-		<div class="cart f-r mycart" id="jCart">
-			<span class="cart-count"><span name="mycart_count">{$myCartInfo['count']}</span></span>
+		<div class="cart f-r mycart" id="jCart">   
+        {set:$count = 0}
+        {foreach:items=$myCartInfo}
+        {set:$count+=$item['count']}
+        {/foreach}
+			<span class="cart-count"><span name="mycart_count">{$count}</span></span>
 			<a href="{url:/simple/cart}" class="cart-buying" target="_blank"><span class="cart-account">去购物车结算</span></a>
 			
 		</div>
