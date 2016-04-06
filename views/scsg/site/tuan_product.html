@@ -361,6 +361,7 @@
                                <ul>
                                     <%for(var i in spec_array) {%>
                                     <li><span><%=spec_array[i].name%></span>
+                                    <div class="yListr_flot">
                                     <%if(spec_array[i].type == 1){%>
                                     <%for(j = 0; j < spec_array[i].specVal.length; j ++) {%>
                                     <%if(spec_array[i].specVal.length == 1){%>
@@ -380,6 +381,7 @@
                                     <%}%>
                                    
                                    <%}%>
+                                   </div>
                                    </li>
                                    <%}%>
                                </ul>

@@ -368,6 +368,7 @@
         		               <ul>
                                     <%for(var i in spec_array) {%>
         		                    <li><span><%=spec_array[i].name%></span>
+        		                    <div class="yListr_flot">
                                     <%if(spec_array[i].type == 1){%>
                                     <%for(j = 0; j < spec_array[i].specVal.length; j ++) {%>
                                     <%if(spec_array[i].specVal.length == 1){%>
@@ -380,13 +381,13 @@
                                    <%for(j = 0; j < spec_array[i].specVal.length; j ++) {%>
                                     <%if(spec_array[i].specVal.length == 1){%>
                                     <em class="yListrclickem allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><img src="{webroot:<%=spec_array[i].specVal[j]%>}"><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
-                                    <%}else{%>
+                                    <%}else{%>	
                                     <em class="allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><img src="{webroot:<%=spec_array[i].specVal[j]%>}"><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
                                     <%}%>
-                                    
                                     <%}%>
                                    
                                    <%}%>
+                                   </div>
                                    </li>
                                    <%}%>
         		               </ul>

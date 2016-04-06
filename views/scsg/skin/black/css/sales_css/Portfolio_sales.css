@@ -17,6 +17,7 @@ img{ border:none;}
 .cf{zoom:1}
 .pb10{padding-bottom:0px;color:#E4393C; font-weight:bold; font-size:14px; display:block; line-height:26px;}
 .mt10{line-height: 18px; 
+padding: 0 0 3px 0; 
 color:#C8CFD6;
 height:34px;
 text-overflow: -o-ellipsis-lastline;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;
@@ -43,7 +44,7 @@ word-break:break-all; word-wrap:break-word;}
 .product{ height: 233px; position: relative; overflow: hidden; display: none; margin-top: 20px; width:720px;}
 .product ul{ position: absolute; left: 0px;}
 .product-wrap .show{ display: block; width:720px;}
-.product-wrap .product li{height: 211px; width:150px; float: left; display: inline; background: #f3f3f3;border: 2px solid #fafafa; transition:0.4s;-webkit-transition:0.4s;-moz-transition: 0.4s;-o-transition: 0.4s;-ms-transition: 0.4s;}
+.product-wrap .product li{height: 219px; width:150px; float: left; display: inline; background: #f3f3f3;border: 2px solid #fafafa; transition:0.4s;-webkit-transition:0.4s;-moz-transition: 0.4s;-o-transition: 0.4s;-ms-transition: 0.4s;}
 .product-wrap .product li.ml0{/*margin-left:0px;*/}
 .product-wrap .product li a.imgwrap{ display: block; width: 150px; height: 150px; background: #fff; text-align:center;}
 .product-wrap .product li p{/*padding-left: 15px;*//*color: #666666;*//*line-height: 22px;*/}
@@ -58,23 +59,23 @@ word-break:break-all; word-wrap:break-word;}
 a,img{border:0;}
 body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 /* 轮播*/
-.friend{height:220px;margin:0 auto;overflow:hidden;width:720px;}
-.mr_frbox{height:220px;}
-.mr_frUl{float:left;height:200px;width:650px;margin-left:10px;}
+.friend{height:219px;margin:0 auto;overflow:hidden;width:720px;}
+.mr_frbox{height:219px;}
+.mr_frUl{float:left;height:219px;width:650px;margin-left:10px;}
 .mr_frUl ul li{display:inline;float:left;/*height:389px;*/width:150px;overflow:hidden;position:relative;margin-right:10px;}
 .mr_frUl ul li a img{/*display:block;*/width:100%;}
 
 
 
-.portfolio_sales .portfolio .product-wrap dl{float:left;margin-left:10px; border:#f3f3f3 solid 1px; height:211px;margin-top: 1px; width:150px; background:#f3f3f3;}
+.portfolio_sales .portfolio .product-wrap dl{float:left;margin-left:10px; border:#f3f3f3 solid 1px; height:216px;margin-top: 1px; width:150px; background:#f3f3f3;}
 .portfolio_sales .portfolio .product-wrap .jiahao{border:none; margin:60px 25px 0 25px;; width:20px; height:20px;}
 .portfolio_sales .portfolio .product-wrap dl dd .mt10 a:hover{ color:#ff6600;}
 .portfolio_sales .portfolio .product-wrap dl dd .mt10 a{color: #666666;}
-.portfolio_sales .portfolio .product-wrap .product.show .friend .mr_frbox .mr_frUl #mr_fu li form .fuxuan{
-	width:16px;height:16px; margin-top:5px; float:left;margin-right:5px; }
-.portfolio_sales .portfolio .product-wrap dl dd form .fuxuan{width:16px;height:16px; margin-top:5px; float:left; margin-right:5px; }
-.portfolio_sales .portfolio .product-wrap .product .friend .mr_frbox .mr_frUl #mr_fu li form .fuxuan{
-	width:16px;height:16px; margin-top:5px; float:left;margin-right:5px; }
+.portfolio_sales .portfolio .product-wrap .product.show .friend .mr_frbox .mr_frUl #mr_fu li .fuxuan{
+	width:15px;height:15px; margin-top:6px; float:left;margin-right:5px;float: left; }
+.portfolio_sales .portfolio .product-wrap dl dd .fuxuan{width:15px;height:15px; margin-top:6px; float:left; margin-right:5px;float: left; }
+.portfolio_sales .portfolio .product-wrap .product .friend .mr_frbox .mr_frUl #mr_fu li .fuxuan{
+	width:15px;height:15px; margin-top:6px; float:left;margin-right:5px;float: left; }
 
 
 
@@ -185,6 +186,8 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
     text-align: center;
     margin-top: 15px;
 }
+.item_img img{width: 60px; height: 60px;}
+
 .port_meta {
     float: left;
     width: 365px;
@@ -356,20 +359,21 @@ ul, ol {
             }
 
             .yListr ul li {
-                height: 22px;
-                margin-bottom: 15px;
+                margin-bottom: 12px;
             }
 
             .yListr ul li span {
+                float: left;
                 color: #000000;
                 font-size: 14px;
-                line-height: 36px;
+                line-height: 30px;
                 display: inline-block;
-                width: 42px;
+                width: 62px;
                 padding-left: 4px;
             }
 
             .yListr ul li em {
+    margin-bottom: 3px;
     cursor: pointer;
     color: #666666;
     font-size: 12px;
@@ -445,3 +449,8 @@ ul, ol {
             }
 
             .yListr ul li em img{height: 25px; width: 25px;}
+            .yListr_flot{
+                        width: 298px;
+                        height: auto;
+                        overflow: hidden;
+            }
