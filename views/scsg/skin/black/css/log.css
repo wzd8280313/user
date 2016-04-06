@@ -233,7 +233,7 @@ input.gray,input.gray_s,input.gray_t,input.gray_m{width:246px;height:22px;border
 input.gray_s{width:97px}input.gray_t{width:38px;height:17px;padding:3px 3px 0}input.gray_m{width:123px}
 input.current{border-color:#000}
 input.search{width:240px;height:23px;padding-left:27px;border:1px solid #d2d2d2;margin:0 5px;vertical-align:middle;background:url(../images/front/ucenter/search_bg.gif) no-repeat}
-input.radio,input.checks{vertical-align:middle;margin-right:5px;background:none;border:none;margin-left:13px;}
+input.radio,input.checks{vertical-align:middle;margin-right:5px;background:none;border:none;margin-left:13px;width: 15px; height: 15px;}
 input.sbtn{width:37px;height:19px;margin:0 5px;border:none;color:#666;background:url(../images/front/ucenter/sbtn_bg.gif) no-repeat;padding-bottom: 1px;}
 input.sreset{border:none;background:none;color:#aaa}
 textarea{width:465px;height:65px;padding:0 0 0 5px;font-size:12px;color:#333;border:1px #7f9db9 solid;line-height:18px}
@@ -885,3 +885,21 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 .chg-account{height:69px;background:#f7f6f6 ;}
 
 .copyright{margin-top:40px;}
+
+/* 购物车结算 */
+.tfoli_zuh{
+    float: left;
+    height: 26px;
+    line-height: 48px;
+    padding-left: 18px;
+    font-size: 14px;
+    color: #0e0e0e;
+    font-family: Arial, "宋体";
+}
+.tfoli_zuh .buycart_to{
+    width: 15px;
+    height: 15px;
+    position: relative;
+    top: 5px;
+    margin-right: 4px;
+}
