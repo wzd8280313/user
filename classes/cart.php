@@ -348,7 +348,7 @@ class Cart extends IInterceptorBase
 	 * @return array : [goods]=>array( ['id']=>商品ID , ['data'] => array( [商品ID]=>array ([name]商品名称 , [img]图片地址 , [sell_price]价格, [count]购物车中此商品的数量 ,[type]类型goods,product , [goods_id]商品ID值 ) ) ) , [product]=>array( 同上 ) , [count]购物车商品和货品数量 , [sum]商品和货品总额 ;
 	 */
 	private function cartFormat($cartValueList)
-	{
+	{          
 		//初始化结果
 		$result = $this->cartExeStruct;
 		$goodsIdArray = array();
@@ -422,31 +422,35 @@ class Cart extends IInterceptorBase
                 {
                     $goodsArray[$goodsVal['id']] = $goodsVal;
                 }
-
-                foreach($result[$com]['goods']['data'] as $key => $val)
+                if(isset($result[$com]['goods']['data']))
                 {
-                    $result[$com]['goods']['data'][$key]['img']        = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
-                    $result[$com]['goods']['data'][$key]['name']       = $goodsArray[$val['goods_id']]['name'];
-                    $result[$com]['goods']['data'][$key]['sell_price'] = $goodsArray[$val['goods_id']]['sell_price'];
+                    foreach($result[$com]['goods']['data'] as $key => $val)
+                    {
+                        $result[$com]['goods']['data'][$key]['img']        = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
+                        $result[$com]['goods']['data'][$key]['name']       = $goodsArray[$val['goods_id']]['name'];
+                        $result[$com]['goods']['data'][$key]['sell_price'] = $goodsArray[$val['goods_id']]['sell_price'];
 
-                    //购物车中的金额累加
-                    if(isset($result[$com]['sum']))
-                    {
-                        $result[$com]['sum']   += $goodsArray[$val['goods_id']]['sell_price'] * $val['count'];
-                    }
-                    else
-                    {
-                        $result[$com]['sum']   = $goodsArray[$val['goods_id']]['sell_price'] * $val['count'];
+                        //购物车中的金额累加
+                        if(isset($result[$com]['sum']))
+                        {
+                            $result[$com]['sum']   += $goodsArray[$val['goods_id']]['sell_price'] * $val['count'];
+                        }
+                        else
+                        {
+                            $result[$com]['sum']   = $goodsArray[$val['goods_id']]['sell_price'] * $val['count'];
+                        }
                     }
                 }
-
-                foreach($result[$com]['product']['data'] as $key => $val)
+                if(isset($result[$com]['product']['data']))
                 {
-                    $result[$com]['product']['data'][$key]['img']  = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
-                    $result[$com]['product']['data'][$key]['name'] = $goodsArray[$val['goods_id']]['name'];
+                    foreach($result[$com]['product']['data'] as $key => $val)
+                    {
+                        $result[$com]['product']['data'][$key]['img']  = Thumb::get($goodsArray[$val['goods_id']]['img'],120,120);
+                        $result[$com]['product']['data'][$key]['name'] = $goodsArray[$val['goods_id']]['name'];
 
-                    //购物车中的金额累加
-                    $result[$com]['sum']   += $result[$com]['product']['data'][$key]['sell_price'] * $val['count'];
+                        //购物车中的金额累加
+                        $result[$com]['sum']   += $result[$com]['product']['data'][$key]['sell_price'] * $val['count'];
+                    }
                 }
             }
         }

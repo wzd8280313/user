@@ -1,0 +1,164 @@
+<style type="text/css">
+.selectbox{width:500px;height:350px;margin-top: 10px;}
+.selectbox div{float:left;}
+.selectbox #select1{margin-right: 20px;}
+.selectbox #select2{margin-left: 20px;}
+.selectbox .select-bar select{width:180px;height:350px;}
+.selectbox .button{width:50px; height:30px; margin-top:10px; cursor:pointer;padding: 4px 0;}
+</style>
+<article class="module width_full">
+    <header>
+        <h3 class="tabs_involved">组合编辑</h3>
+    </header>
+
+    <form action="{url:/seller/combine_save}"  method="post" name='combine_edit' enctype='multipart/form-data'>
+        <input type='hidden' name='id' />
+        <div class="module_content">
+            <fieldset>
+                <label>组合名称：</label>
+                <div class="box">
+                    <input type='text' name='name' pattern='required' alt='请填写组合名称' />
+                    <label class="tip">* 填写组合名称</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <label>排序：</label>
+                <div class="box">
+                    <input type='text' class="tiny" name='sort' pattern='int' alt='必需为整形数值' />
+                </div>
+            </fieldset>
+            <fieldset>
+                <label>选择主商品：</label>
+                <div class="box">
+                    <button type='button' onclick="searchGoods('{url:/block/search_goods/type/radio/is_products/0/seller_id/$this->seller['seller_id']}',storeNumsCallback);" class='btn'><span>选择商品</span></button>
+                    <input class="normal" id="js_goods_name" type="text" value="{$this->goods_name}" disabled="disabled" />
+                    <input type="hidden" name="goods_id" value="{$this->object['goods_id']}" js_require="true" pattern='intval' alt="请选择主商品" js_site=""/>
+                </div>
+            </fieldset>
+            <fieldset>
+                <label>组合商品选择</label>
+                <div class="box">
+                    <input class="normal" type="text" id="js_goods_list" placeholder="输入搜索商品关键字" value="" js_data="{$this->object['combine']}" /><br/>
+                    <div class="selectbox">
+                        <div class="select-bar js_select">
+                            <select multiple="multiple" id="select1">
+                                {if:$this->goodsList}
+                                    {foreach: items=$this->goodsList}
+                                    <option value="{$item['id']}">{$item['name']}</option>
+                                    {/foreach}
+                                {/if}
+                            </select>
+                        </div>
+                        <div class="btn-bar">
+                            <span id="add"><input type="button" class="button" value=">"/></span><br />
+                            <span id="add_all"><input type="button" class="button" value=">>"/></span><br />
+                            <span id="remove"><input type="button" class="button" value="<"/></span><br />
+                            <span id="remove_all"><input type="button" class="button" value="<<"/></span>
+                        </div>
+                        <div class="select-bar js_select">
+                            <select multiple="multiple" id="select2" name="ids[]">
+                            {if:$this->goods}
+                                {foreach: items=$this->goods}
+                                <option value="{$item['id']}" selected="selected">{$item['name']}</option>
+                                {/foreach}
+                            {/if}
+                            </select>
+                            
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <label>状态：</label>
+                <div class="box">
+                    <label class='attr'><input type='radio' name='status' value='0' />删除</label>
+                    <label class='attr'><input type='radio' name='status' value='1' checked="checked" />可用</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <label>类型：</label>
+                <div class="box">
+                    <label class='attr'><input type="radio" name="type" value="1" {if:$this->object['type'] == 1} checked {/if}> 固定搭配</label>
+                    <label class='attr'><input type="radio" name="type" value="2" {if:$this->object['type'] == 2} checked {/if}> 自由搭配</label>
+                </div>
+            </fieldset>
+        </div>
+
+        <footer>
+            <div class="submit_link">
+                <input type="submit" class="alt_btn" value="确 定" />
+                <input type="reset" value="重 置" />
+            </div>
+        </footer>
+    </form>
+</article>
+<script type="text/javascript">
+$(function(){
+    dbClick();
+})
+    
+    $("#js_goods_list").keyup(function(){
+        var _v = $(this).val();
+        var _exp = $(this).attr('js_data');
+        var seller_id = {$this->seller['seller_id']};
+        $.ajax({
+            type: "get",
+            url: "{url:/goods/_search}",
+            data: {_v: _v, _exp: _exp, seller_id: seller_id},
+            dataType: "json",
+            success:function(data){
+                if(data)
+                {
+                    var html = '';
+                    for(var i in data){
+                        html += "<option value="+data[i].id+">"+data[i].name+"</option>";
+                    }
+                    $("#select1").html(html);
+                    dbClick();
+                }
+            }
+        });
+    })
+    
+    $("#add").click(function(){
+        $('#select1 option:selected').appendTo('#select2');
+        $('#select2 option').attr('selected', 'selected');
+    })
+    
+    $("#add_all").click(function(){
+        $('#select1 option').appendTo('#select2');
+        $('#select2 option').attr('selected', 'selected');
+    })
+    
+    $("#remove").click(function(){
+        $('#select2 option:selected').appendTo('#select1');
+        $('#select2 option').attr('selected', 'selected');
+    })
+    
+    $("#remove_all").click(function(){
+        $('#select2 option').appendTo('#select1');
+    })
+    
+    function dbClick()
+    {
+        $('.js_select option').each(function(){
+            $(this).dblclick(function(){
+                var obj = $(this).parents('.js_select').siblings('.js_select').children('select');
+                $(this).appendTo(obj);
+                $('#select2 option').attr('selected', 'selected');
+            })
+        })
+    }
+    
+    //输入筛选商品的条件
+    function storeNumsCallback(goodsList)
+    {
+        goodsList.each(function()
+        {
+            var temp = $.parseJSON($(this).attr('data'));
+            $('#js_goods_name').val(temp.name);
+            $('input[name=goods_id]').val(temp.goods_id);
+        });
+    }
+</script>

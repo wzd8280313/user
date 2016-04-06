@@ -334,25 +334,11 @@ function Spec_combine_show(){
             $('.port_item').each(function(){
                 var _p = $(this).attr('js_product_id')
                     ,goods_id = _p != 0 ? _p : $(this).attr('js_goods_id')
-                    ,type = _p != 0 ? 'product' : 'goods'
-                    ,info = [];
+                    ,type = _p != 0 ? 'product' : 'goods';
                 $.getJSON(_this.join_cart_url,{"goods_id":goods_id,"type":type,"goods_num":buyNums,"random":Math.random,'comId':comId},function(content){
                     if(content.isError == false)
                     {
-                        
-                        //获取购物车信息
-                        /*$.getJSON(_this.show_cart_url,{"random":Math.random},function(json)
-                        {//window.realAlert(JSON.stringify(json));
-                        $('#product_myCart').show();
-                            $('[name="mycart_count"]').text(json.count);
-                            $('[name="mycart_sum"]').text(json.sum);
-            
-                            //展示购物车清单
-                            $('#product_myCart').show();
-            
-                            //暂闭加入购物车按钮
-                            $('#joinCarButton').attr('disabled','disabled');
-                        });*/
+                         msg += '';
                     }
                     else
                     {

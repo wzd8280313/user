@@ -65,6 +65,52 @@ $(document).ready(function(){
                                  $(".J_ComboAddCart").show().attr('js_data', _comId);
                             }
                         }
+                        else
+                        {
+                            if(_obj.hasClass('liji'))
+                            {
+                                //设置必要参数
+                                var buyNums  = 1
+                                    ,ids='$'+_id
+                                    ,type='$goods';
+                                for(var i=0; i<chk_value.length; i++)
+                                {
+                                    ids += '$'+chk_value[i];
+                                    type += '$goods';   
+                                }
+                                var url = buy_now_combine_url;
+                                url = url.replace('@id@',ids).replace('@buyNums@',buyNums).replace('@type@',type).replace('@comId@',_comId);
+                                //页面跳转
+                                window.location.href = url;
+                            }
+                            else
+                            {
+                                chk_value.push(_id);
+                                var msg = '';
+                                for(var i=0; i<chk_value.length; i++)
+                                {
+                                    $.getJSON(join_cart_url,{"goods_id":chk_value[i],"type":'goods',"goods_num":1,"random":Math.random,'comId':_comId},function(content){
+                                        console.info(content);
+                                        if(content.isError == false)
+                                        {
+                                            msg += '';
+                                        }
+                                        else
+                                        {
+                                           msg += ','+content.message;
+                                        }
+                                    });
+                                }
+                                if(msg.length > 0)
+                                { 
+                                    alert(msg)
+                                }
+                                else
+                                {
+                                    tips('成功加入购物车'); 
+                                }
+                            }
+                        }
                     });
                     
                 }

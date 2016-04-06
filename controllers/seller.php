@@ -1832,4 +1832,165 @@ class Seller extends IController
             Util::showMessage('请选择要删除的促销活动');
         }
     }
+    
+    
+    /**
+     * @商品组合添加、修改
+     */
+    function combine_edit()
+    {
+        $id = IFilter::act(IReq::get('cid'),'int');
+        $seller_id = $this->seller['seller_id'];
+        if($id)
+        {
+            $obj = new IModel('combine_goods');
+            $this->object = $obj->getObj('id = '.$id);
+            if($this->object && $this->object['seller_id'] <> $seller_id)
+            {
+                $this->combine_list();
+            }
+            $goods = new IModel('goods');
+            $name = $goods->getField('id='.$this->object['goods_id'], 'name');                                        
+            $this->goods_name = $name ? $name : '';
+            $this->goods_no = $goods->getField('id='.$this->object['goods_id'], 'goods_no');
+            
+            //获取已选商品列表
+            if($this->object['combine'])
+            {
+                $handle = new IQuery('goods');
+                $handle->order    = "sort asc,id desc";
+                $handle->fields   = "id,name";
+                $handle->where    = "(is_del = 0 or is_del = 3) and id in (".$this->object['combine'].")";
+                $this->goods = $handle->find();
+            }                                       
+        }           
+        //获取所有商品列表---过滤已选商品
+        $goodsHandle = new IQuery('goods');
+        $goodsHandle->order = "sort asc,id desc";
+        $goodsHandle->fields = "id,name";
+        $where = "(is_del = 0 or is_del = 3) and seller_id=".$seller_id;   
+        if($this->object['combine'])
+        {
+            $where .=  " and id not in (".$this->object['combine'].")";
+        }
+        $goodsHandle->where =  $where;
+        $this->goodsList = $goodsHandle->find();                                                                                       
+        $this->redirect('combine_edit');
+    }
+    
+    /**
+     * @保存商品组合
+     */
+    function combine_save()
+    {
+        //获得post值
+        $id = IFilter::act(IReq::get('id'),'int');
+        $name = IFilter::act(IReq::get('name'));
+        $goods_id = IFilter::act(IReq::get('goods_id'),'int'); 
+        $ids = isset($_POST['ids']) ? $_POST['ids'] : '';
+        $sort = IFilter::act(IReq::get('sort'),'int');
+        $status = IFilter::act(IReq::get('status'),'int', 0);
+        $type = IFilter::act(IReq::get('type'),'int', 2);
+        $seller_id = $this->seller['seller_id'];
+        
+        if(!$name)
+        {
+            $this->combine_list();
+            exit;
+        }      
+        $combine = $ids ? implode(',', $ids) : ''; 
+
+        $tb = new IModel('combine_goods');
+        $info = array(
+            'name'      => $name,
+            'goods_id' => $goods_id,
+            'combine' => $combine,
+            'sort'      => $sort,
+            'status'=> $status,
+            'type'=> $type,
+            'seller_id'=> $seller_id
+        );        
+        $tb->setData($info);
+        if($id)                                   
+        {
+            if($seller_id <> $tb->getField('id='.$id, 'seller_id'))
+            {
+                die('无权限修改');
+            }
+            $where = "id=".$id;
+            $tb->update($where);
+        }
+        else                                              
+        {
+            $tb->add();
+        }
+
+        $this->redirect('combine_list');
+    }
+    
+    /**
+     * @商品组合列表
+     */
+    function combine_list()
+    {                             
+        $page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
+        $QB = new IQuery('combine_goods');
+        $QB->order    = "sort asc,id desc";
+        $QB->where = 'seller_id='.$this->seller['seller_id'].' and status = 1';
+        $QB->page   = $page;
+        $this->QB = $QB;
+        $this->redirect('combine_list');
+    }
+    
+    /**
+     * @商品组合排序
+     */
+    public function combine_sort()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');
+        $sort = IFilter::act(IReq::get('sort'),'int');
+        $flag = 0;
+        if($id)
+        {
+            $tb = new IModel('combine_goods');
+            $info = $tb->getObj('id='.$id);
+            if(count($info)>0)
+            {
+                if($info['sort']!=$sort)
+                {
+                    $tb->setData(array('sort'=>$sort));
+                    if($tb->update('id='.$id))
+                    {
+                        $flag = 1;
+                    }
+                }
+            }
+        }
+        echo $flag;
+    }
+    
+    /**
+     * @删除商品组合
+     */
+    function combine_del()
+    {
+        //post数据
+        $id = IFilter::act(IReq::get('cid'),'int');
+                          
+        $tb = new IModel('combine_goods');
+        $tb->setData(array('status'=>0));
+        if($id)
+        {
+            if($this->seller['seller_id'] <> $tb->getField('id='.$id, 'seller_id'))
+            {
+                die('无权限删除');
+            }
+            $tb->update(Util::joinStr($id));
+        }
+        else
+        {
+            die('请选择要删除的数据');
+        }
+        $this->redirect("combine_list");
+    }
 }

@@ -456,7 +456,7 @@
                 <li><a href="{url:/site/products/id/$goods[id]}">
                 <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" width="150" height="150" alt=""></a>
                 <p class="mt10"> <a href="{url:/site/products/id/$goods[id]}">{$goods['name']} </a></p>
-                <input class="fuxuan"  name="chooise" type="checkbox" value="{$goods['id']}" {if:$combine['type'] == 1}onclick="return false;" checked="checked"{/if}>
+                <input class="fuxuan"  name="chooise" type="checkbox" value="{$goods['id']}" {if:$combine['type'] == 1}style="display:none;"{/if} checked="checked">
                 <p class="pb10">¥<b>{if:$goods['combine_price']}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</b></p>
                 </li>
             {/foreach}

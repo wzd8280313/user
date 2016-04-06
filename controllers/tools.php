@@ -806,9 +806,7 @@ class Tools extends IController
         $query->join = "join ad_position as ap on am.position_id=ap.id";
         $query->where = 'ap.status =1 and ap.name LIKE "%首页楼层%" and am.type = 1';
         $query->fields = 'am.*,ap.name as ap_name';
-        $adList = $query->find();  
-        //var_dump($position);
-       // var_dump($adList);exit;
+        $adList = $query->find();    
         $this->position = $position;
         $this->adList = $adList;
         $this->redirect('ad_floor_edit');

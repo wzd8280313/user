@@ -73,8 +73,8 @@ function prom_ajax(){
 		{ 
 					if(content.promotion.length > 0)
 					{
-						$('#cart_prompt .indent').remove();
-
+						$('#cart_prompt p').remove();
+                        $('#cart_prompt').append('<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>');
 						for(var i = 0;i < content.promotion.length; i++)
 						{
 							$('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
