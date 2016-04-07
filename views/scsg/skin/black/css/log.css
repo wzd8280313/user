@@ -888,10 +888,11 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
 
 /* 购物车结算 */
 .tfoli_zuh{
+	position: relative;
     float: left;
     height: 26px;
     line-height: 48px;
-    padding-left: 18px;
+    padding-left: 8px;
     font-size: 14px;
     color: #0e0e0e;
     font-family: Arial, "宋体";
@@ -900,6 +901,13 @@ a.reg_btn{display:block;width:159px;margin:10px 0 0;background-position:0 -210px
     width: 15px;
     height: 15px;
     position: relative;
-    top: 5px;
+    top: 4px;
     margin-right: 4px;
 }
+.tfoli_zuh span{position: absolute;
+    left: 1150px;
+    display: block;
+    width: 30px;
+    bottom: -21px;
+}
+.tfoli_zuh span a{color: #666;font-family:"微软雅黑"}
