@@ -479,7 +479,7 @@ function selectTakeself(deliveryId)
 						{/foreach}
 					</div>  
 						
-						
+						{foreach:items=$this->goodsList key=$buy item=$goods}
 						<table width="100%" class="cart_table t_c" >
 							<colgroup>
 								<col width="115px" />
@@ -507,7 +507,7 @@ function selectTakeself(deliveryId)
 	
 							<tbody >
 								<!-- 商品展示 开始-->
-								{foreach:items = $this->goodsList $key=$k}
+								{foreach:items = $goods $key=$k}
 								{if:is_array($item)}
 								<tr>
 									<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
@@ -541,6 +541,7 @@ function selectTakeself(deliveryId)
 								<!-- 商品展示 结束-->
 							</tbody>
 						</table>
+                        {/foreach}
 				</div>
 				
 				<!--购买清单 结束-->

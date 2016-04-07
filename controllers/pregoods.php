@@ -247,6 +247,27 @@ class Pregoods extends IController
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
 		
+        //组合销售
+        /*$combine = new IModel('combine_goods');
+        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
+        foreach($combineList as $k => $v)
+        {
+            if(!$v['combine'])
+            {
+                unset($combineList[$k]);
+                continue;
+            }
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
+            if($goodsList)
+            {
+                $combineList[$k]['goodsList'] = $goodsList;
+            }
+            else
+            {
+                unset($combineList[$k]);
+            }   
+        }                       
+        $this->combineList = $combineList; */
 		$this->setRenderData($goods_info);
 
 		$this->redirect('products');
@@ -257,8 +278,17 @@ class Pregoods extends IController
 	{
 		//	$paymentList=Api::run('getSellerDelivery',array('#seller_id#'=>1));
 		//print_r($paymentList);exit();
-		$id        = IFilter::act(IReq::get('id'),'int');
-		$type      = IFilter::act(IReq::get('type'));//goods,product
+        $cid       = IReq::get('comId');
+        if($cid)
+        {
+            $id        = IFilter::act(IReq::get('id')); //string
+            $type      = IFilter::act(IReq::get('type'));
+        }
+        else
+        {
+            $id        = IFilter::act(IReq::get('id'),'int');
+            $type      = IFilter::act(IReq::get('type'));//goods,product
+        }  
 		$active_id = IFilter::act(IReq::get('active_id'),'int');
 		$prom 	   = 'presell';
 		$buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
@@ -369,8 +399,7 @@ class Pregoods extends IController
 					'delivery' => '',
 					'takeself' => '',
 			);
-		}
-	
+		}                     
 		//返回值
 		$this->final_sum = $result['final_sum'];
 		$this->promotion = $result['promotion'];
@@ -393,7 +422,7 @@ class Pregoods extends IController
 		//获取商品税金
 		$this->goodsTax    = $result['tax'];
 	
-		$seller_id = $result['goodsList']['0']['seller_id'];
+		$seller_id = $result['goodsList'][0][0]['seller_id'];
 		if($seller_id==0){
 			$this->seller_name = '山城速购';
 		}else{
@@ -517,6 +546,16 @@ class Pregoods extends IController
 		$paymentName= $paymentRow['name'];
 		$paymentType= $paymentRow['type'];
 	
+        $temp = array();
+        foreach($goodsResult['goodsList'] as $key=>$val)
+        {
+            foreach($val as $value)
+            {
+                $temp[] = $value;
+            }
+        }
+        unset($goodsResult['goodsList']);
+        $goodsResult['goodsList'] = $temp;
 		//最终订单金额计算
 		$orderData = $countSumObj->countOrderFeePresell($goodsResult,$area,$payment,$insured,$taxes);
 		

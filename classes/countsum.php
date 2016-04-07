@@ -90,7 +90,7 @@ class CountSum
 	public function presell_count($id,$type,$buy_num,$active_id)
 	{
 		$buyInfo = array(
-				$type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num)),'count' => $buy_num)
+				0 => array($type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num)),'count' => $buy_num))
 		);
 		$priceInfo = $this->goodsCount($buyInfo);
 		$presell_db = new IModel('presell');
