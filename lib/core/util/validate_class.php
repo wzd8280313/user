@@ -89,7 +89,7 @@ class IValidate
      */
     public static function mobi($str='')
     {
-		return (bool)preg_match("!^1[3|4|5|7|8][0-9]\d{4,8}$!",$str);
+		return (bool)preg_match("!^1[3|4|5|7|8][0-9]\d{8}$!",$str);
     }
     /**
      * @brief 匹配帐号是否合法(字母开头，默认允许4-16字节【有效位数可自由定制】，允许字母数字下划线)
