@@ -24,7 +24,7 @@
 					 <div class="tfoli_zuh">                                                    
                     {query:name=combine_goods where=id eq $k fields=name}
                     <input class="buycart_to" type="checkbox" onclick="checkAllCombine(this)">优惠套餐：{$item['name']}
-                    <a href="{url:/simple/removeCart/link/cart/combine_id/$k}">删除</a>
+                    <span><a href="{url:/simple/removeCart/link/cart/combine_id/$k}">删除</a></span>        
                     {/query}
                     {foreach:items = $goods item=$value key=$buy}
                      </div>
