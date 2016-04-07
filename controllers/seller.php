@@ -313,6 +313,11 @@ class Seller extends IController
 		{
 			$order_show = new Order_Class();
 			$data = $order_show->getOrderShow($order_id);
+            if($good_id)
+            {
+                $goods = new IModel('goods');
+                $this->type = $goods->getField('id='.$good_id, 'type');
+            }
             $this->good_id = $good_id;
 		}
 		$this->setRenderData($data);
