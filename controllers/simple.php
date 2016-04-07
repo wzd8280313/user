@@ -51,31 +51,44 @@ class Simple extends IController
     }
 
     //设置手机验证码
+
 	function getMobileValidateNum(){
 
-		if(IS_AJAX){
-			$phone = IFilter::act(IReq::get('phone','post'));
-			$code  = IFilter::act(IReq::get('check_code','post'));
-			$res = array('errorCode'=>0);
+		if(IS_AJAX) {
+			$phone = IFilter::act(IReq::get('phone', 'post'));
+
+			$res = array('errorCode' => 0);
+			if ($phone == '') $res['errorCode'] = 1;
+			if (!$phone) $res['errorCode'] = 15;
+
+			//验证图形验证码
+			$captcha = IFilter::act(IReq::get('captcha', 'post'));
+			$captcha_ser = ISafe::get('captcha');
+			ISafe::clear('captcha');
+			if ($captcha_ser==null || $captcha != $captcha_ser) {
+				$res['errorCode'] = 100001;
+			}
+
+			//验证随机码
+			$code = IFilter::act(IReq::get('check_code', 'post'));
 			$checkRes = ISafe::checkSafeCode($code);
-			if(isset($checkRes['succ']) && $checkRes['succ']==0){
-				$res['errorCode']=13;
+			if (isset($checkRes['succ']) && $checkRes['succ'] == 0) {
+				$res['errorCode'] = 13;
 			}
 			$res['check_code'] = $checkRes['new'];
-			if($phone=='')$res['errorCode']=1;
-			if(!$phone)$res['errorCode']=15;
-			if($res['errorCode']==0){
-				$text = rand(100000,999999);
-				ISafe::set('mobileValidateReg',array('phone'=>$phone,'num'=>$text,'time'=>time(),'ip'=>Iclient::getIp()));
-				$text = smsTemplate::checkCode(array('{mobile_code}'=>$text));
-				if(!hsms::send($phone,$text))
-					$res['errorCode']=-1;
+			if ($phone == '') $res['errorCode'] = 1;
+			if (!$phone) $res['errorCode'] = 15;
+			if ($res['errorCode'] == 0) {
+				$text = rand(100000, 999999);
+				ISafe::set('mobileValidateReg', array('phone' => $phone, 'num' => $text, 'time' => time(), 'ip' => Iclient::getIp()));
+				$text = smsTemplate::checkCode(array('{mobile_code}' => $text));
+				if (!hsms::send($phone, $text))
+					$res['errorCode'] = -1;
 			}
 			echo JSON::encode($res);
 		}
 
-		
-		
+
 	}
 	//
 	/**
@@ -110,7 +123,7 @@ class Simple extends IController
     		if(!IValidate::email($email))
     			$data['errorCode']=3;
     	}
-    	
+
     	if(!IValidate::phone($phone))
     	{
     		$data['errorCode']=15;
@@ -122,10 +135,10 @@ class Simple extends IController
        	if($data['errorCode']==0){
        		$data['errorCode'] = self::checkMobileValidateCode($phone,$validPhoneCode);
        	}
-	  	
+
     	if($data['errorCode']==0 ){
     		$userObj = new IModel('user');
-    		
+
     		if($type==1 && !!$userObj->getObj(" email = '".$email."'",'id')){
     			$data['errorCode']=18;
     		}
@@ -146,7 +159,7 @@ class Simple extends IController
     				{
     					$group = new IModel('user_group');
     					$group_id =$group->getField('is_default=1','id');
-    					
+
     					//member表
     					$memberArray = array(
     							'user_id' => $user_id,
@@ -158,12 +171,12 @@ class Simple extends IController
     					$memberObj = new IModel('member');
     					$memberObj->setData($memberArray);
     					$memberObj->add();
-    			
+
     					//邮箱激活帐号
     					if($type == 1)
     					{
     						//$data['sendRes']=$this->send_check_mail();
-    						
+
     					}
     					ISafe::set('phone',$phone);
     					ISafe::set('email',$email);
@@ -172,9 +185,9 @@ class Simple extends IController
     				}else{
     					$data['errorCode']=13;
     				}
-    				 
+
     			}
-    		
+
     	}
     	echo JSON::encode($data);
     }
@@ -186,7 +199,7 @@ class Simple extends IController
     	$password   = IFilter::act(IReq::get('password','post'));
     	//$remember   = IFilter::act(IReq::get('remember','post'));
     	$autoLogin  = IFilter::act(IReq::get('isAutoLogin','post'));
-		
+
 		$password   = md5($password);
 		$captcha = IFilter::act(IReq::get('validCode'),'str');
 		$errTimes = $this->getErrTimes($login_info);
@@ -207,12 +220,12 @@ class Simple extends IController
     	else
     	{
     		if($userRow = CheckRights::isValidUser($login_info,$password))
-    		{	
+    		{
     			$M = new IModel('user');
     			$where = 'phone = "'.$login_info.'" OR email = "'.$login_info.'" OR username = "'.$login_info.'"';
     			$M->setData(array('err_times'=>0));
     			$M->update($where);
-    			
+
 				CheckRights::loginAfter($userRow);
 
 // 				//记住帐号
@@ -227,7 +240,7 @@ class Simple extends IController
 					ICookie::set('autoLogin',$autoLogin);
 				}
 
-				
+
     		}
     		else
     		{
@@ -259,7 +272,7 @@ class Simple extends IController
     		}
     	}
 		echo JSON::encode($data);
-    	
+
     }
 
     //商品加入购物车[ajax]
@@ -273,7 +286,7 @@ class Simple extends IController
 		//加入购物车
     	$cartObj   = new Cart();
     	$addResult = $cartObj->add($goods_id,$goods_num,$type);
-    
+
     	if($link != '')
     	{
     		if($addResult === false)
@@ -312,7 +325,7 @@ class Simple extends IController
     	$id           = IFilter::act(IReq::get('id'),'int');
     	$productObj   = new IModel('products');
     	$productsList = $productObj->query('goods_id = '.$id,'sell_price,id,spec_array,goods_id','store_nums','desc',7);
-    	
+
 		if($productsList)
 		{
 			foreach($productsList as $key => $val)
@@ -382,7 +395,7 @@ class Simple extends IController
     		}
     		$arr[$key]=explode('-',$v);
     	}
-    	
+
     	$cartObj   = new Cart();
     	$cartInfo  = $cartObj->getMyCart();
     	$delResult = $cartObj->del_many($arr);
@@ -405,7 +418,7 @@ class Simple extends IController
     {
     	$cartObj  = new Cart();
     	$cartList = $cartObj->getMyCart();
-    	
+
     	$data['data'] = array_merge($cartList['goods']['data'],$cartList['product']['data']);
     	$data['count']= $cartList['count'];
     	$data['sum']  = $cartList['sum'];
@@ -432,9 +445,9 @@ class Simple extends IController
     	$this->count     = $result['count'];
     	$this->reduce    = $result['reduce'];
     	$this->weight    = $result['weight'];
-    
+
     	//将商品按商家分开
-    	$this->goodsList = $this->goodsListBySeller($this->goodsList);	
+    	$this->goodsList = $this->goodsListBySeller($this->goodsList);
     	//print_r($this->goodsList);
 		//渲染视图
     	$this->redirect('cart',$redirect);
@@ -456,7 +469,7 @@ class Simple extends IController
     			}
     		}
     		$goodsListSeller[$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
-    		$goodsListSeller[$value['seller_id']]['weight'] += $value['weight']*$value['count']; 
+    		$goodsListSeller[$value['seller_id']]['weight'] += $value['weight']*$value['count'];
     		$goodsListSeller[$value['seller_id']][] = $value;
     	}
     	return $goodsListSeller;
@@ -490,7 +503,7 @@ class Simple extends IController
     }
     /**
      * @凑单功能
-     * 
+     *
      */
 	function add_order()
 	{
@@ -499,7 +512,7 @@ class Simple extends IController
 		$result   = $countObj->cart_count();
 		$cart_sum       = $result['sum'];
 		$prorule = new ProRule($cart_sum);
-		
+
 		if($this->user['user_id'])
 		{
 			//获取 user_group
@@ -508,7 +521,7 @@ class Simple extends IController
 			$groupRow['id'] = empty($groupRow) ? 0 : $groupRow['id'];
 			$prorule->setUserGroup($groupRow['id']);
 		}
-		
+
 		$prom_data = $prorule->notSatisfyPromotion();
 		if(!$prom_data){
 			$prom_data['gap_price'] = 0;
@@ -518,7 +531,7 @@ class Simple extends IController
 			$prom_data['gap_price'] = $gap_price;
 			$prom_data['cou_price'] = ceil($gap_price * 125/100);
 		}
-		
+
 		$this->setRenderData($prom_data);
 		$this->redirect('add_order');
 	}
@@ -731,12 +744,25 @@ class Simple extends IController
 
 		//计算商品
 		$countSumObj = new CountSum($user_id);
-
-		
+        $this->good_type = 0;
 		if($id && $type)//立即购买
 		{
 			$result = $countSumObj->direct_count($id,$type,$buy_num,$promo,$active_id);
-		
+            $goods = new IModel('goods');
+            if($type == 'goods')
+            {
+                $good_type = $goods->getField('id='.$id, 'type');
+            }
+		    else
+            {
+                $product = new IModel('products');
+                $gId = $product->getField('id='.$id, 'goods_id');
+                if($gId)
+                {
+                    $good_type = $goods->getField('id='.$gId, 'type');
+                }
+            }
+            $this->good_type = isset($good_type) ? $good_type : 0;
 			$this->gid       = $id;
 			$this->type      = $type;
 			$this->num       = $buy_num;
@@ -745,7 +771,7 @@ class Simple extends IController
 		}
 		else//购物车
 		{
-			
+
 			$goodsdata = $_POST;
 			$checked = IFilter::act(IReq::get('sub'));
 			$cartData = array();
@@ -753,14 +779,14 @@ class Simple extends IController
 			foreach($checked as $key=>$val){//转换成购物车的数据结构
 				$tem = explode('-',$val);
 				$cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
-				
+
 			}
 			//计算购物车中的商品价格
 			$result = $countSumObj->cart_count($cartData);
-			
+
 		}
-		
-		
+
+
 		//检查商品合法性或促销活动等有错误
 		if( is_string($result))
 		{
@@ -804,7 +830,7 @@ class Simple extends IController
 		}else{
 			$this->prop_not = true;
 		}
-		
+
 
 		if(isset($memberRow['custom']) && $memberRow['custom'])
 		{
@@ -828,9 +854,9 @@ class Simple extends IController
     	$this->count       = $result['count'];
     	$this->reduce      = $result['reduce'];
     	$this->weight      = $result['weight'];
-    
+
     	$this->freeFreight = $result['freeFreight'];
-    	
+
     	//商品列表按商家分开
     	$this->goodsList = $this->goodsListBySeller($this->goodsList);
 
@@ -840,18 +866,18 @@ class Simple extends IController
     	$where = array('id'=>array_keys($this->goodsList));
     	$sellerStr = implode(',',$where['id']);//2,1,0
     	//print_r($where);
-    	
+
     	//判断是否支持货到付款
     	if($sellerStr && $sellerObj->query('id in ('.$sellerStr.') and freight_collect = 0')){
     		$this->freight_collect=0;
     	}
-    	
+
 		//收货地址列表
 		$this->addressList = $addressList;
-		
+
 		//获取商品税金
 		$this->goodsTax    = $result['tax'];
-		
+
 		//print_r($this->goodsList);
 		//获取配送方式列表（一个商家不支持则不显示）
 		$allDeliveryType = Api::run('getDeliveryList');
@@ -861,7 +887,6 @@ class Simple extends IController
 				unset($allDeliveryType[$key]);
 			}
 		}
-		
 		$this->allDeliveryType = $allDeliveryType;
     	//渲染页面
     	$this->redirect('cart2');
@@ -873,7 +898,7 @@ class Simple extends IController
     	//获取收货地址
     	$addressObj  = new IModel('address');
     	$addressList = $addressObj->query('user_id = '.$user_id);
-    	
+
     	//更新$addressList数据
     	foreach($addressList as $key => $val)
     	{
@@ -897,7 +922,7 @@ class Simple extends IController
 	 */
     function cart3()
     {
-    	
+
     	$accept_name   = IFilter::act(IReq::get('accept_name'));
     	$province      = IFilter::act(IReq::get('province'),'int');
     	$city          = IFilter::act(IReq::get('city'),'int');
@@ -906,7 +931,8 @@ class Simple extends IController
     	$mobile        = IFilter::act(IReq::get('mobile'));
     	$telphone      = IFilter::act(IReq::get('telphone'));
     	$zip           = IFilter::act(IReq::get('zip'));
-    	$delivery_id   = IFilter::act(IReq::get('delivery_id'),'int');
+        $delivery_id   = IFilter::act(IReq::get('delivery_id'),'int');
+    	$good_type     = IFilter::act(IReq::get('good_type'),'int');
     	$accept_time   = IFilter::act(IReq::get('accept_time'));
     	$payment       = IFilter::act(IReq::get('payment'),'int');
     	$order_message = IFilter::act(IReq::get('message'));
@@ -943,7 +969,7 @@ class Simple extends IController
     		IError::show(403,'请认真核对收货地址等订单信息，切勿快速提交');
     	}
 
-    	if($delivery_id == 0)
+    	if($delivery_id == 0 && $good_type == 0)
     	{
     		IError::show(403,'请选择配送方式');
     	}
@@ -1026,7 +1052,7 @@ class Simple extends IController
 
 		//最终订单金额计算
 		$orderData = $countSumObj->countOrderFee($goodsResult,$area,$delivery_id,$payment,$insured,$taxes);
-	
+
 		if(is_string($orderData))
 		{
 			IError::show(403,$orderData);
@@ -1099,12 +1125,12 @@ class Simple extends IController
 		$orderObj->setData($dataArray);
 
 		$this->order_id = $orderObj->add();
-		
+
 		if($this->order_id == false)
 		{
 			IError::show(403,'订单生成错误');
 		}
-		
+
 
 		/*将订单中的商品插入到order_goods表*/
     	$orderInstance = new Order_Class();
@@ -1169,7 +1195,7 @@ class Simple extends IController
 			);
 			if($fapiao_data['type']==0){
 				$fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
-					
+
 			}else{
 				$fapiao_data['com'] = IFilter::act(IReq::get('tax_com'));
 				$fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
@@ -1178,15 +1204,15 @@ class Simple extends IController
 				$fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
 				$fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
 			}
-			
-			
+
+
 			foreach($seller_ids as $key=>$v){
 				$fapiao_data['seller_id'] = $v;
 				$db_fapiao->setData($fapiao_data);
 				$db_fapiao->add();
 			}
 		}
-		
+
 		//获取备货时间
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
@@ -1197,8 +1223,12 @@ class Simple extends IController
 		$this->final_sum   = $dataArray['order_amount'];
 		$this->payment     = $paymentName;
 		$this->paymentType = $paymentType;
-		$this->delivery    = $deliveryRow['name'];
-		$this->deliveryType= $deliveryRow['type'];
+        if($good_type == 0)
+        {
+            $this->delivery    = $deliveryRow['name'];
+            $this->deliveryType= $deliveryRow['type'];
+        }
+
 
 		//订单金额为0时，订单自动完成
 		if($this->final_sum <= 0)
@@ -2043,5 +2073,5 @@ class Simple extends IController
 	function upbrower(){
 		$this->layout = '';
 		$this->redirect('upbrower');
-	}
+	}  
 }
