@@ -5152,7 +5152,7 @@ function bindEvent() {
         }
     });
     var a = true;
-    $(".phone_num").change(function() {
+    $(".phone_num").change(function() {alert();
         if (registerValidateUserBehaviorSwitcher == 1) {
             showValidCodeWhenRegistByEmail = 0
 

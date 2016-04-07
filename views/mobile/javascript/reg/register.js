@@ -40,27 +40,23 @@ function resetCheckCode(code){
 
     }
 	$(".receive_code").addClass('reacquire_code');
-<<<<<<< HEAD
-	var phone = $('#mobile').val();
+
      var checkCode = $('input[name=check_code]').val();
-=======
+
     var phone = $('#mobile').val();
 	var captcha = $('#validCaptcha').val();
->>>>>>> new_master
+
     $.ajax({
         type: "POST",
         url: getMobileCodeUrl,
 		dataType:'json',
         async: false,
-<<<<<<< HEAD
-		data : {phone:phone,check_code:checkCode},
+
+		data : {phone:phone,check_code:checkCode,captcha:captcha},
         success: function(a) {
-            resetCheckCode(a.check_code);
-=======
-		data : {phone:phone,captcha:captcha},
-        success: function(a) {    
->>>>>>> new_master
+
             if (a) {
+                resetCheckCode(a.check_code);
                 if (0 == a.errorCode) {
                     var d = $(".receive_code");
 					d.attr("disabled", true);
@@ -82,35 +78,28 @@ function resetCheckCode(code){
                     if (-1 == a.errorCode) {
                         showErrInfo('网络繁忙，请稍候再试');
                         return
-<<<<<<< HEAD
+
                     }
                     else if(a.errorCode == 13){
                         showErrInfo('请重新获取验证码');
                         return
                     }
+                    else if(100001 == a.errorCode)
+                        {
+                            $('#chgPhoneCaptcha').trigger('click');
+                            showErrInfo('验证码不正确或已过期');
+                            return;
+                        }
                     else {
                         showErrInfo('手机号码格式不正确');
                         return
-=======
-                    } else {
-                        if(100001 == a.errorCode)
-                        {
-                            showErrInfo('请输入正确的验证码');
-                            return;
-                        }
-                        else
-                        {
-                            showErrInfo('手机号码格式不正确');
-                            return;
-                        }
-                        
->>>>>>> new_master
+
                     }
                 }
             }
         },
 		complete:function(){
-			
+            $(".receive_code").removeClass('reacquire_code');
 		}
     });
     return false
