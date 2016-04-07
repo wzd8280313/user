@@ -335,12 +335,19 @@ class Simple extends IController
     {
     	$link      = IReq::get('link');
     	$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
-    	$type      = IReq::get('type');
+        $type      = IReq::get('type');
+    	$combine_id= IReq::get('combine_id') ? IReq::get('combine_id') : 0;
 
     	$cartObj   = new Cart();
     	$cartInfo  = $cartObj->getMyCart();
-    	$delResult = $cartObj->del($goods_id,$type);
-
+        if($combine_id)
+        {
+            $delResult = $cartObj->del($combine_id);
+        }
+        else
+        {
+            $delResult = $cartObj->del($combine_id,$type.'-'.$goods_id);
+        }   
     	if($link != '')
     	{
     		if($delResult === false)

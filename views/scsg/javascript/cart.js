@@ -3,11 +3,14 @@ $(function(){
 	$('#ckAll').click(function(){
 		$("input[name^='sub']").prop("checked", this.checked);
 			if(!this.checked) {
-					 $('#origin_price').text(0);
-                     $('#discount_price').text(0);    
-					 $('#delivery').text(0);	
+                $('.tfoli_zuh').find('input').removeAttr('checked');
+			    $('#origin_price').text(0);
+                $('#discount_price').text(0);    
+			    $('#delivery').text(0);	
 			}else{
 					var total_price = total_discount = delivery = 0;
+                    
+                    $('.tfoli_zuh').find('input').attr('checked', 'checked');
 					$("input[name^='sub']").each(function(i){
 						var json = JSON.parse($(this).attr('data-json'));
 						var num = $('#'+json.type+'_count_'+json.id).val();
@@ -259,14 +262,14 @@ function cart_reduce(obj)
 
 function checkAllCombine(obj)
 {
-    $(obj).siblings('table').find("input[name^='sub']").prop("checked", $(obj).is(':checked'));
+    $(obj).closest('div').siblings('table').find("input[name^='sub']").prop("checked", $(obj).is(':checked'));
     if(!$(obj).is(':checked')) {   
              $('#origin_price').text(0);
              $('#discount_price').text(0);    
              $('#delivery').text(0);    
     }else{
         var total_price = total_discount = delivery = 0;
-        $(obj).siblings('table').find("input[name^='sub']").each(function(){      
+        $(obj).closest('div').siblings('table').find("input[name^='sub']").each(function(){      
             var json = JSON.parse($(this).attr('data-json'));  
             var num = $('#'+json.type+'_count_'+json.id).val();               
             total_price +=mathMul(parseFloat(json.sell_price),num);

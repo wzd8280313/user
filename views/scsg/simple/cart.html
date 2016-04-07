@@ -24,6 +24,7 @@
 					 <div class="tfoli_zuh">                                                    
                     {query:name=combine_goods where=id eq $k fields=name}
                     <input class="buycart_to" type="checkbox" onclick="checkAllCombine(this)">优惠套餐：{$item['name']}
+                    <a href="{url:/simple/removeCart/link/cart/combine_id/$k}">删除</a>
                     {/query}
                     {foreach:items = $goods item=$value key=$buy}
                      </div>
@@ -35,10 +36,12 @@
 						<col width="80px" />
 						<col width="80px" />
 						<col width="80px" />
+                        {if:$k == 0}
 						<col width="80px" />
+                        {/if}
 						<caption>商家：{$value['seller_name']}</caption>
 						<thead>
-							<tr><th>图片</th><th>商品名称</th><th>赠送积分</th><th>单价</th><th>优惠</th><th>数量</th><th>运费</th><th>小计</th><th class="last">操作</th></tr>
+							<tr><th>图片</th><th>商品名称</th><th>赠送积分</th><th>单价</th><th>优惠</th><th>数量</th><th>运费</th><th>小计</th>{if:$k == 0}<th class="last">操作</th>{/if}</tr>
 						</thead>
 						<tbody>
 							{foreach:items=$value key=$in}
@@ -80,7 +83,9 @@
 								</td>
                                 <td>￥<b class="red2" id="{$type}_delivery_{$item['id']}">{$item['delivery']}</b></td>
 								<td>￥<b class="red2" id="{$type}_sum_{$item['id']}">{$item['sum']}</b></td>
+                                {if:$k == 0}
 								<td><a href="{url:/simple/removeCart/link/cart/type/$type/goods_id/$item[id]}">删除</a></td>
+                                {/if}
 							</tr>
 							{/if}
 							{/foreach}
