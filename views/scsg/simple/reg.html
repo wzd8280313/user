@@ -272,5 +272,22 @@ var showValidCodeWhenRegistByMobile = 0;
 		refresh_valid_code(window, email_captcha_callback);
 	});*/
 </script>
+<script type="text/javascript">
+	var returnUrl = '{url:$callback}';
+	var logPath = '{url:/simple/login}';
+	var regPath = '{url:/simple/reg_act}';
+	var checkPhoneIsOneUrl = '{url:/simple/checkPhoneIsOne}';
+	var checkEmailIsOneUrl = '{url:/simple/checkEmailIsOne}';
+	var getMobileCodeUrl = '{url:/simple/getMobileValidateNum}';
+
+	var showValidCodeWhenRegistByMobile = 0;
+	var registerValidateUserBehaviorSwitcher = 1;
+	var showValidCodeWhenRegistByEmail = 0; 	$(".email_register_form .img_code").hide();
+	$(".phone_code").show();
+	//jsRegistFed.loadFunRegist();
+	$(document).ready(function(){
+		bindEvent();
+	});
+</script>
 <div class="tips">错误信息<br>文字文字</div>
 

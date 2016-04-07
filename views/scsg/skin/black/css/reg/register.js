@@ -3888,7 +3888,7 @@ var jsRegistFed = {
         })
     },
     receiveCode: function() {
-        $(".phone_verifica_form").delegate(".receive_code", "click", 
+        $(".phone_verifica_form").delegate(".receive_code", "click",
         function() {
             if ($(".receive_code").hasClass("reacquire_code")) {
                 return false
@@ -4076,7 +4076,7 @@ var jsRegistFed = {
         })
     },
     mobileRegist: function() {
-        $(".mobile_register_form .recv_mobile_code").delegate(".receive_code", "click", 
+        $(".mobile_register_form .recv_mobile_code").delegate(".receive_code", "click",
         function(a) {
             if (!$(".receive_code", ".mobile_register_form .recv_mobile_code").hasClass("reacquire_code")) {
                 if (showValidCodeWhenRegistByMobile == 1) {
@@ -4490,7 +4490,7 @@ on_send_mobile_captcha_fail = function(c) {
                         {
                             $('#chgEmailCaptcha').trigger('click');
                             var b = $(".tips");
-                            var a = new Tips(b, "请输入上面正确的验证码");
+                            var a = new Tips(b, "验证码错误或已过期");
                             a.show();
                             return;
                         }
@@ -4573,7 +4573,7 @@ function checkRegisterParamForMobile() {
         sig: jQuery("#validateSig").val()
     };
     var a = URLPrefix.passport + "/passport/register_param_validate.do";
-    jQuery.post(a, e, 
+    jQuery.post(a, e,
     function(f) {
         if (f) {
             if (f.errorCode != 0) {
@@ -5152,7 +5152,7 @@ function bindEvent() {
         }
     });
     var a = true;
-    $(".phone_num").change(function() {alert();
+    $(".phone_num").change(function() {
         if (registerValidateUserBehaviorSwitcher == 1) {
             showValidCodeWhenRegistByEmail = 0
 
