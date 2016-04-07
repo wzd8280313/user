@@ -626,7 +626,8 @@ class Pregoods extends IController
 	
 		//预售活动ID
 		'active_id'           => $active_id,
-		'pay_type'            => $payment,
+        'pay_type'            => $payment,
+		'seller_id'            => $seller_id
 		);
 	
 		$dataArray['order_amount'] = $dataArray['order_amount'] <= 0 ? 0 : $dataArray['order_amount'];
