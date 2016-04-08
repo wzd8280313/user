@@ -66,7 +66,7 @@ var getMobileCodeUrl = '{url:/simple/getMobileValidateNum}';
         </div>
         <div class="field captcha code mt10">
             <div class="field-relative">
-                <input type="text" style="float: left" class="reg-input icon-reg icon-reg-captcha" name="captcha" placeholder="填写图片所示的字符" id="validCaptcha">
+                <input type="text" style="float: left" class="reg-input icon-reg icon-reg-captcha" name="captcha" placeholder="填写图片所示的字符" id="validCaptcha" onfocus='hideErrInfo()'>
                 <div style="width: 30%;float: left;">
                 <img src='{url:/site/getCaptcha}' id='captchaImg' /><span class="light_gray">看不清？<a class="link" id='chgPhoneCaptcha' href="javascript:void(0)" onclick="javascript:changeCaptcha('{url:/site/getCaptcha}');">换一张</a></span>
                 </div>

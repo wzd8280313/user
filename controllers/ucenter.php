@@ -234,8 +234,9 @@ class Ucenter extends IController
         $tb_order_goods->join = 'left join goods as g on og.goods_id=g.id';
         $tb_order_goods->where = 'og.order_id='.$id;
         $tb_order_goods->group = 'og.id';
-        $tb_order_goods->fields = 'g.type,g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums';
+        $tb_order_goods->fields = 'g.type,g.sell_price,g.point,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,og.seller_id';
         $this->og_data = $tb_order_goods->find();
+        
        	$this->redirect('order_detail',false);
     }
     
