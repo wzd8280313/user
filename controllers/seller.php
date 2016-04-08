@@ -311,7 +311,9 @@ class Seller extends IController
 		$data = array();
 		if($order_id)
 		{
-			$order_show = new Order_Class();
+            $order = new IModel('order');
+            $this->order_status = $order->getField('id='.$order_id, 'status');
+			$order_show = new Order_Class();     
 			$data = $order_show->getOrderShow($order_id);
             if($good_id)
             {

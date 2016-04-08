@@ -30,7 +30,7 @@
 					{if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
 					{set:$show_deli = 1;}
 					{/if}
-
+                    {set:$item['status'] = $this->order_status}
 					<tr {if:$item['goods_id'] == $this->good_id} style="color:red;" {/if}>
 						<td>
 							{set:$goodsRow = JSON::decode($item['goods_array'])}

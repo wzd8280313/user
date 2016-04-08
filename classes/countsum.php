@@ -663,7 +663,7 @@ class CountSum
     {
     	$where  = "og.is_send = 1 and o.pay_type != 0 and o.pay_status = 1";
     	$where .= $is_checkout !== '' ? " and is_checkout = ".$is_checkout : "";
-    	$where .= $seller_id          ? " and seller_id = ".$seller_id : "";
+    	$where .= $seller_id          ? " and og.seller_id = ".$seller_id : "";
     	$where .= $start_time         ? " and o.create_time >= '{$start_time}' " : "";
     	$where .= $end_time           ? " and o.create_time <= '{$end_time}' "   : "";
 
