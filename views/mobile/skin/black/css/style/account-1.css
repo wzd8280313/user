@@ -504,6 +504,9 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 	line-height: 30px;
 	font-weight: normal;
 }
+.qijiandian ul li h4.more_magin{
+	    padding-top: 2px;
+}
 .qijiandian ul .huise{
 	height: 15px;
 	width: 100%;
