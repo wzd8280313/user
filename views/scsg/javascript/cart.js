@@ -73,16 +73,22 @@ function prom_ajax(){
 	var tmpUrl = prom_url;
 		tmpUrl = tmpUrl.replace("@random@",Math.random());
 		$.getJSON( tmpUrl ,{final_sum:final_sum},function(content)
-		{ 
+		{
 					if(content.promotion.length > 0)
 					{
 						$('#cart_prompt p').remove();
                         $('#cart_prompt').append('<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>');
 						for(var i = 0;i < content.promotion.length; i++)
 						{
-							$('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+                            if(content.promotion[i].hide != 1)
+                            {
+							    $('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+                            }
 						}
-						$('#cart_prompt').show();
+                        if($('#cart_prompt').find('p.indent').length > 0)
+                        {
+						    $('#cart_prompt').show();
+                        }
 					}
 					else
 					{

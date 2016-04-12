@@ -507,7 +507,6 @@ class Simple extends IController
 	    	$groupObj = new IModel('member as m,user_group as g');
 			$groupRow = $groupObj->getObj('m.user_id = '.$this->user['user_id'].' and m.group_id = g.id','g.*');
 			$groupRow['id'] = empty($groupRow) ? 0 : $groupRow['id'];
-
 	    	$proObj->setUserGroup($groupRow['id']);
 		}
     	$promotion = $proObj->getInfo();
@@ -1433,7 +1432,7 @@ class Simple extends IController
                 $delCart[$tem[0]][] = $tem[1].'-'.$tem[2];
             }
             //计算购物车中的商品价格$goodsResult
-            $goodsResult = $countSumObj->cart_count($cartData);
+            $goodsResult = $countSumObj->cart_count($cartData, $area);
             $cart = new Cart();
             $cart->del_many($delCart);
             //清空购物车

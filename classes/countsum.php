@@ -346,12 +346,12 @@ class CountSum
 		return false;
 	}
 	//购物车计算
-	public function cart_count($cartData='')
+	public function cart_count($cartData='', $area = null)
 	{
 		//获取购物车中的商品和货品信息
     	$cartObj    = new Cart();
     	$myCartInfo = $cartObj->getMyCart($cartData);
-    	return $this->goodsCount($myCartInfo);
+    	return $this->goodsCount($myCartInfo, $area);
     }
 
     //计算非购物车中的商品
@@ -607,11 +607,20 @@ class CountSum
                 {
                     $proModel = new IModel('promotion');
                     $freeFreight = implode(',', $goodsResult['freeFreight']);
-                    $goods = $proModel->query('id in ('.$freeFreight.')', 'goods_id');
+                    $goods = $proModel->query('id in ('.$freeFreight.')', 'goods_id, seller_id');
                     $goodsList = '';
                     foreach($goods as $v)
                     {
-                        $goodsList .= ','.$v['goods_id'];
+                        if($v['goods_id'] == 'all')
+                        {
+                            $goods = new IModel('goods');
+                            $gId = $goods->getFields(array('seller_id' => $v['seller_id']), 'id');
+                            $goodsList .= $gId  ? ','.implode(',', $gId) : '';
+                        }
+                        elseif(!empty($v['goods_id']))
+                        {
+                            $goodsList .= ','.$v['goods_id'];
+                        }
                     }
                     if(in_array($val['goods_id'], explode(',',$goodsList)))
                     {
@@ -664,7 +673,6 @@ class CountSum
         //订单商品刷新
         $result['goodsResult'] = $goodsResult;
         $result['order_extend'] = $order_extend;
-
         return $result;
     }
     

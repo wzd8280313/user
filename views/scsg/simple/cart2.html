@@ -137,7 +137,7 @@ function get_delivery()
 	{
 		return;
 	}                     
-	$('span[id^=deliveryfee_]').each(function(i){
+	$('span[id^=deliveryfee_]').each(function(k){
 		var _this = $(this)
             ,price = 0;
         _this.parents('table').find('.js_goods_delivery').each(function(){
@@ -179,7 +179,7 @@ function get_delivery()
                             if(content.protect_price > 0)
                             {
                                 
-                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+i+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+k+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
                             }
                             _t.html(html);
                         }
@@ -484,8 +484,8 @@ function selectTakeself(deliveryId)
 
 					<h3><span class="orange">购买的商品</span></h3>
 
-					<div class="cart_prompt f14 t_l m_10" {if:empty($this->promotion)}style="display:none"{/if}>
-						<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
+					<div id="js_promotion_list" class="cart_prompt f14 t_l m_10">
+						<p class="m_10 gray" style="display: none;"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
 						{foreach:items = $this->promotion}
 						<p class="indent blue js_data_{$item['type']}" id="js_data_{$item['id']}" {if:$item['hide']} style="display:none;" {/if}>{$item['plan']}，{$item['info']}</p>
 						{/foreach}
@@ -640,5 +640,12 @@ function selectTakeself(deliveryId)
 	</form>
 </div>
 <script type="text/javascript">
-
+    $(function(){
+        $('#js_promotion_list').find('p.indent').each(function(){
+            if($(this).is(':visible'))
+            {
+                $('#js_promotion_list').find('p.gray').show();
+            }
+        })
+    })
 </script>

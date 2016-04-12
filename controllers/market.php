@@ -459,7 +459,7 @@ class Market extends IController
                 }
             }
             $this->area = $area;
-            if($promotionRow['goods_id'])
+            if($promotionRow['goods_id'] <> 'all')
             {
                 $goods = new IModel('goods');
                 $goodsList = $goods->query('id in ('.$promotionRow['goods_id'].')', 'id as goods_id,name,img,goods_no');
@@ -496,14 +496,13 @@ class Market extends IController
         //$gId = $award_type == 5 ? array() : '';
         if(IReq::get('select_all') || empty($gId))
         {
-            $goods = new IModel('goods');
-            $gId = $goods->getFields(array('is_del'=>0,'seller_id'=>0), 'id');          
+            $goods_id = 'all';       
         }
         else
         {
-            $gId = array_unique($gId);   
-        }     
-        $goods_id = join(',', $gId);                             
+            $gId = array_unique($gId);
+            $goods_id = join(',', $gId);     
+        }                                                      
         //支持免费配送的地区ID
         $area_groupid = $award_type == 6 ? serialize(IReq::get('area_groupid')) : '';
 		$dataArray = array(

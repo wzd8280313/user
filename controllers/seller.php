@@ -1717,7 +1717,7 @@ class Seller extends IController
             $where = 'id = '.$id;
             $promotionRow = $promotionObj->getObj($where); 
             $goodsList = array();                             
-            if($promotionRow['goods_id'])
+            if($promotionRow['goods_id'] <> 'all')
             {
                 $goods = new IModel('goods');
                 $goodsList = $goods->query('id in ('.$promotionRow['goods_id'].')', 'id as goods_id,name,img,goods_no');
@@ -1763,18 +1763,13 @@ class Seller extends IController
         $gId = IReq::get('goods_id');  
         if(IReq::get('select_all') || empty($gId))
         {
-            $goods = new IModel('goods');
-            $list = $goods->query('(is_del=0 or is_del=4) and seller_id='.$this->seller['seller_id'], 'id');     
-            foreach($list as $v)
-            {
-                $gId[] = $v['id'];
-            }                           
+            $goods_id = 'all';                           
         }
         else
         {
-            $gId = array_unique($gId);   
-        }                    
-        $goods_id = join(',', $gId);               
+            $gId = array_unique($gId);
+            $goods_id = join(',', $gId);   
+        }                                          
         //支持免费配送的地区ID                   
         $area_groupid = $award_type == 6 ? serialize(IReq::get('area_groupid')) : '';
         $dataArray = array(
