@@ -3,11 +3,14 @@ $(function(){
 	$('#ckAll').click(function(){
 		$("input[name^='sub']").prop("checked", this.checked);
 			if(!this.checked) {
-					 $('#origin_price').text(0);
-                     $('#discount_price').text(0);    
-					 $('#delivery').text(0);	
+                $('.tfoli_zuh').find('input').removeAttr('checked');
+			    $('#origin_price').text(0);
+                $('#discount_price').text(0);    
+			    $('#delivery').text(0);	
 			}else{
 					var total_price = total_discount = delivery = 0;
+                    
+                    $('.tfoli_zuh').find('input').attr('checked', 'checked');
 					$("input[name^='sub']").each(function(i){
 						var json = JSON.parse($(this).attr('data-json'));
 						var num = $('#'+json.type+'_count_'+json.id).val();
@@ -70,16 +73,22 @@ function prom_ajax(){
 	var tmpUrl = prom_url;
 		tmpUrl = tmpUrl.replace("@random@",Math.random());
 		$.getJSON( tmpUrl ,{final_sum:final_sum},function(content)
-		{ 
+		{
 					if(content.promotion.length > 0)
 					{
-						$('#cart_prompt .indent').remove();
-
+						$('#cart_prompt p').remove();
+                        $('#cart_prompt').append('<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>');
 						for(var i = 0;i < content.promotion.length; i++)
 						{
-							$('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+                            if(content.promotion[i].hide != 1)
+                            {
+							    $('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+                            }
 						}
-						$('#cart_prompt').show();
+                        if($('#cart_prompt').find('p.indent').length > 0)
+                        {
+						    $('#cart_prompt').show();
+                        }
 					}
 					else
 					{
@@ -259,14 +268,14 @@ function cart_reduce(obj)
 
 function checkAllCombine(obj)
 {
-    $(obj).siblings('table').find("input[name^='sub']").prop("checked", $(obj).is(':checked'));
+    $(obj).closest('div').siblings('table').find("input[name^='sub']").prop("checked", $(obj).is(':checked'));
     if(!$(obj).is(':checked')) {   
              $('#origin_price').text(0);
              $('#discount_price').text(0);    
              $('#delivery').text(0);    
     }else{
         var total_price = total_discount = delivery = 0;
-        $(obj).siblings('table').find("input[name^='sub']").each(function(){      
+        $(obj).closest('div').siblings('table').find("input[name^='sub']").each(function(){      
             var json = JSON.parse($(this).attr('data-json'));  
             var num = $('#'+json.type+'_count_'+json.id).val();               
             total_price +=mathMul(parseFloat(json.sell_price),num);

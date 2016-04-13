@@ -372,8 +372,7 @@ class Order_Class
             else
             {
                 $order_goods_info = $tb_order_goods->query('order_id='.$order_id);
-            } 
-            //var_dump($order_goods_info);
+            }                              
 	 		$data['goods_amount'] = 0;
 	 		$data['goods_weight'] = 0;
 

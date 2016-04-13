@@ -335,12 +335,19 @@ class Simple extends IController
     {
     	$link      = IReq::get('link');
     	$goods_id  = IFilter::act(IReq::get('goods_id'),'int');
-    	$type      = IReq::get('type');
+        $type      = IReq::get('type');
+    	$combine_id= IReq::get('combine_id') ? IReq::get('combine_id') : 0;
 
     	$cartObj   = new Cart();
     	$cartInfo  = $cartObj->getMyCart();
-    	$delResult = $cartObj->del($goods_id,$type);
-
+        if($combine_id)
+        {
+            $delResult = $cartObj->del($combine_id);
+        }
+        else
+        {
+            $delResult = $cartObj->del($combine_id,$type.'-'.$goods_id);
+        }   
     	if($link != '')
     	{
     		if($delResult === false)
@@ -500,7 +507,6 @@ class Simple extends IController
 	    	$groupObj = new IModel('member as m,user_group as g');
 			$groupRow = $groupObj->getObj('m.user_id = '.$this->user['user_id'].' and m.group_id = g.id','g.*');
 			$groupRow['id'] = empty($groupRow) ? 0 : $groupRow['id'];
-
 	    	$proObj->setUserGroup($groupRow['id']);
 		}
     	$promotion = $proObj->getInfo();
@@ -1426,7 +1432,7 @@ class Simple extends IController
                 $delCart[$tem[0]][] = $tem[1].'-'.$tem[2];
             }
             //计算购物车中的商品价格$goodsResult
-            $goodsResult = $countSumObj->cart_count($cartData);
+            $goodsResult = $countSumObj->cart_count($cartData, $area);
             $cart = new Cart();
             $cart->del_many($delCart);
             //清空购物车

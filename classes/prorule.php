@@ -104,7 +104,7 @@ class ProRule
 
 		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce, $goodsIdList);
 		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce, $goodsIdList);
-		$allInfo  = array_merge($cashInfo,$giftInfo);   
+		$allInfo  = array_merge($cashInfo,$giftInfo); 
 		foreach($allInfo as $key => $val)
 		{
             $explain[$key]['id'] = $val['id'];
@@ -212,7 +212,7 @@ class ProRule
 	 * @return array 促销规则信息
 	 */
 	private function satisfyPromotion($award_type = null, $goodsIdList = array(), $area = null, $sum = null)
-	{
+	{                     
         $final_sum = $sum ? $sum : $this->sum;
         
 		$datetime = ITime::getDateTime();
@@ -233,35 +233,41 @@ class ProRule
 		{
 			$where.=' and user_group = "all" ';
 		}                  
-		$proList = $proObj->query($where,'*','`condition`');   
+		$proList = $proObj->query($where,'*','`condition`');  
         if(!$sum)
         {
             $proListTemp = $proList;
             $temp = array_keys($goodsIdList);
             foreach($proListTemp as $k => $v)
-            {                             
-                if($v['goods_id'])
+            {
+                $gId = array();
+                if($v['goods_id'] == 'all')
+                {
+                    $goods = new IModel('goods');
+                    $gId = $goods->getFields(array('seller_id' => $v['seller_id']), 'id');
+                }                             
+                elseif($v['goods_id'])
                 {
                     $gId = explode(',', $v['goods_id']);
-                    $common = array_intersect($temp, $gId);
-                    if($common && count($temp) > count($common))
+                }
+                $common = array_intersect($temp, $gId);
+                if($common && count($temp) > count($common))
+                {
+                    $sumNum = 0;
+                    $reduceNum = 0;
+                    foreach($common as $val)
                     {
-                        $sumNum = 0;
-                        $reduceNum = 0;
-                        foreach($common as $val)
-                        {
-                            $sumNum += $goodsIdList[$val]['sum'];
-                            $reduceNum += $goodsIdList[$val]['reduce'];
-                        }
-                        self::satisfyPromotion($award_type, $goodsIdList, $area, $sumNum - $reduceNum);
+                        $sumNum += $goodsIdList[$val]['sum'];
+                        $reduceNum += $goodsIdList[$val]['reduce'];
                     }
-                    elseif(empty($common))
-                    {
-                        $proList[$k]['hide'] = 1;
-                    }
+                    self::satisfyPromotion($award_type, $goodsIdList, $area, $sumNum - $reduceNum);
+                }
+                elseif(empty($common))
+                {
+                    $proList[$k]['hide'] = 1;
                 }
             }
-        }                                                             
+        }                                                            
         if($area)
         {
             $proListTemp = $proList;
@@ -280,7 +286,7 @@ class ProRule
                     }
                 }  
             }
-        }                                                      
+        }                                             
 		return $proList;
 	}
 	/**
@@ -473,7 +479,13 @@ class ProRule
 		{
 			if($is_once == true)
 			{
-				$awardInfo[0] = current($allAwardInfo);
+                foreach($allAwardInfo as $k => $v)
+                {
+                    if(!isset($awardInfo[$v['seller_id']]))
+                    {
+                        $awardInfo[$v['seller_id']] = $v;
+                    }
+                }
 			}
 			else
 			{

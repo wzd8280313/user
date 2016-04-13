@@ -15,6 +15,15 @@ $(document).ready(function(){
 		$(".show1").show();
 	})
 })
+
+$(function(){
+    $('#js_promotion_list').find('p.indent').each(function(){
+        if($(this).is(':visible'))
+        {
+            $('#js_promotion_list').find('p.gray').show();
+        }
+    })
+})
 //创建订单表单实例
 orderFormInstance = new orderFormClass();
 orderFormInstance.presell = 1;
@@ -472,14 +481,14 @@ function selectTakeself(deliveryId)
 				<div class="wrap_box">
 
 					<h3><span class="orange">购买的商品</span></h3>
-					<div class="cart_prompt f14 t_l m_10" {if:empty($this->promotion)}style="display:none"{/if}>
-						<p class="m_10 gray"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
+					<div class="cart_prompt f14 t_l m_10">
+						<p class="m_10 gray" style="display:none"><b class="orange">恭喜，</b>您的订单已经满足了以下优惠活动！</p>
 						{foreach:items = $this->promotion}
 						<p class="indent blue js_data_{$item['type']}" id="js_data_{$item['id']}" {if:$item['hide']} style="display:none;" {/if}>{$item['plan']}，{$item['info']}</p>
 						{/foreach}
 					</div>  
 						
-						
+						{foreach:items=$this->goodsList key=$buy item=$goods}
 						<table width="100%" class="cart_table t_c" >
 							<colgroup>
 								<col width="115px" />
@@ -507,7 +516,7 @@ function selectTakeself(deliveryId)
 	
 							<tbody >
 								<!-- 商品展示 开始-->
-								{foreach:items = $this->goodsList $key=$k}
+								{foreach:items = $goods $key=$k}
 								{if:is_array($item)}
 								<tr>
 									<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
@@ -541,6 +550,7 @@ function selectTakeself(deliveryId)
 								<!-- 商品展示 结束-->
 							</tbody>
 						</table>
+                        {/foreach}
 				</div>
 				
 				<!--购买清单 结束-->

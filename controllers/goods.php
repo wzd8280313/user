@@ -661,10 +661,11 @@ class Goods extends IController
      {
          $key = $_GET['_v'];
          $exp = $_GET['_exp'];
+         $seller_id = $_GET['seller_id'] ? $_GET['seller_id'] : 0;
          $handle = new IQuery('goods');
          $handle->order    = "sort asc,id desc";
          $handle->fields   = "id,name";
-         $where = "(is_del = 0 or is_del = 3) and name like '%".$key."%'";
+         $where = "(is_del = 0 or is_del = 3) and seller_id = ".$seller_id." and name like '%".$key."%'";
          if($exp)
          {
              $where .= " and id not in (".$exp.")";
@@ -683,6 +684,10 @@ class Goods extends IController
         {
             $obj = new IModel('combine_goods');
             $this->object = $obj->getObj('id = '.$id);
+            if($this->object && $this->object['seller_id'] <> 0)
+            {
+                $this->combine_list();
+            }
             $goods = new IModel('goods');
             $name = $goods->getField('id='.$this->object['goods_id'], 'name');                                        
             $this->goods_name = $name ? $name : '';
@@ -694,7 +699,7 @@ class Goods extends IController
                 $handle = new IQuery('goods');
                 $handle->order    = "sort asc,id desc";
                 $handle->fields   = "id,name";
-                $handle->where    = "(is_del = 0 or is_del = 3) and id in (".$this->object['combine'].")";
+                $handle->where    = "is_del = 0 and id in (".$this->object['combine'].")";
                 $this->goods = $handle->find();
             }                                       
         }
@@ -703,7 +708,7 @@ class Goods extends IController
         $goodsHandle = new IQuery('goods');
         $goodsHandle->order = "sort asc,id desc";
         $goodsHandle->fields = "id,name";
-        $where = "(is_del = 0 or is_del = 3)";   
+        $where = "is_del = 0 and seller_id=0";   
         if($this->object['combine'])
         {
             $where .=  " and id not in (".$this->object['combine'].")";
@@ -741,11 +746,17 @@ class Goods extends IController
             'combine' => $combine,
             'sort'      => $sort,
             'status'=> $status,
-            'type'=> $type
+            'type'=> $type,
+            'seller_id'=> 0
         );        
         $tb->setData($info);
         if($id)                                   
         {
+            $seller_id = $tb->getField('id='.$id, 'seller_id');
+            if($seller_id <> 0)
+            {
+                die("无权限修改！"); 
+            }
             $where = "id=".$id;
             $tb->update($where);
         }
@@ -765,6 +776,7 @@ class Goods extends IController
         $page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
         $QB = new IQuery('combine_goods');
         $QB->order    = "sort asc,id desc";
+        $QB->where = 'seller_id=0 and status=1';
         $QB->page   = $page;
         $this->QB = $QB;
         $this->redirect('combine_list');
@@ -806,7 +818,11 @@ class Goods extends IController
         $id = IFilter::act(IReq::get('cid'),'int');
                           
         $tb = new IModel('combine_goods');
-        $tb->setData(array('status'=>3));
+        if($tb->getField('id='.$id, 'seller_id') <> 0)
+        {
+            die("无权限修改！");
+        }
+        $tb->setData(array('status'=>0));
         if($id)
         {
             $tb->update(Util::joinStr($id));

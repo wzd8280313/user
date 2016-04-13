@@ -94,7 +94,7 @@
 				        {if:$this->goodsList}
                              {foreach:items=$this->goodsList}
                                 <tr class="td_c">
-                                    <td><img src="{webroot:{$item['img']}}" style="max-width:140px;max-height:50px;" /></td>
+                                    <td><img src="{webroot:$item['img']}" style="max-width:140px;max-height:50px;" /></td>
                                     <td>{$item['goods_no']}</td>
                                     <td>{$item['name']}
                                         <input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/>
@@ -108,7 +108,7 @@
 					</tbody>
 				</table>
 					<button type='button'  class='btn js_select_goods_btn'><span>选择商品</span></button>
-                    <label><input type="checkbox" name="select_all" value="1" {if:!$this->promotionRow['goods_id']} checked {/if}>本店所有商品</label>
+                    <label><input type="checkbox" name="select_all" value="1" {if:$this->promotionRow['goods_id'] == 'all' || empty($this->promotionRow['goods_id'])} checked {/if}>本店所有商品</label>
 			</fieldset>
             <fieldset id="areaBox" style='display:none' class="js_select_area">
                 <label>支持免运费的地区</label>
