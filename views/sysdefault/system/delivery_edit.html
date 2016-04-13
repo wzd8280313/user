@@ -1,5 +1,5 @@
 {set:$data=$this->data_info}
-{set:$type=$this->data_info['deli_type']} 
+{set:$type=$this->data_info['deli_type'] ? $this->data_info['deli_type'] : 0} 
 {js:artTemplate}
 <script type='text/javascript' src='{theme:javascript/artTemplate/area_select.js}'></script>
 <div class="headbar">

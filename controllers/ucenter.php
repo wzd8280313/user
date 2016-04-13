@@ -995,7 +995,7 @@ class Ucenter extends IController
     		'sex'          => IFilter::act( IReq::get('sex'),'int' ),
     		'birthday'     => IFilter::act( IReq::get('birthday') ),
     		'zip'          => IFilter::act( IReq::get('zip') ,'string' ),
-    		'msn'          => IFilter::act( IReq::get('msn') ,'string' ),
+    		/*'msn'          => IFilter::act( IReq::get('msn') ,'string' ),*/
     		'qq'           => IFilter::act( IReq::get('qq') , 'string' ),
     		'contact_addr' => IFilter::act( IReq::get('contact_addr'), 'string'),
     		'telephone'    => IFilter::act( IReq::get('telephone'),'string'),

@@ -358,30 +358,55 @@ class Block extends IController
 		//获取支付方式类库
 		$paymentInstance = Payment::createPaymentInstance($payment_id);
 
-		//在线充值
-		if($recharge !== null)
-		{
-			if($payment_id==7){//担保交易不能充值
-				IError::show(403,'担保交易不能用户充值');
-			}
-			$recharge   = IFilter::act($recharge,'float');
-			$paymentRow = Payment::getPaymentById($payment_id);
+        if($payment_id <> 13)
+        {
+		    //在线充值
+		    if($recharge !== null)
+		    {
+			    if($payment_id==7){//担保交易不能充值
+				    IError::show(403,'担保交易不能用户充值');
+			    }
+			    $recharge   = IFilter::act($recharge,'float');
+			    $paymentRow = Payment::getPaymentById($payment_id);
 
-			//account:充值金额; paymentName:支付方式名字
-			$reData   = array('account' => $recharge , 'paymentName' => $paymentRow['name']);
-			$sendData = $paymentInstance->getSendData(Payment::getPaymentInfo($payment_id,'recharge',$reData));
-		}
-		//订单支付
-		else if($order_id)
-		{
-			$sendData = $paymentInstance->getSendData(Payment::getPaymentInfo($payment_id,'order',$order_id));
-		}
-		else
-		{
-			IError::show(403,'发生支付错误');
-		}
+			    //account:充值金额; paymentName:支付方式名字
+			    $reData   = array('account' => $recharge , 'paymentName' => $paymentRow['name']);
+			    $sendData = $paymentInstance->getSendData(Payment::getPaymentInfo($payment_id,'recharge',$reData));
+		    }
+		    //订单支付
+		    else if($order_id)
+		    {
+			    $sendData = $paymentInstance->getSendData(Payment::getPaymentInfo($payment_id,'order',$order_id));
+		    }
+		    else
+		    {
+			    IError::show(403,'发生支付错误');
+		    }
+            $paymentInstance->doPay($sendData);
+        }
+        else
+        {
+            //在线充值
+            if($recharge !== null)
+            {
+                $recharge   = IFilter::act($recharge,'float');
+                $paymentRow = Payment::getPaymentById($payment_id);
 
-		$paymentInstance->doPay($sendData);
+                //account:充值金额; paymentName:支付方式名字
+                $reData   = array('account' => $recharge , 'paymentName' => $paymentRow['name']);
+                $sendData = $paymentInstance->getUrlCode(Payment::getPaymentInfo($payment_id,'recharge',$reData));
+            }
+            //订单支付
+            else if($order_id)
+            {
+                $sendData = $paymentInstance->getUrlCode(Payment::getPaymentInfo($payment_id,'order',$order_id));
+            }
+            else
+            {
+                IError::show(403,'发生支付错误');
+            }
+            
+        }                                   
 	}
 	/**
 	 * 合并支付同步回调

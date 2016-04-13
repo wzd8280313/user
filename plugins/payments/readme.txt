@@ -7,3 +7,5 @@
 支付宝即时到帐：direct_alipay
 支付宝双接口  ：alipay
 贝宝          ：paypal
+银联	      ：unionpay
+微信二维码支付：scan_wechat
