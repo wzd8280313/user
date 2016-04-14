@@ -874,13 +874,13 @@ a.articles header h4 { float: left; width: 75%; vertical-align: top; color: #1e1
 
 
 .qijiandian ul li input {
-	color: #F00;
-	display: block;
-	float: left;
-	height: 22px;
-	width: 22px;
-	background-color: #ffffff;
-	margin-left: 8px;
+    color: #F00;
+    display: block;
+    float: left;
+    height: 16px;
+    width: 16px;
+    background-color: #ffffff;
+    margin: 5px 2px 0 5px;
 }
 
 /*.qijiandian ul .heji form input {
@@ -989,4 +989,26 @@ color: #000;
 	z-index: 1110;
 	background: #fff;
 	
+}
+h4.state_red{
+    float: right;
+    margin-right: 5px;
+    color: #F00;
+    line-height: 30px;
+    font-weight: normal;
+    clear: both;
+}
+a.order_number {
+    border: 1px solid #999;
+    font-size: 14px;
+    color: #333;
+    background-color: #FFF;
+    float: right;
+    padding: 2px;
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+    text-align: left;
+    border-radius: 2px;
 }
