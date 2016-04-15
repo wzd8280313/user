@@ -405,9 +405,26 @@ class Block extends IController
             {
                 IError::show(403,'发生支付错误');
             }
-            
+            $filename = 'pay_'.ITime::getTime();
+            $this->qrcode($sendData, $filename);
+            $this->redirect('/site/payCode', false, $filename);
         }                                   
-	}
+    }
+    //生成二维码
+    function qrcode($url,$file)
+    {
+        IWeb::autoload('phpqrcode');
+        // 二维码数据 
+        $url = $url; 
+        // 生成的文件名 
+        $filename = $file.'.png'; 
+        // 纠错级别：L、M、Q、H 
+        $errorCorrectionLevel = 'L';  
+        // 点的大小：1到10 
+        $matrixPointSize = 6;  
+        //创建一个二维码文件 
+        QRcode::png($url, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
+    }
 	/**
 	 * 合并支付同步回调
 	 * 

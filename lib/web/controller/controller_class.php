@@ -358,7 +358,7 @@ class IController extends IControllerBase
 			//重定跳转定向
 			if($actionId!=$nextUrl && $location == true)
 			{ 
-				$locationUrl = IUrl::creatUrl('/'.$this->ctrlId.'/'.$nextUrl);
+				$locationUrl = IUrl::creatUrl('/'.$this->ctrlId.'/'.$nextUrl);             
 				header('location: '.$locationUrl);
 				IWeb::$app->end(0);
 			}
@@ -381,7 +381,14 @@ class IController extends IControllerBase
 			{
 				$nextAction .= '/'.$urlArray[3];
 			}
-			$locationUrl = IUrl::creatUrl('/'.$ctrlId.'/'.$nextAction);
+            if($data && is_string($data))
+            {
+                 $locationUrl = IUrl::creatUrl('/'.$ctrlId.'/'.$nextAction.'/data/'.$data);
+            }
+			else
+            {
+                 $locationUrl = IUrl::creatUrl('/'.$ctrlId.'/'.$nextAction);
+            }
 			header('location: '.$locationUrl);
 			IWeb::$app->end(0);
 		}
