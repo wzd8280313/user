@@ -45,7 +45,7 @@ class WxPayApi
 		
 		//异步通知url未设置，则使用配置文件中的url
 		if(!$inputObj->IsNotify_urlSet()){
-			$inputObj->SetNotify_url('/');//异步通知url
+			$inputObj->SetNotify_url(WxPayConfig::NOTIFY_URL);//异步通知url
 		}
 		if(!$inputObj->GetAppid())
         {
@@ -423,7 +423,6 @@ class WxPayApi
 			$msg = $e->errorMessage();
 			return false;
 		}
-		
 		return call_user_func($callback, $result);
 	}
 	

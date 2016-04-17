@@ -1,4 +1,4 @@
-//头部滑动
+//头??????
 $(document).ready(function(){
 	    var swiperHead = new Swiper('.swiper-container.head', {
 	        slidesPerView: 4,
@@ -15,7 +15,7 @@ $(document).ready(function(){
 	    	$(".swiper-container.head").find(".swiper-slide").eq(swiperHead.clickedIndex).addClass("active").siblings().removeClass("active");
 	    });
 		
-//内容滑动
+//???莼???
 		var swiperPanel = new Swiper('.swiper-container.panel', {
 			slidesPerColumn : 1,
 			slidesPerColumnFill : 'row',
@@ -30,7 +30,7 @@ $(document).ready(function(){
 	    });
 		
 		
-//头部悬浮
+//头??????
 
 
 
@@ -46,8 +46,7 @@ $(function(){
 		}
 		if(like_tops == ''){
 			like_tops = $('#like_top').offset().top-140;
-		}
-		console.log($('#box1').offset().top);
+		}                                     
 		if(scroH>=head_top){  
  
 			$(".head").css({"position":"fixed","top":"60px"});
@@ -63,7 +62,7 @@ $(function(){
 	
 	})
 })
-/*头部循环增加class值*/
+/*头??循??????class值*/
 $(function(){
 	$(".head .swiper-slide .ls").each(function(i){
 	$(this).addClass("tb"+(i+1));

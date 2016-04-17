@@ -2,7 +2,7 @@
 require_once dirname(__FILE__)."/lib/WxPay.Exception.php";
 require_once dirname(__FILE__)."/lib/WxPay.Config.php";
 require_once dirname(__FILE__)."/lib/WxPay.Data.php";
-require_once dirname(__FILE__)."/lib/WxPay.Api.php";        
+//require_once dirname(__FILE__)."/lib/WxPay.Api.php";        
 require_once dirname(__FILE__)."/WxPay.NativePay.php";        
 require_once dirname(__FILE__)."/log.php";
 
@@ -619,11 +619,11 @@ class scan_wechat
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag('');
-        $input->SetNotify_url('/');
+        $input->SetNotify_url(WxPayConfig::NOTIFY_URL);
         $input->SetTrade_type("NATIVE");
         $input->SetProduct_id($payment['M_OrderId']);
         $input->SetAppid($paraData['M_merId']);
-        $input->SetMch_id($paraData['M_mchid']); 
+        $input->SetMch_id($paraData['M_mchid']);           
         $result = $notify->GetPayUrl($input);
         return($result["code_url"]);
     }

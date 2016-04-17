@@ -55,5 +55,8 @@ class WxPayConfig
 	 * 上报等级，0.关闭上报; 1.仅错误出错上报; 2.全量上报
 	 * @var int
 	 */
-	const REPORT_LEVENL = 1;
+	const REPORT_LEVENL = 1;     
+    
+    //回调地址
+    const NOTIFY_URL = "http://v.yqrtv.com:8080/scsg/block/wechat_callback";
 }

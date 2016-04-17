@@ -55,7 +55,7 @@
                     <div class="sj"><img {if:isset($good['seller_logo'])} src="{webroot:}{$good['seller_logo']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$good['seller_name']}</a></div>
                  <!-- 商品详情-->
                     <div class="qr_xq">
-                      <a href="{url:/site/products/id/$good['goods_id']}" style="display:block;padding-bottom:25px;border-bottom: 1px solid #F4F1F1;">
+                      <a href="{url:/site/products/id/$good['goods_id']}" style="display:block;padding-bottom:25px;">
                         <div class="tjxq_img">
                             <img src="{webroot:$good['img']}" onerror='this.src="{skin:images/front/nopic_100_100.gif}"'>
                         </div>

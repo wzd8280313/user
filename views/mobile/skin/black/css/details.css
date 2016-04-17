@@ -19,7 +19,11 @@
 .history #commentBox .sppj{
 	margin: 5px 0 0 0;
 	display: inline-flex;
+	float: left;
 }
+#commentBox p{    
+	clear: both;
+    margin: 3px 5px 10px 5px;}
 .history #commentBox .more{
 	float:right;margin-right:10px;
 }

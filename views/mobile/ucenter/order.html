@@ -23,9 +23,7 @@
 .ding_log{width: 23px;
     height: 23px;
     float: left;
-    margin-top: 2px;
-    position: absolute;
-    left: 3px;
+    margin-left: 3px;
  }
 .loading-imgS p{font-size:16px;color:#9A9A9A;text-align:center}
 
@@ -39,9 +37,8 @@ width: 100%;
 background-color: rgba(94, 110, 141, 0.9);
 }
 .qijiandian ul h3 {
-    position: relative;
-    top: 5px;
-    left: 10%;
+    float: left;
+    margin: 6px 0 0 3px;
 }
 </style> 
 <script type='text/javascript'>
@@ -137,22 +134,25 @@ background-color: rgba(94, 110, 141, 0.9);
 <script type='text/html' id='order_box'>
 <ul>
  	<li>
+<% for(var i in goods_data){%>
 	{if:$status==1}
  		<%if(can_pay==1){%>
 	
 		<input type="checkbox" name="sub[]" value='<%=id%>'/>
 
 			<%}%>
-	{/if}
+	{/if}  
+    <img class="ding_log" <%if(goods_data[i]['seller_logo']){%> src="{webroot:}<%=goods_data[i]['seller_logo']%>" <%}%> src="{skin:images/ptlog.png}"><h3><%=goods_data[i]['seller_name']%>＞</h3>
+ 
+	<!--{if:$status==1}
+ 		<%if(can_pay==1){%>
+	
+		<input type="checkbox" name="sub[]" value='<%=id%>'/>
 
-		<a href="{url:/ucenter/order_detail/id/}/<%=id%>"><%=order_no%></a><h4><%=order_status%></h4>
-
-		/*<h3><a href="#">恒波官方旗舰店＞<%=order_no%></a></h3><h4><%=order_status%></h4>
-		<h3><a href="#">订单号：<%=order_no%></a></h3><h4><%=order_status%></h4>*/
-
- 	</li>
-	<% for(var i in goods_data){%>
-    <img class="ding_log" <%if(goods_data[i]['seller_logo']){%> src="{webroot:}<%=goods_data[i]['seller_logo']%>" <%}%> src="{skin:images/ptlog.png}"><h3 style="line-height:27px;"><%=goods_data[i]['seller_name']%>＞</h3>
+			<%}%>
+	{/if}-->
+		<a class="order_number" href="{url:/ucenter/order_detail/id/}/<%=id%>"><%=order_no%></a><h4 class="state_red"><%=order_status%></h4>
+ 	</li>            
  	<li class="chanpin">
 		 <a class="tupian"  href="{url:/ucenter/order_detail/id/}/<%=id%>"> <img src="{url:<%=goods_data[i]['img']%>}" ></a>
 		   
