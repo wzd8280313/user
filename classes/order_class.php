@@ -1106,6 +1106,29 @@ class Order_Class
     		'note'     => '订单【'.$order_no.'】由【'.$sendorSort.'】'.$sendorName.'发货',
     		'addtime'  => date('Y-m-d H:i:s')
     	));
+        
+        //如果是拆分订单，更新总订单状态
+        $parSendStatus = $sendStatus;
+        if($tbOrderRow['pid'] <> 0)
+        {
+            if($parSendStatus==1)
+            {
+                $other_order = $tb_order->getobj('pid='.$tbOrderRow['pid'].' and id <>'.$order_id.' and distribution_status <> 1', 'distribution_status');
+                if(!empty($other_order))
+                {
+                    $parSendStatus = 2;
+                }
+            }
+            if($parSendStatus == 1)
+            {
+                $otherData['status'] = 9;
+            }
+            $otherData['distribution_status'] = $parSendStatus;
+            $otherData['send_time'] = ITime::getDateTime();
+            $tb_order->setData($otherData);
+            $tb_order->update('id='.$tbOrderRow['pid']);
+        }
+        
     	$sendResult = $tb_order_log->add();
 
 		//获取货运公司
@@ -1368,6 +1391,12 @@ class Order_Class
 			$paymentData = Payment::getPaymentInfoForRefund($pay_type,$refundId,$order_id,$amount);
 			if(!$res=$paymentInstance->refund($paymentData)) return false;//验签失败
 		}
+        else if($pay_type == 13)
+        {
+            $paymentInstance = Payment::createPaymentInstance($pay_type);
+            $paymentData = Payment::getPaymentInfoForRefund($pay_type,$refundId,$order_id,$amount);
+            if(!$res=$paymentInstance->refund()) return false;//验签失败
+        }
 		else if($pay_type==1){//预存款付款打入账户余额
 			$obj = new IModel('member');
 			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
@@ -1619,7 +1648,8 @@ class Order_Class
 			'active_id'   => $orderRow['active_id'],
 			'pro_reduce'  => $orderRow['pro_reduce'],
 			'ticket_reduce' => $orderRow['ticket_reduce'],
-			'real_amount' => $orderRow['real_amount']
+            'real_amount' => $orderRow['real_amount'],
+			'seller_id' => $orderRow['seller_id']
 		);
 		$order_db->setData($new_order_data);
 		$new_order_id = $order_db->add();
@@ -1634,7 +1664,8 @@ class Order_Class
 			'goods_weight'=>$orderGoodsRow['goods_weight'],
 			'delivery_fee'=>$orderGoodsRow['delivery_fee'],
 			'save_price'=>$orderGoodsRow['save_price'],
-			'img'       => $orderGoodsRow['img']
+            'img'       => $orderGoodsRow['img'],
+			'seller_id' => $orderGoodsRow['seller_id']
 		);
 		if($orderGoodsRow['comment_id']!=0)$new_order_good['comment_id']=-1;
 		$product_db = new IModel('products');

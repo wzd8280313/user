@@ -1067,7 +1067,7 @@ class Seller extends IController
 	 		$tb_refundment = new IQuery('refundment_doc as c');
 	 		$tb_refundment->join=' left join order as o on c.order_id=o.id left join user as u on u.id = c.user_id';
 	 		$tb_refundment->fields = 'o.order_no,o.create_time,u.username,c.*';
-	 		$tb_refundment->where = 'c.id='.$refundment_id.' and seller_id = '.$this->seller['seller_id'];
+	 		$tb_refundment->where = 'c.id='.$refundment_id.' and c.seller_id = '.$this->seller['seller_id'];
 	 		$refundment_info = $tb_refundment->find();
 	 		if($refundment_info)
 	 		{
@@ -1093,7 +1093,7 @@ class Seller extends IController
 			$tb_refundment = new IQuery('refundment_doc as c');
 			$tb_refundment->join=' left join order as o on c.order_id=o.id left join user as u on u.id = c.user_id';
 			$tb_refundment->fields = 'o.order_no,o.create_time,u.username,c.*';
-			$tb_refundment->where = 'c.id='.$refundment_id.' and seller_id = '.$this->seller['seller_id'];
+			$tb_refundment->where = 'c.id='.$refundment_id.' and c.seller_id = '.$this->seller['seller_id'];
 			$refundment_info = $tb_refundment->find();
 			if($refundment_info)
 			{

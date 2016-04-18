@@ -45,7 +45,7 @@
 				{set:$show_deli=0}
                 {if:$pid}
                 {query:name=order_goods where=order_id eq $pid and seller_id eq $seller_id}
-                {if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
+                {if:($item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5)) && $status <> 3 }
                 {set:$show_deli = 1;}
                 {/if}
                 <tr>
@@ -69,7 +69,7 @@
                 {/query}
                 {else:}
 				{query:name=order_goods where=order_id eq $order_id}
-				{if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
+				{if:($item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5)) && $status <> 3 }
 				{set:$show_deli = 1;}
 				{/if}
 				<tr>

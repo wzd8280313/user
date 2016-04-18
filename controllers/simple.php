@@ -792,7 +792,6 @@ class Simple extends IController
 
 		//计算商品
 		$countSumObj = new CountSum($user_id);
-
 		
 		if($id && $type)//立即购买
 		{
@@ -826,16 +825,17 @@ class Simple extends IController
             {
                 $param .= '/sub/'. $checked;
                 $checked = explode('+', $checked);
-            }
+            }                  
 			$cartData = array();
 			if(empty($checked))$this->redirect('cart');
 			foreach($checked as $key=>$val){//转换成购物车的数据结构
 				$tem = explode('-',$val);
                 if(isset($goodsdata[$val]))
                 {
-                    $cartData[$tem[0]][intval($tem[1])] = intval($goodsdata[$val]);
+                    $cartData[$tem[0]][$tem[1]]['id'][] = intval($tem[2]);
+                    $cartData[$tem[0]][$tem[1]]['data'][intval($tem[2])] = intval($goodsdata[$val]);
                 }
-			}
+			}                    
 			//计算购物车中的商品价格
 			$result = $countSumObj->cart_count($cartData);
 			

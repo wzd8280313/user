@@ -72,11 +72,11 @@
 								<td>减￥{$item['reduce']}</td>
 								<td>
                                     {if:$k <> 0}
-                                    <input class="tiny" type="text" readonly="readonly" name='{$type}-{$item["id"]}' id="{$type}_count_{$item['id']}" value="{$item['count']}" />
+                                    <input class="tiny" type="text" readonly="readonly" name='{$k}-{$type}-{$item["id"]}' id="{$type}_count_{$item['id']}" value="{$item['count']}" />
                                     {else:}
 									<div class="num">
 										<a class="reduce" href="javascript:void(0)" onclick='cart_reduce({$item_json});'>-</a>
-										<input class="tiny" value="{$item['count']}" onblur='cartCount({$item_json});' name='{$type}-{$item["id"]}' type="text" id="{$type}_count_{$item['id']}" />
+										<input class="tiny" value="{$item['count']}" onblur='cartCount({$item_json});' name='{$k}-{$type}-{$item["id"]}' type="text" id="{$type}_count_{$item['id']}" />
 										<a class="add" href="javascript:void(0)" onclick='cart_increase({$item_json});'>+</a>
 									</div>
                                     {/if}

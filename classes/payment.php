@@ -198,10 +198,13 @@ class Payment
 			$orderGoodsList = $orderGoodsDB->query('order_id = '.$order_id);
 			foreach($orderGoodsList as $key => $val)
 			{
-				if(!goods_class::checkStore($val['goods_nums'],$val['goods_id'],$val['product_id']))
-				{
-					IError::show(403,'商品库存不足无法支付，请重新下单');
-				}
+                if($val['is_change'] == 0)
+                {
+				    if(!goods_class::checkStore($val['goods_nums'],$val['goods_id'],$val['product_id']))
+				    {
+					    IError::show(403,'商品库存不足无法支付，请重新下单');
+				    }
+                }
 			}
 
 			$payment['M_Remark']    = $orderRow['postscript'];
@@ -281,11 +284,12 @@ class Payment
 		$orderGoodsList = $orderGoodsDB->find();
 		foreach($orderGoodsList as $key => $val)
 		{
-			
-			if($val['type']!=4 && !goods_class::checkStore($val['goods_nums'],$val['goods_id'],$val['product_id']))
-			{
-				IError::show(403,'商品库存不足无法支付，请重新下单');
-			}
+			if($val['is_change'] == 0){
+			    if($val['type']!=4 && !goods_class::checkStore($val['goods_nums'],$val['goods_id'],$val['product_id']))
+			    {
+				    IError::show(403,'商品库存不足无法支付，请重新下单');
+			    }
+            }
 		}
 		
 		$payment['M_Remark']    = $orderList[0]['postscript'];

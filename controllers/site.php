@@ -359,7 +359,7 @@ class Site extends IController
                 $dataList[$k]['num'] = $refer_info ? $refer_info['totalNum'] : 0;
             }
             $temp = $dataList[0];
-            $this->type = $temp['id'];
+            $this->type = $temp['id'] ? $temp['id'] : 0;
         }
         $goods_info['refer'] = $dataList;
     

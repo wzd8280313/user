@@ -77,7 +77,8 @@
 						<%}%>
 						<th>库存</th>
 						<th>市场价格</th>
-						<th>销售价格</th>
+                        <th>销售价格</th>
+						<th>组合销售价格</th>
 						<th>成本价格</th>
                         <th>重量(克)</th>    
                         <th>购买成功增加积分</th>    
@@ -117,6 +118,7 @@
 							<input class="tiny" name="_sell_price[<%=i%>]" type="text" pattern="float" value="<%=item['sell_price']%>" />
 							<input type="button" onclick="memberPrice(this);" value="会员组价格 <%if(item['groupPrice']){%>*<%}%>" />
 						</td>
+                        <td><input class="tiny" name="_combine_price[<%=i%>]" type="text" pattern="float" empty value="<%=item['combine_price']%>" /></td>
 						<td><input class="tiny" name="_cost_price[<%=i%>]" type="text" pattern="float" empty value="<%=item['cost_price']%>" /></td>
                         <td><input class="tiny" name="_weight[<%=i%>]" type="text" pattern="float" empty value="<%=item['weight']%>" /></td>
 						<td><input class="tiny" name="_point[<%=i%>]" type="text" pattern="float" empty value="<%=item['point']%>" /></td><td><input class="tiny" name="_tax[<%=i%>]" type="text" pattern="float" empty value="<%=item['tax']%>" /><input class="" name="_default_tax[<%=i%>]" type="checkbox" value="1" <%if(item['default_tax'] == 1){%>checked='checked' <%}%> />使用默认税率</td>

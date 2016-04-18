@@ -38,7 +38,7 @@
 
 		<tbody>
 			{set:$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1}
-			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id left join order as o on o.id eq og.order_id fields=o.* page=$page where=go.seller_id eq $seller_id and o.if_del eq 0 and o.status neq 4 $where group=og.order_id id=$orderObject order=o.id desc}
+			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id left join order as o on o.pid eq og.order_id fields=o.* page=$page where=o.seller_id eq $seller_id and o.if_del eq 0 and o.status neq 4 $where group=og.order_id id=$orderObject order=o.id desc}
 			<tr>
 				<td title="{$item['order_no']}">{$item['order_no']}</td>
 				<td title="{$item['accept_name']}">{$item['accept_name']}</td>
@@ -60,7 +60,7 @@
 				</td>
 				<td>
 					<a href="{if:Order_class::isGoDelivery($item)}{url:/seller/order_deliver/id/$item[id]}{else:}javascript:alert('此单不满足发货条件');{/if}"><img class="operator" src="{skin:images/main/icn_jump_back.png}" title="立即发货" alt="立即发货" /></a>
-					<a href="{url:/seller/order_show/id/$item[id]}"><img title="订单详情" alt="订单详情" src="{skin:images/main/icn_settings.png}" /></a>
+					<a href="{url:/seller/order_show/id/$item[id]/pid/$item[pid]}"><img title="订单详情" alt="订单详情" src="{skin:images/main/icn_settings.png}" /></a>
 				</td>
 			</tr>
 		   {/query}

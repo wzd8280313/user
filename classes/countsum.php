@@ -180,7 +180,14 @@ class CountSum
 				    }
 				    else{
 					    $groupPrice                = $this->getGroupPrice($val['goods_id'],'goods');
-                        $minPrice = ($val['combine_price'] && $val['combine_price'] <> '0.00') ? $val['combine_price'] : ($groupPrice ? $groupPrice : $val['sell_price']);
+                        if($buy <> 0)
+                        {
+                            $minPrice = ($val['combine_price'] && $val['combine_price'] <> '0.00') ? $val['combine_price'] : ($groupPrice ? $groupPrice : $val['sell_price']);
+                        }
+                        else
+                        {
+                            $minPrice = $groupPrice ? $groupPrice : $val['sell_price'];
+                        }
 				    }
                     
     			    $minPrice = min($minPrice,$val['sell_price']);
@@ -254,7 +261,14 @@ class CountSum
 					    $minPrice = $buyInfo['product']['data'][$val['product_id']]['active_price'];
 				    }else{
 	    			    $groupPrice                  = $this->getGroupPrice($val['product_id'],'product');
-                        $minPrice = ($val['combine_price'] && $val['combine_price'] <> '0.00') ? $val['combine_price'] : ($groupPrice ? $groupPrice : $val['sell_price']);
+                        if($buy <> 0)
+                        {
+                            $minPrice = ($val['combine_price'] && $val['combine_price'] <> '0.00') ? $val['combine_price'] : ($groupPrice ? $groupPrice : $val['sell_price']);
+                        }
+                        else
+                        {
+                            $minPrice = $groupPrice ? $groupPrice : $val['sell_price'];
+                        }
 				    }
     			    $minPrice = min($minPrice,$val['sell_price']);
     			    if($buy)
@@ -371,7 +385,7 @@ class CountSum
 	    		$disPrice = $activeObject->activePrice;
 	    		
 	    		$buyInfo = array(
-	    				$type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num,'active_price'=>$disPrice)),'count' => $buy_num)
+	    				0=>array($type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num,'active_price'=>$disPrice)),'count' => $buy_num))
 	    		);
 	    		
 				//设置优惠价格，如果不存在则优惠价等于商品原价

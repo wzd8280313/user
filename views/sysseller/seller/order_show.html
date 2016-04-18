@@ -40,12 +40,9 @@
 
 				<tbody>
 					{set:$goodsSum = 0;$orderWeight = 0;$delivery_fee = 0;$save_price = 0;$tax = 0;}
-					{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=order_id eq $order_id and go.seller_id eq $seller_id fields=og.*}
+					{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=order_id eq $pid and go.seller_id eq $seller_id fields=og.*}
 					{set:$goodsSum    += $item['real_price'] * $item['goods_nums']}
 					{set:$orderWeight += $item['goods_weight']* $item['goods_nums']}
-					{set:$delivery_fee+= $item['delivery_fee']}
-					{set:$save_price  += $item['save_price']}
-					{set:$tax         += $item['tax']}
 					<tr>
 						<td>
 							{set:$goodsRow = JSON::decode($item['goods_array'])}
@@ -85,13 +82,13 @@
 						<th>商品总额:</th><td>￥{$goodsSum}</td>
 					</tr>
 					<tr>
-						<th>配送费用:</th><td>￥{$delivery_fee}</td>
+						<th>配送费用:</th><td>￥{$real_freight}</td>
 					</tr>
 					<tr>
-						<th>保价费用:</th><td>￥{$save_price}</td>
+						<th>保价费用:</th><td>￥{$insured}</td>
 					</tr>
 					<tr>
-						<th>税金:</th><td>￥{$tax}</td>
+						<th>税金:</th><td>￥{$taxes}</td>
 					</tr>
 					<tr>
 						<th>订单总额:</th><td>￥{echo:array_sum(array($goodsSum,$delivery_fee,$save_price,$tax))}</td>

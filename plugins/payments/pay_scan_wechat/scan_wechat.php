@@ -403,6 +403,20 @@ class scan_wechat
 		
 		return $result;
 	}
+    
+    public function callback($callbackData,&$paymentId,&$money,&$message,&$orderNo)
+    {
+        //获取通知的数据
+        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+        //如果返回成功则验证签名
+        try {
+            $result = WxPayResults::Init($xml);
+        } catch (WxPayException $e){
+            $message = $e->errorMessage();
+            return false;
+        }
+        return true;
+    }
 	
  	/**
  	 * 

@@ -610,55 +610,6 @@ class Block extends IController
 		}
 	}
     
-    //微信支付回调函数
-    public function wechat_callback()
-    {
-        //充值方式
-        if(stripos($orderNo,'recharge') !== false)
-        {
-            $recharge_no = str_replace('recharge','',$orderNo);
-            if(payment::updateRecharge($recharge_no))
-            {
-                $this->redirect('/site/success/message/'.urlencode("充值成功").'/?callback=/ucenter/account_log');
-                exit;
-            }
-            IError::show(403,'充值失败');
-        }
-        else if(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false)
-        {
-            $order_id = Preorder_Class::updateOrderStatus($orderNo);
-            if($order_id)
-            {
-                $url  = '/site/success/message/'.urlencode("支付成功");
-                if(IClient::getDevice()=='mobile'){
-                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
-                }
-                else{
-                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
-                }
-                
-                $this->redirect($url);
-                exit;
-            }
-            IError::show(403,'订单修改失败');
-        }
-        else{
-            $order_id = Order_Class::updateOrderStatus($orderNo);
-            if($order_id)
-            {
-                $url  = '/site/success/message/'.urlencode("支付成功");
-                if(IClient::getDevice()=='mobile'){
-                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
-                }
-                else{
-                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
-                }
-                $this->redirect($url);
-                exit;
-            }
-            IError::show(403,'订单修改失败');
-        }
-    }
 
 	/**
      * @brief 【重要】支付回调[异步]

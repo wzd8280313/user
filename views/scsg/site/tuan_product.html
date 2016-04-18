@@ -217,7 +217,7 @@
 												<a class="reduce" href="javascript:tuan_spec_show.modified(-1);get_delivery_fee()"></a>
 											</div>
 											<span class="mui-amount-unit">&nbsp;件</span>
-										<em id="J_EmStock" class="tb-hidden" style="display: inline;">库存量 <label id="data_storeNums">{$store_nums}</label>件</em>
+										<em id="J_EmStock" class="tb-hidden" style="display: inline;">库存量 <label id="data_storeNums">{echo:$this->tuanData['store_nums']-$this->tuanData['sum_count']}</label>件</em>
 										<span id="J_StockTips" class='red'></span>
 										
 									</dd>
