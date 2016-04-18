@@ -133,11 +133,11 @@
 
             <!-- 添加分组 -->
             
-             <tr><td></td><td>
-             	
-             
-	    <div class="js_show">添加分组<span>+</span></div>
-           <div class="total_inpt" style="display:none">
+            <tr><td></td><td>
+	         <div class="js_show">添加分组<span>+</span></div>
+		    </tr>
+		   <tr class="add_iptr"></td><td></td><td>
+             <div class="total_inpt" style="margin-top: 20px;">
 
               
 					<span><b>分组名称：</b>
@@ -167,7 +167,7 @@
                     </span> 
                     
                 
-                 <tr class="stylenone" style="display:none"> 
+                 <tr class="stylenone" style="display:none;"> 
 					<th>设置闪购商品：</th>
 					<td>
 						<table class='border_table' style='width:70%'>
@@ -197,18 +197,19 @@
 						</table>
 					</td>
 				</tr>
-				<tr>
 
+
+
+				<tr>
+                <tbody class="addlist_div"></tbody>
                <script type="text/javascript">
                      $(document).ready(function(){
                        $(".bdtonne").click(function(){
-                       $(".stylenone").slideToggle();
+                       $(".stylenone").show(); 
                       });
+
                     });
             </script>
-
-
-
 
 
 
@@ -219,23 +220,17 @@
 
 
 
- 
-      <script type="text/javascript">
-       $(document).ready(function(){
-       $('.js_show').click(function(){
-		if($(this).next('div').is(":hidden"))
-		{
-			$(this).next('div').show();
-			$(this).find('span').html('-');
-		}
-		else
-		{
-			$(this).next('div').hide();
-			$(this).find('span').html('+');
-		}
-	})
-	  });
-            </script>
+				 <script type="text/javascript">
+				 $(document).ready(function(){
+				   $(".js_show").click(function(){
+				     $(".addlist_div").append($(".add_iptr:first").clone()); 
+				     });
+				 
+				 /*$(".bdtonne").click(function(){
+				       $(".addlist_div").append($(".stylenone:first").clone()); 
+				     });*/
+				 });
+				 </script>
 
 
 
@@ -248,15 +243,6 @@
 
 
                       
-
-
-
-
-
-
-
-
-
 
 
 
