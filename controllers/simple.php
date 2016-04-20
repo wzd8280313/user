@@ -1409,7 +1409,7 @@ class Simple extends IController
             //计算$gid商品
             if(is_numeric($gid))
             {
-                $goodsResult = $countSumObj->direct_count($gid,$type,$num,$promo,$active_id);
+                $goodsResult = $countSumObj->direct_count($gid,$type,$num,$promo,$active_id,0,$area);
             }
             else
             {
@@ -2448,6 +2448,7 @@ class Simple extends IController
 		//添加地址ajax
 	function address_add()
 	{
+        $id          = IFilter::act(IReq::get('radio_address'), 'int');
 		$accept_name = IFilter::act(IReq::get('accept_name'));
 		$province    = IFilter::act(IReq::get('province'),'int');
 		$city        = IFilter::act(IReq::get('city'),'int');
@@ -2457,7 +2458,6 @@ class Simple extends IController
 		$telphone    = IFilter::act(IReq::get('telphone'));
 		$mobile      = IFilter::act(IReq::get('mobile'));
         $user_id     = $this->user['user_id'];
-
         if(!$user_id)
         {
         	die(JSON::encode(array('data' => null)));
@@ -2495,8 +2495,15 @@ class Simple extends IController
 
 			//执行insert
 			$model->setData($sqlData);
-			$sqlData['add_id']=$model->add();
-
+            if($id)
+            {
+                $model->update('id='.$id);
+                $sqlData['id']=$id;
+            }
+            else
+            {
+                $sqlData['id']=$model->add();
+            }
 			$sqlData['province_val'] = $areaList[$province];
 			$sqlData['city_val']     = $areaList[$city];
 			$sqlData['area_val']     = $areaList[$area];

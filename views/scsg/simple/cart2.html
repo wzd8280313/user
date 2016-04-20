@@ -116,6 +116,12 @@ function address_save()
 		$.getJSON('{url:/simple/address_add}',$('form[name="order_form"]').serialize(),function(content){
 			if(content.data)
 			{
+                $('input[name=radio_address]').each(function(){
+                    if(content.data.id == $(this).val())
+                    {
+                        $(this).closest('li').remove();
+                    }
+                })
 				var addressLiHtml = template.render('addressLiTemplate',{"item":content.data});
 				$('.addr_list').prepend(addressLiHtml);
 				$('input:radio[name="radio_address"]:first').trigger('click');
@@ -165,15 +171,16 @@ function get_delivery()
                             {
                                 $('.js_data_6').hide();
                                 orderFormInstance.deliveryPrice += parseFloat(content.price);
+                                price += (content.price);
                             }
                             else
                             {
                                 for(var i = 0; i < content.isFreeFreight.length; i ++){
                                     $("#js_data_"+content.isFreeFreight[i]).show();
                                 }
+                                price = 0;
                             }
                             //orderFormInstance.freeFreight = content.isFreeFreight;
-                            price += (content.price);
                             var html = parseFloat(content.price).toFixed(2);
                             //允许保价
                             if(content.protect_price > 0)
@@ -186,7 +193,8 @@ function get_delivery()
                     },
                     timeout:1000,
                 })
-                _this.html(parseFloat(price).toFixed(2));
+                var _p = price == 0 ? '免运费' : '￥'+parseFloat(price).toFixed(2);
+                _this.html(_p);
         })				
 	})
 	orderFormInstance.doAccount();
@@ -503,7 +511,7 @@ function selectTakeself(deliveryId)
 								<col width="80px" />
 							</colgroup>
 							<caption>商家：{$value['seller_name']}
-								<span style='float:right'><span>配送费用：</span>￥<span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>{$value['delivery']}</span></span>
+								<span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
 							</caption>
 							<input type='hidden' value='{$value[0]['seller_id']}' name='seller_id[]' />
 							

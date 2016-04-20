@@ -87,12 +87,12 @@ class CountSum
 	/**
 	 * 预售计算
 	 */
-	public function presell_count($id,$type,$buy_num,$active_id)
+	public function presell_count($id,$type,$buy_num,$active_id,$area=null)
 	{
 		$buyInfo = array(
 				0 => array($type => array('id' => array($id) , 'data' => array($id => array('count' => $buy_num)),'count' => $buy_num))
 		);
-		$priceInfo = $this->goodsCount($buyInfo);
+		$priceInfo = $this->goodsCount($buyInfo,$area);
 		$presell_db = new IModel('presell');
 		$temp=$presell_db->getObj('id='.$active_id.' and TIMESTAMPDIFF(second,yu_end_time,NOW())<=0','*');
         $priceInfo['pre_rate'] = $temp ? $temp['money_rate'] : '';

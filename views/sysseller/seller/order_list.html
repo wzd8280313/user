@@ -38,7 +38,8 @@
 
 		<tbody>
 			{set:$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1}
-			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id left join order as o on o.pid eq og.order_id fields=o.* page=$page where=o.seller_id eq $seller_id and o.if_del eq 0 and o.status neq 4 $where group=og.order_id id=$orderObject order=o.id desc}
+            {query:name=order page=$page where=seller_id eq $seller_id and if_del eq 0 and status neq 4 $where id=$orderObject order=id desc}
+            
 			<tr>
 				<td title="{$item['order_no']}">{$item['order_no']}</td>
 				<td title="{$item['accept_name']}">{$item['accept_name']}</td>

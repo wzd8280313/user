@@ -444,10 +444,12 @@
 			<tbody>
 			{if:$this->result}
 			{foreach:items=$this->result}
+            {if:$item['hide'] == 0}
 			<tr>
 				<td>{$item['plan']}</td>
 				<td>{$item['info']}</td>
 			</tr>
+            {/if}
 			{/foreach}
 			{else:}
 			<tr><td colspan='2'>暂无数据</td></tr>

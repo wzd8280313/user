@@ -19,19 +19,30 @@ class Order extends IController
 	{
 		//获得post传来的值
         $order_id = IFilter::act(IReq::get('id'),'int');
-		$pid = IFilter::act(IReq::get('pid'),'int');
 		$data = array();
 		if($order_id)
 		{
 			$order_show = new Order_Class();
 			$data = $order_show->getOrderShow($order_id);
-		
 			if($data)
 			{
+                $goodsList = array();
+                $orderGoods = new IModel('order_goods');
+                if($data['pid'])
+                {
+                    $temp = $orderGoods->query('order_id='.$data['pid'].' and seller_id='.$data['seller_id'], 'goods_id, goods_price, real_price, goods_nums');
+                }
+                else
+                {
+                    $temp = $orderGoods->query('order_id='.$data['id'].' and seller_id='.$data['seller_id'], 'goods_id, goods_price, real_price, goods_nums');
+                }
+                foreach($temp as $v)
+                {
+                    $goodsList[$v['goods_id']] = array('sum' => $v['goods_price'] * $v['goods_nums'], 'reduce' => ($v['goods_price']-$v['real_price'])*$v['goods_nums']);
+                }
 				//获得折扣前的价格
 			 	$rule = new ProRule($data['real_amount']+$data['pro_reduce']);
-			 	$this->result = $rule->getInfo();
-
+			 	$this->result = $rule->getInfo($goodsList, $data['area']);
 		 		//获取地区
 		 		$data['area_addr'] = join('&nbsp;',area::name($data['province'],$data['city'],$data['area']));
 			 	$this->setRenderData($data);
@@ -1607,7 +1618,7 @@ class Order extends IController
 	{
 		$this->layout='print';
 		$order_id = IFilter::act( IReq::get('id'),'int' );
-		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
+		$seller_id = IReq::get('seller_id') ? IFilter::act( IReq::get('seller_id'),'int' ) : 0;
 		$type     = IFilter::act(IReq::get('type'));
 
 		$tb_order =  new IModel('order');
@@ -1645,7 +1656,7 @@ class Order extends IController
 	{
 		$this->layout='print';
 		$order_id = IFilter::act( IReq::get('id'),'int' );
-		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
+		$seller_id= IReq::get('seller_id') ? IFilter::act( IReq::get('seller_id'),'int' ) : 0;
 
 		$type     = IFilter::act(IReq::get('type'));
 
@@ -1665,7 +1676,7 @@ class Order extends IController
 	{
 		$this->layout='print';
 		$order_id = IFilter::act(IReq::get('id'),'int');
-		$seller_id= IFilter::act( IReq::get('seller_id'),'int' );
+		$seller_id = IReq::get('seller_id') ? IFilter::act( IReq::get('seller_id'),'int' ) : 0;
 
 		$type     = IFilter::act(IReq::get('type'));
 		$tb_order =  new IModel('order');

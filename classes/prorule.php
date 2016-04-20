@@ -98,12 +98,12 @@ class ProRule
 	 * @brief 获取促销规则的数据
 	 * @return array plan:活动方案名称; info:具体促销信息;
 	 */
-	public function getInfo($goodsIdList = array())
+	public function getInfo($goodsIdList = array(), $area = null)
 	{
 		$explain  = array();
 
-		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce, $goodsIdList);
-		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce, $goodsIdList);
+		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce, $goodsIdList, $area);
+		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce, $goodsIdList, $area);
 		$allInfo  = array_merge($cashInfo,$giftInfo); 
 		foreach($allInfo as $key => $val)
 		{
@@ -212,7 +212,7 @@ class ProRule
 	 * @return array 促销规则信息
 	 */
 	private function satisfyPromotion($award_type = null, $goodsIdList = array(), $area = null, $sum = null)
-	{                     
+	{                                 
         $final_sum = $sum ? $sum : $this->sum;
         
 		$datetime = ITime::getDateTime();
@@ -467,13 +467,13 @@ class ProRule
 	 * @param array  $goodsIdList    营销方式绑定的商品ID
 	 * @return array            奖励信息
 	 */
-	private function getAwardInfo($award_type,$is_once,$goodsIdList = array())
+	private function getAwardInfo($award_type,$is_once,$goodsIdList = array(), $area = null)
 	{
 		$awardInfo = array();
 
 		//获取所有现金促销规则奖励信息
         $award_type_str = join(',',$award_type);
-		$allAwardInfo   = $this->satisfyPromotion($award_type_str,$goodsIdList);
+		$allAwardInfo   = $this->satisfyPromotion($award_type_str,$goodsIdList, $area);
 		//当现金奖励仅为一次时，奖励优惠最大化
 		if(!empty($allAwardInfo))
 		{

@@ -92,7 +92,7 @@
 					<td>
 						<label class='attr'><input name="price_type" value="0" type="radio" onclick="$('#areaBox').hide();" checked="checked">统一地区运费</label>
 						<label class='attr'><input name="price_type" value="1" type="radio" onclick="$('#areaBox').show();">指定地区运费</label>
-						<label>《统一地区运费》：全部的地区都使用默认的《重量设置》中的计费方式。《指定地区运费》：单独指定部分地区的运费</label>
+						<label>《统一地区运费》：全部的地区都使用默认的<span class="js_desc_text_3">《重量设置》</span>中的计费方式。《指定地区运费》：单独指定部分地区的运费</label>
 					</td>
 				</tr>
 			</table>
@@ -180,11 +180,13 @@ $(function()
             {
                 $('.js_desc_text_1').html('首数费用');
                 $('.js_desc_text_2').html('增加费用');
+                $('.js_desc_text_3').html('《数量设置》');
             }
             else
             {
                 $('.js_desc_text_1').html('首重费用');
                 $('.js_desc_text_2').html('续重费用');
+                $('.js_desc_text_3').html('《重量设置》');
             }
         })
     })
@@ -235,11 +237,13 @@ $(function()
     {
         $('.js_desc_text_1').html('首数费用');
         $('.js_desc_text_2').html('增加费用');
+        $('.js_desc_text_3').html('《数量设置》');
     }
     else
     {
         $('.js_desc_text_1').html('首重费用');
         $('.js_desc_text_2').html('续重费用');
+        $('.js_desc_text_3').html('《重量设置》');
     }
 });
 /**
@@ -296,11 +300,13 @@ function addArea()
     {
         $('.js_desc_text_1').html('首数费用');
         $('.js_desc_text_2').html('增加费用');
+        $('.js_desc_text_3').html('《数量设置》');
     }
     else
     {
         $('.js_desc_text_1').html('首重费用');
         $('.js_desc_text_2').html('续重费用');
+        $('.js_desc_text_3').html('《重量设置》');
     }
 	
 }

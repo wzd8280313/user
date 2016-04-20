@@ -1057,9 +1057,10 @@ class Order_Class
 		 	self::updateStore($order_goods_relation,'reduce');
 		}*/
 
+        $orderId = $tbOrderRow['pid'] ? $tbOrderRow['pid'] : $order_id;
 		//更新发货状态
 	 	$orderGoodsDB = new IModel('order_goods');
-	 	$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$order_id,'count(*) as num');
+	 	$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$orderId.' and seller_id='.$sendor_id,'count(*) as num');
 		$sendStatus = 2;//部分发货
 	 	if(count($order_goods_relation) >= $orderGoodsRow['num'])
 	 	{

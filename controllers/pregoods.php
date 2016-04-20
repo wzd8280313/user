@@ -503,7 +503,7 @@ class Pregoods extends IController
 		if($type && $gid)
 		{
 			//计算$gid商品
-			$goodsResult = $countSumObj->presell_count($gid,$type,$num,$active_id);
+			$goodsResult = $countSumObj->presell_count($gid,$type,$num,$active_id,$area);
 			
 				
 			$this->gid       = $gid;

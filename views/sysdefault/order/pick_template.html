@@ -35,8 +35,13 @@
 				<th>数量</th>
 				<th>小计</th>
 			</tr>
-			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=order_id eq $id}
-			{if:$seller_id && $item['seller_id'] != $seller_id}
+            {if:$pid}
+                {set:$where="order_id = $pid"}
+            {else:}
+                {set:$where="order_id = $pid"}
+            {/if}
+			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=$where}
+			{if:$item['seller_id'] != $seller_id}
 			{set:continue;}
 			{/if}
 			{set:$goodsRow = JSON::decode($item['goods_array'])}
@@ -52,29 +57,21 @@
 				<td>{$item['goods_nums']}</td>
 				<td>￥{echo:$item['real_price'] * $item['goods_nums']}元</td>
 			</tr>
+            <tr> 
+                <td align="left" style="border: none;">订单附言：{$postscript}</td>
+                <td align="left" style="border: none;">配送：{query:name=delivery where=id eq $item[delivery_id]}{$item['name']}{/query}</td>
+            </tr>
+            <tr>
+                <td align="left" style="border: none;">地址：{$address}</td>
+                <td align="left" style="border: none;">收货人：{$accept_name}</td>
+            </tr>
+            <tr>
+                <td align="left" style="border: none;">手机：{$mobile}</td>
+                <td align="left" style="border: none;">电话：{$telphone}</td>
+            </tr> 
 			{/query}
 		</tbody>
-	</table>
-
-	<table class="table" width="100%" cellspacing="0" cellpadding="0" border="0">
-		<colgroup>
-			<col width="60%" />
-			<col />
-		</colgroup>
-
-		<tr>
-			<td align="left">订单附言：{$postscript}</td>
-			<td align="left">配送：{query:name=delivery where=id eq $distribution}{$item['name']}{/query}</td>
-		</tr>
-		<tr>
-			<td align="left">地址：{$address}</td>
-			<td align="left">收货人：{$accept_name}</td>
-		</tr>
-		<tr>
-			<td align="left">手机：{$mobile}</td>
-			<td align="left">电话：{$telphone}</td>
-		</tr>
-	</table>
+	</table>    
 
 	<table class="table topBorder" width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr><td class="f18" align="left"><b>签字：</b></td></tr>

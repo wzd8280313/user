@@ -37,8 +37,13 @@
 				<th>小计</th>
 			</tr>
 			{set:$goodsSum = 0;$deliveryPrice = 0;}
-			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=order_id eq $id}
-			{if:$seller_id && $item['seller_id'] != $seller_id}
+            {if:$pid}
+                {set:$where="order_id = $pid"}
+            {else:}
+                {set:$where="order_id = $pid"}
+            {/if}
+			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=$where}
+			{if:$item['seller_id'] != $seller_id}
 			{set:continue;}
 			{/if}
 			{set:$goodsSum      += $item['real_price'] * $item['goods_nums']}
