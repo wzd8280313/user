@@ -68,8 +68,8 @@
 
 							<!--分类数据显示-->
 							<script id="categoryButtonTemplate" type="text/html">
-							<button class="btn" type="button" onclick="return confirm('确定删除此分类？') ? $(this).remove() : '';">
-								<input type="hidden" value="<%=templateData['id']%>" name="_goods_category[]" />
+                            <input type="hidden" value="<%=templateData['id']%>" name="_goods_category[]" />
+							<button class="btn" type="button" onclick="return confirm('确定删除此分类？') ? $(this).remove() : '';">     
 								<span class="del"><%=templateData['name']%></span>
 							</button>
 							</script>
