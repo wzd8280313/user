@@ -86,10 +86,10 @@ class ProRule
 	 * @brief 进行赠品促销规则的奖励
 	 * @param int $user_id 用户的ID值
 	 */
-	public function setAward($user_id)
+	public function setAward($user_id, $goodsList = array())
 	{
 		//获取赠品奖励信息
-		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce);
+		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce,$goodsList);
 		
 		return $this->giftAction($giftInfo,$user_id);
 	}
@@ -104,7 +104,7 @@ class ProRule
 
 		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce, $goodsIdList, $area);
 		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce, $goodsIdList, $area);
-		$allInfo  = array_merge($cashInfo,$giftInfo); 
+		$allInfo  = array_merge($cashInfo,$giftInfo);       
 		foreach($allInfo as $key => $val)
 		{
             $explain[$key]['id'] = $val['id'];
@@ -112,7 +112,7 @@ class ProRule
 			$explain[$key]['plan'] = $val['name'];
             $explain[$key]['info'] = $this->typeExplain($val['award_type'],$val['condition'],$val['award_value']);
 			$explain[$key]['hide'] = isset($val['hide']) ? $val['hide'] : 0;
-		}
+		}                   
 		return $explain;
 	}
 
@@ -233,7 +233,7 @@ class ProRule
 		{
 			$where.=' and user_group = "all" ';
 		}                  
-		$proList = $proObj->query($where,'*','`condition`');  
+		$proList = $proObj->query($where,'*','`condition`');
         if(!$sum)
         {
             $proListTemp = $proList;
@@ -250,7 +250,7 @@ class ProRule
                 {
                     $gId = explode(',', $v['goods_id']);
                 }
-                $common = array_intersect($temp, $gId);
+                $common = array_intersect($temp, $gId);     
                 if($common && count($temp) > count($common))
                 {
                     $sumNum = 0;
@@ -267,7 +267,7 @@ class ProRule
                     $proList[$k]['hide'] = 1;
                 }
             }
-        }                                                            
+        }                                                                              
         if($area)
         {
             $proListTemp = $proList;
@@ -286,7 +286,7 @@ class ProRule
                     }
                 }  
             }
-        }                                             
+        }                                                   
 		return $proList;
 	}
 	/**
@@ -376,86 +376,89 @@ class ProRule
 	 * @param array 赠品促销规则奖励信息
 	 */
 	private function giftAction($giftArray,$user_id)
-	{
+	{                             
 		foreach($giftArray as $key => $val)
 		{
-			$award_type  = $val['award_type'];
-			$award_value = $val['award_value'];
-			switch($award_type)
-			{
-				//积分
-				case "3":
-				{
-					$award_value = $award_value * $this->point_mul;
-					$pointConfig = array(
-						'user_id' => $user_id,
-						'point'   => $award_value,
-						'log'     => '促销奖励，消费满'.$this->sum.'元，奖励'.$award_value.'积分',
-					);
-					$pointObj = new Point;
-					$pointObj->update($pointConfig);
-				}
-				break;
+            if(!isset($val['hide']) || $val['hide'] <> 1)
+            {                        
+			    $award_type  = $val['award_type'];
+			    $award_value = $val['award_value'];
+			    switch($award_type)
+			    {
+				    //积分
+				    case "3":
+				    {
+					    $award_value = $award_value * $this->point_mul;
+					    $pointConfig = array(
+						    'user_id' => $user_id,
+						    'point'   => $award_value,
+						    'log'     => '促销奖励，消费满'.$this->sum.'元，奖励'.$award_value.'积分',
+					    );
+					    $pointObj = new Point;
+					    $pointObj->update($pointConfig);
+				    }
+				    break;
 
-				//代金券
-				case "4":
-				{
-					/*(1)修改prop表*/
-					$ticketObj = new IModel('ticket');
-					$where     = 'id = '.$award_value;
-					$ticketRow = $ticketObj->getObj($where);
+				    //代金券
+				    case "4":
+				    {
+					    /*(1)修改prop表*/
+					    $ticketObj = new IModel('ticket');
+					    $where     = 'id = '.$award_value;
+					    $ticketRow = $ticketObj->getObj($where);
 
-					//奖励的红包没有过期
-					$time = ITime::getDateTime();
-					if(($time > $ticketRow['start_time']) && ($time < $ticketRow['end_time']))
-					{
-						$dataArray = array(
-							'condition' => $award_value,
-							'name'      => $ticketRow['name'],
-							'card_name' => 'T'.IHash::random(8),
-							'card_pwd'  => IHash::random(8),
-							'value'     => $ticketRow['value'],
-							'start_time'=> $ticketRow['start_time'],
-							'end_time'  => $ticketRow['end_time'],
-							'is_send'   => 1,
-						);
-						$propObj = new IModel('prop');
-						$propObj->setData($dataArray);
-						$insert_id = $propObj->add();
+					    //奖励的红包没有过期
+					    $time = ITime::getDateTime();
+					    if(($time > $ticketRow['start_time']) && ($time < $ticketRow['end_time']))
+					    {
+						    $dataArray = array(
+							    'condition' => $award_value,
+							    'name'      => $ticketRow['name'],
+							    'card_name' => 'T'.IHash::random(8),
+							    'card_pwd'  => IHash::random(8),
+							    'value'     => $ticketRow['value'],
+							    'start_time'=> $ticketRow['start_time'],
+							    'end_time'  => $ticketRow['end_time'],
+							    'is_send'   => 1,
+						    );
+						    $propObj = new IModel('prop');
+						    $propObj->setData($dataArray);
+						    $insert_id = $propObj->add();
 
-						/*(2)修改member表*/
-						$memberObj = new IModel('member');
+						    /*(2)修改member表*/
+						    $memberObj = new IModel('member');
 
-						//用户prop字段值null时
-						$memberArray = array('prop' => ','.$insert_id.',');
-						$memberObj->setData($memberArray);
-						$result      = $memberObj->update('user_id = '.$user_id.' and ( prop is NULL or prop = "" )');
+						    //用户prop字段值null时
+						    $memberArray = array('prop' => ','.$insert_id.',');
+						    $memberObj->setData($memberArray);
+						    $result      = $memberObj->update('user_id = '.$user_id.' and ( prop is NULL or prop = "" )');
 
-						//用户prop字段值非null时
-						if(!$result)
-						{
-							$memberArray = array(
-								'prop' => 'concat(prop,"'.$insert_id.',")',
-							);
-							$memberObj->setData($memberArray);
-							$memberObj->update('user_id = '.$user_id,'prop');
-						}
-					}
-				}
-				break;
+						    //用户prop字段值非null时
+						    if(!$result)
+						    {
+							    $memberArray = array(
+								    'prop' => 'concat(prop,"'.$insert_id.',")',
+							    );
+							    $memberObj->setData($memberArray);
+							    $memberObj->update('user_id = '.$user_id,'prop');
+						    }
+					    }
+				    }
+				    break;
 
-				//赠送经验
-				case "7":
-				{
-					$memberObj   = new IModel('member');
-					$memberArray = array(
-						'exp' => 'exp + '.$award_value,
-					);
-					$memberObj->setData($memberArray);
-					$memberObj->update('user_id = '.$user_id,'exp');
-				}
-				break;
-			}
+				    //赠送经验
+				    case "7":
+				    {
+					    $memberObj   = new IModel('member');
+					    $memberArray = array(
+						    'exp' => 'exp + '.$award_value,
+					    );
+					    $memberObj->setData($memberArray);
+					    $memberObj->update('user_id = '.$user_id,'exp');
+				    }
+				    break;
+			    }
+            }
 		}
 		
 	}

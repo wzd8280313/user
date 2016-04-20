@@ -1556,14 +1556,20 @@ class Order_Class
 				$exp_add = $orderRow['exp'];
 				$point_add = $orderRow['point'];
 			}
-			
 			if($point_add!=0){
 				$point_add = $point_add * $point_mul;
 			}
 		//(2)进行促销活动奖励
+            $orderGoods = new IModel('order_goods');
+            $orderGoodsList = $orderGoods->query('order_id='.$order_id, 'goods_id, goods_price, real_price, goods_nums');
+            $goodsList = array();
+            foreach($orderGoodsList as $v)
+            {
+                $goodsList[$v['goods_id']] = array('sum' => $v['goods_price'] * $v['goods_nums'], 'reduce' => ($v['goods_price']-$v['real_price'])*$v['goods_nums']);
+            }
 			$proObj = new ProRule($real_amount,$point_mul);
 			$proObj->setUserGroup($memberRow['group_id']);
-			$proObj->setAward($user_id);
+			$proObj->setAward($user_id, $goodsList);
 		
 			//(3)增加经验值
 			$memberData = array(
@@ -1938,6 +1944,12 @@ class Order_Class
 					$setDataOg['refunds_status'] = 8;
 				}
 			}
+            $good = new IModel('goods');
+            $temp = $good->getField('id = '.$goodsOrderRow['goods_id'], 'store_type');
+            if($temp == 1 && $goodsOrderRow['is_change'] == 1)
+            {
+                Order_Class::updateStore($goodsOrderRow['id'], 'add');
+            }
 		}
 		else if(in_array($refunds_status,array(1,5))){//被拒绝
 			if($goodsOrderRow['is_send']==1){

@@ -1664,7 +1664,7 @@ class Seller extends IController
 		$page=(isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
 		$fapiao_db = new IQuery('order_fapiao as f');
 		$fapiao_db->join = 'left join order as o on o.id = f.order_id   left join user as u on u.id = f.user_id';
-		$fapiao_db->where = 'seller_id ='. $seller_id.' AND f.status = 1 '.$whereAdd;
+		$fapiao_db->where = 'f.seller_id ='. $seller_id.' AND f.status = 1 '.$whereAdd;
 		
 		$fapiao_db->order = 'f.id DESC';
 		$fapiao_db->page = $page;

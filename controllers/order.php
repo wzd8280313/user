@@ -453,7 +453,7 @@ class Order extends IController
 			$tb_refundment_doc->update('id='.$refundment_id);
 			
 			$refundment_row = $tb_refundment_doc->getObj('id='.$refundment_id,'order_id,goods_id,product_id');
-			$goodsOrderRow = $order_goods_db->getObj('order_id='.$refundment_row['order_id'].' and goods_id='.$refundment_row['goods_id'].' and product_id ='.$refundment_row['product_id'],'is_send,id');
+			$goodsOrderRow = $order_goods_db->getObj('order_id='.$refundment_row['order_id'].' and goods_id='.$refundment_row['goods_id'].' and product_id ='.$refundment_row['product_id'],'is_send,id,is_change,goods_id');
 			Order_Class::get_order_status_refunds($refundment_id,$pay_status);
 			Order_Class::ordergoods_status_refunds($pay_status,$goodsOrderRow,$type);
 			$logObj = new log('db');

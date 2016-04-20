@@ -331,7 +331,7 @@ class hookCreateAction extends IInterceptorBase
 			}
 			$ids = substr($ids,0,-1);
 			$goods_db = new IModel('goods');
-			$goods_db->setData(array('is_del'=>2));
+			$goods_db->setData(array('is_del'=>0));
 			$goods_db->update('id in ('.$ids.')');
 		}
 			

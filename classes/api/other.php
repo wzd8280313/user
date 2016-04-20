@@ -8,12 +8,13 @@
 class APIOther
 {
 	//获取促销规则
-	public function getProrule()
+	public function getProrule($arg)
 	{
+        $temp = intval($arg);
 		$proRuleObj = new ProRule(999999999);
 		$proRuleObj->isGiftOnce = false;
-		$proRuleObj->isCashOnce = false;
-		return $proRuleObj->getInfo();
+		$proRuleObj->isCashOnce = false; 
+		return $proRuleObj->getInfo(array($temp=>(1)));
 	}
 
 	//获取支付方式
