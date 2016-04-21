@@ -1,0 +1,139 @@
+{set:$comment=$this->comment;}
+<style type="text/css">
+    .pthf{
+        color:#13BFF3;
+    }
+    .js_show_big_photo{
+        width: 50px; height: 50px; border: 2px solid #F0F0F0;
+    }
+    .js_show_big_photo:hover{
+         border: 2px solid #FF6600;
+    }
+</style>
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>评论管理</span><span>></span><span>查看评论</span></div>
+	<div class="operating">
+		<a href="{url:/comment/comment_list}"><button class="operating_btn" type="button"><span class="return">返回</span></button></a>
+	</div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/comment/comment_update}" method="post" name="comment_edit">
+			<input type="hidden" value="{$comment['id']}" name="id" />
+			<table class="form_table">
+				<colgroup>
+					<col width="150px" />
+					<col />
+				</colgroup>
+
+				<tr>
+					<th>评论人：</th>
+					<td>{if: $comment['username']}<a href="{url:/member/member_edit/uid/$comment['uid']}" >{$comment['username']}</a>{else:}游客{/if}</td>
+				</tr>
+				{if:$comment['sellerid']}
+				<tr><th>商家：</th><td><a href="{url:/site/home/id/$comment['sellerid']}" target="_blank">商家主页</a></td></tr>
+				{/if}
+				<tr>
+				<tr>
+					<th>评价商品：</th><td><a href="{url:/goods/products/id/$comment['goods_id']}" target="_blank">{$comment['name']}</a></td>
+				</tr>
+				<tr>
+					<th>评价分数：</th><td>{$comment['point']}分</td>
+				</tr>
+				<tr>
+					<th valign="top">评价内容：</th>
+					<td>
+						<div class="">
+                            <p><span>{if: $comment['username']}{$comment['username']}{else:}游客{/if}：</span>
+                                <span>{$comment['comment_time']}</span></p>
+                            <p>{$comment['contents']}</p>
+                            {if: $comment['photo']}
+                            <p class="js_photo">
+                            {foreach: items=$comment['photo'] item=$photo}
+                                <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
+                            {/foreach}
+                            <p></p>
+                            {/if}
+                            {if:isset($comment['replySelf'])}
+                             <p><b>追加评语：</b><span class="gray">{$comment['replySelf']['contents']}</span></p>
+                                {if: isset($comment['replySelfPhoto'])}
+                                <p class="js_photo">
+                                {foreach: items=$comment['replySelfPhoto'] item=$photo}
+                                    <img src="{webroot:$photo['img']}" class="js_show_big_photo"/>
+                                {/foreach}                      
+                                <p></p>
+                                {/if}
+                              {/if}
+						</div>
+                        {foreach:items=$this->commentList}
+                        <div class="js_reply_select" js_data="{$item['id']}">
+                            <p><span {if:$item['user_id']==-1} class="pthf" {/if}>{$item['username']}：</span>
+                                <span>{$item['comment_time']}</span></p>
+                            <p>{$item['contents']}</p>
+                        </div>
+                        {/foreach}
+
+					</td>
+				</tr>
+				
+				
+					<th>回复评价：</th>
+					<td><textarea class='normal' name='recontents'></textarea><label>卖家对买家评论的回复</label></td>
+				</tr>
+				<tr>
+					<th></th>
+					<td>
+						<button type='submit' class='submit' onclick="return checkForm()"><span>确定</span></button>
+						<button type='reset' class='submit'><span>重置</span></button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>  
+<SCRIPT LANGUAGE="JavaScript">
+//提交表单前的检查
+function checkForm()
+{
+    var _c = $.trim($('textarea[name="recontents"]').val());
+    if(_c.length > 0)
+    {
+        return true;
+    }
+    else
+    {
+        alert('回复不能为空');
+        return false;
+    }
+}
+function reclaim()
+{
+	art.dialog({
+		id: 'reclaim',
+		lock: true,
+		title: '删除评价',
+		content: "确定要删除此条评价信息吗？",
+		ok: function(){
+			$("form[name='comment_edit']").submit();
+			return false;
+		},
+		cancel: true
+	});
+}
+$(document).on('click', '.js_reply_select', function(){
+    var _id = $(this).attr('js_data');
+    $(this).css('color', 'red');
+    $(this).siblings().css('color','black');
+    $("input[name=id]").val(_id);
+})
+$(document).on('click', '.js_show_big_photo', function(){
+    var _u = new Image();
+    _u.src = $(this).attr('src')
+    var _w = _u.width > 500 ? 500 : _u.width
+        ,html = '<p class="js_hide_big_photo" style="margin-top:10px;width:26px; height:20px; border:1px solid gray;cursor:pointer;">关闭</p><br/><img src='+_u.src+' width='+_w+'/>';
+    $(this).parents('.js_photo').next('p').html(html);
+})
+$(document).on('click', '.js_hide_big_photo', function(){
+    $(this).parents('p').html('');
+})
+</SCRIPT>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+{set:$file = IFilter::act(IReq::get('data'));}
+<head>
+	<meta charset="UTF-8">
+	<title>微信支付</title>
+	<link rel="stylesheet" href="{skin:css/weixin.css}">
+</head>
+<body>
+        <div class="over_mask" ></div>
+        	<div class="containton" >
+        		<div class="pay-weixin">
+                       <div class="p-w-hd">微信支付</div>
+                       <div class="p-w-bd">
+                           <div class="j_weixinInfo font-red">请根据提示扫描二维码进行微信支付</div>
+                           <div class="p-w-box">
+                               <div class="pw-box-hd">
+                                   <img src="{url:/views/qrcode/}/{$file}.png" width="298">
+                               </div>
+                               <div class="pw-box-ft" style="background: url({skin:images/cocen.png}) 50px 8px no-repeat #ff7674;">
+                                   <p>请使用微信扫一扫</p>
+                                   <p>扫描二维码支付</p>
+                               </div>
+                           </div>
+                           <div class="p-w-sidebar" style="background: url({skin:images/wxbg.png}) 50px 0 no-repeat;"></div>
+                       </div>
+                  </div>
+                  <div class="payment-change">
+   	               <!--<a class="pc-wrap" id="reChooseUrl" href="">
+   	               	<i class="pc-w-arrow-left">&lt;</i>
+   	                   <strong>选择其他支付方式</strong>
+   	               </a>-->
+   	          </div>
+        	</div>
+
+
+	
+</body>
+</html>

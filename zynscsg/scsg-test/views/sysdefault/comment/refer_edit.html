@@ -1,0 +1,75 @@
+{set:$id = IFilter::act(IReq::get('id'),'int')}
+{set:$reply = $this->reply}
+<div class="headbar">
+	<div class="position"><span>会员</span><span>></span><span>咨询管理</span><span>></span><span>回复咨询</span></div>
+	<div class="operating">
+		<a onclick="windows.location.href='{url:/comment/refer_del/check/$id}'" href="javascript:void(0);"><button class="operating_btn" type="button"><span class="delete">删除</span></button></a>
+		<a href="javascript:void(0)" onclick="history.go(-1)"><button class="operating_btn" type="button"><span class="return">返回</span></button></a>
+	</div>
+</div>
+<style type="text/css">
+	.pthf{
+		color:#13BFF3;
+	}
+</style>
+<div class="content_box">
+	<div class="content form_content">
+		<form action="{url:/comment/refer_reply}" method="post" name="refer_edit">
+			<input type="hidden" value="{$id}" name="refer_id" />
+			<table class="form_table">
+				<col width="150px" />
+				<col />
+				<tr>
+					<th>咨询人：</th>
+                    <td>
+                        {if: $reply['username']}<a href="{url:/member/member_edit/uid/$reply['uid']}" >{$reply['username']}</a>{else:}游客{/if}
+                    </td>
+				</tr>
+				<tr>
+					<th valign="top">咨询内容：</th>
+					<td>
+						<div class="">
+							<p><span>{if: $reply['username']}{$reply['username']}{else:}游客{/if}：</span>
+								<span>{$reply['time']}</span></p>
+							<p>{$reply['question']}</p>	
+						</div>
+                        {foreach:items=$this->replyList}
+                        <div class="js_reply_select" js_data="{$item['id']}">
+							<p><span {if:$item['user_id']==-1} class="pthf" {/if}>{$item['username']}：</span>
+								<span>{$item['time']}</span></p>
+							<p>{$item['question']}</p>
+                        </div>
+                        {/foreach}
+					</td>
+				</tr>
+				<tr>
+					<th valign="top">回复：</th><td><textarea name="content" rows="" cols=""></textarea></td>
+				</tr>
+				<tr>
+					<th></th><td><button class="submit" type="submit" onclick="return checkForm()"><span>回 复</span></button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+    function checkForm()
+    {
+        var _c = $.trim($('textarea[name="content"]').val());
+        if(_c.length > 0)
+        {
+            return true;
+        }
+        else
+        {
+            alert('回复不能为空');
+            return false;
+        }
+    }
+    $(document).on('click', '.js_reply_select', function(){
+        var _id = $(this).attr('js_data');
+        $(this).css('color','red');
+        $(this).siblings().css('color','black');
+        $("input[name=refer_id]").val(_id);
+    })
+</script>

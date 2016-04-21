@@ -1,0 +1,18 @@
+/*右侧导航*/
+
+#menu{width: 120px;height: auto; position: fixed;top: 40%;right: 15px;margin-top: -135px; display: none;}
+#menu ul{display: block;list-style: none}
+#menu ul li a{width: 120px; height: 40px; line-height: 
+	40px; text-align: center;background-color: #9f0e13;color: #fff;display: block;
+	font-size:12px;
+}
+#menu ul li a:hover,#menu ul li a.cur{background-color: rgba(0, 0, 0, 0.68);color: #fff;}
+.rutn_top{
+	text-align: center;
+	background:#9f0e13; 
+	color: #EFECEC;
+}
+.rutn_top a{
+	font-size: 10px;
+	color:#EFECEC;
+}

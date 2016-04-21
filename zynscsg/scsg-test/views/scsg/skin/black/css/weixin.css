@@ -1,0 +1,115 @@
+html, body, form, p, h1, h2, h3, h4, h5, h6, dl, ul, ol, li, dt, dd, select, figure { margin: 0; padding: 0; }
+body, select, input, option, textarea { font-family: "Microsoft YaHei",Arial; }
+body { font-size: 16px; line-height: 1.5; -webkit-text-size-adjust: none; }
+select, input, option, textarea { font-size: 100%; -webkit-box-sizing: border-box; box-sizing: border-box; }
+select, textarea, input[type="email"], input[type="text"], input[type="tel"], input[type="number"], input[type="search"], input[type="submit"], input[type="button"], input[type="reset"] { -webkit-appearance: none; -webkit-box-shadow: none; box-shadow: none; -webkit-border-image: none; border-image: none; -webkit-border-radius: 0; border-radius: 0; }
+ul, ol, li {
+	list-style-type: none;
+	font-size: 14px;
+}
+em, i, var { font-style: normal; }
+a, a:visited { color: #000; }
+a { text-decoration: none; }
+a img { border: 0 none; }
+img { max-width: 100%; }
+
+
+
+
+/* 微信支付弹出框 */
+body{background: #F1F2F7}
+.containton {
+    border-top: 3px solid #4b5b78;
+    background-color: #fff;
+    padding: 18px 30px 0;
+    z-index: 3000;
+    width: 929px;
+    margin: 0 auto;
+    margin-top: 70px;
+}
+.containton .p-w-hd {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-family: "Microsoft Yahei";
+}
+.containton .p-w-bd {
+    padding-left: 130px;
+    margin-bottom: 30px;
+    position:relative
+}
+.j_weixinInfo.font-red{
+	position:absolute; 
+	top: -40px; 
+	left: 130px;
+}
+.containton .font-red {
+    color: #ff5d5b;
+}
+.containton a {
+    color: #2ea7e7;
+}
+.containton .p-w-box {
+    float: left;
+    width: 300px;
+    text-align: center;
+}
+
+.containton .pw-box-hd {
+    margin-bottom: 20px;
+    width: 300px;
+    height: 300px;
+}
+.containton .pw-box-hd img {
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    width: 298px;
+    height: 298px;
+}
+.containton .pw-box-ft {
+    height: 44px;
+    padding: 8px 0 8px 125px;
+}
+.pw-box-ft p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+    color: #fff;
+    font-weight: 700;
+}
+.containton .p-w-sidebar {
+    float: left;
+    width: 379px;
+    height: 421px;
+    padding-left: 50px;
+    margin-top: -20px;
+}
+.payment-change{
+	clear: both;
+}
+.payment-change .pc-wrap {
+    display: block;
+    height: 56px;
+    line-height: 56px;
+    padding: 0 20px;
+    -webkit-transition: all .1s;
+    -moz-transition: all .1s;
+    -ms-transition: all .1s;
+    transition: all .1s;
+}
+.payment-change .pc-wrap .pc-w-arrow-left {
+    float: left;
+    margin-right: 15px;
+    font-family: "\5b8b\4f53";
+	font-style: normal;
+	font-size: 22px;
+	width: 20px;
+	text-align: center;
+	color: #2fa1dd;
+	}
+.payment-change .pc-wrap strong {
+    color: #2ea7e7;
+    margin-right: 30px;
+    font-size: 14px;
+    float: left;
+    cursor: pointer;
+}

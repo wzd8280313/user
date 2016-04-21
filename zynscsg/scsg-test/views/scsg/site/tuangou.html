@@ -1,0 +1,252 @@
+<link href="{skin:css/tm.css}" rel="stylesheet">
+<link rel="stylesheet" type='text/css' href="{skin:css/buynmb_css/jquery.spinner.css}">
+
+<script type='text/javascript' src="{theme:javascript/sales_js/jquery-1.11.1.min.js}" ></script>
+<script type='text/javascript' src="{theme:javascript/buynmb_js/jquery.spinner.js}" ></script>
+<script type="text/javascript" src="{theme:javascript/shan/shan.js}"></script>
+                
+<div class="cnt w1190">  
+
+<style type="text/css">
+	h1{font-family:"微软雅黑";font-size:20px;margin-top:20px;letter-spacing:2px;}
+
+	.time-item strong{background:#C71C60;color:#fff;line-height:49px;font-size:18px;font-family:Arial;padding:0 5px;margin-right:5px;}
+	.time-item a:hover{color:#c71c60}
+	#day_show{float:left;line-height:49px;color:#c71c60;font-size:14px;margin:0 5px;font-family:Arial, Helvetica, sans-serif;}
+	.item-title .unit{background:none;line-height:49px;font-size:12px;padding:0 5px;float:left;}
+	
+	.pp_tm_show li{
+		position: relative;
+		float: left;
+		width: 435px;
+		height: 300px;
+		margin: 20px 10px 0 0;
+		padding: 10px;
+		border: 1px solid #ccc;
+		background: #fff;overflow:hidden;
+		font-size:16px;
+		
+	}
+	.pp_tm_show li:hover {
+		background: #f15a24;
+		border: 1px solid #f15a24;
+	}
+	.pp_tm_show dd{margin-top:15px;}
+
+	.pp_tm_show .pl{float:left;}
+	.pp_tm_show .pr{float:right;}
+
+</style>
+
+<link rel="stylesheet" type="text/css" href="{skin:css/base.css}">
+<link rel="stylesheet" type="text/css" href="{skin:css/index_sg.css}">
+<!--tuan-->
+<link type="text/css" rel="stylesheet" href="{skin:css/resource.css}">
+<!--tuan-->
+<!-- 团购活动列表 -->
+
+
+<div class="pp_tm_con_fr">
+	<a name="floor-1"></a>
+		<h3>今日团购<i>TOP</i></h3>
+</div>
+<div class="mb10 warp-all group-list">
+	<input name='start' type='hidden' value='{$this->count}'/>
+	  <div class="left_group"> 
+        {if:$this->topList}
+	  	{foreach:items = $this->topList}
+		{set:$end= strtotime($item['end_time']) - time()}
+		{set:$zhe = 10*round($item['regiment_price']/$item['sell_price'],2)}
+	        <div class="today-deals-con">
+            
+            <div style=" border: 1px solid;border-color:#eaeae2; width: 805px; height: 350px;">
+		        <div class="deal-img-wrap">
+		            <a title="" href="{url:/site/tuan_product/active/$item['id']}" target="_blank"><img src="{url:$item['img']}" alt=""  width="350" height="350"></a>
+		            <div class="all_bicon_box"></div>
+		        </div>
+		        <div class="deal-summary">
+                <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
+                <h2>{$item['title']}</h2></a>
+                 
+				
+		            <a class="deal-summary-link" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">
+		                <p class="tit"> <em>{$zhe}折/</em><b>{$item['intro']}</b></p>
+                        <div class="shop_poto">
+                            <p class="price-wrap">
+		                    <span class="price"><em>¥</em>{$item['regiment_price']}</span>
+		                    <span class="dis">参考价<del style="text-decoration: blink;">¥{$item['sell_price']}</del></span> 
+                            <span class="buy_num_con"><span class="buy_number">{$item['sum_count']}</span>人已经购买</span>
+		                      </p> 
+                            </div>
+                               </a>
+		                <div class="other clearfix">
+		                  <div class="clearfix_left">
+                  <span style="float:left; margin-left:20px;">数量：</span>
+                     <input type="text" class="spinnerExample"/> 
+                              
+                    <a class="now_buy" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}">立即购买</a>
+                    <a class="in_join" target="_blank" href="{url:/site/tuan_product/active/$item['id']}}"> 加入购物车</a>               
+                             </div>
+                    <div class="clearfix_right"> 
+                              
+                      <span class="bk-timeleft home_timer today_end_time countdown" id="timeRemaining-{$key}">
+					<span class="icon"></span>
+					<span id='cd_day_{$key}'></span>天
+					<span id='cd_hour_{$key}'></span>小时
+					<span id='cd_minute_{$key}'></span>分
+					<span id='cd_second_{$key}'></span>秒	
+					<input name='endTime' type='hidden' value='{$end}' />
+				</span> 
+                          <div class="hpl_ypl">  
+                         <img src="{skin:images/nice.png}" style=" width:20px; height:20px;" alt="好评" /><p>好评率<i>{$item['comment_rate']}%</i></p> 
+                           <p class="blue"><i class="blues">{$item['comment_num']}</i>人评论</p>
+                            </div>
+                         
+                          </div>
+		                </div>
+		            
+		        </div>
+           </div>    
+      <img style="width:30px; height:51px;float:right;position:relative;bottom: 285px;left: -4px;" border="0" src="{skin:images/yigo.png}" >   
+                
+	    </div>
+		{/foreach}
+        {/if} 
+	</div>
+    <div class="right_group">
+        {echo:Ad::show("团购右侧上")} 
+		{echo:Ad::show("团购右侧下")}
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<style>
+	.shan-brand li {width:358px;}
+	.shan-brand li dt img { max-width:358px;max-height:220px; }
+	.shan-brand .brand-img {width:358px;height:220px;}
+	.pp_tm_con_se{width:1190px;}
+	.pp_tm_con_se_l{width:1190px;}
+	.width { width:1200px;margin:0 auto;}
+</style>
+{if:$this->timeList}
+<div class="pp_tm_con_fr one">
+	<a name="floor-1"></a>
+		<h3>整点团购</h3>  
+</div> 
+  <div class="tuangou_list">       
+<div class="tab1">
+	<div class="menu">      
+		<ul id="nav">
+        {foreach:items = $this->timeList}  
+        {set:$time = date('H:i', strtotime($item['start_time']))}
+        {set:$sign = $key+3}
+        {if:strtotime($item['start_time']) < time() && strtotime($item['end_time']) > time()}
+        {set:$end=strtotime($item['end_time'])-time()}
+        <li id="one1" onclick="getOnTimeList('{$item['start_time']}',1)">
+             <span class="bk-timeleft home_timer today_end_time countdown one" id="timeRemaining-{$sign}">
+    					<!-- <span id='cd_day_{$key}'>1</span>天 -->
+    					<span id='cd_hour_{$sign}'></span>:
+    					<span id='cd_minute_{$sign}'></span>:
+    					<span id='cd_second_{$sign}'></span>	
+    					<input name='endTime' type='hidden' value='{$end}' />
+    				</span>      
+              <div  class="jjistp"><span> 距结束</span><p class=jjsop>{$time}</p></div>
+           </li>
+           {elseif:strtotime($item['start_time']) > time()}
+           <li id="one3" onclick="getOnTimeList('{$item['start_time']}',2)">
+                <div class="start_sig"><span> 将开始</span><p class="start_sin">{$time}</p></div>
+           </li>
+           {else:}
+           <li id="one2" onclick="getOnTimeList('{$item['start_time']}',0)">
+             <div  class="jjistp pop"><span> 已结束</span><p class="jjsop sad">{$time}</p></div>
+            </li>
+            {/if}
+           {/foreach}         
+    </ul>
+		
+	</div>
+    
+    
+      <div class="menudiv">
+      
+      <ul class="tuangou" id="onTimeList">
+      </ul>
+    </div>
+    
+</div>
+<!-- tab标签代码end -->
+</div>
+<script type='text/html' id='onTimeListTuan'>
+     <li><div class="tuan_poto">
+        <a href="{url:/site/tuan_product/active/<%=id%>}"><img src="{webroot:<%=img%>}" style="width:290px; height:195px; border:none;" alt="<%=title%>" /></a>
+       </div>
+     <div class="tuan_title"><a href="{url:/site/tuan_product/active/<%=id%>}"><h3><%=title%></h3></a>    
+       <span class="price">¥<b><%=regiment_price%></b><del>¥<em><%=sell_price%></em></del></span>  <span class="qiangg"><%=sum_count%>人抢购</span>
+       <%if(sign==1){%>
+          <a class="msqing" href="{url:/site/tuan_product/active/<%=id%>}">马上抢</a>
+          <%}else if(sign==2){%>
+          <a class="msqing" href="javascript:;">未开始</a>
+          <%}else{%>
+          <a class="msqing" href="javascript:;">已结束</a>
+          <%}%>
+        </div>
+          </li>
+</script>
+{set:$t=isset($this->time)}
+<script type="text/javascript">
+$(function(){   
+    var _s = {$t};
+    if(_s)
+    {
+        getOnTimeList('{$this->time}',{$this->sign});
+    }
+})
+function getOnTimeList(time, sign)
+{
+    var url = '{url:/site/getOnTimeList/time/@time@/sign/@sign@}';
+    url = url.replace("@time@",time);
+    url = url.replace("@sign@",sign);
+    $.getJSON(url,function(json)
+    {
+        $('#onTimeList').empty();  
+        for(var item in json.data)
+        {
+            var html = template.render('onTimeListTuan',json.data[item]);
+            $('#onTimeList').append(html);
+        }
+    });
+}
+</script>
+{/if}                           
+{if:$this->brandList}
+ <div class="pp_tm_con_fr" style="margin-top:5px;">
+	<a name="floor-1"></a>
+		<h3>品牌团Brand</h3>
+</div>               
+  <div class="brand_list">
+  <ul class="brand">
+  {foreach:items = $this->brandList}
+  <li><div class="brand_poto">
+     <a href="{url:/site/tuan_product/active/$item['id']}"><img src="{url:$item['img']}" style="width:385px; height:195px; border:none;" alt="{$item['title']}" /></a>
+        </div>
+  <div class="brand_title"><a href="{url:/site/tuan_product/active/$item['id']}"><h3>{$item['title']}</h3></a>    
+    <span class="price">¥<b>{$item['regiment_price']}</b><del>¥<em>{$item['sell_price']}</em></del></span>  <span class="qiangg">{$item['sum_count']}人抢购</span>
+       <a class="msqing" href="{url:/site/tuan_product/active/$item['id']}">马上抢</a>
+     </div>
+    </li>
+  {/foreach}
+  </ul>
+  </div>
+  {/if} 
+</div>
+
+
+<!--购置数量加减-->
+<script type="text/javascript">
+$('.spinnerExample').spinner({});
+</script>
+                         
+                         
+                         
+         

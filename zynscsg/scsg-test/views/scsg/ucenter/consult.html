@@ -1,0 +1,57 @@
+<div class="main f_r">
+	<div class='tabs_content'>
+		<div class="node">
+			<table class="list_table m_10" width="100%" cellpadding="0" cellspacing="0">
+				<col width="160px" />
+				<col />
+				<col width="80px" />
+				<col width="60px"/>
+				<thead><tr><th>商品名称</th><th>内容</th><th>咨询时间</th><th>回复</th></tr></thead>
+				<tbody>
+					{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+					{set:$user_id = $this->user['user_id']}
+				
+					{set:$queryConsultList = Api::run('getUcenterConsult',$user_id)}
+					{foreach:items = $queryConsultList->find()}
+                    {set:$queryReply = Api::run('getUcenterConsultReply',$item['id'])}
+					<tr>
+						<td><a href="{url:/site/products/id/$item[gid]}" target="_black">{$item['name']}</a></td>
+						<td>{$item['question']}</td>
+						<td>{echo:substr($item['time'],0,10)}</td>
+						<td>{if:$queryReply}<a class="blue bold" href="javascript:void(0);" js_data="{$item['id']}" onclick="show_msg(this)">查看</a>{else:}未回复{/if}</td>
+					</tr>
+                    <tr class="show"></tr>
+					{/foreach}
+				</tbody>
+				<tfoot><tr><td colspan="4" class="t_l">{$queryConsultList->getPageBar()}</td></tr></tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function show_msg(obj)
+{
+    var id = $(obj).attr('js_data');
+    $.ajax({
+         type: "GET",
+         url: "{url:/ucenter/refer_reply}",
+         data: {id:id},
+         dataType: "json",
+         success: function(data){
+             var html = '<td colspan="4"><i class="close f_r" onclick="bClose(this)"></i>';
+             for(var i = 0; i < data.length; i++)
+             {
+                 html += data[i]['username']+'在['+data[i]['time']+']给您做了如下解答:';
+                 html += '<p class="gray indent mt_10">'+data[i]['question']+'</p>';
+             }
+             html += '</td>';
+             $(obj).parents('tr').next('.show').html(html);
+          }
+     });
+
+}
+function bClose(obj)
+{
+    $(obj).parents('.show').html('');
+}
+</script>
