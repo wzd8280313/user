@@ -219,7 +219,6 @@ class CountSum
                     $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $goodsList[$key]['count'];
                     $order_extend[$val['seller_id']]['count'] += $goodsList[$key]['count'];
                     $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
-                    $order_extend[$val['seller_id']]['goodsList'][$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
     			    //全局统计
 		    	    $this->weight += $val['weight'] * $goodsList[$key]['count'];
 		    	    $this->point  += $val['point']  * $goodsList[$key]['count'];
@@ -229,6 +228,7 @@ class CountSum
 		    	    $this->count  += $goodsList[$key]['count'];
 		    	    $this->tax    += self::getGoodsTax($goodsList[$key]['sum'],$val['seller_id'],$val['goods_id'],'goods');
                     $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
+                    $order_extend[$val['seller_id']]['goodsIdList'][$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
                     $goodsListFinal[$buy][] = $goodsList[$key];
 		        }
     	    }
@@ -298,7 +298,6 @@ class CountSum
                     $order_extend[$val['seller_id']]['exp'] += $val['exp']    * $productList[$key]['count'];
                     $order_extend[$val['seller_id']]['count'] += $productList[$key]['count'];
                     $order_extend[$val['seller_id']]['reduce'] += $current_reduce_all;
-                    $order_extend[$val['seller_id']]['goodsList'][$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
     			    //全局统计
 		    	    $this->weight += $val['weight'] * $productList[$key]['count'];
 		    	    $this->point  += $val['point']  * $productList[$key]['count'];
@@ -308,7 +307,9 @@ class CountSum
 		    	    $this->count  += $productList[$key]['count'];
 		    	    $this->tax    += self::getGoodsTax($productList[$key]['sum'],$val['seller_id'],$val['product_id'],'product');
                     $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
-		            $goodsListFinal[$buy][] = $productList[$key];
+                    $goodsListFinal[$buy][] = $productList[$key];
+		            $order_extend[$val['seller_id']]['goodsIdList'][$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
+                    $goodsListFinal[$buy][] = $productList[$key];
                 }
     	    }
         }
@@ -316,6 +317,16 @@ class CountSum
     	//总金额满足的促销规则
     	if($user_id&&$prom)
     	{
+            //拆分订单的促销规则
+            foreach($order_extend as $k => $v)
+            {
+                $proObj = new ProRule($v['sum'] - $v['reduce']);
+                $proObj->setUserGroup($group_id);
+                $this->isFreeFreight = $proObj->isFreeFreight($area,$v['goodsIdList']);
+                $order_extend[$k]['promotion'] = $proObj->getInfo($v['goodsIdList'],$area);
+                $order_extend[$k]['proReduce'] = $v['sum'] - $v['reduce'] - $proObj->getSum($v['goodsIdList']);
+                unset($proObj);
+            }
 	    	$proObj = new ProRule($final_sum);
 	    	$proObj->setUserGroup($group_id);
 	    	$this->isFreeFreight = $proObj->isFreeFreight($area,$goodsIdList);
@@ -324,6 +335,11 @@ class CountSum
     	}
     	else
     	{
+            foreach($order_extend as $k => $v)
+            {
+                $order_extend[$k]['promotion'] = 0;
+                $order_extend[$k]['proReduce'] = 0;
+            }
 	    	$this->promotion = array();
 	    	$this->proReduce = 0;
     	}
@@ -589,12 +605,14 @@ class CountSum
             'order_extend' => array()
         );
         $goods_seller_data = array();
-        //$order_extend = array();
+        $order_extend = array();
         foreach($goodsResult['goodsList'] as $key => $val){
-           /* $order_extend[$val['seller_id']]['deliveryOrigPrice'] = 0;
+            $order_extend[$val['seller_id']]['deliveryOrigPrice'] = 0;
             $order_extend[$val['seller_id']]['insuredPrice'] = 0;
             $order_extend[$val['seller_id']]['deliveryPrice'] = 0;
-            $order_extend[$val['seller_id']]['taxPrice'] = 0;*/
+            $order_extend[$val['seller_id']]['taxPrice'] = 0;
+            $order_extend[$val['seller_id']]['sum'] = 0;
+            $order_extend[$val['seller_id']]['reduce'] = 0;
             $deliveryRow = Delivery::getDelivery($area_id, $val['delivery_id'], $val['goods_id'], $val['product_id'], $val['count']);
             
             if(is_string($deliveryRow) || $deliveryRow['if_delivery'] == 1)
@@ -602,19 +620,19 @@ class CountSum
                 return "您所选购的商品：".$val['name']."，无法送达";
             }
             $result['deliveryOrigPrice'] += $deliveryRow['price'];
-            //$order_extend[$val['seller_id']]['deliveryOrigPrice'] += $deliveryRow['price'];
+            $order_extend[$val['seller_id']]['deliveryOrigPrice'] += $deliveryRow['price'];
             
             //商品保价计算
             //    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
             if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$key]) ) )
             {
                 $result['insuredPrice'] += $deliveryRow['protect_price'];
-                //$order_extend[$val['seller_id']]['insuredPrice'] += $deliveryRow['protect_price'];
+                $order_extend[$val['seller_id']]['insuredPrice'] += $deliveryRow['protect_price'];
             }
             if(!$goodsResult['freeFreight'])
             {
                 $result['deliveryPrice'] += $deliveryRow['price'];
-                //$order_extend[$val['seller_id']]['deliveryPrice'] += $deliveryRow['price'];
+                $order_extend[$val['seller_id']]['deliveryPrice'] += $deliveryRow['price'];
                 $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
             }
             else
@@ -645,7 +663,7 @@ class CountSum
                     else
                     {
                         $result['deliveryPrice'] += $deliveryRow['price'];
-                        //$order_extend[$val['seller_id']]['deliveryPrice'] += $deliveryRow['price'];
+                        $order_extend[$val['seller_id']]['deliveryPrice'] += $deliveryRow['price'];
                         $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
                     }
                 }
@@ -669,17 +687,22 @@ class CountSum
                 }
                 $goodsResult['goodsList'][$key]['taxPrice'] = $tempTax;
                 $result['taxPrice'] += $tempTax;
-                //$order_extend[$val['seller_id']]['taxPrice'] += $tempTax;
+                $order_extend[$val['seller_id']]['taxPrice'] += $tempTax;
                  
             }
             else{
                 $goodsResult['goodsList'][$key]['taxPrice'] = 0;
             }
+            $order_extend[$val['seller_id']]['sum'] += $val['sum'];
+            $order_extend[$val['seller_id']]['reduce'] += $val['reduce'];
         }
-        //非货到付款的线上支付方式手续费
-        if($payment_id != 0)
-        {
-            $result['paymentPrice'] = self::getGoodsPaymentPrice($payment_id,$goodsFinalSum);
+        foreach($order_extend as $k => $v)
+        {            
+            //非货到付款的线上支付方式手续费
+            if($payment_id != 0)
+            {
+                $order_extend[$k]['paymentPrice'] = self::getGoodsPaymentPrice($payment_id,$v['sum']-$v['reduce']);
+            }
         }
 
         //最终订单金额计算
@@ -688,7 +711,7 @@ class CountSum
 
         //订单商品刷新
         $result['goodsResult'] = $goodsResult;
-        //$result['order_extend'] = $order_extend;
+        $result['order_extend'] = $order_extend;
         return $result;
     }
     

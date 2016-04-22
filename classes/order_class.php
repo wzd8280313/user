@@ -552,7 +552,7 @@ class Order_Class
      * @param $payment  支付方式
      * @param $seller_id  卖家id
 	 */
-	public function insertOrderGoods($order_id,$goodsResult = array(),$payment, $seller_id = null)
+	public function insertOrderGoods($order_id,$goodsResult = array(),$payment, $seller_id = 0)
 	{
 		$orderGoodsObj = new IModel('order_goods');
 
@@ -574,7 +574,7 @@ class Order_Class
             $good = new IModel('goods');
 			foreach($goodsResult['goodsList'] as $key => $val)
 			{
-                if(is_null($seller_id) || (!is_null($seller_id) && $val['seller_id'] == $seller_id))
+                if($val['seller_id'] == $seller_id)
                 { 
 				    //拼接商品名称和规格数据
 				    $specArray = array('name' => $val['name'],'goodsno' => $val['goods_no'],'value' => '');
