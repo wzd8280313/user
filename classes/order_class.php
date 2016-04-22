@@ -800,7 +800,7 @@ class Order_Class
 		if($orderGoodsRow['is_send']==0){
 			return '未发货';
 		}
-		else if($orderGoodsRow['status']==5 && $orderGoodsRow['is_send']==1){
+		else if(isset($orderGoodsRow['status']) && $orderGoodsRow['status']==5 && $orderGoodsRow['is_send']==1){
 			return '已完成';
 		}
 		else if($orderGoodsRow['is_send']==1){
