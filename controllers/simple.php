@@ -1380,7 +1380,7 @@ class Simple extends IController
         $dataArray     = array();
         $seller_ids    = IFilter::act(IReq::get('seller_id'),'int');
         //防止表单重复提交
-        if(IReq::get('timeKey') != null)
+       /* if(IReq::get('timeKey') != null)
         {
             if(ISafe::get('timeKey') == IReq::get('timeKey'))
             {
@@ -1391,7 +1391,7 @@ class Simple extends IController
             {
                 ISafe::set('timeKey',IReq::get('timeKey'));
             }
-        }
+        }*/
 
         if($province == 0 || $city == 0 || $area == 0)
         {
@@ -1479,6 +1479,7 @@ class Simple extends IController
         $paymentName= $paymentRow['name'];
         $paymentType= $paymentRow['type'];
         //$goodsResult['goodsList'] = $this->goodsListBySeller($goodsResult['goodsList']);
+        var_dump($goodsResult);exit;
         //最终订单金额计算
         $temp = array();
         foreach($goodsResult['goodsList'] as $key=>$val)
