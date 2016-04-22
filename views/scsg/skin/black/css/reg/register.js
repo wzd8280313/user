@@ -4004,7 +4004,24 @@ var jsRegistFed = {
             },
             success: function(c) {
                 resetCheckCode(c.check_code);
-                if (c.errorCode == 1) {
+				if (0 == c.errorCode) {
+                            var d = $(".receive_code").eq(0);
+                            d.addClass("reacquire_code").html("重新获取验证码(<i>59</i>)");
+                            var f = $("i", ".reacquire_code").text();
+                            var c = setInterval(function() {
+                                if (f > 0) {
+                                    f--;
+                                    $("i", ".reacquire_code").text(f)
+                                }
+                            },
+                            1000);
+                            var b = setTimeout(function() {
+                                d.removeClass("reacquire_code").html("重新获取验证码");
+                            },
+                            f * 1000);
+                           
+                        }
+                else if (c.errorCode == 1) {
                     showPhoneError("不能为空")
 
                 } else {
