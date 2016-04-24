@@ -120,7 +120,7 @@ class Comment extends IController
 	function comment_list()
 	{                                                                
 		$search = IFilter::act(IReq::get('search'),'strict');
-        $plat = IReq::get('plat');          
+        $plat = IReq::get('plat') ? IReq::get('plat') : 'plat';          
         $replyStatus = IReq::get('replyStatus');
         if($replyStatus)
         {
@@ -254,6 +254,7 @@ class Comment extends IController
             $message = array('status' => 0, 'msg' => '系统错误');
             echo JSON::encode($message);exit;
         }
+        $seller_id = $data['sellerid'];
         unset($data['id']);
         $data['pid'] = $id;
         $data['p_id'] = $data['p_id'].$id.',';
@@ -271,7 +272,14 @@ class Comment extends IController
         {
             $comment->setData(array('recomment_time'=>ITime::getDateTime('Y-m-d')));
             $comment->update('id='.$id);
-            $this->redirect('comment_list');
+            if($seller_id)
+            {
+                 $this->redirect('comment_list_seller');
+            }
+            else
+            {
+                $this->redirect('comment_list_plat');
+            }
         }
 	}
 
@@ -294,7 +302,7 @@ class Comment extends IController
 		$goodsname = IFilter::act(IReq::get('goodsname'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
         $endTime = IFilter::act(IReq::get('endTime'));
-		$plat = IFilter::act(IReq::get('plat'));
+		$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
 		$this->data['username'] = $username;
 		$this->data['goodsname'] = $goodsname;
 		$this->data['beginTime'] = $beginTime;
@@ -412,7 +420,7 @@ class Comment extends IController
 		$goodsname = IFilter::act(IReq::get('goodsname'));
 		$beginTime = IFilter::act(IReq::get('beginTime'));
         $endTime = IFilter::act(IReq::get('endTime'));
-		$plat = IFilter::act(IReq::get('plat'));
+		$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
 		$this->data['username'] = $username;
 		$this->data['goodsname'] = $goodsname;
 		$this->data['beginTime'] = $beginTime;
@@ -547,6 +555,7 @@ class Comment extends IController
             $message = array('status' => 0, 'msg' => '系统错误');
             echo JSON::encode($message);exit;
         }
+        $seller_id = $data['seller_id'];
         $admin_id = $this->admin['admin_id'];//管理员id
         unset($data['id']);
         $data['question'] = $content;
@@ -564,7 +573,15 @@ class Comment extends IController
         {  
             $refer->setData(array('reply_time'=>ITime::getDateTime(), 'status'=>1));
             $refer->update('id='.$rid, array('id'));
-            $this->redirect('refer_list');
+            if($seller_id)
+            {
+                $this->redirect('refer_list_seller');
+            }
+            else
+            {
+                $this->redirect('refer_list_plat');
+            }
+            
         }       
 		
 	}

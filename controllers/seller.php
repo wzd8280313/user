@@ -301,6 +301,8 @@ class Seller extends IController
         $res = $refer->add();
         if($res)
         {
+            $refer->setData(array('reply_time'=>ITime::getDateTime(), 'status'=>1));
+            $refer->update('id='.$rid, array('id'));
             $this->redirect('refer_list');
         }        
         
@@ -1019,6 +1021,12 @@ class Seller extends IController
 	{
 		$id = IFilter::act(IReq::get('id'),'int');
 		$recontent = IFilter::act(IReq::get('recontents'));
+        if(!trim($recontent, ' '))
+        {   
+            $message = array('status' => 0, 'msg' => '回复不能为空');            
+            echo JSON::encode($message);exit;
+        }
+
 		if($id)
 		{
 			$commentDB = new IQuery('comment as c');
@@ -1052,6 +1060,8 @@ class Seller extends IController
         $res = $comment->add(); 
         if($res)
         {
+            $comment->setData(array('recomment_time'=>ITime::getDateTime('Y-m-d')));
+            $comment->update('id='.$id);
             $this->redirect('comment_list');
         }
 	}

@@ -27,15 +27,8 @@ class Order extends IController
 			if($data)
 			{
                 $goodsList = array();
-                $orderGoods = new IModel('order_goods');
-                if($data['pid'])
-                {
-                    $temp = $orderGoods->query('order_id='.$data['pid'].' and seller_id='.$data['seller_id'], 'goods_id, goods_price, real_price, goods_nums');
-                }
-                else
-                {
-                    $temp = $orderGoods->query('order_id='.$data['id'].' and seller_id='.$data['seller_id'], 'goods_id, goods_price, real_price, goods_nums');
-                }
+                $orderGoods = new IModel('order_goods');     
+                $temp = $orderGoods->query('order_id='.$data['id'].' and seller_id='.$data['seller_id'], 'goods_id, goods_price, real_price, goods_nums');
                 foreach($temp as $v)
                 {
                     $goodsList[$v['goods_id']] = array('sum' => $v['goods_price'] * $v['goods_nums'], 'reduce' => ($v['goods_price']-$v['real_price'])*$v['goods_nums']);
@@ -118,7 +111,7 @@ class Order extends IController
 		//筛选、
 		$beginTime = IFilter::act(IReq::get('beginTime'));
 		$endTime = IFilter::act(IReq::get('endTime'));
-        $plat = IFilter::act(IReq::get('plat'));
+        $plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
 		$data['beginTime'] = $beginTime;
 		$data['endTime'] = $endTime;
 		$data['order_no'] = $order_no;
@@ -165,7 +158,7 @@ class Order extends IController
 		//筛选、
 		$beginTime = IFilter::act(IReq::get('beginTime'));
         $endTime = IFilter::act(IReq::get('endTime'));
-		$plat = IFilter::act(IReq::get('plat'));
+		$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
 		$data['beginTime'] = $beginTime;
 		$data['endTime'] = $endTime;
         $data['order_no'] = $order_no;
@@ -205,7 +198,7 @@ class Order extends IController
 	public function fapiao_list(){
 		$where = ' and  1 ';
         $order_no = IFilter::act(IReq::get('order_no'));
-		$plat = IFilter::act(IReq::get('plat'));
+		$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
         $data['order_no'] = $order_no;
 		$data['plat'] = $plat;
 		
@@ -236,7 +229,7 @@ class Order extends IController
 	public function fapiao(){
 		$where = ' and  1 ';
         $order_no = IFilter::act(IReq::get('order_no'));
-		$plat = IFilter::act(IReq::get('plat'));
+		$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
         $data['order_no'] = $order_no;
 		$data['plat'] = $plat;  
 		if($order_no){
@@ -807,7 +800,7 @@ class Order extends IController
     {
     	//获取必要数据
         $order_id = IFilter::act(IReq::get('id'),'int');
-    	$pid = IFilter::act(IReq::get('pid'),'int');
+    	//$pid = IFilter::act(IReq::get('pid'),'int');
 
     	//生成order数据
     	$dataArray['invoice_title'] = IFilter::act(IReq::get('invoice_title'));
@@ -848,29 +841,38 @@ class Order extends IController
 		//拼接要购买的商品或货品数据,组装成固有的数据结构便于计算价格
 		$length = count($product_id);
 		$buyInfo = array(
-			'goods' => array('id' => array() , 'data' => array()),
-			'product' => array('id' => array() , 'data' => array())
-		);
+                        0=>array('goods' => array('id' => array(), 'data' => array() ),'product' => array( 'id' => array() , 'data' => array()),'count' => 0,'sum' => 0)
+                        );
 		
 		for($i = 0;$i < $length;$i++)
 		{
 			//货品数据
 			if(intval($product_id[$i]) > 0)
 			{
-				$buyInfo['product']['id'][] = $product_id[$i];
-				$buyInfo['product']['data'][$product_id[$i]] = array('count' => $goods_nuns[$i]);
+				$buyInfo[0]['product']['id'][] = $product_id[$i];
+				$buyInfo[0]['product']['data'][$product_id[$i]] = array('count' => $goods_nuns[$i]);
 			}
 			//商品数据
 			else
 			{
-				$buyInfo['goods']['id'][] = $goods_id[$i];
-				$buyInfo['goods']['data'][$goods_id[$i]] = array('count' => $goods_nuns[$i]);
+				$buyInfo[0]['goods']['id'][] = $goods_id[$i];
+				$buyInfo[0]['goods']['data'][$goods_id[$i]] = array('count' => $goods_nuns[$i]);
 			}
 		}
 
 		//开始算账
 		$countSumObj = new CountSum();
-		$goodsResult = $countSumObj->goodsCount($buyInfo);
+		$goodsResult = $countSumObj->goodsCount($buyInfo, $dataArray['area']);
+        $temp = array();
+        foreach($goodsResult['goodsList'] as $key=>$val)
+        {
+            foreach($val as $value)
+            {
+                $temp[] = $value;
+            }
+        }
+        unset($goodsResult['goodsList']);
+        $goodsResult['goodsList'] = $temp;
 		$orderFee    = $countSumObj->countOrderFeeee($goodsResult,$dataArray['province'],$dataArray['pay_type'],$dataArray['if_insured'],$dataArray['invoice'],$dataArray['discount']);
 
 		//获取原价的运费
@@ -919,7 +921,7 @@ class Order extends IController
 
     	//同步order_goods表
     	$orderInstance = new Order_Class();
-        if($pid)
+        /*if($pid)
         {
             $orderInstance->insertOrderGoods($pid,$orderFee['goodsResult'],$dataArray['pay_type'],$orderRow['seller_id']);
             $other = $orderDB->getObj('pid='.$pid, 'sum(payable_amount) as payable_amount, sum(real_freight) as real_freight, sum(insured) as insured,sum(order_amount) as order_amount');
@@ -935,10 +937,10 @@ class Order extends IController
             }
         }
     	else
-        {
-            $orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
-            $turnUrl = 'order_list/plat/plat';
-        }
+        {*/
+        $orderInstance->insertOrderGoods($order_id,$orderFee['goodsResult'],$dataArray['pay_type']);
+        $turnUrl = 'order_list/plat/plat';
+        /*}*/
 
     	$this->redirect($turnUrl);
     }
@@ -960,15 +962,8 @@ class Order extends IController
 			//获取订单中的商品信息
 			$orderGoodsDB         = new IQuery('order_goods as og');
 			$orderGoodsDB->join   = "left join goods as go on og.goods_id = go.id left join products as p on p.id = og.product_id";
-			$orderGoodsDB->fields = "go.id,go.name,p.spec_array,p.id as product_id,og.real_price,og.goods_nums";
-            if($data['pid'])
-            {
-                $orderGoodsDB->where  = "og.order_id = ".$data['pid'].' and og.seller_id = '.$data['seller_id'];
-            }
-            else
-            {
-                $orderGoodsDB->where  = "og.order_id = ".$order_id;
-            }
+			$orderGoodsDB->fields = "go.id,go.name,p.spec_array,p.id as product_id,og.real_price,og.goods_nums";       
+            $orderGoodsDB->where  = "og.order_id = ".$order_id;
 			$this->orderGoods     = $orderGoodsDB->find();
 
 			//获取用户名
@@ -989,7 +984,7 @@ class Order extends IController
 		//搜索条件
 		$search = IFilter::act(IReq::get('search'),'strict');
 		$page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
-        $plat = IReq::get('plat');
+        $plat = IReq::get('plat') ? IReq::get('plat') : 'plat';
         if($plat == 'plat')
         {
             $search['seller_id'] = '=0';
@@ -997,7 +992,7 @@ class Order extends IController
         elseif($plat == 'seller')
         {
             $search['seller_id'] = '!=0';
-        }
+        } 
         else
         {
             $search['pid'] = 0;
@@ -1214,7 +1209,7 @@ class Order extends IController
     	//筛选、
     	$beginTime = IFilter::act(IReq::get('beginTime'));
         $endTime = IFilter::act(IReq::get('endTime'));
-    	$plat = IFilter::act(IReq::get('plat'));
+    	$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
     	$data['beginTime'] = $beginTime;
     	$data['endTime'] = $endTime;
     	$data['order_no'] = $order_no;
@@ -1266,7 +1261,7 @@ class Order extends IController
     	 //筛选、
     	$beginTime = IFilter::act(IReq::get('beginTime'));
         $endTime = IFilter::act(IReq::get('endTime'));
-    	$plat = IFilter::act(IReq::get('plat'));
+    	$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
     	$data['beginTime'] = $beginTime;
     	$data['endTime'] = $endTime;
     	$data['order_no'] = $order_no;
@@ -1415,7 +1410,7 @@ class Order extends IController
     	//筛选、
     	$beginTime = IFilter::act(IReq::get('beginTime'));
         $endTime = IFilter::act(IReq::get('endTime'));
-    	$plat = IFilter::act(IReq::get('plat'));
+    	$plat = IReq::get('plat') ? IFilter::act(IReq::get('plat')) : 'plat';
     	$data['beginTime'] = $beginTime;
     	$data['endTime'] = $endTime;
     	$data['order_no'] = $order_no;
@@ -2114,7 +2109,7 @@ class Order extends IController
 		$seller_id = 0;
 		$money = IFilter::act(IReq::get('money'),'float');
 		if(!$id || !$money){
-			$this->redirect('fapiao');
+			$this->redirect('fapiao_plat');
 		}
 		$db_fa = new IModel('order_fapiao');
 		$data=array(
@@ -2123,7 +2118,16 @@ class Order extends IController
 		);
 		$db_fa->setData($data);
 		$db_fa->update('id='.$id);
-		$this->redirect('fapiao');
+        $data['seller_id'] = $db_fa->getField('id='.$id, 'seller_id');
+        if($data['seller_id'])
+        {
+            $this->redirect('fapiao_seller');
+        }
+        else
+        {
+            $this->redirect('fapiao_plat');
+        }
+		
 	}
 	public function ship_info_list(){
 		$this->redirect('ship_info_list');

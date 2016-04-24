@@ -269,7 +269,8 @@ class Goods extends IController
 		{
 			die('请确认表单提交正确');
 		}
-
+        $goods = new IModel('goods');
+        $seller_id = $goods->getField('id='.$id, 'seller_id');
 		//初始化商品数据
 		unset($_POST['id']);
 		unset($_POST['callback']);
@@ -283,7 +284,7 @@ class Goods extends IController
 		$goodsObject = new goods_class();
 		$goodsObject->update($id,$_POST);
 
-		$callback ? $this->redirect($callback) : $this->redirect("goods_list");
+		$callback ? $this->redirect($callback) : ($seller_id ? $this->redirect("goods_list_seller") : $this->redirect("goods_list_plat"));
 	}
 
 	/**
@@ -414,14 +415,29 @@ class Goods extends IController
 	function goods_list()
 	{
 		//搜索条件
-		$search = IFilter::act(IReq::get('search'),'strict');       
-        if(IReq::get('plat') == 'plat')
+		$search = IFilter::act(IReq::get('search'),'strict');
+        if(!isset($search['seller_id']))
         {
-            $search['seller_id'] = '=0';
+            $plat = IReq::get('plat') ? IReq::get('plat') : 'plat';       
+            if($plat == 'plat')
+            {
+                $search['seller_id'] = '=0';
+            }
+            elseif($plat == 'seller')
+            {
+                $search['seller_id'] = '!=0';
+            }
         }
-        elseif(IReq::get('plat') == 'seller')
+        else
         {
-            $search['seller_id'] = '!=0';
+            if($search['seller_id'] == '!=0')
+            {
+                $plat = 'seller';
+            }
+            else
+            {
+                $plat = 'plat';
+            }
         }
         if(IReq::get('is_del'))
         {
@@ -438,7 +454,8 @@ class Goods extends IController
 		$goodsHandle->fields   = "go.*,seller.true_name";
 		$goodsHandle->page     = $page;
 		$goodsHandle->where    = $where;
-		$goodsHandle->join     = $join;
+        $goodsHandle->join     = $join;
+		$this->plat = $plat;
 
 		$this->search      = $search;
 		$this->goodsHandle = $goodsHandle;

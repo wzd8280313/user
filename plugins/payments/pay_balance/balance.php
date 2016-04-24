@@ -79,6 +79,7 @@ class balance extends paymentPlugin
 		$urlStr .= $user_id . $partnerKey . $encryptKey;
 		$return['sign'] = md5($urlStr);
 
+        $return['pay_level'] = isset($payment['pay_level']) ? $payment['pay_level'] : 2;
         return $return;
     }
 	/**
@@ -180,6 +181,7 @@ class balance extends paymentPlugin
 
         $orderNo = $ExternalData['order_no'];
         $money   = $ExternalData['total_fee'];
+        $pay_level   = isset($ExternalData['pay_level']) ? $ExternalData['pay_level'] : 2;
 
         if($ExternalData['sign'] == md5($testStr))
         {
@@ -197,7 +199,7 @@ class balance extends paymentPlugin
 						'order_id' => $orderNo,
 					);
 					$log->write($config);
-                	return true;
+                	return array('result' => true, 'pay_level' => $pay_level);
                 }
                 break;
 

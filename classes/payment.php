@@ -177,25 +177,35 @@ class Payment
 	 * @param $argument   mix    参数
 	 * @return array 支付提交信息
 	 */
-	public static function getPaymentInfo($payment_id,$type,$argument)
+	public static function getPaymentInfo($payment_id,$type,$argument, $pay_level = 2)
 	{
 		
 		$payment = self::getPaymentParam($payment_id);
 		if($type == 'order')
 		{
 			$order_id = $argument;
-
+            $orderGoodsDB   = new IModel('order_goods');
+            
 			//获取订单信息
-			$orderObj = new IModel('order');
-			$orderRow = $orderObj->getObj('id = '.$order_id.' and status = 1');
+            if($pay_level == 1)
+            {
+			    $orderParentObj = new IModel('order_parent');
+                $orderObj = new IModel('order');
+
+                //判断商品库存                                
+                $orderIdList =  $orderObj->getFields(array('pid'=> $order_id), 'id');
+                $orderGoodsList = $orderGoodsDB->query('order_id in ('.implode(',', $orderIdList).")");
+            }
+            else
+            {
+                $orderObj = $orderParentObj = new IModel('order');
+                $orderGoodsList = $orderGoodsDB->query('order_id = '.$order_id);
+            }
+			$orderRow = $orderParentObj->getObj('id = '.$order_id.' and status = 1');
 			if(empty($orderRow))
 			{
 				IError::show(403,'订单信息不正确，或已支付');
-			}
-
-			//判断商品库存
-			$orderGoodsDB   = new IModel('order_goods');
-			$orderGoodsList = $orderGoodsDB->query('order_id = '.$order_id);
+			}                                                                                      
 			foreach($orderGoodsList as $key => $val)
 			{
                 if($val['is_change'] == 0)
@@ -248,9 +258,11 @@ class Payment
 			$payment['M_Amount']  = $reData['account'];
 			$payment['M_Remark']  = '';
 		}
-
+        
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
+        
+        $payment['pay_level'] = $pay_level;
 
 		//交易信息
 		$payment['M_Time']      = time();

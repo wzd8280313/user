@@ -309,7 +309,7 @@ class Preorder_Class extends Order_Class{
 	 * @param $note     string 收款的备注
 	 * @return false or int order_id
 	 */
-	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '')
+	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '',$pay_level = 2)
 	{
 		if(stripos($orderNo,'pre') !== false)
 		{
@@ -346,7 +346,27 @@ class Preorder_Class extends Order_Class{
 					'pay_status' => 2
 			);
 		}
-	
+	    //非货到付款的支付方式 
+        if($orderRow['pay_type'] != 0 && $orderRow['pay_status'] == 2)
+        {
+            //减少库存量
+            $orderGoodsDB = new IModel('order_goods');
+            $orderGoodsList = $orderGoodsDB->query('order_id = '.$orderRow['id']);
+            $orderGoodsListId = array();
+            $good = new IModel('goods');
+            foreach($orderGoodsList as $key => $val)
+            {
+                $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
+                if(($temp <> 1 && $val['is_change'] == 0) || $val['is_change'] == 0)
+                {
+                    $orderGoodsListId[] = $val['id'];
+                }
+            }
+            if($orderGoodsListId)
+            {
+                self::updateStore($orderGoodsListId,'reduce');
+            }
+        }
 		if($orderRow['pay_status'] == 2)
 		{
 			return $orderRow['id'];
@@ -413,7 +433,7 @@ class Preorder_Class extends Order_Class{
 			}
 			$collectionDocObj->setData($collectionData);
 			$collectionDocObj->add();
-	
+	        
 			return $orderRow['id'];
 	
 		

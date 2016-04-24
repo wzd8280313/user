@@ -1512,7 +1512,15 @@ class Ucenter extends IController
 		    	}
 		    	else
 		    	{
-		    		$orderObj = new IModel('order');
+                    $pay_level = IReq::get('pay_level') ? IReq::get('pay_level') : 2;
+                    if($pay_level == 1)
+                    {
+                        $orderObj = new IModel('order_parent');
+                    }
+                    else
+                    {
+                        $orderObj = new IModel('order');
+                    }      
 		    		if(stripos($return['order_no'],'merge') === false){
 		    			$trueOrderNo   = Preorder_Class::getTrueOrderNo($return['order_no']);
 		    			$orderRow = $orderObj->getObj('order_no  = "'.IFilter::act($trueOrderNo).'" and (pay_status = 0 and type!=4 || pay_status in (0,1) and type=4) and user_id = '.$user_id);
@@ -1537,7 +1545,7 @@ class Ucenter extends IController
 			    	{
 			    		$return['is_success'] = 'F';
 			    	}
-
+                    $return['pay_level'] = $pay_level;
 			    	ksort($return);
 
 			    	//返还的URL地址

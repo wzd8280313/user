@@ -30,6 +30,7 @@
 
 	<div class="searchbar">
 		<form action="{url:/}" method="get" name="searchListForm">
+            <input type='hidden' name='plat' value='{$this->plat}' />
 			<input type='hidden' name='controller' value='goods' />
 			<input type='hidden' name='action' value='goods_list' />
 			<input type='hidden' name='ids' />

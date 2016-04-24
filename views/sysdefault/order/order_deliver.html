@@ -43,36 +43,6 @@
 			</thead>
 
 			<tbody>
-                {if:$pid}
-                {query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id left join refundment_doc as r on r.order_id eq og.order_id and r.goods_id eq og.goods_id and r.product_id eq og.product_id and r.pay_status in (0,3,4,7)  fields=og.*,r.id as rid,r.type as rtype ,go.seller_id where=og.order_id eq $pid and og.seller_id eq $seller_id}
-                <tr>
-                    <td>
-                        {if:$item['seller_id']}
-                        <img src="{skin:images/admin/seller_ico.png}" alt="商户商品" title="商户商品" />
-                        {/if}
-                        {set:$goodsRow = JSON::decode($item['goods_array'])}
-                        {$goodsRow['name']} &nbsp;&nbsp; {$goodsRow['value']}
-                    </td>
-                    <td>{$item['real_price']}</td>
-                    <td>{$item['goods_nums']}</td>
-                    <td>
-                        {if:$item['is_send'] == 0 && ($item['refunds_status']==0 || $item['refunds_status']==5)}
-                        <input type="checkbox" name="sendgoods[]" value="{$item['id']}" />
-                        {else:}
-                            {if:$item['rid'] && $item['rtype']==0}
-                                <a href='javascript:void(0)' onclick='parent.location.href="{url:/order/refundment_apply_show/id/$item[rid]}"'>{echo:Order_class::get_order_good_status($item)}</a>
-                            {elseif:$item['rid'] && $item['rtype']==1}
-                                <a href='javascript:void(0)' onclick='parent.location.href="{url:/order/refundment_chg_show/id/$item[rid]}"'>{echo:Order_class::get_order_good_status($item)}</a>
-                            
-                            {else:}
-                                {echo:Order_class::get_order_good_status($item)}
-                            {/if}
-                        
-                        {/if}
-                    </td>
-                </tr>
-                {/query}
-                {else:}
 				{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id left join refundment_doc as r on r.order_id eq og.order_id and r.goods_id eq og.goods_id and r.product_id eq og.product_id and r.pay_status in (0,3,4,7)  fields=og.*,r.id as rid,r.type as rtype ,go.seller_id where=og.order_id eq $order_id}
 				<tr>
 					<td>
@@ -101,7 +71,6 @@
 					</td>
 				</tr>
 				{/query}
-                {/if}
 			</tbody>
 		</table>
 

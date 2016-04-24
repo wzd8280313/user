@@ -26,30 +26,6 @@
 				<tbody>
 					{set:$show_deli=0}
                     {set:$seller_id = $this->seller['seller_id']}
-                    {if:$pid}
-					{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id fields=og.*,go.seller_id where=og.order_id eq $pid and go.seller_id eq $seller_id}
-					{if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
-					{set:$show_deli = 1;}
-					{/if}
-
-					<tr>
-						<td>
-							{set:$goodsRow = JSON::decode($item['goods_array'])}
-							{$goodsRow['name']} &nbsp;&nbsp; {$goodsRow['value']}
-						</td>
-						<td>{$item['real_price']}</td>
-						<td>{$item['goods_nums']}</td>
-						<td>
-							{if:$show_deli}
-							<input type="checkbox" name="sendgoods[]" value="{$item['id']}" />
-							
-							{else:}
-							{echo:Order_class::get_order_good_status($item)}
-							{/if}
-						</td>
-					</tr>
-					{/query}
-                    {else:}
                     {query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id fields=og.*,go.seller_id where=og.order_id eq $order_id and go.seller_id eq $seller_id}
                     {if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
                     {set:$show_deli = 1;}
@@ -72,7 +48,6 @@
                         </td>
                     </tr>
                     {/query}
-                    {/if}
 				</tbody>
 			</table>
 		</fieldset>

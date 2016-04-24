@@ -163,13 +163,13 @@ class CountSum
     		    //开始优惠情况判断
     		    foreach($goodsList as $key => $val)
     		    {
-                    $order_extend[$val['seller_id']]['sum'] = 0;
-                    $order_extend[$val['seller_id']]['weight'] = 0;
-                    $order_extend[$val['seller_id']]['point'] = 0;
-                    $order_extend[$val['seller_id']]['tax'] = 0;
-                    $order_extend[$val['seller_id']]['exp'] = 0;
-                    $order_extend[$val['seller_id']]['count'] = 0;
-                    $order_extend[$val['seller_id']]['reduce'] = 0;
+                    $order_extend[$val['seller_id']]['sum'] = isset($order_extend[$val['seller_id']]['sum']) ? $order_extend[$val['seller_id']]['sum'] : 0;
+                    $order_extend[$val['seller_id']]['weight'] = isset($order_extend[$val['seller_id']]['weight']) ? $order_extend[$val['seller_id']]['weight'] : 0;
+                    $order_extend[$val['seller_id']]['point'] = isset($order_extend[$val['seller_id']]['point']) ? $order_extend[$val['seller_id']]['point'] : 0;
+                    $order_extend[$val['seller_id']]['tax'] = isset($order_extend[$val['seller_id']]['tax']) ? $order_extend[$val['seller_id']]['tax'] : 0;
+                    $order_extend[$val['seller_id']]['exp'] = isset($order_extend[$val['seller_id']]['exp']) ? $order_extend[$val['seller_id']]['exp'] : 0;
+                    $order_extend[$val['seller_id']]['count'] = isset($order_extend[$val['seller_id']]['count']) ? $order_extend[$val['seller_id']]['count'] : 0;
+                    $order_extend[$val['seller_id']]['reduce'] = isset($order_extend[$val['seller_id']]['reduce']) ? $order_extend[$val['seller_id']]['reduce'] : 0;
     //     			//检查库存
     //     			if($buyInfo['goods']['data'][$val['goods_id']]['count'] <= 0 || $buyInfo['goods']['data'][$val['goods_id']]['count'] > $val['store_nums'])
     //     			{
@@ -245,13 +245,13 @@ class CountSum
     		    //开始优惠情况判断
     		    foreach($productList as $key => $val)
     		    {
-                    $order_extend[$val['seller_id']]['sum'] = 0;
-                    $order_extend[$val['seller_id']]['weight'] = 0;
-                    $order_extend[$val['seller_id']]['point'] = 0;
-                    $order_extend[$val['seller_id']]['tax'] = 0;
-                    $order_extend[$val['seller_id']]['exp'] = 0;
-                    $order_extend[$val['seller_id']]['count'] = 0;
-                    $order_extend[$val['seller_id']]['reduce'] = 0;
+                    $order_extend[$val['seller_id']]['sum'] = isset($order_extend[$val['seller_id']]['sum']) ? $order_extend[$val['seller_id']]['sum'] : 0;
+                    $order_extend[$val['seller_id']]['weight'] = isset($order_extend[$val['seller_id']]['weight']) ? $order_extend[$val['seller_id']]['weight'] : 0;
+                    $order_extend[$val['seller_id']]['point'] = isset($order_extend[$val['seller_id']]['point']) ? $order_extend[$val['seller_id']]['point'] : 0;
+                    $order_extend[$val['seller_id']]['tax'] = isset($order_extend[$val['seller_id']]['tax']) ? $order_extend[$val['seller_id']]['tax'] : 0;
+                    $order_extend[$val['seller_id']]['exp'] = isset($order_extend[$val['seller_id']]['exp']) ? $order_extend[$val['seller_id']]['exp'] : 0;
+                    $order_extend[$val['seller_id']]['count'] = isset($order_extend[$val['seller_id']]['count']) ? $order_extend[$val['seller_id']]['count'] : 0;
+                    $order_extend[$val['seller_id']]['reduce'] = isset($order_extend[$val['seller_id']]['reduce']) ? $order_extend[$val['seller_id']]['reduce'] : 0;
     			    //检查库存
     //     			if($buyInfo['product']['data'][$val['product_id']]['count'] <= 0 || $buyInfo['product']['data'][$val['product_id']]['count'] > $val['store_nums'])
     //     			{
@@ -309,7 +309,6 @@ class CountSum
                     $goodsIdList[$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
                     $goodsListFinal[$buy][] = $productList[$key];
 		            $order_extend[$val['seller_id']]['goodsIdList'][$val['goods_id']] = array('sum' => $current_sum_all, 'reduce' => $current_reduce_all);
-                    $goodsListFinal[$buy][] = $productList[$key];
                 }
     	    }
         }
@@ -324,14 +323,14 @@ class CountSum
                 $proObj->setUserGroup($group_id);
                 $this->isFreeFreight = $proObj->isFreeFreight($area,$v['goodsIdList']);
                 $order_extend[$k]['promotion'] = $proObj->getInfo($v['goodsIdList'],$area);
-                $order_extend[$k]['proReduce'] = $v['sum'] - $v['reduce'] - $proObj->getSum($v['goodsIdList']);
+                $order_extend[$k]['proReduce'] = $v['sum'] - $v['reduce'] - $proObj->getSum($v['goodsIdList'], $area);
                 unset($proObj);
             }
 	    	$proObj = new ProRule($final_sum);
 	    	$proObj->setUserGroup($group_id);
 	    	$this->isFreeFreight = $proObj->isFreeFreight($area,$goodsIdList);
-	    	$this->promotion = $proObj->getInfo($goodsIdList,$area);
-	    	$this->proReduce = $final_sum - $proObj->getSum($goodsIdList);
+	    	$this->promotion = $proObj->getInfo($goodsIdList,$area, true);
+	    	$this->proReduce = $final_sum - $proObj->getSum($goodsIdList, $area);
     	}
     	else
     	{
@@ -607,12 +606,12 @@ class CountSum
         $goods_seller_data = array();
         $order_extend = array();
         foreach($goodsResult['goodsList'] as $key => $val){
-            $order_extend[$val['seller_id']]['deliveryOrigPrice'] = 0;
-            $order_extend[$val['seller_id']]['insuredPrice'] = 0;
-            $order_extend[$val['seller_id']]['deliveryPrice'] = 0;
-            $order_extend[$val['seller_id']]['taxPrice'] = 0;
-            $order_extend[$val['seller_id']]['sum'] = 0;
-            $order_extend[$val['seller_id']]['reduce'] = 0;
+            $order_extend[$val['seller_id']]['deliveryOrigPrice'] = isset($order_extend[$val['seller_id']]['deliveryOrigPrice']) ? $order_extend[$val['seller_id']]['deliveryOrigPrice'] : 0;
+            $order_extend[$val['seller_id']]['insuredPrice'] = isset($order_extend[$val['seller_id']]['insuredPrice']) ? $order_extend[$val['seller_id']]['insuredPrice'] : 0;
+            $order_extend[$val['seller_id']]['deliveryPrice'] = isset($order_extend[$val['seller_id']]['deliveryPrice']) ? $order_extend[$val['seller_id']]['deliveryPrice'] : 0;
+            $order_extend[$val['seller_id']]['taxPrice'] = isset($order_extend[$val['seller_id']]['taxPrice']) ? $order_extend[$val['seller_id']]['taxPrice'] : 0;
+            $order_extend[$val['seller_id']]['sum'] = isset($order_extend[$val['seller_id']]['sum']) ? $order_extend[$val['seller_id']]['sum'] : 0;
+            $order_extend[$val['seller_id']]['reduce'] = isset($order_extend[$val['seller_id']]['reduce']) ? $order_extend[$val['seller_id']]['reduce'] : 0;
             $deliveryRow = Delivery::getDelivery($area_id, $val['delivery_id'], $val['goods_id'], $val['product_id'], $val['count']);
             
             if(is_string($deliveryRow) || $deliveryRow['if_delivery'] == 1)
@@ -628,6 +627,7 @@ class CountSum
             {
                 $result['insuredPrice'] += $deliveryRow['protect_price'];
                 $order_extend[$val['seller_id']]['insuredPrice'] += $deliveryRow['protect_price'];
+                $order_extend[$val['seller_id']]['if_insured'] =1;
             }
             if(!$goodsResult['freeFreight'])
             {

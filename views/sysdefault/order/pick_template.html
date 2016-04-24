@@ -34,13 +34,8 @@
 				<th>单价</th>
 				<th>数量</th>
 				<th>小计</th>
-			</tr>
-            {if:$pid}
-                {set:$where="order_id = $pid"}
-            {else:}
-                {set:$where="order_id = $pid"}
-            {/if}
-			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=$where}
+			</tr>         
+			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=order_id eq $id}
 			{if:$item['seller_id'] != $seller_id}
 			{set:continue;}
 			{/if}

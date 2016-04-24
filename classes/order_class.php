@@ -61,143 +61,269 @@ class Order_Class
 	 * @param $note     string 收款的备注
 	 * @return false or int order_id
 	 */
-	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '')
+	public static function updateOrderStatus($orderNo,$admin_id = '',$note = '',$pay_level = 2)
 	{
-		//获取订单信息
-		$orderObj  = new IModel('order');
-		$orderRow  = $orderObj->getObj('order_no = "'.$orderNo.'"');
-
-		if(empty($orderRow))
-		{
-			return false;
-		}
-        if($orderRow['pid'] == 0)
+        if($pay_level == 1)
         {
-            $orderList = $orderObj->query('pid='.$orderRow['id'], 'id,status');
-            foreach($orderList as $v)
-            {
-                 $data = array(
+             //获取订单信息
+             $orderParentObj = new IModel('order_parent');
+             $orderRow  = $orderParentObj->getObj('order_no = "'.$orderNo.'"');
+             if(empty($orderRow))
+             {
+                return false;
+             }   
+             if($orderRow['pay_status'] == 0)
+             {
+                $dataArray = array(
+                    'status'     => ($orderRow['status'] == 5) ? 5 : 2,       
+                    'pay_status' => 1
+                );
+
+                $orderParentObj->setData($dataArray);
+                $is_success = $orderParentObj->update('order_no = "'.$orderNo.'"');
+                if($is_success == '')
+                {
+                    return false;
+                }
+             }
+             else
+             {
+                return false;
+             }
+             if(intval($orderRow['user_id']) != 0)
+             {
+                $user_id = $orderRow['user_id'];
+
+                //获取用户信息
+                $memberObj  = new IModel('member');
+                $memberRow  = $memberObj->getObj('user_id = '.$user_id,'prop,group_id');
+             }
+             $orderObj  = new IModel('order');        
+             $orderList = $orderObj->query('pid='.$orderRow['id'], 'id,status,prop,order_amount,order_no');
+             $config = new Config('site_config');
+             foreach($orderList as $v)
+             {
+                $data = array(
                     'status'     => ($v['status'] == 5) ? 5 : 2,
                     'pay_time'   => ITime::getDateTime(),
                     'pay_status' => 1
                 );
 
                 $orderObj->setData($data);
-                $orderObj->update('id = "'.$v['id'].'"');
-            }
-            
-        }
-		if($orderRow['pay_status'] == 1)
-		{
-            
-			return $orderRow['id'];
-		}
-		else if($orderRow['pay_status'] == 0)
-		{
-			$dataArray = array(
-				'status'     => ($orderRow['status'] == 5) ? 5 : 2,
-				'pay_time'   => ITime::getDateTime(),
-				'pay_status' => 1
-			);
-
-			$orderObj->setData($dataArray);
-			$is_success = $orderObj->update('order_no = "'.$orderNo.'"');
-			if($is_success == '')
-			{
-				return false;
-			}
-
-			//删除订单中使用的道具
-			$ticket_id = trim($orderRow['prop']);
-			if($ticket_id != '')
-			{
-				$propObj  = new IModel('prop');
-				$propData = array('is_userd' => 1);
-				$propObj->setData($propData);
-				$propObj->update('id = '.$ticket_id);
-			}
-
-			if(intval($orderRow['user_id']) != 0)
-			{
-				$user_id = $orderRow['user_id'];
-
-				//获取用户信息
-				$memberObj  = new IModel('member');
-				$memberRow  = $memberObj->getObj('user_id = '.$user_id,'prop,group_id');
-
-				//(1)删除订单中使用的道具
-				if($ticket_id != '')
-				{
-					$finnalTicket = str_replace(','.$ticket_id.',',',',','.trim($memberRow['prop'],',').',');
-					$memberData   = array('prop' => $finnalTicket);
-					$memberObj->setData($memberData);
-					$memberObj->update('user_id = '.$user_id);
-				}
-
-
-			}
-
-			//插入收款单
-			$collectionDocObj = new IModel('collection_doc');
-			$collectionData   = array(
-				'order_id'   => $orderRow['id'],
-				'user_id'    => $orderRow['user_id'],
-				'amount'     => $orderRow['order_amount'],
-				'time'       => ITime::getDateTime(),
-				'payment_id' => $orderRow['pay_type'],
-				'pay_status' => 1,
-				'if_del'     => 0,
-				'note'       => $note,
-				'admin_id'   => $admin_id ? $admin_id : 0
-			);
-
-			$collectionDocObj->setData($collectionData);
-			$collectionDocObj->add();
-
-			//促销活动订单
-			if($orderRow['type'] != 0)
-			{
-				Active::payCallback($orderNo,$orderRow['type']);
-			}
-
-			//非货到付款的支付方式
-			if($orderRow['pay_type'] != 0)
-			{
-				//减少库存量
-				$orderGoodsDB = new IModel('order_goods');
-				$orderGoodsList = $orderGoodsDB->query('order_id = '.$orderRow['id']);
-				$orderGoodsListId = array();
-                $good = new IModel('goods');
-				foreach($orderGoodsList as $key => $val)
-				{
-                    $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
-                    if(($temp <> 1 && $val['is_change'] == 0) || $val['is_change'] == 0)
-                    {
-                        $orderGoodsListId[] = $val['id'];
-                    }
-				}
-                if($orderGoodsListId)
+                $orderObj->update('id = "'.$v['id'].'"'); //删除订单中使用的道具
+                $ticket_id = trim($v['prop']);
+                if($ticket_id != '')
                 {
-                    self::updateStore($orderGoodsListId,'reduce');
+                    $propObj  = new IModel('prop');
+                    $propData = array('is_userd' => 1);
+                    $propObj->setData($propData);
+                    $propObj->update('id = '.$ticket_id);
                 }
-			}
 
-			//自提点短信发送
-			self::sendTakeself($orderNo);
+                if($memberRow)
+                {
+                    //(1)删除订单中使用的道具
+                    if($ticket_id != '')
+                    {
+                        $finnalTicket = str_replace(','.$ticket_id.',',',',','.trim($memberRow['prop'],',').',');
+                        $memberData   = array('prop' => $finnalTicket);
+                        $memberObj->setData($memberData);
+                        $memberObj->update('user_id = '.$user_id);
+                    }
 
-			//订单付款后短信通知管理员进行订单处理
-			$config = new Config('site_config');
-			if(isset($config->mobile) && $config->mobile)
-			{
-				$smsContent = smsTemplate::payFinishToAdmin(array('{orderNo}' => $orderNo));
-				Hsms::send($config->mobile,$smsContent);
-			}
-			return $orderRow['id'];
-		}
-		else
-		{
-			return false;
-		}
+
+                }
+
+                //插入收款单
+                $collectionDocObj = new IModel('collection_doc');
+                $collectionData   = array(
+                    'order_id'   => $v['id'],
+                    'user_id'    => $orderRow['user_id'],
+                    'amount'     => $v['order_amount'],
+                    'time'       => ITime::getDateTime(),
+                    'payment_id' => $orderRow['pay_type'],
+                    'pay_status' => 1,
+                    'if_del'     => 0,
+                    'note'       => $note,
+                    'admin_id'   => $admin_id ? $admin_id : 0
+                );
+
+                $collectionDocObj->setData($collectionData);
+                $collectionDocObj->add();
+
+                //非货到付款的支付方式
+                if($orderRow['pay_type'] != 0)
+                {
+                    //减少库存量
+                    $orderGoodsDB = new IModel('order_goods');
+                    $orderGoodsList = $orderGoodsDB->query('order_id = '.$v['id']);
+                    $orderGoodsListId = array();
+                    $good = new IModel('goods');
+                    foreach($orderGoodsList as $key => $val)
+                    {
+                        $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
+                        if(($temp <> 1 && $val['is_change'] == 0) || $val['is_change'] == 0)
+                        {
+                            $orderGoodsListId[] = $val['id'];
+                        }
+                    }
+                    if($orderGoodsListId)
+                    {
+                        self::updateStore($orderGoodsListId,'reduce');
+                    }
+                }
+
+                //自提点短信发送
+                self::sendTakeself($v['order_no']);
+
+                //订单付款后短信通知管理员进行订单处理   
+                if(isset($config->mobile) && $config->mobile)
+                {
+                    $smsContent = smsTemplate::payFinishToAdmin(array('{orderNo}' => $v['order_no']));
+                    Hsms::send($config->mobile,$smsContent);
+                }
+                $return[] = $v['id'];
+             }                                   
+             return $return;
+        }
+        else
+        {
+		    //获取订单信息
+		    $orderObj  = new IModel('order');
+		    $orderRow  = $orderObj->getObj('order_no = "'.$orderNo.'"');
+
+		    if(empty($orderRow))
+		    {
+			    return false;
+		    }
+            if($orderRow['pid'] == 0)
+            {
+                $orderList = $orderObj->query('pid='.$orderRow['id'], 'id,status');
+                foreach($orderList as $v)
+                {
+                     $data = array(
+                        'status'     => ($v['status'] == 5) ? 5 : 2,
+                        'pay_time'   => ITime::getDateTime(),
+                        'pay_status' => 1
+                    );
+
+                    $orderObj->setData($data);
+                    $orderObj->update('id = "'.$v['id'].'"');
+                }
+                
+            }
+		    if($orderRow['pay_status'] == 1)
+		    {
+                
+			    return $orderRow['id'];
+		    }
+		    else if($orderRow['pay_status'] == 0)
+		    {
+			    $dataArray = array(
+				    'status'     => ($orderRow['status'] == 5) ? 5 : 2,
+				    'pay_time'   => ITime::getDateTime(),
+				    'pay_status' => 1
+			    );
+
+			    $orderObj->setData($dataArray);
+			    $is_success = $orderObj->update('order_no = "'.$orderNo.'"');
+			    if($is_success == '')
+			    {
+				    return false;
+			    }
+
+			    //删除订单中使用的道具
+			    $ticket_id = trim($orderRow['prop']);
+			    if($ticket_id != '')
+			    {
+				    $propObj  = new IModel('prop');
+				    $propData = array('is_userd' => 1);
+				    $propObj->setData($propData);
+				    $propObj->update('id = '.$ticket_id);
+			    }
+
+			    if(intval($orderRow['user_id']) != 0)
+			    {
+				    $user_id = $orderRow['user_id'];
+
+				    //获取用户信息
+				    $memberObj  = new IModel('member');
+				    $memberRow  = $memberObj->getObj('user_id = '.$user_id,'prop,group_id');
+
+				    //(1)删除订单中使用的道具
+				    if($ticket_id != '')
+				    {
+					    $finnalTicket = str_replace(','.$ticket_id.',',',',','.trim($memberRow['prop'],',').',');
+					    $memberData   = array('prop' => $finnalTicket);
+					    $memberObj->setData($memberData);
+					    $memberObj->update('user_id = '.$user_id);
+				    }
+
+
+			    }
+
+			    //插入收款单
+			    $collectionDocObj = new IModel('collection_doc');
+			    $collectionData   = array(
+				    'order_id'   => $orderRow['id'],
+				    'user_id'    => $orderRow['user_id'],
+				    'amount'     => $orderRow['order_amount'],
+				    'time'       => ITime::getDateTime(),
+				    'payment_id' => $orderRow['pay_type'],
+				    'pay_status' => 1,
+				    'if_del'     => 0,
+				    'note'       => $note,
+				    'admin_id'   => $admin_id ? $admin_id : 0
+			    );
+
+			    $collectionDocObj->setData($collectionData);
+			    $collectionDocObj->add();
+
+			    //促销活动订单
+			    if($orderRow['type'] != 0)
+			    {
+				    Active::payCallback($orderNo,$orderRow['type']);
+			    }
+
+			    //非货到付款的支付方式
+			    if($orderRow['pay_type'] != 0)
+			    {
+				    //减少库存量
+				    $orderGoodsDB = new IModel('order_goods');
+				    $orderGoodsList = $orderGoodsDB->query('order_id = '.$orderRow['id']);
+				    $orderGoodsListId = array();
+                    $good = new IModel('goods');
+				    foreach($orderGoodsList as $key => $val)
+				    {
+                        $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
+                        if(($temp <> 1 && $val['is_change'] == 0) || $val['is_change'] == 0)
+                        {
+                            $orderGoodsListId[] = $val['id'];
+                        }
+				    }
+                    if($orderGoodsListId)
+                    {
+                        self::updateStore($orderGoodsListId,'reduce');
+                    }
+			    }
+
+			    //自提点短信发送
+			    self::sendTakeself($orderNo);
+
+			    //订单付款后短信通知管理员进行订单处理
+			    $config = new Config('site_config');
+			    if(isset($config->mobile) && $config->mobile)
+			    {
+				    $smsContent = smsTemplate::payFinishToAdmin(array('{orderNo}' => $orderNo));
+				    Hsms::send($config->mobile,$smsContent);
+			    }
+			    return $orderRow['id'];         
+		    }
+		    else
+		    {
+			    return false;
+		    }
+        }
 	}
 
 	/**
@@ -364,15 +490,8 @@ class Order_Class
 	 		}
 
 	 		//获取商品总重量和总金额
-	 		$tb_order_goods = new IModel('order_goods');
-            if($data['pid'])
-            {                     
-                $order_goods_info = $tb_order_goods->query('order_id='.$data['pid'].' and seller_id = '.$data['seller_id']);
-            }
-            else
-            {
-                $order_goods_info = $tb_order_goods->query('order_id='.$order_id);
-            }                              
+	 		$tb_order_goods = new IModel('order_goods');    
+            $order_goods_info = $tb_order_goods->query('order_id='.$order_id);                           
 	 		$data['goods_amount'] = 0;
 	 		$data['goods_weight'] = 0;
 
@@ -1057,10 +1176,10 @@ class Order_Class
 		 	self::updateStore($order_goods_relation,'reduce');
 		}*/
 
-        $orderId = $tbOrderRow['pid'] ? $tbOrderRow['pid'] : $order_id;
+        //$orderId = $tbOrderRow['pid'] ? $tbOrderRow['pid'] : $order_id;
 		//更新发货状态
 	 	$orderGoodsDB = new IModel('order_goods');
-	 	$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$orderId.' and seller_id='.$sendor_id,'count(*) as num');
+	 	$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$order_id.' and seller_id='.$sendor_id,'count(*) as num');
 		$sendStatus = 2;//部分发货
 	 	if(count($order_goods_relation) >= $orderGoodsRow['num'])
 	 	{
@@ -1109,8 +1228,8 @@ class Order_Class
     	));
         
         //如果是拆分订单，更新总订单状态
-        $parSendStatus = $sendStatus;
-        if($tbOrderRow['pid'] <> 0)
+         /*$parSendStatus = $sendStatus;
+       if($tbOrderRow['pid'] <> 0)
         {
             if($parSendStatus==1)
             {
@@ -1128,7 +1247,7 @@ class Order_Class
             $otherData['send_time'] = ITime::getDateTime();
             $tb_order->setData($otherData);
             $tb_order->update('id='.$tbOrderRow['pid']);
-        }
+        }*/
         
     	$sendResult = $tb_order_log->add();
 

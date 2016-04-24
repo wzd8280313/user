@@ -1378,7 +1378,6 @@ class Simple extends IController
         $order_type    = 0;
         $invoice       = isset($_POST['taxes']) ? 1 : 0;
         $dataArray     = array();
-        $seller_ids    = IFilter::act(IReq::get('seller_id'),'int');
         //防止表单重复提交
         if(IReq::get('timeKey') != null)
         {
@@ -1465,7 +1464,7 @@ class Simple extends IController
                 $ticketRow = $propObj->getObj('id = '.$ticket_id.' and NOW() between start_time and end_time and type = 0 and is_close = 0 and is_userd = 0 and is_send = 1');
                 if(!empty($ticketRow))
                 {
-                    $dataArray['prop'] = $ticket_id;
+                    $prop['prop'] = $ticket_id;
                 }
 
                 //锁定红包状态
@@ -1496,77 +1495,31 @@ class Simple extends IController
             IError::show(403,$orderData);
             exit;
         }
-        
+        $parentOrder = new IModel('order_parent');
         //生成的订单数据
         $dataArray = array(
             'order_no'            => $order_no,
-            'user_id'             => $user_id,
             'accept_name'         => $accept_name,
+            'user_id'             => $user_id,
             'pay_type'            => $payment,
             'postcode'            => $zip,
             'telphone'            => $telphone,
-            'province'            => $province,
-            'city'                => $city,
-            'area'                => $area,
             'address'             => $address,
+            'type'                => $order_type,
             'mobile'              => $mobile,
             'create_time'         => ITime::getDateTime(),
             'postscript'          => $order_message,
-            'accept_time'         => $accept_time,
-            'exp'                 => $goodsResult['exp'],
-            'point'               => $goodsResult['point'],
-            'type'                => $order_type,
-
-            //红包道具
-            'prop'                => isset($dataArray['prop']) ? $dataArray['prop'] : null,
-
-            //商品价格
-            'payable_amount'      => $goodsResult['sum'],//商品原总价
-            'real_amount'         => $goodsResult['final_sum'],//商品元总价-促销优惠-闪购/会员价优惠    （未减去红包金额）
-
-            //运费价格
-            'payable_freight'     => $orderData['deliveryOrigPrice'],
-            'real_freight'        => $orderData['deliveryPrice'],
-
-            //手续费
-            'pay_fee'             => $orderData['paymentPrice'],
-
-            //税金
-            'invoice'             => $invoice,
-            'taxes'               => $orderData['taxPrice'],
-
-            //优惠价格（包括闪购、会员价差价，红包，促销活动减价）
-            'promotions'          => $goodsResult['proReduce'] + $goodsResult['reduce'] + (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
-
-            //促销活动优惠
-            'pro_reduce'         => $goodsResult['proReduce'] ,
-            //红包减免金额
-            'ticket_reduce'      => isset($ticketRow['value']) ? $ticketRow['value'] : 0,
             //订单应付总额（商品final_num加上，税金，运费，再减去红包）
             'order_amount'        => $orderData['orderAmountPrice'] - (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
 
-            //订单保价
-            'if_insured'          => $insured ? 1 : 0,
-            'insured'             => $orderData['insuredPrice'],
-
-            //自提点ID
-            'takeself'            => $takeself,
-
-            //促销活动ID
-            'active_id'           => $active_id,
         );
-
         $dataArray['order_amount'] = $dataArray['order_amount'] <= 0 ? 0 : $dataArray['order_amount'];
         
-        if(count($orderData['order_extend']) == 1)
-        {
-            $dataArray['seller_id'] = key($orderData['order_extend']);
-        }
-        $orderObj  = new IModel('order');
-        $orderObj->setData($dataArray);
+        $parentOrder->setData($dataArray);
 
-        $this->order_id = $orderObj->add();
+        $this->order_id = $parentOrder->add();
         
+        $orderObj  = new IModel('order');
         if($this->order_id == false)
         {
             IError::show(403,'订单生成错误');
@@ -1578,6 +1531,10 @@ class Simple extends IController
         //拆分订单
         foreach($orderData['order_extend'] as $k => $v)
         {
+            if(isset($ticketRow['value']))
+            {
+                $ticket = $ticketRow['value'] * (round($v['sum']/$goodsResult['sum'], 2));
+            }
             $temp = Order_Class::createOrderNum();
             $data = array(
                 'order_no'            => $temp,
@@ -1599,7 +1556,7 @@ class Simple extends IController
                 'type'                => $order_type,
 
                 //红包道具
-                'prop'                => isset($dataArray['prop']) ? $dataArray['prop'] : null,
+                'prop'                => isset($prop['prop']) ? $prop['prop'] : null,
                 //商品价格
                 'payable_amount'      => $goodsResult['extend'][$k]['sum'],//商品原总价
                 'real_amount'         => $goodsResult['extend'][$k]['sum']-$goodsResult['extend'][$k]['reduce'],//商品元总价-促销优惠-闪购/会员价优惠    （未减去红包金额）
@@ -1614,17 +1571,16 @@ class Simple extends IController
                 //税金
                 'invoice'             => $invoice,
                 'taxes'               => $v['taxPrice'], //优惠价格（包括闪购、会员价差价，红包，促销活动减价）
-                'promotions'          => $goodsResult['extend'][$k]['proReduce'] + $goodsResult['extend'][$k]['reduce'] + (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
+                'promotions'          => $goodsResult['extend'][$k]['proReduce'] + $goodsResult['extend'][$k]['reduce'] + (isset($ticket) ? $ticket : 0),
 
                 //促销活动优惠
                 'pro_reduce'         => $goodsResult['extend'][$k]['proReduce'] ,
                 //红包减免金额
-                'ticket_reduce'      => isset($ticketRow['value']) ? $ticketRow['value'] : 0,
-                //订单应付总额（商品final_num加上，税金，运费，再减去红包）
-                'order_amount'        => $goodsResult['extend'][$k]['sum']-$goodsResult['extend'][$k]['reduce']+$v['deliveryPrice'] + $v['insuredPrice'] + $v['taxPrice'] + $v['paymentPrice'] - (isset($ticketRow['value']) ? $ticketRow['value'] : 0),
+                'ticket_reduce'      => isset($ticket) ? $ticket : 0,
+                'order_amount'        => $goodsResult['extend'][$k]['sum']-$goodsResult['extend'][$k]['proReduce']-$goodsResult['extend'][$k]['reduce']+$v['deliveryPrice'] + $v['insuredPrice'] + $v['taxPrice'] + $v['paymentPrice'] - (isset($ticket) ? $ticket : 0),
 
                 //订单保价
-                'if_insured'          => $insured ? 1 : 0,
+                'if_insured'          => isset($v['if_insured']) ? 1 : 0,
                 'insured'             => $v['insuredPrice'],
 
                 //自提点ID
@@ -1635,10 +1591,35 @@ class Simple extends IController
                 'pid'                 => $this->order_id,
                 'seller_id'           => $k
             );
+            
             $data['order_amount'] = $data['order_amount'] <= 0 ? 0 : $data['order_amount'];
             $orderObj->setData($data);
             $oId = $orderObj->add();
             $orderInstance->insertOrderGoods($oId,$orderData['goodsResult'],$payment,$k);
+            //填写开发票信息
+            if($invoice){
+                $db_fapiao = new IModel('order_fapiao');
+                $fapiao_data = array(
+                        'order_id'=> $oId,
+                        'user_id' => $user_id,
+                        'type'    => IFilter::act(IReq::get('type'),'int'),
+                        'create_time'=> ITime::getDateTime(),
+                        'seller_id' => $k
+                );
+                if($fapiao_data['type']==0){
+                    $fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
+                        
+                }else{
+                    $fapiao_data['com'] = IFilter::act(IReq::get('tax_com'));
+                    $fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
+                    $fapiao_data['address'] = IFilter::act(IReq::get('tax_address'));
+                    $fapiao_data['telphone'] = IFilter::act(IReq::get('tax_telphone'));
+                    $fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
+                    $fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
+                }
+                $db_fapiao->setData($fapiao_data);
+                $db_fapiao->add();
+            }
             $array = array('order_id' => $oId,'order_no' => $temp, 'final_sum' => $data['order_amount']);
             $finalData[] = $array;
         }
@@ -1688,34 +1669,6 @@ class Simple extends IController
                         $addressObj->update('user_id = '.$user_id.' and id = '.$radio_address);
                     }
                 }
-            }
-        }
-        //填写开发票信息
-        if($invoice){
-            $db_fapiao = new IModel('order_fapiao');
-            $fapiao_data = array(
-                    'order_id'=> $this->order_id,
-                    'user_id' => $user_id,
-                    'type'    => IFilter::act(IReq::get('type'),'int'),
-                    'create_time'=> ITime::getDateTime(),
-            );
-            if($fapiao_data['type']==0){
-                $fapiao_data['taitou'] = IFilter::act(IReq::get('taitou'));
-                    
-            }else{
-                $fapiao_data['com'] = IFilter::act(IReq::get('tax_com'));
-                $fapiao_data['tax_no']= IFilter::act(IReq::get('tax_no'));
-                $fapiao_data['address'] = IFilter::act(IReq::get('tax_address'));
-                $fapiao_data['telphone'] = IFilter::act(IReq::get('tax_telphone'));
-                $fapiao_data['bank'] = IFilter::act(IReq::get('tax_bank'));
-                $fapiao_data['account'] = IFilter::act(IReq::get('tax_account'));
-            }
-            
-            
-            foreach($seller_ids as $key=>$v){
-                $fapiao_data['seller_id'] = $v;
-                $db_fapiao->setData($fapiao_data);
-                $db_fapiao->add();
             }
         }
         
@@ -2563,16 +2516,26 @@ class Simple extends IController
 			$this->redirect('/simple/login');
 		}
 		
-		$order_id = intval(IReq::get('order_id'));
+        $order_id = intval(IReq::get('order_id'));
 		if(!$order_id)return false;
-		$order = new IModel('order');
+        $pay_level = intval(IReq::get('pay_level'));
+        if($pay_level == 1)
+        {
+            $order = new IModel('order_parent');
+        }
+        else
+        {
+            $order = new IModel('order');
+        }
+		
 		if(!$order_data = $order->getObj('id='.$order_id.' and user_id = '.$this->user['user_id'],'create_time')){
 			IError::show(403,"订单不存在");
 		}
 		$config = new Config('site_config');
 		$cancle_days = isset($config->order_cancel_time) ? $config->order_cancel_time : 3;
 		$this->end_time = strtotime($order_data['create_time']) + $cancle_days*24*3600;
-		$this->order_id = $order_id;
+        $this->order_id = $order_id;
+		$this->pay_level = $pay_level;
 	
 		$this->redirect('payafter');
 	}

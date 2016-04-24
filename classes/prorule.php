@@ -66,11 +66,10 @@ class ProRule
 	 * @brief 获取现金促销规则优惠后的金额
 	 * @return float 优惠后金额
 	 */
-	public function getSum($goodsIdList=array())
+	public function getSum($goodsIdList=array(), $area = null)
 	{
 		//获取现金奖励信息
-		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce,$goodsIdList);
-
+		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce,$goodsIdList, $area);
 		if(!empty($cashInfo))
 		{
 			//执行现金奖励运算
@@ -101,10 +100,9 @@ class ProRule
 	public function getInfo($goodsIdList = array(), $area = null)
 	{
 		$explain  = array();
-
 		$giftInfo = $this->getAwardInfo($this->gift_award_type,$this->isGiftOnce, $goodsIdList, $area);
 		$cashInfo = $this->getAwardInfo($this->cash_award_type,$this->isCashOnce, $goodsIdList, $area);
-		$allInfo  = array_merge($cashInfo,$giftInfo);       
+		$allInfo  = is_array($cashInfo) ? array_merge($cashInfo,$giftInfo) : array();       
 		foreach($allInfo as $key => $val)
 		{
             $explain[$key]['id'] = $val['id'];
@@ -112,7 +110,7 @@ class ProRule
 			$explain[$key]['plan'] = $val['name'];
             $explain[$key]['info'] = $this->typeExplain($val['award_type'],$val['condition'],$val['award_value']);
 			$explain[$key]['hide'] = isset($val['hide']) ? $val['hide'] : 0;
-		}                   
+		}                                    
 		return $explain;
 	}
 
@@ -211,9 +209,9 @@ class ProRule
 	 * @param int $award_type 奖励类别 1减金额 2奖励折扣 3赠送积分 4赠送代金券 5赠送赠品 6免运费 7赠送经验
 	 * @return array 促销规则信息
 	 */
-	private function satisfyPromotion($award_type = null, $goodsIdList = array(), $area = null, $sum = null)
-	{                                 
-        $final_sum = $sum ? $sum : $this->sum;
+	private function satisfyPromotion($award_type = null, $goodsIdList = array(), $area = null)
+	{                              
+        $final_sum = $this->sum;
         
 		$datetime = ITime::getDateTime();
 		$proObj   = new IModel('promotion');
@@ -223,7 +221,6 @@ class ProRule
 		{
 			$where.=' and award_type in ('.$award_type.')';
 		}
-
 		//用户组
 		if($this->user_group != null)
 		{
@@ -234,24 +231,24 @@ class ProRule
 			$where.=' and user_group = "all" ';
 		}                  
 		$proList = $proObj->query($where,'*','`condition`');
-        if(!$sum)
+        $proListTemp = $proList;
+        $temp = array_keys($goodsIdList);
+        foreach($proListTemp as $k => $v)
         {
-            $proListTemp = $proList;
-            $temp = array_keys($goodsIdList);
-            foreach($proListTemp as $k => $v)
+            $gId = array();
+            if($v['goods_id'] == 'all')
             {
-                $gId = array();
-                if($v['goods_id'] == 'all')
-                {
-                    $goods = new IModel('goods');
-                    $gId = $goods->getFields(array('seller_id' => $v['seller_id']), 'id');
-                }                             
-                elseif($v['goods_id'])
-                {
-                    $gId = explode(',', $v['goods_id']);
-                }
-                $common = array_intersect($temp, $gId);     
-                if($common && count($temp) > count($common))
+                $goods = new IModel('goods');
+                $gId = $goods->getFields(array('seller_id' => $v['seller_id']), 'id');
+            }                             
+            elseif($v['goods_id'])
+            {
+                $gId = explode(',', $v['goods_id']);
+            }
+            $common = array_intersect($temp, $gId); 
+            if($common)
+            {
+                if(count($temp) > count($common))
                 {
                     $sumNum = 0;
                     $reduceNum = 0;
@@ -260,14 +257,18 @@ class ProRule
                         $sumNum += $goodsIdList[$val]['sum'];
                         $reduceNum += $goodsIdList[$val]['reduce'];
                     }
-                    self::satisfyPromotion($award_type, $goodsIdList, $area, $sumNum - $reduceNum);
-                }
-                elseif(empty($common))
-                {
-                    $proList[$k]['hide'] = 1;
+                    $proList[$k]['sum'] = $sumNum - $reduceNum;
+                    if(($sumNum - $reduceNum) < $v['condition'])
+                    {
+                        $proList[$k]['hide'] = 1;
+                    }
                 }
             }
-        }                                                                              
+            else
+            {   
+                $proList[$k]['hide'] = 1;
+            }      
+        }                                                                             
         if($area)
         {
             $proListTemp = $proList;
@@ -286,7 +287,7 @@ class ProRule
                     }
                 }  
             }
-        }                                                   
+        }
 		return $proList;
 	}
 	/**
@@ -351,7 +352,7 @@ class ProRule
 				    //减少百分比
 				    case "2":
 				    {
-					    $sum = $sum - ($sum * ($award_value/100));
+					    $sum = isset($val['sum']) ? $sum - ($val['sum'] * ($award_value/100)) : $sum - ($sum * ($award_value/100));
 				    }
 				    break;
                 }
@@ -476,7 +477,7 @@ class ProRule
 
 		//获取所有现金促销规则奖励信息
         $award_type_str = join(',',$award_type);
-		$allAwardInfo   = $this->satisfyPromotion($award_type_str,$goodsIdList, $area);
+		$allAwardInfo   = $this->satisfyPromotion($award_type_str,$goodsIdList, $area,null);
 		//当现金奖励仅为一次时，奖励优惠最大化
 		if(!empty($allAwardInfo))
 		{
@@ -494,7 +495,7 @@ class ProRule
 			{
 				$awardInfo = $allAwardInfo;
 			}
-		}
+		}     
 		return $awardInfo;
 	}
 }

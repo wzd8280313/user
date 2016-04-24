@@ -26,25 +26,26 @@ jQuery(function(){
 			{if:$this->user['user_id']}
 			{set:$tmpId=$this->order_id;}
 			<p class="order_stats">
-				<a href="{url:/ucenter/order_detail/id/$tmpId}" class="f_r blue">查看订单状态</a>
+				<!--<a href="{url:/ucenter/order_detail/id/$tmpId}" class="f_r blue">查看订单状态</a>  -->
 				<img width="48px" height="51px" alt="" src="{skin:images/front/right.gif}"><strong class="f14">订单已提交</strong>
 			</p>
 			{/if}
 
 			<div class="stats_box">
 				<h3>订单信息</h3>
+                {foreach:items=$this->finalData}
 				<table width="100%" class="form_table t_l orange">
 					<col width="75px" />
 					<col />
 
 					<tbody>
-						<tr><th>订单编号：</th><td class="f18 bold red2">{$this->order_num}</td></tr>
-						<tr><th>订单金额：</th><td class="f18 bold red2">￥<b>{$this->final_sum}</b></td></tr>
+						<tr><th>订单编号：</th><td class="f18 bold red2">{$item['order_no']}</td></tr>
+						<tr><th>订单金额：</th><td class="f18 bold red2">￥<b>{$item['final_sum']}</b></td></tr>
 						<tr><th>备货时间：</th><td class="f18 bold red2">{$this->stockup_time}天</td></tr>
 						<tr><th>支付方式：</th><td class="f18 bold red2">{$this->payment}</td></tr>  
 					</tbody>
 				</table>
-
+                {/foreach}
 				<a class="fold" href="javascript:void(0)" id='order_a'>[查看订单详细信息]</a>
 
 				<div class="blue_box gray m_10" id='order_detail' style='display:none'>
@@ -65,7 +66,7 @@ jQuery(function(){
 				<!--不是货到付款并且支付方式为线上支付-->
 				{if:$this->deliveryType != 1 && $this->paymentType == 1}
 				{set:$tmpId=$this->order_id;}
-				<form action='{url:/block/doPay/order_id/$tmpId}' method='post' target='_blank'>
+				<form action='{url:/block/doPay/order_id/$tmpId/pay_level/1}' method='post' target='_blank'>
 					<input class="submit_pay" type="submit" value="立即支付" onclick="return dopay();" />
 				</form>
 				{/if}
@@ -77,7 +78,7 @@ jQuery(function(){
 <script type="text/javascript">
 function dopay()
 {
-	var url = '{url:/simple/payafter/order_id/$this->order_id/order_type/1}';
+	var url = '{url:/simple/payafter/order_id/$this->order_id/order_type/1/pay_level/1}';
 	art.dialog.open(url);
 }
 </script>

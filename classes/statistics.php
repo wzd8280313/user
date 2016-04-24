@@ -373,7 +373,7 @@ class statistics
     public static function refundsCountDiff($plat = 1)
     {
         $refundDB = new IQuery('refundment_doc');
-        $where = '(pay_status = 0 or pay_ststus = 4) and if_del = 0';
+        $where = '(pay_status = 0 or pay_status = 4) and if_del = 0';
         if($plat)
         {
             $where .= ' and seller_id = 0';
