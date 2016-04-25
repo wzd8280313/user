@@ -1779,5 +1779,8 @@ class Site extends IController
         array_unshift($goodsList, $goods_info);
         echo JSON::encode(array('data' => $goodsList, 'spec' => $spec));
     }
-	
+	function match_sale()
+    {
+        $this->redirect('match_sale');
+    }
 }

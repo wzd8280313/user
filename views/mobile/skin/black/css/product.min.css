@@ -457,7 +457,12 @@ a.ingot_btn:link,a.ingot_btn:visited{ display:block; width:300px; height:45px; l
 		.am-share-sns .share-icon-dou {background-image:url(../images/icons_0_32_08.png); }
 
 		.sharebg { background-color: #333; bottom: 0; height: 100%; left: 0; opacity: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 1100; display:none; }
-		.sharebg-active { opacity: 1; display:block; }
+		.sharebg-active { 
+                        /* opacity: 1; */ 
+                        display:block;    
+                        filter: alpha(opacity=60);
+                        -moz-opacity: 0.6;
+                        opacity: 0.6; }
 
 							
 				
