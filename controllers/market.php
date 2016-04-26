@@ -1211,13 +1211,7 @@ class Market extends IController
 		$siteObj = new Config('site_config');
 		$siteObj->write($inputArray);
 		$this->redirect('pro_argument');
-	}
-
-	//活动列表页
-	public function active_list()
-	{
-		$this->redirect('active_list');
-	}
+	}         
 
 	//编辑活动列表页
 	public function active_edit()

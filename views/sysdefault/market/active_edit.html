@@ -3,26 +3,6 @@
 <script type="text/javascript" src="{theme:javascript/event.js}"></script>
 <script type="text/javascript" src="{theme:javascript/jquery-1.7.2.js}"></script>
 
-
-<script type="text/javascript">
-    $(function () {
-        $('input[name=type]').each(function () {
-            $(this).click(function () {
-                var _i = $(this).val();
-                if (_i == 2) {
-                    $('.js_show_1').hide().find('input').attr('disabled', 'disabled');
-                    $('.js_show_2').show().find('input').removeAttr('disabled');
-                }
-                else {
-                    $('.js_show_2').hide().find('input').attr('disabled', 'disabled');
-                    $('.js_show_1').show().find('input').removeAttr('disabled');
-                }
-            })
-        })
-    })
-</script>
-
-
 <div class="headbar">
     <div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>{if:isset($this->regimentRow['id'])}编辑{else:}添加{/if}活动</span>
     </div>
@@ -36,69 +16,24 @@
                 <col/>
                 <tr>
                     <th>活动标题：</th>
-                    <td><input type='text' class='normal' name='title' pattern='required' alt='请填写活动标题'/><label>*
+                    <td><input type='text' class='normal' name='name' pattern='required' alt='请填写活动名称'/><label>*
                         填写活动名称</label></td>
                 </tr>
                 <tr>
                     <th>活动类型</th>
                     <td>
-                        <label class='attr'><input type="radio" name="type" value="0"/>TOP</label>
-                        <label class='attr'><input type="radio" name="type" value="1"/>有奖活动</label>
-                        <label class='attr'><input type="radio" name="type" value="2"/>抽奖活动</label>
-                    </td>
-                </tr>
-                <!-- <tr class="js_show_1" {if:$this->regimentRow['type'] == 2} style="display:none" {/if}>
-                    <th>活动时间：</th>
-                    <td>
-                        <input type='text' name='start_time' class='Wdate' onblur="FireEvent(this,'onchange');" pattern='datetime' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' /> ～
-                        <input type='text' name='end_time' class='Wdate' onblur="FireEvent(this,'onchange');" pattern='datetime' onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" alt='请填写一个日期' />
-                        <label>* 此活动的时间段</label>
-                    </td>
-                </tr> -->
-                <tr class="js_show_2" {if:$this->regimentRow['type'] <> 2} style="display:none" {/if}>
-                    <th>活动时间：</th>
-                    <td>
-                        <input type='text' name='start_time1' class='Wdate' onblur="FireEvent(this,'onchange');"
-                               pattern='datetime' {if:$this->regimentRow['type'] == 2}
-                        value="{$this->regimentRow['start_time']}" {/if} onFocus="WdatePicker({dateFmt:'yyyy-MM-dd
-                        HH:00:00'})" alt='请填写一个日期' /> ～
-                        <input type='text' name='end_time1' class='Wdate' onblur="FireEvent(this,'onchange');"
-                               pattern='datetime' {if:$this->regimentRow['type'] == 2}
-                        value="{$this->regimentRow['end_time']}" {/if} onFocus="WdatePicker({dateFmt:'yyyy-MM-dd
-                        HH:00:00'})" alt='请填写一个日期' />
-                        <label>* 此活动的时间段</label>
+                        <label class='attr'><input type="radio" name="type" value="1"/>活动一</label>
+                        <label class='attr'><input type="radio" name="type" value="2"/>有奖活动</label>
+                        <label class='attr'><input type="radio" name="type" value="3"/>抽奖活动</label>
                     </td>
                 </tr>
                 <tr>
-                    <th>是否开启：</th>
+                    <th>状态：</th>
                     <td>
-                        <label class='attr'><input type='radio' name='is_close' value='0'/>是</label>
-                        <label class='attr'><input type='radio' name='is_close' value='1' checked=checked/>否</label>
+                        <label class='attr'><input type='radio' name='status' value='1' checked=checked/>开启</label>
+                        <label class='attr'><input type='radio' name='status' value='2'/>关闭</label>
                     </td>
                 </tr>
-                <tr>
-                    <th>是否区分规格：</th>
-                    <td>
-                        <label class='attr' name='spec_diff'><input type='radio' name='spec' value='0'/>是</label>
-                        <label class='attr' name='spec_diff'><input type='radio' name='spec' value='1' checked=checked/>否</label>
-                    </td>
-                </tr>
-                　
-                <!-- <tr>
-                    <th>设置活动商品：</th>
-                    <td>
-                        <table class='border_table'>
-                            <col width="100px" />
-                            <col />
-                            <input type='hidden' name='goods_id' />
-                
-                            <tbody id='regiment_box'>
-                            </tbody>
-                
-                            <tr><td colspan=2><button type='button' class='btn' onclick=''><span>添加商品</span></button><label>* 添加要活动的商品</label></td></tr>
-                        </table>
-                    </td>
-                </tr> -->
 
 
                 <!--增加背景图片上传  -->
@@ -109,7 +44,7 @@
                             <div id="preview">
 
                             </div>
-                            <input type="file" onchange="previewImage(this)"/>
+                            <input type="file" name="backimage" onchange="previewImage(this)"/>
 
                         </div>
 
@@ -123,7 +58,7 @@
                             <div id="preview_">
 
                             </div>
-                            <input type="file" onchange="previewImg(this)"/>
+                            <input type="file" name="topimage" onchange="previewImg(this)"/>
 
                         </div>
 
@@ -137,7 +72,6 @@
                         <input type='text' class='small' name='sort'/>
                     </td>
                 </tr>
-    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.7.2/jquery.min.js"></script>
                 <!-- 添加分组 -->
 
                 <tr>
@@ -151,13 +85,13 @@
                     <td>
                         <div class='total_inpt' style='margin-top: 10px;'>
                     <span><b>分组名称：</b>
-                    <input type='text' class='normal' name='title' pattern='required' alt='请填写活动标题'/><label>*
-                            填写活动名称</label></span>
+                    <input type='text' class='normal' name='title' pattern='required' alt='请填写活动分组名称'/><label>*
+                            填写分组名称</label></span>
                  <span class='mupohot'><b>设置图片：</b>
                         <div class='total_wids'>
                             <div id='previews'>
                             </div>
-                            <input type='file' onchange='previewImages(this)'/>
+                            <input type='file' name="groupImage[]" onchange='previewImages(this)'/>
                         </div>
                    </span>
                   <span class='paixlie'><b>排序：</b>
