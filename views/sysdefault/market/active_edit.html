@@ -85,7 +85,7 @@
                     <td>
                         <div class='total_inpt' style='margin-top: 10px;'>
                     <span><b>分组名称：</b>
-                    <input type='text' class='normal' name='title' pattern='required' alt='请填写活动分组名称'/><label>*
+                    <input type='text' class='normal' name='group[]' pattern='required' alt='请填写活动分组名称'/><label>*
                             填写分组名称</label></span>
                  <span class='mupohot'><b>设置图片：</b>
                         <div class='total_wids'>
@@ -95,7 +95,7 @@
                         </div>
                    </span>
                   <span class='paixlie'><b>排序：</b>
-                        <input type='text' class='small' name='sort'/>
+                        <input type='text' class='small' name='groupSort[]'/>
                    </span>
                    <span><a style='color: #666;' class='delfenzu' href='javascript:;'>删除分组</a>
                    </span>
@@ -107,7 +107,7 @@
 
 
                 <tr class='stylenone' style='display:none;'>
-                    <th>设置闪购商品：</th>
+                    <th>设置分组商品：</th>
                     <td>
                         <table class='border_table' style='width:70%'>
                             <col width='150px'/>
@@ -129,7 +129,7 @@
                             <tr>
                                 <td colspan='5'>
                                     <button type='button' class='btn'><span>选择商品</span></button>
-                                    <label>* 设置要闪购的商品，仅能设置一种商品</label>
+                                    <label>* 设置分组商品</label>
                                 </td>
                             </tr>
                             </tbody>
@@ -142,17 +142,17 @@
                             "                            <td>" +
                             "                            <div class='total_inpt' style='margin-top: 10px;'>" +
                             "                            <span><b>分组名称：</b>" +
-                            "                    <input type='text' class='normal' name='title' pattern='required' alt='请填写活动标题'/><label>*" +
-                            "                            填写活动名称</label></span>" +
+                            "                    <input type='text' class='normal' name='group[]' pattern='required' alt='请填写活动分组名称'/><label>*" +
+                            "                            填写分组名称</label></span>" +
                             "                    <span class='mupohot'><b>设置图片：</b>" +
                             "                    <div class='total_wids'>" +
                             "                            <div id='previews'>" +
                             "                            </div>" +
-                            "                            <input type='file' onchange='previewImages(this)'/>" +
+                            "                            <input type='file' name='groupImage[]' onchange='previewImages(this)'/>" +
                             "                            </div>" +
                             "                            </span>" +
                             "                            <span class='paixlie'><b>排序：</b>" +
-                            "                    <input type='text' class='small' name='sort'/>" +
+                            "                    <input type='text' class='small' name='groupSort[]'/>" +
                             "                            </span>" +
                             "                            <span><a style='color: #666;' class='delfenzu' href='javascript:;'>删除分组</a>" +
                             "                            </span>" +
@@ -163,7 +163,7 @@
                             "                            </tr>" +
                             "                            " +
                             "                            <tr class='stylenone' style='display:none;'>" +
-                            "                            <th>设置闪购商品：</th>" +
+                            "                            <th>设置分组商品：</th>" +
                             "                    <td>" +
                             "                    <table class='border_table' style='width:70%'>" +
                             "                            <col width='150px'/>" +
@@ -185,43 +185,28 @@
                             "                            <tr>" +
                             "                            <td colspan='5'>" +
                             "                            <button type='button' class='btn'><span>选择商品</span></button>" +
-                            "                    <label>* 设置要闪购的商品，仅能设置一种商品</label>" +
+                            "                    <label>* 设置分组商品</label>" +
                             "                    </td>" +
                             "                    </tr>" +
                             "                    </tbody>" +
                             "                    </table>" +
                             "                    </td>" +
                             "                    </tr>";
-                    $(".tjsp").click(function () {
-                        $(this).parents(".add_iptr").next(".stylenone").show();
-                    });
-
-                    $(".delfenzu").click(function () {
-                        $(this).parents(".add_iptr").next(".stylenone").remove();
-                        $(this).parents(".add_iptr").remove()
-                    })
                     $("#tianjiafz").click(function () {
                         var jnewdom = $(newdom);
                         var stylenone = $(".stylenone");
                         $(stylenone[stylenone.length - 1]).after(jnewdom)
-
-
-
-                        $(".tjsp").click(function () {
-                            console.log($(this).parents(".add_iptr").next(".stylenone"))
-                            $(this).parents(".add_iptr").next(".stylenone").show();
-                        });
-                        $(".delfenzu").click(function () {
-                            $(this).parents(".add_iptr").next(".stylenone").remove();
-                            $(this).parents(".add_iptr").remove()
-                        })
                     });
+                    $(document).on('click', ".tjsp", function(){
+                        $(this).parents(".add_iptr").next(".stylenone").show();
+                    })
+
+                    $(document).on('click', ".delfenzu", function(){
+                        $(this).parents(".add_iptr").next(".stylenone").remove();
+                        $(this).parents(".add_iptr").remove()
+                    })
                 </script>
                 <tbody class="addlist_div"></tbody>
-
-
-               
-
 
                 <tr>
                     <td></td>
@@ -233,124 +218,6 @@
         </form>
     </div>
 </div>
-
-
-<!--原团购编辑ＪＳ  -->
-<script type='text/javascript'>
-    //输入筛选商品的条件
-    function searchGoodsCallback(goodsList)
-    {
-        goodsList.each(function()
-        {
-            var temp = $.parseJSON($(this).attr('data'));
-            
-            if (!temp.product_id) {
-                temp.product_id = 0;
-                var spec_str = '所有';
-            }else{
-                var spec_str = getSpec(temp.spec_array);
-            }
-            var goods_id = temp.goods_id;
-            var is_presell = 0;
-            $.ajax({
-                type:'post',
-                async:false,
-                data:{'goods_id':goods_id},
-                url:'{url:market/is_presell}',
-                beforeSend:function(){
-                    
-                },
-                success:function(data){
-                    if(data==1){
-                        $('.red').text('该商品已参加预售，不能参加活动');
-                        is_presell = 1;
-                    }
-                },
-                error:function(){
-                    
-                },
-                complete:function(){
-                
-                },
-                timeout:1000,
-                
-            })
-            if(is_presell==1)return false;
-            var content = {
-                "data":
-                {
-                    "goods_id":temp.goods_id,
-                    "product_id":temp.product_id,
-                    "name":temp.name,
-                    "img":temp.img,
-                    "spec":spec_str,
-                    "sell_price":temp.sell_price,
-                    "store_nums":temp.store_nums
-                }
-            };
-            relationCallBack(content);
-        });
-    }
-
-    //关联商品回调处理函数
-    function relationCallBack(content,regimentImg)
-    {
-        if(content)
-        {
-            regimentImg = !regimentImg ? content['data']['img'] : regimentImg;
-
-            var imgUrl = "{webroot:@url@}";
-            imgUrl     = imgUrl.replace("@url@",regimentImg);
-
-            var html = '<input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
-                            '<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/>'+
-                        '<tr><th>商品名称：</th><td>'+content['data']['name']+'</td></tr>'
-                          +'<tr><th>展示图片：</th><td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /><br /><input type="file" class="file" name="img" /></td></tr>'
-                          +'<tr><th>商品规格：</th><td>'+content['data']['spec']+'<label></label></td></tr>'
-                            +'<tr><th>活动价格：</th><td><input type="text" class="small" name="regiment_price" pattern="float" alt="填写数字" />，  目前原价：'+content['data']['sell_price']+'<label>* 设置活动价格</label></td></tr>'
-                             +'<tr><th>活动库存量：</th><td><input type="text" class="small" name="store_nums" pattern="int" alt="填写数字" />，  目前库存：'+content['data']['store_nums']+'<label>* 活动出售的最大数量</label></td></tr>'
-                          +'<tr><th>每人活动最小量：</th><td><input type="text" class="small" name="limit_min_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最小数量，少于这个数量则无法购买，0表示不限制</label></td></tr>'
-                          +'<tr><th>每人活动最大量：</th><td><input type="text" class="small" name="limit_max_count" pattern="int" alt="填写数字" />，<label>限制每个用户购买的最大数量，大于这个数量则无法购买，0表示不限制</label></td></tr>';
-
-            $('#regiment_box').html(html);
-        }
-    }
-
-    //关联商品信息
-    {if:isset($this->regimentRow['goodsRow'])}
-    var goodsRow = {$this->regimentRow['goodsRow']};
-    goodsRow['data']['spec'] = getSpec(goodsRow['data']['spec_array']);
-    goodsRow['data']['spec'] = goodsRow['data']['spec'] ? goodsRow['data']['spec'] : '所有';
-    relationCallBack(goodsRow,"{$this->regimentRow['img']}");
-    {/if}
-
-    //表单回填
-    var formObj = new Form('regiment_edit');
-    formObj.init({echo:JSON::encode($this->regimentRow)});
-    
-    $(function(){
-        $('label[name=spec_diff]').click(function(){
-            var is_spec = $(this).find('input[type=radio]').val();
-            $('button.btn').off('click');
-            if(is_spec==0){
-                $('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/is_products/1/seller_id/0}',searchGoodsCallback);})
-            }else{
-                $('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/seller_id/0}',searchGoodsCallback);})
-            }
-            
-        })
-        {if:isset($this->regimentRow['product_id'])&&$this->regimentRow['product_id']>0}
-            $('label[name=spec_diff]').eq(0).trigger('click');
-        {else:}
-            $('label[name=spec_diff]').eq(1).trigger('click');
-        {/if}
-        
-    })
-</script>
-
-
-
-
 <!--闪购移过来ＪＳ  -->
 <script type='text/javascript'>
     //输入筛选商品的条件
@@ -397,35 +264,9 @@
                         +'<td><input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
                             '<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/><a href="">删除</a> </td>';
 
-            $('#speed_goods').html(html);
+            $('#speed_goods').append(html);
         }
-    }
-
-    //选择参与人群
-    function select_all()
-    {
-        var is_checked = $('[name="group_all"]').attr('checked');
-        if(is_checked ==  true)
-        {
-            var checkedVal  = true;
-            var disabledVal = true;
-        }
-        else
-        {
-            var checkedVal  = false;
-            var disabledVal = false;
-        }
-
-        $('input:checkbox[name="user_group[]"]').each(
-            function(i)
-            {
-                $(this).attr('checked',checkedVal);
-                $(this).attr('disabled',disabledVal);
-            }
-        );
-    }
-
-    
+    }    
     //预定义商品绑定
     {if:isset($this->promotionRow['goodsRow'])}
         var goodsData = {$this->promotionRow['goodsRow']};
@@ -449,21 +290,7 @@
     
     //
     $(function(){
-        $('label[name=spec_diff]').click(function(){
-            var is_spec = $(this).find('input[type=radio]').val();
-            $('button.btn').off('click');
-            if(is_spec==0){
-                $('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/is_products/1/seller_id/0}',searchGoodsCallback);})
-            }else{
-                $('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/type/radio/seller_id/0}',searchGoodsCallback);})
-            }
-            
-        })
-        {if:isset($this->promotionRow['product_id'])&&$this->promotionRow['product_id']>0}
-            $('label[name=spec_diff]').eq(0).trigger('click');
-        {else:}
-            $('label[name=spec_diff]').eq(1).trigger('click');
-        {/if}
+        $('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/seller_id/0}',searchGoodsCallback);})
         
     })
         
