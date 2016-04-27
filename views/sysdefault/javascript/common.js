@@ -245,7 +245,7 @@ function lateCall(t,func)
  * @param url string 执行的URL
  * @param callback function 筛选成功后执行的回调函数
  */
-function searchGoods(url,callback)
+function searchGoods(url,callback,param)
 {
 	var step = 0;
 	art.dialog.open(url,
@@ -286,7 +286,7 @@ function searchGoods(url,callback)
 					return false;
 				}
 				//执行处理回调
-				callback(goodsList);
+				callback(goodsList,param);
 				return true;
 			}
 		}

@@ -125,7 +125,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr id='speed_goods' class='td_c'></tr>
+                            <tr class='speed_goods' class='td_c'></tr>
                             <tr>
                                 <td colspan='5'>
                                     <button type='button' class='btn'><span>选择商品</span></button>
@@ -181,7 +181,7 @@
                             "                            </tr>" +
                             "                            </thead>" +
                             "                            <tbody>" +
-                            "                            <tr id='speed_goods' class='td_c'></tr>" +
+                            "                            <tr class='speed_goods' class='td_c'></tr>" +
                             "                            <tr>" +
                             "                            <td colspan='5'>" +
                             "                            <button type='button' class='btn'><span>选择商品</span></button>" +
@@ -206,7 +206,6 @@
                         $(this).parents(".add_iptr").remove()
                     })
                 </script>
-                <tbody class="addlist_div"></tbody>
 
                 <tr>
                     <td></td>
@@ -221,36 +220,25 @@
 <!--闪购移过来ＪＳ  -->
 <script type='text/javascript'>
     //输入筛选商品的条件
-    function searchGoodsCallback(goodsList)
+    function searchGoodsCallback(goodsList, obj)
     {
         goodsList.each(function()
         {
             var temp = $.parseJSON($(this).attr('data'));
-            
-            if(!temp.product_id){
-                temp.product_id = 0;
-                var spec_str = '所有';
-            }else{
-                var spec_str = getSpec(temp.spec_array);
-            }
-            
             var content = {
                 "data":
                 {
                     "goods_id":temp.goods_id,
-                    "product_id":temp.product_id,
                     "name":temp.name,
                     "img":temp.img,
-                    "spec":spec_str,
-                    "sell_price":temp.sell_price
                 }
             };
-            relationCallBack(content);
+            relationCallBack(content,obj);
         });
     }
 
     //关联商品回调处理函数
-    function relationCallBack(content)
+    function relationCallBack(content, obj)
     {
         if(content)
         {
@@ -259,12 +247,10 @@
 
             var html =   '<td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /></td>'
                         +'<td>'+content['data']['name']+'</td>'
-                        +'<td>'+content['data']['spec']+'</td>'
-                        +'<td>'+content['data']['sell_price']+'</td>'
                         +'<td><input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
-                            '<input type="hidden" name="product_id" value="'+content['data']['product_id']+'"/><a href="">删除</a> </td>';
+                            '<a href="">删除</a> </td>';
 
-            $('#speed_goods').append(html);
+            $(obj).closest('tr').siblings('tr.speed_goods').append(html);
         }
     }    
     //预定义商品绑定
@@ -290,11 +276,7 @@
     
     //
     $(function(){
-        $('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/seller_id/0}',searchGoodsCallback);})
+        $(document).on('click','button.btn',function(){searchGoods('{url:/block/search_goods/seller_id/0}',searchGoodsCallback, this);})
         
     })
-        
-                
-    
-    
 </script>
