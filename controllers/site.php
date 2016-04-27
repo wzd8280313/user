@@ -1185,8 +1185,8 @@ class Site extends IController
 	}
 
 
-	function ce(){
-
+	function ce(){     
+		print_r($_SESSION);    
 	}
 	
 }
