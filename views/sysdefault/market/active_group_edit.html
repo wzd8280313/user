@@ -1,0 +1,171 @@
+{js:artTemplate}
+<script type="text/javascript" src="{theme:javascript/event.js}"></script>
+<script type="text/javascript" src="{theme:javascript/jquery-1.7.2.js}"></script>
+
+<div class="headbar">
+    <div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>{if:isset($id)}编辑{else:}添加{/if}活动分组</span>
+    </div>
+</div>
+<div class="content_box">
+    <div class="content form_content">
+        <form action="{url:/market/active_group_edit_act}" method="post" name='active_group_edit' enctype='multipart/form-data'>
+            <input type='hidden' name='id' value='{$id}'/>
+            <input type='hidden' name='active_id' value='{$active_id}'/>
+            <table class="form_table">
+                <col width="150px"/>
+                <col/>
+                <tr>
+                    <th>分组名称：</th>
+                    <td><input type='text' class='normal' name='group_name' pattern='required' alt='请填写分组名称' value="{$group_name}"/><label>*
+                        填写分组名称</label></td>
+                </tr>
+                <tr>
+                    <th>设置分组图片：</th>
+                    <td>
+                        <div class="total_wid">
+                            <div id="preview">
+                            {if:isset($image) && $image}
+                            <img src="{webroot:$image}" style="height: 100px;">
+                            {/if}
+                            </div>
+                            <input type="file" name="image"/>
+
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>选择分组商品：</th>
+                    <td>
+                        <table class='border_table' style='width:70%'>
+                            <col width="150px" />
+                            <col />
+                            <col width="100px" />
+                            <thead>
+                                <tr>
+                                    <th>图片</th>
+                                    <th>名称</th>
+                                    <th>排序</th>
+                                    <th>商品状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {if:$this->goodsList}
+                                {foreach:items=$this->goodsList}
+                                    <tr>
+                                    <td><img src="{webroot:$item['img']}" title="{$item['name']}" style="max-width:140px;" /></td>
+                                    <td>{$item['name']}</td>
+                                    <td><input type="text" name="goodsSort[]" value="{$item['sort']}" /></td>
+                                    <td>{if:$item['is_del'] == 0}上架{elseif:$item['is_del'] == 2}下架{elseif:$item['is_del'] == 3}待审{else:}预售{/if}</td>
+                                    <td><input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/>
+                                    <a href="javasctipt:;" onclick="_removeGoods(this)">删除</a> </td>
+                                    </tr>
+                                {/foreach}
+                                {/if}
+                                <tr id="speed_goods">
+                                    <td colspan='5'>
+                                        <button type='button' class='btn'><span>选择商品</span></button>
+                                        <label>* 设置分组商品</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>排序：</th>
+                    <td>
+                        <input type='text' class='small' name='sort' value="{$sort}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button class="submit" type='submit'><span>确 定</span></button>
+                        <span class='red'></span></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script type='text/javascript'>
+    //输入筛选商品的条件
+    function searchGoodsCallback(goodsList)
+    {
+        goodsList.each(function()
+        {
+            var temp = $.parseJSON($(this).attr('data'));
+            var content = {
+                "data":
+                {
+                    "goods_id":temp.goods_id,
+                    "name":temp.name,
+                    "img":temp.img,
+                    "is_del":(temp.is_del == 0) ? '上架' : ((temp.is_del == 2) ? '下架' : ((temp.is_del == 3) ? '待审': '预售')),
+                }
+            };
+            relationCallBack(content);
+        });
+    }
+
+    //关联商品回调处理函数
+    function relationCallBack(content)
+    {
+        if(content)
+        {
+            var ids = [];
+            $("input[name^=goods_id]").each(function(){
+                ids.push($(this).val());
+            })
+            if($.inArray(content['data']['goods_id'],ids) == -1)
+            {
+                var imgUrl = "{webroot:@url@}";
+                imgUrl     = imgUrl.replace("@url@",content['data']['img']);
+
+                var html =   '<tr><td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /></td>'
+                            +'<td>'+content['data']['name']+'</td>'
+                            +'<td><input type="text" name="goodsSort[]" /></td>'
+                            +'<td>'+content['data']['is_del']+'</td>'
+                            +'<td><input type="hidden" name="goods_id[]" value="'+content['data']['goods_id']+'"/>'+
+                                '<a href="javasctipt:;" onclick="_removeGoods(this)">删除</a> </td></tr>';
+            }
+            else
+            {
+                alert('商品不能重复添加');
+            }
+
+            $("#speed_goods").before(html);
+        }
+    }
+    
+    //预定义商品绑定
+    {if:isset($this->promotionRow['goodsRow'])}
+        var goodsData = {$this->promotionRow['goodsRow']};
+        goodsData['data']['spec'] = getSpec(goodsData['data']['spec_array']);
+        relationCallBack(goodsData);
+        //表单回填
+        var formObj = new Form('pro_edit');
+        formObj.init
+        ({
+            'id':'{$this->promotionRow['id']}',
+            'name':'{$this->promotionRow['name']}',
+            'start_time':'{$this->promotionRow['start_time']}',
+            'end_time':'{$this->promotionRow['end_time']}',
+            'group_all':"{$this->promotionRow['user_group']}",
+            'is_close':'{$this->promotionRow['is_close']}',
+            'condition':'{$this->promotionRow['condition']}',
+            'award_value':'{$this->promotionRow['award_value']}'
+        });
+        
+    {/if}
+    
+    //
+    $(function(){
+        $('button.btn').on('click',function(){searchGoods('{url:/block/search_goods/seller_id/0}',searchGoodsCallback);})
+    })
+    function _removeGoods(obj)
+    {
+        $(obj).closest('tr').remove();
+    }
+</script>

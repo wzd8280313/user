@@ -1,37 +1,37 @@
-
-{js:my97date}
+{js:artTemplate}
 <script type="text/javascript" src="{theme:javascript/event.js}"></script>
 <script type="text/javascript" src="{theme:javascript/jquery-1.7.2.js}"></script>
 
 <div class="headbar">
-    <div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>{if:isset($this->regimentRow['id'])}编辑{else:}添加{/if}活动</span>
+    <div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>{if:isset($id)}编辑{else:}添加{/if}活动</span>
     </div>
 </div>
 <div class="content_box">
     <div class="content form_content">
-        <form action="{url:/active/_edit_act}" method="post" name='regiment_edit' enctype='multipart/form-data'>
-            <input type='hidden' name='id' value=''/>
+        <form action="{url:/market/active_edit_act}" method="post" name='active_edit' enctype='multipart/form-data'>
+            <input type='hidden' name='id' value='{$id}'/>
             <table class="form_table">
                 <col width="150px"/>
                 <col/>
                 <tr>
                     <th>活动标题：</th>
-                    <td><input type='text' class='normal' name='name' pattern='required' alt='请填写活动名称'/><label>*
+                    <td><input type='text' class='normal' name='name' pattern='required' alt='请填写活动名称' value="{$name}"/><label>*
                         填写活动名称</label></td>
                 </tr>
                 <tr>
                     <th>活动类型</th>
                     <td>
-                        <label class='attr'><input type="radio" name="type" value="1"/>活动一</label>
-                        <label class='attr'><input type="radio" name="type" value="2"/>有奖活动</label>
-                        <label class='attr'><input type="radio" name="type" value="3"/>抽奖活动</label>
+                        <label class='attr'><input type="radio" name="type" value="1" {if:isset($type) && $type == 1} checked="checked" {/if}/>活动一</label>
+                        <label class='attr'><input type="radio" name="type" value="2" {if:isset($type) && $type == 2} checked="checked" {/if}/>活动二</label>
+                        <label class='attr'><input type="radio" name="type" value="3" {if:isset($type) && $type == 3} checked="checked" {/if}/>活动三</label>
+                        <label class='attr'><input type="radio" name="type" value="4" {if:isset($type) && $type == 4} checked="checked" {/if}/>活动四</label>
                     </td>
                 </tr>
                 <tr>
                     <th>状态：</th>
                     <td>
-                        <label class='attr'><input type='radio' name='status' value='1' checked=checked/>开启</label>
-                        <label class='attr'><input type='radio' name='status' value='2'/>关闭</label>
+                        <label class='attr'><input type='radio' name='status' value='1'  {if:isset($status) && $status == 1} checked="checked" {/if}/>开启</label>
+                        <label class='attr'><input type='radio' name='status' value='2' {if:isset($status) && $status == 2} checked="checked" {/if}/>关闭</label>
                     </td>
                 </tr>
 
@@ -42,9 +42,11 @@
                     <td>
                         <div class="total_wid">
                             <div id="preview">
-
+                            {if:isset($backimage) && $backimage}
+                            <img src="{webroot:$backimage}" style="height: 100px;">
+                            {/if}
                             </div>
-                            <input type="file" name="backimage" onchange="previewImage(this)"/>
+                            <input type="file" name="backimage"/>
 
                         </div>
 
@@ -56,9 +58,11 @@
                     <td>
                         <div class="total_wid_">
                             <div id="preview_">
-
+                            {if:isset($topimage) && $topimage}
+                            <img src="{webroot:$topimage}" style="height: 100px;">
+                            {/if}
                             </div>
-                            <input type="file" name="topimage" onchange="previewImg(this)"/>
+                            <input type="file" name="topimage"/>
 
                         </div>
 
@@ -69,144 +73,9 @@
                 <tr>
                     <th>排序：</th>
                     <td>
-                        <input type='text' class='small' name='sort'/>
+                        <input type='text' class='small' name='sort' value="{$sort}"/>
                     </td>
                 </tr>
-                <!-- 添加分组 -->
-
-                <tr>
-                    <td></td>
-                    <td>
-                        <div class="js_show" id="tianjiafz">添加分组<span>+</span></div>
-                </tr>
-                <tr class="stylenone"></tr>
-                <tr class='add_iptr'></td>
-                    <td></td>
-                    <td>
-                        <div class='total_inpt' style='margin-top: 10px;'>
-                    <span><b>分组名称：</b>
-                    <input type='text' class='normal' name='group[]' pattern='required' alt='请填写活动分组名称'/><label>*
-                            填写分组名称</label></span>
-                 <span class='mupohot'><b>设置图片：</b>
-                        <div class='total_wids'>
-                            <div id='previews'>
-                            </div>
-                            <input type='file' name="groupImage[]" onchange='previewImages(this)'/>
-                        </div>
-                   </span>
-                  <span class='paixlie'><b>排序：</b>
-                        <input type='text' class='small' name='groupSort[]'/>
-                   </span>
-                   <span><a style='color: #666;' class='delfenzu' href='javascript:;'>删除分组</a>
-                   </span>
-                  <span>
-                  <button type='button' class='bdtonne tjsp' onclick=''>添加商品</button>
-                    </span>
-                        </div>
-                </tr>
-
-
-                <tr class='stylenone' style='display:none;'>
-                    <th>设置分组商品：</th>
-                    <td>
-                        <table class='border_table' style='width:70%'>
-                            <col width='150px'/>
-                            <col width='250px'/>
-                            <col width='100px'/>
-                            <col width='100px'/>
-                            <col/>
-                            <thead>
-                            <tr>
-                                <th>图片</th>
-                                <th>名称</th>
-                                <th>价格</th>
-                                <th>序号</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr class='speed_goods' class='td_c'></tr>
-                            <tr>
-                                <td colspan='5'>
-                                    <button type='button' class='btn'><span>选择商品</span></button>
-                                    <label>* 设置分组商品</label>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <script>
-                    var newdom = "<tr class='add_iptr' ></td>" +
-                            "                    <td></td>" +
-                            "                            <td>" +
-                            "                            <div class='total_inpt' style='margin-top: 10px;'>" +
-                            "                            <span><b>分组名称：</b>" +
-                            "                    <input type='text' class='normal' name='group[]' pattern='required' alt='请填写活动分组名称'/><label>*" +
-                            "                            填写分组名称</label></span>" +
-                            "                    <span class='mupohot'><b>设置图片：</b>" +
-                            "                    <div class='total_wids'>" +
-                            "                            <div id='previews'>" +
-                            "                            </div>" +
-                            "                            <input type='file' name='groupImage[]' onchange='previewImages(this)'/>" +
-                            "                            </div>" +
-                            "                            </span>" +
-                            "                            <span class='paixlie'><b>排序：</b>" +
-                            "                    <input type='text' class='small' name='groupSort[]'/>" +
-                            "                            </span>" +
-                            "                            <span><a style='color: #666;' class='delfenzu' href='javascript:;'>删除分组</a>" +
-                            "                            </span>" +
-                            "                            <span>" +
-                            "                            <button type='button' class='bdtonne tjsp' onclick=''>添加商品</button>" +
-                            "                            </span>" +
-                            "                            </div>" +
-                            "                            </tr>" +
-                            "                            " +
-                            "                            <tr class='stylenone' style='display:none;'>" +
-                            "                            <th>设置分组商品：</th>" +
-                            "                    <td>" +
-                            "                    <table class='border_table' style='width:70%'>" +
-                            "                            <col width='150px'/>" +
-                            "                            <col width='250px'/>" +
-                            "                            <col width='100px'/>" +
-                            "                            <col width='100px'/>" +
-                            "                            <col/>" +
-                            "                            <thead>" +
-                            "                            <tr>" +
-                            "                            <th>图片</th>" +
-                            "                            <th>名称</th>" +
-                            "                            <th>价格</th>" +
-                            "                            <th>序号</th>" +
-                            "                            <th>操作</th>" +
-                            "                            </tr>" +
-                            "                            </thead>" +
-                            "                            <tbody>" +
-                            "                            <tr class='speed_goods' class='td_c'></tr>" +
-                            "                            <tr>" +
-                            "                            <td colspan='5'>" +
-                            "                            <button type='button' class='btn'><span>选择商品</span></button>" +
-                            "                    <label>* 设置分组商品</label>" +
-                            "                    </td>" +
-                            "                    </tr>" +
-                            "                    </tbody>" +
-                            "                    </table>" +
-                            "                    </td>" +
-                            "                    </tr>";
-                    $("#tianjiafz").click(function () {
-                        var jnewdom = $(newdom);
-                        var stylenone = $(".stylenone");
-                        $(stylenone[stylenone.length - 1]).after(jnewdom)
-                    });
-                    $(document).on('click', ".tjsp", function(){
-                        $(this).parents(".add_iptr").next(".stylenone").show();
-                    })
-
-                    $(document).on('click', ".delfenzu", function(){
-                        $(this).parents(".add_iptr").next(".stylenone").remove();
-                        $(this).parents(".add_iptr").remove()
-                    })
-                </script>
-
                 <tr>
                     <td></td>
                     <td>
@@ -217,66 +86,3 @@
         </form>
     </div>
 </div>
-<!--闪购移过来ＪＳ  -->
-<script type='text/javascript'>
-    //输入筛选商品的条件
-    function searchGoodsCallback(goodsList, obj)
-    {
-        goodsList.each(function()
-        {
-            var temp = $.parseJSON($(this).attr('data'));
-            var content = {
-                "data":
-                {
-                    "goods_id":temp.goods_id,
-                    "name":temp.name,
-                    "img":temp.img,
-                }
-            };
-            relationCallBack(content,obj);
-        });
-    }
-
-    //关联商品回调处理函数
-    function relationCallBack(content, obj)
-    {
-        if(content)
-        {
-            var imgUrl = "{webroot:@url@}";
-            imgUrl     = imgUrl.replace("@url@",content['data']['img']);
-
-            var html =   '<td><img src="'+imgUrl+'" title="'+content['data']['name']+'" style="max-width:140px;" /></td>'
-                        +'<td>'+content['data']['name']+'</td>'
-                        +'<td><input type="hidden" name="goods_id" value="'+content['data']['goods_id']+'"/>'+
-                            '<a href="">删除</a> </td>';
-
-            $(obj).closest('tr').siblings('tr.speed_goods').append(html);
-        }
-    }    
-    //预定义商品绑定
-    {if:isset($this->promotionRow['goodsRow'])}
-        var goodsData = {$this->promotionRow['goodsRow']};
-        goodsData['data']['spec'] = getSpec(goodsData['data']['spec_array']);
-        relationCallBack(goodsData);
-        //表单回填
-        var formObj = new Form('pro_edit');
-        formObj.init
-        ({
-            'id':'{$this->promotionRow['id']}',
-            'name':'{$this->promotionRow['name']}',
-            'start_time':'{$this->promotionRow['start_time']}',
-            'end_time':'{$this->promotionRow['end_time']}',
-            'group_all':"{$this->promotionRow['user_group']}",
-            'is_close':'{$this->promotionRow['is_close']}',
-            'condition':'{$this->promotionRow['condition']}',
-            'award_value':'{$this->promotionRow['award_value']}'
-        });
-        
-    {/if}
-    
-    //
-    $(function(){
-        $(document).on('click','button.btn',function(){searchGoods('{url:/block/search_goods/seller_id/0}',searchGoodsCallback, this);})
-        
-    })
-</script>

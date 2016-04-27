@@ -1216,6 +1216,134 @@ class Market extends IController
 	//编辑活动列表页
 	public function active_edit()
 	{
+        $id = IReq::get('id');
+        if($id)
+        {   
+            $active = new IModel('active');
+            $detail = $active->getObj('id='.$id);
+            $this->setRenderData($detail);
+        }
 		$this->redirect('active_edit');
 	}
+    
+    public function active_edit_act()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');                  
+        $name = IFilter::act(IReq::get('name'), 'string');
+        $type = IReq::get('type');
+        $status = IFilter::act(IReq::get('status','post'));
+        $sort = IFilter::act(IReq::get('sort','post'));
+        
+        $dataArray = array(
+            'name'          => $name,
+            'type'          => $type,
+            'sort'          => $sort,
+            'status'        => $status,        
+            'time'          => ITime::getNow('Y-m-d H:i:s')
+        );
+        //处理上传图片
+        if(isset($_FILES['backimage']['name']) && $_FILES['backimage']['name'] != '')
+        {
+            $uploadObj = new PhotoUpload();
+            $photoInfo = $uploadObj->run();
+            $dataArray['backimage'] = $photoInfo['backimage']['img'];
+        }
+        if(isset($_FILES['topimage']['name']) && $_FILES['topimage']['name'] != '')
+        {
+            $uploadObj = new PhotoUpload();
+            $photoInfo = $uploadObj->run();
+            $dataArray['topimage'] = $photoInfo['topimage']['img'];
+        }
+        $active = new IModel('active');
+        $active->setData($dataArray);
+
+        if($id)
+        {
+            $where = 'id = '.$id;
+            $active->update($where);
+        }
+        else
+        {
+            $active->add();
+        }
+        $this->redirect('active_list');
+    }  
+    
+    function active_group_edit()
+    {
+        $id = IReq::get('id');
+        $active_id = IReq::get('active_id');
+        $detail = array();
+        $goodsList = array();
+        if($id)
+        {
+             $activeGroup = new IModel('active_group');
+             $detail = $activeGroup->getObj('id='.$id);
+            //分组商品
+            $goods = new IQuery('group_goods as gg');
+            $goods->join = "left join goods as g on gg.goods_id = g.id";
+            $goods->where = "gg.group_id = ".$id;
+            $goods->fields = "gg.*,g.id,g.name,g.img,g.is_del";
+            $goodsList = $goods->find(); 
+        }
+        if($active_id)
+        {
+            $detail['active_id'] = $active_id;
+        }                          
+        $this->goodsList = $goodsList;                   
+        $this->setRenderData($detail);
+        $this->redirect('active_group_edit');
+    }
+    
+    function active_group_edit_act()
+    {
+        $id = IReq::get('id');
+        $active_id = IReq::get('active_id');
+        $group_name = IReq::get('group_name');
+        $sort = IReq::get('sort');
+        $goods_id = IReq::get('goods_id');
+        if(empty($goods_id))
+        {
+            Util::showMessage('请选择商品');
+        }
+        $dataArray = array(
+                         'active_id' => $active_id,
+                         'group_name' => $group_name,
+                         'sort' => $sort,
+                        );
+        //处理上传图片
+        if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != '')
+        {
+            $uploadObj = new PhotoUpload();
+            $photoInfo = $uploadObj->run();
+            $dataArray['image'] = $photoInfo['image']['img'];
+        }
+        $active_group = new IModel('active_group');
+        $active_group->setData($dataArray);
+        if($id)
+        {
+           $active_group->update('id='.$id);
+            $group_id = $id;
+        }
+        else
+        {
+            $group_id = $active_group->add();  
+        }   
+         //清理之前的商品关联
+         $goodsSort = IReq::get('goodsSort');
+         $goods = new IModel('group_goods');
+         $goods->del('group_id='.$group_id);
+         $data = array();
+         foreach($goods_id as $k => $v)
+         {
+              $data = array(
+                        'group_id' => $group_id,
+                        'goods_id' => $v,
+                        'sort'     => $goodsSort[$k]
+                        );
+              $goods->setData($data);
+              $goods->add();
+         } 
+         $this->redirect('active_group/id/'.$active_id); 
+    }
 }

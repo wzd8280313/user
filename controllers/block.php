@@ -80,7 +80,7 @@ class Block extends IController
 		}
 		$tb_goods = new IQuery($table_name);
 		$tb_goods->where = $where;
-		$tb_goods->fields     = 'go.id as goods_id,go.name,go.img,go.store_nums,go.goods_no,go.sell_price,go.spec_array';
+		$tb_goods->fields     = 'go.id as goods_id,go.name,go.img,go.store_nums,go.goods_no,go.sell_price,go.spec_array,go.is_del';
 		$tb_goods->page = $page;
 		$tb_goods->pagesize = $show_num;
 		$tb_goods->order    = "go.sort asc,go.id desc";
