@@ -70,7 +70,7 @@ $search = IFilter::act(IReq::get('search'),'strict');
 				{query:name=active order=sort asc,id desc page=$page where=$where}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
-					<td><a href='{url:/site/tuan_product/active/$item[id]}' target='_blank' class="orange" title="{$item['name']}">{$item['name']}</a></td>
+					<td><a href='{url:/site/active/id/$item[id]}' target='_blank' class="orange" title="{$item['name']}">{$item['name']}</a></td>
 					<td>{if:$item['type']==1}活动一{elseif:$item['type']==2}活动二{elseif:$item['type']==3}活动三{else:}活动四{/if}</td>
 					<td>{$item['sort']}</td>
 					<td>{echo:($item['status']==1) ? '开启':'关闭'}</td>

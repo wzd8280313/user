@@ -1783,4 +1783,43 @@ class Site extends IController
     {
         $this->redirect('match_sale');
     }
+    
+    //活动页面
+    function active()
+    {
+        $id = IFilter::act(IReq::get('id'), 'int');
+        $active = new IModel('active');
+        $detail = $active->getObj('id='.$id);
+        $group = new IModel('active_group');
+        $groupDetail = $group->query('active_id='.$id,'*','sort', 'asc');
+        $this->group = $groupDetail;
+        $goods = new IQuery('group_goods as gg');
+        $goods->join = "left join goods as g on gg.goods_id = g.id";
+        $goods->fields = "gg.*,g.name,g.img,g.sell_price,g.market_price,g.short_desc,g.brand_id";
+        $goods->order = 'gg.sort asc';       
+        foreach($groupDetail as $k => $v)
+        {  
+            $goods->where = "(g.is_del = 0 or g.is_del = 4) and ((type = 1 and past_time > now()) or type <> 1) and gg.group_id =".$v['id'];
+            $groupDetail[$k]['goodsList'] = $goods->find();
+        }
+        $this->detail = $detail;
+        $this->groupDetail = $groupDetail;
+        if($detail['type'] == 1)
+        {
+            $this->redirect('active1');
+        }
+        elseif($detail['type'] == 2)
+        {
+            $this->redirect('active2');
+        }
+        elseif($detail['type'] == 3)
+        {
+            $this->redirect('active3');
+        }
+        else
+        {
+            $this->redirect('active4');
+        }
+        //var_dump($groupDetail);
+    }
 }

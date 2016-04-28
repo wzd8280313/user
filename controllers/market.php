@@ -1283,7 +1283,7 @@ class Market extends IController
             $goods = new IQuery('group_goods as gg');
             $goods->join = "left join goods as g on gg.goods_id = g.id";
             $goods->where = "gg.group_id = ".$id;
-            $goods->fields = "gg.*,g.id,g.name,g.img,g.is_del";
+            $goods->fields = "gg.*,g.name,g.img,g.is_del";
             $goodsList = $goods->find(); 
         }
         if($active_id)
