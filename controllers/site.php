@@ -1185,8 +1185,5 @@ class Site extends IController
 	}
 
 
-	function ce(){
-
-	}
 	
 }
