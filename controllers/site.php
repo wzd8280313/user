@@ -1790,6 +1790,13 @@ class Site extends IController
         $id = IFilter::act(IReq::get('id'), 'int');
         $active = new IModel('active');
         $detail = $active->getObj('id='.$id);
+        $para = JSON::decode($detail['extendpara']);
+        $detail['top'] = isset($para['top']) ? $para['top'] : '';
+        $detail['main'] = isset($para['main']) ? $para['main'] : '';
+        $detail['float'] = isset($para['float']) ? $para['float'] : '';
+        $detail['floatimage'] = isset($para['floatimage']) ? $para['floatimage'] : '';
+        $detail['link'] = isset($para['link']) ? $para['link'] : '';
+        $detail['topImage'] = isset($para['topImage']) ? $para['topImage'] : '';
         $group = new IModel('active_group');
         $groupDetail = $group->query('active_id='.$id,'*','sort', 'asc');
         $this->group = $groupDetail;
@@ -1799,26 +1806,28 @@ class Site extends IController
         $goods->order = 'gg.sort asc';       
         foreach($groupDetail as $k => $v)
         {  
-            $goods->where = "(g.is_del = 0 or g.is_del = 4) and ((type = 1 and past_time > now()) or type <> 1) and gg.group_id =".$v['id'];
+            $goods->where = "(g.is_del = 0 or g.is_del = 4) and (((type = 1 and past_time > now()) or (type = 1 and past_time = '0000-00-00')) or type <> 1) and gg.group_id =".$v['id'];
             $groupDetail[$k]['goodsList'] = $goods->find();
         }
-        $this->detail = $detail;
+        $this->setRenderData($detail);
         $this->groupDetail = $groupDetail;
         if($detail['type'] == 1)
         {
-            $this->redirect('active1');
+            $this->redirect('active1', false);
         }
         elseif($detail['type'] == 2)
         {
-            $this->redirect('active2');
+            $this->redirect('active2', false);
         }
         elseif($detail['type'] == 3)
         {
-            $this->redirect('active3');
+            $this->redirect('active3', false);
         }
         else
         {
-            $this->redirect('active4');
+            $activeList = $active->query('id != '.$id, '*', 'rand()', 'desc', 2);
+            $this->activeList = $activeList;
+            $this->redirect('active4', false);
         }
         //var_dump($groupDetail);
     }

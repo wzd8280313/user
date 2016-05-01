@@ -1,466 +1,84 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>活动页面一</title>
-<link rel="stylesheet" type="text/css" href="css/activate_page.css">
-<script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/active_menu.js"></script>
-</head>
-
-<body>
+{set:
+    $seo_data=array();
+    $site_config=new Config('site_config');
+    $seo_data['title']=$name."_".$site_config->name;
+    $seo_data['keywords']=$name;
+    $seo_data['description']=$description;
+    seo::set($seo_data);
+    
+}
+<link rel="stylesheet" href="{skin:css/activate_page.css}">
+<script type='text/javascript' src="{theme:javascript/sales_js/jquery-1.11.1.min.js}" ></script> 
+<script type='text/javascript' src="{theme:javascript/active_menu.js}" ></script>            
 <div class="focus_banner">
 
-<a class="none_active" name="comtop" href="#">#</a>
+<a class="none_active" name="comtop" href="#"></a>
 <div class="focus_box">
-	<div class="focus_word">
-	  <p>OUTDOOR AUTUMN & WINTER</p>
-	  <h1>户外新春<i>×</i>爆款惠顾</h1>
-	  <hr><span> 低至<b>29</b>元  </span><hr class="word_right">
-	  <a href="#"> <img src="images/focus_dian.png" width="135" height="135" alt="点击购买"></a>
-	  </div>
+    <div>
+       <img src="{webroot:$topImage}" alt="{$name}">
+      </div>
 </div>
 
 <!--floor滚动开始-->
 <div id="active">
-	<ul class="daoha">
+    <ul class="daoha" style="border: 3px solid {$main};background-color: {$main};color: #fff;">
         <li class="hce_top act">
-        <img src="images/erm.jpg" width="104" height="103" alt="二维码"><p class="ce_word">爆款汇</p></li> 
-		<li><a class="act_ce" href="#item1" class="cur">热卖单品</a></li>
-		<li><a class="act_ce" href="#item2">御寒外套</a></li>
-		<li><a class="act_ce" href="#item3">温暖上装</a></li>
-		<li><a class="act_ce" href="#item4">女神裙装</a></li>
-		<li><a class="act_ce" href="#item5">白搭裤装</a></li>
-        <a href="#comtop"><li class="hce_botom">返回顶部</li></a>
-	</ul>
+        <img src="{webroot:$floatimage}" alt=""></li>
+        {set:$k=0} 
+        {foreach:items=$this->group}
+        {set:$k++} 
+            <li><a href="#item{$k}" {if:$key==0} class="act_ce cur" {else:} class="act_ce" {/if}>{$item['group_name']}</a></li> 
+        {/foreach} 
+        <a href="#comtop"><li class="hce_botom" style="background: #ccc;">返回顶部</li></a>
+    </ul>
 </div>
 
-<div id="content">
-	<div class="item" >
-		<!--图片列表开始-->
-	<div class="active_list">
-		<div class="list_total">
-			<div class="page_left">
-				<a href="#">
-					<img src="images/ad_l.jpg" width="192" height="485" alt="广告图">
-				</a>
-			</div>
+<div id="content" style="background-color: {$float}">
+{foreach:items=$this->groupDetail}
+    <div class="item" >
+        <!--图片列表开始-->
+    <div class="active_list">
+        <div class="list_total">
+            <div class="page_left">
+                <a href="{$item['link_url']}" target="_blank">
+                    <img src="{webroot:$item['image']}" width="192" height="485" alt="{$item['group_name']}">
+                </a>
+            </div>
 
-		<div class="page_right">
-		<ul>
-		   <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	     
-		    <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-		  	<li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	     
-		    <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-		  	<li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	     
-		    <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	    </ul>
-	  </div>
+        <div class="page_right">
+        <ul>
+        {foreach:items=$item['goodsList'] item=$goods}
+           <li>
+             <div class="list_poto">
+                  <a href="{url:/site/products/id/$goods['goods_id']}"  target="_blank"> 
+                      <img src="{webroot:$goods['img']}" width="220" height="220" alt="{$goods['name']}"/>
+                  </a>
+            </div>
+             <div class="jgoodsinfo">
+                <div class="jdesc" title="{$goods['name']}" >
+                    <a target="_blank" href="{url:/site/products/id/$goods['goods_id']}">{$goods['name']}</a>
+                </div>
+                <div class="jprice">
+                    <div class="jdprice">
+                        <span class="jtext">促销价：</span>
+                        <span class="jrmb">￥</span>
+                        <span class="jdnum">{$goods['sell_price']}</span>
+                    </div>
+                                
+                </div>
+                <div class="jbtnarea">
+                    <a href="{url:/site/products/id/$goods['goods_id']}" target="_blank">点击抢购<span>></span></a>
+                </div>
+            </div>
+              </li>
+        {/foreach}
+        </ul>
+      </div>
  </div>
  </div>
 
 <!--列表结束-->       
-	</div>
-	<div class="item">
-		<!--图片列表开始-->
-	<div class="active_list">
-		<div class="list_total">
-			<div class="page_left">
-				<a href="#">
-					<img src="images/ad_l.jpg" width="192" height="485" alt="广告图">
-				</a>
-			</div>
-
-		<div class="page_right">
-		<ul>
-		   <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	     
-		    <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	    </ul>
-	  </div>
-	 </div>
-	</div>  
+    </div>
+{/foreach}
 </div>
-<div class="item" >
-		<!--图片列表开始-->
-	<div class="active_list">
-		<div class="list_total">
-			<div class="page_left">
-				<a href="#">
-					<img src="images/ad_l.jpg" width="192" height="485" alt="广告图">
-				</a>
-			</div>
-
-		<div class="page_right">
-		<ul>
-		   <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	     
-		    <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	    </ul>
-	  </div>
-	 </div>
-	</div>   
-</div>
-
-<!--列表结束--> 
-<div class="item" >
-		<!--图片列表开始-->
-	<div class="active_list">
-		<div class="list_total">
-			<div class="page_left">
-				<a href="#">
-					<img src="images/ad_l.jpg" width="192" height="485" alt="广告图">
-				</a>
-			</div>
-
-		<div class="page_right">
-		<ul>
-		   <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	     
-		    <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	    </ul>
-	  </div>
-	 </div>
-	</div>   
-</div>
-
-<div class="item" >
-		<!--图片列表开始-->
-	<div class="active_list">
-		<div class="list_total">
-			<div class="page_left">
-				<a href="#">
-					<img src="images/ad_l.jpg" width="192" height="485" alt="广告图">
-				</a>
-			</div>
-
-		<div class="page_right">
-		<ul>
-		   <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	     
-		    <li>
-		 	<div class="list_poto">
-		  		<a href="#"> 
-		  			<img src="images/poto_list.jpg" width="220" height="220" alt="上衣"/>
-		  		</a>
-		    </div>
-		 	<div class="jgoodsinfo">
-				<div class="jdesc" title="骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL" >
-					<a target="_blank" href="#">骆驼(CAMEL)户外冲锋衣男 防风防水三合一冲锋衣抓绒保暖两件套 军绿/深灰A4W270109 XL</a>
-				</div>
-				<div class="jprice">
-					<div class="jdprice">
-						<span class="jtext">促销价：</span>
-						<span class="jrmb">￥</span>
-						<span class="jdnum">528.00</span>
-					</div>
-								
-				</div>
-				<div class="jbtnarea">
-					<a href="#" target="_blank">点击抢购<span>></span></a>
-				</div>
-			</div>
-		  	</li>
-	    </ul>
-	  </div>
-	 </div>
-	</div>   
-</div>
-
-
-
-
-
-</div>
-<!--floor滚动结束-->
-</body>
-</html>
+<!--floor滚动结束-->       

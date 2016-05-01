@@ -1221,6 +1221,13 @@ class Market extends IController
         {   
             $active = new IModel('active');
             $detail = $active->getObj('id='.$id);
+            $para = JSON::decode($detail['extendpara']);
+            $detail['top'] = isset($para['top']) ? $para['top'] : '';
+            $detail['main'] = isset($para['main']) ? $para['main'] : '';
+            $detail['float'] = isset($para['float']) ? $para['float'] : '';
+            $detail['floatimage'] = isset($para['floatimage']) ? $para['floatimage'] : '';
+            $detail['link'] = isset($para['link']) ? $para['link'] : '';
+            $detail['topImage'] = isset($para['topImage']) ? $para['topImage'] : '';   
             $this->setRenderData($detail);
         }
 		$this->redirect('active_edit');
@@ -1232,28 +1239,54 @@ class Market extends IController
         $name = IFilter::act(IReq::get('name'), 'string');
         $type = IReq::get('type');
         $status = IFilter::act(IReq::get('status','post'));
+        $link = IFilter::act(IReq::get('link','post'));
+        $desc = IFilter::act(IReq::get('desc','post'));
+        $top = IFilter::act(IReq::get('top','post'));
+        $main = IFilter::act(IReq::get('main','post'));
+        $float = IFilter::act(IReq::get('float','post'));
         $sort = IFilter::act(IReq::get('sort','post'));
+        $description = IFilter::act(IReq::get('description','post'));
         
         $dataArray = array(
             'name'          => $name,
             'type'          => $type,
             'sort'          => $sort,
-            'status'        => $status,        
+            'status'        => $status,          
+            'description'   => $description,          
             'time'          => ITime::getNow('Y-m-d H:i:s')
         );
         //处理上传图片
-        if(isset($_FILES['backimage']['name']) && $_FILES['backimage']['name'] != '')
+        if(isset($_FILES['seoimage']['name']) && $_FILES['seoimage']['name'] != '')
         {
             $uploadObj = new PhotoUpload();
             $photoInfo = $uploadObj->run();
-            $dataArray['backimage'] = $photoInfo['backimage']['img'];
-        }
-        if(isset($_FILES['topimage']['name']) && $_FILES['topimage']['name'] != '')
+            $dataArray['seoimage'] = $photoInfo['seoimage']['img'];
+        } 
+        if(isset($_FILES['topImage']['name']) && $_FILES['topImage']['name'] != '')
         {
             $uploadObj = new PhotoUpload();
             $photoInfo = $uploadObj->run();
-            $dataArray['topimage'] = $photoInfo['topimage']['img'];
+            $para['topImage'] = $photoInfo['topImage']['img'];
         }
+        else
+        {
+            $para['topImage'] = IReq::get('topImage');
+        }
+        if(isset($_FILES['floatimage']['name']) && $_FILES['floatimage']['name'] != '')
+        {
+            $uploadObj = new PhotoUpload();
+            $photoInfo = $uploadObj->run();
+            $para['floatimage'] = $photoInfo['floatimage']['img'];
+        }
+        else
+        {
+            $para['floatimage'] = IReq::get('floatimage');
+        }
+        $para['top'] = $top;
+        $para['main'] = $main;
+        $para['float'] = $float;
+        $para['link'] = $link;
+        $dataArray['extendpara'] = JSON::encode($para);
         $active = new IModel('active');
         $active->setData($dataArray);
 
@@ -1300,6 +1333,8 @@ class Market extends IController
         $id = IReq::get('id');
         $active_id = IReq::get('active_id');
         $group_name = IReq::get('group_name');
+        $desc = IReq::get('description');
+        $link = IReq::get('link_url');
         $sort = IReq::get('sort');
         $goods_id = IReq::get('goods_id');
         if(empty($goods_id))
@@ -1309,6 +1344,8 @@ class Market extends IController
         $dataArray = array(
                          'active_id' => $active_id,
                          'group_name' => $group_name,
+                         'description' => $desc,
+                         'link_url' => $link,
                          'sort' => $sort,
                         );
         //处理上传图片

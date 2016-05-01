@@ -36,17 +36,17 @@
                 </tr>
 
 
-                <!--增加背景图片上传  -->
+                <!--增加宣传图片上传  -->
                 <tr>
-                    <th>设置背景图片：</th>
+                    <th>设置宣传图片：</th>
                     <td>
-                        <div class="total_wid">
-                            <div id="preview">
-                            {if:isset($backimage) && $backimage}
-                            <img src="{webroot:$backimage}" style="height: 100px;">
+                        <div class="total_wid__">
+                            <div id="preview__">
+                            {if:isset($seoimage) && $seoimage}
+                            <img src="{webroot:$seoimage}" style="height: 100px;">
                             {/if}
                             </div>
-                            <input type="file" name="backimage"/>
+                            <input type="file" name="seoimage"/>
 
                         </div>
 
@@ -58,18 +58,57 @@
                     <td>
                         <div class="total_wid_">
                             <div id="preview_">
-                            {if:isset($topimage) && $topimage}
-                            <img src="{webroot:$topimage}" style="height: 100px;">
+                            {if:isset($topImage) && $topImage}
+                            <img src="{webroot:$topImage}" style="height: 100px;">
+                            <input type="hidden" name="topImage" value="{$topImage}">
                             {/if}
                             </div>
-                            <input type="file" name="topimage"/>
+                            <input type="file" name="topImage"/>
 
                         </div>
 
                     </td>
                 </tr>
+                <tr>
+                    <th>设置顶部背景颜色：</th>
+                    <td><input type="text" name="top" class="normal" value="{$top}"></td>
+                </tr>
+                <tr>
+                    <th>设置主体背景颜色：</th>
+                    <td><input type="text" name="main" class="normal" value="{$main}"></td>
+                </tr>
+                <tr>
+                    <th>设置浮动框背景颜色：</th>
+                    <td><input type="text" name="float" class="normal" value="{$float}"></td>
+                </tr>
+                <tr>
+                    <th>顶部图片链接：</th>
+                    <td>
+                        <input type="text" name="link" class='normal' alt='请填写链接地址' value="{$link_url}">
 
+                    </td>
+                </tr>
+                <tr>
+                    <th>浮动图片：</th>
+                    <td>
+                        <div class="total_wid">
+                            <div id="preview">
+                            {if:isset($floatimage) && $floatimage}
+                            <img src="{webroot:$floatimage}" style="height: 100px;">
+                            <input type="hidden" name="floatimage" value="{$floatimage}">
+                            {/if}
+                            </div>
+                            <input type="file" name="floatimage"/>
 
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>简单描述：</th>
+                    <td>
+                        <input type='text' class='small' name='description' value="{$description}"/><label>限制50个字</label>
+                    </td>
+                </tr>
                 <tr>
                     <th>排序：</th>
                     <td>

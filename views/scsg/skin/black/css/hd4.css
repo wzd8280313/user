@@ -1,0 +1,260 @@
+body{
+	
+	font-family: 'Lato', sans-serif;
+	padding: 0px;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+border-top: none;	
+}
+a:hover, a:focus {
+    color:#fb920b;
+    text-decoration:none;
+}
+ul, ol {
+list-style: none;
+padding: 0px;
+}
+/*大背景图*/
+.hd4_cont{
+	
+}
+/*头部广告图*/
+.act-module-header {
+width: 100%;
+overflow: hidden;
+margin-bottom: 10px;
+background-color: transparent;
+}
+.act-module-header .act-header-inner {
+width: 990px;
+position: relative;
+margin: 0 auto;
+}
+/*导航样式*/
+.act-module-38pro-floorNav {
+margin-top: 10px;
+}
+.mui-act-banner, .mui-act-items, .mui-act-wrapper {
+width: 990px;
+margin: 0 auto;
+overflow: hidden;
+_zoom: 1;
+}
+
+.act-module-38pro-floorNav .mui-act-lateralNav {
+	width: 990px;
+	overflow: hidden;
+	margin: 0 auto;
+	background-color: #9f0e13;
+}
+ .act-module-38pro-floorNav .mui-act-lateralNav .current, .mui-act-lateralNav .mui-act-anchor:hover {
+	background-color: #fff;
+	color: #9f0e13;
+}
+ .act-module-38pro-floorNav .mui-act-lateralNav-link {
+	color: #fff;
+}
+
+.act-module-38pro-floorNav .mui-act-lateralNav-link {
+	float: left;
+	height: 40px;
+	overflow: hidden;
+	text-align: center;
+	display: block;
+	overflow: hidden;
+	color: #fff;
+}
+.act-module-38pro-floorNav .mui-act-lateralNav .mui-act-lateralNav-link .mui-act-lateralNav-txt {
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 40px;
+}
+
+.act-module-38pro-floorNav .mui-act-lateralNav .mui-act-lateralNav-link .mui-act-lateralNav-ico {
+	font-size: 14px;
+	font-weight: 700;
+	overflow: hidden;
+	width: 20px;
+	color: #9f0e13;
+}
+.act-module-38pro-floorNav .mui-act-lateralNav .mui-act-lateralNav-link .icon-map-marker {
+
+	display: inline;
+}
+.icon-map-marker {
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	-webkit-text-stroke-width: .2px;
+}
+/*活动商品*/
+.zebra-act-item-2-pc {
+width: 990px;
+margin: 0 auto;
+margin-top: 10px;
+position: relative;
+overflow: hidden;
+font-family: 'Microsoft Yahei';
+font-size: 12px;
+}
+.zebra-act-item-2-pc .act-list {
+width: 1050px;
+overflow: hidden;
+}
+.zebra-act-item-2-pc .act-list li {
+width: 320px;
+height: 300px;
+margin: 0 15px 15px 0;
+background: #fff;
+float: left;
+display: inline;
+overflow: hidden;
+position: relative;
+}
+.zebra-act-item-2-pc .act-list li .itemLink {
+width: 320px;
+height: 300px;
+position: absolute;
+left: 0;
+top: 0;
+z-index: 98;
+/* background: url("#") no-repeat; */
+}
+.zebra-act-item-2-pc .act-list li .pic {
+width: 320px;
+height: 180px;
+overflow: hidden;
+position: relative;
+z-index: 1;
+}
+.img-ks-lazyload {
+-webkit-animation: ks-fadeIn 350ms linear 0ms 1 normal both;
+animation: ks-fadeIn 350ms linear 0ms 1 normal both;
+opacity: 1;
+}
+.zebra-act-item-2-pc .act-list li .action-box {
+height: 30px;
+overflow: hidden;
+}
+.zebra-act-item-2-pc .item-title {
+display: block;
+position: absolute;
+bottom: 0;
+left: 0;
+background: #000;
+opacity: 0.5;
+filter: alpha(opacity=50);
+width: 100%;
+padding: 0 20%;
+height: 20px;
+line-height: 20px;
+color: #fff;
+text-align: center;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+.zebra-act-item-2-pc .act-list li .info-box {
+position: relative;
+z-index: 1;
+background: #fff;
+overflow: hidden;
+}
+
+.zebra-act-item-2-pc .act-list li .desc {
+height: 30px;
+line-height: 30px;
+text-align: center;
+color: #f40b4c;
+font-family: 'Microsoft YaHei';
+font-weight: bold;
+margin: 0px;
+}
+.zebra-act-item-2-pc .act-list li .box-sep {
+display: block;
+height: 1px;
+background: #ee0d3b;
+opacity: 0.2;
+filter: alpha(opacity=20);
+font-size: 0;
+line-height: 0;
+}
+.zebra-act-item-2-pc .act-list li .info-detail {
+position: relative;
+}
+.zebra-act-item-2-pc .act-list li .logo {
+padding: 8px 0 8px 20px;
+}
+.price-box {
+position: absolute;
+right: 20px;
+top: 0;
+text-align: right;
+width: 100%;
+}
+.zebra-act-item-2-pc .act-list li .oprice {
+margin: 8px 0 0 0;
+}
+.zebra-act-item-2-pc .act-list li .oprice, .zebra-act-item-2-pc .act-list li .price {
+height: 20px;
+line-height: 20px;
+color: #a1a1a1;
+white-space: nowrap;
+font-family: 'arail,Microsoft Yahei';
+
+}
+.zebra-act-item-2-pc .act-list li .price {
+font-weight: bold;
+color: #ee0d3b;
+font-family: 'helvetica';
+margin: 0px;
+}
+.zebra-act-item-2-pc .act-list li .coupon {
+float: left;
+color: #ee0d3b;
+border: dashed 1px #ee0d3b;
+margin-left: 4px;
+_margin-left: 2px;
+}
+.zebra-act-item-2-pc .act-list li .coupon .quan {
+width: 27px;
+float: left;
+border-right: dashed 1px #ee0d3b;
+}
+.zebra-act-item-2-pc .act-list li .btn {
+float: right;
+background: #ee0d3b;
+color: #fff;
+border: solid 1px #ee0d3b;
+margin-right: 4px;
+_margin-right: 2px;
+padding: 0px;
+border-radius: 0px;
+font-size: 10px;
+}
+.zebra-act-item-2-pc .act-list li .coupon, .zebra-act-item-2-pc .act-list li .btn {
+width: 152px;
+height: 28px;
+overflow: hidden;
+line-height: 28px;
+text-align: center;
+}
+.zebra-act-item-2-pc .act-list li .couponLink {
+width: 150px;
+height: 28px;
+position: absolute;
+left: 5px;
+bottom: 5px;
+z-index: 99;
+background: url("#") no-repeat;
+}
+/*活动图*/
+.zebra-act-banner-w990 {
+width: 100%;
+margin-top: 10px;
+}
+.mui-w990{
+	width:990px;
+	margin:0 auto;
+}
+/*右侧导航*/
