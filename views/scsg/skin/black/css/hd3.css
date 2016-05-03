@@ -31,6 +31,10 @@ margin: 0 auto;
 	width: 990px;
 	margin: 0 auto;
 }
+.fale_top_img img{
+	width: 104px;
+height: 104px;
+}
 .sct .hd3 .hd3_tit{
 	display: inline-block;
 	float:left; 

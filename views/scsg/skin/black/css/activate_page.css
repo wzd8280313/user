@@ -220,6 +220,11 @@ html{overflow:auto;overflow-y:scroll;}
     height: 142px;
 	text-align:center;
     }	
+.hce_top img{
+     width: 97px;
+    height: 142px;
+}
+
 .hce_top p{ color: #FFF;
     padding-top: 80px;
     font-size: 21px;
