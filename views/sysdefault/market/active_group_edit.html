@@ -36,6 +36,20 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>设置分组图片2：</th>
+                    <td>
+                        <div class="total_wid">
+                            <div id="preview">
+                            {if:isset($overimage) && $overimage}
+                            <img src="{webroot:$overimage}" style="height: 100px;">
+                            {/if}
+                            </div>
+                            <input type="file" name="overimage"/>
+                        </div>
+                        <label>用于鼠标滑过或定位当前位置显示的图片</label>
+                    </td>
+                </tr>
+                <tr>
                     <th>选择分组商品：</th>
                     <td>
                         <table class='border_table' style='width:70%'>

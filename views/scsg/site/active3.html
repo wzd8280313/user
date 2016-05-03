@@ -30,7 +30,11 @@
         <div class="hd3">
             <a name="bt{$item['id']}">
             {foreach:items=$this->group key=$keyG item=$group}
-            <div class="hd3_tit"><a {if:$key<>$keyG} href="#bt{$group['id']}" {/if}><img src="{webroot:$group['image']}" alt="{$group['group_name']}"></a></div>
+            {if:$key<>$keyG}
+            <div class="hd3_tit"><a  href="#bt{$group['id']}" ><img src="{webroot:$group['image']}" alt="{$group['group_name']}"></a></div>
+            {else:}
+            <div class="hd3_tit"><img src="{webroot:$group['overimage']}" alt="{$group['group_name']}"></div>
+            {/if}
             {/foreach}
                 <!--<div class="hd3_tit"><a><img src="images/hd3_t2s.jpg"/></a></div>
                 <div class="hd3_tit"><a href="#bt2"><img src="images/hd3_t3.jpg"/></a></div>

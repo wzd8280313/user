@@ -1355,6 +1355,12 @@ class Market extends IController
             $photoInfo = $uploadObj->run();
             $dataArray['image'] = $photoInfo['image']['img'];
         }
+        if(isset($_FILES['overimage']['name']) && $_FILES['overimage']['name'] != '')
+        {
+            $uploadObj = new PhotoUpload();
+            $photoInfo = $uploadObj->run();
+            $dataArray['overimage'] = $photoInfo['overimage']['img'];
+        }
         $active_group = new IModel('active_group');
         $active_group->setData($dataArray);
         if($id)
