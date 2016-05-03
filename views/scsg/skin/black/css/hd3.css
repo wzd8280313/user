@@ -30,7 +30,6 @@ margin: 0 auto;
 .sct .hd3{
 	width: 990px;
 	margin: 0 auto;
-	height: 88px;
 }
 .sct .hd3 .hd3_tit{
 	display: inline-block;
@@ -38,14 +37,17 @@ margin: 0 auto;
 	padding-left: 4px;
 	margin-bottom: 35px;
 	height:65px;
+	width: 246px;
 }
+
 .sct .hd3  a{
 	display: block;
 	
 }
-.sct .hd3 .hd3_tit a img{
+.sct .hd3 .hd3_tit img{
 	width:242px;
-
+	height: 88px;
+    
 }
 .sct .hd3 .hd3_cont {
 	display: inline-block;
