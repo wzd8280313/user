@@ -31,6 +31,9 @@ class Simple extends IController
 		}
 		else
 		{
+            $oauth = new IModel('oauth');
+            $oauthList = $oauth->query('is_close = 0');
+            $this->oauth = $oauthList;
 			$this->redirect('login');
 		}
 	}
