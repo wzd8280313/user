@@ -175,6 +175,7 @@ class Simple extends IController
     					$memberObj = new IModel('member');
     					$memberObj->setData($memberArray);
     					$memberObj->add();               
+
 						$memberObj->commit();
 						
 						//赠送代金券、积分
@@ -197,7 +198,9 @@ class Simple extends IController
 						{
 							$prop = new ProRule(0);
 							$prop->giftSend(array('ticket'=>intval($site_config['reg_ticket'])),$user_id);
+
 						}     
+
     					//邮箱激活帐号
     					if($type == 1)
     					{
