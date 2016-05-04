@@ -1645,6 +1645,33 @@ class Simple extends IController
     		$this->redirect('login');
     	}
     }
+    
+    //qq登录回调
+    public function qqlogin_callback()
+    {
+        $id = 2;
+        $oauthObj = new Oauth($id);
+        $result   = $oauthObj->checkStatus($_GET);
+
+        if($result === true)
+        {
+            $oauthObj->getAccessToken($_GET);
+            $userInfo = $oauthObj->getUserInfo();
+
+            if(isset($userInfo['id']) && isset($userInfo['name']) && $userInfo['id'] != '' &&  $userInfo['name'] != '')
+            {
+                $this->bindUser($userInfo,$id);
+            }
+            else
+            {
+                $this->redirect('login');
+            }
+        }
+        else
+        {
+            $this->redirect('login');
+        }
+    }
 
     //同步绑定用户数据
     public function bindUser($userInfo,$oauthId)
@@ -1783,7 +1810,7 @@ class Simple extends IController
 				);
 				$userObj->setData($userData);
 				$user_id = $userObj->add();
-
+                $userObj->commit();
 				$memberObj  = new IModel('member');
 				$memberData = array(
 					'user_id'   => $user_id,
@@ -1794,7 +1821,7 @@ class Simple extends IController
 				);
 				$memberObj->setData($memberData);
 				$memberObj->add();
-
+                $memberObj->commit(); 
 				$oauthUserObj = new IModel('oauth_user');
 
 				//插入关系表
@@ -1806,12 +1833,12 @@ class Simple extends IController
 				);
 				$oauthUserObj->setData($oauthUserData);
 				$oauthUserObj->add();
-
+                $oauthUserObj->commit();  
 				$userRow = CheckRights::isValidUser($userData['email'],$userData['password']);
 				CheckRights::loginAfter($userRow);
 
 				//自定义跳转页面
-				$callback = ISafe::get('callback');
+				$callback = ISafe::get('callback');   
 				$this->redirect('/site/success?message='.urlencode("注册成功！").'&callback='.$callback);
     		}
     	}
