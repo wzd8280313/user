@@ -22,7 +22,7 @@ class Simple extends IController
 	}
 
 	function login()
-	{
+	{ 
 		$this->layout = 'site_reg';
 		//如果已经登录，就跳到ucenter页面
 		if( ISafe::get('user_id') != null  )
@@ -1597,12 +1597,16 @@ class Simple extends IController
 
     	if($id)
     	{
-    		$oauthObj = new Oauth($id);
-			$result   = array(
-				'isError' => false,
-				'url'     => $oauthObj->getLoginUrl(),
-			);
-    		ISession::set('oauth',$id);
+    		    $oauthObj = new Oauth($id);
+			    $result   = array(
+				    'isError' => false,
+				    'url'     => $oauthObj->getLoginUrl(),
+			    );                 
+    		    ISession::set('oauth',$id);    
+                echo "<script language='javascript' type='text/javascript'>";
+                echo "window.location.href='{$result['url']}'";
+                echo "</script>";
+                return;
     	}
     	else
     	{
@@ -1623,14 +1627,12 @@ class Simple extends IController
     		$this->redirect('login');
     		exit;
     	}
-    	$oauthObj = new Oauth($id);
-    	$result   = $oauthObj->checkStatus($_GET);
-
+    	$oauthObj = new Oauth($id);  
+    	$result   = $oauthObj->checkStatus($_GET);   
     	if($result === true)
     	{
     		$oauthObj->getAccessToken($_GET);
-	    	$userInfo = $oauthObj->getUserInfo();
-
+	    	$userInfo = $oauthObj->getUserInfo(); 
 	    	if(isset($userInfo['id']) && isset($userInfo['name']) && $userInfo['id'] != '' &&  $userInfo['name'] != '')
 	    	{
 	    		$this->bindUser($userInfo,$id);
@@ -1645,34 +1647,6 @@ class Simple extends IController
     		$this->redirect('login');
     	}
     }
-    
-    //qq登录回调
-    public function qqlogin_callback()
-    {
-        $id = 2;
-        $oauthObj = new Oauth($id);
-        $result   = $oauthObj->checkStatus($_GET);
-
-        if($result === true)
-        {
-            $oauthObj->getAccessToken($_GET);
-            $userInfo = $oauthObj->getUserInfo();
-
-            if(isset($userInfo['id']) && isset($userInfo['name']) && $userInfo['id'] != '' &&  $userInfo['name'] != '')
-            {
-                $this->bindUser($userInfo,$id);
-            }
-            else
-            {
-                $this->redirect('login');
-            }
-        }
-        else
-        {
-            $this->redirect('login');
-        }
-    }
-
     //同步绑定用户数据
     public function bindUser($userInfo,$oauthId)
     {
@@ -1699,8 +1673,7 @@ class Simple extends IController
 	    	ISafe::set('oauth_username',$username);
 	    	ISession::set('oauth_id',$oauthId);
 	    	ISession::set('oauth_userInfo',$userInfo);
-
-	    	$this->redirect('bind_user');
+	    	$this->redirect('bind_user',false);
     	}
     	//存在绑定账号
     	else
@@ -1708,6 +1681,7 @@ class Simple extends IController
     		$userObj = new IModel('user');
     		$tempRow = $userObj->getObj("id = '{$oauthUserRow['user_id']}'");
     		$userRow = CheckRights::isValidUser($tempRow['username'],$tempRow['password']);
+
     		CheckRights::loginAfter($userRow);
 
 			//自定义跳转页面
@@ -1731,11 +1705,19 @@ class Simple extends IController
     	$password       = IReq::get('password');
     	$oauth_id       = IFilter::act(ISession::get('oauth_id'));
     	$oauth_userInfo = IFilter::act(ISession::get('oauth_userInfo'));
-
+        $captcha    = IFilter::act(IReq::get('captcha','post')); 
+        if($captcha != ISafe::get('captcha'))
+        {
+            $data['errorCode']=2;              
+            $data['message'] = '验证码输入不正确';
+            echo JSON::encode($data);exit;
+        }
+        
     	if(!$oauth_id || !isset($oauth_userInfo['id']))
     	{
-    		$this->redirect('login');
-    		exit;
+            $data['errorCode']=1; 
+            $data['url']='/simple/login'; 
+            echo JSON::encode($data);exit;         
     	}
 
     	if($userRow = CheckRights::isValidUser($login_info,md5($password)))
@@ -1756,15 +1738,15 @@ class Simple extends IController
 
 			//自定义跳转页面
 			$callback = ISafe::get('callback');
-			$this->redirect('/site/success?message='.urlencode("登录成功！").'&callback='.$callback);
+            $data['errorCode']=0;
+            $data['url']='/site/success?message='.urlencode("登录成功！").'&callback='.$callback;       
     	}
     	else
     	{
-    		$this->login_info = $login_info;
-    		$this->message    = '用户名和密码不匹配';
-    		$_GET['bind_type']= 'exists';
-    		$this->redirect('bind_user',false);
+            $data['errorCode']=2;             
+            $data['message'] = '用户名和密码不匹配'; 
     	}
+        echo JSON::encode($data);
     }
 
 	//绑定不存在用户
@@ -1772,82 +1754,92 @@ class Simple extends IController
     {
     	$username       = IFilter::act(IReq::get('username'));
     	$email          = IFilter::act(IReq::get('email'));
+        $phone = IFilter::act(IReq::get('phone','post'));
+        $password   = IFilter::act(IReq::get('password','post'));
+        $password2 = IFilter::act(IReq::get('password2','post'));
+        $validPhoneCode = IFilter::act(Ireq::get('validPhoneCode','post'),'int');
     	$oauth_id       = IFilter::act(ISession::get('oauth_id'));
     	$oauth_userInfo = IFilter::act(ISession::get('oauth_userInfo'));
+        $data['errorCode'] = 0;
+		/*注册信息校验*/   
+        if(IValidate::email($email) == false)
+        {       
+            $data['errorCode']=3;
+        }
+        elseif(!Util::is_username($username))
+        {  
+            $data['errorCode']=101;       
+        }
+        elseif(!IValidate::phone($phone))
+        {
+            $data['errorCode']=15;
+        }
+        else if($password != $password2)
+        {
+            $data['errorCode']=4;
+        }
+        if($data['errorCode']==0){
+            $data['errorCode'] = self::checkMobileValidateCode($phone,$validPhoneCode);
+        } 
 
-		/*注册信息校验*/
-    	if(IValidate::email($email) == false)
-    	{
-    		$message = '邮箱格式不正确';
-    	}
-    	else if(!Util::is_username($username))
-    	{
-    		$message = '用户名必须是由2-20个字符，可以为字数，数字下划线和中文';
-    	}
-    	else
-    	{
-    		$userObj = new IModel('user');
-    		$where   = 'email = "'.$email.'" or username = "'.$email.'" or username = "'.$username.'"';
-    		$userRow = $userObj->getObj($where);
-
-    		if(!empty($userRow))
-    		{
-    			if($email == $userRow['email'])
-    			{
-    				$message = '此邮箱已经被注册过，请重新更换';
-    			}
-    			else
-    			{
-    				$message = "此用户名已经被注册过，请重新更换";
-    			}
-    		}
-    		else
-    		{
-				$userData = array(
-					'email'    => $email,
-					'username' => $username,
-					'password' => md5(ITime::getDateTime()),
-				);
-				$userObj->setData($userData);
-				$user_id = $userObj->add();
+        if($data['errorCode']==0 ){
+            $userObj = new IModel('user');
+            $userRow = $userObj->getObj('email = "'.$email.'" or username = "'.$email.'" or username = "'.$username.'"');
+            if(!!$userRow){
+                if($email == $userRow['email'])
+                {
+                    $data['errorCode']=18;                     
+                }
+                else
+                {
+                    $data['errorCode']=102;   
+                }
+                
+            } 
+            else
+            {
+                $userArray = array(
+                        'email'    => $email,
+                        'phone'    => $phone,
+                        'password' => md5($password),
+                );
+                $userObj->setData($userArray);
+                $user_id = $userObj->add();
                 $userObj->commit();
-				$memberObj  = new IModel('member');
-				$memberData = array(
-					'user_id'   => $user_id,
-					'true_name' => $oauth_userInfo['name'],
-					'last_login'=> ITime::getDateTime(),
-					'sex'       => isset($oauth_userInfo['sex']) ? $oauth_userInfo['sex'] : 1,
-					'time'      => ITime::getDateTime(),
-				);
-				$memberObj->setData($memberData);
-				$memberObj->add();
-                $memberObj->commit(); 
-				$oauthUserObj = new IModel('oauth_user');
+                $memberObj  = new IModel('member');
+                $memberData = array(
+                    'user_id'   => $user_id,
+                    'true_name' => $oauth_userInfo['name'],
+                    'last_login'=> ITime::getDateTime(),
+                    'sex'       => isset($oauth_userInfo['sex']) ? $oauth_userInfo['sex'] : 1,
+                    'time'      => ITime::getDateTime(),
+                );
+                $memberObj->setData($memberData);
+                $memberObj->add();
+                $memberObj->commit();
+                $oauthUserObj = new IModel('oauth_user');
 
-				//插入关系表
-				$oauthUserData = array(
-					'oauth_user_id' => $oauth_userInfo['id'],
-					'oauth_id'      => $oauth_id,
-					'user_id'       => $user_id,
-					'datetime'      => ITime::getDateTime(),
-				);
-				$oauthUserObj->setData($oauthUserData);
-				$oauthUserObj->add();
+                //插入关系表
+                $oauthUserData = array(
+                    'oauth_user_id' => $oauth_userInfo['id'],
+                    'oauth_id'      => $oauth_id,
+                    'user_id'       => $user_id,
+                    'datetime'      => ITime::getDateTime(),
+                );
+                $oauthUserObj->setData($oauthUserData);
+                $oauthUserObj->add();
                 $oauthUserObj->commit();  
-				$userRow = CheckRights::isValidUser($userData['email'],$userData['password']);
-				CheckRights::loginAfter($userRow);
+                $userRow = CheckRights::isValidUser($userArray['email'],$userArray['password']);
+                CheckRights::loginAfter($userRow);
 
-				//自定义跳转页面
-				$callback = ISafe::get('callback');   
-				$this->redirect('/site/success?message='.urlencode("注册成功！").'&callback='.$callback);
-    		}
-    	}
+                //自定义跳转页面
+                $callback = ISafe::get('callback');
+                $data['errorCode'] = 0;
+                $data['url'] =  '/site/success?message='.urlencode("注册成功！").'&callback='.$callback;  
+            }
 
-    	if($message != '')
-    	{
-    		$this->message = $message;
-    		$this->redirect('bind_user',false);
-    	}
+        }
+        echo JSON::encode($data);      
     }
 
 	/**
