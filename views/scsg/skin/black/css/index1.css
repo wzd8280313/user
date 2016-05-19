@@ -936,7 +936,7 @@ color: #fff;
 }
 #scroll{
 	z-index:0;
-	width: 100%; height: 490px; overflow: visible; position: relative; visibility: visible; display: block;
+	width: 100%; height: 490px; overflow: visible; /*position: relative;*/position: absolute; visibility: visible; display: block;
 }
 #scroll .pic{
 	width:759px;float:left;
