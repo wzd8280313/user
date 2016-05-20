@@ -15,6 +15,10 @@ a:hover, a:focus {
     padding: 0px;
     width: 100%;
 }
+.hd3_dt .mui-zebra-module div img{
+	width: 1190px;
+	height: 500px;
+}
 /*头部广告图*/
 .act-module-header {
 width: 100%;
