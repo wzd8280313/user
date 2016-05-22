@@ -26,6 +26,11 @@ overflow: hidden;
 margin-bottom: 10px;
 background-color: transparent;
 }
+.act-module-header div img{
+	width: 1190px;
+	height: 500px;
+}
+
 .act-module-header .act-header-inner {
 width: 990px;
 position: relative;
@@ -126,6 +131,10 @@ height: 180px;
 overflow: hidden;
 position: relative;
 z-index: 1;
+}
+.zebra-act-item-2-pc .act-list li .pic{
+width: 320px;
+height: 180px;
 }
 .img-ks-lazyload {
 -webkit-animation: ks-fadeIn 350ms linear 0ms 1 normal both;

@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
-body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{padding:0;margin:0;font-size:100%}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td,button{padding:0;margin:0;font-size:100%;}
 label input{vertical-align:middle}
 a:link,a:visited{color:#333;text-decoration:none;}
 body{font:12px/1.5 "宋体", Arial, Helvetica, sans-serif;color:black;background-color:#fff;}
@@ -13,6 +13,10 @@ a{cursor: pointer;}
 .focus_banner .focus_box{
     margin: 0 auto;
 	z-index:2000; }
+.focus_banner .focus_box div img{
+        width: 1190px;
+        height: 500px;
+    }
 .focus_word{color: #fff;width: 600px;}
 .focus_word p{
 	font-size: 18px;
@@ -65,11 +69,12 @@ a{cursor: pointer;}
 .focus_banner .active_list{ width:100%; height:auto; overflow:hidden; margin:0 auto; }
 .focus_banner .active_list .list_total{ width:990px; height:auto; overflow:hidden;     margin: 15px auto 0 auto; }
 .list_total .page_left{ width:192px; float:left; margin-right:10px;}
+.list_total .page_left img{width:192px; height: 485px;}
 .list_total .page_right{ float:left; width:788px; }
 .focus_banner .active_list .list_total .page_right ul{ width:795px;}
 .focus_banner .active_list .list_total .page_right ul li{width:193px; height:auto; background:#fff; overflow:hidden; float:left;margin:0 0 6px 5px;}
 .focus_banner .active_list .list_total .page_right .list_poto{ text-align:center; width:193px; height:150px;}
-.focus_banner .active_list .list_total .page_right ul li .list_poto img{    width: 150px;height: 150px;}
+.focus_banner .active_list .list_total .page_right ul li .list_poto img{    width: 193px;height: 150px;}
 .jgoodsinfo {
     position: relative;
     zoom: 1;
@@ -149,6 +154,7 @@ a{cursor: pointer;}
 .hot_sale .hotad_left img{ width:583px; width:181px;}
 .hot_sale .hotad_right img{ width:583px; width:181px;}
 .hot_sale .hot_sltop{height: 123px;width:966px; margin:20px auto 20px auto;text-align: center;}
+.hot_sale .hot_sltop img{height: 123px;width:966px; }
 .hot_sale h1{ font-family: "微软雅黑";   font-size: 34px;padding-top: 12px;letter-spacing: 0.3em;}
 .hot_sale h3 {
 	font-family: "宋体";
@@ -159,6 +165,7 @@ a{cursor: pointer;}
 .hot_sale .hotsl_list ul li{ width:190px; height:310px; float:left;margin: 0 5px 10px 0px;}
 .hot_sale .hotsl_list ul{    width: 980px;}
 .hot_sale .hotsl_list ul li .hotsl_poto{ width:190px; height:260px; text-align:center;}
+.hot_sale .hotsl_list ul li .hotsl_poto img{width:190px; height:260px;}
 .hot_sale .hotsl_list ul li .hotsl_word{ background-color:#333;}
 .hot_sale .hotsl_list ul li .hotsl_word{ color: #FFF;padding: 5px 10px;}
 .hot_sale .hotsl_list ul li .hotsl_word a{ color:#FFF;}
