@@ -5,6 +5,7 @@
 	<div class="operating">
 		<div class="search f_r">
 			<form name="searchModForm" action="{url:/}" method="get">
+                <input type='hidden' name='plat' value='{$this->plat}' />
 				<input type='hidden' name='controller' value='goods' />
 				<input type='hidden' name='action' value='goods_list' />
 				<select class="auto" name="search[name]">
