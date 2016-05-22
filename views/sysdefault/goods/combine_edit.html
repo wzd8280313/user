@@ -90,6 +90,15 @@
 <script type="text/javascript">
 $(function(){
     dbClick();
+    
+    //排除主商品、组合商品冲突
+    var _id = $('input[name=goods_id]').val();
+    $("#select1 option").each(function(){
+        if($(this).val() == _id)
+        {
+            $(this).remove();
+        }
+    })
 })
     
     $("#js_goods_list").keyup(function(){
@@ -149,9 +158,18 @@ $(function(){
     {
         goodsList.each(function()
         {
-            var temp = $.parseJSON($(this).attr('data'));
+            var temp = $.parseJSON($(this).attr('data'))
+                ,_id = $('input[name=goods_id]').val()
+                ,_name = $('#js_goods_name').val();
             $('#js_goods_name').val(temp.name);
             $('input[name=goods_id]').val(temp.goods_id);
+            $('#select1').append("<option value="+_id+">"+_name+"</option>")
+            $("#select1 option").each(function(){
+                if($(this).val() == temp.goods_id)
+                {
+                    $(this).remove();
+                }
+            })
         });
     }
 </script>

@@ -12,7 +12,7 @@
 {js:cookie}
 {set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule', $id);}
 {foreach:items=$promotion}
-	{if:$item['type']==6}<!--获取免配送费的信息-->
+	{if:$item['type']==6 &&  $item['hide'] <> 1}<!--获取免配送费的信息-->
 	{set:$freightInfo=$item['info']}
 	{/if}
 {/foreach}

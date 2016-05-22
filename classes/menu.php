@@ -268,7 +268,8 @@ class Menu
 		'/order/delivery_recycle_list' => '/order/order_delivery_list_plat',
 		'/order/ship_recycle_list'	=>	'/order/ship_info_list',
 		'/order/expresswaybill_edit' => '/order/order_list_plat',
-		'/order/order_show' => '/order/order_list_plat',
+        '/order/order_show_plat' => '/order/order_list_plat',
+		'/order/order_show_seller' => '/order/order_list_seller',
 	);
 
     /**
@@ -388,10 +389,6 @@ class Menu
 			$result[] = $item;
 		}
 
-		if($find_current == false && $is_auto == false)
-		{
-			return $this->submenu(true);
-		}
         if(IReq::get('plat'))
         {
             $this->current = '/'.$controller.'/'.$action.'_'.IReq::get('plat');
@@ -400,6 +397,10 @@ class Menu
         {
             $this->current = '/'.$controller.'/'.$action.'/deli_type/'.IReq::get('deli_type');
         }
+		if($find_current == false && $is_auto == false)
+		{
+			return $this->submenu(true);
+		}
 		return JSON::encode($result);
 	}
 }

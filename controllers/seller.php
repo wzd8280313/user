@@ -754,6 +754,8 @@ class Seller extends IController
 			$this->redirect('regiment_list');
 			exit();
 		}
+        
+        $regimentObj = new IModel('regiment');
 		$dataArray = array(
 			'id'        	=> $id,
 			'title'     	=> IFilter::act(IReq::get('title','post')),
@@ -772,13 +774,46 @@ class Seller extends IController
         {
             $dataArray['start_time'] = IFilter::act(IReq::get('start_time1','post'));
             $dataArray['end_time'] = IFilter::act(IReq::get('end_time1','post'));
+            if(!$dataArray['is_close'])
+            {
+                if($regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and end_time>"'.$dataArray['start_time'].'" and start_time < "'.$dataArray['start_time'].'"') || $regimentObj->getObj('type=2 and id <> '.$id.' and is_close=0 and start_time<"'.$dataArray['end_time'].'" and end_time > "'.$dataArray['end_time'].'"'))
+                {
+                    $this->regimentRow = $dataArray;
+                    $this->redirect('regiment_edit',false);
+                    Util::showMessage('该时间段已有整点团购，不能开启新的团购');
+                }
+            }
         }
         else
         {
             $dataArray['start_time'] = IFilter::act(IReq::get('start_time','post'));
             $dataArray['end_time'] = IFilter::act(IReq::get('end_time','post'));
         }
-
+        if($dataArray['end_time'] <= $dataArray['start_time'])
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('结束时间不能早于开始时间');
+        }
+        $goods_store_nums = IFilter::act(IReq::get('goods_store_nums', 'post'), 'int');
+        if($dataArray['store_nums'] > $goods_store_nums)
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('团购库存量不能大于商品库存量'); 
+        }
+        if($dataArray['limit_max_count'] <> 0 && $dataArray['limit_max_count'] > $dataArray['store_nums'])
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('团购最大量不能大于团购库存量');
+        }
+        if($dataArray['limit_max_count'] <> 0 && $dataArray['limit_max_count'] < $dataArray['limit_min_count'])
+        {
+            $this->regimentRow = $dataArray;
+            $this->redirect('regiment_edit',false);
+            Util::showMessage('团购最小量不能大于团购最大量');
+        }
 		if($goodsId)
 		{
 			$goodsObj = new IModel('goods');
@@ -814,7 +849,6 @@ class Seller extends IController
 			Util::showMessage('请选择要关联的商品');
 		}
 
-		$regimentObj = new IModel('regiment');
 		$regimentObj->setData($dataArray);
 
 		if($id)

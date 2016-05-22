@@ -142,8 +142,11 @@ function get_delivery()
 	if(!area)
 	{
 		return;
-	}                     
-	$('span[id^=deliveryfee_]').each(function(k){
+	}
+    $('.js_data_6').hide();
+    var _d = []
+        ,_in = 0;                     
+	$('span[id^=deliveryfee_]').each(function(){
 		var _this = $(this)
             ,price = 0;
         _this.parents('table').find('.js_goods_delivery').each(function(){
@@ -168,18 +171,17 @@ function get_delivery()
                         else
                         {
                             if(!content.isFreeFreight)
-                            {
-                                $('.js_data_6').hide();
+                            {                          
                                 orderFormInstance.deliveryPrice += parseFloat(content.price);
                                 price += (content.price);
                             }
                             else
                             {
                                 for(var i = 0; i < content.isFreeFreight.length; i ++){
-                                    $("#js_data_"+content.isFreeFreight[i]).show();
+                                    _d.push(content.isFreeFreight[i]);
                                 }
                                 $('.js_data_6').siblings('.gray').show();
-                                price = 0;
+                                price = '免运费';
                             }
                             //orderFormInstance.freeFreight = content.isFreeFreight;
                             var html = parseFloat(content.price).toFixed(2);
@@ -187,17 +189,25 @@ function get_delivery()
                             if(content.protect_price > 0)
                             {
                                 
-                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+k+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+_in+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
                             }
                             _t.html(html);
                         }
                     },
                     timeout:1000,
                 })
-                var _p = price == 0 ? '免运费' : '￥'+parseFloat(price).toFixed(2);
+                var _p = price == '免运费' ? '免运费' : '￥'+parseFloat(price).toFixed(2);
                 _this.html(_p);
+                _in++;
         })				
 	})
+    if(!!_d)
+    {
+        for(var i = 0; i < _d; i ++){
+            $("#js_data_"+_d[i]).show();
+        }
+        
+    }
 	orderFormInstance.doAccount();
 
 

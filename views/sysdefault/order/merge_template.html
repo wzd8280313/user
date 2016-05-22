@@ -38,9 +38,6 @@
 			</tr>
 			{set:$goodsSum = 0;$deliveryPrice = 0;}        
 			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=order_id eq $id}
-			{if:$item['seller_id'] != $seller_id}
-			{set:continue;}
-			{/if}
 			{set:$goodsSum      += $item['real_price'] * $item['goods_nums']}
 			{set:$deliveryPrice += $item['delivery_fee']}
 			{set:$goodsRow       = JSON::decode($item['goods_array'])}
@@ -128,9 +125,6 @@
 				<th>小计</th>
 			</tr>               
 			{query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id where=order_id eq $id}
-			{if:$item['seller_id'] != $seller_id}
-			{set:continue;}
-			{/if}
 			{set:$goodsRow = JSON::decode($item['goods_array'])}
 			<tr>
 				<td align="left">

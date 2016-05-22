@@ -99,7 +99,7 @@ class Order_Class
                 $memberRow  = $memberObj->getObj('user_id = '.$user_id,'prop,group_id');
              }
              $orderObj  = new IModel('order');        
-             $orderList = $orderObj->query('pid='.$orderRow['id'], 'id,status,prop,order_amount,order_no');
+             $orderList = $orderObj->query('pid='.$orderRow['id'], 'id,status,prop,order_amount,order_no,type');
              $config = new Config('site_config');
              foreach($orderList as $v)
              {
@@ -150,6 +150,12 @@ class Order_Class
 
                 $collectionDocObj->setData($collectionData);
                 $collectionDocObj->add();
+                
+                //促销活动订单
+                if($v['type'] != 0)
+                {
+                    Active::payCallback($v['order_no'],$v['type']);
+                }
 
                 //非货到付款的支付方式
                 if($orderRow['pay_type'] != 0)
@@ -1065,7 +1071,7 @@ class Order_Class
 		if($orderGoodsRow['is_send']==0){
 			return '未发货';
 		}
-		else if($orderGoodsRow['status']==5 && $orderGoodsRow['is_send']==1){
+		else if(isset($orderGoodsRow['status']) && $orderGoodsRow['status']==5 && $orderGoodsRow['is_send']==1){
 			return '已完成';
 		}
 		else if($orderGoodsRow['is_send']==1){
@@ -1179,7 +1185,7 @@ class Order_Class
         //$orderId = $tbOrderRow['pid'] ? $tbOrderRow['pid'] : $order_id;
 		//更新发货状态
 	 	$orderGoodsDB = new IModel('order_goods');
-	 	$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$order_id.' and seller_id='.$sendor_id,'count(*) as num');
+	 	$orderGoodsRow = $orderGoodsDB->getObj('is_send = 0 and order_id = '.$order_id,'count(*) as num');
 		$sendStatus = 2;//部分发货
 	 	if(count($order_goods_relation) >= $orderGoodsRow['num'])
 	 	{
@@ -1417,10 +1423,10 @@ class Order_Class
 	public static function refundmentText($pay_status,$type)
 	{	
 		if($type==0){//退货
-			$result = array('0' => '退款申请,等待卖家确认中', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待退货审核','5'=>'验货未通过','6'=>'退款失败（超期未退货）','7'=>'审核通过，等待退款');
+			$result = array('0' => '退款申请,等待卖家确认中', '1' => '退款失败', '2' => '退款成功','3'=>'请退货','4'=>'等待退货审核','5'=>'退货失败(验货未通过)','6'=>'退款失败（超期未退货）','7'=>'审核通过，等待退款');
 			
 		}else{//换货
-			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待换货审核','5'=>'验货未通过','6'=>'换货失败（超期未退货）','7'=>'等待换货');
+			$result = array('0' => '申请换货', '1' => '换货失败', '2' => '换货成功','3'=>'请退货','4'=>'等待换货审核','5'=>'换货失败(验货未通过)','6'=>'换货失败（超期未退货）','7'=>'等待换货');
 		}
 		return isset($result[$pay_status]) ? $result[$pay_status] : '';
 	}
@@ -1894,12 +1900,12 @@ class Order_Class
 		if(!$seller_id)$seller_id = 0;
 		$order_goods_db = new IQuery('order_goods as og');
 		$order_goods_db->join = 'left join goods as g on og.goods_id=g.id ';
-		$order_goods_db->where = 'og.order_id='.$goodsOrderRow['order_id'].' and og.id !='.$goodsOrderRow['id'].' and og.is_send!=2 and g.seller_id='.$seller_id;
+		$order_goods_db->where = 'og.order_id='.$goodsOrderRow['order_id'].' and og.id !='.$goodsOrderRow['id'].' and og.is_send=0 and g.seller_id='.$seller_id;
 		$order_goods_db->limit = 1;
 		$send_data = $order_goods_db->find();
 		if($goodsOrderRow['delivery_id'] == 0 )
 		{
-			if(empty($send_data)){
+			if(!empty($send_data)){
 				$otherFee += $goodsOrderRow['delivery_fee'];
 			}
             if($orderRow['if_insured'])

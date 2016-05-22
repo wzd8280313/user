@@ -359,8 +359,9 @@ class Site extends IController
                 $dataList[$k]['num'] = $refer_info ? $refer_info['totalNum'] : 0;
             }
             $temp = $dataList[0];
-            $this->type = $temp['id'] ? $temp['id'] : 0;
+            $referType = $temp['id'] ? $temp['id'] : 0;
         }
+        $this->type = isset($referType) ? $referType : 0;
         $goods_info['refer'] = $dataList;
     
         
@@ -942,8 +943,9 @@ class Site extends IController
                 $dataList[$k]['num'] = $refer_info ? $refer_info['totalNum'] : 0;
             }
             $temp = $dataList[0];
-            $this->type = $temp['id'] ? $temp['id'] : 0;
+            $referType = $temp['id'] ? $temp['id'] : 0;
         }
+        $this->type = isset($referType) ? $referType : 0;
 		$goods_info['refer'] = $dataList;
 
 		//获得商品的价格区间
@@ -1828,7 +1830,6 @@ class Site extends IController
             $activeList = $active->query('id != '.$id, '*', 'rand()', 'desc', 2);
             $this->activeList = $activeList;
             $this->redirect('active4', false);
-        }
-        //var_dump($groupDetail);
+        }                           
     }
 }
