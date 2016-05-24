@@ -188,7 +188,9 @@
 	<div id="topPriceHistroyDiv">
 		<div class="cx">
 			{foreach:items=$promotion}
+            {if:$item['hide'] <> 1}
 			<span>{$item['plan']}</span><p>{$item['info']}</p>
+            {/if}
 			{/foreach}
 		</div>
 	</div>
@@ -207,57 +209,44 @@
 
 </div>
 <!-- 组合套餐start -->
-
+{if:isset($this->mobileCombine)}
 <div class="history intro">
-	<h3>优惠搭配</h3> <h4 class="gengduo"><a href="{url:/site/match_sale}"><img src="{skin:images/match_sale/sale_rt.png}" alt="更多"></a></h4>
+	<h3>优惠搭配</h3> <h4 class="gengduo"><a href="{url:/site/match_sale/id/$id}"><img src="{skin:images/match_sale/sale_rt.png}" alt="更多"></a></h4>
       <div class="match_item">
     	
         <ul>
-        	<li><a href="#">
+        	<li><a href="javascript:;">
         		  <div class="intro_box">
         		  	<div class="intro_img">
-        		  <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="更多">
+                    {if:$this->goodsImg}
+                    <img src="{url:/pic/thumb/img/$this->goodsImg['img']/w/200/h/200}" alt="" />
+                    {else:}
+                    <img src="{skin:images/front/nopic_435_435.gif}" width="150" height="150" alt="" />
+                   {/if}
         		      <div class="int_numbers">
-                        <div class="int_price">¥6666</div>
+                        <div class="int_price">¥{if:$combine_price}{$combine_price}{else:}{$sell_price}{/if}</div>
         		      </div>
         		    </div>
         	      </div>
         	   </a>
         	</li>
-
+            {foreach:$items=$this->mobileCombine['goodsList'] item=$goods}
+            {if:$key < 2}
         	<li class="add_init"><img src="{skin:images/match_sale/sale_add.png}" alt="加"></li>
 
-      	  <li><a href="#">
+      	    <li><a href="{url:/site/products/id/$goods[id]}">
         		  <div class="intro_box">
         		  	<div class="intro_img">
-        		  <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="">
+        		  <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" width="150" height="150" alt="">
         		      <div class="int_numbers">
-                        <div class="int_price">¥6666</div>
+                        <div class="int_price">¥{if:$goods['combine_price']}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</div>
         		      </div>
         		    </div>
         	      </div>
         	   </a>
         	</li>
-          
-           <li class="add_init"><img src="{skin:images/match_sale/sale_add.png}" alt="加"></li>
-
-        	<li><a href="#">
-        		  <div class="intro_box">
-        		  	<div class="intro_img">
-        		  <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="更多">
-        		      <div class="int_numbers">
-                        <div class="int_price">¥6666</div>
-        		      </div>
-        		    </div>
-        	      </div>
-        	   </a>
-        	</li>
-
-
-
-
-      
-
+            {/if}
+            {/foreach}
         </ul>
 
 
@@ -269,7 +258,7 @@
 
 
 </div>
-
+{/if}
 <!-- 组合套餐end -->
 
 

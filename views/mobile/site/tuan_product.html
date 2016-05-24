@@ -6,7 +6,7 @@
 	$seo_data['keywords']=$keywords;
 	$seo_data['description']=$description;
 	seo::set($seo_data);
-	$promotion=Api::run('getProrule');
+	$promotion=Api::run('getProrule', $id);
 	$show_cart=0;
 	$tuan_price = $this->tuanData['regiment_price'];
 }

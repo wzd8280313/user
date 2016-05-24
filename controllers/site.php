@@ -88,6 +88,31 @@ class Site extends IController
 		}
 		echo $promData ? JSON::encode($promData) : 0;
 	}
+    
+    //手机团购页面
+    public function mobileTuangou()
+    {
+        $this->logoUrl = 'images/tglogo.png';
+        $this->tuangou = 1;
+        $this->todayList = array();
+        $this->brandList = array();
+         $tuan = new IQuery('regiment as r');
+        $tuan->join = 'left join goods as g on r.goods_id=g.id';
+        $tuan->fields = 'r.*';
+        $tuan->where = 'r.is_close = 0 AND NOW() between r.start_time and r.end_time and g.is_del=0';
+        $tuan->order = 'r.sort asc';
+        $tuan->limit = 11;
+        $tuanList = $tuan->find();
+        $this->count = count($tuanList);
+        if($this->count>2){
+            $this->todayList = array(array_shift($tuanList),array_shift($tuanList));
+            $this->brandList = $tuanList;
+        }else{
+            $this->todayList = $tuanList;
+        }
+        $this->redirect('tuangou',false);
+    }
+    
 	//团购页面
 	public function tuangou(){
 		$this->logoUrl = 'images/tglogo.png';
@@ -463,6 +488,7 @@ class Site extends IController
             }   
         }                       
         $this->combineList = $combineList;
+        $this->goodsImg = current($goods_info['photo']);
         $this->setRenderData($goods_info);
         $this->redirect('tuan_product');
         
@@ -982,7 +1008,6 @@ class Site extends IController
 		$tb_tag->fields = 't.name,t.img';
 		$tb_tag->limit = 5;
 		$goods_info['tag_data'] = $tb_tag->find();
-		
 		//获取商家信息
 		if($goods_info['seller_id'])
 		{
@@ -1023,8 +1048,13 @@ class Site extends IController
             {
                 unset($combineList[$k]);
             }   
+        }
+        if(!empty($combineList))
+        {
+            $this->mobileCombine = $combineList[0]; 
         }                        
         $this->combineList = $combineList;
+        $this->goodsImg = current($goods_info['photo']);
 	//	print_r($goods_info);
 	//	print_r($specArray);
 		$this->setRenderData($goods_info);
@@ -1784,6 +1814,28 @@ class Site extends IController
     }
 	function match_sale()
     {
+        $goods_id = IFilter::act(IReq::get('id'), 'int');
+        $combine = new IModel('combine_goods');
+        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
+        $tb_goods = new IModel('goods');
+        foreach($combineList as $k => $v)
+        {
+            if(!$v['combine'])
+            {
+                unset($combineList[$k]);
+                continue;
+            }
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
+            if($goodsList)
+            {
+                $combineList[$k]['goodsList'] = $goodsList;
+            }
+            else
+            {
+                unset($combineList[$k]);
+            }   
+        }
+        $this->combineList = $combineList;
         $this->redirect('match_sale');
     }
     

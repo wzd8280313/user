@@ -206,7 +206,9 @@
 	<div id="topPriceHistroyDiv">
 		<div class="cx">
 			{foreach:items=$promotion}
+            {if:$item['hide'] <> 1}
 			<span>{$item['plan']}</span><p>{$item['info']}</p>
+            {/if}
 			{/foreach}
 		</div>
 	</div>
@@ -221,5 +223,27 @@
 		<div style="text-align:center;">
 			<a  href="javascript:void(0)" style="border: 2px solid #845959;padding: 2px 10px;color: #000;" onclick="show_comments_list($('[name=pingjia]'))">查看更多</a>
 		</div>
-	</div>上腾娱乐
+	</div>
+    <div class="history">
+    <h3 class="tit">服务</h3>
+    <!--介绍内容-->
+    <div id="topPriceHistroyDiv">
+        <div class="fw">
+
+
+        <div class="qq-login">
+            <a href="" class="fw"><i>服务承诺</i><p>服务承诺</p>
+            </a>
+            <a  href="" class="fh"><i>按时发货</i><p>按时发货</p>
+            </a>
+            <a  href="" class="th"><i>七天无理由退还</i><p>七天无理由退还</p>
+            </a>
+              <a  href="" class="pz"><i>品质保障</i><p>品质保障</p>
+            </a>
+        </div>        
+    </div>
+    <div style="clear: both;"></div>
+    <!--<p><img src="images/li10.jpg" alt=""></p> -->
+</div>
+</div>
 </div>
