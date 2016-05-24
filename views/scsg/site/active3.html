@@ -24,7 +24,7 @@
                 
             </div>
          </div>
-     <div id="content" style="background: red;" >
+     <div id="content" style="background: {$main};" >
      {foreach:items=$this->groupDetail}
     <div class="sct item">
         <div class="hd3">
@@ -64,9 +64,9 @@
 </div>
 </div>           
 
-    <div id="menu" style="color: #F5F5F5;display: none;background: red;">
+    <div id="menu" style="color: #F5F5F5;display: none;background: {$float};">
         <div class="rutn_top">
-            <div class="fale_top_img"><span>新年特惠</span><img src="{webroot:$floatimage}"/></div>
+            <div class="fale_top_img"><span>{$description}</span><img src="{webroot:$floatimage}"/></div>
         </div>
         <ul>
         {foreach:items=$this->group} 

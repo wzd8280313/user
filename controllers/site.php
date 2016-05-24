@@ -1474,7 +1474,7 @@ class Site extends IController
 	}
     
     /**
-     * @brief 商品添加中图片上传的方法
+     * @brief 评论图片上传的方法
      */
     public function comment_img_upload()
     {
@@ -1483,6 +1483,7 @@ class Site extends IController
 
          //调用文件上传类
         $photoObj = new PhotoUpload();
+        $uploadObj->setIterance(false);
         $photo    = current($photoObj->run());  
         //判断上传是否成功，如果float=1则成功
         if($photo['flag'] == 1)
@@ -1792,6 +1793,11 @@ class Site extends IController
         $id = IFilter::act(IReq::get('id'), 'int');
         $active = new IModel('active');
         $detail = $active->getObj('id='.$id);
+        if(!$detail)
+        {
+            IError::show(403,"活动不存在");
+            exit;
+        }
         $para = JSON::decode($detail['extendpara']);
         $detail['top'] = isset($para['top']) ? $para['top'] : '';
         $detail['main'] = isset($para['main']) ? $para['main'] : '';

@@ -766,27 +766,21 @@ class Member extends IController
 		);
 
 		//商户资质上传
-		if(isset($_FILES['paper_img']['name']) && $_FILES['paper_img']['name'])
+		if((isset($_FILES['paper_img']['name']) && $_FILES['paper_img']['name']) || (isset($_FILES['logo_img']['name']) && $_FILES['logo_img']['name']))
 		{
 			$uploadObj = new PhotoUpload();
 			$uploadObj->setIterance(false);
 			$photoInfo = $uploadObj->run();
-			if(isset($photoInfo['paper_img']['img']) && file_exists($photoInfo['paper_img']['img']))
-			{
-				$sellerRow['paper_img'] = $photoInfo['paper_img']['img'];
-			}
+			
 		}
-		
+		if(isset($photoInfo['paper_img']['img']) && file_exists($photoInfo['paper_img']['img']))
+        {
+            $sellerRow['paper_img'] = $photoInfo['paper_img']['img'];
+        }
 		//商户logo上传
-		if(isset($_FILES['logo_img']['name']) && $_FILES['logo_img']['name'])
+		if(isset($photoInfo['logo_img']['img']) && file_exists($photoInfo['logo_img']['img']))
 		{
-			$uploadObj = new PhotoUpload();
-			$uploadObj->setIterance(false);
-			$photoInfo = $uploadObj->run();
-			if(isset($photoInfo['logo_img']['img']) && file_exists($photoInfo['logo_img']['img']))
-			{
-				$sellerRow['logo_img'] = $photoInfo['logo_img']['img'];
-			}
+			$sellerRow['logo_img'] = $photoInfo['logo_img']['img'];
 		}
 
 		//添加新会员

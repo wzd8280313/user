@@ -21,7 +21,7 @@
 
 <!--floor滚动开始-->
 <div id="active">
-    <ul class="daoha" style="border: 3px solid {$main};background-color: {$main};color: #fff;">
+    <ul class="daoha" style="border: 3px solid {$float};background-color: {$float};color: #fff;">
         <li class="hce_top act">
         <img src="{webroot:$floatimage}" alt=""></li>
         {set:$k=0} 
@@ -33,7 +33,7 @@
     </ul>
 </div>
 
-<div id="content" style="background-color: {$float}">
+<div id="content" style="background-color: {$main}">
 {foreach:items=$this->groupDetail}
     <div class="item" >
         <!--图片列表开始-->

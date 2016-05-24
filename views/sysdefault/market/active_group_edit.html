@@ -1,7 +1,7 @@
 {js:artTemplate}
 <script type="text/javascript" src="{theme:javascript/event.js}"></script>
 <script type="text/javascript" src="{theme:javascript/jquery-1.7.2.js}"></script>
-
+{set:$type=$this->type}
 <div class="headbar">
     <div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>{if:isset($id)}编辑{else:}添加{/if}活动分组</span>
     <button onclick="history.go(-1)">返回</button>
@@ -20,6 +20,7 @@
                     <td><input type='text' class='normal' name='group_name' pattern='required' alt='请填写分组名称' value="{$group_name}"/><label>*
                         填写分组名称</label></td>
                 </tr>
+                {if:$type <> 4}
                 <tr>
                     <th>设置分组图片：</th>
                     <td>
@@ -35,6 +36,7 @@
 
                     </td>
                 </tr>
+                {if:$type==3}
                 <tr>
                     <th>设置分组图片2：</th>
                     <td>
@@ -46,9 +48,11 @@
                             </div>
                             <input type="file" name="overimage"/>
                         </div>
-                        <label>用于鼠标滑过或定位当前位置显示的图片</label>
+                        <label>用于定位当前位置显示的图片</label>
                     </td>
                 </tr>
+                {/if}
+                {/if}
                 <tr>
                     <th>选择分组商品：</th>
                     <td>
@@ -88,6 +92,7 @@
                         </table>
                     </td>
                 </tr>
+                {if:$type==2}
                 <tr>
                     <th>链接地址：</th>
                     <td>
@@ -95,6 +100,7 @@
 
                     </td>
                 </tr>
+                {/if}
                 <tr>
                     <th>简单描述：</th>
                     <td>

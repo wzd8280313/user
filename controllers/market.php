@@ -829,6 +829,7 @@ class Market extends IController
 			if(isset($_FILES['img']['name']) && $_FILES['img']['name'] != '')
 			{
 				$uploadObj = new PhotoUpload();
+                $uploadObj->setIterance(false);
 				$photoInfo = $uploadObj->run();
 				$dataArray['img'] = $photoInfo['img']['img'];
 			}
@@ -1238,8 +1239,7 @@ class Market extends IController
         $id = IFilter::act(IReq::get('id'),'int');                  
         $name = IFilter::act(IReq::get('name'), 'string');
         $type = IReq::get('type');
-        $status = IFilter::act(IReq::get('status','post'));
-        $link = IFilter::act(IReq::get('link','post'));
+        $status = IFilter::act(IReq::get('status','post'));  
         $desc = IFilter::act(IReq::get('desc','post'));
         $top = IFilter::act(IReq::get('top','post'));
         $main = IFilter::act(IReq::get('main','post'));
@@ -1255,27 +1255,28 @@ class Market extends IController
             'description'   => $description,          
             'time'          => ITime::getNow('Y-m-d H:i:s')
         );
+        
         //处理上传图片
-        if(isset($_FILES['seoimage']['name']) && $_FILES['seoimage']['name'] != '')
+        if((isset($_FILES['seoimage']['name']) && $_FILES['seoimage']['name'] != '') || (isset($_FILES['topImage']['name']) && $_FILES['topImage']['name'] != '') || (isset($_FILES['floatimage']['name']) && $_FILES['floatimage']['name'] != ''))
         {
             $uploadObj = new PhotoUpload();
+            $uploadObj->setIterance(false);
             $photoInfo = $uploadObj->run();
-            $dataArray['seoimage'] = $photoInfo['seoimage']['img'];
         } 
-        if(isset($_FILES['topImage']['name']) && $_FILES['topImage']['name'] != '')
+        if(isset($photoInfo['seoimage']['img']) && file_exists($photoInfo['seoimage']['img']))
+        {   
+            $dataArray['seoimage'] = $photoInfo['seoimage']['img'];
+        }
+        if(isset($photoInfo['topImage']['img']) && file_exists($photoInfo['topImage']['img']))
         {
-            $uploadObj = new PhotoUpload();
-            $photoInfo = $uploadObj->run();
             $para['topImage'] = $photoInfo['topImage']['img'];
         }
         else
         {
             $para['topImage'] = IReq::get('topImage');
         }
-        if(isset($_FILES['floatimage']['name']) && $_FILES['floatimage']['name'] != '')
+        if(isset($photoInfo['floatimage']['img']) && file_exists($photoInfo['floatimage']['img']))
         {
-            $uploadObj = new PhotoUpload();
-            $photoInfo = $uploadObj->run();
             $para['floatimage'] = $photoInfo['floatimage']['img'];
         }
         else
@@ -1284,8 +1285,7 @@ class Market extends IController
         }
         $para['top'] = $top;
         $para['main'] = $main;
-        $para['float'] = $float;
-        $para['link'] = $link;
+        $para['float'] = $float;   
         $dataArray['extendpara'] = JSON::encode($para);
         $active = new IModel('active');
         $active->setData($dataArray);
@@ -1300,7 +1300,56 @@ class Market extends IController
             $active->add();
         }
         $this->redirect('active_list');
-    }  
+    }
+    
+    public function active_del()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');
+        if($id)
+        {
+            $active = new IModel('active');
+
+            if(is_array($id))
+            {
+                $idStr = join(',',$id);
+                $where = ' id in ('.$idStr.')';
+                //该活动下分组
+                $gdWhere = ' active_id in ('.$idStr.')';
+                $gsWhere = array('active_id' => $idStr);
+            }
+            else
+            {
+                $where  = 'id = '.$id;
+                //该活动下分组
+                $gdWhere  = 'active_id = '.$id;
+                $gsWhere  = array('active_id' => $id);
+            }
+            $res = $active->del($where);
+            if($res)
+            {
+                $group = new IModel('active_group');
+                $groupList = $group->getFields($gsWhere, 'id');
+                $group->del($gdWhere);
+                if($groupList)
+                {
+                    $groups = join(',', $groupList);
+                    $groupGoods = new IModel('group_goods');
+                    $groupGoods->del('group_id in ('.$groups.')');
+                }
+                $this->redirect('active_list');
+            }
+            else
+            {
+                $this->redirect('active_list',false);
+                Util::showMessage('系统错误');
+            }
+        }
+        else
+        {
+            $this->redirect('active_list',false);
+            Util::showMessage('请选择要删除的活动');
+        }
+    } 
     
     function active_group_edit()
     {
@@ -1317,12 +1366,22 @@ class Market extends IController
             $goods->join = "left join goods as g on gg.goods_id = g.id";
             $goods->where = "gg.group_id = ".$id;
             $goods->fields = "gg.*,g.name,g.img,g.is_del";
-            $goodsList = $goods->find(); 
+            $goodsList = $goods->find();
+            $active = new IModel('active');
+            $activeType = $active->getField('id='.$detail['active_id'], 'type');
         }
-        if($active_id)
+        elseif($active_id)
         {
             $detail['active_id'] = $active_id;
-        }                          
+            $active = new IModel('active');
+            $activeType = $active->getField('id='.$active_id, 'type');
+        }
+        else
+        {
+            $this->redirect('active_group',false);
+            Util::showMessage('缺少参数');
+        }
+        $this->type = $activeType;                          
         $this->goodsList = $goodsList;                   
         $this->setRenderData($detail);
         $this->redirect('active_group_edit');
@@ -1349,16 +1408,18 @@ class Market extends IController
                          'sort' => $sort,
                         );
         //处理上传图片
-        if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != '')
+        if((isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') || (isset($_FILES['overimage']['name']) && $_FILES['overimage']['name'] != ''))
         {
             $uploadObj = new PhotoUpload();
+            $uploadObj->setIterance(false);
             $photoInfo = $uploadObj->run();
+        }
+        if(isset($photoInfo['image']['img']) && file_exists($photoInfo['image']['img']))
+        {
             $dataArray['image'] = $photoInfo['image']['img'];
         }
-        if(isset($_FILES['overimage']['name']) && $_FILES['overimage']['name'] != '')
+        if(isset($photoInfo['overimage']['img']) && file_exists($photoInfo['overimage']['img']))
         {
-            $uploadObj = new PhotoUpload();
-            $photoInfo = $uploadObj->run();
             $dataArray['overimage'] = $photoInfo['overimage']['img'];
         }
         $active_group = new IModel('active_group');
@@ -1389,4 +1450,45 @@ class Market extends IController
          } 
          $this->redirect('active_group/id/'.$active_id); 
     }
+    
+    public function active_group_del()
+    {
+        $id = IFilter::act(IReq::get('id'),'int');
+        if($id)
+        {
+            $group = new IModel('active_group');
+
+            if(is_array($id))
+            {
+                $idStr = join(',',$id);
+                $where = ' id in ('.$idStr.')';
+                //该分组下商品
+                $gWhere = ' group_id in ('.$idStr.')';
+            }
+            else
+            {
+                $where  = 'id = '.$id;
+                //该分组下商品
+                $gWhere  = 'group_id = '.$id;
+            }
+            $active_id = $group->getField($where, 'active_id');
+            $res = $group->del($where);
+            if($res)
+            {
+                $groupGoods = new IModel('group_goods');
+                $groupGoods->del($gWhere);
+                $this->redirect('active_group/id/'.$active_id);
+            }
+            else
+            {
+                $this->redirect('active_group',false);
+                Util::showMessage('系统错误');
+            }
+        }
+        else
+        {
+            $this->redirect('active_group',false);
+            Util::showMessage('请选择要删除的分组');
+        }
+    } 
 }

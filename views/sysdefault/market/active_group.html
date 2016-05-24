@@ -48,7 +48,7 @@ $aId = IFilter::act(IReq::get('id'),'int')
 
 <div class="content">
 
-	<form method='post' action='{url:/market/active_del}' name='active_del'>
+	<form method='post' action='{url:/market/active_group_del}' name='active_group_del'>
 		<table class="list_table">
 			<colgroup>
 				<col width="40px" />
@@ -63,7 +63,7 @@ $aId = IFilter::act(IReq::get('id'),'int')
 				{query:name=active_group as ag join=LEFT JOIN active as a on ag.active_id eq a.id fields=ag.*,a.name order=sort asc,id desc page=$page where=$where}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
-					<td><a href='{url:/site/tuan_product/active/$item[id]}' target='_blank' class="orange" title="{$item['name']}">{$item['name']}</a></td>
+					<td><a href='{url:/site/active/id/$item[active_id]}' target='_blank' class="orange" title="{$item['name']}">{$item['name']}</a></td>
 					<td>{$item['group_name']}</td>
 					<td>{$item['sort']}</td>
 					<td>

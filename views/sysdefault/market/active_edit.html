@@ -1,7 +1,30 @@
 {js:artTemplate}
 <script type="text/javascript" src="{theme:javascript/event.js}"></script>
 <script type="text/javascript" src="{theme:javascript/jquery-1.7.2.js}"></script>
-
+{set:$t=isset($type) ? $type : 0}
+<script type="text/javascript">
+    $(function(){
+        var _t = {$t};
+        selfShow(_t);
+        
+        $('input[name=type]').each(function(){
+            $(this).click(function(){
+                selfShow($(this).val());
+            })
+        })
+    })
+    function selfShow(_t)
+    {
+        if(_t == 1)
+        {
+            $('.js_set_show').hide();
+        }
+        else
+        {
+            $('.js_set_show').show();
+        }
+    }
+</script>
 <div class="headbar">
     <div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>{if:isset($id)}编辑{else:}添加{/if}活动</span>
     </div>
@@ -20,7 +43,7 @@
                 </tr>
                 <tr>
                     <th>活动类型</th>
-                    <td>
+                    <td class="js_type">
                         <label class='attr'><input type="radio" name="type" value="1" {if:isset($type) && $type == 1} checked="checked" {/if}/>活动一</label>
                         <label class='attr'><input type="radio" name="type" value="2" {if:isset($type) && $type == 2} checked="checked" {/if}/>活动二</label>
                         <label class='attr'><input type="radio" name="type" value="3" {if:isset($type) && $type == 3} checked="checked" {/if}/>活动三</label>
@@ -49,11 +72,11 @@
                             <input type="file" name="seoimage"/>
 
                         </div>
-
+                        <label style="color: red;">用于其他活动页面宣传</label>
                     </td>
                 </tr>
                 <!--增加顶部图片上传  -->
-                <tr>
+                <tr class="js_set_show" {if:$t==1} style="display:none" {/if}>
                     <th>设置顶部图片：</th>
                     <td>
                         <div class="total_wid_">
@@ -69,7 +92,7 @@
 
                     </td>
                 </tr>
-                <tr>
+                <tr class="js_set_show" {if:$t==1} style="display:none" {/if}>
                     <th>设置顶部背景颜色：</th>
                     <td><input type="text" name="top" class="normal" value="{$top}"></td>
                 </tr>
@@ -80,13 +103,6 @@
                 <tr>
                     <th>设置浮动框背景颜色：</th>
                     <td><input type="text" name="float" class="normal" value="{$float}"></td>
-                </tr>
-                <tr>
-                    <th>顶部图片链接：</th>
-                    <td>
-                        <input type="text" name="link" class='normal' alt='请填写链接地址' value="{$link_url}">
-
-                    </td>
                 </tr>
                 <tr>
                     <th>浮动图片：</th>
@@ -106,7 +122,7 @@
                 <tr>
                     <th>简单描述：</th>
                     <td>
-                        <input type='text' class='small' name='description' value="{$description}"/><label>限制50个字</label>
+                    <textarea name='description' cols="" rows="">{$description}</textarea><label>限制50个字</label>
                     </td>
                 </tr>
                 <tr>

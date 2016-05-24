@@ -98,15 +98,20 @@
              </div>
              {/foreach}
         </div>
-    <div id="menu">
-        <div class="rutn_top" style="background:#9f0e13; ">
-            <div class="fale_top_img"><span>新年特惠</span><img src="images/erm.jpg"/></div>
+    <div id="menu" style="background:{$float}; ">
+        <div class="rutn_top">
+            <div class="fale_top_img"><span>{$description}</span><img src="{webroot:$floatimage}"/></div>
         </div>
-        <ul style="background-color: #9f0e13;color: #fff;">
-            <li><a href="#item1" class="cur"><span class="mui-act-lateralNav-ico  icon-map-marker"></span>超级爆款</a></li>
-            <li><a href="#item2"><span class="mui-act-lateralNav-ico  icon-map-marker"></span>超级爆款</a></li>
+        <ul>
+            {set:$k=0}
+            {foreach:items=$this->group}
+                {set:$k++}
+                <li><a style="color: #FFF;" href="#item{$k}" {if:$key == 0} class="cur" {/if}><span class="mui-act-lateralNav-ico  icon-map-marker"></span>{$item['group_name']}</a></li> 
+            {/foreach}
+            <!--<li><a href="#item1" class="cur"><span class="mui-act-lateralNav-ico  icon-map-marker"></span>超级爆款</a></li>
+            <li><a href="#item2"><span class="mui-act-lateralNav-ico  icon-map-marker"></span>超级爆款</a></li>-->
         </ul>
         <div class="rutn_top">
-            <a href="#"><span class="icon-angle-up"></span><p>返回顶部</p></a>
+            <a href="#"><span class="icon-angle-up"></span><p style="color: #FFF;">返回顶部</p></a>
         </div>
     </div> 
