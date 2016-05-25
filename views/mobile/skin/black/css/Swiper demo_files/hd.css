@@ -220,25 +220,4 @@ background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAA8AQMAAACU1
 	border:0;
 	
 }
-/*活动页面*/
-.line-height{
-	display: block;
-	line-height: 44px;
-}
-.gd_bottom{
-	margin:15px 0;
-	border-top: 1px solid #eee; 
-	border-bottom: 1px solid #eee;
-	text-align: center; 
-}
-.top_img img{
-	width: 100%;
-}
-.ul_conter .shop_lj{
-	display: block;
-/*	margin: 5px 10px;*/
-	line-height: 25px;
-	background: #ed1b24;
-	color: #fff !important;
-	text-align: center;
-}
+
