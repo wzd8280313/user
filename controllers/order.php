@@ -817,7 +817,6 @@ class Order extends IController
     	$dataArray['mobile']        = IFilter::act(IReq::get('mobile'));
     	$dataArray['discount']      = IFilter::act(IReq::get('discount'),'float');
     	$dataArray['postscript']    = IFilter::act(IReq::get('postscript'));
-    	$dataArray['distribution']  = IFilter::act(IReq::get('distribution'),'int');
     	$dataArray['accept_time']   = IFilter::act(IReq::get('accept_time'));
 
 		$goods_id   = IFilter::act(IReq::get('goods_id'));

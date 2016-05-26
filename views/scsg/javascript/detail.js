@@ -135,7 +135,8 @@ function Spec_show(){
 				$('#price_panel').html(priceHtml);
 				//普通货品数据渲染
                 $('#product_id').val(json.data.id);
-				$('.js_point_core').html(json.data.point);
+                $('.js_point_core').html(json.data.point);
+				$('#data_weight').html(json.data.weight);
 				get_delivery_fee();
 			}
 			

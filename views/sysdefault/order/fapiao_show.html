@@ -88,10 +88,11 @@
 						<input type='text' {if:$fapiao['status']==1}disabled{/if} max-value="{$fapiao['money']}" value="{$fapiao['money']}" pattern='^[0-9]+.?[0-9]{0,2}$' name='money' alt='请正确填写金额'/>
 					</td>
 				</tr>
-		
+		        {if:$fapiao['status'] == 0}
 				<tr>
 					<td colspan="2"><button type="submit" class="submit" onclick='return checkForm()'><span>开票</span></button></td>
 				</tr>
+                {/if}
 			</tbody>
 		</table>
 	</form>

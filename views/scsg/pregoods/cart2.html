@@ -202,9 +202,9 @@ function get_delivery()
                 _in++;
         })                
     })
-    if(!!_d)
+    if(_d.length > 0)
     {
-        for(var i = 0; i < _d; i ++){
+        for(var i = 0; i < _d.length; i ++){
             $("#js_data_"+_d[i]).show();
         }
         

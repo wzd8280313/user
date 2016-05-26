@@ -353,7 +353,10 @@ class Ucenter extends IController
                                 $ids[] = $v['id'];
                             }
                         }
-                        Order_Class::updateStore($ids, 'add');
+                        if($ids)
+                        {
+                            Order_Class::updateStore($ids, 'add');
+                        }
                     }
 				}
 			}
@@ -685,12 +688,12 @@ class Ucenter extends IController
         			Order_Class::order_status_refunds(0,$goodsOrderRow,$type);
         		}
         		Order_Class::ordergoods_status_refunds(0,$goodsOrderRow,$type);
-                /*$good = new IModel('goods');
+                $good = new IModel('goods');
                 $temp = $good->getField('id = '.$goodsOrderRow['goods_id'], 'store_type');
                 if($temp == 1 && $goodsOrderRow['is_change'] == 1)
                 {
                     Order_Class::updateStore($order_goods_id, 'add');
-                }*/
+                }
         		$this->redirect('/site/success');
         		exit;
         	
@@ -2013,6 +2016,23 @@ class Ucenter extends IController
     						$prop->setData(array('is_close'=>0));
     						$prop->update('id='.$prop_id);
     					}
+                        //修改库存
+                        $og = new IModel('order_goods');
+                        $goods = $og->query('order_id='.$id.' and is_change = 1', 'id,goods_id');
+                        if($goods)
+                        {
+                            $gd = new IModel('goods');
+                            $ids = array();
+                            foreach($goods as $v)
+                            {
+                                $temp = $gd->getObj('id='.$v['goods_id'],'store_type');
+                                if($temp['store_type']==1)
+                                {
+                                    $ids[] = $v['id'];
+                                }
+                            }
+                            Order_Class::updateStore($ids, 'add');
+                        }
     				}
     			}
     			break;

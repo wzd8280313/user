@@ -678,7 +678,7 @@ class Goods extends IController
      {
          $key = $_GET['_v'];
          $exp = $_GET['_exp'];
-         $seller_id = $_GET['seller_id'] ? $_GET['seller_id'] : 0;
+         $seller_id = isset($_GET['seller_id']) ? $_GET['seller_id'] : 0;
          $handle = new IQuery('goods');
          $handle->order    = "sort asc,id desc";
          $handle->fields   = "id,name";
@@ -757,6 +757,10 @@ class Goods extends IController
         $combine = $ids ? implode(',', $ids) : ''; 
 
         $tb = new IModel('combine_goods');
+        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id))
+        {
+            exit('该商品已添加同名组合');
+        }
         $info = array(
             'name'      => $name,
             'goods_id' => $goods_id,

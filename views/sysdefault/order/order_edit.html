@@ -90,16 +90,6 @@
 
 				<tbody>
 					<tr>
-						<th>配送方式：</th>
-						<td>
-							<select name="distribution" pattern="required" alt="请选择配送方式" class="normal">
-								{query:name=delivery where=is_delete eq 0}
-								<option value="{$item['id']}">{$item['name']}</option>
-								{/query}
-							</select>
-						</td>
-					</tr>
-					<tr>
 						<th>支付方式：</th>
 						<td>
 							<select name="pay_type" pattern="required" alt="请选择配送方式" class="normal">

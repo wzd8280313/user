@@ -752,7 +752,8 @@ class Market extends IController
 	function regiment_edit_act()
 	{
 		$id      = IFilter::act(IReq::get('id'),'int');
-		$goodsId = IFilter::act(IReq::get('goods_id'),'int');
+        $goodsId = IFilter::act(IReq::get('goods_id'),'int');
+		$productId = IFilter::act(IReq::get('product_id','post'),'int');
 		                                     
         $regimentObj = new IModel('regiment');
 		$dataArray = array(
@@ -762,7 +763,7 @@ class Market extends IController
 			'is_close'      => IFilter::act(IReq::get('is_close','post')),
 			'intro'     	=> IFilter::act(IReq::get('intro','post')),
 			'goods_id'      => $goodsId,
-			'product_id'    => IFilter::act(IReq::get('product_id','post'),'int'),
+			'product_id'    => $productId,
 			'store_nums'    => IFilter::act(IReq::get('store_nums','post')),
 			'limit_min_count' => IFilter::act(IReq::get('limit_min_count','post'),'int'),
 			'limit_max_count' => IFilter::act(IReq::get('limit_max_count','post'),'int'),
@@ -837,8 +838,16 @@ class Market extends IController
 			{
 				$dataArray['img'] = $goodsRow['img'];
 			}
-
-			$dataArray['sell_price'] = $goodsRow['sell_price'];
+            if($productId)
+            {
+                $productObj = new IModel('products');
+                $dataArray['sell_price'] = $productObj->getField('id='.$productId, 'sell_price');
+            }
+            else
+            {
+                $dataArray['sell_price'] = $goodsRow['sell_price'];
+            }
+			
 		}
 		else
 		{

@@ -103,6 +103,7 @@ class Preorder_Class extends Order_Class{
 		if($pay_type==1){//货到付款，余额支付退款到余额
 			$obj = new IModel('member');
 			$isSuccess = $obj->addNum('user_id = '.$user_id,array('balance'=>$amount));
+            $obj->commit();
 			if($isSuccess)
 			{
 				//用户余额进行的操作记入account_log表
@@ -149,6 +150,10 @@ class Preorder_Class extends Order_Class{
 	
 		$order_goods_id = $orderGoodsRow['id'];
 	
+        if($orderGoodsRow['is_change'] == 1)
+        {
+            self::updateStore($order_goods_id,'add');
+        }
 		
 		//更新退款状态，改为已退货
 		$orderGoodsDB->setData(array('is_send' => 2));
@@ -346,8 +351,8 @@ class Preorder_Class extends Order_Class{
 					'pay_status' => 2
 			);
 		}
-	    //非货到付款的支付方式 
-        if($orderRow['pay_type'] != 0 && $orderRow['pay_status'] == 2)
+	    //非货到付款的支付方式
+        if($orderRow['pay_type'] != 0 && $orderRow['pay_status'] == 1)
         {
             //减少库存量
             $orderGoodsDB = new IModel('order_goods');
@@ -478,9 +483,7 @@ class Preorder_Class extends Order_Class{
 		ksort($result);
 		return $result;
 	}
-	
-
-	
+    
 	/**
 	 * @brief 商品发货接口
 	 * @param string $order_id 订单id

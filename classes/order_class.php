@@ -379,59 +379,62 @@ class Order_Class
 	 */
 	public static function updateStore($orderGoodsId,$type = 'add')
 	{
-		$newStoreNums  = 0;
-		$updateGoodsId = array();
-		$orderGoodsObj = new IModel('order_goods');
-		$goodsObj      = new IModel('goods');
-		$productObj    = new IModel('products');
-		if(!is_array($orderGoodsId))$orderGoodsId = array($orderGoodsId);
-		$goodsList     = $orderGoodsObj->query('id in('.join(",",$orderGoodsId).') and is_send = 0','goods_id,product_id,goods_nums');
-		foreach($goodsList as $key => $val)
-		{
-			//货品库存更新
-			if($val['product_id'] != 0)
-			{
-				$productsRow = $productObj->getObj('id = '.$val['product_id'],'store_nums');
-				$localStoreNums = $productsRow['store_nums'];
+        if($orderGoodsId)
+        {
+		    $newStoreNums  = 0;
+		    $updateGoodsId = array();
+		    $orderGoodsObj = new IModel('order_goods');
+		    $goodsObj      = new IModel('goods');
+		    $productObj    = new IModel('products');
+		    if(!is_array($orderGoodsId))$orderGoodsId = array($orderGoodsId);
+		    $goodsList     = $orderGoodsObj->query('id in('.join(",",$orderGoodsId).') and is_send = 0','goods_id,product_id,goods_nums');
+		    foreach($goodsList as $key => $val)
+		    {
+			    //货品库存更新
+			    if($val['product_id'] != 0)
+			    {
+				    $productsRow = $productObj->getObj('id = '.$val['product_id'],'store_nums');
+				    $localStoreNums = $productsRow['store_nums'];
 
-				//同步更新所属商品的库存量
-				if(!isset($updateGoodsId[$val['goods_id']])){$updateGoodsId[$val['goods_id']] = 0;}
-				$updateGoodsId[$val['goods_id']] += $val['goods_nums'];
-				
+				    //同步更新所属商品的库存量
+				    if(!isset($updateGoodsId[$val['goods_id']])){$updateGoodsId[$val['goods_id']] = 0;}
+				    $updateGoodsId[$val['goods_id']] += $val['goods_nums'];
+				    
 
-				$newStoreNums = ($type == 'add') ? $localStoreNums + $val['goods_nums'] : $localStoreNums - $val['goods_nums'];
-				$newStoreNums = $newStoreNums > 0 ? $newStoreNums : 0;
+				    $newStoreNums = ($type == 'add') ? $localStoreNums + $val['goods_nums'] : $localStoreNums - $val['goods_nums'];
+				    $newStoreNums = $newStoreNums > 0 ? $newStoreNums : 0;
 
-				$productObj->setData(array('store_nums' => $newStoreNums));
-				$productObj->update('id = '.$val['product_id'],'store_nums');
-				
-			}
-            else{
-                
-                if(!isset($updateGoodsId[$val['goods_id']]))$updateGoodsId[$val['goods_id']] = 0;
-                $updateGoodsId[$val['goods_id']] += $val['goods_nums'];
-                
-            }
-		}
-		//更新统计goods的库存
-		if($updateGoodsId)
-		{
-			$table = $goodsObj->getTableName();
-			foreach($updateGoodsId as $key=>$val)
-			{
-				if($type=='add'){
-					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` +  '.$val.', sale = sale - '.$val.' where id = '.$key;
-                    $orderGoodsObj->setData(array('is_change'=>0));
-                    $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
-				}else{
-					$sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` -  '.$val.', sale = sale + '.$val.' where id = '.$key;
-                    $orderGoodsObj->setData(array('is_change'=>1));
-                    $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
-				}
-				$goodsObj->db_query($sql);
-				
-			}
-		}
+				    $productObj->setData(array('store_nums' => $newStoreNums));
+				    $productObj->update('id = '.$val['product_id'],'store_nums');
+				    
+			    }
+                else{
+                    
+                    if(!isset($updateGoodsId[$val['goods_id']]))$updateGoodsId[$val['goods_id']] = 0;
+                    $updateGoodsId[$val['goods_id']] += $val['goods_nums'];
+                    
+                }
+		    }
+		    //更新统计goods的库存
+		    if($updateGoodsId)
+		    {
+			    $table = $goodsObj->getTableName();
+			    foreach($updateGoodsId as $key=>$val)
+			    {
+				    if($type=='add'){
+					    $sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` +  '.$val.', sale = sale - '.$val.' where id = '.$key;
+                        $orderGoodsObj->setData(array('is_change'=>0));
+                        $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
+				    }else{
+					    $sql = ' UPDATE '.$table.' set `store_nums` = `store_nums` -  '.$val.', sale = sale + '.$val.' where id = '.$key;
+                        $orderGoodsObj->setData(array('is_change'=>1));
+                        $orderGoodsObj->update('id in('.join(",",$orderGoodsId).')', 'is_change');
+				    }
+				    $goodsObj->db_query($sql);
+				    
+			    }
+		    }
+        }
 	}
 
 	/**
@@ -731,7 +734,7 @@ class Order_Class
 				    $insert_id = $orderGoodsObj->add(true);
                     $temp = $good->getField('id = '.$val['goods_id'], 'store_type');
                     //下单就减少库存或者支付方式为货到付款的时候下单就减少库存
-                    if($temp == 1 || $payment == 0)
+                    if($temp == 1)
                     {
                         $orderGoodsListId[] = $insert_id;
                     }
@@ -1176,11 +1179,11 @@ class Order_Class
 		$tbOrderRow = $tb_order->getObj('id = '.$order_id);
 
 		//如果支付方式为货到付款，则减少库存
-		/*if($tbOrderRow['pay_type'] == 0)
+		if($tbOrderRow['pay_type'] == 0)
 		{
 		 	//减少库存量
 		 	self::updateStore($order_goods_relation,'reduce');
-		}*/
+		}
 
         //$orderId = $tbOrderRow['pid'] ? $tbOrderRow['pid'] : $order_id;
 		//更新发货状态
@@ -1562,8 +1565,6 @@ class Order_Class
 		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
 		$order_goods_id = $orderGoodsRow['id'];
 		
-        $good = new IModel('goods');
-
 		if($orderGoodsRow['is_change'] == 1)
 		{
 			self::updateStore($order_goods_id,'add');
@@ -2073,7 +2074,7 @@ class Order_Class
             $temp = $good->getField('id = '.$goodsOrderRow['goods_id'], 'store_type');
             if($temp == 1 && $goodsOrderRow['is_change'] == 1)
             {
-                Order_Class::updateStore($goodsOrderRow['id'], 'add');
+                self::updateStore($goodsOrderRow['id'], 'add');
             }
 		}
 		else if(in_array($refunds_status,array(1,5))){//被拒绝

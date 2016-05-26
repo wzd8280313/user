@@ -145,7 +145,7 @@ function get_delivery()
 	}
     $('.js_data_6').hide();
     var _d = []
-        ,_in = 0;                     
+        ,_in = 0;                    
 	$('span[id^=deliveryfee_]').each(function(){
 		var _this = $(this)
             ,price = 0;
@@ -201,9 +201,9 @@ function get_delivery()
                 _in++;
         })				
 	})
-    if(!!_d)
+    if(_d.length > 0)
     {
-        for(var i = 0; i < _d; i ++){
+        for(var i = 0; i < _d.length; i ++){
             $("#js_data_"+_d[i]).show();
         }
         

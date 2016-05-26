@@ -275,7 +275,7 @@ class ProRule
             $temp = array_keys($goodsIdList); 
             foreach($proListTemp as $k => $v)
             {
-                if($v['area_groupid'])
+                if(!empty(unserialize($v['area_groupid'])))
                 {
                     $area_groupid = unserialize($v['area_groupid']);
                     foreach($area_groupid as $key => $val)

@@ -394,7 +394,7 @@ class Site extends IController
         $tb_product = new IModel('products');
         $countsumInstance = new countsum();
         if($product_id){//如果按规格区分
-            $proData = $tb_product->getObj('id='.$product_id,'spec_array,store_nums,sell_price');
+            $proData = $tb_product->getObj('id='.$product_id,'spec_array,store_nums,sell_price,market_price');
             $goods_info = array_merge($goods_info,$proData);
             $group_type = 'product';
             $group_goods_id = $product_id;
@@ -477,7 +477,7 @@ class Site extends IController
                 unset($combineList[$k]);
                 continue;
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img');
             if($goodsList)
             {
                 $combineList[$k]['goodsList'] = $goodsList;
@@ -1039,7 +1039,7 @@ class Site extends IController
                 unset($combineList[$k]);
                 continue;
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img');
             if($goodsList)
             {
                 $combineList[$k]['goodsList'] = $goodsList;
@@ -1825,7 +1825,7 @@ class Site extends IController
                 unset($combineList[$k]);
                 continue;
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img');
             if($goodsList)
             {
                 $combineList[$k]['goodsList'] = $goodsList;
@@ -1885,7 +1885,7 @@ class Site extends IController
         }
         else
         {
-            $activeList = $active->query('id != '.$id, '*', 'rand()', 'desc', 2);
+            $activeList = $active->query('id != '.$id.' and seoimage is not null', '*', 'rand()', 'desc', 2);
             $this->activeList = $activeList;
             $this->redirect('active4', false);
         }                           

@@ -239,7 +239,7 @@
 							<div class="tm-indcon">
 								<a target="_blank" href="#">
 									<span class="tm-label">送积分</span>
-									<span class="tm-count">{$point}</span>
+                                    <span class="tm-count js_point_core">{$point}</span>
 								</a>
 							</div>
 						</li>
@@ -760,6 +760,8 @@ function sele_spec(_self)
 				$('#data_goodsNo').text(json.data.products_no);
 				$('#data_storeNums').text(json.data.store_nums);
 				$('#product_id').val(json.data.id);
+                $('.js_point_core').html(json.data.point);
+                $('#data_weight').html(json.data.weight);
 				get_delivery_fee();
 				//库存监测
 				checkStoreNums();

@@ -49,7 +49,8 @@ class Block extends IController
 		$goods_no    = IFilter::act( IReq::get('goods_no'));
 		$is_products = IFilter::act( IReq::get('is_products'),'int');
 		$seller_id   = IFilter::act( IReq::get('seller_id'),'int');
-		$goods_id    = IFilter::act( IReq::get('goods_id'),'int');
+        $goods_id    = IFilter::act( IReq::get('goods_id'),'int');
+		$exp_presell = IFilter::act( IReq::get('exp_presell'),'int');
 		//$tb_goods = new IQuery('goods as go');
 		
 		$condition = '&show_num='.$show_num;
@@ -60,11 +61,12 @@ class Block extends IController
 		if($goods_no)$condition .= '&goods_no='.$goods_no;
 		if($is_products)$condition .= '&is_products='.$is_products;
 		if($seller_id)$condition .= '&seller_id='.$seller_id;
-		if($goods_id)$condition .= '&goods_id='.$goods_id;
+        if($goods_id)$condition .= '&goods_id='.$goods_id;
+		if($exp_presell)$condition .= '&exp_presell='.$exp_presell;
 		//查询条件
 		$table_name = 'goods as go';
 
-		$where   = ' (go.is_del = 0 or go.is_del = 4) ';
+		$where   = $exp_presell ? ' go.is_del = 0 ' : ' (go.is_del = 0 or go.is_del = 4) ';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
 		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
 		$where  .= $goods_no  ? ' and go.goods_no     = "'.$goods_no.'"' : '';

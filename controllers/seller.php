@@ -1936,6 +1936,10 @@ class Seller extends IController
         {
             $this->combine_list();
             exit;
+        }
+        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id))
+        {
+            exit('该商品已添加同名组合');
         }      
         $combine = $ids ? implode(',', $ids) : ''; 
 

@@ -128,11 +128,6 @@ function Spec_combine_show(){
                     })
                     var num = parseFloat(_final)*buyNum;
                     $('.js_combine_price_data').html(num.toFixed(2));
-                   /* var priceHtml = template.render('priceTemplate',json.data);
-                    $('#price_panel').html(priceHtml);
-                    //普通货品数据渲染
-                    $('#product_id').val(json.data.id);
-                    $('.js_point_core').html(json.data.point);*/
                 }
                 
             });
