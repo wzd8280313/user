@@ -1871,23 +1871,29 @@ class Site extends IController
         }
         $this->setRenderData($detail);
         $this->groupDetail = $groupDetail;
-        if($detail['type'] == 1)
-        {
-            $this->redirect('active1', false);
-        }
-        elseif($detail['type'] == 2)
-        {
-            $this->redirect('active2', false);
-        }
-        elseif($detail['type'] == 3)
-        {
-            $this->redirect('active3', false);
+        if(IClient::getDevice()=='mobile'){
+            $this->redirect('active');
         }
         else
         {
-            $activeList = $active->query('id != '.$id.' and seoimage is not null', '*', 'rand()', 'desc', 2);
-            $this->activeList = $activeList;
-            $this->redirect('active4', false);
-        }                           
+            if($detail['type'] == 1)
+            {
+                $this->redirect('active1', false);
+            }
+            elseif($detail['type'] == 2)
+            {
+                $this->redirect('active2', false);
+            }
+            elseif($detail['type'] == 3)
+            {
+                $this->redirect('active3', false);
+            }
+            else
+            {
+                $activeList = $active->query('id != '.$id.' and seoimage is not null', '*', 'rand()', 'desc', 2);
+                $this->activeList = $activeList;
+                $this->redirect('active4', false);
+            }
+        }                          
     }
 }

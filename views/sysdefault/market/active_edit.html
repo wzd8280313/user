@@ -18,10 +18,12 @@
         if(_t == 1)
         {
             $('.js_set_show').hide();
+            $('.js_set_label_show').show();
         }
         else
         {
             $('.js_set_show').show();
+            $('.js_set_label_show').hide();
         }
     }
 </script>
@@ -76,7 +78,7 @@
                     </td>
                 </tr>
                 <!--增加顶部图片上传  -->
-                <tr class="js_set_show" {if:$t==1} style="display:none" {/if}>
+                <tr>
                     <th>设置顶部图片：</th>
                     <td>
                         <div class="total_wid_">
@@ -89,7 +91,7 @@
                             <input type="file" name="topImage"/>
 
                         </div>
-
+                        <label class="js_set_label_show" {if:$t == 1} style="color: red;" {else:} style="display:none;" {/if}>用于设置手机页面顶部图片</label>
                     </td>
                 </tr>
                 <tr class="js_set_show" {if:$t==1} style="display:none" {/if}>

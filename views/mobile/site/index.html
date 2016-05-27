@@ -112,11 +112,22 @@
 
 		<ul class="homebanner" id="pro-banner" style="position: relative; overflow: hidden; -webkit-transition: left 600ms ease; transition: left 600ms ease; width: 7420px; left: 0px;">
                {foreach:items=$this->index_slide}
+               {if:strstr($item['url'], 'http://')}
+               {set:$linkUrl = $item['url']}
+               {else:}
+               {set:unset($linkUrl)}
+               {/if}
 			   {set:$num=$key;}
 			    <li style="float: left; display: block; width: 1855px;">
+                    {if:isset($linkUrl)}
+                    <a href="{$linkUrl}">
+                        <img src="{webroot:$item['img']}">
+                    </a>
+                    {else:}
                     <a href="{webroot:$item['url']}">
                         <img src="{webroot:$item['img']}">
                     </a>
+                    {/if}
                 </li>
 				{/foreach}
          </ul>

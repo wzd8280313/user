@@ -1,0 +1,75 @@
+  <!DOCTYPE html>
+<!-- saved from url=(0017)http://m.#.com/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">        
+        <title>山城速购</title> 
+         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no, email=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <!-- uc强制竖屏 -->
+        <meta name="screen-orientation" content="portrait">
+        <meta name="full-screen" content="yes">
+        <meta name="browsermode" content="application">
+        <!-- QQ强制竖屏 -->
+        <meta name="x5-orientation" content="portrait">
+        <meta name="x5-fullscreen" content="true">
+        <meta name="x5-page-mode" content="app">
+        <meta name="keywords" content="山城速购">
+        <meta name="description" content="山城速购">
+		<meta property="qc:admins" content="365014653761146463757" /> 
+		<!-- Swiper JS -->
+	<link rel="stylesheet" href="{skin:css/Swiper demo_files/swiper.min.css}">
+	<link rel="stylesheet" href="{skin:css/Swiper demo_files/fenlei.css}">
+	<script src="{theme:javascript/Swiper demo_files/zepto.min.js}"></script>
+	<script src="{theme:javascript/Swiper demo_files/touch.js}"></script>
+    <script src="{theme:javascript/Swiper demo_files/swiper.min.js}"></script>
+	 <script src="{theme:javascript/Swiper demo_files/hds.js}"></script>
+    <!-- Initialize Swiper -->
+</head>
+		<!--分组产品嵌套-->
+	<div class="top_img" id="top_img">
+		<img src="{webroot:$topImage}"/>
+	</div>
+	<div>
+		
+		<div class="swiper-container swiper-container-horizontal head" id="box1" >
+		    <div class="swiper-wrapper swiper_height">
+                {foreach:items=$this->group}
+		        <div class="swiper-slide swiper_bg {if:$key==0} active {/if}">
+					<div class="swiper_tit">
+						<span class="line-height">{$item['group_name']}</span>
+					</div>
+				</div>
+                {/foreach}
+		    </div>
+		</div>
+
+		<div class="swiper-container panel section_bg">
+			<section class="swiper-wrapper" style="background:#fff;margin-bottom:5px;">
+                {foreach:items=$this->groupDetail}
+				<div class="swiper-slide">
+					<ul class="ul_conter">
+                        {foreach:items=$item['goodsList'] item=$goods}
+                        <li><a href="{url:/site/products/id/$goods['goods_id']}">
+								<div><img src="{webroot:$goods['img']}"></div>
+								<p class="fl_title">{$goods['name']}</p>
+								<p><span class="ul_price">活动价：￥{$goods['sell_price']}</span>			
+								</p>
+								<a class="shop_lj">立即购买</a>
+							</a>
+						</li>
+                        {/foreach}
+                    </ul>
+                    <!--<div class="gd_bottom">
+			            <p>查看更多</p>
+					</div>-->
+				</div>
+                {/foreach}
+			</section>
+		</div>
+	</div>
+		<!--分类产品嵌套-->
+</html></head>
