@@ -448,7 +448,7 @@
    <dd><p class="mt10"> <a href="javascript:;"> {$name} </a></p></dd>
    <dd>
    <input class="fuxuan" name="" type="checkbox" onclick="return false;" value="{$id}" checked>
-   <p class="pb10">¥<b>{if:$combine_price}{$combine_price}{else:}{$sell_price}{/if}</b></p> </dd>       
+   <p class="pb10">¥<b>{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</b></p> </dd>       
   </dl>
   <dl class="jiahao">
   <dd><img src="{skin:images/sales_img/jiahao.jpg}" width="30" height="30" alt="加"></dd>
@@ -469,7 +469,7 @@
                 <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" width="150" height="150" alt=""></a>
                 <p class="mt10"> <a href="{url:/site/products/id/$goods[id]}">{$goods['name']} </a></p>
                 <input class="fuxuan"  name="chooise" type="checkbox" value="{$goods['id']}" {if:$combine['type'] == 1}style="display:none;"{/if} checked="checked">
-                <p class="pb10">¥<b>{if:$goods['combine_price']}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</b></p>
+                <p class="pb10">¥<b>{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</b></p>
                 </li>
             {/foreach}
             </ul>

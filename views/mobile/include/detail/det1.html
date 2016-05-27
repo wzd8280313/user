@@ -224,7 +224,7 @@
                     <img src="{skin:images/front/nopic_435_435.gif}" width="150" height="150" alt="" />
                    {/if}
         		      <div class="int_numbers">
-                        <div class="int_price">¥{if:$combine_price}{$combine_price}{else:}{$sell_price}{/if}</div>
+                        <div class="int_price">¥{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</div>
         		      </div>
         		    </div>
         	      </div>
@@ -239,7 +239,7 @@
         		  	<div class="intro_img">
         		  <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" width="150" height="150" alt="">
         		      <div class="int_numbers">
-                        <div class="int_price">¥{if:$goods['combine_price']}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</div>
+                        <div class="int_price">¥{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</div>
         		      </div>
         		    </div>
         	      </div>
