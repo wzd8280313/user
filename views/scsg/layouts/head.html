@@ -34,12 +34,13 @@ $favorite_ids = implode(',',$favorite_id_arr);}
 	{js:validate}
 	{js:artTemplate}
 
-	
-	<!--[if lte IE 7]>
+	<?php
+	/*<!--[if lte IE 7]>
 	 <script type="text/javascript">
 	window.location="{url:/simple/upbrower}";
 	</script>
-	<![endif]-->
+	<![endif]-->*/
+    ?>
 	<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/artDialog.js?skin=aero}' ></script>
 		<script type='text/javascript' src='{url:/lib/web/js/source/artdialog/plugins/iframeTools.js}' ></script>
 	<script type='text/javascript' src="{theme:javascript/common.js}"></script>

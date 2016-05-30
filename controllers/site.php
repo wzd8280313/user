@@ -1049,10 +1049,10 @@ class Site extends IController
                 unset($combineList[$k]);
             }   
         }
-        if(!empty($combineList) && isset($combineList[0]))
+        if(!empty($combineList))
         {
-            $this->mobileCombine = $combineList[0]; 
-        }                        
+            $this->mobileCombine = current($combineList); 
+        }                      
         $this->combineList = $combineList;
         $this->goodsImg = current($goods_info['photo']);
 	//	print_r($goods_info);
