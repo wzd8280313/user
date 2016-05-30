@@ -12,7 +12,6 @@
 	<link rel="stylesheet" href="{skin:css/product.min.css}" type="text/css">
 	<script type="text/javascript" src="{theme:javascript/jquery-1.7.1.js}"></script>
 	<script type="text/javascript" src="{theme:javascript/match_sale.js}"></script>
-  <script type="text/javascript" src="{theme:javascript/detail.js}"></script> 
 	<style>
        .zuhe_figure .chooice_attr i.chooi_none{background: url({skin:images/match_sale/atno.png}) left center no-repeat;
                                      background-size: 80%;
@@ -73,71 +72,145 @@
 
 	<div id="conintro">
 	<!-- 套餐一 -->
-					<ul class="aton">
-				     
-           <li>
-			<div class="zuhe_figure">
-				<div class="chooice_attr"><i class="chooi_none"></i> </div>
-		       	<div class="figure_lf">
-		       		<a href="">
-		       		  <div class="filf_img"> 
-		       		   <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="组图">
+					  <!-- 套餐一 -->
+          <ul class="aton">
+                       
+              <li>
+                <div class="zuhe_figure">
+                  <div class="chooice_attr"><i class="chooi_none"></i> </div>
+                      <div class="figure_lf">
+                        <a href="">
+                          <div class="filf_img"> 
+                           <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="组图">
+                                </div>
+                              </a>
                       </div>
-                    </a>
-		       	</div>
-		       	<div class="figure_cen">
-		       		<a class="clamp_line" href="">
-		       			名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
-		       		</a>
-                    <div class="attr_chooi s-btn s-an s-colo" data="hot">
-                    	<a class="jrgwc" onClick="toshop()">
-                    	  <span>选择商品属性</span>
-                    	  <i></i>
-                    	</a>
-                    </div> 
-<!-- 属性弹出层 --></div>
-                
-      <!--点击加入购物车弹框 -->
-                <div id="tc_shop" class="tc_shop">
-                <form method="" action="">
-      				<div class="tc_le tc_tite">          
-      					<div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
-      					<div class="tc_cont float_lf">
-      						<p style="color:red;">￥2500</p> <p>(库存100件)</p>
-      						<span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
-      						
-      					</div>
-      					<div style="clear: none;"></div>
-      				</div>
+                      <div class="figure_cen">
+                        <a class="clamp_line" href="">
+                          名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
+                        </a>
+                              <div class="attr_chooi s-btn s-an s-colo" data="hot">
+                                <a class="jrgwc" href="javascript:;">
+                                  <span>选择商品属性</span>
+                                  <i></i>
+                                </a>
+                              </div> 
+          <!-- 属性弹出层 --></div>
+                          
+                <!--点击加入购物车弹框 -->
+                          
+                           <div id="tc_shop" class="tc-modal-active" style="display:none;">  
+                            <form method="" action="">
+                              <div class="tc_le tc_tite">          
+                                <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
+                                <div class="tc_cont float_lf">
+                                  <p style="color:red;">￥2500</p> <p>(库存100件)</p>
+                                  <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
+                                  
+                                </div>
+                                <div style="clear: none;"></div>
+                              </div>
 
 
-      				<div class="tc_le">
-      					<p class="tc_tit">颜色</p>
-      					<span class="tc_gg">白色</span>
-      					<span class="tc_gg">黑色</span>
-      				</div>
+                              <div class="tc_le">
+                                <p class="tc_tit">颜色</p>
+                                <span class="tc_gg">白色</span>
+                                <span class="tc_gg">黑色</span>
+                              </div>
+                              <div class="tc_le">
+                                <p class="tc_tit">容量</p>
+                                <span class="tc_gg">100ml</span>
+                                <span class="tc_gg">2L</span>
+                              </div>
+
+                              <div class="tc_le"><input class="submit" type="button" value="确定" onclick=""/></div>
+                            </form>
+                        </div>
+               
+
+                <!--点击加入购物车弹框结束 -->
+
+                 
+                      <div class="figure_rg">
+                        <p>￥5555.00</p>
+                        <p class="online_bu">￥6555.00</p>
+                        <p>&times;1</p>
+
+                      </div>
+
+                 </div>
+              
+               </li>
 
 
-      				<div class="tc_le"><input class="submit" type="submit" value="确定" onclick="window.open('../cart.html')"/></div>
-      			</form>
-      		</div>
 
-      <!--点击加入购物车弹框结束 -->
 
-       
-		       	<div class="figure_rg">
-		       		<p>￥5555.00</p>
-		       		<p class="online_bu">￥6555.00</p>
-		       		<p>&times;1</p>
 
-		       	</div>
 
-       </div>
-    
-                     </li>
-   
-                   
-                    </ul>
+
+
+              <li>
+                <div class="zuhe_figure">
+                  <div class="chooice_attr"><i class="chooi_none"></i> </div>
+                      <div class="figure_lf">
+                        <a href="">
+                          <div class="filf_img"> 
+                           <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="组图">
+                                </div>
+                              </a>
+                      </div>
+                      <div class="figure_cen">
+                        <a class="clamp_line" href="">
+                          名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
+                        </a>
+                              <div class="attr_chooi s-btn s-an s-colo" data="hot">
+                                <a class="jrgwc" href="javascript:;">
+                                  <span>选择商品属性</span>
+                                  <i></i>
+                                </a>
+                              </div> 
+          <!-- 属性弹出层 --></div>
+                          
+                <!--点击加入购物车弹框 -->
+                          
+                           <div id="tc_shop" class="tc-modal-active" style="display:none;">  
+                            <form method="" action="">
+                              <div class="tc_le tc_tite">          
+                                <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
+                                <div class="tc_cont float_lf">
+                                  <p style="color:red;">￥2500</p> <p>(库存100件)</p>
+                                  <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
+                                  
+                                </div>
+                                <div style="clear: none;"></div>
+                              </div>
+
+
+                              <div class="tc_le">
+                                <p class="tc_tit">颜色11</p>
+                                <span class="tc_gg">白色11</span>
+                                <span class="tc_gg">黑色11</span>
+                              </div>
+
+                              <div class="tc_le"><input class="submit"  type="button"  value="确定" onclick=""/></div>
+                            </form>
+                        </div>
+
+                <!--点击加入购物车弹框结束 -->
+
+                      <div class="figure_rg">
+                        <p>￥5555.00</p>
+                        <p class="online_bu">￥6555.00</p>
+                        <p>&times;1</p>
+
+                      </div>
+
+                 </div>
+              
+            </li>
+             
+                             
+         </ul>
          <!-- 套餐er -->
                     
 					<ul>
@@ -156,7 +229,7 @@
 		       			名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
 		       		</a>
                     <div class="attr_chooi s-btn s-an s-colo" data="hot">
-                    	<a class="jrgwc" onClick="toshop()">  
+                    	<a class="jrgwc" href="javascript:;">  
                     	  <span>选择商品属性</span>
                     	  <i></i>
                     	</a>
@@ -164,7 +237,7 @@
 <!-- 属性弹出层 --></div>
                 
       <!--点击加入购物车弹框 -->
-                <div id="tc_shop" class="tc_shop">
+                 <div id="tc_shop" class="tc-modal-active" style="display:none;">
                 <form method="" action="">
       				<div class="tc_le tc_tite">          
       					<div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
@@ -180,7 +253,7 @@
       					<span class="tc_gg">白色</span>
       					<span class="tc_gg">黑色</span>
       				</div>
-      				<div class="tc_le"><input class="submit" type="submit" value="确定" onclick="window.open('#')"/></div>
+      				<div class="tc_le"><input class="submit" type="submit" value="确定" onclick=""/></div>
       			</form>
       		</div>
 
@@ -216,7 +289,7 @@
 		       			名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
 		       		</a>
                     <div class="attr_chooi s-btn s-an s-colo" data="hot">
-                    	<a class="jrgwc" onClick="toshop()">
+                    	<a class="jrgwc" href="javascript:;">
                     	  <span>选择商品属性</span>
                     	  <i></i>
                     	</a>
@@ -224,7 +297,7 @@
 <!-- 属性弹出层 --></div>
                 
       <!--点击加入购物车弹框 -->
-                <div id="tc_shop" class="tc_shop">
+                <div id="tc_shop" class="tc-modal-active" style="display:none;">
                 <form method="" action="">
       				  <div class="tc_le tc_tite">          
       					   <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
@@ -242,7 +315,7 @@
       					<span class="tc_gg">黑色</span>
       				</div>
 
-      				<div class="tc_le"><input class="submit" type="submit" value="确定" onclick="window.open('#')"/></div>
+      				<div class="tc_le"><input class="submit" type="submit" value="确定" onclick=""/></div>
       			</form>
       		</div>
 
