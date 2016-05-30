@@ -797,7 +797,7 @@ class Goods extends IController
         $page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
         $QB = new IQuery('combine_goods');
         $QB->order    = "sort asc,id desc";
-        $QB->where = 'seller_id=0 and status=1';
+        $QB->where = 'seller_id=0';
         $QB->page   = $page;
         $this->QB = $QB;
         $this->redirect('combine_list');
@@ -841,12 +841,11 @@ class Goods extends IController
         $tb = new IModel('combine_goods');
         if($tb->getField('id='.$id, 'seller_id') <> 0)
         {
-            die("无权限修改！");
+            die("无权限删除！");
         }
-        $tb->setData(array('status'=>0));
         if($id)
         {
-            $tb->update(Util::joinStr($id));
+            $tb->del(Util::joinStr($id));
         }
         else
         {

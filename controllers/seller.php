@@ -1979,7 +1979,7 @@ class Seller extends IController
         $page   = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
         $QB = new IQuery('combine_goods');
         $QB->order    = "sort asc,id desc";
-        $QB->where = 'seller_id='.$this->seller['seller_id'].' and status = 1';
+        $QB->where = 'seller_id='.$this->seller['seller_id'];
         $QB->page   = $page;
         $this->QB = $QB;
         $this->redirect('combine_list');
@@ -2021,14 +2021,13 @@ class Seller extends IController
         $id = IFilter::act(IReq::get('cid'),'int');
                           
         $tb = new IModel('combine_goods');
-        $tb->setData(array('status'=>0));
         if($id)
         {
             if($this->seller['seller_id'] <> $tb->getField('id='.$id, 'seller_id'))
             {
                 die('无权限删除');
             }
-            $tb->update(Util::joinStr($id));
+            $tb->del(Util::joinStr($id));
         }
         else
         {

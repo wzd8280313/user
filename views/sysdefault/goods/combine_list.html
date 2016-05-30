@@ -45,7 +45,7 @@
 				<td>{$item['name']}</td>
 				<td>{$list[$item['goods_id']]}</td>
                 <td>
-                {if:$item['status']=='1'}<span class="green">可用</span>{else:}<span class="red">已删除</span>{/if}
+                {if:$item['status']=='1'}<span class="green">可用</span>{else:}<span class="red">不可用</span>{/if}
                 </td>
 				<td>
 				{if:$item['type']=='1'}<span class="green">固定搭配</span>{else:}<span class="brown">自由搭配</span>{/if}
