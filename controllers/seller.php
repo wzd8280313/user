@@ -1938,7 +1938,7 @@ class Seller extends IController
             exit;
         }
         $tb = new IModel('combine_goods');
-        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id. ' and status = 1'))
+        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id))
         {
             exit('该商品已添加同名组合');
         }      
@@ -2021,14 +2021,13 @@ class Seller extends IController
         $id = IFilter::act(IReq::get('cid'),'int');
                           
         $tb = new IModel('combine_goods');
-        $tb->setData(array('status'=>0));
         if($id)
         {
             if($this->seller['seller_id'] <> $tb->getField('id='.$id, 'seller_id'))
             {
                 die('无权限删除');
             }
-            $tb->update(Util::joinStr($id));
+            $tb->del(Util::joinStr($id));
         }
         else
         {
