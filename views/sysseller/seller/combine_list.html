@@ -46,7 +46,7 @@
                     <td><input class="tiny" type="text" id="sort{$item['id']}" value="{$item['sort']}" onblur="toSort({$item['id']});" /></td>
                     <td>
                         <a href="{url:/seller/combine_edit/cid/$item[id]}"><img src="{skin:images/main/icn_edit.png}" title="编辑" /></a>
-                        <a href="javascript:delModel({link:'{url:/seller/combine_del/id/$item[id]}'})"><img src="{skin:images/main/icn_del.png}" title="删除" /></a>
+                        <a href="javascript:delModel({link:'{url:/seller/combine_del/cid/$item[id]}'})"><img src="{skin:images/main/icn_del.png}" title="删除" /></a>
                     </td>
                 </tr>
                 {/query}
