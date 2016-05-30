@@ -1937,13 +1937,13 @@ class Seller extends IController
             $this->combine_list();
             exit;
         }
-        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id))
+        $tb = new IModel('combine_goods');
+        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id. ' and status = 1'))
         {
             exit('该商品已添加同名组合');
         }      
         $combine = $ids ? implode(',', $ids) : ''; 
 
-        $tb = new IModel('combine_goods');
         $info = array(
             'name'      => $name,
             'goods_id' => $goods_id,

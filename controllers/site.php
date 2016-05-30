@@ -1049,7 +1049,7 @@ class Site extends IController
                 unset($combineList[$k]);
             }   
         }
-        if(!empty($combineList))
+        if(!empty($combineList) && isset($combineList[0]))
         {
             $this->mobileCombine = $combineList[0]; 
         }                        
