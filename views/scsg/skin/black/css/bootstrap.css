@@ -999,6 +999,9 @@ td,th {
     content: "\e177"
 }
 
+
+
+
 .glyphicon-transfer:before {
     content: "\e178"
 }
@@ -1335,11 +1338,6 @@ td,th {
     content: "\e260"
 }
 
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box
-}
 
 :after,:before {
     -webkit-box-sizing: border-box;
@@ -1369,14 +1367,14 @@ button,input,select,textarea {
 a {
     color: #606061;
     text-decoration: none
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
 
 a:focus,a:hover {
     color: #23527c;
