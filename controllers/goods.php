@@ -757,7 +757,7 @@ class Goods extends IController
         $combine = $ids ? implode(',', $ids) : ''; 
 
         $tb = new IModel('combine_goods');
-        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id))
+        if($tb->getObj('name = "'.$name.'" and goods_id = '.$goods_id.' and id != '.$id. ' and status = 1'))
         {
             exit('该商品已添加同名组合');
         }
@@ -843,9 +843,10 @@ class Goods extends IController
         {
             die("无权限修改！");
         }
+        $tb->setData(array('status'=>0));
         if($id)
         {
-            $tb->del(Util::joinStr($id));
+            $tb->update(Util::joinStr($id));
         }
         else
         {
