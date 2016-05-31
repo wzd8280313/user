@@ -1,0 +1,4 @@
+{set: $query=Api::run('getGoodsList2',array('#id#',1))}
+{foreach : items = $query}
+{$item}
+{/foreach}

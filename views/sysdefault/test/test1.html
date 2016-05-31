@@ -1,0 +1,40 @@
+{echo : 'IWEB'}
+<br/>
+{url :}
+<br />
+{echo : '1'}
+<br />
+{url : /test/test}
+<br />
+{url : /1/arg/111}
+<br />
+{theme :}
+<br />
+{webroot :}
+<br />
+{skin :}
+<br />
+<!--  引入js文件validate进行表单验证 -->
+{js:validate}
+<br />
+<form callback='test("回调一下")'>
+<input name="email" pattern='email' alt='请输入正确的email'/>
+<input name='int' pattern='^\d{3,5}' alt="qingshu" />
+<input type='submit' value='tijiao'>
+</form>
+{set : $numbers=array(1,2,3,4,5,6)}
+{foreach:items=$numbers key=$k item=$v}
+key:{$k}--value:{$v}<br />
+{/foreach}
+<script type="text/javascript">
+	function test(msg){
+		alert(msg);
+		return true;
+	}
+</script>
+{query :name=test limit=5}{$item['name']}{/query}
+{set:$page=IReq::get('page')==null?1:IReq::get('page');}
+{query:name=test page=$page pagesize=2}
+{$key}:{$item['name']}<br />
+{/query}
+{$query->getPageBar()}
