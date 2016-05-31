@@ -210,9 +210,8 @@ class ProRule
 	 * @return array 促销规则信息
 	 */
 	private function satisfyPromotion($award_type = null, $goodsIdList = array(), $area = null)
-	{                              
+	{                           
         $final_sum = $this->sum;
-        
 		$datetime = ITime::getDateTime();
 		$proObj   = new IModel('promotion');
 		$where    = '`condition` between 0 and '.$final_sum.' and type = 0 and is_close = 0 and start_time <= "'.$datetime.'" and end_time >= "'.$datetime.'"';
@@ -245,23 +244,20 @@ class ProRule
             {
                 $gId = explode(',', $v['goods_id']);
             }
-            $common = array_intersect($temp, $gId); 
+            $common = array_intersect($temp, $gId);
             if($common)
             {
-                if(count($temp) > count($common))
+                $sumNum = 0;
+                $reduceNum = 0;
+                foreach($common as $val)
                 {
-                    $sumNum = 0;
-                    $reduceNum = 0;
-                    foreach($common as $val)
-                    {
-                        $sumNum += $goodsIdList[$val]['sum'];
-                        $reduceNum += $goodsIdList[$val]['reduce'];
-                    }
-                    $proList[$k]['sum'] = $sumNum - $reduceNum;
-                    if(($sumNum - $reduceNum) < $v['condition'])
-                    {
-                        $proList[$k]['hide'] = 1;
-                    }
+                    $sumNum += $goodsIdList[$val]['sum'];
+                    $reduceNum += $goodsIdList[$val]['reduce'];
+                }
+                $proList[$k]['sum'] = $sumNum - $reduceNum;
+                if(($sumNum - $reduceNum) < $v['condition'])
+                {
+                    $proList[$k]['hide'] = 1;
                 }
             }
             else
