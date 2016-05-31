@@ -1816,8 +1816,39 @@ class Site extends IController
     {
         $goods_id = IFilter::act(IReq::get('id'), 'int');
         $combine = new IModel('combine_goods');
-        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
+        
+        //主商品
         $tb_goods = new IModel('goods');
+        $goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)");
+        if(!$goods_info)
+        {
+            IError::show(403,"这件商品不存在或已下架");
+            exit;
+        }
+        $product_db = new IModel('products');
+        $goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
+        $goods_info['product'] = JSON::encode($goods_info['product']);
+        if($goods_info['is_del']==4)header('location:'.IUrl::getHost().IUrl::creatUrl('pregoods/products/id/'.$goods_id));
+        //商品图片
+        $tb_goods_photo = new IQuery('goods_photo_relation as g');
+        $tb_goods_photo->fields = 'p.id AS photo_id,p.img ';
+        $tb_goods_photo->join = 'left join goods_photo as p on p.id=g.photo_id ';
+        $tb_goods_photo->where =' g.goods_id='.$goods_id;
+        $goods_info['photo'] = $tb_goods_photo->find();
+        foreach($goods_info['photo'] as $key => $val)
+        {
+            //对默认第一张图片位置进行前置
+            if($val['img'] == $goods_info['img'])
+            {
+                $temp = $goods_info['photo'][0];
+                $goods_info['photo'][0] = $val;
+                $goods_info['photo'][$key] = $temp;
+            }
+        }
+        $this->goodsImg = current($goods_info['photo']);
+        $this->setRenderData($goods_info);
+        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
+        
         foreach($combineList as $k => $v)
         {
             if(!$v['combine'])
@@ -1825,7 +1856,7 @@ class Site extends IController
                 unset($combineList[$k]);
                 continue;
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img');
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img,spec_array');
             if($goodsList)
             {
                 $combineList[$k]['goodsList'] = $goodsList;

@@ -130,23 +130,23 @@ a{cursor: pointer;}
 }
 /* 组合 */
 .zuhe_figure{ height: auto;overflow:hidden; width: 100%;padding: 2% 3%;}
-.zuhe_figure .figure_lf{float: left;width: 20%;}
-.zuhe_figure .figure_lf .filf_img{
+.figure_lf{float: left;width: 20%;}
+.figure_lf .filf_img{
     width: 65px;
     float: left;
     border: 1px solid #ddd;
     text-align: center;
 }
-.zuhe_figure .figure_lf .filf_img img{
+.figure_lf .filf_img img{
     max-width: 65px;
     height: auto;
 }
-.zuhe_figure .figure_cen{
+.figure_cen{
     width: 42%;
     float: left;
     padding: 0 2%;
 }
- .zuhe_figure .figure_cen a.clamp_line{
+ .figure_cen a.clamp_line{
     line-height: 18px;
     padding: 0 0 3px 0;
     color: #3C3C3C;
@@ -162,30 +162,30 @@ a{cursor: pointer;}
     height: 32px;
 
 }
-.zuhe_figure .figure_rg {
+.figure_rg {
     line-height: 1.2em;
     width: 24%;
     float: left;
     padding: 0 1%;
 }
-.zuhe_figure .figure_rg p.online_bu{
+.figure_rg p.online_bu{
     color: #666;
     text-decoration: line-through;
 }
-.zuhe_figure .chooice_attr{float: left;}
-.zuhe_figure .chooice_attr.opacity{
+.chooice_attr{float: left;}
+.chooice_attr.opacity{
     filter: alpha(opacity=50);
     -moz-opacity: 0.5;
     opacity: 0.5;
     background: #fff;
 }
-.zuhe_figure .chooice_attr i{
+.chooice_attr i{
     display: block;
     width: 20px;
     height: 20px;
     margin: 20px 5px 0 0;
 }
-.zuhe_figure .figure_cen .attr_chooi{
+.figure_cen .attr_chooi{
     border-radius: 3px;
     width: 90px;
     position: relative;
@@ -194,12 +194,12 @@ a{cursor: pointer;}
     border: 1px solid #dddddd;
     margin-top: 3px;
 }
-.zuhe_figure .figure_cen .attr_chooi  span{
+.figure_cen .attr_chooi  span{
     color: #ff5500;
     display: block;
     float: left;
 }
-.zuhe_figure .figure_cen .attr_chooi i{
+.figure_cen .attr_chooi i{
     display: block;
     width: 20px;
     float: left;

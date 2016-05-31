@@ -13,15 +13,15 @@
 	<script type="text/javascript" src="{theme:javascript/jquery-1.7.1.js}"></script>
 	<script type="text/javascript" src="{theme:javascript/match_sale.js}"></script>
 	<style>
-       .zuhe_figure .chooice_attr i.chooi_none{background: url({skin:images/match_sale/atno.png}) left center no-repeat;
+       .chooice_attr i.chooi_none{background: url({skin:images/match_sale/atno.png}) left center no-repeat;
                                      background-size: 80%;
                                  }
-       .zuhe_figure .chooice_attr i.chooi_none.aton{background: url({skin:images/match_sale/aton.png})left center no-repeat; 
+       .chooice_attr i.chooi_none.aton{background: url({skin:images/match_sale/aton.png})left center no-repeat; 
                                             background-size: 80%;}                          
-       .zuhe_figure .chooice_attr i.chooi_have  {background: url({skin:images/match_sale/aton.png}) left center no-repeat;
+       .chooice_attr i.chooi_have  {background: url({skin:images/match_sale/aton.png}) left center no-repeat;
                                      background-size: 80%;
                                  }         
-       .zuhe_figure .figure_cen .attr_chooi i{background: url({skin:images/match_sale/chooice.png}) left center no-repeat;
+       .figure_cen .attr_chooi i{background: url({skin:images/match_sale/chooice.png}) left center no-repeat;
                                                 background-size: 62%}                          
 	</style>
 	
@@ -37,68 +37,119 @@
 <div class="wrapper">
   <div class="matchmain">
 	<h4 id="matchtitle">
-					<span class="aton">套餐一</span>
-					<span>套餐二</span>
-					<span>套餐三</span>
-				</h4>
+        {set:$k = 0}
+        {foreach:items=$this->combineList}
+        {if:$key < 3}
+		    <span {if:$k == 0} class="aton" {/if}>{$item['name']}</span>
+        {/if}
+        {set:$k++}
+		{/foreach}
+	</h4>
 
 
        <div class="lt_specing"></div>
-       <div class="main_figure">
+       <div class="main_figure js_sel_attr">
 		       	<div class="figure_lf">
-		       		<a href="">
-		       		  <div class="filf_img"> 
-		       		   <img src="{skin:images/match_sale/zuhe_1.jpg}" alt="主图">
+		       		<a href="{url:/site/products/id/$id}">
+		       		  <div class="filf_img">
+                        {if:$this->goodsImg}
+                        <img src="{url:/pic/thumb/img/$this->goodsImg['img']/w/200/h/200}" alt="" />
+                        {else:}
+                        <img src="{skin:images/front/nopic_435_435.gif}" width="150" height="150" alt="" />
+                       {/if} 
                       </div>
                     </a>
 		       	</div>
 		       	<div class="figure_cen">
-		       		<a class="clamp_line" href="">
-		       			名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
+		       		<a class="clamp_line" href="{url:/site/products/id/$id}">
+		       			{$name} 
 		       		</a>
-
+                    {if:$spec_array}
+                    <div class="attr_chooi s-btn s-an s-colo" data="hot">
+                        <a class="jrgwc" href="javascript:;">
+                            <span>选择商品属性</span>
+                            <i></i>
+                        </a>
+                    </div>
+                    {/if} 
 		       	</div>
 
 		       	<div class="figure_rg">
-		       		<p>￥5555.00</p>
-		       		<p class="online_bu">￥6555.00</p>
-		       		<p>&times;1</p>
+		       		<p>￥{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</p>
+		       		<p class="online_bu">￥{$sell_price}</p>
 
 		       	</div>
+                <div id="tc_shop" class="tc-modal-active" style="display:none;">  
+                            <form method="" action="">
+                              <div class="tc_le tc_tite">          
+                                <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
+                                <div class="tc_cont float_lf">
+                                  <p style="color:red;">￥2500</p> <p>(库存100件)</p>
+                                  <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
+                                  
+                                </div>
+                                <div style="clear: none;"></div>
+                              </div>
 
+                              {if:$spec_array}
+                              {set:$specArray = JSON::decode($spec_array);}
+                              {foreach:items=$specArray}
+                              <div class="tc_le">
+                                <p class="tc_tit">{$item['name']}</p>
+                                {set:$specVal=explode(',',trim($item['value'],','))}
+                                {foreach:items=$specVal item=$spec_value}
+                                {if:$item['type'] == 1}
+                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</a></span>
+                                {else:}
+                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></a></span>
+                                {/if}
+                                {/foreach}
+                              </div>
+                              {/foreach}
+                              {/if}
+
+                              <div class="tc_le"><input class="submit" type="button" value="确定" onclick=""/></div>
+                            </form>
+                        </div>
 
 
        </div>
 
 	<div id="conintro">
 	<!-- 套餐一 -->
+        {set:$kk = 0}
+        {foreach:items=$this->combineList item=$combine}
+        {if:$key < 3}
 					  <!-- 套餐一 -->
-          <ul class="aton">
-                       
+          <ul {if:$kk == 0} class="aton" {/if}>
+              {foreach:$items=$combine['goodsList'] item=$goods}         
               <li>
-                <div class="zuhe_figure">
-                  <div class="chooice_attr"><i class="chooi_none"></i> </div>
+                <div class="zuhe_figure js_sel_attr">
+                  <div class="chooice_attr"><i {if:$combine['type'] == 1} class="chooi_none aton" {else:} class="chooi_none" {/if}></i> </div>
                       <div class="figure_lf">
-                        <a href="">
+                        <a href="{url:/site/products/id/$goods[id]}">
                           <div class="filf_img"> 
-                           <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="组图">
+                           <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" alt="{$goods['name']}">
                                 </div>
                               </a>
                       </div>
                       <div class="figure_cen">
-                        <a class="clamp_line" href="">
-                          名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
+                        <a class="clamp_line" href="{url:/site/products/id/$goods[id]}">
+                          {$goods['name']}
                         </a>
+                        {if:$goods['spec_array']}
                               <div class="attr_chooi s-btn s-an s-colo" data="hot">
                                 <a class="jrgwc" href="javascript:;">
                                   <span>选择商品属性</span>
                                   <i></i>
                                 </a>
-                              </div> 
+                              </div>
+                              {/if}
           <!-- 属性弹出层 --></div>
                           
                 <!--点击加入购物车弹框 -->
                           
+                          {if:$goods['spec_array']}
                            <div id="tc_shop" class="tc-modal-active" style="display:none;">  
                             <form method="" action="">
                               <div class="tc_le tc_tite">          
@@ -110,239 +161,47 @@
                                 </div>
                                 <div style="clear: none;"></div>
                               </div>
-
-
+                              {set:$specArray = JSON::decode($goods['spec_array']);}
+                              {foreach:items=$specArray item=$spec}
                               <div class="tc_le">
-                                <p class="tc_tit">颜色</p>
-                                <span class="tc_gg">白色</span>
-                                <span class="tc_gg">黑色</span>
+                                <p class="tc_tit">{$spec['name']}</p>
+                                {set:$specVal=explode(',',trim($spec['value'],','))}
+                                {foreach:items=$specVal item=$spec_value}
+                                {if:$spec['type'] == 1}
+                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</a></span>
+                                {else:}
+                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></a></span>
+                                {/if}
+                                {/foreach}
                               </div>
-                              <div class="tc_le">
-                                <p class="tc_tit">容量</p>
-                                <span class="tc_gg">100ml</span>
-                                <span class="tc_gg">2L</span>
-                              </div>
-
+                              {/foreach}
                               <div class="tc_le"><input class="submit" type="button" value="确定" onclick=""/></div>
                             </form>
                         </div>
+                          {/if} 
                
 
                 <!--点击加入购物车弹框结束 -->
 
                  
                       <div class="figure_rg">
-                        <p>￥5555.00</p>
-                        <p class="online_bu">￥6555.00</p>
-                        <p>&times;1</p>
+                        <p>￥{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</p>
+                        <p class="online_bu">￥{$goods['sell_price']}</p>
 
                       </div>
 
                  </div>
               
                </li>
-
-
-
-
-
-
-
-
-              <li>
-                <div class="zuhe_figure">
-                  <div class="chooice_attr"><i class="chooi_none"></i> </div>
-                      <div class="figure_lf">
-                        <a href="">
-                          <div class="filf_img"> 
-                           <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="组图">
-                                </div>
-                              </a>
-                      </div>
-                      <div class="figure_cen">
-                        <a class="clamp_line" href="">
-                          名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
-                        </a>
-                              <div class="attr_chooi s-btn s-an s-colo" data="hot">
-                                <a class="jrgwc" href="javascript:;">
-                                  <span>选择商品属性</span>
-                                  <i></i>
-                                </a>
-                              </div> 
-          <!-- 属性弹出层 --></div>
-                          
-                <!--点击加入购物车弹框 -->
-                          
-                           <div id="tc_shop" class="tc-modal-active" style="display:none;">  
-                            <form method="" action="">
-                              <div class="tc_le tc_tite">          
-                                <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
-                                <div class="tc_cont float_lf">
-                                  <p style="color:red;">￥2500</p> <p>(库存100件)</p>
-                                  <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
-                                  
-                                </div>
-                                <div style="clear: none;"></div>
-                              </div>
-
-
-                              <div class="tc_le">
-                                <p class="tc_tit">颜色11</p>
-                                <span class="tc_gg">白色11</span>
-                                <span class="tc_gg">黑色11</span>
-                              </div>
-
-                              <div class="tc_le"><input class="submit"  type="button"  value="确定" onclick=""/></div>
-                            </form>
-                        </div>
-
-                <!--点击加入购物车弹框结束 -->
-
-                      <div class="figure_rg">
-                        <p>￥5555.00</p>
-                        <p class="online_bu">￥6555.00</p>
-                        <p>&times;1</p>
-
-                      </div>
-
-                 </div>
-              
-            </li>
-             
-                             
+               {/foreach}             
          </ul>
-         <!-- 套餐er -->
-                    
-					<ul>
-			<li>
-                    <div class="zuhe_figure">
-                      <div class="chooice_attr opacity"><i class="chooi_none aton"></i> </div>
-                          <div class="figure_lf">
-                            <a href="">
-                              <div class="filf_img"> 
-                               <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="组图">
-                                    </div>
-                                  </a>
-                          </div>
-                          <div class="figure_cen">
-                            <a class="clamp_line" href="">
-                              名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
-                            </a>
-                                  <div class="attr_chooi s-btn s-an s-colo" data="hot">
-                                    <a class="jrgwc" href="javascript:;">
-                                      <span>选择商品属性</span>
-                                      <i></i>
-                                    </a>
-                                  </div> 
-              <!-- 属性弹出层 --></div>
-                              
-                    <!--点击加入购物车弹框 -->
-                              
-                               <div id="tc_shop" class="tc-modal-active" style="display:none;">  
-                                <form method="" action="">
-                                  <div class="tc_le tc_tite">          
-                                    <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
-                                    <div class="tc_cont float_lf">
-                                      <p style="color:red;">￥2500</p> <p>(库存100件)</p>
-                                      <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
-                                      
-                                    </div>
-                                    <div style="clear: none;"></div>
-                                  </div>
-
-
-                                  <div class="tc_le">
-                                    <p class="tc_tit">颜色11</p>
-                                    <span class="tc_gg">白色11</span>
-                                    <span class="tc_gg">黑色11</span>
-                                  </div>
-
-                                  <div class="tc_le"><input class="submit"  type="button"  value="确定" onclick=""/></div>
-                                </form>
-                            </div>
-
-                    <!--点击加入购物车弹框结束 -->
-
-                          <div class="figure_rg">
-                            <p>￥5555.00</p>
-                            <p class="online_bu">￥6555.00</p>
-                            <p>&times;1</p>
-
-                          </div>
-
-                     </div>
-                  
-                </li>
-              
-                        
-					</ul>
-		<!-- 套餐san -->
-					<ul>
-						      <li>
-                                <div class="zuhe_figure">
-                                  <div class="chooice_attr opacity"><i class="chooi_none aton"></i> </div>
-                                      <div class="figure_lf">
-                                        <a href="">
-                                          <div class="filf_img"> 
-                                           <img src="{skin:images/match_sale/zuhe_2.jpg}" alt="组图">
-                                                </div>
-                                              </a>
-                                      </div>
-                                      <div class="figure_cen">
-                                        <a class="clamp_line" href="">
-                                          名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 名龙堂i7 4790K升6700/GTX970 水冷DIY组装台式GTA5游戏电脑主机 
-                                        </a>
-                                              <div class="attr_chooi s-btn s-an s-colo" data="hot">
-                                                <a class="jrgwc" href="javascript:;">
-                                                  <span>选择商品属性</span>
-                                                  <i></i>
-                                                </a>
-                                              </div> 
-                          <!-- 属性弹出层 --></div>
-                                          
-                                <!--点击加入购物车弹框 -->
-                                          
-                                           <div id="tc_shop" class="tc-modal-active" style="display:none;">  
-                                            <form method="" action="">
-                                              <div class="tc_le tc_tite">          
-                                                <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
-                                                <div class="tc_cont float_lf">
-                                                  <p style="color:red;">￥2500</p> <p>(库存100件)</p>
-                                                  <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
-                                                  
-                                                </div>
-                                                <div style="clear: none;"></div>
-                                              </div>
-
-
-                                              <div class="tc_le">
-                                                <p class="tc_tit">颜色11</p>
-                                                <span class="tc_gg">白色11</span>
-                                                <span class="tc_gg">黑色11</span>
-                                              </div>
-
-                                              <div class="tc_le"><input class="submit"  type="button"  value="确定" onclick=""/></div>
-                                            </form>
-                                        </div>
-
-                                <!--点击加入购物车弹框结束 -->
-
-                                      <div class="figure_rg">
-                                        <p>￥5555.00</p>
-                                        <p class="online_bu">￥6555.00</p>
-                                        <p>&times;1</p>
-
-                                      </div>
-
-                                 </div>
-                              
-                            </li>
-                     
-                        
-					</ul>
+         {/if}
+        {set:$kk++}
+        {/foreach}
 				</div>
 			</div>
         </div>
+        <div style="height: 60px;"></div>
 <!-- 合计部分start -->
 		<div class="heji_total">
 			<div class="hejit_left">

@@ -44,9 +44,9 @@ $(function(){
   $(this).hasClass("tc_backgr") ? $(this).removeClass("tc_backgr") : ($(this).addClass("tc_backgr"), $(this).siblings(".tc_gg").removeClass("tc_backgr"))
 });
 $("input.submit").click(function() {
-  for (var b = $(this).parents(".tc-modal-active").find(" .tc_backgr"), a = "以选", c = 0; c < b.length; c++) a += b[c].innerHTML + ",";
+  for (var b = $(this).parents(".tc-modal-active").find(" .tc_backgr"), a = "已选", c = 0; c < b.length; c++) a += b[c].innerHTML + ",";
   a = a.substr(0, a.length - 1);
-  0 < b.length ? ($(this).parents("li").find(".jrgwc span").html(a), $(this).parents("li").find(".jrgwc span").css("color", "#aaa")) : ($(this).parents("li").find(".jrgwc span").html("请选择商品属性"), $(this).parents("li").find(".jrgwc span").css("color", "#ff5500"))
+  0 < b.length ? ($(this).parents(".js_sel_attr").find(".jrgwc span").html(a), $(this).parents(".js_sel_attr").find(".jrgwc span").css("color", "#aaa")) : ($(this).parents(".js_sel_attr").find(".jrgwc span").html("请选择商品属性"), $(this).parents(".js_sel_attr").find(".jrgwc span").css("color", "#ff5500"))
 }); });
   
     
