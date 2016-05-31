@@ -1221,7 +1221,34 @@ class Market extends IController
 		$siteObj = new Config('site_config');
 		$siteObj->write($inputArray);
 		$this->redirect('pro_argument');
-	}         
+	}
+    
+    //活动列表页
+    public function active_list()
+    {
+        $search = IFilter::act(IReq::get('search'),'strict');
+        if(isset($search['name'])&&$search['name'])
+        {
+            $where='name="'.$search['name'].'"';
+        }
+        else
+        {
+            $where = 1;
+        }
+        $page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;
+        $active = new IQuery('active');
+        $active->where = $where;
+        $active->order = 'sort asc, id desc';
+        $active->page  = $page;
+        $this->active  = $active;
+        $activeList = $active->find();
+        foreach($activeList as $k => $v)
+        {
+            $activeList[$k]['host'] = IUrl::getHost();
+        }
+        $this->activeList = $activeList;
+        $this->redirect('active_list');
+    }         
 
 	//编辑活动列表页
 	public function active_edit()

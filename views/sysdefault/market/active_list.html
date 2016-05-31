@@ -1,12 +1,3 @@
-{set:
-$search = IFilter::act(IReq::get('search'),'strict');
-
-}
-{if:isset($search['name'])&&$search['name']}
-{set:$where='name="'.$search['name'].'"'}
-{else:}
-{set:$where=1}
-{/if}
 {js:artTemplate}
 <div class="headbar">
 	<div class="position"><span>营销</span><span>></span><span>营销活动管理</span><span>></span><span>活动</span></div>
@@ -33,7 +24,7 @@ $search = IFilter::act(IReq::get('search'),'strict');
 				<col width="80px" />
 				<col width="100px" />
                 <col width="150px" />
-				<col width="100px" />
+				<col width="130px" />
 			</colgroup>
 
 			<thead>
@@ -62,12 +53,11 @@ $search = IFilter::act(IReq::get('search'),'strict');
                 <col width="80px" />
                 <col width="100px" />
                 <col width="150px" />
-                <col width="100px" />
+                <col width="130px" />
 			</colgroup>
 
 			<tbody>
-				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
-				{query:name=active order=sort asc,id desc page=$page where=$where}
+				{foreach:items=$this->activeList}
 				<tr>
 					<td><input type='checkbox' name='id[]' value='{$item['id']}' /></td>
 					<td><a href='{url:/site/active/id/$item[id]}' target='_blank' class="orange" title="{$item['name']}">{$item['name']}</a></td>
@@ -76,6 +66,9 @@ $search = IFilter::act(IReq::get('search'),'strict');
 					<td>{echo:($item['status']==1) ? '开启':'关闭'}</td>
 					<td>{$item['time']}</td>
 					<td>
+                        <a class="js_clip" js_clip_data="{$item['id']}" js_host="{$item['host']}">
+                            <img class="operator" src="{skin:images/admin/icon_copy.png}" alt="复制链接" title="复制链接">
+                        </a>
                         <a href="{url:/market/active_group/id/$item[id]}">
                             <img class="operator" src="{skin:images/admin/icon_check.gif}" alt="查看分组" title="查看分组">
                         </a>
@@ -88,9 +81,29 @@ $search = IFilter::act(IReq::get('search'),'strict');
 						</a>
 					</td>
 				</tr>
-				{/query}
+				{/foreach}
 			</tbody>
 		</table>
 	</form>
 </div>
-{$query->getPageBar()}
+{$this->active->getPageBar()}
+<script type="text/javascript">
+$('.js_clip').bind('click', function(){
+    var _d = '{webroot:site/active/id/@id@}'
+    _d = _d.replace("@id@",$(this).attr('js_clip_data'));
+    _d = $(this).attr('js_host') + _d;
+    setClipboard(_d);
+});
+function setClipboard(data)
+{
+    if (window.clipboardData != undefined)
+    {
+        if (window.clipboardData.setData('Text', data))
+        {
+            alert('已复制到剪切板');
+            return;
+        }
+    }
+    prompt('请按 CTRL + C 复制', data);
+}
+</script>

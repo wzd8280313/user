@@ -88,11 +88,16 @@ _mvq.push(['$logConversion']);
 					<ul style=''>
 						{foreach:$items=$this->index_slide }
 							{set:$key=$key+1}
+                            {if:strstr($item['url'], 'http://')}
+                            {set:$linkUrl = $item['url']}
+                            {else:}
+                            {set:unset($linkUrl)}
+                            {/if}
 							{if:$key==1}
 							{set:$fUrl=$item['url'];$fImg=$item['img'];}
-								<li class="nonce" alt="{$key}" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}"></li>
+								<li class="nonce" alt="{$key}" target_color="{$item['color']}" {if:isset($linkUrl)} target_link="{$linkUrl}" {else:} target_link="{webroot:$item['url']}" {/if} target_src="{webroot:$item['img']}"></li>
 							{else:}
-								<li class="initial" alt="1" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}"></li>
+								<li class="initial" alt="1" target_color="{$item['color']}" {if:isset($linkUrl)} target_link="{$linkUrl}" {else:} target_link="{webroot:$item['url']}" {/if} target_src="{webroot:$item['img']}"></li>
 							{/if}
 						{/foreach}
 					</ul>

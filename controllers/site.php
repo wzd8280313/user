@@ -361,7 +361,7 @@ class Site extends IController
         $tb_shop = new IQuery('order_goods as og');
         $tb_shop->join = 'left join order as o on o.id=og.order_id';
         $tb_shop->fields = 'count(*) as totalNum';
-        $tb_shop->where = 'og.goods_id='.$goods_id.' and o.status = 5';
+        $tb_shop->where = 'og.goods_id='.$goods_id.' and (o.status = 5 or o.status = 11)';
         $shop_info = $tb_shop->find();
         $goods_info['buy_num'] = 0;
         if($shop_info)
@@ -394,7 +394,7 @@ class Site extends IController
         $tb_product = new IModel('products');
         $countsumInstance = new countsum();
         if($product_id){//如果按规格区分
-            $proData = $tb_product->getObj('id='.$product_id,'spec_array,store_nums,sell_price,market_price');
+            $proData = $tb_product->getObj('id='.$product_id,'spec_array,store_nums,sell_price,market_price,weight');
             $goods_info = array_merge($goods_info,$proData);
             $group_type = 'product';
             $group_goods_id = $product_id;
@@ -946,7 +946,7 @@ class Site extends IController
 		$tb_shop = new IQuery('order_goods as og');
 		$tb_shop->join = 'left join order as o on o.id=og.order_id';
 		$tb_shop->fields = 'count(*) as totalNum';
-		$tb_shop->where = 'og.goods_id='.$goods_id.' and o.status = 5';
+		$tb_shop->where = 'og.goods_id='.$goods_id.' and (o.status = 5 or o.status = 11)';
 		$shop_info = $tb_shop->find();
 		$goods_info['buy_num'] = 0;
 		if($shop_info)
@@ -1051,8 +1051,8 @@ class Site extends IController
         }
         if(!empty($combineList))
         {
-            $this->mobileCombine = $combineList[0]; 
-        }                        
+            $this->mobileCombine = current($combineList); 
+        }                      
         $this->combineList = $combineList;
         $this->goodsImg = current($goods_info['photo']);
 	//	print_r($goods_info);
@@ -1300,7 +1300,7 @@ class Site extends IController
 		$orderGoodsDB = new IQuery('order_goods as og');
 		$orderGoodsDB->join   = 'left join order as o on og.order_id = o.id left join user as u on o.user_id = u.id';
 		$orderGoodsDB->fields = 'o.user_id,og.goods_price,og.goods_nums,o.create_time as completion_time,u.username,u.email,u.phone';
-		$orderGoodsDB->where  = 'og.goods_id = '.$goods_id.' and o.status = 5';
+		$orderGoodsDB->where  = 'og.goods_id = '.$goods_id.' and (o.status = 5 or o.status = 11)';
 		$orderGoodsDB->order  = 'o.create_time desc';
 		$orderGoodsDB->page   = $page;
 
@@ -1871,23 +1871,29 @@ class Site extends IController
         }
         $this->setRenderData($detail);
         $this->groupDetail = $groupDetail;
-        if($detail['type'] == 1)
-        {
-            $this->redirect('active1', false);
-        }
-        elseif($detail['type'] == 2)
-        {
-            $this->redirect('active2', false);
-        }
-        elseif($detail['type'] == 3)
-        {
-            $this->redirect('active3', false);
+        if(IClient::getDevice()=='mobile'){
+            $this->redirect('active');
         }
         else
         {
-            $activeList = $active->query('id != '.$id.' and seoimage is not null', '*', 'rand()', 'desc', 2);
-            $this->activeList = $activeList;
-            $this->redirect('active4', false);
-        }                           
+            if($detail['type'] == 1)
+            {
+                $this->redirect('active1', false);
+            }
+            elseif($detail['type'] == 2)
+            {
+                $this->redirect('active2', false);
+            }
+            elseif($detail['type'] == 3)
+            {
+                $this->redirect('active3', false);
+            }
+            else
+            {
+                $activeList = $active->query('id != '.$id.' and seoimage is not null', '*', 'rand()', 'desc', 2);
+                $this->activeList = $activeList;
+                $this->redirect('active4', false);
+            }
+        }                          
     }
 }
