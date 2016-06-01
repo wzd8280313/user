@@ -333,3 +333,18 @@ a{cursor: pointer;}
     font-style: normal;
     line-height: 30px;
  }
+ .master_play{
+    position: absolute;
+    width: 90%;
+    background: #8E8787;
+    opacity: 0.9;
+    z-index: 99999999999;
+    top: 40%;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 14px;
+    left: 5%;
+    display:none;
+}

@@ -1736,13 +1736,6 @@ class Site extends IController
         
         $tb_goods = new IModel('goods');
         $product_db = new IModel('products');
-      /*  $tb_attribute_goods = new IQuery('goods_attribute as g');
-        $tb_attribute_goods->join  = 'left join attribute as a on a.id=g.attribute_id ';
-        $tb_attribute_goods->fields=' a.name,g.attribute_value ';
-        $tb_attribute_goods->order = "g.id asc";
-        $tb_goods_photo = new IQuery('goods_photo_relation as g');
-        $tb_goods_photo->fields = 'p.id AS photo_id,p.img ';
-        $tb_goods_photo->join = 'left join goods_photo as p on p.id=g.photo_id ';*/
         
         //主商品信息
         $goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)", 'id,name,img,spec_array,store_nums,combine_price,sell_price');
@@ -1856,7 +1849,7 @@ class Site extends IController
                 unset($combineList[$k]);
                 continue;
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img,spec_array');
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img,spec_array,store_nums');
             if($goodsList)
             {
                 $combineList[$k]['goodsList'] = $goodsList;

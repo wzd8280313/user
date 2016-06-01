@@ -90,7 +90,6 @@ $(document).ready(function(){
                                 for(var i=0; i<chk_value.length; i++)
                                 {
                                     $.getJSON(join_cart_url,{"goods_id":chk_value[i],"type":'goods',"goods_num":1,"random":Math.random,'comId':_comId},function(content){
-                                        console.info(content);
                                         if(content.isError == false)
                                         {
                                             msg += '';

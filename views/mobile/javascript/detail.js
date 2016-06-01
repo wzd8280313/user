@@ -274,7 +274,7 @@ function sele_spec(_self,price)
 			}
 			else
 			{
-				alert(json.message);
+				window.realAlert(json.message);
 				closeBuy();
 			}
 		});
@@ -444,7 +444,8 @@ function joinCart()
 		}
 		else
 		{
-			alert(content.message);
+			window.realAlert(content.message);
+            return;
 		}
 	});
 }

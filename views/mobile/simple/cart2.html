@@ -266,11 +266,12 @@ $(".sj img").css("height","27px")
 
      	<div class="qrdd qrdds">
      		<!-- 商品详情-->
-            {foreach:items=$this->goodsList item=$value}
-     		<div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="#">{$value['seller_name']}</a></div>
-			
+            {foreach:items=$this->goodsList key=$buy item=$goods}
+            {foreach:items=$goods item=$value}
+     		<div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$value['seller_name']}</a></div>
+                <span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
 				<input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
-				{foreach:items=$value key=$k}
+				{foreach:items = $value $key=$k}
 				{if:is_array($item)}
 		     		<div class="qr_xq" style="clear:both;margin:-5px;">
 		     			{if:$item['product_id']==0}
@@ -311,6 +312,7 @@ $(".sj img").css("height","27px")
 				{/if}
 				{/foreach}
                 <div style="clear: both;"></div>
+            {/foreach}
 			{/foreach}
             
 			<div style="height:23px;" ></div>

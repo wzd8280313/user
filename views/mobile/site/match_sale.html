@@ -22,9 +22,13 @@
                                      background-size: 80%;
                                  }         
        .figure_cen .attr_chooi i{background: url({skin:images/match_sale/chooice.png}) left center no-repeat;
-                                                background-size: 62%}                          
+                                                background-size: 62%}                                                        
 	</style>
-	
+	<script type="text/javascript">
+        var product_url = '{url:/site/getProduct}';//点击规格获取货
+        var _url = '{url:/site/getCombineInfo/}'; //获取组合商品信息
+        var buy_now_combine_url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@/comId/@comId@}';
+    </script>
 </head>
 <body>
 	<div class="match_sale">
@@ -48,7 +52,7 @@
 
 
        <div class="lt_specing"></div>
-       <div class="main_figure js_sel_attr">
+       <div class="main_figure js_sel_attr" js_data="{$id}" js_product_id="">
 		       	<div class="figure_lf">
 		       		<a href="{url:/site/products/id/$id}">
 		       		  <div class="filf_img">
@@ -75,16 +79,21 @@
 		       	</div>
 
 		       	<div class="figure_rg">
-		       		<p>￥{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</p>
-		       		<p class="online_bu">￥{$sell_price}</p>
+		       		<p>￥<span class="js_select_data_price">{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</span></p>
+		       		<p class="online_bu">￥<span class="online_bu js_select_sell_price">{$sell_price}</span></p>
 
 		       	</div>
-                <div id="tc_shop" class="tc-modal-active" style="display:none;">  
-                            <form method="" action="">
+                <div name="tc_shop" class="tc-modal-active" style="display:none;"> 
                               <div class="tc_le tc_tite">          
-                                <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
+                                <div class="tc_img">
+                                {if:$this->goodsImg}
+                                <img src="{url:/pic/thumb/img/$this->goodsImg['img']/w/200/h/200}" alt="{$name}" />
+                                {else:}
+                                <img src="{skin:images/front/nopic_435_435.gif}" width="150" height="150" alt="{$name}" />
+                               {/if}
+                               </div>
                                 <div class="tc_cont float_lf">
-                                  <p style="color:red;">￥2500</p> <p>(库存100件)</p>
+                                  <p style="color:red;" class="js_price_data">￥{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</p> <p class="js_nums_data">(库存{$store_nums}件)</p>
                                   <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
                                   
                                 </div>
@@ -94,22 +103,20 @@
                               {if:$spec_array}
                               {set:$specArray = JSON::decode($spec_array);}
                               {foreach:items=$specArray}
-                              <div class="tc_le">
+                              <div class="tc_le" name='specCols'>
                                 <p class="tc_tit">{$item['name']}</p>
                                 {set:$specVal=explode(',',trim($item['value'],','))}
                                 {foreach:items=$specVal item=$spec_value}
                                 {if:$item['type'] == 1}
-                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</a></span>
+                                <span class="tc_gg" onclick="sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</span>
                                 {else:}
-                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></a></span>
+                                <span class="tc_gg" onclick="sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></span>
                                 {/if}
                                 {/foreach}
                               </div>
                               {/foreach}
                               {/if}
-
                               <div class="tc_le"><input class="submit" type="button" value="确定" onclick=""/></div>
-                            </form>
                         </div>
 
 
@@ -121,11 +128,11 @@
         {foreach:items=$this->combineList item=$combine}
         {if:$key < 3}
 					  <!-- 套餐一 -->
-          <ul {if:$kk == 0} class="aton" {/if}>
+          <ul {if:$kk == 0} class="aton" {/if} js_data="{$combine['id']}">
               {foreach:$items=$combine['goodsList'] item=$goods}         
               <li>
-                <div class="zuhe_figure js_sel_attr">
-                  <div class="chooice_attr"><i {if:$combine['type'] == 1} class="chooi_none aton" {else:} class="chooi_none" {/if}></i> </div>
+                <div class="zuhe_figure js_sel_attr" js_data="{$goods['id']}" js_product_id="">
+                  <div class="chooice_attr"><i {if:$combine['type'] == 1} class="chooi_none aton chooi_have" {else:} class="chooi_none" {/if}  js_data="{$goods['id']}"></i> </div>
                       <div class="figure_lf">
                         <a href="{url:/site/products/id/$goods[id]}">
                           <div class="filf_img"> 
@@ -150,33 +157,31 @@
                 <!--点击加入购物车弹框 -->
                           
                           {if:$goods['spec_array']}
-                           <div id="tc_shop" class="tc-modal-active" style="display:none;">  
-                            <form method="" action="">
+                           <div name="tc_shop" class="tc-modal-active" style="display:none;"> 
                               <div class="tc_le tc_tite">          
-                                <div class="tc_img"><img src="{skin:images/23274638-1_b.jpg}" alt="组图"></div>
+                                <div class="tc_img"><img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" alt="{$goods['name']}"></div>
                                 <div class="tc_cont float_lf">
-                                  <p style="color:red;">￥2500</p> <p>(库存100件)</p>
+                                  <p style="color:red;" class="js_price_data">￥{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</p> <p class="js_nums_data">(库存{$goods['store_nums']}件)</p>
                                   <span style="position: absolute;top:3px;right:3px;" class="share_btn">关闭</span>
                                   
                                 </div>
                                 <div style="clear: none;"></div>
                               </div>
                               {set:$specArray = JSON::decode($goods['spec_array']);}
-                              {foreach:items=$specArray item=$spec}
-                              <div class="tc_le">
-                                <p class="tc_tit">{$spec['name']}</p>
-                                {set:$specVal=explode(',',trim($spec['value'],','))}
+                              {foreach:items=$specArray}
+                              <div class="tc_le" name='specCols'>
+                                <p class="tc_tit">{$item['name']}</p>
+                                {set:$specVal=explode(',',trim($item['value'],','))}
                                 {foreach:items=$specVal item=$spec_value}
-                                {if:$spec['type'] == 1}
-                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</a></span>
+                                {if:$item['type'] == 1}
+                                <span class="tc_gg" onclick="sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'>{$spec_value}</span>
                                 {else:}
-                                <span class="tc_gg" onclick="sele_spec(this);"><a  href="javascript:void(0);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></a></span>
+                                <span class="tc_gg" onclick="sele_spec(this);" value='{"id":"{$item['id']}","type":"{$item['type']}","value":"{$spec_value}","name":"{$item['name']}"}'><img src="{webroot:$spec_value}" width='30px' height='30px' /></span>
                                 {/if}
                                 {/foreach}
                               </div>
                               {/foreach}
                               <div class="tc_le"><input class="submit" type="button" value="确定" onclick=""/></div>
-                            </form>
                         </div>
                           {/if} 
                
@@ -185,8 +190,8 @@
 
                  
                       <div class="figure_rg">
-                        <p>￥{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</p>
-                        <p class="online_bu">￥{$goods['sell_price']}</p>
+                        <p>￥<span class="js_select_data_price">{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</span></p>
+                        <p>￥<span class="online_bu js_select_sell_price">{$goods['sell_price']}</span></p>
 
                       </div>
 
@@ -205,14 +210,14 @@
 <!-- 合计部分start -->
 		<div class="heji_total">
 			<div class="hejit_left">
-				<a href="#">
+				<a href="javascript:;" class="js_buy_now" js_data="{$id}">
 				  立即购买	
 				</a>
 			</div>
 
 			<div class="hejit_right">
-				<span>合计：￥<em>3790.00</em></span>
-				<p>优惠：￥<i>1209.00</i></p>
+				<span>合计：￥<em></em></span>
+				<p>优惠：￥<i></i></p>
 			</div>
 			
 		</div>
@@ -227,6 +232,7 @@
 					var index = $(this).index();
 					$(this).addClass('aton').siblings().removeClass('aton');
 					oCon.find('ul').eq(index).show().siblings().hide();
+                    count_price();
 				});
 			}
 			tabsChange({
@@ -236,6 +242,8 @@
 		</script>
 
 </div>
+   
+   <div class="master_play"></div>
     
 </body>
 </html>

@@ -63,11 +63,17 @@
 								</td>
 								<td width="10%" id='coudan'><a href="{url:/simple/add_order}" class="goadd">去凑单&nbsp;&gt;</a></td>
 							</tr>
-						</table>		   
+						</table>
+                        {foreach:items = $this->goodsList key=$k item=$goods}		   
 					   <div class="c_list cb" id="list">
+                       {query:name=combine_goods where=id eq $k fields=name}
+                       <input class="buycart_to" type="checkbox" onclick="checkAllCombine(this)">优惠套餐：{$item['name']}
+                        <span><a href="{url:/simple/removeCart/link/cart/combine_id/$k}">删除</a></span>        
+                        {/query}
 						<ul>
-							{foreach:items = $this->goodsList item=$value}
-							{foreach:items=$value key=$k}
+							{foreach:items = $goods item=$value key=$buy}
+                            商家：{$value['seller_name']}
+							{foreach:items=$value key=$in}
 							{if:is_array($item)}
 							{set:$type=isset($item['spec_array'])?'product':'goods'}
 							{set:$item['id']=isset($item['spec_array'])?$item['product_id']:$item['goods_id']}
@@ -97,7 +103,7 @@
 							  {/foreach}
 						</ul>
 					   </div>
-					   
+					   {/foreach}
 					   
 					</div>  
 					</div>
