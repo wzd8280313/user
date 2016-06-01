@@ -1,0 +1,77 @@
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: result
+errFile:E:\wamp\wamp\www\iweb2\plugins\hsms\haiyan.php
+errLine:67
+errTime:16-04-15 10:02:55
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: HTTP_X_FORWARDED_FOR
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:102
+errTime:16-04-15 10:20:25
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: HTTP_CLIENT_IP
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:102
+errTime:16-04-15 10:22:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: defaultKey
+errFile:IWEB_PATH/core\util\cookie_class.php
+errLine:139
+errTime:16-04-15 11:39:02
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:31
+errTime:16-04-15 13:46:44
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: Index_slide
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:231
+errTime:16-04-15 14:06:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:232
+errTime:16-04-15 14:06:56
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for MobileUser::setToken(), called in E:\wamp\wamp\www\iweb2\lib\web\action\inline_action.php on line 22 and defined
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:252
+errTime:16-04-15 15:06:39
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: urlArrays
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:380
+errTime:16-04-15 15:57:28
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Use of undefined constant locationUrl - assumed 'locationUrl'
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:364
+errTime:16-04-15 16:11:30
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IController::getViewFile(), called in E:\wamp\wamp\www\iweb2\controllers\MobileUser.php on line 276 and defined
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:310
+errTime:16-04-15 16:16:46
+<\ERROR_INFO>

@@ -1,0 +1,120 @@
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:158
+errTime:16-04-12 13:19:03
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_regiment WHERE is_close = 0 and NOW() between start_time and end_time ORDER BY id desc DESC  limit 500
+ -- Erreur de syntaxe près de 'DESC  limit 500' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:230  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:123  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getRegiment    	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:162
+errTime:16-04-12 16:28:46
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: commend_id
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:144
+errTime:16-04-12 16:36:52
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_commend_goods  as c on go.id=c.goods_id where c.commnet_id=3   
+ -- Champ 'c.commnet_id' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:170  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getTuijian     	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_commend_goods  as c on go.id=c.goods_id where c.comment_id=3   
+ -- Champ 'c.comment_id' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:170  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getTuijian     	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: comment_id
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:148
+errTime:16-04-12 16:39:35
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:168
+errTime:16-04-12 17:50:32
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_commend_goods  as c on go.id=c.goods_id where where c.commend_id=2 and go.is_del=1   
+ -- Erreur de syntaxe près de 'where c.commend_id=2 and go.is_del=1' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:171  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getTuijian     	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_commend_goods  as c on go.id=c.goods_id where where c.commend_id=2 and go.is_del=1   
+ -- Erreur de syntaxe près de 'where c.commend_id=2 and go.is_del=1' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:171  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getTuijian     	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:165
+errTime:16-04-12 17:52:43
+<\ERROR_INFO>

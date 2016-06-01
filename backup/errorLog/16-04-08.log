@@ -1,0 +1,920 @@
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:113
+errTime:16-04-08 11:55:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:113
+errTime:16-04-08 11:56:24
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:114
+errTime:16-04-08 11:57:55
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\simple.php
+	Func:init           	Class:Simple         	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: self
+errFile:IWEB_PATH/iweb.php
+errLine:113
+errTime:16-04-08 12:10:38
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\iweb.php:113)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-08 12:11:16
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\classes\themeroute.php:43)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-08 12:40:24
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\classes\themeroute.php:43)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-08 12:42:21
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:114
+errTime:16-04-08 12:42:37
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 12:44:31
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: app
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:115
+errTime:16-04-08 12:45:46
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined offset: 0
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 12:48:58
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT goods_id FROM iwebshop_presell WHERE is_close=0 and TIMESTAMPDIFF(second,yu_end_time,NOW()) >0 limit 500
+ -- La table 'iweb.iwebshop_presell' n'existe pas
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:327  	File:E:\wamp\wamp\www\iweb2\classes\hookCreateAction.php
+	Func:pregoods_presell_list	Class:hookCreateAction	Type:::   	Line:322  	File:E:\wamp\wamp\www\iweb2\classes\hookCreateAction.php
+	Func:site_index     	Class:hookCreateAction	Type:::   	Line:     	File:
+	Func:call_user_func 	Class:               	Type:     	Line:37   	File:E:\wamp\wamp\www\iweb2\classes\hookCreateAction.php
+	Func:onCreateAction 	Class:hookCreateAction	Type:::   	Line:     	File:
+	Func:call_user_func 	Class:               	Type:     	Line:104  	File:IWEB_PATH/core\interceptor_class.php
+	Func:run            	Class:IInterceptor   	Type:::   	Line:135  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM iwebshop_user as u,iwebshop_member as m WHERE (u.phone = '' or u.email = '' or u.username = '') and m.status = 1 and u.id = m.user_id limit 1
+ -- Champ 'u.phone' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:228  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:176  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:319  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:isValidUser    	Class:CheckRights    	Type:::   	Line:124  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:getUser        	Class:CheckRights    	Type:::   	Line:174  	File:E:\wamp\wamp\www\iweb2\classes\checkrights.php
+	Func:checkUserRights	Class:CheckRights    	Type:::   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\site.php
+	Func:init           	Class:Site           	Type:->   	Line:131  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:258
+errTime:16-04-08 13:31:39
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:259
+errTime:16-04-08 13:33:16
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:34:53
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:259
+errTime:16-04-08 13:35:09
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:259
+errTime:16-04-08 13:35:31
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:260
+errTime:16-04-08 13:35:54
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:260
+errTime:16-04-08 13:36:15
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:260
+errTime:16-04-08 13:36:24
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:260
+errTime:16-04-08 13:36:31
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:260
+errTime:16-04-08 13:36:59
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:259
+errTime:16-04-08 13:37:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:260
+errTime:16-04-08 13:37:47
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:41
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'default'
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:116
+errTime:16-04-08 13:46:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:113
+errTime:16-04-08 14:29:13
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:113
+errTime:16-04-08 14:30:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:113
+errTime:16-04-08 14:30:36
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:50
+errTime:16-04-08 15:23:38
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::select(), called in E:\wamp\wamp\www\iweb2\controllers\mobile.php on line 49 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:79
+errTime:16-04-08 15:36:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: b_list
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:77
+errTime:16-04-08 16:05:25
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: conditon
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:98
+errTime:16-04-08 16:14:47
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: conditon
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:98
+errTime:16-04-08 16:14:56
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: conditon
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:98
+errTime:16-04-08 16:14:57
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::select(), called in E:\wamp\wamp\www\iweb2\controllers\mobile.php on line 90 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:79
+errTime:16-04-08 16:54:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: whre
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:98
+errTime:16-04-08 17:20:10
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: content
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:99
+errTime:16-04-08 17:25:36
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: order
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:108
+errTime:16-04-08 17:42:18
+<\ERROR_INFO>

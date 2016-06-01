@@ -1,0 +1,14 @@
+<ERROR_INFO>
+errID:2
+errStr:file_get_contents(E:\wamp\wamp\www\iweb2\plugins\payments\pay_unionpay/key/private_key.pfx): failed to open stream: No such file or directory
+errFile:E:\wamp\wamp\www\iweb2\plugins\payments\pay_unionpay\common.php
+errLine:292
+errTime:16-04-25 15:34:17
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:file_get_contents(E:\wamp\wamp\www\iweb2\plugins\payments\pay_unionpay/key/private_key.pfx): failed to open stream: No such file or directory
+errFile:E:\wamp\wamp\www\iweb2\plugins\payments\pay_unionpay\common.php
+errLine:292
+errTime:16-04-25 15:34:31
+<\ERROR_INFO>

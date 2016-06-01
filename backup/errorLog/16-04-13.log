@@ -1,0 +1,121 @@
+<ERROR_INFO>
+errID:8
+errStr:unserialize(): Error at offset 159 of 681 bytes
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:217
+errTime:16-04-13 13:10:26
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:unserialize(): Error at offset 159 of 621 bytes
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:217
+errTime:16-04-13 13:11:31
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:unserialize(): Error at offset 159 of 621 bytes
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:217
+errTime:16-04-13 13:11:32
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:219
+errTime:16-04-13 13:14:09
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:220
+errTime:16-04-13 13:20:39
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_goods as go  where id=3and is_del=0   order by desc limit 1000
+ -- Erreur de syntaxe près de 'is_del=0   order by desc limit 1000' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:229  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getGoodsInfo   	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_goods as go  where id=3 and is_del=0   order by desc limit 1000
+ -- Erreur de syntaxe près de 'desc limit 1000' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:229  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getGoodsInfo   	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT is_del=0 and status=1 FROM shop_delivery WHERE * limit 1
+ -- Erreur de syntaxe près de '* limit 1' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:230  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:177  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:236  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getDelivery    	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_delivery WHERE is_del=0 and status=1 limit 1
+ -- Champ 'is_del' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:230  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:177  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:236  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getDelivery    	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_comment as c  where goods_id=    limit 1000
+ -- Erreur de syntaxe près de 'limit 1000' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:255  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getComment     	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: select  u.name,u.head_ico,c.* from shop_comment as c left join shop_user   as u on u.id=c.user_id where c.goods_id=22 and c.status=1    limit 1000
+ -- Champ 'u.name' inconnu dans field list
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:259  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getComment     	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>

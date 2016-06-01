@@ -1,0 +1,121 @@
+<ERROR_INFO>
+errID:2
+errStr:call_user_func() expects parameter 1 to be a valid callback, class 'test' does not have a method 'test5'
+errFile:IWEB_PATH/core\interceptor_class.php
+errLine:109
+errTime:16-06-01 10:09:04
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: email
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:53
+errTime:16-06-01 10:10:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: time
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:99
+errTime:16-06-01 15:49:50
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: INSERT INTO shop_mobile_code ( `phone`,`code` ) VALUES ( '15313086535','715042' ) 
+ -- Duplicata du champ '15313086535' pour la clef 'PRIMARY'
+Line: 96
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:149  	File:IWEB_PATH/web\model\model_class.php
+	Func:add            	Class:IModel         	Type:->   	Line:109  	File:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+	Func:getMobileValidateCode	Class:MobileUser     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:28   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::update(), called in E:\wamp\wamp\www\iweb2\controllers\MobileUser.php on line 108 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:110
+errTime:16-06-01 15:54:04
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: phone
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:137
+errTime:16-06-01 16:14:11
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: phone
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:137
+errTime:16-06-01 16:15:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: phone
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:137
+errTime:16-06-01 16:16:48
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 2 for MobileUser::checkMobileValidateCode(), called in E:\wamp\wamp\www\iweb2\controllers\MobileUser.php on line 31 and defined
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:134
+errTime:16-06-01 16:17:15
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_mobile_code WHERE phone= limit 1
+ -- Erreur de syntaxe près de 'limit 1' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:230  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:177  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:137  	File:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+	Func:checkMobileValidateCode	Class:MobileUser     	Type:->   	Line:31   	File:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+	Func:MobileReg      	Class:MobileUser     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:28   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Use of undefined constant get - assumed 'get'
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:137
+errTime:16-06-01 17:10:10
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Use of undefined constant get - assumed 'get'
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:137
+errTime:16-06-01 17:10:28
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Use of undefined constant get - assumed 'get'
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:137
+errTime:16-06-01 17:10:37
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Use of undefined constant get - assumed 'get'
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:137
+errTime:16-06-01 17:13:40
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: num
+errFile:E:\wamp\wamp\www\iweb2\controllers\MobileUser.php
+errLine:147
+errTime:16-06-01 17:16:27
+<\ERROR_INFO>

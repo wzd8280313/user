@@ -1,0 +1,1478 @@
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 15
+errorCode: 8
+errorTime: 2016-04-06 10:48:56
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 15
+errorCode: 8
+errorTime: 2016-04-06 10:51:35
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 15
+errorCode: 8
+errorTime: 2016-04-06 10:51:36
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 15
+errorCode: 8
+errorTime: 2016-04-06 10:51:37
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 16
+errorCode: 8
+errorTime: 2016-04-06 10:54:45
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 16
+errorCode: 8
+errorTime: 2016-04-06 10:55:13
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 16
+errorCode: 8
+errorTime: 2016-04-06 10:55:19
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 16
+errorCode: 8
+errorTime: 2016-04-06 10:56:03
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 17
+errorCode: 8
+errorTime: 2016-04-06 10:56:23
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 17
+errorCode: 8
+errorTime: 2016-04-06 10:57:15
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 17
+errorCode: 8
+errorTime: 2016-04-06 10:59:38
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 17
+errorCode: 8
+errorTime: 2016-04-06 11:00:51
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 19
+errorCode: 8
+errorTime: 2016-04-06 11:00:51
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 17
+errorCode: 8
+errorTime: 2016-04-06 11:01:06
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 17
+errorCode: 8
+errorTime: 2016-04-06 11:01:07
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: fileds
+errorFile: IWEB_PATH/classes/api/goods.php
+errorLine: 17
+errorCode: 8
+errorTime: 2016-04-06 11:01:08
+#0 : APIGoods->getGoodsList(1,2,3,4)
+#1 IWEB_PATH/classes/api.php(88): call_user_func_array()
+#2 IWEB_PATH/controllers/goods.php(1023): Api::run(getGoodsList,1,2,3,4)
+#3 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test()
+#4 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#5 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#6 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#7 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  go.name,go.id from iwebshop_goods as go  where id=#id# and is_del = 0    limit 1
+ -- Erreur de syntaxe près de '' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 11:18:52
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  go.name,go.id from iwebshop_goods as go  where id=#id# and is_del = 0    limit 1)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/controllers/goods.php(1030): Api::run(getGoodsList2,1)
+#4 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test2()
+#5 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#6 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#7 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#8 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  go.name,go.id from iwebshop_goods as go  where id = #id# and is_del = 0    limit 1
+ -- Erreur de syntaxe près de '' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 11:19:22
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  go.name,go.id from iwebshop_goods as go  where id = #id# and is_del = 0    limit 1)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/controllers/goods.php(1030): Api::run(getGoodsList2,1)
+#4 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test2()
+#5 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#6 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#7 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#8 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  go.name,go.id from iwebshop_goods as go  where id = #id# and is_del = 0    limit 1
+ -- Erreur de syntaxe près de '' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 11:19:23
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  go.name,go.id from iwebshop_goods as go  where id = #id# and is_del = 0    limit 1)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/controllers/goods.php(1030): Api::run(getGoodsList2,1)
+#4 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test2()
+#5 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#6 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#7 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#8 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  go.name,go.id from iwebshop_goods as go  where id = #id# and is_del = 0    limit 1
+ -- Erreur de syntaxe près de '' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 11:19:23
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  go.name,go.id from iwebshop_goods as go  where id = #id# and is_del = 0    limit 1)
+#1 IWEB_PATH/classes/api.php(151): IQuery->find()
+#2 IWEB_PATH/classes/api.php(56): Api::query()
+#3 IWEB_PATH/controllers/goods.php(1030): Api::run(getGoodsList2,1)
+#4 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test2()
+#5 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#6 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#7 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#8 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Array to string conversion
+errorFile: IWEB_PATH/runtime/sysdefault/goods/test2.php
+errorLine: 48
+errorCode: 8
+errorTime: 2016-04-06 11:30:36
+#0 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/goods/test2.php)
+#1 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/goods/test2.php)
+#2 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/goods/test2)
+#3 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/goods/test2)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#5 IWEB_PATH/controllers/goods.php(1032): IController->redirect(test2)
+#6 IWEB_PATH/lib/web/action/inline_action.php(24): Goods->test2()
+#7 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#8 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#9 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#10 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Trying to get property of non-object
+errorFile: IWEB_PATH/lib/web/controller/controller_class.php
+errorLine: 102
+errorCode: 8
+errorTime: 2016-04-06 12:45:00
+#0 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#1 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#2 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Trying to get property of non-object
+errorFile: IWEB_PATH/lib/web/controller/controller_class.php
+errorLine: 102
+errorCode: 8
+errorTime: 2016-04-06 12:45:02
+#0 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#1 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#2 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Trying to get property of non-object
+errorFile: IWEB_PATH/lib/web/controller/controller_class.php
+errorLine: 102
+errorCode: 8
+errorTime: 2016-04-06 12:45:51
+#0 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#1 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#2 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Trying to get property of non-object
+errorFile: IWEB_PATH/lib/web/controller/controller_class.php
+errorLine: 102
+errorCode: 8
+errorTime: 2016-04-06 12:45:54
+#0 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#1 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#2 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:45:46
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:46:34
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:46:50
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:49:28
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:49:39
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:50:15
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:51:57
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:51:58
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:51:58
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:51:58
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:52:00
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:52:50
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:52:55
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:52:57
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:53:04
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:55:40
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:55:59
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:56:05
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:56:18
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:56:32
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:56:54
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:59:10
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:59:20
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 13:59:59
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:00:14
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:00:22
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:00:46
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:00:49
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:01:10
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:01:12
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:01:23
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:01:26
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:01:28
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(110): IViewAction->run()
+#7 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#8 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#9 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:04:36
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:04:57
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:04:59
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:05
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:14
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:37
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:38
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:40
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:54
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:54
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000
+ -- Erreur de syntaxe près de 'and is_del = 0    limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:05:55
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_quick_naviga  where admin_id =  and is_del = 0    limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(35): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_'goods'      limit 5000
+ -- Erreur de syntaxe près de ''goods'      limit 5000' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:39:45
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_'goods'      limit 5000)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(30): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: select  * from iwebshop_'goods'      limit 5
+ -- Erreur de syntaxe près de ''goods'      limit 5' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 73
+excepCode: 1000
+excepTime: 2016-04-06 14:40:15
+#0 IWEB_PATH/lib/core/query_class.php(180): IDB->query(select  * from iwebshop_'goods'      limit 5)
+#1 IWEB_PATH/runtime/sysdefault/test/test1.php(30): IQuery->find()
+#2 IWEB_PATH/lib/web/controller/controllerbase_class.php(116): require(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#3 IWEB_PATH/lib/web/controller/controllerbase_class.php(82): IControllerBase->requireFile(IWEB_PATH/runtime/sysdefault/test/test1.php)
+#4 IWEB_PATH/lib/web/controller/controller_class.php(175): IControllerBase->renderView(IWEB_PATH/views/sysdefault/test/test1)
+#5 IWEB_PATH/lib/web/action/view_action.php(36): IController->render(IWEB_PATH/views/sysdefault/test/test1)
+#6 IWEB_PATH/lib/web/controller/controller_class.php(358): IViewAction->run()
+#7 IWEB_PATH/controllers/test.php(12): IController->redirect(test1)
+#8 IWEB_PATH/lib/web/action/inline_action.php(24): test->test1()
+#9 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#10 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#11 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#12 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Missing argument 1 for IWeb::createApp(), called in E:\wamp\wamp\www\iweb\controllers\test.php on line 21 and defined
+errorFile: IWEB_PATH/lib/iweb.php
+errorLine: 51
+errorCode: 2
+errorTime: 2016-04-06 16:10:48
+#0 IWEB_PATH/controllers/test.php(21): IWeb::createApp()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Missing argument 2 for IWeb::createApp(), called in E:\wamp\wamp\www\iweb\controllers\test.php on line 21 and defined
+errorFile: IWEB_PATH/lib/iweb.php
+errorLine: 51
+errorCode: 2
+errorTime: 2016-04-06 16:10:48
+#0 IWEB_PATH/controllers/test.php(21): IWeb::createApp()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: className
+errorFile: IWEB_PATH/lib/iweb.php
+errorLine: 53
+errorCode: 8
+errorTime: 2016-04-06 16:10:48
+#0 IWEB_PATH/controllers/test.php(21): IWeb::createApp()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Missing argument 1 for IWeb::createApp(), called in E:\wamp\wamp\www\iweb\controllers\test.php on line 21 and defined
+errorFile: IWEB_PATH/lib/iweb.php
+errorLine: 51
+errorCode: 2
+errorTime: 2016-04-06 16:10:50
+#0 IWEB_PATH/controllers/test.php(21): IWeb::createApp()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Missing argument 2 for IWeb::createApp(), called in E:\wamp\wamp\www\iweb\controllers\test.php on line 21 and defined
+errorFile: IWEB_PATH/lib/iweb.php
+errorLine: 51
+errorCode: 2
+errorTime: 2016-04-06 16:10:50
+#0 IWEB_PATH/controllers/test.php(21): IWeb::createApp()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: className
+errorFile: IWEB_PATH/lib/iweb.php
+errorLine: 53
+errorCode: 8
+errorTime: 2016-04-06 16:10:50
+#0 IWEB_PATH/controllers/test.php(21): IWeb::createApp()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined property: IWebApplication::$getController
+errorFile: IWEB_PATH/controllers/test.php
+errorLine: 21
+errorCode: 8
+errorTime: 2016-04-06 16:15:05
+#0 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#1 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#2 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#3 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#4 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Missing argument 1 for IWebApplication::__construct(), called in E:\wamp\wamp\www\iweb\controllers\test.php on line 21 and defined
+errorFile: IWEB_PATH/lib/core/webapplication_class.php
+errorLine: 28
+errorCode: 2
+errorTime: 2016-04-06 16:17:30
+#0 IWEB_PATH/controllers/test.php(21): IWebApplication->__construct()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: config
+errorFile: IWEB_PATH/lib/core/webapplication_class.php
+errorLine: 30
+errorCode: 8
+errorTime: 2016-04-06 16:17:30
+#0 IWEB_PATH/controllers/test.php(21): IWebApplication->__construct()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Missing argument 1 for IWebApplication::__construct(), called in E:\wamp\wamp\www\iweb\controllers\test.php on line 21 and defined
+errorFile: IWEB_PATH/lib/core/webapplication_class.php
+errorLine: 28
+errorCode: 2
+errorTime: 2016-04-06 16:18:18
+#0 IWEB_PATH/controllers/test.php(21): IWebApplication->__construct()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+errorInfo: Undefined variable: config
+errorFile: IWEB_PATH/lib/core/webapplication_class.php
+errorLine: 30
+errorCode: 8
+errorTime: 2016-04-06 16:18:18
+#0 IWEB_PATH/controllers/test.php(21): IWebApplication->__construct()
+#1 IWEB_PATH/lib/web/action/inline_action.php(24): test->insert()
+#2 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#3 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#4 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#5 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+

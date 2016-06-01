@@ -1,0 +1,223 @@
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: m_category
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:144
+errTime:16-04-11 11:03:51
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:212
+errTime:16-04-11 11:04:18
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_goods as go left join shop_shop_commend_goods   as c on go.id=c.goods_id where c.commend_id=3    limit 1000
+ -- La table 'shop2.shop_shop_commend_goods' n'existe pas
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:157  	File:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+	Func:getTejia       	Class:Mobile         	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:181
+errTime:16-04-11 11:56:56
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:181
+errTime:16-04-11 12:00:39
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_comment_goods  as c on go.id=c.goods_id where c.commnet_id=3   
+ -- La table 'shop2.shop_comment_goods' n'existe pas
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:184  	File:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+	Func:getTuijian     	Class:Mobile         	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_commend_goods  as c on go.id=c.goods_id where c.commnet_id=3   
+ -- Champ 'c.commnet_id' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:184  	File:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+	Func:getTuijian     	Class:Mobile         	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: where
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+errLine:181
+errTime:16-04-11 12:36:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Array to string conversion
+errFile:E:\wamp\wamp\www\iweb2\classes\themeroute.php
+errLine:113
+errTime:16-04-11 15:33:06
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'parent_id'
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:39
+errTime:16-04-11 17:03:34
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'parent_id'
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:39
+errTime:16-04-11 17:08:07
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'parent_id'
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:39
+errTime:16-04-11 17:08:09
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:mysql_fetch_assoc() expects parameter 1 to be resource, array given
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:39
+errTime:16-04-11 17:13:29
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:38
+errTime:16-04-11 17:13:48
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'parent_id'
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:39
+errTime:16-04-11 17:14:41
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_commend_goods  as c on go.id=c.goods_id where c.commnet_id=3   
+ -- Champ 'c.commnet_id' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:184  	File:E:\wamp\wamp\www\iweb2\controllers\mobile.php
+	Func:getTuijian     	Class:Mobile         	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'parent_id'
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:41
+errTime:16-04-11 17:20:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: parent_id
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:39
+errTime:16-04-11 17:23:57
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Illegal string offset 'parent_id'
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:40
+errTime:16-04-11 17:24:42
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: array
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:40
+errTime:16-04-11 17:27:19
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: pid
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:41
+errTime:16-04-11 17:27:51
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Missing argument 1 for IModel::select(), called in E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php on line 170 and defined
+errFile:IWEB_PATH/web\model\model_class.php
+errLine:79
+errTime:16-04-11 17:40:43
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Invalid argument supplied for foreach()
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:25
+errTime:16-04-11 17:40:51
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: parent_id
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:26
+errTime:16-04-11 17:48:29
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: cat_llist
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:173
+errTime:16-04-11 17:49:30
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_goods  where category_id in (50,59,60,61,62,63,64,65,66,67,68,52,69,70,71,72,73,74,75,76,53,77,78,79,80,81,82,83,84,54,85,86,87,88,89,90,91,55,92,93,94,95,96,97,98,99,56,100,101,102,103,104,105,106,107,108,109,57,110,111,112,113,114,115,116,117,118,58,119,120,121,122,123,2)    limit 1000
+ -- Champ 'category_id' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:181  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getCatGoods    	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>

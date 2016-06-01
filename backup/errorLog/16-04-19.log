@@ -1,0 +1,105 @@
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: search_lsit
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:240
+errTime:16-04-19 10:08:52
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Use of undefined constant haveDone - assumed 'haveDone'
+errFile:IWEB_PATH/core\interceptor_class.php
+errLine:86
+errTime:16-04-19 13:34:10
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2048
+errStr:call_user_func() expects parameter 1 to be a valid callback, non-static method test::test5() should not be called statically
+errFile:IWEB_PATH/core\interceptor_class.php
+errLine:109
+errTime:16-04-19 13:43:07
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 13:48:47
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 13:49:52
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 13:50:09
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 13:50:10
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:Cannot modify header information - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/web\controller\controller_class.php
+errLine:128
+errTime:16-04-19 13:50:46
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 13:51:00
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 13:52:32
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 14:18:33
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 14:19:44
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 14:20:27
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:session_start(): Cannot send session cookie - headers already sent by (output started at E:\wamp\wamp\www\iweb2\lib\core\webapplication_class.php:26)
+errFile:IWEB_PATH/core\util\session_class.php
+errLine:17
+errTime:16-04-19 14:20:29
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:mysqli::mysqli(): 
+errFile:IWEB_PATH/db\driver\mysqli_class.php
+errLine:28
+errTime:16-04-19 17:29:26
+<\ERROR_INFO>

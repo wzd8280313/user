@@ -1,0 +1,23 @@
+<ERROR_INFO>
+errID:8
+errStr:Undefined index: name
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:140
+errTime:16-05-03 14:02:57
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: SELECT * FROM shop_delivery WHERE id= limit 1
+ -- Erreur de syntaxe près de 'limit 1' à la ligne 1
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:230  	File:IWEB_PATH/web\model\model_class.php
+	Func:query          	Class:IModel         	Type:->   	Line:177  	File:IWEB_PATH/web\model\model_class.php
+	Func:getObj         	Class:IModel         	Type:->   	Line:29   	File:E:\wamp\wamp\www\iweb2\classes\preorder_class.php
+	Func:getOrderShow   	Class:Preorder_Class 	Type:->   	Line:21   	File:E:\wamp\wamp\www\iweb2\controllers\preorder.php
+	Func:preorder_show  	Class:Preorder       	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:28   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>

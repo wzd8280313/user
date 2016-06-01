@@ -1,0 +1,44 @@
+<ERROR_INFO>
+Mess: select count(*) as total from shop_goods as go left join shop_commend_goods  as c on go.id=c.goods_id where c.commend_id=a and go.is_del=0   
+ -- Champ 'a' inconnu dans where clause
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:54   	File:IWEB_PATH/core\paging_class.php
+	Func:setSql         	Class:IPaging        	Type:->   	Line:40   	File:IWEB_PATH/core\paging_class.php
+	Func:__construct    	Class:IPaging        	Type:->   	Line:138  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:188  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getTuijian     	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>
+<ERROR_INFO>
+errID:8
+errStr:Undefined variable: tem
+errFile:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+errLine:208
+errTime:16-04-18 14:50:33
+<\ERROR_INFO>
+<ERROR_INFO>
+errID:2
+errStr:mkdir(): File exists
+errFile:IWEB_PATH/core\util\file_class.php
+errLine:127
+errTime:16-04-18 17:32:04
+<\ERROR_INFO>
+<ERROR_INFO>
+Mess: select  * from shop_goods as go left join shop_commend_goods   as c on go.id=c.goods_id where c.commend_id=3   order by id DESC limit 5
+ -- Champ: 'id' dans order clause est ambigu
+Line: 66
+File: IWEB_PATH/db\db_class.php
+##Debug_backtrace:##
+	Func:query          	Class:IDB            	Type:->   	Line:166  	File:IWEB_PATH/core\query_class.php
+	Func:find           	Class:IQuery         	Type:->   	Line:151  	File:E:\wamp\wamp\www\iweb2\controllers\mobieGoods.php
+	Func:getTejia       	Class:mobieGoods     	Type:->   	Line:22   	File:IWEB_PATH/web\action\inline_action.php
+	Func:run            	Class:IInlineAction  	Type:->   	Line:136  	File:IWEB_PATH/web\controller\controller_class.php
+	Func:run            	Class:IController    	Type:->   	Line:27   	File:IWEB_PATH/core\webapplication_class.php
+	Func:execRequest    	Class:IWebApplication	Type:->   	Line:105  	File:IWEB_PATH/core\application_class.php
+	Func:run            	Class:IApplication   	Type:->   	Line:6    	File:E:\wamp\wamp\www\iweb2\index.php
+</ERROR_INFO>

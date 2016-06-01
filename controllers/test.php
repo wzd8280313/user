@@ -122,9 +122,9 @@ class test extends IController{
 		$result=session_id();
 	
 	}
-	public static function test5(){
+/*	public static function test5(){
 		echo 'jinlaile';
-	}
+	}*/
 	public function mailtest(){
 		$phpMailerDir = IWEB_PATH.'core/util/phpmailer/PHPMailerAutoload.php';
 			include_once($phpMailerDir);

@@ -1,0 +1,48 @@
+<ERROR_BLOCK>
+excepInfo: DELETE FROM iwebshop_test WHERE id =
+ -- Erreur de syntaxe près de '' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 103
+excepCode: 1000
+excepTime: 2016-04-07 11:16:59
+#0 IWEB_PATH/lib/web/model/model_class.php(123): IDB->query(DELETE FROM iwebshop_test WHERE id =)
+#1 IWEB_PATH/controllers/test.php(78): IModel->del(id =)
+#2 IWEB_PATH/lib/web/action/inline_action.php(24): test->del()
+#3 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#4 IWEB_PATH/lib/core/webapplication_class.php(73): IController->run()
+#5 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#6 IWEB_PATH/index.php(6): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: DELETE FROM iwebshop_test WHERE id =
+ -- Erreur de syntaxe près de '' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 103
+excepCode: 1000
+excepTime: 2016-04-07 13:31:47
+#0 IWEB_PATH/lib/web/model/model_class.php(123): IDB->query(DELETE FROM iwebshop_test WHERE id =)
+#1 IWEB_PATH/controllers/test.php(79): IModel->del(id =)
+#2 IWEB_PATH/lib/web/action/inline_action.php(24): test->del()
+#3 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#4 IWEB_PATH/lib/core/webapplication_class.php(74): IController->run()
+#5 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#6 IWEB_PATH/index.php(7): IApplication->run()
+</ERROR_BLOCK>
+
+<ERROR_BLOCK>
+excepInfo: DELETE FROM iwebshop_test WHERE id =
+ -- Erreur de syntaxe près de '' à la ligne 1
+excepFile: IWEB_PATH/lib/db/db_class.php
+excepLine: 103
+excepCode: 1000
+excepTime: 2016-04-07 13:32:08
+#0 IWEB_PATH/lib/web/model/model_class.php(123): IDB->query(DELETE FROM iwebshop_test WHERE id =)
+#1 IWEB_PATH/controllers/test.php(80): IModel->del(id =)
+#2 IWEB_PATH/lib/web/action/inline_action.php(24): test->del()
+#3 IWEB_PATH/lib/web/controller/controller_class.php(110): IInlineAction->run()
+#4 IWEB_PATH/lib/core/webapplication_class.php(74): IController->run()
+#5 IWEB_PATH/lib/core/application_class.php(89): IWebApplication->execRequest()
+#6 IWEB_PATH/index.php(7): IApplication->run()
+</ERROR_BLOCK>
+
