@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0035)http://www.prcsteel.com/Upload.aspx -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+
+</title>
+    <script src="jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#upload").change(function () {
+                $("#frmUpload").submit();
+            });
+
+            $("#frmUpload").submit(function () {
+                var filename = document.getElementById('upload').value;
+                if (filename == "")
+                { alert("请先选择上传文件！"); return false; }
+            });
+        });
+        function change() {
+            var filename = document.getElementById('upload').value;
+            var file_type = filename.substring(filename.lastIndexOf(".") + 1);
+            if (file_type != "gif" || file_type != "jpg" || file_type != "xls" || file_type != "doc" || file_type != "xlsx" || file_type != "docx") {
+                alert("抱歉，您上传的文件类型格式错误，只能上传小于2M的Excel、Word和图片文件！");
+            }
+        }
+    </script>
+    <style type="text/css">
+        body{ margin:0; padding:0;}
+        a{ text-decoration:none;}
+    </style>
+</head>
+<body>
+    <form method="post" action="Upload.htm" id="frmUpload" enctype="multipart/form-data">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="FQ7wa5jwWg0MxMucE8zEqt/SRkhtMcuhrgwCu1STsOCPS2X/xUK16vw1GZ7tdPFo">
+</div>
+
+    <div id="updiv"><input type="hidden" value="" name="odurl">
+        <input type="file" name="upload" id="upload"> &nbsp;<input style=" display:none;" type="submit" value="上 传">
+    </div>
+    </form>
+
+</body></html>
