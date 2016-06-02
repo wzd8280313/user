@@ -149,7 +149,8 @@ function get_delivery()
         ,_in = 0; 
 	$('span[id^=deliveryfee_]').each(function(){
         var _this = $(this)
-            ,price = 0;
+            ,price = 0
+            ,_pri = '';
         _this.parents('table').find('.js_goods_delivery').each(function(){
             var _t = $(this)
                 ,obj = _t.attr('js_data')
@@ -173,7 +174,6 @@ function get_delivery()
                         {
                             if(!content.isFreeFreight)
                             {
-                                orderFormInstance.deliveryPrice += parseFloat(content.price);
                                 price += content.price;
                             }
                             else
@@ -182,7 +182,7 @@ function get_delivery()
                                     _d.push(content.isFreeFreight[i]);
                                 }
                                 $('.js_data_6').siblings('.gray').show();
-                                price = '免运费';
+                                _pri = '免运费';
                             }
                             //orderFormInstance.deliveryPrice += parseFloat(content.price);
                             var html = parseFloat(content.price).toFixed(2);
@@ -197,10 +197,19 @@ function get_delivery()
                     },
                     timeout:1000,
                 })
-                var _p = price == '免运费' ? '免运费' : '￥'+parseFloat(price).toFixed(2);
-                _this.html(_p);
                 _in++;
-        })                
+        })
+        
+        var _p = _pri == '免运费' ? '免运费' : '￥'+parseFloat(price).toFixed(2);
+        _this.html(_p);
+        if(_pri == '')
+        {
+            orderFormInstance.deliveryPrice = parseFloat(price);
+        }
+        else
+        {
+            orderFormInstance.deliveryPrice = 0;
+        }                
     })
     if(_d.length > 0)
     {

@@ -42,6 +42,11 @@
 //创建订单表单实例
 orderFormInstance = new orderFormClass();
 orderFormInstance.presell = 1;
+
+//计算运费
+$(function(){
+    orderFormInstance.get_delivery();
+})
 //DOM加载完毕
 jQuery(function(){
 	
@@ -62,7 +67,7 @@ jQuery(function(){
 	getTakeselfData('area','{$defaultAddress["area"]}');
 
 	//获取配送费用的url
-	orderFormInstance.delivery_fee_url = '{url:/block/order_delivery}';
+	orderFormInstance.delivery_fee_url = '{url:/block/order_delivery_count}';
 	//设置是否免运费
 	orderFormInstance.freeFreight = {echo:$this->freeFreight ? 1 : 0};
 	//商品价格
@@ -234,10 +239,17 @@ function selectProtect(obj)
 					{/if}
 		     	</a>
 	     	</div>
-     
+        {foreach:items=$this->goodsList key=$buy item=$goods}
      	<div class="qrdd qrdds">
+            商家：{$this->seller_name}<span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
      		<!-- 商品详情-->
-			{foreach:items = $this->goodsList}
+			{foreach:items = $goods $key=$k}
+                {if:$item['product_id']==0}
+                    {set:$type= 'goods';$id=$item['goods_id']}
+                {else:}
+                    {set:$type='product';$id=$item['product_id']}
+                {/if}
+                <input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
 		     		<div class="qr_xq">
 		     		<a href="{url:/site/products/id/$item[goods_id]}">
 		     			<div class="tjxq_img">
@@ -261,7 +273,7 @@ function selectProtect(obj)
 				     			数量：<span>x{$item['count']}</span>
 				     		</p>
 							<p class="sum" >
-				     			运费：<span id="deliveryFeeBox_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"></span>
+				     			运费：<span class="js_goods_delivery" js_data="{$item['delivery_id']}_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"></span>
 				     		</p>
 							<p style='color:red;'>
 								小计：<b >￥{$item['sum']}</b>
@@ -289,18 +301,11 @@ function selectProtect(obj)
 						{/if}
 					{/foreach}
      			</select>
-     			<p style=" margin-right:10px; margin-top:7px;margin-bottom:6px;">配送方式</p>
-     			<select style="width:97%;height:33px; background-color: #F30; color:#fff; " name='delivery_id' onchange='orderFormInstance.deliverySave()' pattern='int'>
-     				<option value='-1'>请选配送方式</option>
-					{set:$deliveryData = $this->allDeliveryType}
-					{foreach:items = $deliveryData}
-     				<option value="{$item['id']}" >{$item['name']}</option>
-					{/foreach}
-     			</select>
      			<input style="width:97%;height:33px;" class="xt" type="text" name='message' placeholder="买家留言"/>
      			
      		</div>
      	</div>
+        {/foreach}
 		{if:!empty($this->promotion)}
 		<div class="qrdd qrdds">
 	     	<span class="yhj">满足的优惠活动</span>

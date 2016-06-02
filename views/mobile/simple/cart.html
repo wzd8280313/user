@@ -66,10 +66,6 @@
 						</table>
                         {foreach:items = $this->goodsList key=$k item=$goods}		   
 					   <div class="c_list cb" id="list">
-                       {query:name=combine_goods where=id eq $k fields=name}
-                       <input class="buycart_to" type="checkbox" onclick="checkAllCombine(this)">优惠套餐：{$item['name']}
-                        <span><a href="{url:/simple/removeCart/link/cart/combine_id/$k}">删除</a></span>        
-                        {/query}
 						<ul>
 							{foreach:items = $goods item=$value key=$buy}
                             商家：{$value['seller_name']}
@@ -90,11 +86,11 @@
 											{set:$item_json = JSON::encode($item)}
 											<div class="spinner">
 												<button type="button" class="decrease" onclick='cart_reduce({$item_json});'>-</button>
-												<input id="{$type}_count_{$item['id']}" type="text" class="spinner value" name='{$type}-{$item["id"]}' onblur='cartCount({$item_json});' value='{$item["count"]}' >
+												<input id="{$type}_count_{$item['id']}" type="text" class="spinner value" name='{$k}-{$type}-{$item["id"]}' onblur='cartCount({$item_json});' value='{$item["count"]}' >
 												<button type="button" class="increase" onclick='cart_increase({$item_json});'>+</button>
 											</div>
 										</td>
-										<td width="10%"> <input type="checkbox" class="checkbox" name="sub[]"  data-json='{$item_json}' value="{$type}-{$item['id']}"></td>
+										<td width="10%"> <input type="checkbox" class="checkbox js_get_goodsList" name="sub[]"  data-json='{$item_json}' value="{$k}-{$type}-{$item['id']}"></td>
 									</tr>
 								</table>
 							  </li>
@@ -168,7 +164,7 @@
 </section>
 			<section>
 				<div id='cart_prompt'>
-				满足的优惠活动：
+				
 				</div>
 			</section>
 			    

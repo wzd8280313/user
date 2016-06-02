@@ -263,10 +263,10 @@ $(".sj img").css("height","27px")
             </div>
 
 
-
-     	<div class="qrdd qrdds">
+        {foreach:items=$this->goodsList key=$buy item=$goods}
+     	<div class="qrdd qrdds js_seller_diff">
      		<!-- 商品详情-->
-            {foreach:items=$this->goodsList key=$buy item=$goods}
+            
             {foreach:items=$goods item=$value}
      		<div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$value['seller_name']}</a></div>
                 <span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
@@ -279,7 +279,7 @@ $(".sj img").css("height","27px")
 						{else:}
 							{set:$type='product';$id=$item['product_id']}
 						{/if}
-						<input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
+                        <input type='hidden' name='goods[]' value='{$buy}-{$type}-{$id}-{$item["count"]}' />
 		     		<a href="{url:/site/products/id/$item['goods_id']}">
 		     			<div class="tjxq_img" style="margin-top:-5px;">
 		     				<img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}"/>
@@ -313,12 +313,12 @@ $(".sj img").css("height","27px")
 				{/foreach}
                 <div style="clear: both;"></div>
             {/foreach}
-			{/foreach}
             
 			<div style="height:23px;" ></div>
      		<!-- 商品详情结束 -->
      		
      	</div>
+        {/foreach}
 
 		<!-- 支付方式 -->
 		<div class="qrdd qrdds">
@@ -344,7 +344,6 @@ $(".sj img").css("height","27px")
 
 					{/foreach}
      			</select>
-     			<input style="width:97%;height:33px;" class="xt" type="text" name='message' placeholder="买家留言"/>
      		</div>
 		</div>
 		<div class="qrdd qrdds">
@@ -358,7 +357,7 @@ $(".sj img").css("height","27px")
 	     	<span class="yhj">满足的优惠活动</span>
 			{foreach:items = $this->promotion}
 	     	<div class="fapiao">
-	     		<span class="fa_tit">{$item['plan']}，{$item['info']}</span>
+	     		<span class="indent fa_tit js_data_{$item['type']}" id="js_data_{$item['id']}" {if:$item['hide']} style="display:none;" {/if}>{$item['plan']}，{$item['info']}</span>
 	     	</div>		
      		{/foreach}
      	</div>
@@ -402,12 +401,12 @@ $(".sj img").css("height","27px")
 				<p> + 运费总计：<b id='delivery_fee_show'>0</b></p>
 				<p> + 保价：<b id='protect_price_value'>0</b></p>
 				<p> + 支付手续费：<b  id='payment_value'>0</b></p>
-				<p class='total'> 应付金额：<b  id='final_sum'>{$this->final_sum}</b></p>
+				<p class='total'> 应付金额：<b>￥<span id='final_sum'>{$this->final_sum}</span></b></p>
      		</div>
 		</div>
      	<div style="height:55px;"></div>
      	<div class="anniu">
-			<div class="an fk"> 实付款：<b  id='final_sums' style="font-size: 15px;">￥{$this->final_sum}</b></div>
+			<div class="an fk"> 实付款：<b style="font-size: 15px;">￥<span id="final_sums">{$this->final_sum}</span></b></div>
      		<div class="an but" onclick='submit_check();'>
 				确定提交
 			<!--<input class="but"  type="button"  value="确定提交" style="bottom:-5px;"/>-->

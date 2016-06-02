@@ -204,6 +204,58 @@
 	</div>
 
 </div>
+<!-- 组合套餐start -->
+{if:isset($this->mobileCombine)}
+<div class="history intro">
+    <h3>优惠搭配</h3> <h4 class="gengduo"><a href="{url:/site/match_sale/id/$id}"><img src="{skin:images/match_sale/sale_rt.png}" alt="更多"></a></h4>
+      <div class="match_item">
+        
+        <ul>
+            <li><a href="javascript:;">
+                  <div class="intro_box">
+                      <div class="intro_img">
+                    {if:$this->goodsImg}
+                    <img src="{url:/pic/thumb/img/$this->goodsImg['img']/w/200/h/200}" alt="" />
+                    {else:}
+                    <img src="{skin:images/front/nopic_435_435.gif}" width="150" height="150" alt="" />
+                   {/if}
+                      <div class="int_numbers">
+                        <div class="int_price">¥{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</div>
+                      </div>
+                    </div>
+                  </div>
+               </a>
+            </li>
+            {foreach:$items=$this->mobileCombine['goodsList'] item=$goods}
+            {if:$key < 2}
+            <li class="add_init"><img src="{skin:images/match_sale/sale_add.png}" alt="加"></li>
+
+              <li><a href="{url:/site/products/id/$goods[id]}">
+                  <div class="intro_box">
+                      <div class="intro_img">
+                  <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" width="150" height="150" alt="">
+                      <div class="int_numbers">
+                        <div class="int_price">¥{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</div>
+                      </div>
+                    </div>
+                  </div>
+               </a>
+            </li>
+            {/if}
+            {/foreach}
+        </ul>
+
+
+
+
+      </div>  
+
+
+
+
+</div>
+{/if}
+<!-- 组合套餐end -->
 <!-- 服务-->
 <div class="history">
 	<h3 class="tit">服务</h3>

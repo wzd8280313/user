@@ -69,10 +69,14 @@ function check_goods(_this){
  * @finnal_sum 原商品总价减去会员折扣价
  */
 function prom_ajax(){
-	var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()));
+	var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()))
+        _v = [];
+        $('input[name^=sub]:checked').each(function(){
+            _v.push($(this).attr('data-json'));
+        })
 	var tmpUrl = prom_url;
 		tmpUrl = tmpUrl.replace("@random@",Math.random());
-		$.getJSON( tmpUrl ,{final_sum:final_sum},function(content)
+		$.getJSON( tmpUrl ,{final_sum:final_sum, para:_v},function(content)
 		{
 					if(content.promotion.length > 0)
 					{

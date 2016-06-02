@@ -496,8 +496,16 @@ class Simple extends IController
     //计算促销规则[ajax]
     function promotionRuleAjax()
     {
-    	$promotion = array();
-    	$proReduce = 0;
+        $goodsList = array();
+        $promotion = array();
+        $proReduce = 0;
+        $para = IReq::get('para');
+        foreach($para as $v)
+        {
+            $temp = JSON::decode($v);
+            $goodsList[$temp['goods_id']]['sum'] = $temp['sum'];
+            $goodsList[$temp['goods_id']]['reduce'] = $temp['reduce'];
+        }
     	$final_sum = intval(IReq::get('final_sum'));
     	$proObj = new ProRule($final_sum);
     	//总金额满足的促销规则
@@ -509,8 +517,8 @@ class Simple extends IController
 			$groupRow['id'] = empty($groupRow) ? 0 : $groupRow['id'];
 	    	$proObj->setUserGroup($groupRow['id']);
 		}
-    	$promotion = $proObj->getInfo();
-    	$proReduce = number_format($final_sum - $proObj->getSum(),2);
+    	$promotion = $proObj->getInfo($goodsList);
+    	$proReduce = number_format($final_sum - $proObj->getSum($goodsList),2);
 		$result = array(
     		'promotion' => $promotion,
     		'proReduce' => $proReduce,
@@ -750,6 +758,10 @@ class Simple extends IController
 		$buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
         $addId        = IFilter::act(IReq::get('addId'),'int');
          $param = '';
+         if($cid)
+         {
+             $param .= '/cid/'.$cid;
+         }
          if($id)
          {
              $param .= '/id/'.$id;
@@ -835,7 +847,7 @@ class Simple extends IController
                     $cartData[$tem[0]][$tem[1]]['id'][] = intval($tem[2]);
                     $cartData[$tem[0]][$tem[1]]['data'][intval($tem[2])] = intval($goodsdata[$val]);
                 }
-			}                    
+			}                  
 			//计算购物车中的商品价格
 			$result = $countSumObj->cart_count($cartData);
 			
@@ -969,13 +981,18 @@ class Simple extends IController
     	$user_id = $this->user['user_id'];
         
         //获取购物车携带参数
-        $id        = IFilter::act(IReq::get('id'),'int');
+        $cid        = IFilter::act(IReq::get('cid'),'int');
+        $id        = IFilter::act(IReq::get('id'));
         $type      = IFilter::act(IReq::get('type'));//goods,product
         $promo     = IFilter::act(IReq::get('promo'));
         $active_id = IFilter::act(IReq::get('active_id'),'int');
         $buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
         $sub = IFilter::act(IReq::get('sub'));
          $param = '';
+         if($cid)
+         {
+             $param .= '/comId/'.$cid;
+         }
          if($id)
          {
              $param .= '/id/'.$id;

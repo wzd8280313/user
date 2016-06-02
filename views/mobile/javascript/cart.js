@@ -77,18 +77,32 @@ function check_goods(_this){
  * @finnal_sum 原商品总价减去会员折扣价
  */
 function prom_ajax(){
-	var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()));
+	var final_sum   = mathSub(parseFloat($('#origin_price').text()),parseFloat($('#discount_price').text()))
+        ,_v = [];
+    $('.js_get_goodsList').each(function(){
+        if($(this).hasClass('checked'))
+        {
+             _v.push($(this).attr('data-json'));
+        }
+    })
 	var tmpUrl = promotion_url;
 		tmpUrl = tmpUrl.replace("@random@",Math.random());
-		$.getJSON( tmpUrl ,{final_sum:final_sum},function(content){
+		$.getJSON( tmpUrl ,{final_sum:final_sum, para:_v},function(content){
 			if(content.promotion.length > 0)
 			{
-				$('#cart_prompt .indent').remove();
+				$('#cart_prompt p').remove();
+                $('#cart_prompt').append('<p>满足的优惠活动：</p>');
 				for(var i = 0;i < content.promotion.length; i++)
 				{
-					$('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+                    if(content.promotion[i].hide != 1)
+                    {
+					    $('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+                    }
 				}
-				$('#cart_prompt').show();
+				if($('#cart_prompt').find('p.indent').length > 0)
+                {
+                    $('#cart_prompt').show();
+                }
 			}
 			else
 			{

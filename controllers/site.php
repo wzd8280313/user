@@ -486,7 +486,11 @@ class Site extends IController
             {
                 unset($combineList[$k]);
             }   
-        }                       
+        }
+        if(!empty($combineList))
+        {
+            $this->mobileCombine = current($combineList); 
+        }                      
         $this->combineList = $combineList;
         $this->goodsImg = current($goods_info['photo']);
         $this->setRenderData($goods_info);
