@@ -296,7 +296,7 @@ input,textarea,select,radio,checkbox{}
 
 
 /*content内容页样式*/
-.content{background:#fff;color:#6b6b6b; padding-right:5px; padding-bottom:5px;}
+.content{background:#fff;color:#6b6b6b; padding-right:5px;/* padding-bottom:5px;*/}
 .shadow{box-shadow:1px 1px 5px 1px #666; padding:10px;}
 .content .con{}
 .content .con img{width:100%;}

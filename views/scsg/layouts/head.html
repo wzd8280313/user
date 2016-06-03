@@ -385,8 +385,36 @@ if($("#actionimg").length>0){
 					{set:$k=$keyT+1;}
 					<li class="list-item" style='position:static;' js_data="{$valT['id']}">
 						<h3 class="cat-type-{$k}">
-							<a href="{url:/site/pro_list/cat/$valT[id]}" class='underline-a' target="_blank">{$valT['name']}</a>
+
+							 <img class="pc_show_red" src="{skin:images/pc_ncp1.png}" alt="" style="width:20px;height:20px;position:absolute;left:3px;top:2px;">
+
+							 <img class="pc_hide_white" src="{skin:images/pc_ncp2.png}" alt="" style="width:20px;height:20px;position:absolute;left:3px;top:2px;display:none;">
+							<a href="{url:/site/pro_list/cat/$valT[id]}" class='underline-a' target="_blank">
+								{$valT['name']}
+							</a>
 						</h3>
+		<script type="text/javascript">
+			(function($){
+                $(function(){
+	            
+	            var aLiHover = $("#jCat .cat-list li.list-item");
+	            var pcImgRed = $("#jCat .cat-list li.list-item .pc_show_red");
+	            var pcImgWhi = $("#jCat .cat-list li.list-item .pc_hide_white")
+	             $(aLiHover).each(function(){
+	              var index = $(aLiHover).index(this);	              
+		        	 $(this).hover(function() {
+		        	 	    $(pcImgWhi).eq(index).show();
+				            $(pcImgRed).eq(index).hide();
+				            
+				        }, function() {
+				        	$(pcImgRed).eq(index).show();
+				            $(pcImgWhi).eq(index).hide();
+				        });
+		           });	 
+
+              });
+			}) (jQuery);
+		</script>
 						<p class="cat-rcmd">
 							{set:$secondCat=Api::run('getCategoryByParentid',array('#parent_id#',$valT['id']))}
 							{foreach:items=$secondCat key=$keyS item=$valS}

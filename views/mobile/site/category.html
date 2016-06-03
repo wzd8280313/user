@@ -48,7 +48,7 @@
 			{set:$secondCat = Api::run('getCategoryByParentid',array('#parent_id#',$item['id']),3);}
 				<li>
 					<a href="{url:/site/pro_list/cat/$item['id']}">
-						<span class="icon icon1"><!--<img alt="" src="{skin:/images/category/shoujishuma.jpg}" style="width:35px;height:40px"/>--></span>
+						<span class="icon"><img alt="" src="{skin:/css/wap/mobil_ncp.png}" style="width:32px;height:32px;margin:3px;"/></span>
 						<h3>{$item['name']}</h3>
 						<p>
 							{foreach:items=$secondCat key=$k item=$i}
