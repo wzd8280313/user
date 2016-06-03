@@ -110,7 +110,8 @@ function orderFormClass()
         $('span[id^=deliveryfee_]').each(function(){
             var _this = $(this)
             ,price = 0
-            ,_pri = '';
+            ,_g = []
+            ,_group = 0;
             _this.parents('.js_seller_diff').find('.js_goods_delivery').each(function(){
                 var _t = $(this)
                 ,obj = _t.attr('js_data')
@@ -118,7 +119,7 @@ function orderFormClass()
                 $.ajax({
                     type:'post',
                     async:false,
-                    data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3],final_sum:final_sum},
+                    data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
                     dataType:'json',
                     url: _url,
                     success:function(content)
@@ -131,23 +132,14 @@ function orderFormClass()
                         }
                         else
                         {
-                            if(!content.isFreeFreight)
-                            {                          
-                                price += (content.price);
-                            }
-                            else
-                            {
-                                for(var i = 0; i < content.isFreeFreight.length; i ++){
-                                    _d.push(content.isFreeFreight[i]);
-                                }
-                                $('.js_data_6').parent('div').siblings('span.yhj').show();
-                                _pri = '免运费';
-                            }
+                            price += (content.price);
+                            _g.push(content.goodsList);
+                            _group = content.group_id;
                             var html = parseFloat(content.price).toFixed(2);
                             //允许保价
                             if(content.protect_price > 0)
                             {
-                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+dataArray[1]+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+_in+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
                             }
                             _t.html(html);
                         }
@@ -156,16 +148,34 @@ function orderFormClass()
                 })
                 _in++;                                                    
             })
-            var _p = _pri == '免运费' ? '免运费' : '￥'+parseFloat(price).toFixed(2);
-            _this.html(_p);
-            if(_pri == '')
-            {
-                orderFormInstance.deliveryPrice = parseFloat(price);
-            }
-            else
-            {
-                orderFormInstance.deliveryPrice = 0;
-            }
+            
+            $.ajax({
+                type:'post',
+                async:false,
+                data:{final_sum:final_sum, area:area, group:_group, goodsList:_g},
+                dataType:'json',
+                url: _delivery_url,
+                success:function(jsonData)
+                {
+                    if(!jsonData.isFreeFreight)
+                    {
+                        orderFormInstance.deliveryPrice = parseFloat(price);
+                        
+                        _this.html('￥'+parseFloat(price).toFixed(2));
+                    }
+                    else
+                    {
+                        for(var i = 0; i < jsonData.isFreeFreight.length; i ++){
+                            _d.push(jsonData.isFreeFreight[i]);
+                        }
+                        $('.js_data_6').parent('div').siblings('span.yhj').show();
+                        orderFormInstance.deliveryPrice = 0;
+                        _this.html('免运费');
+                    }
+                }
+            })
+            
+           
         })                            
 		if(_d.length > 0)
         {

@@ -83,6 +83,14 @@ class CountSum
 		}
 		return null;
 	}
+    
+    /**
+     * 获取会员组id
+     */
+     public function getGroupId()
+     {
+         return $this->group_id;
+     }
 
 	/**
 	 * 预售计算

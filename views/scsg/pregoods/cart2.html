@@ -4,6 +4,9 @@
 <link rel="stylesheet" type="text/css" href="{skin:/css/log.css}">
 <link rel="stylesheet" type="text/css" href="{skin:/fap/css/zengzhi.css}">
 <script type='text/javascript'>
+var _url = "{url:/block/order_delivery_count}";
+var final_sum = {$this->final_sum};
+var _delivery_url = "{url:/block/order_delivery_free}";
 	//更换增值发票和普通发票
 $(document).ready(function(){
 	$("input[class='zzsfp']").click(function(){
@@ -130,95 +133,6 @@ function address_save()
 			orderFormInstance.addressSave();
 		});
 	}
-}
-
-//[delivery]根据省份地区ajax获取配送方式
-function get_delivery()
-{
-	orderFormInstance.deliveryPrice = 0;
-	var area     = $('[name=area]').val();
-	var province = $('[name="province"]').val();
-    var city     = $('[name=city]').val();
-	
-	if(!area)
-	{
-		return;
-	}
-    $('.js_data_6').hide();
-    var _d = []
-        ,_in = 0; 
-	$('span[id^=deliveryfee_]').each(function(){
-        var _this = $(this)
-            ,price = 0
-            ,_pri = '';
-        _this.parents('table').find('.js_goods_delivery').each(function(){
-            var _t = $(this)
-                ,obj = _t.attr('js_data')
-                ,dataArray = obj.split("_");
-                $.ajax({
-                    type:'post',
-                    async:false,
-                    data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3],'final_sum':{$this->final_sum}},
-                    dataType:'json',
-                    url:"{url:/block/order_delivery_count}",
-                    
-                    success:function(content)
-                    {
-                        //地区无法送达
-                        if(content.if_delivery == 1)
-                        {
-                            alert('您选择地区部分商品无法送达');
-                            $('#'+obj).html("<span style='color:red'>无法送达</span>");
-                        }
-                        else
-                        {
-                            if(!content.isFreeFreight)
-                            {
-                                price += content.price;
-                            }
-                            else
-                            {
-                                for(var i = 0; i < content.isFreeFreight.length; i ++){
-                                    _d.push(content.isFreeFreight[i]);
-                                }
-                                $('.js_data_6').siblings('.gray').show();
-                                _pri = '免运费';
-                            }
-                            //orderFormInstance.deliveryPrice += parseFloat(content.price);
-                            var html = parseFloat(content.price).toFixed(2);
-                            //允许保价
-                            if(content.protect_price > 0)
-                            {
-                                
-                                html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+_in+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
-                            }
-                            _t.html(html);
-                        }
-                    },
-                    timeout:1000,
-                })
-                _in++;
-        })
-        
-        var _p = _pri == '免运费' ? '免运费' : '￥'+parseFloat(price).toFixed(2);
-        _this.html(_p);
-        if(_pri == '')
-        {
-            orderFormInstance.deliveryPrice = parseFloat(price);
-        }
-        else
-        {
-            orderFormInstance.deliveryPrice = 0;
-        }                
-    })
-    if(_d.length > 0)
-    {
-        for(var i = 0; i < _d.length; i ++){
-            $("#js_data_"+_d[i]).show();
-        }
-        
-    }
-    orderFormInstance.doAccount();
 }
 
 //保价

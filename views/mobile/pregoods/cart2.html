@@ -42,6 +42,7 @@
 <script type='text/javascript'>
 var _url = "{url:/block/order_delivery_count}";
 var final_sum = {$this->final_sum};
+var _delivery_url = "{url:/block/order_delivery_free}";
 //创建订单表单实例
 orderFormInstance = new orderFormClass();
 orderFormInstance.presell = 1;
@@ -65,8 +66,6 @@ jQuery(function(){
 	})();
 	getTakeselfData('area','{$defaultAddress["area"]}');
 
-	//获取配送费用的url
-	//orderFormInstance.delivery_fee_url = '{url:/block/order_delivery_count}';
 	//设置是否免运费
 	orderFormInstance.freeFreight = {echo:$this->freeFreight ? 1 : 0};
 	//商品价格

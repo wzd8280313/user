@@ -132,6 +132,101 @@ function orderFormClass()
 		$('#address_form input:text').removeClass('invalid-text');
 		$('#address_form select').removeClass('invalid-text');
 	}
+    
+    //[delivery]根据省份地区ajax获取配送方式
+    this.get_delivery = function()
+    {
+        this.deliveryPrice = 0;
+        var province = $('[name="province"]').val();
+        var city     = $('[name=city]').val();
+        var area     = $('[name=area]').val();
+          
+        if(!area)
+        {
+            return;
+        }
+        $('.js_data_6').hide();
+        var _d = []
+            ,_in = 0;                    
+        $('span[id^=deliveryfee_]').each(function(){
+            var _this = $(this)
+                ,price = 0
+                ,_g = []
+                ,_group = 0;
+            _this.parents('table').find('.js_goods_delivery').each(function(){
+                var _t = $(this)
+                    ,obj = _t.attr('js_data')
+                    ,dataArray = obj.split("_");
+                    $.ajax({
+                        type:'post',
+                        async:false,
+                        data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3]},
+                        dataType:'json',
+                        url:_url,
+                        
+                        success:function(content)
+                        {                        
+                            //地区无法送达
+                            if(content.if_delivery == 1)
+                            {
+                                alert('您选择地区部分商品无法送达');
+                                $('#'+obj).html("<span style='color:red'>无法送达</span>");
+                            }
+                            else
+                            {
+                                price += (content.price);
+                                _g.push(content.goodsList);
+                                _group = content.group_id;
+                                //orderFormInstance.freeFreight = content.isFreeFreight;
+                                var html = parseFloat(content.price).toFixed(2);
+                                //允许保价
+                                if(content.protect_price > 0)
+                                {
+                                    
+                                    html += "<br /><label title='￥"+content.protect_price+"'><input type='checkbox' value='"+content.protect_price+"' name='insured["+_in+"]' onchange='selectProtect(this);' class='checks'/>保价</label>";
+                                }
+                                _t.html(html);
+                            }
+                        },
+                        timeout:1000,
+                    })
+                    _in++;
+            })
+             $.ajax({
+                type:'post',
+                async:false,
+                data:{final_sum:final_sum, area:area, group:_group, goodsList:_g},
+                dataType:'json',
+                url: _delivery_url,
+                success:function(jsonData)
+                {
+                    if(!jsonData.isFreeFreight)
+                    {
+                        orderFormInstance.deliveryPrice = parseFloat(price);
+                        
+                        _this.html('￥'+parseFloat(price).toFixed(2));
+                    }
+                    else
+                    {
+                        for(var i = 0; i < jsonData.isFreeFreight.length; i ++){
+                            _d.push(jsonData.isFreeFreight[i]);
+                        }
+                        $('.js_data_6').parent('div').siblings('span.yhj').show();
+                        orderFormInstance.deliveryPrice = 0;
+                        _this.html('免运费');
+                    }
+                }
+            })        
+        })
+        if(_d.length > 0)
+        {
+            for(var i = 0; i < _d.length; i ++){
+                $("#js_data_"+_d[i]).show();
+            }
+            
+        }
+        orderFormInstance.doAccount();
+    }
 
 	/**
 	 * 清空地址数据
@@ -245,7 +340,7 @@ function orderFormClass()
 		var timeHandle = setInterval(function(){
 			if($('[name="area"]').val())
 			{
-				get_delivery();
+				orderFormInstance.get_delivery();
 				clearInterval(timeHandle);
 			}
 		},100);
