@@ -12,6 +12,39 @@ class Pregoods extends IController
 	{
 		CheckRights::checkUserRights();
 	}
+    
+    /*将商品列表按商家分开
+     * @return array array('seller_name'=>商家名，'weight'=>商品重量,'total_price'=>总价,[0]=>array(商品数据),)
+     */
+    private function goodsListBySeller($goodsListCombine){
+        $goodsListSeller = array();
+        $result = array();
+        foreach($goodsListCombine as $buy=>$goodsList)
+        {
+            foreach($goodsList as $key => $value){
+            if(!isset($goodsListSeller[$buy][$value['seller_id']])){
+                $goodsListSeller[$buy][$value['seller_id']]['weight'] = 0;
+                $goodsListSeller[$buy][$value['seller_id']]['total_price'] = 0;
+                $goodsListSeller[$buy][$value['seller_id']]['delivery'] = 0;
+                if($value['seller_id']==0){
+                    $goodsListSeller[$buy][$value['seller_id']]['seller_name'] = '平台';
+                }else{
+                    $seller_data = API::run('getSellerInfo',$value['seller_id'],'true_name');
+                    $seller_logo = API::run('getSellerInfo',$value['seller_id'],'logo_img');
+                    $goodsListSeller[$buy][$value['seller_id']]['seller_name'] = $seller_data['true_name'];
+                    $goodsListSeller[$buy][$value['seller_id']]['logo_img'] = $seller_logo['logo_img'];
+                }
+            }
+            $goodsListSeller[$buy][$value['seller_id']]['total_price'] +=(($value['sell_price']-$value['reduce'])*$value['count']);
+            $goodsListSeller[$buy][$value['seller_id']]['weight'] += $value['weight']*$value['count'];
+            $goodsListSeller[$buy][$value['seller_id']]['delivery'] += $value['delivery'];
+            $goodsListSeller[$buy][$value['seller_id']][] = $value;
+            $result = $goodsListSeller;
+        }
+        }
+        return $goodsListSeller;
+    }
+    
     //手机端预售列表
     public function mobilePresell()
     {
@@ -312,6 +345,29 @@ class Pregoods extends IController
 		$buy_num   = IReq::get('num') ? IFilter::act(IReq::get('num'),'int') : 1;
 		$tourist   = IReq::get('tourist');//游客方式购物
 	
+        $addId        = IFilter::act(IReq::get('addId'),'int');
+         $param = '';
+         if($cid)
+         {
+             $param .= '/cid/'.$cid;
+         }
+         if($id)
+         {
+             $param .= '/id/'.$id;
+         }
+         if($type)
+         {
+             $param .= '/type/'.$type;
+         }
+         if($active_id)
+         {
+             $param .= '/active_id/'.$active_id;
+         }
+         if($buy_num > 1)
+         {
+             $param .= '/num/'.$buy_num;
+         }
+    
 		//必须为登录用户
 		if($tourist === null && $this->user['user_id'] == null)
 		{
@@ -430,6 +486,8 @@ class Pregoods extends IController
 		$this->freeFreight = $result['freeFreight'];
         $this->pre_sum     = $result['pre_sum'];
 		$this->wei_text     = $result['wei_text'];
+        //商品列表按商家分开
+        $this->goodsList = $this->goodsListBySeller($this->goodsList);
 		
 		//判断是否支持货到付款
 		$this->freight_collect=0;
@@ -460,6 +518,7 @@ class Pregoods extends IController
 		}
 		
 		//渲染页面
+        $this->param = $param;
 		$this->redirect('cart2');
 	}
 	

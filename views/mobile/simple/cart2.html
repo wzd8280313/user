@@ -40,6 +40,7 @@
 </script>
 <script type='text/javascript'>
 var _url = "{url:/block/order_delivery_count}";
+var final_sum = {$this->final_sum};
 //创建订单表单实例
 orderFormInstance = new orderFormClass();
 
@@ -261,7 +262,6 @@ $(".sj img").css("height","27px")
                 </a>
 
             </div>
-
 
         {foreach:items=$this->goodsList key=$buy item=$goods}
      	<div class="qrdd qrdds js_seller_diff">

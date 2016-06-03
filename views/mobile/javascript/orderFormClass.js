@@ -114,15 +114,13 @@ function orderFormClass()
             _this.parents('.js_seller_diff').find('.js_goods_delivery').each(function(){
                 var _t = $(this)
                 ,obj = _t.attr('js_data')
-                ,dataArray = obj.split("_")
-                ,_u = _url
-                ,final_sum = $('#final_sums').text(); 
+                ,dataArray = obj.split("_");
                 $.ajax({
                     type:'post',
                     async:false,
                     data:{"area":area,"deliveryId":dataArray[0],"goodsId":dataArray[1],"productId":dataArray[2],"num":dataArray[3],final_sum:final_sum},
                     dataType:'json',
-                    url: _u,
+                    url: _url,
                     success:function(content)
                     {
                         //地区无法送达

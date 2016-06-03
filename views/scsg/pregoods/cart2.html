@@ -516,67 +516,71 @@ function selectTakeself(deliveryId)
 					</div>  
 						
 						{foreach:items=$this->goodsList key=$buy item=$goods}
-						<table width="100%" class="cart_table t_c" >
-							<colgroup>
-								<col width="115px" />
-								<col />
-								<col width="80px" />
-								<col width="80px" />
-								<col width="80px" />
-								<col width="80px" />
-								<col width="80px" />
-								<col width="80px" />
-							</colgroup>
-							<caption>商家：{$this->seller_name}<span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span></caption>
-							<thead>
-								<tr>
-									<th>图片</th>
-									<th>商品名称</th>   
-									<th>赠送积分</th>
-									<th>单价</th>
-									<th>优惠</th>
-									<th>数量</th>
+                        {foreach:items=$goods item=$value}
+                        <table width="100%" class="cart_table t_c" >
+                            <colgroup>
+                                <col width="115px" />
+                                <col />
+                                <col width="80px" />
+                                <col width="80px" />
+                                <col width="80px" />
+                                <col width="80px" />
+                                <col width="80px" />
+                            </colgroup>
+                            <caption>商家：{$value['seller_name']}
+                                <span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
+                            </caption>
+                            <input type='hidden' value='{$value[0]['seller_id']}' name='seller_id[]' />
+                            
+                            <thead>
+                                <tr>
+                                    <th>图片</th>
+                                    <th>商品名称</th>
+                                    <th>赠送积分</th>
+                                    <th>单价</th>
+                                    <th>优惠</th>
+                                    <th>数量</th>
                                     <th>运费</th>
-									<th class="last">商品小计</th>
-								</tr>
-							</thead>
-	
-							<tbody >
-								<!-- 商品展示 开始-->
-								{foreach:items = $goods $key=$k}
-								{if:is_array($item)}
-								<tr>
-									<td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
-									<td class="t_l">
+                                    <th class="last">商品小计</th>
+                                </tr>
+                            </thead>
+    
+                            <tbody >
+                                <!-- 商品展示 开始-->
+                                {foreach:items = $value $key=$k}
+                                {if:is_array($item)}
+                                <tr>
+                                    <td><img src="{url:/pic/thumb/img/$item[img]/w/66/h/66}" width="66px" height="66px" alt="{$item['name']}" title="{$item['name']}" /></td>
+                                    <td class="t_l">
                                         {if:$item['product_id']==0}
                                             {set:$type= 'goods';$id=$item['goods_id']}
                                         {else:}
                                             {set:$type='product';$id=$item['product_id']}
                                         {/if}
-                                        <input type='hidden' name='goods[]' value='{$type}-{$id}-{$item["count"]}' />
-                                        
-										<a href="{url:/site/products/id/$item[goods_id]}" class="blue">{$item['name']}</a>
-										{if:isset($item['spec_array'])}
-										<p>
-										{set:$spec_array=Block::show_spec($item['spec_array']);}
-										{foreach:items=$spec_array item=$specValue key=$specName}
-											{$specName}：{$specValue} &nbsp&nbsp
-										{/foreach}
-										</p>
-										{/if}
-									</td>                                                                                   
-									<td>{$item['point']}</td>
-									<td><b>￥{$item['sell_price']}</b></td>
-									<td>减￥{$item['reduce']}</td>
-									<td>{$item['count']}</td>
+                                        <input type='hidden' name='goods[]' value='{$buy}-{$type}-{$id}-{$item["count"]}' />
+                                        <a href="{url:/site/products/id/$item[goods_id]}" class="blue">{$item['name']}</a>
+                                        {if:isset($item['spec_array'])}
+                                        <p>
+                                        {set:$spec_array=Block::show_spec($item['spec_array']);}
+                                        {foreach:items=$spec_array item=$specValue key=$specName}
+                                            {$specName}：{$specValue} &nbsp&nbsp
+                                        {/foreach}
+                                        </p>
+                                        {/if}
+                                    </td>
+                                    <td>{echo:$item['point']*$item['count']}</td>
+                                    <td><b>￥{$item['sell_price']}</b></td>
+                                    <td>{if:isset($item['combine'])}<span>优惠套餐:{$item['combine']}</span>{/if}减￥{$item['reduce']}</td>
+                                    <td>{$item['count']}</td>
                                     <td>￥<b class="red2 js_goods_delivery" js_data="{$item['delivery_id']}_{$item['goods_id']}_{$item['product_id']}_{$item['count']}">{$item['delivery']}</b></td>
-									<td><b class="red2">￥{$item['sum']}</b></td>
-								</tr>
-								{/if}
-								{/foreach}
-								<!-- 商品展示 结束-->
-							</tbody>
-						</table>
+                                    <td><b class="red2">￥{$item['sum']}</b></td>
+                                </tr>
+                                {/if}
+                                {/foreach}
+                                <!-- 商品展示 结束-->
+                            </tbody>
+                        </table>
+                        {/foreach}
                         {/foreach}
 				</div>
 				
