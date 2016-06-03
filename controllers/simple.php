@@ -532,7 +532,7 @@ class Simple extends IController
      */
 	function add_order()
 	{
-		$cart_sum = IFilter::act(IReq::get('sum'),'float');
+		/*$cart_sum = IFilter::act(IReq::get('sum'),'float');
 		$countObj = new CountSum();
 		$result   = $countObj->cart_count();
 		$cart_sum       = $result['sum'];
@@ -555,8 +555,15 @@ class Simple extends IController
 			$gap_price = $prom_data['condition']-$cart_sum;
 			$prom_data['gap_price'] = $gap_price;
 			$prom_data['cou_price'] = ceil($gap_price * 125/100);
-		}
-		
+		}*/
+        $id = IReq::get('id') ? IFilter::act(IReq::get('id'), 'int') : 0;
+		$prom_id = IReq::get('prom') ? IFilter::act(IReq::get('prom'), 'int') : 0;
+        $cart_sum = IFilter::act(IReq::get('sum'),'float');
+        $prom = new IModel('promotion');
+        $prom_data = $prom->getObj('id = '.$prom_id);
+        $gap_price = $prom_data['condition']-$cart_sum;
+        $prom_data['gap_price'] = $gap_price;
+        $prom_data['cou_price'] = ceil($gap_price * 125/100);
 		$this->setRenderData($prom_data);
 		$this->redirect('add_order');
 	}
@@ -565,15 +572,16 @@ class Simple extends IController
 	 */
 	function ajax_coudan()
 	{
-		$price = IFilter::act(IReq::get('cou_price'),'int');
+        $price = IFilter::act(IReq::get('cou_price'),'int');
+		$seller_id = IFilter::act(IReq::get('seller'),'int');
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page')) : 1;
 		$goods_db = new IQuery('goods as g');
 		$goods_db->page = $page;
 		if($price>0){
-			$goods_db->where = 'is_del=0 and sell_price < '.$price;
+			$goods_db->where = 'is_del=0 and sell_price < '.$price.' and seller_id = '.$seller_id;
 			$goods_db->order = 'sell_price DESC';
 		}else{
-			$goods_db->where = 'is_del=0';
+			$goods_db->where = 'is_del=0 and seller_id = '.$seller_id;
 		}
 		$res = $goods_db->find();
 		if($goods_db->page==0){echo 0;exit;}

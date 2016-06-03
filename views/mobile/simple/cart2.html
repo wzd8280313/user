@@ -371,6 +371,7 @@ $(".sj img").css("height","27px")
 	     		<input name='taitou' class="xt" type="text" placeholder="普通"/>
 	     	</div>		
      	</div>
+        {if:!isset($this->prop_not)}
      	<div class="qrdd qrdds">
      		<span class="yhj">代金券使用</span>
      		<span id="ticket_a" class="yhj_check" onclick='orderFormInstance.ticket(this)'></span>
@@ -388,10 +389,11 @@ $(".sj img").css("height","27px")
 			<script type='text/html' id='ticketInputTemplate'>
 				<input type='text' class="xt" id='ticket_num' placeholder="输入实体代金券卡号" />
 				<input type='password' class='xt' id='ticket_pwd' placeholder="密码" />
-				<div class="anniu"><input type="button" class="" onclick="add_ticket();" value="添加" />
+				<div class=""><input type="button" class="" onclick="add_ticket();" value="添加" />
 				</div>
 			</script>
      	</div>
+        {/if}
 		<div class="qrdd qrdds">
      		<div class="qrdds_sum">
      			<p>{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}<b>￥{$this->final_sum}</b></p>

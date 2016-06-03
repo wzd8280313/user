@@ -61,14 +61,16 @@
 								<td width="75%">
 								  <h5 class="fl">购物车中的产品</h5></li>
 								</td>
-								<td width="10%" id='coudan'><a href="{url:/simple/add_order}" class="goadd">去凑单&nbsp;&gt;</a></td>
+								<td width="10%" id='coudan'></td>
 							</tr>
 						</table>
                         {foreach:items = $this->goodsList key=$k item=$goods}		   
 					   <div class="c_list cb" id="list">
-						<ul>
-							{foreach:items = $goods item=$value key=$buy}
-                            商家：{$value['seller_name']}
+                       {foreach:items = $goods item=$value key=$buy}
+						<ul class="js_seller_diff">
+							
+                            <div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$value['seller_name']}</a></div>
+                            <span><a href="javascript:;" onclick="add_order(this)" class="goadd js_goadd" js_data="{$buy}">去凑单&nbsp;&gt;</a></span>
 							{foreach:items=$value key=$in}
 							{if:is_array($item)}
 							{set:$type=isset($item['spec_array'])?'product':'goods'}
@@ -90,14 +92,14 @@
 												<button type="button" class="increase" onclick='cart_increase({$item_json});'>+</button>
 											</div>
 										</td>
-										<td width="10%"> <input type="checkbox" class="checkbox js_get_goodsList" name="sub[]"  data-json='{$item_json}' value="{$k}-{$type}-{$item['id']}"></td>
+										<td width="10%"> <input type="checkbox" class="checkbox js_get_goodsList" name="sub[]"  data-json='{$item_json}' js_data="{echo:number_format($item['sell_price']-$item['reduce'],2)}" value="{$k}-{$type}-{$item['id']}"></td>
 									</tr>
 								</table>
 							  </li>
 							  {/if}
 							  {/foreach}
-							  {/foreach}
 						</ul>
+                        {/foreach}
 					   </div>
 					   {/foreach}
 					   
@@ -163,7 +165,7 @@
     </section>	
 </section>
 			<section>
-				<div id='cart_prompt'>
+				<div id='cart_prompt'  class="qrdd qrdds">
 				
 				</div>
 			</section>
@@ -200,8 +202,9 @@
 	var join_cart_url = '{url:/simple/joinCart}';
 	var cart_url = '{url:/simple/cart}';
 	var promotion_url = '{url:/simple/promotionRuleAjax/random/@random@}';
-	var del_cart_url = '{url:/simple/removeCartMany/link/cart}';
-
+    var del_cart_url = '{url:/simple/removeCartMany/link/cart}';
+	var check_delivery = '{url:/block/check_delivery}';
+    var add_order_url = '{url:/simple/add_order}';
 
 </script>
         

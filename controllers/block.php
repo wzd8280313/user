@@ -298,7 +298,19 @@ class Block extends IController
        $proObj->setUserGroup($group);
        $data['isFreeFreight'] = $proObj->isFreeFreight($area, $temp);         
        echo JSON::encode($data);
-   }   
+   }  
+   
+   //验证商家是否有免运费活动
+   public function check_delivery()
+   {
+       $memberObj = new IModel('member');
+       $user_group = $memberObj->getField('user_id = '.$this->user['user_id'],'group_id');
+       $id = IReq::get('id') ? IFilter::act(IReq::get('id'), 'int') : 0;
+       $datetime = ITime::getDateTime();
+       $prom = new IModel('promotion');
+       $promotion = $prom->getObj('type = 0 and is_close = 0 and start_time <= "'.$datetime.'" and end_time >= "'.$datetime.'" and seller_id = '.$id.' and award_type = 6 and (user_group = "all" or FIND_IN_SET('.$user_group.',user_group))');
+       echo JSON::encode($promotion);
+   } 
        
     /**
      * 合并付款

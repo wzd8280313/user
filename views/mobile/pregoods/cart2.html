@@ -317,6 +317,7 @@ function selectProtect(obj)
 	     	</div>		
      	
      	</div>
+        {if:!isset($this->prop_not)}
      	<div class="qrdd qrdds">
      		<span class="yhj">代金券使用</span>
      		<span id="ticket_a" class="yhj_check" onclick='orderFormInstance.ticket(this)'></span>
@@ -334,10 +335,11 @@ function selectProtect(obj)
 			<script type='text/html' id='ticketInputTemplate'>
 				<input type='text' class="xt" id='ticket_num' placeholder="输入实体代金券卡号" />
 				<input type='password' class='xt' id='ticket_pwd' placeholder="密码" />
-				<div class="anniu"><input type="button" class="" onclick="add_ticket();" value="添加" />
+				<div class=""><input type="button" class="" onclick="add_ticket();" value="添加" />
 				</div>
 			</script>
      	</div>
+        {/if}
 		<div class="qrdd qrdds">
 			<span class="yhj">结算信息</span>
      		<div class="qrdds_sum">

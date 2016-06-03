@@ -33,8 +33,18 @@ $(function(){
 				$("#check_all,#box_all").removeClass("checked").attr('checked',false);
 			}
 			check_goods(this);
-	});	
-
+	});
+    
+    $('.js_goadd').each(function(){
+        var _this = $(this)
+            ,id = _this.attr('js_data');
+        $.getJSON(check_delivery ,{id:id},function(content){
+            if(content)
+            {
+                _this.attr('js_prom_id', content.id).before("<span>"+content.name+"</span>")
+            }
+        })
+    })
 })
 
 //检测购买完成量
@@ -90,13 +100,21 @@ function prom_ajax(){
 		$.getJSON( tmpUrl ,{final_sum:final_sum, para:_v},function(content){
 			if(content.promotion.length > 0)
 			{
-				$('#cart_prompt p').remove();
-                $('#cart_prompt').append('<p>满足的优惠活动：</p>');
+				$('#cart_prompt').html('');
+                $('#cart_prompt').append('<span class="yhj">满足的优惠活动：</soan>');
 				for(var i = 0;i < content.promotion.length; i++)
 				{
                     if(content.promotion[i].hide != 1)
-                    {
-					    $('#cart_prompt').append('<p class="indent blue">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</p>');
+                    { 
+                        /*$('.js_goadd').each(function(){
+                            var _t = $(this)
+                                ,_i = _t.attr('js_prom_id');
+                            if(_i == content.promotion[i].id)
+                            {
+                                _t.parent('span').hide();
+                            }
+                        })*/
+					    $('#cart_prompt').append('<div class="fapiao"><span class="indent fa_tit">'+content.promotion[i].plan+'，'+content.promotion[i].info+'</span></div>');
                     }
 				}
 				if($('#cart_prompt').find('p.indent').length > 0)
@@ -325,4 +343,19 @@ function joinCart_ajax(id,url,type)
 			alt(content.message);
 		}
 	});
+}
+
+//凑单
+function add_order(obj)
+{
+    var _i = $(obj).attr('js_data')
+        ,_p = $(obj).attr('js_prom_id')
+        ,price = 0;
+    $(obj).closest('ul.js_seller_diff').find('.js_get_goodsList').each(function(){
+        if($(this).hasClass('checked'))
+        {
+            price += parseFloat($(this).attr('js_data')); 
+        }
+    })
+    window.location = add_order_url + '/id/' + _i + '/prom/' + _p + '/sum/' + price;
 }
