@@ -386,9 +386,9 @@ if($("#actionimg").length>0){
 					<li class="list-item" style='position:static;' js_data="{$valT['id']}">
 						<h3 class="cat-type-{$k}">
 
-							 <img class="pc_show_red" src="{skin:images/pc_ncp1.png}" alt="" style="width:20px;height:20px;position:absolute;left:3px;top:2px;">
+							 <img class="pc_show_red" src="{webroot:}{$valT['img']}" alt="" style="width:20px;height:20px;position:absolute;left:3px;top:2px;">
 
-							 <img class="pc_hide_white" src="{skin:images/pc_ncp2.png}" alt="" style="width:20px;height:20px;position:absolute;left:3px;top:2px;display:none;">
+							 <img class="pc_hide_white" src="{webroot:}{$valT['imghover']}" alt="" style="width:20px;height:20px;position:absolute;left:3px;top:2px;display:none;">
 							<a href="{url:/site/pro_list/cat/$valT[id]}" class='underline-a' target="_blank">
 								{$valT['name']}
 							</a>

@@ -33,12 +33,21 @@
 						<label>如果不选择上级分类，默认为顶级分类</label>
 					</td>
 				</tr>
+                <tr>
+                        <th>分类展示图片：</th>
+                        <td>
+                            <input type='file' name='img' />
+                            {if:isset($this->categoryRow['img']) && $this->categoryRow['img']}
+                            <p><a target="_blank" href="{webroot:}{$this->categoryRow['img']}"><img src='{webroot:}{$this->categoryRow['img']}' style='width:50px;border:1px solid #ccc' /></a></p>
+                            {/if}
+                        </td>
+                    </tr>
 				<tr>
-						<th>分类展示图片：</th>
+						<th>鼠标滑过图片：</th>
 						<td>
-							<input type='file' name='img' />
-							{if:isset($this->categoryRow['img']) && $this->categoryRow['img']}
-							<p><a target="_blank" href="{webroot:}{$this->categoryRow['img']}"><img src='{webroot:}{$this->categoryRow['img']}' style='width:320px;border:1px solid #ccc' /></a></p>
+							<input type='file' name='imghover' />
+							{if:isset($this->categoryRow['imghover']) && $this->categoryRow['imghover']}
+							<p><a target="_blank" href="{webroot:}{$this->categoryRow['imghover']}"><img src='{webroot:}{$this->categoryRow['imghover']}' style='width:50px;border:1px solid #ccc' /></a></p>
 							{/if}
 						</td>
 					</tr>
