@@ -48,7 +48,7 @@ $(function(){
 		if(like_tops == ''){
 			like_tops = $('#like_top').offset().top-140;
 		}
-		console.log($('#box1').offset().top);
+		//console.log($('#box1').offset().top);
 		if(scroH>=head_top){  
  
 			$(".head").css({"position":"fixed","top":"60px"});

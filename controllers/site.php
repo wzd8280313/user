@@ -166,14 +166,15 @@ class Site extends IController
             {
                 array_pop($timeList);
             }
-            $sign = 1; 
+            $sign = 1;  //进行中
         }               
-        if(count($timeList) < 3 && count($timeList) > 0)
+        if(count($timeList) < 3)
         {
-            $temp = $mod->query('is_close = 0 AND NOW() > start_time and start_time <> "'.$timeList[0]['start_time'].'" and type=2 and unix_timestamp(start_time) >='.strtotime(date('Y-m-d')), 'distinct(start_time),end_time', 'start_time', 'DESC', 3-count($timeList));
+            $temp = $mod->query('is_close = 0 AND NOW() > end_time and type=2 and unix_timestamp(start_time) >='.strtotime(date('Y-m-d')), 'distinct(start_time),end_time', 'start_time', 'DESC', 3-count($timeList));
             foreach($temp as $v)
             {
                 array_unshift($timeList, $v);
+                $sign = 0;  //已结束
             }
         }
         if($timeList)
@@ -181,7 +182,6 @@ class Site extends IController
             if(!$time)
             {
                $time = reset($timeList); 
-               $sign = 0; 
             }   
             $this->timeList = $timeList;
             $this->time = $time['start_time'];
@@ -1517,7 +1517,6 @@ class Site extends IController
 
          //调用文件上传类
         $photoObj = new PhotoUpload();
-        $uploadObj->setIterance(false);
         $photo    = current($photoObj->run());  
         //判断上传是否成功，如果float=1则成功
         if($photo['flag'] == 1)

@@ -711,6 +711,10 @@ class CountSum
             {
                 $order_extend[$k]['paymentPrice'] = self::getGoodsPaymentPrice($payment_id,$v['sum']-$v['reduce']);
             }
+            else
+            {
+                $order_extend[$k]['paymentPrice'] = 0;
+            }
         }
 
         //最终订单金额计算

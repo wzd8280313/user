@@ -321,7 +321,7 @@ class hookCreateAction extends IInterceptorBase
 	public static function site_index(){
 		self::pregoods_presell_list();
 	}
-	//自动将到期的预售产品改为下架
+	//自动将到期的预售产品改为上架
 	public static function pregoods_presell_list(){
 		$db_presell = new IModel('presell');
 		if($presell_list = $db_presell->query('is_close=0 and TIMESTAMPDIFF(second,yu_end_time,NOW()) >0','goods_id')){
@@ -340,13 +340,21 @@ class hookCreateAction extends IInterceptorBase
                     $goods_db->update('id ='.$v['id']);
                 }
             }
+            $db_presell->setData(array('is_close' => 1));
+            $db_presell->update('is_close=0 and TIMESTAMPDIFF(second,yu_end_time,NOW()) >0');
 		}
 			
 	}
 	public static function site_search_list(){
 		self::pregoods_presell_list();
 	}
-	public static function site_products(){
+    public static function site_products(){
+        self::pregoods_presell_list();
+    }
+    public static function presell_presell_list(){
+        self::pregoods_presell_list();
+    }
+	public static function goods_goods_list(){
 		self::pregoods_presell_list();
 	}
 }
