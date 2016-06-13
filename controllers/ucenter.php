@@ -200,9 +200,8 @@ class Ucenter extends IController
     public function order_detail()
     {
         $id = IFilter::act(IReq::get('id'),'int');
-
         $orderObj = new order_class();
-        $this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);
+        $this->order_info = $orderObj->getOrderShow($id,$this->user['user_id']);                   
         if($this->order_info['type']==4)$this->redirect('preorder_detail/id/'.$this->order_info['id']);
 		$this->fapiao_data = array();
 		if($this->order_info['invoice']==1){
@@ -233,7 +232,7 @@ class Ucenter extends IController
         $tb_order_goods->join = 'left join goods as g on og.goods_id=g.id';
         $tb_order_goods->where = 'og.order_id='.$id;
         $tb_order_goods->group = 'og.id';
-        $tb_order_goods->fields = 'og.product_id,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,g.seller_id';
+        $tb_order_goods->fields = 'g.type,g.sell_price,g.point,og.product_id,og.is_send,og.real_price,og.refunds_status,og.id as og_id,og.goods_id,og.img,og.goods_array,og.goods_nums,og.seller_id';
         $og_data = $tb_order_goods->find();
         foreach($og_data as $key=>$val){       
             if($val['seller_id'] <> 0)
@@ -267,6 +266,64 @@ class Ucenter extends IController
         }
         $this->og_data = $og_data;
        	$this->redirect('order_detail',false);
+    }
+    
+    //二维码页面
+    function makeCode(){
+        $id = IReq::get('id', 'get');
+        $order = new IModel('order');
+        $this->order_no = $order->getField('id='.$id, 'order_no');
+        $tb_order_goods = new IQuery('order_goods as og');
+        $tb_order_goods->join = 'left join goods as g on og.goods_id=g.id';
+        $tb_order_goods->where = 'og.order_id='.$id;
+        $tb_order_goods->group = 'og.id';
+        $tb_order_goods->fields = 'g.id,g.name,g.type,g.past_time,g.seller_id,og.order_id';
+        $data = $tb_order_goods->find();
+        IWeb::autoload('phpqrcode');
+        $currUrl = IUrl::getUrl();
+        $temp = parse_url($currUrl);
+        $conn = isset($temp['port']) ? ':'.$temp['port'] : '';
+        foreach($data as $k => $v)
+        {
+            if($v['type'] == 1)
+            {
+                $filename = $this->order_no.'_'.$v['id'];
+                if($v['seller_id'])
+                {
+                    $url = 'http://'.$temp['host'].$conn.IUrl::creatUrl("")."seller/checkCode/id/{$v['order_id']}/gId/{$v['id']}/sId/{$v['seller_id']}";
+                }
+                else
+                {
+                    $url = 'http://'.$temp['host'].$conn.IUrl::creatUrl("")."order/checkCode/id/{$v['order_id']}/gId/{$v['id']}";
+                }               
+                $data[$k]['code'] = $filename;
+                $data[$k]['url'] = $url;
+                $this->qrcode($url, $filename);
+            }
+            else
+            {
+                unset($data[$k]);
+            }
+            
+        }               
+        $this->og_data = $data;   
+        //$h = $this->qrcode();
+        $this->redirect('makeCode');
+    }
+    
+    //生成二维码
+    function qrcode($url,$file)
+    {
+        // 二维码数据 
+        $url = $url; 
+        // 生成的文件名 
+        $filename = $file.'.png'; 
+        // 纠错级别：L、M、Q、H 
+        $errorCorrectionLevel = 'L';  
+        // 点的大小：1到10 
+        $matrixPointSize = 4;  
+        //创建一个二维码文件 
+        QRcode::png($url, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
     }
 	
     /**
@@ -1579,7 +1636,7 @@ class Ucenter extends IController
     function chgPhone()
     {
     	$user_id = $this->user['user_id'];
-    
+
     	$userObj       = new IModel('user');
     	$where         = 'id = '.$user_id;
     	$this->data = array('user_phone'=>$userObj->getField($where,'phone'));
@@ -1592,24 +1649,45 @@ class Ucenter extends IController
      * 获取手机验证码
      */
     public function getMobileCode(){
-    	$phone = IFilter::act(IReq::get('phone'));
-    	if(!IValidate::phone($phone)){
-    		$res['errorCode']==1;
-    		$res['mess']='手机号码填写错误';
-    		echo JSON::encode($res);
-    		exit();
-    	}
-		$res = array('errorCode'=>0);
-		
-		$code = rand(100000,999999);
-		ISafe::set('mobileValidate',array('code'=>$code,'phone'=>$phone,'time'=>time()));
-		$text = smsTemplate::checkCode(array('{mobile_code}'=>$code)); 
-		if(!hsms::send($phone,$text)){
-			$res['errorCode']=-1;
-			$res['mess']='系统繁忙，请稍候再试';
+		if(IS_AJAX){
+			$phone = IFilter::act(IReq::get('phone','post'));
+			$check_code  = IFilter::act(IReq::get('check_code','post'));
+			$res = array('errorCode'=>0);
+			if(!IValidate::phone($phone)){
+				$res= array();
+				$res['errorCode']==1;
+				$res['mess']='手机号码填写错误';
+				echo JSON::encode($res);
+				exit();
+			}
+			$checkRes = ISafe::checkSafeCode($check_code);
+			if(isset($checkRes['succ']) && $checkRes['succ']==0){
+				$res['errorCode']=13;
+				$res['mess']='获取验证码错误，请重新获取';
+			}
+			$res['check_code'] = $checkRes['new'];
+			if($res['errorCode']==0){
+				$code = rand(100000,999999);
+				$sess_arr = array(
+					'code'=>$code,
+					'phone'=>$phone,
+					'time'=>time(),
+					'user_phone'=>$this->user['phone'],
+					'user_id'=>$this->user['id'],
+					'user_username'=>$this->user['username']
+				);
+				ISafe::set('mobileValidate',array($sess_arr));
+				$text = smsTemplate::checkCode(array('{mobile_code}'=>$code));
+				if(!hsms::send($phone,$text)){
+					$res['errorCode']=-1;
+					$res['mess']='系统繁忙，请稍候再试';
+				}
+			}
+
+
+			echo JSON::encode($res);
 		}
-		
-		echo JSON::encode($res);
+
     }
     
     
@@ -1660,12 +1738,18 @@ class Ucenter extends IController
     		return false;
     	}
     }
+
+	public function toChgPhone1(){
+		$this->safeCode = ISafe::getSafeCode();
+		$this->redirect('toChgPhone1');
+	}
     /**
      * 修改手机号第二步
      */
     public function toChgPhone2(){
     	$firstCheck = $this->checkFirstStep();
     	if($firstCheck){
+			$this->safeCode = ISafe::getSafeCode();
     		$this->redirect('toChgPhone2');
     	}else{
     		$this->redirect('toChgPhone1');

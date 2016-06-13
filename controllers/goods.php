@@ -274,11 +274,25 @@ class Goods extends IController
 		//初始化商品数据
 		unset($_POST['id']);
 		unset($_POST['callback']);
+
         foreach($_POST['_combine_price'] as $k=>$v)
         {
             if(!$v)
             {
                 $_POST['_combine_price'][$k] = $_POST['_sell_price'][$k];
+            }
+        }
+
+        if($_POST['type'] == 0)
+        {
+            unset($_POST['past_time']);
+        }
+        else
+        {
+            $_POST['past_time'] = $_POST['past_time'] ? $_POST['past_time'] : '0000-00-00';
+            if($_POST['is_del']==0 && $_POST['past_time'] <> '0000-00-00' && $_POST['past_time'] < date('Y-m-d'))
+            {
+                die('该商品已过期');  
             }
         }
 		$goodsObject = new goods_class();
@@ -720,7 +734,7 @@ class Goods extends IController
                 $handle = new IQuery('goods');
                 $handle->order    = "sort asc,id desc";
                 $handle->fields   = "id,name";
-                $handle->where    = "is_del = 0 and id in (".$this->object['combine'].")";
+                $handle->where    = "is_del = 0 and type <> 1 and id in (".$this->object['combine'].")";
                 $this->goods = $handle->find();
             }                                       
         }
@@ -729,7 +743,7 @@ class Goods extends IController
         $goodsHandle = new IQuery('goods');
         $goodsHandle->order = "sort asc,id desc";
         $goodsHandle->fields = "id,name";
-        $where = "is_del = 0 and seller_id=0";   
+        $where = "is_del = 0 and seller_id=0 and type <> 1";   
         if($this->object['combine'])
         {
             $where .=  " and id not in (".$this->object['combine'].")";

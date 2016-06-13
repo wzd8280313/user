@@ -184,7 +184,7 @@ class Pregoods extends IController
 		$tb_attribute_goods->where = "goods_id='".$goods_id."' and attribute_id!=''";
 		$tb_attribute_goods->order = "g.id asc";
 		$goods_info['attribute'] = $tb_attribute_goods->find();
-	
+
 		//评论条数
         $comment = new IModel('comment');
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
@@ -198,12 +198,13 @@ class Pregoods extends IController
         
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
         $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
-	
+        
 		//购买记录
 		$tb_shop = new IQuery('order_goods as og');
 		$tb_shop->join = 'left join order as o on o.id=og.order_id';
 		$tb_shop->fields = 'count(*) as totalNum';
-		$tb_shop->where = 'og.goods_id='.$goods_id.' and (o.status = 5 or o.status = 11)';
+		/*$tb_shop->where = 'og.goods_id='.$goods_id.' and (o.status = 5 or o.status = 11)';*/
+		$tb_shop->where = 'og.goods_id='.$goods_id.' and (o.type <> 4 and o.status = 5 OR (o.type = 4 and o.status in (3,4,7,9,11)))';
 		$shop_info = $tb_shop->find();
 		$goods_info['buy_num'] = 0;  
 		if($shop_info)
@@ -297,28 +298,6 @@ class Pregoods extends IController
 			ISafe::set('visit',$visit);
 		}
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
-		
-        //组合销售
-        /*$combine = new IModel('combine_goods');
-        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
-        foreach($combineList as $k => $v)
-        {
-            if(!$v['combine'])
-            {
-                unset($combineList[$k]);
-                continue;
-            }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND (is_del=0 or is_del=4)", 'id,name,combine_price,sell_price,img');
-            if($goodsList)
-            {
-                $combineList[$k]['goodsList'] = $goodsList;
-            }
-            else
-            {
-                unset($combineList[$k]);
-            }   
-        }                       
-        $this->combineList = $combineList; */
 		$this->setRenderData($goods_info);
 
 		$this->redirect('products');
@@ -388,12 +367,26 @@ class Pregoods extends IController
 	
 		//计算商品
 		$countSumObj = new CountSum($user_id);
-	
+	    $this->good_type = 0;
 		if($id && $type)//立即购买
 		{
 			
 			$result = $countSumObj->presell_count($id,$type,$buy_num,$active_id);
-			
+			$goods = new IModel('goods');
+            if($type == 'goods')
+            {
+                $good_type = $goods->getField('id='.$id, 'type');
+            }
+            else
+            {
+                $product = new IModel('products');
+                $gId = $product->getField('id='.$id, 'goods_id');
+                if($gId)
+                {
+                    $good_type = $goods->getField('id='.$gId, 'type');
+                }
+            }
+            $this->good_type = isset($good_type) ? $good_type : 0;
 				
 			$this->gid       = $id;
 			$this->type      = $type;
@@ -570,7 +563,6 @@ class Pregoods extends IController
 		{
 			IError::show(403,'请填写收货地址的省市地区');
 		}
-	
 		$user_id = ($this->user['user_id'] == null) ? 0 : $this->user['user_id'];
 	
 		//计算费用

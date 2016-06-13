@@ -89,10 +89,10 @@
 					<div class="login_entry">
 						<p>合作网站账号登录</p>
 						<ul class="account_list_big clearfix">
-							<li><a href="#" target="_blank" class="qq" title="QQ"></a></li>
-							<li><a href="#" target="_blank" class="sina" title="新浪微博"></a></li>
-							<li><a href="#" target="_blank" class="alipay" title="支付宝"></a></li>
-							<li><a href="#" target="_blank" class="weixin" title="微信"></a></li>
+                            {set:$callback=IFilter::act(IReq::get('callback'),'text')}
+                            {foreach:items=$this->oauth}
+                                <li><a class="{$item['file']}" href="{url:simple/oauth_login/id/$item['id']/callback/$callback}" title="{$item['description']}"></a></li>
+                            {/foreach}
 						</ul>
 				
 					</div>

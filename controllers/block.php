@@ -50,7 +50,8 @@ class Block extends IController
 		$is_products = IFilter::act( IReq::get('is_products'),'int');
 		$seller_id   = IFilter::act( IReq::get('seller_id'),'int');
         $goods_id    = IFilter::act( IReq::get('goods_id'),'int');
-		$exp_presell = IFilter::act( IReq::get('exp_presell'),'int');
+        $exp_presell = IFilter::act( IReq::get('exp_presell'),'int');   //组合销售选择商品时排除预售商品
+		$exp_code = IFilter::act( IReq::get('exp_code'),'int');         //组合销售选择商品时排除虚拟商品
 		//$tb_goods = new IQuery('goods as go');
 		
 		$condition = '&show_num='.$show_num;
@@ -62,11 +63,13 @@ class Block extends IController
 		if($is_products)$condition .= '&is_products='.$is_products;
 		if($seller_id)$condition .= '&seller_id='.$seller_id;
         if($goods_id)$condition .= '&goods_id='.$goods_id;
-		if($exp_presell)$condition .= '&exp_presell='.$exp_presell;
+        if($exp_presell)$condition .= '&exp_presell='.$exp_presell;
+		if($exp_code)$condition .= '&exp_code='.$exp_code;
 		//查询条件
 		$table_name = 'goods as go';
 
-		$where   = $exp_presell ? ' go.is_del = 0 ' : ' (go.is_del = 0 or go.is_del = 4) ';
+        $where   = $exp_presell ? ' go.is_del = 0 ' : ' (go.is_del = 0 or go.is_del = 4) ';
+		$where   = $exp_code ? ' go.type <> 1 ' : '';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
 		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
 		$where  .= $goods_no  ? ' and go.goods_no     = "'.$goods_no.'"' : '';

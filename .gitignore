@@ -7,3 +7,4 @@ node_modules
 /backup
 /config
 !.gitignore
+/views/qrcode

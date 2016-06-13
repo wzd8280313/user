@@ -43,7 +43,7 @@
 .shan-brand h2 { position:relative;padding-bottom:10px;font-size:20px;color:#fff;border-bottom:1px solid #c4c4c4;}
 .shan-brand h2 span { display:block;position:absolute;top:7px;left:102px;width:90px;height:19px;line-height:18px;*line-height:20px;_line-height:18px;font-size:14px;color:#000;background:#fff;}
 .shan-brand h2 span i { display:block;position:absolute;top:-4px;left:-16px;width:16px;height:25px;background:url(../images/icon.png) -238px -30px;}
-.shan-brand li { position:relative; float:left;width:424px;height:350px;margin:10px 10px 0 0;padding:15px;border:1px solid #ccc;background:#fff;}
+.shan-brand li { position:relative; float:left;width:424px;height:445px;margin:10px 10px 0 0;padding:15px;border:1px solid #ccc;background:#fff;}
 .shan-brand li.none { margin-right:0;}
 .shan-brand li dt img {width: 424px;height: 280px;}
 .shan-brand li dd { margin-top:15px;}

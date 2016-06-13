@@ -248,7 +248,7 @@ class CountSum
     		    $productIdStr = join(',',$buyInfo['product']['id']);
     		    $productObj   = new IQuery('products as pro,goods as go');
     		    $productObj->where  = 'pro.id in ('.$productIdStr.') and go.id = pro.goods_id';
-    		    $productObj->fields = 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,pro.point,pro.combine_price,go.exp,go.img,go.seller_id,go.delivery_id';
+    		    $productObj->fields = 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,pro.point,pro.combine_price,go.exp,go.img,go.seller_id,go.delivery_id,go.type';
     		    $productList  = $productObj->find();
     		    //开始优惠情况判断
     		    foreach($productList as $key => $val)
@@ -500,28 +500,50 @@ class CountSum
     			$goods_seller_data[$val['seller_id']]['weight'] += $val['weight'];
     		}
     	}
-    	foreach($goods_seller_data as $k=>$val){
-    		$deliveryRow = Delivery::getDeliveryWeight($area_id,$delivery_id,$val['weight'],$k,$val['sum']);
-    		//商品无法送达
-    		if($deliveryRow['if_delivery'] == 1)
-    		{
-    			return "您所选购的商品：".$val['name']."，无法送达";
-    		}
-    		$goods_seller_data[$k]['deliveryPrice'] = $deliveryRow['price'];
-    		$goods_seller_data[$k]['insuredPrice'] = $deliveryRow['protect_price'];
-    		$result['deliveryOrigPrice'] += $deliveryRow['price'];
-    		
-    		//商品保价计算
-    		//	if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
-    		if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$k]) ) )
-    		{
-    			$result['insuredPrice'] += $deliveryRow['protect_price'];
-    		}
-    		if(!$goodsResult['freeFreight'])
-    		{
-    			$result['deliveryPrice'] += $deliveryRow['price'];
-    		}
-    	}
+        if($delivery_id)
+        {
+    	    foreach($goods_seller_data as $k=>$val){
+    		    $deliveryRow = Delivery::getDeliveryWeight($area_id,$delivery_id,$val['weight'],$k,$val['sum']);
+    		    //商品无法送达
+    		    if($deliveryRow['if_delivery'] == 1)
+    		    {
+    			    return "您所选购的商品：".$val['name']."，无法送达";
+    		    }
+    		    $goods_seller_data[$k]['deliveryPrice'] = $deliveryRow['price'];
+    		    $goods_seller_data[$k]['insuredPrice'] = $deliveryRow['protect_price'];
+    		    $result['deliveryOrigPrice'] += $deliveryRow['price'];
+    		    
+    		    //商品保价计算
+    		    //	if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+    		    if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$k]) ) )
+    		    {
+    			    $result['insuredPrice'] += $deliveryRow['protect_price'];
+    		    }
+    		    if(!$goodsResult['freeFreight'])
+    		    {
+    			    $result['deliveryPrice'] += $deliveryRow['price'];
+    		    }
+    	    }
+        }
+        else
+        {
+            foreach($goods_seller_data as $k=>$val){
+                $goods_seller_data[$k]['deliveryPrice'] = 0;
+                $goods_seller_data[$k]['insuredPrice'] = 0;
+                $result['deliveryOrigPrice'] += 0;
+                
+                //商品保价计算
+                //    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+                if($is_insured == 1  || ( is_array($is_insured) && isset($is_insured[$k]) ) )
+                {
+                    $result['insuredPrice'] += 0;
+                }
+                if(!$goodsResult['freeFreight'])
+                {
+                    $result['deliveryPrice'] += 0;
+                }
+            }
+        }
     	foreach($goodsResult['goodsList'] as $key => $val){
     		//商品保价计算
     		//	if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
@@ -798,6 +820,64 @@ class CountSum
 				$result['deliveryPrice'] += $deliveryRow['price'];
 				$goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
 			}
+
+			/*$deliveryRow = Delivery::getDelivery($province_id,$delivery_id,$val['goods_id'],$val['product_id'],$val['count']);
+            if($delivery_id)
+            {
+			    //商品无法送达
+			    if($deliveryRow['if_delivery'] == 1)
+			    {
+				    return "您所选购的商品：".$val['name']."，无法送达";
+			    }
+
+			    //商品保价计算
+			    if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+			    {
+				    $goodsResult['goodsList'][$key]['insuredPrice'] = $deliveryRow['protect_price'];
+				    $result['insuredPrice'] += $deliveryRow['protect_price'];
+			    }
+			    else
+			    {
+				    $goodsResult['goodsList'][$key]['insuredPrice'] = 0;
+			    }
+
+			    //商品运费计算
+			    $result['deliveryOrigPrice'] += $deliveryRow['price'];
+			    if($goodsResult['freeFreight'] == true)
+			    {
+				    $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+			    }
+			    else
+			    {
+				    $result['deliveryPrice'] += $deliveryRow['price'];
+				    $goodsResult['goodsList'][$key]['deliveryPrice'] = $deliveryRow['price'];
+			    }
+            }
+            else
+            {
+                //商品保价计算
+                if($is_insured == 1 || ( is_array($is_insured) && isset($is_insured[$val['goods_id']."_".$val['product_id']]) ) )
+                {
+                    $goodsResult['goodsList'][$key]['insuredPrice'] = 0;
+                    $result['insuredPrice'] += 0;
+                }
+                else
+                {
+                    $goodsResult['goodsList'][$key]['insuredPrice'] = 0;
+                }
+
+                //商品运费计算
+                $result['deliveryOrigPrice'] += 0;
+                if($goodsResult['freeFreight'] == true)
+                {
+                    $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+                }
+                else
+                {
+                    $result['deliveryPrice'] += 0;
+                    $goodsResult['goodsList'][$key]['deliveryPrice'] = 0;
+                }
+            }*/
 			//商品税金计算
 	    	if($is_invoice == true)
 	    	{

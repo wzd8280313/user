@@ -274,12 +274,14 @@ function selectTakeself(deliveryId)
 						<script type='text/html' id='addressShowTemplate'>
 							<tr><th>收货人信息：</th><td><%=province_val%> <%=city_val%>  (<%=accept_name%>收)</td></tr>
 							<tr><th></th><td><%=area_val%> <%=address%>  <%=mobile%>  <%=telphone%></td></tr>
+                            {if:!$this->good_type}
 							<tr><th>代收点：</th><td><input type='checkbox' name='takeself' class='hide checks' value='0'/> <span id="takeself"></span>
 								<a href="javascript:selectTakeself();"><span class="red">切换自提点</span></a>
 								</td>
 							</tr>
 							<tr class='hide' id='takeselfParam'><td><%=province%></td><td><%=city%></td><td><%=area%></td></tr>
-						</script>
+						    {/if}
+                        </script>
 					</table>
 					<!--地址展示 结束-->
 
@@ -442,7 +444,9 @@ function selectTakeself(deliveryId)
 								<col width="80px" />
 							</colgroup>
 							<caption>商家：{$value['seller_name']}
+                                {if:!$this->good_type}
 								<span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
+                                {/if}
 							</caption>
 							<input type='hidden' value='{$value[0]['seller_id']}' name='seller_id[]' />
 							
@@ -509,7 +513,7 @@ function selectTakeself(deliveryId)
 			<div class="cont_2">
 				<strong>结算信息</strong>
 				<div class="pink_box">
-					<p class="f14 t_l">{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}：<b>{$this->final_sum}</b> - 代金券：<b name='ticket_value'>0</b> + 税金：<b id='tax_fee'>0</b> + 运费总计：<b id='delivery_fee_show'>0</b> + 保价：<b id='protect_price_value'>0</b> + 支付手续费：<b id='payment_value'>0</b></p>
+					<p class="f14 t_l">{if:$this->final_sum != $this->sum}优惠后总金额{else:}商品总金额{/if}：<b>{$this->final_sum}</b> - 代金券：<b name='ticket_value'>0</b> + 税金：<b id='tax_fee'>0</b>{if:!$this->good_type} + 运费总计：<b id='delivery_fee_show'>0</b> + 保价：<b id='protect_price_value'>0</b>{/if} + 支付手续费：<b id='payment_value'>0</b></p>
 					{if:!isset($this->prop_not)}
 					<a href="javascript:void(0)" id="ticket_a" class="fold" hidefocus>
 						<b class="orange">使用代金券</b>

@@ -3888,7 +3888,7 @@ var jsRegistFed = {
         })
     },
     receiveCode: function() {
-        $(".phone_verifica_form").delegate(".receive_code", "click", 
+        $(".phone_verifica_form").delegate(".receive_code", "click",
         function() {
             if ($(".receive_code").hasClass("reacquire_code")) {
                 return false
@@ -3986,18 +3986,42 @@ var jsRegistFed = {
     getMobileRecvCode: function(b) {
         phone_phone_code = true;
         var a = false;
+        var code = $('input[name=check_code]').val();
         $.ajax({
             type: "POST",
             url: getMobileCodeUrl,
 			dataType:'json',
             async: true,
             data: {
-                phone: encrypt.encrypt($("#phone").val())
+                phone: encrypt.encrypt($("#phone").val()),
+
+                check_code : code,
+
+                captcha: encrypt.encrypt($("#validCaptcha").val())
+
               //  validCode: $("#validCodeMobile").val(),
                // sig: $("#validateSig").val()
             },
             success: function(c) {
-                if (c.errorCode == 1) {
+                resetCheckCode(c.check_code);
+				if (0 == c.errorCode) {
+                            var d = $(".receive_code").eq(0);
+                            d.addClass("reacquire_code").html("重新获取验证码(<i>59</i>)");
+                            var f = $("i", ".reacquire_code").text();
+                            var c = setInterval(function() {
+                                if (f > 0) {
+                                    f--;
+                                    $("i", ".reacquire_code").text(f)
+                                }
+                            },
+                            1000);
+                            var b = setTimeout(function() {
+                                d.removeClass("reacquire_code").html("重新获取验证码");
+                            },
+                            f * 1000);
+                           
+                        }
+                else if (c.errorCode == 1) {
                     showPhoneError("不能为空")
 
                 } else {
@@ -4016,6 +4040,11 @@ var jsRegistFed = {
                             d.css("background", "")
                         }
                     } else {
+                        if(c.errorCode==13){
+                            showPhoneError("请刷新页面重新获取");
+                            return false;
+                        }
+
                         if (c.errorCode == 15) {
                             showPhoneError("格式错误，请输入正确的手机号码")
                         } else {
@@ -4037,7 +4066,19 @@ var jsRegistFed = {
                                     if (c.errorCode == -1) {
                                         alert("系统繁忙，请稍后再试")
                                     } else {
-                                        a = true
+                                        if(c.errorCode == 100001)
+                                        {
+                                            $('#chgPhoneCaptcha').trigger('click');
+                                            var b = $(".tips");
+                                            var a = new Tips(b, "验证码不正确或已过期");
+                                            a.show();
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            a = true
+                                        }
+                                        
                                     }
                                 }
                             }
@@ -4052,7 +4093,7 @@ var jsRegistFed = {
         })
     },
     mobileRegist: function() {
-        $(".mobile_register_form .recv_mobile_code").delegate(".receive_code", "click", 
+        $(".mobile_register_form .recv_mobile_code").delegate(".receive_code", "click",
         function(a) {
             if (!$(".receive_code", ".mobile_register_form .recv_mobile_code").hasClass("reacquire_code")) {
                 if (showValidCodeWhenRegistByMobile == 1) {
@@ -4460,6 +4501,17 @@ on_send_mobile_captcha_fail = function(c) {
                         }
                         return
                     }
+                    else
+                    {
+                        if(c == 100001)
+                        {
+                            $('#chgEmailCaptcha').trigger('click');
+                            var b = $(".tips");
+                            var a = new Tips(b, "验证码错误或已过期");
+                            a.show();
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -4538,7 +4590,7 @@ function checkRegisterParamForMobile() {
         sig: jQuery("#validateSig").val()
     };
     var a = URLPrefix.passport + "/passport/register_param_validate.do";
-    jQuery.post(a, e, 
+    jQuery.post(a, e,
     function(f) {
         if (f) {
             if (f.errorCode != 0) {
@@ -5234,7 +5286,12 @@ function bindEvent() {
                 Captcha.sendMobileCaptchaWithParam(getMobileCodeUrl, {
                     //validCode: $(".email_register_form .img_code .ipt_code").val(),
                   //  sig: $("#emailValidateSig").val(),
-                    phone: encrypt.encrypt($(".phone_num").val())
+
+                        check_code : $('input[name=check_code]').val(),
+                    phone: encrypt.encrypt($(".phone_num").val()),
+
+                    captcha: encrypt.encrypt($(".validCaptcha").val())
+
                 },
                 on_send_mobile_captcha_success, on_send_mobile_captcha_fail)
 
@@ -5304,6 +5361,7 @@ Captcha = {
             data: g,
             async: false,
             success: function(b) {
+                resetCheckCode(b.check_code);
                 if (b) {
                     if (b.errorCode != 0) {
                         var a = b.errorCode;
@@ -5611,6 +5669,9 @@ function showPhoneError(b) {
     jQuery("#phone_tip").hide();
     showErrorInfo("phone_error", b)
 }
+function resetCheckCode(code){
+    $('input[name=check_code]').val(code);
+}
 function checkCodeOnBlur(c) {
     var d = jQuery("#" + c).val();
     if (d == "" || d.length != 4) {
@@ -5883,7 +5944,7 @@ function getNumPattern(d) {
     var e = new RegExp(f);
     return e
 }
-function refresh_valid_code(g, e) {
+/*function refresh_valid_code(g, e) {
     var h = $("img[name='valid_code_pic']");
     if (h) {
         var f = "/passport/valid_code.do";
@@ -5904,7 +5965,7 @@ function refresh_valid_code1() {
             c.attr("src", d + "?t=" + Math.random())
         }
     }
-}
+}*/
 function getValidateSigAndSetImageSrc(e, d, f) {
     $.ajax({
         type: "GET",

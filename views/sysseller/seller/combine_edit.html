@@ -30,7 +30,7 @@
             <fieldset>
                 <label>选择主商品：</label>
                 <div class="box">
-                    <button type='button' onclick="searchGoods('{url:/block/search_goods/type/radio/exp_presell/1/is_products/0/seller_id/$this->seller['seller_id']}',storeNumsCallback);" class='btn'><span>选择商品</span></button>
+                    <button type='button' onclick="searchGoods('{url:/block/search_goods/type/radio/exp_presell/1/exp_code/1/is_products/0/seller_id/$this->seller['seller_id']}',storeNumsCallback);" class='btn'><span>选择商品</span></button>
                     <input class="normal" id="js_goods_name" type="text" value="{$this->goods_name}" disabled="disabled" />
                     <input type="hidden" name="goods_id" value="{$this->object['goods_id']}" js_require="true" pattern='intval' alt="请选择主商品" js_site=""/>
                 </div>

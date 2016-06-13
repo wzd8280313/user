@@ -36,7 +36,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 	
 }
 .pages .qrdds .qr_xq{
-	padding: 7px 0 15px 0;
+	padding: 7px 0 7px 0;
 	/*border-bottom: 1px solid #c0c0c0;
  	display: inline-block; 
 	height:105px;*/
@@ -87,6 +87,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
     display: inline-block;
     width: 75px;
     text-align: right;
+   /* text-align: right;*/
 }
 .pages .qrdds .qrdds_zf h4 i{
 	color: red;
@@ -97,6 +98,9 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 	width:65%;
 	height:30px;
 	margin: 10px 0px;
+	/*width:65%;
+	height:30px;
+	margin: 10px 0px;*/
 	padding: 0 5px;
 	color: #A9A4A4;
 }
@@ -254,3 +258,39 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 	border-bottom: 1px solid #F4F1F1;
 }
 /*订单详情结束*/
+/*二维码页面*/
+.erwpage{
+	border-bottom: 1px solid #c0c0c0;
+}
+.erm  .tjxq_img {
+float: left;
+position: relative;
+padding: 0 10px;
+}
+.erm  h2{
+	font-size: 18px;
+}
+.erm:before{
+	content: ' ';
+	position: absolute;
+	border: #999 solid;
+	border-width: 2px 0 0 2px;
+	width: 13px;
+	height: 13px;
+	-webkit-transform: rotate(-225deg);
+	-moz-transform: rotate(-225deg);
+	right: 5px;
+	margin-top: 13px;
+}
+.ermimg{
+	text-align: center;
+}
+.ermtit p{
+	line-height: 30px;
+}
+.ermimg .ermtu{
+	width: 140px;
+	margin: 0 auto;
+	border: 1px solid #c0c0c0;
+}
+/*二维码页面结束*/

@@ -120,4 +120,42 @@ class ISafe
 			return $mappingConf['cookie'];
 		}
 	}
+
+	/**
+	 * 注册时生成的验证
+	 */
+	public static function getSafeCode(){
+		//$ip = IClient::getIp();
+		$ip = IClient::getIp();
+		$ip = $ip == null ? self::id() : $ip;
+
+		$code = self::get(md5($ip));
+		if($code==null){
+			self::set(md5($ip),sha1(rand(1,999999)));
+			$code = self::get(md5($ip));
+		}
+
+		return $code;
+	}
+
+	public static function setSafeCode(){
+		$ip = IClient::getIp();
+		$ip = $ip == null ? self::id() : $ip;
+		self::set(md5($ip),sha1(rand(1,999999)));
+		return self::get(md5($ip));
+	}
+	/**
+	 * 获取手机验证码时
+	 */
+	public static function checkSafeCode($code){
+		$ip = IClient::getIp();
+		$ip = $ip == null ? self::id() : $ip;
+		$safeCode = ISession::get(md5($ip));
+		$newCode  = self::setSafeCode();
+		if($safeCode==null || $safeCode!= $code){
+			return array('new'=>$newCode,'succ'=>0);
+		}
+		return array('new'=>$newCode,'succ'=>1);
+	}
+
 }

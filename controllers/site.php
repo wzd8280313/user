@@ -22,7 +22,7 @@ class Site extends IController
 	}        
 
 	function index()
-	{  
+	{
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
 		$index_slide = isset($site_config['index_slide'])? unserialize($site_config['index_slide']) :array();
@@ -466,30 +466,33 @@ class Site extends IController
         unset($tuanData);
         $goods_info['goods_id'] = $goods_id;
         $goods_info['product_id']=$product_id;
-        
+   
         //组合销售
-        $combine = new IModel('combine_goods');
-        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
-        foreach($combineList as $k => $v)
-        {
-            if(!$v['combine'])
+        $combineList = array();
+        if($goods_info['type'] <> 1){
+            $combine = new IModel('combine_goods');
+            $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
+            foreach($combineList as $k => $v)
             {
-                unset($combineList[$k]);
-                continue;
+                if(!$v['combine'])
+                {
+                    unset($combineList[$k]);
+                    continue;
+                }
+                $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0 and type <> 1", 'id,name,combine_price,sell_price,img');
+                if($goodsList)
+                {
+                    $combineList[$k]['goodsList'] = $goodsList;
+                }
+                else
+                {
+                    unset($combineList[$k]);
+                }   
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img');
-            if($goodsList)
+            if(!empty($combineList))
             {
-                $combineList[$k]['goodsList'] = $goodsList;
+                $this->mobileCombine = current($combineList); 
             }
-            else
-            {
-                unset($combineList[$k]);
-            }   
-        }
-        if(!empty($combineList))
-        {
-            $this->mobileCombine = current($combineList); 
         }                      
         $this->combineList = $combineList;
         $this->goodsImg = current($goods_info['photo']);
@@ -1034,29 +1037,32 @@ class Site extends IController
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
         
         //组合销售
-        $combine = new IModel('combine_goods');
-        $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
-        foreach($combineList as $k => $v)
-        {
-            if(!$v['combine'])
+        $combineList = array();
+        if($goods_info['type'] <> 1){
+            $combine = new IModel('combine_goods');
+            $combineList = $combine->query('goods_id = '.$goods_id.' and status = 1', '*', 'sort', 'asc');
+            foreach($combineList as $k => $v)
             {
-                unset($combineList[$k]);
-                continue;
+                if(!$v['combine'])
+                {
+                    unset($combineList[$k]);
+                    continue;
+                }
+                $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0 and type <> 1", 'id,name,combine_price,sell_price,img');
+                if($goodsList)
+                {
+                    $combineList[$k]['goodsList'] = $goodsList;
+                }
+                else
+                {
+                    unset($combineList[$k]);
+                }   
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img');
-            if($goodsList)
+            if(!empty($combineList))
             {
-                $combineList[$k]['goodsList'] = $goodsList;
-            }
-            else
-            {
-                unset($combineList[$k]);
-            }   
-        }
-        if(!empty($combineList))
-        {
-            $this->mobileCombine = current($combineList); 
-        }                      
+                $this->mobileCombine = current($combineList); 
+            } 
+        }                     
         $this->combineList = $combineList;
         $this->goodsImg = current($goods_info['photo']);
 	//	print_r($goods_info);
@@ -1304,7 +1310,8 @@ class Site extends IController
 		$orderGoodsDB = new IQuery('order_goods as og');
 		$orderGoodsDB->join   = 'left join order as o on og.order_id = o.id left join user as u on o.user_id = u.id';
 		$orderGoodsDB->fields = 'o.user_id,og.goods_price,og.goods_nums,o.create_time as completion_time,u.username,u.email,u.phone';
-		$orderGoodsDB->where  = 'og.goods_id = '.$goods_id.' and (o.status = 5 or o.status = 11)';
+		/*$orderGoodsDB->where  = 'og.goods_id = '.$goods_id.' and (o.status = 5 or o.status = 11)';*/
+		$orderGoodsDB->where  = 'og.goods_id = '.$goods_id.' and (o.type != 4 and o.status = 5 OR o.type=4 and o.status in (3,4,7,9,10))';
 		$orderGoodsDB->order  = 'o.create_time desc';
 		$orderGoodsDB->page   = $page;
 
@@ -1726,7 +1733,6 @@ class Site extends IController
 		$this->redirect("help_list");
 	}
 
-
 	function ce(){
 		print_r($_SESSION);
 	}
@@ -1741,7 +1747,11 @@ class Site extends IController
         $product_db = new IModel('products');
         
         //主商品信息
-        $goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)", 'id,name,img,spec_array,store_nums,combine_price,sell_price');
+        $goods_info = $tb_goods->getObj('id='.$goods_id." AND is_del=0 and type <> 1", 'id,name,img,spec_array,store_nums,combine_price,sell_price');
+        if(!$goods_info)
+        {
+            die("参数错误!");
+        }
         $product_db = new IModel('products');
         $goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
         $goods_info['product'] = JSON::encode($goods_info['product']);
@@ -1852,7 +1862,7 @@ class Site extends IController
                 unset($combineList[$k]);
                 continue;
             }
-            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0", 'id,name,combine_price,sell_price,img,spec_array,store_nums');
+            $goodsList = $tb_goods->query('id in ('.$v['combine'].") AND is_del=0 and type <> 1", 'id,name,combine_price,sell_price,img,spec_array,store_nums');
             if($goodsList)
             {
                 $combineList[$k]['goodsList'] = $goodsList;
