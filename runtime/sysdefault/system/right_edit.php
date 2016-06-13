@@ -4,23 +4,46 @@
 	<title>后台管理</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="<?php echo $this->getWebSkinPath()."css/admin.css";?>" />
+	<link rel="stylesheet" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/admin.css";?>" />
 	<meta name="robots" content="noindex,nofollow">
 	<link rel="shortcut icon" href="favicon.ico" />
-	<script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/jquery/jquery-1.11.3.min.js"></script><script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/jquery/jquery-migrate-1.2.1.min.js"></script>
-	<script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/artdialog/artDialog.js"></script><script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/artdialog/plugins/iframeTools.js"></script><link rel="stylesheet" type="text/css" href="/iweb/runtime/_systemjs/artdialog/skins/aero.css" />
-	<script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/form/form.js"></script>
-	<script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/autovalidate/validate.js"></script><link rel="stylesheet" type="text/css" href="/iweb/runtime/_systemjs/autovalidate/style.css" />
-	<script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/artTemplate/artTemplate.js"></script><script type="text/javascript" charset="UTF-8" src="/iweb/runtime/_systemjs/artTemplate/artTemplate-plugin.js"></script>
-	<script type='text/javascript' src="<?php echo $this->getWebViewPath()."javascript/common.js";?>"></script>
-	<script type='text/javascript' src="<?php echo $this->getWebViewPath()."javascript/admin.js";?>"></script>
-	<script type='text/javascript' src="<?php echo $this->getWebViewPath()."javascript/menu.js";?>"></script>
+	<script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/jquery/jquery-1.11.3.min.js"></script><script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/jquery/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/form/form.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/autovalidate/validate.js"></script><link rel="stylesheet" type="text/css" href="/iweb2/runtime/_systemjs/autovalidate/style.css" />
+	<script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/artdialog/artDialog.js"></script><script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/artdialog/plugins/iframeTools.js"></script><link rel="stylesheet" type="text/css" href="/iweb2/runtime/_systemjs/artdialog/skins/default.css" />
+	<script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/artTemplate/artTemplate.js"></script><script type="text/javascript" charset="UTF-8" src="/iweb2/runtime/_systemjs/artTemplate/artTemplate-plugin.js"></script>
+	<script type='text/javascript' src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/common.js";?>"></script>
+	<script type='text/javascript' src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/admin.js";?>"></script>
+	<script type='text/javascript' src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/menu.js";?>"></script>
+	<script type='text/javascript'>
+		//DOM加载完毕执行
+		$(function(){
+			//隔行换色
+			$(".list_table tr:nth-child(even)").addClass('even');
+			$(".list_table tr").hover(
+				function () {
+					$(this).addClass("sel");
+				},
+				function () {
+					$(this).removeClass("sel");
+				}
+			);
+
+			//后台菜单创建
+			<?php $menu = new Menu($this->admin);?>
+			var data = <?php echo $menu->submenu();?>;
+			var current = '<?php echo $menu->current;?>';
+			
+			var url='<?php echo IUrl::creatUrl("/");?>';
+			initMenu(data,current,url);
+		});
+	</script>
 </head>
 <body>
 	<div class="container">
 		<div id="header">
 			<div class="logo">
-				<a href="<?php echo IUrl::creatUrl("/system/default");?>"><img src="<?php echo $this->getWebSkinPath()."images/admin/logo.png";?>" width="303" height="43" /></a>
+				<a href="<?php echo IUrl::creatUrl("/system/default");?>"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/admin/logo.png";?>" height="43" /></a>
 			</div>
 			<div id="menu">
 				<ul name="menu">
@@ -40,7 +63,6 @@
 
 		<div id="admin_left">
 			<ul class="submenu"></ul>
-			<div id="copyright"></div>
 		</div>
 
 		<div id="admin_right">
@@ -70,10 +92,10 @@
 								<?php $rightArray = explode(',',trim($this->rightRow['right'],','))?>
 								<?php if($rightArray){?>
 									<?php foreach($rightArray as $key => $item){?>
-									<tr><td><input type='text' class='middle' value='<?php echo isset($item)?$item:"";?>' name='right[]' pattern="^\w+@\w+$" /></td><td><img class="operator" onclick="$(this).parent().parent().remove();" src="<?php echo $this->getWebSkinPath()."images/admin/icon_del.gif";?>" alt="删除" title="删除" /></td></tr>
+									<tr><td><input type='text' class='middle' value='<?php echo isset($item)?$item:"";?>' name='right[]' pattern="^\w+@\w+$" /></td><td><img class="operator" onclick="$(this).parent().parent().remove();" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/admin/icon_del.gif";?>" alt="删除" title="删除" /></td></tr>
 									<?php }?>
 								<?php }else{?>
-								<tr><td><input type='text' class='middle' value='' name='right[]' pattern="^\w+@\w+$" /></td><td><img class="operator" src="<?php echo $this->getWebSkinPath()."images/admin/icon_del.gif";?>" alt="删除" title="删除" /></td></tr>
+								<tr><td><input type='text' class='middle' value='' name='right[]' pattern="^\w+@\w+$" /></td><td><img class="operator" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/admin/icon_del.gif";?>" alt="删除" title="删除" /></td></tr>
 								<?php }?>
 							</tbody>
 							<tfoot>
@@ -127,7 +149,7 @@
 	function create_right(val)
 	{
 		var val = (val == undefined) ? '':val;
-		var rightStr = '<tr><td><input type="text" class="middle" value="'+val+'" name="right[]" /></td><td><img class="operator" onclick="$(this).parent().parent().remove();" src="<?php echo $this->getWebSkinPath()."images/admin/icon_del.gif";?>" alt="删除" title="删除" /></td></tr>';
+		var rightStr = '<tr><td><input type="text" class="middle" value="'+val+'" name="right[]" /></td><td><img class="operator" onclick="$(this).parent().parent().remove();" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/admin/icon_del.gif";?>" alt="删除" title="删除" /></td></tr>';
 		$('#rightBox').prepend(rightStr);
 	}
 
@@ -155,27 +177,21 @@
 		</div>
 	</div>
 
-	<script type='text/javascript'>
-		//DOM加载完毕执行
-		$(function(){
-			//隔行换色
-			$(".list_table tr:nth-child(even)").addClass('even');
-			$(".list_table tr").hover(
-				function () {
-					$(this).addClass("sel");
-				},
-				function () {
-					$(this).removeClass("sel");
-				}
-			);
+<script type='text/javascript'>
+	//DOM加载结束
+$(function(){
+	<?php if(isset($this->search)&&$this->search){?>
+	<?php $search=$this->search?>
+	<?php }?>
+	<?php if(isset($search)&&$search){?>
+	var searchData = <?php echo JSON::encode($search);?>;
+	for(var index in searchData)
+	{
+		$('[name="search['+index+']"]').val(searchData[index]);
+	}
+	<?php }?>
 
-			//后台菜单创建
-			<?php $menu = new Menu($this->admin);?>
-			var data = <?php echo $menu->submenu();?>;
-			var current = '<?php echo $menu->current;?>';
-			var url='<?php echo IUrl::creatUrl("/");?>';
-			initMenu(data,current,url);
-		});
-	</script>
+});
+</script>
 </body>
 </html>

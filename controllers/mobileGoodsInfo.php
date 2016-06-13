@@ -1,12 +1,5 @@
 <?php 
 	class mobileGoodsInfo extends IController{
-		public function getGoodsInfo(){
-			$id=IFilter::act(IReq::get('id'));
-			$m_goods=new IModel('goods as go');
-			$goodsinfo=$m_goods->getObj("id=$id",'go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id,go.is_del');
-			echo JSON::encode($goodsinfo);
-
-		}
 		//获取配送方式
 		public function getDelivery(){
 			$m_delivery=new IQuery('delivery');
@@ -23,52 +16,51 @@
 			$m_goods->where='r.is_close = 0 and NOW() between r.start_time and r.end_time and go.is_del=0';
 			$m_goods->fields='go.sale,go.comments,go.point,go.spec_array,go.brand_id,go.unit,go.content,go.img,go.store_nums,go.market_price,go.model_id,go.name,go.goods_no,r.*';
 			$result=$m_goods->find();
-			//var_dump($result);
 			echo JSON::encode($result);
 
 		}
 		//获得评论内容
 		public function getComment(){
 			$id=IFilter::act(IReq::get('id'));
-			
 			$m_comment=new IQuery('comment as c');
 			$m_comment->fields='u.username,u.head_ico,c.*';
 			$m_comment->join='left join user  as u on u.id=c.user_id';
-
 			$m_comment->where='c.goods_id='.$id.' and c.status=1';
 			$result=$m_comment->find();
 			//var_dump($result);
 			echo JSON::encode($result);
 		}
-		public function products(){
-		
-			$goods_id = IFilter::act(IReq::get('id'),'int');
+		public function getGoodsInfo(){
+			$goods_id = IFilter::act(IReq::get('goods_id'),'int');
 			$data=array();
 			if(!$goods_id)
-			{	$data['status']=403;
+			{
+				$goods_id=IFilter::act(IReq::get('goods_id','post'),'int');
+				if(!$goods_id){
+				$data['code']=0;
 				$data['info']='传递的参数不正确';
 				echo JSON::encode($data);
 				exit;
-				/*IError::show(403,"传递的参数不正确");
-				exit;*/
+				}
 			}
 			$user_id = $this->user ? $this->user['user_id'] : 0;
 			//把当前商品的数据添加到用户喜欢的数据表中
 			user_like::set_user_history($goods_id,$user_id);
-			
 			//使用商品id获得商品信息
 			$tb_goods = new IModel('goods');
 			//获得当前商品的详情
 			$goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)");
-			
-	 		
 			if(!$goods_info)
-			{	$data['status']=403;
+			{	$data['code']=0;
 				$data['info']='这件商品不存在或已下架';
 				echo JSON::encode($data);
 				exit;
-				/*IError::show(403,"这件商品不存在或已下架");
-				exit;*/
+			}
+			$preg = '/<img.*?src=[\"|\']?(.*?)[\"|\']?\s.*?>/i';
+			preg_match_all($preg,$goods_info['content'],$goods_info['content']);
+			unset($goods_info['content'][0]);
+			foreach($goods_info['content'][1] as $k=>$v){
+				$goods_info['content'][1][$k]='http://v.yqrtv.com:8080/app/'.$v;
 			}
 			//团购
 			$regiment_db = new IModel('regiment');
@@ -76,11 +68,7 @@
 			//关联货品表获得商品的规格，库存
 			$product_db = new IModel('products');
 			$goods_info['product'] = $product_db->query('goods_id='.$goods_info['id'],'id,spec_array,store_nums');
-			$goods_info['product'] = JSON::encode($goods_info['product']);
-			//如果是预售产品跳转到预售页面
-			//if($goods_info['is_del']==4)header('location:'.IUrl::getHost().IUrl::creatUrl('pregoods/products/id/'.$goods_id));
-		//商品销售价格
-			//$sell_price = $goods_info['sell_price'];
+			$goods_info['product'] = $goods_info['product'];
 			//获取品牌信息
 			if($goods_info['brand_id'])
 			{
@@ -98,8 +86,9 @@
 			//获取商品分类名字
 			$categoryObj = new IModel('category_extend as ca,category as c');
 			$categoryRow = $categoryObj->getObj('ca.goods_id = '.$goods_id.' and ca.category_id = c.id','c.id,c.name');
-			$goods_info['category'] = $categoryRow ? $categoryRow['id'] : 0;
-		
+
+			$goods_info['cate_id'] = $categoryRow ? $categoryRow['id'] : 0;
+			$goods_info['cate_name']=$categoryRow ?$categoryRow['name']:'';
 			//获取商品图片 相册表关联商品相册关系表
 			$tb_goods_photo = new IQuery('goods_photo_relation as g');
 			$tb_goods_photo->fields = 'p.id AS photo_id,p.img ';
@@ -116,11 +105,15 @@
 					$goods_info['photo'][$key] = $temp;
 				}
 			}
+			$goods_info['img']='http://localhost/iweb2/'.$goods_info['img'];
+			//处理图片地址
+			foreach($goods_info['photo'] as $k=>$v){
+				$goods_info['photo'][$k]['img']='http://localhost/iweb2/'.$v['img'];
 
+			}
 			//商品是否参加促销活动(团购，抢购)
 			$goods_info['promo']     = IReq::get('promo')     ? IReq::get('promo') : '';
 			$goods_info['active_id'] = IReq::get('active_id') ? IFilter::act(IReq::get('active_id'),'int') : '';
-			
 			//获得扩展属性
 			$tb_attribute_goods = new IQuery('goods_attribute as g');
 			$tb_attribute_goods->join  = 'left join attribute as a on a.id=g.attribute_id ';
@@ -128,9 +121,7 @@
 			$tb_attribute_goods->where = "goods_id='".$goods_id."' and attribute_id!=''";
 			$tb_attribute_goods->order = "g.id asc";
 			$goods_info['attribute'] = $tb_attribute_goods->find();
-
 			//[数据挖掘]获取最终购买此商品的用户ID列表
-			
 			$tb_order = new IQuery('order_goods as og');
 			$tb_order->join   = 'right join order as o on og.order_id=o.id ';
 			$tb_order->fields = 'DISTINCT o.user_id';
@@ -145,23 +136,23 @@
 					$shop_goods_array[] = $val['user_id'];
 				}
 				$goods_info['buyer_id'] = join(',',$shop_goods_array);
-			}
+
 			//透过用户id列表获得商品数据
-	/*		'getOrderGoodsByBuyerid'=>array(
-	 		 'query'=>array(
-	    			'name'  => 'order_goods as og',
-	    			'join' => "join order as o on og.order_id = o.id left join goods as lg on lg.id = og.goods_id AND lg.is_del = 0",
-	    		'where' => "o.user_id in (#buyer_id#) AND lg.id is not null",
-	    		'fields' => "DISTINCT lg.id,lg.sell_price as price,lg.img,lg.name",
-	    		'order' => "o.completion_time desc ",
-	    		'limit' => 5,
-	   		 )*/
+
 	 		 $tb_order->join='left join order as o on og.order_id=o.id left join goods as lg on lg.id=og.goods_id and lg.is_del=0';
 	 		 $tb_order->where='o.user_id in ('.$goods_info['buyer_id'].') and lg.id is not null';
 	 		 $tb_order->fields='DISTINCT lg.id,lg.sell_price as price,lg.img,lg.name';
 	 		 $tb_order->order='o.completion_time desc';
 	 		 $tb_order->limit=5;
 	 		 $goods_info['buyer_info']=$tb_order->find();
+			}
+			//处理图片地址
+			if(!empty($goods_info['buyer_info'])){
+				foreach($goods_info['buyer_info'] as $k=>$v){
+					$goods_info['buyer_info'][$k]['img']='http://localhost/iweb2/'.$v['img'];
+				}
+
+			}
 			//获得该商品的购买记录
 			$tb_shop = new IQuery('order_goods as og');
 			$tb_shop->join = 'left join order as o on o.id=og.order_id';
@@ -173,7 +164,6 @@
 			{
 				$goods_info['buy_num'] = $shop_info[0]['totalNum'];
 			}
-
 			//购买前咨询
 			//实例化咨询表，查询当前商品的咨询总数
 			$tb_refer    = new IModel('refer');
@@ -183,8 +173,6 @@
 			{
 				$goods_info['refer'] = $refeer_info['totalNum'];
 			}
-
-
 			//获得商品的价格区间
 			$tb_product = new IModel('products');
 			$goods_info['maxSellPrice']   = '';
@@ -200,9 +188,6 @@
 				$goods_info['minMarketPrice'] = $product_info['minMarketPrice'];
 				$goods_info['maxMarketPrice'] = $product_info['maxMarketPrice'];
 			}
-			
-			
-
 			//获得会员价
 			$countsumInstance = new countsum();
 			$group_price = $countsumInstance->getGroupPrice($goods_id,'goods');
@@ -226,35 +211,27 @@
 				$sellerDB = new IModel('seller');
 				//获取商家的id，名称，邮箱，手机号，logo图片，客服号码，总评分，评价总数
 				$goods_info['seller'] = $sellerDB->getObj('id = '.$goods_info['seller_id'],'id,true_name,email,mobile,logo_img,server_num,point,num');
-			}
-			//增加浏览次数
-		
-			
-			$visit    = ISafe::get('visit');
-			//$visit=IReq::get('visit')
-			//IFilter::act(IReq::get)
-
-			$checkStr = "#".$goods_id."#";
-			//判断当前商品id是不是已经浏览过;
-			if($visit && strpos($visit,$checkStr) !== false)
-			{
-			}
-			else
-			{
-				//如果没有浏览过就增加，并且把商品id放到cookie中防止重复加一;
-				$tb_goods->setData(array('visit' => 'visit + 1'));
-				$tb_goods->update('id = '.$goods_id,'visit');
-				$visit = $visit === null ? $checkStr : $visit.$checkStr;
-				//$goods_info['visit']=$visit;
-				ISafe::set('visit',$visit);
+				$goods_info['seller']['logo_img']='http://localhost/iweb2/'.$goods_info['seller']['logo_img'];
 			}
 			user_like::add_like_cate($goods_id,$this->user['user_id']);
-		//	print_r($goods_info);
-		//	print_r($specArray);
-			$goods_info['status']=1;
+			//获得评论内容
+			$m_comment=new IQuery('comment as c');
+			$m_comment->fields='u.username,u.head_ico,c.*';
+			$m_comment->join='left join user  as u on u.id=c.user_id';
+
+			$m_comment->where='c.goods_id='.$goods_id.' and c.status=1';
+			$commentInfo=$m_comment->find();
+			$goods_info['comment']=$commentInfo;
+			if(!empty($goods_info['comment'])){
+				foreach($goods_info['comment'] as $k=>$v){
+					$goods_info['comment'][$k]['head_ico']='http://localhost/iweb2/'.$v['head_ico'];
+				}
+			}
+			//分享的url
+			$goods_info['sharurl']='http://localhost/iweb2/site/products?id='.$goods_id;
+			$goods_info['code']=1;
 			echo JSON::encode($goods_info);
-			/*$this->setRenderData($goods_info);
-			$this->redirect('products'); */
+			//var_dump($goods_info);
 		}
 	}
 

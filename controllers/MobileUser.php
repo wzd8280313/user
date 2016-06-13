@@ -1,6 +1,7 @@
 <?php 
 /*
-登录
+  * 注册登录
+  * author:wangzhande
  */
 class MobileUser extends IController
 {
@@ -12,10 +13,11 @@ class MobileUser extends IController
 		$phone = IFilter::act(IReq::get('phone', 'post'));
 		$password = IFilter::act(IReq::get('password', 'post'));
 		$validPhoneCode = IFilter::act(Ireq::get('validPhoneCode','post'));
-		$type = IFilter::act(IReq::get('type', 'post'));
+		//$type = IFilter::act(IReq::get('type', 'post'));
 		if (!IValidate::phone($phone)) {  //手机格式不 正确的话
 			$data['code'] = 0;
 			$data['info']='手机格式不正确';
+			die(JSON::encode($data));
 		}
 		if (!IValidate::required($password)) {
 			//密码不能为空
@@ -45,6 +47,7 @@ class MobileUser extends IController
 				//$userObj->commit();
 				//插入成功
 				if ($user_id) {
+					$data['token']=$this->setToken($user_id);
 					//实例化用户组表，
 					$group = new IModel('user_group');
 					//获得默认的分组id；
@@ -57,7 +60,7 @@ class MobileUser extends IController
 						'status' => 1,
 					);
 					if ($group_id) $memberArray['group_id'] = $group_id;
-					if ($type == 1) $memberArray['status'] = 4;
+					//if ($type == 1) $memberArray['status'] = 4;
 					//用户信息表
 					$memberObj = new IModel('member');
 					//把用户信息放到用户信息表
@@ -80,7 +83,7 @@ class MobileUser extends IController
 	public function getMobileValidateCode()
 	{
 		$phone = IFilter::act(IReq::get('phone','post'));
-		$res = array('code' => 1);
+		$res = array('code' => 1,'info'=>'发送成功');
 		if ($phone == '') {
 			$res['code'] = 0;
 			$res['info']='手机号码不能为空';
@@ -92,7 +95,7 @@ class MobileUser extends IController
 		if ($res['code'] == 1) {
 			$text = rand(100000, 999999);
 			$mobileObj=new IModel('mobile_code');
-			$where='phone='.$phone;
+			//$where='phone='.$phone;
 			$mobileRes=$mobileObj->getObj('phone='.$phone);
 			$data=array(
 				'phone'=>$phone,
@@ -103,14 +106,16 @@ class MobileUser extends IController
 				$mobileObj->setData($data);
 				$mobileObj->update('phone='.$phone);
 			}else{
+				$data['send_times']=0;
 				$mobileObj->setData($data);
+				$mobileObj->add();
 			}
 
 			$text = smsTemplate::checkCode(array('{mobile_code}' => $text));
-			$sms=new ChuanglanSMS('N9081709','9fd2cd94');
+/*			$sms=new ChuanglanSMS('N9835706','1329942c');
 			$result=$sms->send($phone,$text);
 			$result=JSON::decode($result);
-			if($result['success']==true){
+/*			if($result['success']==true){
 				//发送成功
 				$res['code']=1;
 				$res['info']='发送成功';
@@ -118,7 +123,7 @@ class MobileUser extends IController
 				//发送失败
 				$res['code']=0;
 				$res['info']='发送失败';
-			}
+			}*/
 		}
 		echo JSON::encode($res);
 
@@ -155,46 +160,35 @@ class MobileUser extends IController
 	//用户登录
 	public function login_act()
 	{
-
-		$login_info = IFilter::act(IReq::get('login_info', 'post'));
+		$login_info = IFilter::act(IReq::get('username', 'post'));
 		$password = IFilter::act(IReq::get('password', 'post'));
-		//$remember   = IFilter::act(IReq::get('remember','post'));
-		$autoLogin = IFilter::act(IReq::get('isAutoLogin', 'post'));
-
 		$password = md5($password);
-		$captcha = IFilter::act(IReq::get('validCode'), 'str');
 		$errTimes = $this->getErrTimes($login_info);
-		$data = array('code' => 0);
-		if ($login_info == '') {
-			$data['code'] = 1;
-			$data['msg'] = '用户名不能为空';
-		} else if ($password == '') {
-			$data['code'] = 2;
-			$data['msg'] = '密码不能为空';
+		if($errTimes===false){
+			die(JSON::encode(array('code'=>0,'info'=>'账号不存在')));
 		}
-		//     	else if(($errTimes = $this->getErrTimes($login_info))>7){//帐户锁定，打电话解冻
-		//     		$data['code'] = 13;
-		//     	}
-		//     	//如果密码错误次数超过3次
+		$data = array('code' => 1,'info'=>'登录成功');
+		if ($login_info == '') {
+			$data['code'] = 0;
+			$data['info'] = '用户名不能为空';
+			die(JSON::encode($data));
+		} else if ($password == '') {
+			$data['code'] = 0;
+			$data['info'] = '密码不能为空';
+			die(JSON::encode($data));
+		}
 		else if ($errTimes > 3) {//二次添加
-			$data['code'] = 10;
+			$data['code'] = 0;
+			$data['info']='密码错误次数太多,请点忘记密码';
+			die(JSON::encode($data));
 		} else {    //验证已注册用户是否合法
-
 			if ($userRow = CheckRights::isValidUser($login_info, $password)) {    //验证成功后把密码错误次数改为0
 				$M = new IModel('user');
 				$where = 'phone = "' . $login_info . '" OR email = "' . $login_info . '" OR username = "' . $login_info . '"';
 				$M->setData(array('err_times' => 0));
 				$M->update($where);
-				//用户登录后，
-				//CheckRights::loginAfter($userRow);
-				//保存用户信息
-				//$data['user_id']=ISafe::setMobileCode('user_id',$userRow['id']);
-				$data['token'] = self::setToken($userRow['id']);
-
-
-				//要生成一个token保存起来 
-
-
+				$data['token'] =$this->setToken($userRow['id']);
+				//要生成一个token保存起来
 				$memberObj = new IModel('member');
 				//设置最后登录时间
 				$dataArray = array(
@@ -213,110 +207,64 @@ class MobileUser extends IController
 					$memberObj->setData($dataArray);
 					$memberObj->update('user_id = ' . $userRow["id"]);
 				}
-// 				//记住帐号
-// 				if($remember == 1)
-// 				{
-// 					ICookie::set('loginName',$login_info);
-// 				}
-
-				//自动登录
-				if ($autoLogin == 1) {
-
-					//ICookie::set('autoLogin',$autoLogin);
-
-				}
-
-
 			} else {
-				//邮箱未验证
-				$userDB = new IModel('user as u,member as m');
-				$userRow = $userDB->getObj(" (u.username = '{$login_info}' or u.email = '{$login_info}' or u.phone = '{$login_info}') and password = '{$password}' and u.id = m.user_id");
 
-				if ($userRow) {
-					if ($userRow['status'] == 4)//邮箱未验证
-					{
-						$message = "您的邮箱还未验证，请点击下面的链接发送您的邮箱验证邮件！";
-						$data['returnUrl'] = IUrl::creatUrl('/site/success?message=' . urlencode($message) . '&email=' . $userRow['email']);
-					} else if ($userRow['status'] == 3) {//后台锁定
-						$data['code'] = 9;
-					} else if ($userRow['status'] == 2) {
-						$data['code'] = 15;
-					}
-				} else {
 					$M = new Imodel('user');
-					$M->addNum(array('username' => $login_info, 'phone' => $login_info, 'email' => $login_info), array('err_times' => 1), 0);//zi
-					$data['code'] = 7;//密码账号不匹配
-					$data['errorTimes'] = $errTimes + 1;
-				}
+					$M->addNum(array('username' => $login_info, 'phone' => $login_info, 'email' => $login_info),
+					array('err_times' => 1), 0);
+					$data['code'] = 0;//密码账号不匹配
+					$data['info']='账号密码不匹配，密码错误次数'.($errTimes+1);
+				//$data['errorTimes'] = $errTimes + 1;
 			}
 		}
 		echo JSON::encode($data);
 
-
 	}
-
-	protected function setToken($user_id)
+	//设置token
+	private function setToken($user_id)
 	{
-
-		$encryptKey = isset(IWeb::$app->config['encryptKey']) ? IWeb::$app->config['encryptKey'] : self::$defaultKey;
-		$token = ICrypt::encode($user_id, $encryptKey);
-
-		/*$user_id=IFilter::act(IReq::get('user_id'));
-		$data['user_id']=ICookie::setMobileCode('user_id',$user_id);
-		var_dump($data);
-		$password=IFilter::act(IReq::get('user_pwd'));
-		$data['password']=ICookie::setMobileCode('password',$password);
-		var_dump($data);*/
-
-
-	}
-
-
-
-	public function test2()
-	{
-		//var_dump($this->module);
-		//var_dump($this->themeDir());
-		//var_dump($this->module->getBasePath());
-		//var_dump($this->getViewPath());
-		//var_dump($this->module->config);
-		//var_dump($this->theme);
-		$this->redirect('/site/ceshi');
-	}
-
-	public function test3()
-	{	$userId=IFilter::act(IReq::get('userId','post'));
-		if($userId==""){
-			$result['code']=false;
-			$result['info']='用户id不存在';
-			die(JSON::encode($result));
+		$token=sha1($user_id.time());
+		$tokenModel=new IModel('token');
+		if($tokenModel->getObj('user_id='.$user_id)){
+			$tokenModel->setData(array('user_id'=>$user_id,'token'=>$token));
+			$tokenModel->update('user_id='.$user_id);
+		} else{
+			$tokenModel->setData(array('user_id'=>$user_id,'token'=>$token));
+			$tokenModel->add();
 		}
-		if(isset($_FILES['attach']['name'])&&$_FILES['attach']['name']!=''){
-			$photoObj=new PhotoUpload();
-			$photo=$photoObj->run();
-			if($photo['attach']['img']){
-				$userObj=new IModel('user');
-				$dataArray=array('head_ico'=>$photo['attach']['img']);
-				$userObj->setData($dataArray);
-				$where="id=".$userId;
-				if($userObj->update($where)){
-					die(JSON::encode(array('code'=>true,'info'=>'上传成功')));
-				}else{
-					die(JSON::encode(array('code'=>false,'info'=>'上传失败')));
-				}
-			}else{
-				die(JSON::encode(array('code'=>false,'info'=>'上传失败')));
-			}
+		return $token;
+	}
+
+	//获取用户密码错误次数
+	private function getErrTimes($username){
+		$M = new IModel('user');
+		$where = 'phone = "'.$username.'" OR username = "'.$username.'" OR email = "'.$username.'"';
+		if($res = $M->getObj($where,'err_times')) {
+			return  $res['err_times'];
 		}else{
-			die(JSON::encode(array('code'=>false,'info'=>'请选择图片')));
+			return false;
 		}
 	}
-	public function sms(){
-		$phone=IFilter::act(IReq::get('phone','get'));
-		$password=IFilter::act(IReq::get('password'),'get');
-		$chuanglan=new ChuanglanSMS($phone,$password);
-		$res=$chuanglan->send(15313086535,'验证码');
-		var_dump($res);
+	public function test(){
+		$arr1 = array (
+			'0' => array ('fid' => 1, 'tid' => 1, 'name' =>'Name1' ),
+			'1' => array ('fid' => 1, 'tid' => 2 , 'name' =>'Name2' ),
+			'2' => array ('fid' => 1, 'tid' => 5 , 'name' =>'Name3' ),
+			'3' => array ('fid' => 1, 'tid' => 7 , 'name' =>'Name4' ),
+			'4' => array ('fid' => 3, 'tid' => 9, 'name' =>'Name5' )
+		);
+		foreach($arr1 as $k => $v){
+			$temp[$v['fid']][] = array(
+				'tid' => $v['tid'],
+				'name' => $v['name'],
+			);
+		}
+		foreach($temp as $v){
+			$arr2[] = $v;
+		}
+		var_dump($arr2);die;
+
+
 	}
 }
 
