@@ -1,6 +1,10 @@
 $(document).ready(function(){
 		$(".chooi_none").click(function(){
         $(this).toggleClass("chooi_have");
+        if(!$(this).hasClass('aton'))
+        {
+            count_price();
+        }
 　　});
 	});
     
@@ -110,7 +114,7 @@ $(function(){
     ,_p = $(this).closest('.js_sel_attr').attr('js_combine_price');
     $(this).closest('.js_sel_attr').find('span.js_select_data_price').text(_p);
     $(this).closest('.js_sel_attr').find('span.js_select_sell_price').text(_pri);
-  count_price();
+    count_price();
 }); 
 count_price();
 
@@ -200,10 +204,15 @@ function count_price(){
     $('.js_sel_attr').each(function(){
         if($(this).is(":visible"))
         {
-            _zh += parseFloat($(this).find('span.js_select_data_price').html());
-            _sell += parseFloat($(this).find('span.js_select_sell_price').html());
+            if($(this).find('i.chooi_have').length > 0)
+            {
+                _zh += parseFloat($(this).find('span.js_select_data_price').html());
+                _sell += parseFloat($(this).find('span.js_select_sell_price').html());
+            }
         }
     })
+    _zh += parseFloat($('span.js_main_data_price').html());
+    _sell += parseFloat($('span.js_main_sell_price').html());
     $('div.hejit_right').find('em').html(_zh.toFixed(2));
     $('div.hejit_right').find('i').html(parseFloat(_sell - _zh).toFixed(2));
 }

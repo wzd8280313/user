@@ -271,9 +271,9 @@ class ProRule
             $temp = array_keys($goodsIdList); 
             foreach($proListTemp as $k => $v)
             {
-                if(!empty(unserialize($v['area_groupid'])))
+                $area_groupid = unserialize($v['area_groupid']);
+                if(!empty($area_groupid))
                 {
-                    $area_groupid = unserialize($v['area_groupid']);
                     foreach($area_groupid as $key => $val)
                     { 
                         if(strpos($val, ';'.$area.';') === false && strpos($val,';'.substr($area,0,2).'0000;') === false)

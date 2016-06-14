@@ -195,7 +195,7 @@ function getTakeselfData(typeVal,id)
 //保价
 function selectProtect(obj)
 {
-	if($(obj).attr('checked') == 'checked')
+	if($(obj).prop('checked'))
 	{
 		orderFormInstance.protectPrice += parseFloat(obj.value);
 	}
@@ -222,6 +222,7 @@ function selectProtect(obj)
 			<input type='hidden' name='direct_type' value='{$this->type}' />
 			<input type='hidden' name='direct_num' value='{$this->num}' />
 			<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
+            <input type='hidden' name='seller_id' value='{$this->seller_id}' />
 	     	<div class="qrdd">
 	     		<a class="dz" href="{url:simple/address}{$param}">
 	     			<input type='hidden' value='{$this->defaultAddressId}' name='address_id' pattern='int'/>
@@ -247,7 +248,6 @@ function selectProtect(obj)
             {foreach:items=$goods item=$value}
              <div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$value['seller_name']}</a></div>
                 <span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
-                <input type='hidden' value='{$value[0]["seller_id"]}' name='seller_id[]' />
                 {foreach:items = $value $key=$k}
                 {if:is_array($item)}
                      <div class="qr_xq" style="clear:both;margin:-5px;">
@@ -296,7 +296,39 @@ function selectProtect(obj)
              
          </div>
         {/foreach}
+        <div class="qrdd qrdds">
+            <div class="qrdds_zf">
+                 <h4><i>*</i>代收点:</h4>
+                    <select style="">
+                     <option>请选择代收点（可空）</option>
+                     </select>
+           
+                 </div>
+        </div>
+        <div class="qrdd qrdds">
+            <div class="qrdds_zf">
+                 <h4><i>*</i>支付方式:</h4>    
+                 <select style="" name="payment" onchange='orderFormInstance.paymentSave()' pattern='int'>
+                     <option value='-1'>请选择支付方式</option>
+                        {set:$paymentList=Api::run('getPaymentList')}
+                        {foreach:items = $paymentList}
+                        {set:$paymentPrice = CountSum::getGoodsPaymentPrice($item['id'],$this->sum);}
+                        {if:$item['id']!=0 || $this->freight_collect!=0}
+                    <option value="{$item['id']}" price='{$paymentPrice}'>{$item['name']}</option>
+                        {/if}
+
+                    {/foreach}
+                 </select>
+             </div>
+        </div>
+        <div class="qrdd qrdds">
+            <div class="qrdds_zf">        
+                <h4>买家留言:</h4>
+                 <input  class="xt" style="width:65%" type="text" name='message' placeholder="买家留言"/>
+            </div>
+        </div>
 		{if:!empty($this->promotion)}
+        
 		<div class="qrdd qrdds">
             <span class="yhj">满足的优惠活动</span>
             {foreach:items = $this->promotion}

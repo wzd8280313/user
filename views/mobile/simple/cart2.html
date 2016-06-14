@@ -197,7 +197,7 @@ function getTakeselfData(typeVal,id)
 //保价
 function selectProtect(obj)
 {
-	if($(obj).attr('checked') == 'checked')
+	if($(obj).prop('checked'))
 	{
 		orderFormInstance.protectPrice += parseFloat(obj.value);
 	}
@@ -232,6 +232,9 @@ $(".sj img").css("height","27px")
 			<input type='hidden' name='direct_num' value='{$this->num}' />
 			<input type='hidden' name='direct_promo' value='{$this->promo}' />
 			<input type='hidden' name='direct_active_id' value='{$this->active_id}' />
+            {if:isset($this->cid)}
+            <input type="hidden" name="direct_cid" value="{$this->cid}">
+            {/if}
      		<div class="qrdd">
                 <a class="dz "  href="{url:simple/address}{$param}">
                 	<input type='hidden' value='{$this->defaultAddressId}' name='address_id' pattern='int'/>

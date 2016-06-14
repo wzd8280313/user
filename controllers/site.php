@@ -346,16 +346,20 @@ class Site extends IController
         //评论条数
         $comment = new IModel('comment');
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
-        $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
-        
+        $goods_info['comment_num'] = $temp[0]['num'];
+        //好评
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
-        $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
-        
+        $goods_info['good_comment'] = $temp[0]['num'];
+        //中评
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
-        $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
-        
+        $goods_info['middle_comment'] = $temp[0]['num'];
+        //差评
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
-        $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        $goods_info['bad_comment'] = $temp[0]['num'];
+        
+        //评分
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'sum(point) as sum');
+        $goods_info['grade'] = !!$temp[0]['sum'] ? $temp[0]['sum'] : 0;
         
         //购买记录
         $tb_shop = new IQuery('order_goods as og');
@@ -935,16 +939,20 @@ class Site extends IController
         //评论条数
         $comment = new IModel('comment');
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
-        $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
-        
+        $goods_info['comment_num'] = $temp[0]['num'];
+        //好评
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point=5 and pid = 0', 'count(1) as num');
-        $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
-        
+        $goods_info['good_comment'] = $temp[0]['num'];
+        //中评
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
-        $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
-        
+        $goods_info['middle_comment'] = $temp[0]['num'];
+        //差评
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
-        $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        $goods_info['bad_comment'] = $temp[0]['num'];
+        
+        //评分
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'sum(point) as sum');
+        $goods_info['grade'] = !!$temp[0]['sum'] ? $temp[0]['sum'] : 0;
 
 		//购买记录
 		$tb_shop = new IQuery('order_goods as og');

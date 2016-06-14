@@ -39,9 +39,13 @@ $(function(){
         var _this = $(this)
             ,id = _this.attr('js_data');
         $.getJSON(check_delivery ,{id:id},function(content){
-            if(content)
+            if(content.length == 0)
             {
-                _this.attr('js_prom_id', content.id).before("<span>"+content.name+"</span>")
+                _this.hide();
+            }
+            else
+            {
+                _this.attr('js_prom_id', content.id).before("<span>"+content.name+"</span>&nbsp;&nbsp;&nbsp;");
             }
         })
     })
@@ -305,7 +309,6 @@ function cart_del_many(){
 	for(var i=0;i<obj.length;i++){
 		str += obj.eq(i).val()+ '|';
 	}
-	
 	$.ajax({
 		type:'post',
 		async:true,
