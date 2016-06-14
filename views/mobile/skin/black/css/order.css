@@ -253,4 +253,17 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 	padding: 2px 10px;
 	border-bottom: 1px solid #F4F1F1;
 }
+.add_daijinq{
+    position: relative;
+    text-align: right;
+    right: 3%;
+}
+.add_daijinq input{
+    width: 45px;
+    height: 26px;
+    line-height: 26px;
+    background: #e63839;
+    border-radius: 3px;
+    color: #f2f2f2;
+}
 /*订单详情结束*/

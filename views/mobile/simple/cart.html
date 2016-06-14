@@ -59,7 +59,7 @@
 							<tr>
 								<td width="10%"> <input type="checkbox" class="check_alls checkbox"  name="check_all" id="check_all" > </td>
 								<td width="75%">
-								  <h5 class="fl">购物车中的产品</h5></li>
+								  <h5 class="fl" style="top:5px;margin-left:3px;">购物车中的产品</h5></li>
 								</td>
 								<td width="10%" id='coudan'></td>
 							</tr>
@@ -68,8 +68,7 @@
 					   <div class="c_list cb" id="list">
                        {foreach:items = $goods item=$value key=$buy}
 						<ul class="js_seller_diff">
-							
-                            <div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:27px;float:left;"/><a herf="javascript:;">{$value['seller_name']}</a></div>
+                            <div class="sj"><img {if: isset($value['logo_img'])} src="{webroot:}{$value['logo_img']}" {else:} src="{skin:images/ptlog.png}" {/if} style="width:26px;height:26px;float:left;"/><a style="line-height:28px;margin-left:5px;" herf="javascript:;">{$value['seller_name']}</a></div>
                             <span style="float: right"><a href="javascript:;" onclick="add_order(this)" class="goadd js_goadd" js_data="{$buy}">去凑单&nbsp;&gt;</a></span>
 							{foreach:items=$value key=$in}
 							{if:is_array($item)}
