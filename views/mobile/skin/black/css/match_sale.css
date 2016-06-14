@@ -124,7 +124,7 @@ a{cursor: pointer;}
     float: left;
     padding: 0 1%;
 }
-.main_figure .figure_rg p.online_bu{
+.figure_rg p.online_bu{
     color: #666;
     text-decoration: line-through;
 }
@@ -167,10 +167,6 @@ a{cursor: pointer;}
     width: 24%;
     float: left;
     padding: 0 1%;
-}
-.figure_rg p.online_bu{
-    color: #666;
-    text-decoration: line-through;
 }
 .chooice_attr{float: left;}
 .chooice_attr.opacity{

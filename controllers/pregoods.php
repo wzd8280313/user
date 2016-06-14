@@ -188,17 +188,21 @@ class Pregoods extends IController
 		//评论条数
         $comment = new IModel('comment');
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'count(1) as num');
-        $goods_info['comment_num'] = !!$temp ? $temp[0]['num'] : 0;
+        $goods_info['comment_num'] = $temp[0]['num'];
         
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point=5 and pid = 0 ', 'count(1) as num');
-        $goods_info['good_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        $goods_info['good_comment'] = $temp[0]['num'];
         
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point < 5 and point > 1 and pid = 0', 'count(1) as num');
-        $goods_info['middle_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        $goods_info['middle_comment'] = $temp[0]['num'];
         
         $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and point<2 and pid = 0', 'count(1) as num');
-        $goods_info['bad_comment'] = !!$temp ? $temp[0]['num'] : 0;
+        $goods_info['bad_comment'] = $temp[0]['num'];
         
+        //评分
+        $temp = $comment->query('status <> 0 and goods_id = '.$goods_id.' and pid = 0', 'sum(point) as sum');
+        $goods_info['grade'] = !!$temp[0]['sum'] ? $temp[0]['sum'] : 0;
+	
 		//购买记录
 		$tb_shop = new IQuery('order_goods as og');
 		$tb_shop->join = 'left join order as o on o.id=og.order_id';
@@ -703,9 +707,7 @@ class Pregoods extends IController
 	
 		$orderObj  = new IModel('order');
 		$orderObj->setData($dataArray);
-	
 		$this->order_id = $orderObj->add();
-	
 		if($this->order_id == false)
 		{
 			IError::show(403,'订单生成错误');

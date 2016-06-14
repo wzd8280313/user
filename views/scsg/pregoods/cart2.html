@@ -138,7 +138,7 @@ function address_save()
 //保价
 function selectProtect(obj)
 {
-	if($(obj).attr('checked') == 'checked')
+	if($(obj).prop('checked'))
 	{
 		orderFormInstance.protectPrice += parseFloat(obj.value);
 	}
@@ -444,7 +444,6 @@ function selectTakeself(deliveryId)
                             <caption>商家：{$value['seller_name']}
                                 <span style='float:right'><span>配送费用：</span><span id='deliveryfee_{$value[0]["seller_id"]}_{$value["weight"]}_{$value["total_price"]}'>￥{$value['delivery']}</span></span>
                             </caption>
-                            <input type='hidden' value='{$value[0]['seller_id']}' name='seller_id[]' />
                             
                             <thead>
                                 <tr>

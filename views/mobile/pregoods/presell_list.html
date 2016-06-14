@@ -53,6 +53,7 @@
          <div class="modle_items2" id='presell_box'>
             <ul class="items cf">
             	{foreach:items=$this->pre_list}
+                {if:!$item['presell_img']}{set:$item['presell_img']=$item['img']}{/if}
                     <li>
                         <a href="{url:/pregoods/products/id/$item['goods_id']}" class="img"><img src="{url:$item['presell_img']}"></a>
                         <a href="{url:/pregoods/products/id/$item['goods_id']}" class="tit">{$item['name']}</a>

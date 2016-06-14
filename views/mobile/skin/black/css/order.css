@@ -294,3 +294,17 @@ padding: 0 10px;
 	border: 1px solid #c0c0c0;
 }
 /*二维码页面结束*/
+.add_daijinq{
+    position: relative;
+    text-align: right;
+    right: 3%;
+}
+.add_daijinq input{
+    width: 45px;
+    height: 26px;
+    line-height: 26px;
+    background: #e63839;
+    border-radius: 3px;
+    color: #f2f2f2;
+}
+/*订单详情结束*/

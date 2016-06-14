@@ -79,8 +79,8 @@
 		       	</div>
 
 		       	<div class="figure_rg">
-		       		<p>￥<span class="js_select_data_price">{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</span></p>
-		       		<p class="online_bu">￥<span class="online_bu js_select_sell_price">{$sell_price}</span></p>
+		       		<p>￥<span class="js_select_data_price js_main_data_price">{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</span></p>
+		       		<p class="online_bu">￥<span class="js_select_sell_price js_main_sell_price">{$sell_price}</span></p>
 
 		       	</div>
                 <div name="tc_shop" class="tc-modal-active" style="display:none;"> 
@@ -191,7 +191,7 @@
                  
                       <div class="figure_rg">
                         <p>￥<span class="js_select_data_price">{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</span></p>
-                        <p>￥<span class="online_bu js_select_sell_price">{$goods['sell_price']}</span></p>
+                        <p class="online_bu">￥<span class="js_select_sell_price">{$goods['sell_price']}</span></p>
 
                       </div>
 

@@ -425,17 +425,17 @@ class Simple extends IController
     	$data = IFilter::act(IReq::get('str'));
     	if(!$data)return false;
     	$arr = explode('|',$data);
-    	foreach($arr as $key=>$v){
-    		if($v==''){
-    			unset($arr[$key]);
-    			continue;
-    		}
-    		$arr[$key]=explode('-',$v);
-    	}
-
+        $delCart = array();
+        foreach($arr as $val){
+            $tem =explode('-',$val);
+            if($val==''){
+                continue;
+            }
+            $delCart[$tem[0]][] = $tem[1].'-'.$tem[2];
+        }
     	$cartObj   = new Cart();
     	$cartInfo  = $cartObj->getMyCart();
-    	$delResult = $cartObj->del_many($arr);
+    	$delResult = $cartObj->del_many($delCart);
     	if($delResult){
     		echo 1;
     	}
@@ -581,35 +581,15 @@ class Simple extends IController
      */
 	function add_order()
 	{
-		/*$cart_sum = IFilter::act(IReq::get('sum'),'float');
-		$countObj = new CountSum();
-		$result   = $countObj->cart_count();
-		$cart_sum       = $result['sum'];
-		$prorule = new ProRule($cart_sum);
-
-		if($this->user['user_id'])
-		{
-			//获取 user_group
-			$groupObj = new IModel('member as m,user_group as g');
-			$groupRow = $groupObj->getObj('m.user_id = '.$this->user['user_id'].' and m.group_id = g.id','g.*');
-			$groupRow['id'] = empty($groupRow) ? 0 : $groupRow['id'];
-			$prorule->setUserGroup($groupRow['id']);
-		}
-
-		$prom_data = $prorule->notSatisfyPromotion();
-		if(!$prom_data){
-			$prom_data['gap_price'] = 0;
-			$prom_data['cou_price'] = 0;
-		}else{
-			$gap_price = $prom_data['condition']-$cart_sum;
-			$prom_data['gap_price'] = $gap_price;
-			$prom_data['cou_price'] = ceil($gap_price * 125/100);
-		}*/
         $id = IReq::get('id') ? IFilter::act(IReq::get('id'), 'int') : 0;
 		$prom_id = IReq::get('prom') ? IFilter::act(IReq::get('prom'), 'int') : 0;
         $cart_sum = IFilter::act(IReq::get('sum'),'float');
         $prom = new IModel('promotion');
         $prom_data = $prom->getObj('id = '.$prom_id);
+        if(!$prom_data)
+        {
+            die("参数错误！");
+        }
         $gap_price = $prom_data['condition']-$cart_sum;
         $prom_data['gap_price'] = $gap_price;
         $prom_data['cou_price'] = ceil($gap_price * 125/100);
