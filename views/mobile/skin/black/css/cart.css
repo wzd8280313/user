@@ -108,7 +108,7 @@ img{vertical-align:middle/* 此样式会控制前端图片属性所以去掉*/ }
 .tc{text-align:center}
 .tr{text-align:right}
 .bc{margin-left:auto;margin-right:auto}/* blockCenter */
-.fl{float:left;display:inline}
+.fl{float:left;display:inline;position: relative;}
 .fr{float:right;display:inline}
 .cb{clear:both}
 .clear{clear:both;display:block;overflow:hidden;}
@@ -414,3 +414,6 @@ a.but5{border:1px solid #b8b8b8; color:#000; border-radius:5px; text-align:cente
 .all-buy-cont .all-buy-item .items li .p{color:#ff5e00;display:block}
 .hide-buy-cont .buy-tit .arr{width:14px;height:14px;border-top:1px #999 solid;border-right:1px #999 solid;position:absolute;right:15px;top:50%;margin-top:-9px;-webkit-transform:rotate(135deg);-moz-transform:rotate(135deg)}
 .hide-buy-cont .all-buy-item{display:none}
+.c_list.cb .js_seller_diff{
+	    margin-top: 5px;
+}
