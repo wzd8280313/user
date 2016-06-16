@@ -77,6 +77,10 @@ class Delivery
         {
             return "商品已下架";
         }
+        if($goodsRow['type'] == 1)
+        {
+            return array('price' => 0, 'protect_price' => 0, 'if_delivery' => 0);
+        }
         //获取默认的配送方式信息
         $delivery    = new IModel('delivery');
         $deliveryRow = $delivery->getObj('is_delete = 0 and status = 1 and id = '.$delivery_id);

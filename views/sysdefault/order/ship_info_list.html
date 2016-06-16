@@ -40,7 +40,7 @@ $where = getSearchCondition($this->search);
 </div>
 
 <div class="content">
-	<form action="{url:/order/ship_info_del}" method="post" name="ship_list">
+	<form action="{url:/order/ship_info_del}" method="post" name="ship_list" onsubmit="return checkboxCheck('id[]','尚未选中任何记录！')">
 		<table class="list_table">
 			<col width="30px" />
 			<col />

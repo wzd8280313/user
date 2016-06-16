@@ -112,6 +112,7 @@ class Seller extends IController
         else
         {
             $_POST['past_time'] = $_POST['past_time'] ? $_POST['past_time'] : '0000-00-00';
+            $_POST['delivery_id'] = 0;
             if($_POST['is_del']==3 && $_POST['past_time'] <> '0000-00-00' && $_POST['past_time'] < date('Y-m-d'))
             {
                 die('该商品已过期,不能申请上架');                  

@@ -981,14 +981,11 @@ class Simple extends IController
 		if(Common::activeProp($promo)){//判断活动是否允许使用代金券
 			if(isset($memberRow['prop']) && ($propId = trim($memberRow['prop'],',')))
 			{
-				$porpObj = new IQuery('prop as p');
-                $porpObj->join = 'join ticket as t on p.condition = t.id';
-                $porpObj->where = 'p.id in ('.$propId.') and NOW() between p.start_time and p.end_time and p.type = 0 and p.is_close = 0 and p.is_userd = 0 and p.is_send = 1';
-                $porpObj->fields = 'p.id,p.name,p.value,p.card_name,t.type,t.condition';
-                $prop = $porpObj->find();
+				$propObj = new IModel('prop');
+                $prop = $propObj->query('id in ('.$propId.') and NOW() between start_time and end_time and type = 0 and is_close = 0 and is_userd = 0 and is_send = 1', 'id,name,value,card_name,ticket_condition');
                 foreach($prop as $k => $v)
                 {
-                    if($v['type'] == 2 && $v['condition'] > $result['sum'])
+                    if($v['ticket_condition'] && $v['ticket_condition'] > $result['sum'])
                     {
                         unset($prop[$k]);
                     }

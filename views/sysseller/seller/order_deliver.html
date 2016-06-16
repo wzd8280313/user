@@ -26,6 +26,11 @@
 				<tbody>
 					{set:$show_deli=0}
 
+                     {set:$seller_id = $this->seller['seller_id']}
+                    {query:name=order_goods as og join=left join goods as go on go.id eq og.goods_id fields=og.*,go.seller_id where=og.order_id eq $order_id and go.seller_id eq $seller_id}
+                    {if:$item['is_send']==0 && ($item['refunds_status']==0 || $item['refunds_status']==5) }
+                    {set:$show_deli = 1;}
+                    {/if}                    
                     {set:$item['status'] = $this->order_status}
 					<tr {if:$item['goods_id'] == $this->good_id} style="color:red;" {/if}>
 						<td>

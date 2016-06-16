@@ -1450,14 +1450,15 @@ class Ucenter extends IController
 	    		{
 	    			//生成红包
 					$dataArray = array(
-						'condition' => $ticketRow['id'],
-						'name'      => $ticketRow['name'],
-						'card_name' => 'T'.IHash::random(8),
-						'card_pwd'  => IHash::random(8),
-						'value'     => $ticketRow['value'],
-						'start_time'=> $ticketRow['start_time'],
-						'end_time'  => $ticketRow['end_time'],
-						'is_send'   => 1,
+						'condition'     => $ticketRow['id'],
+						'name'          => $ticketRow['name'],
+						'card_name'     => 'T'.IHash::random(8),
+						'card_pwd'      => IHash::random(8),
+						'value'         => $ticketRow['value'],
+                        'ticket_condition' => $ticketRow['condition'],
+						'start_time'    => $ticketRow['start_time'],
+						'end_time'      => $ticketRow['end_time'],
+						'is_send'       => 1,
 					);
 					$propObj = new IModel('prop');
 					$propObj->setData($dataArray);

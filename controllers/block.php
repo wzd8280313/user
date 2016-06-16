@@ -67,9 +67,9 @@ class Block extends IController
 		if($exp_code)$condition .= '&exp_code='.$exp_code;
 		//查询条件
 		$table_name = 'goods as go';
-
+        
         $where   = $exp_presell ? ' go.is_del = 0 ' : ' (go.is_del = 0 or go.is_del = 4) ';
-		$where   = $exp_code ? ' go.type <> 1 ' : '';
+		$where  .= $exp_code ? ' go.type <> 1 ' : '';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
 		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
 		$where  .= $goods_no  ? ' and go.goods_no     = "'.$goods_no.'"' : '';
@@ -860,11 +860,9 @@ class Block extends IController
     	}
     	else
     	{
-            $ticketObj = new IModel('ticket');
-            $ticketRow = $ticketObj->getObj('id='.$propRow['condition']);
-            if($ticketRow['type'] == 2 && $ticketRow['condition'] > $final_num)
+            if($propRow['ticket_condition'] && $propRow['ticket_condition'] > $final_num)
             {
-                $message = '消费达到'.$ticketRow['condition'].'才能使用该代金券';
+                $message = '消费达到'.$propRow['ticket_condition'].'才能使用该代金券';
             }
             else
             {

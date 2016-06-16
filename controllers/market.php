@@ -146,6 +146,7 @@ class Market extends IController
 					'card_name' => 'T'.IHash::random(8),
 					'card_pwd'  => IHash::random(8),
 					'value'     => $ticketRow['value'],
+                    'ticket_condition' => $ticketRow['condition'],
 					'start_time'=> $ticketRow['start_time'],
 					'end_time'  => $ticketRow['end_time'],
 				);

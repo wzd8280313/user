@@ -51,7 +51,7 @@
 					{set:$isHasTicket = true;}
 					<tr>
 						<td></td>
-						<td><b class="gray"><label class='attr'><input class="radio" type="radio" name='ticket_id' value="{$item['id']}" />{$item['name']}：{$item['value']}元（需要{$item['point']}积分）</b></td><td><label>有效日期：{$item['start_time']}至{$item['end_time']}</label></label></td>
+						<td><b class="gray"><label class='attr'><input class="radio" type="radio" name='ticket_id' value="{$item['id']}" />{$item['name']}：{$item['value']}元 <span style="color: red;">{if:$item['type'] == 1}全场通用{else:}满{$item['condition']}可用{/if}</span>（需要{$item['point']}积分）</b></td><td><label>有效日期：{$item['start_time']}至{$item['end_time']}</label></label></td>
 					</tr>
 					{/foreach}
 					{if:$isHasTicket == false}

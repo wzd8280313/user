@@ -14,7 +14,7 @@ return array(
 		'query' => array(
 			'name'   => 'goods as go',
 			'where'  => 'id = #id# and (is_del = 0 or is_del = 4)',
-			'fields' => 'go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id,go.is_del',
+			'fields' => 'go.name,go.id as goods_id,go.img,go.sell_price,go.point,go.weight,go.store_nums,go.exp,go.goods_no,0 as product_id,go.seller_id,go.is_del,go.type',
 			'type'   => 'row',
 		)
 	),
@@ -23,7 +23,7 @@ return array(
 		'query' => array(
 			'name'   => 'goods as go,products as pro',
 			'where'  => 'pro.id = #id# and pro.goods_id = go.id and (go.is_del = 0 or go.is_del=4)',
-			'fields' => 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,go.point,go.exp,go.img,go.seller_id',
+			'fields' => 'pro.sell_price,pro.weight,pro.id as product_id,pro.spec_array,pro.goods_id,pro.store_nums,pro.products_no as goods_no,go.name,go.point,go.exp,go.img,go.seller_id,go.type',
 			'type'   => 'row',
 		)
 	),

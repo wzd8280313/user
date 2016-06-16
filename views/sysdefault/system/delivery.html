@@ -47,7 +47,7 @@ $search = IFilter::act(IReq::get('search'),'strict');
 		</table>
 	</div>
 </div>
-<form name="ModelForm" action="{url:/system/delivery_operate}" method="post">
+<form name="ModelForm" action="{url:/system/delivery_operate}" method="post" onsubmit="return checkboxCheck('id[]','尚未选中任何记录！')">
 <div class="content">
 	<table class="list_table">
 		<col width="40px" />

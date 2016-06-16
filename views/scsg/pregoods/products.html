@@ -416,7 +416,9 @@
 			<div class="cont">
 				<ul class="list">
 				{foreach:items=$promotion}
+                {if:$item['hide'] <> 1}
 					<li>{$item['info']}</li>
+                {/if}
 				{/foreach}
 				</ul>
 			</div>

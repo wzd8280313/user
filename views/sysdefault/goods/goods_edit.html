@@ -195,7 +195,7 @@
 							</div>
 						</td>
 					</tr>
-                    <tr>
+                    <tr class="js_show_delivery">
                         <th>运费计算：</th>
                         <td>
                             <select name="delivery_id">
@@ -428,10 +428,12 @@ function showTime(t)
     if(t==1)
     {
         $('.js_show_time').show();
+        $('.js_show_delivery').hide();
     }
     else
     {
         $('.js_show_time').hide();
+        $('.js_show_delivery').show();
     }
 }
 //创建表单实例
