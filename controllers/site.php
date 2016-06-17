@@ -1465,14 +1465,13 @@ class Site extends IController
 
 	//评论列表页
 	function comments_list()
-	{	
-		$id   = IFilter::act(IReq::get("id"),'int');
-		$type = IFilter::act(IReq::get("type"));
+    {
+        $id   = IFilter::act(IReq::get("id"),'int');
+        $type = IFilter::act(IReq::get("type"));
 
-		$this->data=Comment_Class::get_comment_byid($id,$type,10,$this);
-
-		$this->redirect('comments_list');
-	}
+        $this->data=Comment_Class::get_comment_byid($id,$type,10,$this);
+        $this->redirect('comments_list');
+    }
 
 	//提交评论页
 	function comments()
@@ -1889,7 +1888,7 @@ class Site extends IController
     {
         $id = IFilter::act(IReq::get('id'), 'int');
         $active = new IModel('active');
-        $detail = $active->getObj('id='.$id);
+        $detail = $active->getObj('id='.$id.' and status = 1');
         if(!$detail)
         {
             IError::show(403,"活动不存在");
@@ -1907,7 +1906,7 @@ class Site extends IController
         $this->group = $groupDetail;
         $goods = new IQuery('group_goods as gg');
         $goods->join = "left join goods as g on gg.goods_id = g.id";
-        $goods->fields = "gg.*,g.name,g.img,g.sell_price,g.market_price,g.short_desc,g.brand_id";
+        $goods->fields = "gg.*,g.name,g.img,truncate(g.sell_price,1) as sell_price,truncate(g.market_price,1) as market_price,g.short_desc,g.brand_id";
         $goods->order = 'gg.sort asc';       
         foreach($groupDetail as $k => $v)
         {  

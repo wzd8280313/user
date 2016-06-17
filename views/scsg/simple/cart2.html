@@ -491,7 +491,7 @@ function selectTakeself(deliveryId)
 									<td>{if:isset($item['combine'])}<span>优惠套餐:{$item['combine']}</span>{/if}减￥{$item['reduce']}</td>
 									<td>{$item['count']}</td>
                                     <td>￥<b class="red2 js_goods_delivery" js_data="{$item['delivery_id']}_{$item['goods_id']}_{$item['product_id']}_{$item['count']}">{$item['delivery']}</b></td>
-									<td><b class="red2">￥{$item['sum']}</b></td>
+									<td><b class="red2">￥{$item['sum']}</b><span id="{$item['delivery_id']}_{$item['goods_id']}_{$item['product_id']}_{$item['count']}"></span></td>
 								</tr>
 								{/if}
 								{/foreach}

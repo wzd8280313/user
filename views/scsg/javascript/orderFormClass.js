@@ -61,7 +61,7 @@ function orderFormClass()
         {*/
             this.orderAmount += parseFloat(this.deliveryPrice);
         /*}*/
-		this.orderAmount = this.orderAmount <=0 ? 0 : this.orderAmount.toFixed(2);         
+		this.orderAmount = this.orderAmount <=0 ? 0 : this.orderAmount.toFixed(2);        
 		//刷新DOM数据
 		$('#final_sum').text(this.orderAmount);
 		$('[name="ticket_value"]').text(this.ticketPrice);
@@ -165,12 +165,12 @@ function orderFormClass()
                         url:_url,
                         
                         success:function(content)
-                        {                        
+                        {                      
                             //地区无法送达
                             if(content.if_delivery == 1)
                             {
                                 alert('您选择地区部分商品无法送达');
-                                $('#'+obj).html("<span style='color:red'>无法送达</span>");
+                                $('#'+obj).html("<span style='color:red'>&nbsp&nbsp;无法送达</span>");
                             }
                             else
                             {
@@ -202,7 +202,7 @@ function orderFormClass()
                 {
                     if(!jsonData.isFreeFreight)
                     {
-                        orderFormInstance.deliveryPrice = parseFloat(price);
+                        orderFormInstance.deliveryPrice += parseFloat(price);
                         
                         _this.html('￥'+parseFloat(price).toFixed(2));
                     }
@@ -212,7 +212,7 @@ function orderFormClass()
                             _d.push(jsonData.isFreeFreight[i]);
                         }
                         $('.js_data_6').parent('div').siblings('span.yhj').show();
-                        orderFormInstance.deliveryPrice = 0;
+                        orderFormInstance.deliveryPrice += 0;
                         _this.html('免运费');
                     }
                 }

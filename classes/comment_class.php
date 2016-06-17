@@ -140,6 +140,23 @@ class Comment_Class
                       $data['comment_list'][$key]['user_show'] = user_like::getSecretPhone($value['phone']);
                 }
                 $data['comment_list'][$key]['photo'] = $photo->query('comment_id='.$value['id'], 'img', 'sort', 'desc');
+                
+                $temp = $comment->query('status <> 0 and goods_id = '.$id.' and pid='.$value['id'].' and user_id <> -1 and p_id <> "0"', 'count(1) as num');
+                $data['comment_list'][$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+                
+                $reply = $comment->query("goods_id = $id and p_id LIKE '%,{$value['id']}%' and user_id = -1");
+                foreach($reply as $key => $val)
+                {
+                    if($val['sellerid'])
+                    {
+                        $seller_name = API::run('getSellerInfo',$val['sellerid'],'true_name');
+                    }
+                    $reply[$key]['seller_name'] = isset($seller_name['true_name']) ? $seller_name['true_name'] : '山城速购';
+                    $temp = $comment->query('goods_id = '.$id.' and pid='.$val['id'].' and user_id <> -1', 'count(1) as num');
+                    $reply[$key]['reply'] = !!$temp ? $temp[0]['num'] : 0;
+                    unset($seller_name);
+                }
+                $data['comment_list'][$key]['replyData'] =  $reply;
                 if(!!$value['recontents'])
                 {
                     $temp = $comment->getObj("id='{$value['recontents']}'");

@@ -823,7 +823,7 @@ class Simple extends IController
     	//必须为登录用户
     	if($this->user['user_id'] == null)
     	{
-    		if($id == 0 || $type == '')
+    		if($id === 0 || $type == '')
     		{
     			$this->redirect('/simple/login?callback=/simple/cart2');
     		}

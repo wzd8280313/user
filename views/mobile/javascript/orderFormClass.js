@@ -159,7 +159,7 @@ function orderFormClass()
                 {
                     if(!jsonData.isFreeFreight)
                     {
-                        orderFormInstance.deliveryPrice = parseFloat(price);
+                        orderFormInstance.deliveryPrice += parseFloat(price);
                         
                         _this.html('￥'+parseFloat(price).toFixed(2));
                     }
@@ -169,7 +169,7 @@ function orderFormClass()
                             _d.push(jsonData.isFreeFreight[i]);
                         }
                         $('.js_data_6').parent('div').siblings('span.yhj').show();
-                        orderFormInstance.deliveryPrice = 0;
+                        orderFormInstance.deliveryPrice += 0;
                         _this.html('免运费');
                     }
                 }

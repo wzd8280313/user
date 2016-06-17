@@ -64,6 +64,21 @@
                         <p></p>
                         {/if}
                       {/if}
+                      <div class="huifu">
+                        <p class="js_replay_comment" js_data="{$item['id']}" js_name="{$item['username']}"><span class="replys J-reply-trigger" id="hf_{$item['id']}">回复（{$item['reply']}）</span></p>
+                        <div class="js_comment_list_{$item['id']}"></div>
+                    </div>
+                    {if:isset($item['replyData'])}
+                        {foreach:items=$item['replyData'] item=$rep}
+                        <p class="bg_gray"><img src="{skin:images/front/answer.gif}" width="16px" height="17px" />
+                        <b class="orange">{$rep['seller_name']}回复：</b><span class="f_r">{$item['comment_time']}</span></p>
+                        <p class="indent bg_gray">{$rep['contents']}</p>
+                        <div class="ts">
+                            <p class="js_replay_comment" js_data="{$rep['id']}" js_name="{$rep['seller_name']}"><span class="replys J-reply-trigger re-hf" id="hf_{$rep['id']}" >回复（{$rep['reply']}）</span></p>
+                            <div class="js_comment_list_{$rep['id']}"></div>
+                        </div>
+                        {/foreach}
+                    {/if}
 					</dl>
 					<div class="corner b"></div>
 					<div class="corner tl"></div>
@@ -102,4 +117,32 @@ $(document).on('click', '.js_show_big_photo', function(){
 $(document).on('click', '.js_hide_big_photo', function(){
     $(this).parents('p').html('');
 })
+
+//加载评论回复
+$(document).on('click', '.js_replay_comment',function(){
+    var _this = $(this),
+        _id = _this.attr('js_data'),
+        _name = _this.attr('js_name'),
+        _url = '{url:/site/cir_comment_ajax/page/1/pid/@pid@/goods_id/$id}';
+    _url = _url.replace("@pid@",_id);
+    _this.attr('class', 'js_hide_reply_comment');
+    $.getJSON(_url,function(json){
+        var html = "";
+            
+            for(var i = 0; i < json.data.length; i ++){
+                if(json.data[i]['user_id'] == -1)
+                {
+                    html += '<p><span class="colors">'+json.data[i]['username']+'：</span><span class="red">'+json.data[i]['contents']+'</span><span class="times">'+json.data[i]['comment_time']+'</span></p>'
+                }
+                else
+                {
+                   html += '<p><span class="replys J-reply-trigger">'+json.data[i]['username']+':</span><span class="gray">'+json.data[i]['contents']+'</span><span class="times">'+json.data[i]['comment_time']+'</span></p>'; 
+                }
+                html += '<p class="js_replay_comment" js_data="'+json.data[i]['id']+'" js_name="'+json.data[i]['username']+'"><span class="replys J-reply-trigger" id="hf_'+json.data[i]['id']+'">回复（'+json.data[i]['reply']+'）</span></p><div class="js_comment_list_'+json.data[i]['id']+'"></div>';
+            }
+            html += '</div>';
+        _this.siblings('.js_comment_list_'+_id).html(html);
+    })
+})
+
 </script>
