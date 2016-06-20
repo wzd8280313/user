@@ -212,7 +212,7 @@ select, textarea, input[type="email"], input[type="text"], input[type="tel"], in
 }
 .sj a{
     display: block;
-    padding: 5px 0 0 30px;
+    padding: 0px 0 0 30px;
     position: relative;
     top: 0px;
     left: 0px;
@@ -306,5 +306,14 @@ padding: 0 10px;
     background: #e63839;
     border-radius: 3px;
     color: #f2f2f2;
+}
+/*订单详情结束*/
+.pages .qrdds .qr_xq .tjxq_sum p label{
+	float: right;
+}
+.pages .qrdds .qr_xq .tjxq_sum p label input{
+	position: relative;
+	top: 2px;
+	margin-right: 3px;
 }
 /*订单详情结束*/
