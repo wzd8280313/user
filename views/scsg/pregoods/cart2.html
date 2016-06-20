@@ -217,7 +217,6 @@ function selectTakeself(deliveryId)
 		ok:function(iframeWin, topWin)
 		{
 			var takeselfJson = $(iframeWin.document).find('[name="takeselfItem"]:checked').val();
-
 			if(!takeselfJson)
 			{
 				alert('请选择自提点');
@@ -283,7 +282,9 @@ function selectTakeself(deliveryId)
 						</script>
 					</table>
 					<!--地址展示 结束-->
-
+                    <script type='text/html' id='takeselfTemplate'>
+                            <%=item['province_str']%> <%=item['city_str']%> <%=item['area_str']%> <%=item['address']%> <%=item['name']%> <%=item['phone']%> <%=item['mobile']%>
+                        </script>
 					<!--收货表单信息 开始-->
 					<div class="prompt_4 m_10" id='address_often'>
 						<strong>常用收货地址</strong>

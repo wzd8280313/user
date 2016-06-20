@@ -23,6 +23,12 @@ class Preorder_Class extends Order_Class{
 		if($data)
 		{
 			$data['order_id'] = $order_id;
+            
+            //自提点读取
+            if($data['takeself'])
+            {
+                $data['takeself'] = self::getTakeselfInfo($data['takeself']);
+            }  
 	
 			$areaData = area::name($data['province'],$data['city'],$data['area']);
 			$data['province_str'] = $areaData[$data['province']];

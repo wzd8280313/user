@@ -10,12 +10,89 @@ class APIOther
 	//获取促销规则
 	public function getProrule($arg)
 	{
-        $temp = intval($arg);
-		$proRuleObj = new ProRule(999999999);
-		$proRuleObj->isGiftOnce = false;
-		$proRuleObj->isCashOnce = false; 
-		return $proRuleObj->getInfo(array($temp=>(1)));
+        $datetime = ITime::getDateTime();
+        $id = intval($arg);
+        $goods = new IModel('goods');
+        $seller_id = $goods->getField('id='.$id, 'seller_id');
+        $proObj   = new IModel('promotion');
+        $where    = 'type = 0 and is_close = 0 and start_time <= "'.$datetime.'" and end_time >= "'.$datetime.'" and (goods_id = "all" or FIND_IN_SET('.$id.',goods_id)) and user_group = "all" and seller_id = '.$seller_id;
+        $proList = $proObj->query($where,'*','`condition`');
+        $explain  = array();
+        foreach($proList as $key => $val)
+        {
+            $explain[$key]['id'] = $val['id'];
+            $explain[$key]['type'] = $val['award_type'];
+            $explain[$key]['plan'] = $val['name'];
+            $explain[$key]['info'] = $this->typeExplain($val['award_type'],$val['condition'],$val['award_value']);
+        }
+        return $explain;
 	}
+    
+    /**
+     * @brief 奖励类型解释
+     * @param int 类型id值
+     * @param string 满足条件
+     * @param string 奖励数据
+     * @return string 类型说明
+     */
+    private function typeExplain($awardType,$condition,$awardValue)
+    {
+        switch($awardType)
+        {
+            case "1":
+            {
+                return '购物满￥'.$condition.' 优惠￥'.$awardValue;
+            }
+            break;
+
+            case "2":
+            {
+                return '购物满￥'.$condition.' 优惠'.$awardValue.'%';
+            }
+            break;
+
+            case "3":
+            {
+                return '购物满￥'.$condition.' 增加'.$awardValue.'积分';
+            }
+            break;
+
+            case "4":
+            {
+                $ticketObj = new IModel('ticket');
+                $where     = 'id = '.$awardValue;
+                $ticketRow = $ticketObj->getObj($where);
+                if($ticketRow)
+                    return '购物满￥'.$condition.' 立得￥'.$ticketRow['value'].'代金券';
+                else return '';
+            }
+            break;
+
+            case "5":
+            {
+                return '购物满￥'.$condition.' 送赠品';
+            }
+            break;
+
+            case "6":
+            {
+                return '购物满￥'.$condition.' 免运费';
+            }
+            break;
+
+            case "7":
+            {
+                return '购物满￥'.$condition.' 立加'.$awardValue.'经验';
+            }
+            break;
+
+            default:
+            {
+                return null;
+            }
+            break;
+        }
+    }
 
 	//获取支付方式
 	public function getPaymentList()

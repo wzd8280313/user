@@ -107,11 +107,12 @@ function searchUserCallback(userIds)
 	{
 		defaultText = '已选择部分用户';
 	}
-    art.dialog.data('toUser',userIds);  
-    /*var iframeObj = art.dialog({'id':'sendWindow'});
+    /*art.dialog.data('toUser',userIds);  
+    var iframeObj = art.dialog({'id':'sendWindow'});
     console.info(iframeObj);
     console.info($(iframeObj).contents());
     $(iframeObj).find('#queryString').text(defaultText);*/
+    art.dialog.alert(defaultText);
 	art.dialog({'id':'userCondition'}).close();
 }
 

@@ -69,7 +69,7 @@ class Block extends IController
 		$table_name = 'goods as go';
         
         $where   = $exp_presell ? ' go.is_del = 0 ' : ' (go.is_del = 0 or go.is_del = 4) ';
-		$where  .= $exp_code ? ' go.type <> 1 ' : '';
+		$where  .= $exp_code ? ' and go.type <> 1 ' : '';
 		$where  .= $goods_id  ? ' and go.id           = '.$goods_id      : '';
 		$where  .= isset($seller_id) ? ' and go.seller_id    = '.$seller_id     : '';//此处做了更改
 		$where  .= $goods_no  ? ' and go.goods_no     = "'.$goods_no.'"' : '';
