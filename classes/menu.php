@@ -222,7 +222,6 @@ class Menu
    			'广告管理'=>array(
    				'/tools/ad_position_list'=> '广告位列表',
                 '/tools/ad_list'=> '广告列表',
-   				'/tools/ad_floor_edit'=> '首页楼层广告设置'
    			),
             
             '友情链接'=>array(                         

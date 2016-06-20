@@ -647,6 +647,106 @@ class Tools extends IController
 
 		$this->redirect('ad_position_list');
 	}
+    
+    //[广告位]编辑广告
+    function ad_position_ad_edit()
+    {
+        $id = IReq::get('id');
+        $adp = new IModel('ad_position');
+        $info = $adp->getObj('id='.$id);
+        $this->setRenderData($info);
+        $ad = new IModel('ad_manage');
+        $adList = $ad->query('position_id='.$id, '*', '`order`');
+        $this->adList = $adList;
+        $this->redirect('ad_position_ad_edit');
+    }
+    
+    //[广告位]编辑广告动作
+    function ad_position_ad_edit_act()
+    {
+        $position_id    = IFilter::act( IReq::get('position_id'),'int' );
+        $type  = IFilter::act( IReq::get('type'),'int' );
+        $adObj = new IModel('ad_manage');
+        
+        switch($type)
+        {
+            case "1":
+            //图片上传
+            $upObj  = new IUpload();
+            $attach = 'img';
+            break;
+            case "2":
+            //flash上传
+            $upObj  = new IUpload('4048',array('flv','swf'));
+            $attach = 'flash';
+            break;
+            case "3":
+            //文字
+            $content = IReq::get('text','post');
+            break;
+
+            case "4":
+            //代码
+            $content = IReq::get('code','post');
+            break;
+        }
+        if($upObj != null)
+        {
+            //目录散列
+            $dir = IWeb::$app->config['upload'].'/'.date('Y')."/".date('m')."/".date('d');
+            $upObj->setDir($dir);
+            $upState = $upObj->execute();
+            foreach($upState as $key => $rs)
+            {
+                if($key == $attach){
+                    foreach($rs as $innerKey => $val)
+                    {
+                        if($val['flag']==1 )
+                        {
+                            $content[$innerKey] = $dir.'/'.$upState[$attach][$innerKey]['name'];
+                        }
+                    }
+                }
+            }
+        }
+        $data = array();
+        
+        //删除
+        $adObj->del('id not in('.join(',', $_POST['id']).') and position_id = '.$position_id);
+        if(isset($_POST['name']))
+        {
+            foreach($_POST['name'] as $key => $value)
+            {
+                $data[$key]['name'] = $value;
+                $data[$key]['id'] = $_POST['id'][$key];
+                $data[$key]['link']  = $_POST['link'][$key];
+                $data[$key]['order']  = $_POST['order'][$key];
+                $data[$key]['start_time']  = $_POST['start_time'][$key];
+                $data[$key]['end_time']  = $_POST['end_time'][$key];
+                $data[$key]['position_id']  = $position_id;
+                $data[$key]['type']  = $type;
+                if(isset($content[$key]))
+                {
+                    $data[$key]['content']  = IFilter::addSlash($content[$key]);
+                }
+            }
+        }
+        foreach($data as $k => $v)
+        {
+            $adObj->setData($v);
+            if($v['id'])
+            {
+                $id = $v['id'];
+                unset($v['id']);
+                $adObj->update('id='.$id);
+            }
+            else
+            {
+                $adObj->add();
+            }
+        }
+        $this->redirect('ad_position_ad_edit/id/'.$position_id);
+    }
 
 	//[广告] 删除
 	function ad_del()
@@ -793,69 +893,6 @@ class Tools extends IController
 
 		$this->redirect("ad_list");
 	}
-    
-    //首页楼层广告设置页面
-    function ad_floor_edit()
-    {
-        //广告位
-        $model = new IModel('ad_position ');
-        $position = $model->query('status = 1 and name LIKE "%首页楼层%"', 'id,name');
-        
-        //广告
-        $query = new IQuery('ad_manage as am');
-        $query->join = "join ad_position as ap on am.position_id=ap.id";
-        $query->where = 'ap.status =1 and ap.name LIKE "%首页楼层%" and am.type = 1';
-        $query->fields = 'am.*,ap.name as ap_name';
-        $adList = $query->find();    
-        $this->position = $position;
-        $this->adList = $adList;
-        $this->redirect('ad_floor_edit');
-    }
-    
-    function ad_floor_save()
-    {
-        $data = array();
-        $img = array();
-        if(isset($_FILES['img']) )
-        {
-            $uploadObj = new PhotoUpload();
-            $uploadObj->setIterance(false);
-            $imgInfo = $uploadObj->run();
-
-            if(isset($imgInfo['img']['flag']))
-            {
-                $imgInfo['img'] = array($imgInfo['slide_pic']);
-            }
-
-            if(isset($imgInfo['img']))
-            {
-                foreach($imgInfo['img'] as $key=>$value)
-                {
-
-                    if($value['flag']==1)
-                    {
-                        $img[$key]['img']=$value['img'];
-                    }
-                }
-            }
-        }               
-        $adObj = new IModel('ad_manage');
-        foreach($_POST['id'] as $k => $v)
-        {
-            $dataArray = array(
-                'content'     => isset($img[$k]['img']) ? IFilter::addSlash($img[$k]['img']) : $_POST['content'][$k],
-                'name'        => $_POST['name'][$k],
-                'position_id' => $_POST['position_id'][$k],          
-                'link'        => $_POST['link'][$k],
-                'start_time'  => $_POST['start_time'][$k],
-                'end_time'    => $_POST['end_time'][$k],                         
-                'order'       => $_POST['order'][$k],                        
-            );
-            $adObj->setData($dataArray);
-            $adObj->update('id='.$_POST['id'][$k]);
-        }
-        $this->ad_floor_edit();   
-    }
     
     //[友情链接] 删除
     function link_del()

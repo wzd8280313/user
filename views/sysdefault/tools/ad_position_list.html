@@ -44,7 +44,8 @@
 					<td>{echo:$item['fashion']==1 ? '轮回显示':'随机显示'}</td>
 					<td>{echo:$item['status']==1 ? '是':'否'}</td>
 					<td>
-						<a href='{url:/tools/ad_position_edit/id/$item[id]}'><img class="operator" src="{skin:images/admin/icon_check.gif}" alt="获取广告位代码" title="获取广告位代码" /></a>
+                        <a href='{url:/tools/ad_position_edit/id/$item[id]}'><img class="operator" src="{skin:images/admin/icon_check.gif}" alt="获取广告位代码" title="获取广告位代码" /></a>
+						<a href='{url:/tools/ad_position_ad_edit/id/$item[id]}'><img class="operator" src="{skin:images/admin/icon_edit.gif}" alt="编辑广告位广告" title="编辑广告位广告" /></a>
 						<a href='javascript:void(0)' onclick="delModel({link:'{url:/tools/ad_position_del/id/$item[id]}'});"><img class="operator" src="{skin:images/admin/icon_del.gif}" alt="删除" title="删除" /></a>
 					</td>
 				</tr>

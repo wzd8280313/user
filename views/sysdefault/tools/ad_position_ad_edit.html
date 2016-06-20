@@ -1,0 +1,187 @@
+{js:my97date}
+{js:artTemplate}
+<script type="text/javascript" src="{theme:javascript/event.js}"></script>
+
+<div class="headbar">
+	<div class="position"><span>工具</span><span>></span><span>广告位管理</span><span>></span><span>编辑广告位广告</span></div>
+</div>
+<div class="content_box">
+	<div class="content form_content">
+		<form action='{url:/tools/ad_position_ad_edit_act}' method='post' name='ad_position_ad' enctype='multipart/form-data'>
+			<input type="hidden" name="position_id" value="{$id}">
+            <table class="form_table">
+				<col width="150px" />
+				<col />
+                <tr>
+                    <th>广告位：</th>
+                    <td style="color: red;">{$name}</td>
+                </tr>
+				<tr>
+					<th>广告展示类型：</th>
+					<td>
+						<label class='attr'><input type='radio' name='type' value='1' pattern='required' />图片</label>
+						<label class='attr'><input type='radio' name='type' value='2' pattern='required' />flash</label>
+						<label class='attr'><input type='radio' name='type' value='3' pattern='required' />文字</label>
+						<label class='attr'><input type='radio' name='type' value='4' pattern='required' />代码</label>
+					</td>
+				</tr>
+                <tr>
+                    <th>广告设置：</th>
+                    <td>
+
+                        <table class='border_table' id='slide_box' >
+                            <col width="100px" />
+                            <col width="200px" />
+                            <col />
+                            <thead>
+                            <tr>
+                                <th>名称</th>
+                                <th>链接地址</th>
+                                <th>图片文件</th>
+                                <th>排序</th>
+                                <th>开始和结束时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <tbody></tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan='7'>
+                                        <button type='button' class='btn' onclick="add_ad();"><span>添加广告</span></button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+                            <script type='text/html' id='slideTrTemplate'>
+                            <tr class='td_c'>
+                                <td><input type='hidden' name='id[]' value='<%=id%>'><input type='text' name='name[]' class='small' value='<%=name%>' pattern='required' /></td>
+                                <td><input type='text' name='link[]' class='middle' value='<%=link%>'/></td>
+                            
+                                <td class="js_data_type">
+                                    <%if(type == 1){%>
+                                    <div>
+                                    <%if(content){%>
+                                    <img src="{url:}<%=content%>" width="150px" /><br />
+                                    <input type="hidden" name="content[]" value="<%=content%>"/>
+                                    <%}%> 
+                                    <input type="file" name="img[]" class="file" />
+                                    </div>
+                                    <%}else{%>
+                                    <div style='display:none'>
+                                    <input type="file" name="img[]" class="file" /><br />
+                                    </div>
+                                    <%}%>           
+                                    <%if(type == 2){%>
+                                    <div>
+                                    <%if(content){%> 
+                                    <embed src="{url:}<%=content%>" width="150px" type="application/x-shockwave-flash"></embed><br />
+                                    <input type="hidden" name="content[]" value="<%=content%>"/>
+                                    <%}%> 
+                                    <input type="file" name="flash[]" class="file" />
+                                    </div>
+                                    <%}else{%>
+                                    <div style='display:none'>       
+                                    <input type="file" name="flash[]" class="file" /><br />
+                                    </div>
+                                    <%}%>
+                                    <%if(type == 3){%>
+                                    <div>
+                                    <input type="text" name="text[]" value="<%=content%>"/>
+                                    </div>
+                                    <%}else{%>
+                                    <div style='display:none'> 
+                                    <input type="text" name="text[]" value="<%=content%>" />
+                                    </div>
+                                    <%}%>
+                                    <%if(type == 4){%>
+                                    <div>
+                                    <textarea name='code[]'><%=content%></textarea>
+                                    </div>
+                                    <%}else{%>
+                                    <div style='display:none'>
+                                    <textarea name='code[]'><%=content%></textarea>
+                                    </div>
+                                    <%}%>
+                                </td>
+                                <td><input type='text' name='order[]' pattern='^\d+$' class='small' value='<%=order%>'/></td>
+                                <td>
+                                <input type='text' class='Wdate' onfocus='WdatePicker()' onblur="FireEvent(this,'onchange');" name='start_time[]' value='<%=start_time%>' pattern='date' /> ～
+                                <input type='text' class='Wdate' onfocus='WdatePicker()' onblur="FireEvent(this,'onchange');" name='end_time[]' value='<%=end_time%>' pattern='date' />
+                                </td>
+                                <td>
+                                    <img class='operator js_remove_ad' src='{skin:images/admin/icon_del.gif}' alt='删除' title='删除' />
+                                </td>
+                            </tr>
+                            </script>
+                        </table>
+                    </td>
+                </tr>
+				
+				<tr>
+					<th></th><td><button class='submit' type='submit' onclick="return checkForm()"><span>确 定</span></button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type='text/javascript'>
+{if:$this->adList}
+var adList = {echo:JSON::encode($this->adList)};
+for(var index in adList)
+{
+    add_ad(adList[index]);
+}
+{else:}
+    add_ad();
+{/if}
+
+//单选按钮点击绑定
+$('input:radio[name="type"]').each(
+    function(i)
+    {
+        $(this).click(function(){
+            showType(i)
+        });
+    }
+);
+
+
+//广告type 控件的show,hide切换
+function showType(indexVal)
+{
+    $('.js_data_type').each(function(){
+        $(this).find('div').hide();
+        $(this).find('div:eq('+indexVal+')').show();
+    })
+}
+//增加幻灯片
+function add_ad(data)
+{
+    var data = data ? data : {};
+    var type = $('input:radio[name="type"]:checked').val();
+    if(type)
+    {
+        data.type = type
+    }
+    var slideTrHtml = template.render('slideTrTemplate',data);
+    $('#slide_box tbody').append(slideTrHtml);
+}
+
+$(document).on('click', '.js_remove_ad', function(){
+    var obj = $(this);
+    art.dialog.confirm('确定要删除么？',function(){obj.closest('tr.td_c').remove()});  
+})
+
+//提交表单前的检查
+function checkForm()
+{
+    if(!$('input:radio[name="type"]:checked').val()){
+        alert('请选择广告展示类型');
+        return false;
+    }
+    return true;
+}
+</script>
