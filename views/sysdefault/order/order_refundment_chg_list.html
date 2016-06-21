@@ -40,6 +40,8 @@
 	</div>
 </div>
 <form name="orderForm" action="{url:/order/refundment_del}" method="post" onsubmit="return checkboxCheck('id[]','尚未选中任何记录！')">
+<input type='hidden' name='redi' value='order_refundment_chg_list' />
+<input type="hidden" name="plat" value="{$plat}">
 <div class="content">
 	<table class="list_table">
 		<col width="30px" />

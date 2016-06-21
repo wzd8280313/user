@@ -275,7 +275,7 @@ class IModel
 	* @$addArr array 累加的字段和数量array('field'=>$num)
 	* @$and  int 1：and连接，0：or连接
 	*/
-	public function addNum($where,$addArr,$and=1){
+	public function addNum($where,$addArr,$and=1,$add = true){
 		$con = ' WHERE ';
 		$and = $and ? 'AND' : 'OR';
 		if(isset($where) && is_array($where)){
@@ -288,7 +288,14 @@ class IModel
 		}
 		$str='';
 		foreach($addArr as $key=>$val){
-			$str .= '`'.$key.'`' .'='.$key .' + '.$val. ',';
+            if($add)
+            {
+                $str .= '`'.$key.'`' .'='.$key .' + '.$val. ',';
+            }
+			else
+            {
+                $str .= '`'.$key.'`' .'='.$key .' - '.$val. ',';
+            }
 		}
 		$str = substr($str,0,-1);
 		$sql = 'UPDATE '.$this->tableName.' SET '.$str.$con;

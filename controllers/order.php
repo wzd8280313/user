@@ -361,6 +361,9 @@ class Order extends IController
 	{
 		//获得post传来的申请退款单id值
 		$refundment_id = IFilter::act(IReq::get('id'),'int');
+        
+        $redi = IFilter::act(IReq::get('redi'));
+        $plat = IFilter::act(IReq::get('plat'));
 		if(is_array($refundment_id))
 		{
 			$refundment_id = implode(",",$refundment_id);
@@ -375,7 +378,7 @@ class Order extends IController
 		$logObj = new log('db');
 		$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"退款单移除到回收站",'移除的ID：'.$refundment_id));
 
-		$this->redirect('refundment_list');
+		$this->redirect($redi.'_'.$plat);
 	}
 
 	/**
@@ -1324,7 +1327,9 @@ class Order extends IController
     public function refundment_del()
     {
     	//post数据
-    	$id = IFilter::act(IReq::get('id'),'int');
+        $id = IFilter::act(IReq::get('id'),'int');
+        $redi = IFilter::act(IReq::get('redi'));
+    	$plat = IFilter::act(IReq::get('plat'));
     	//生成order对象
     	$tb_order = new IModel('refundment_doc');
     	$tb_order->setData(array('if_del'=>1));
@@ -1335,11 +1340,11 @@ class Order extends IController
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"退款单移除到回收站内",'退款单ID：'.join(',',$id)));
 
-			$this->redirect('order_refundment_list');
+			$this->redirect($redi.'_'.$plat);
 		}
 		else
 		{
-			$this->redirect('order_refundment_list',false);
+			$this->redirect($redi.'_'.$plat,false);
 			Util::showMessage('请选择要删除的数据');
 		}
     }
@@ -1399,6 +1404,9 @@ class Order extends IController
     {
     	//post数据
     	$id = IFilter::act(IReq::get('id'),'int');
+        
+        $redi = IFilter::act(IReq::get('redi'));
+        $plat = IFilter::act(IReq::get('plat'));
     	//生成order对象
     	$tb_order = new IModel('delivery_doc');
     	$tb_order->setData(array('if_del'=>1));
@@ -1409,11 +1417,11 @@ class Order extends IController
 			$logObj = new log('db');
 			$logObj->write('operation',array("管理员:".ISafe::get('admin_name'),"发货单移除到回收站内",'发货单ID：'.join(',',$id)));
 
-			$this->redirect('order_delivery_list');
+			$this->redirect($redi.'_'.$plat);
 		}
 		else
 		{
-			$this->redirect('order_delivery_list',false);
+			$this->redirect($redi.'_'.$plat,false);
 			Util::showMessage('请选择要删除的数据');
 		}
     }
@@ -2150,11 +2158,12 @@ class Order extends IController
 	//发票删除
 	public function fapiao_del(){
 		$id = IFilter::act(IReq::get('id'),'int');
-		$action = IFilter::act(IReq::get('toaction'));
+		$redi = IFilter::act(IReq::get('redi'));
+        $plat = IFilter::act(IReq::get('plat'));
 		if(is_array($id) && !empty($id)){
 			$fapiao_db = new IModel('order_fapiao');
 			$fapiao_db ->del('id in ('.implode(',',$id).')');
 		}
-		$this->redirect($action);
+		$this->redirect($redi.'_'.$plat);
 	}
 }

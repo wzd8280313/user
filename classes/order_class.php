@@ -1735,9 +1735,11 @@ class Order_Class
 		$refundsRow = $refundDB->getObj('id = '.$refundId,'order_id,order_no,user_id,goods_id,product_id');
 		$order_id   = $refundsRow['order_id'];
 		$order_no   = $refundsRow['order_no'];
-		$user_id    = $refundsRow['user_id'];
+        $user_id    = $refundsRow['user_id'];
+        $goods_id   = $refundsRow['goods_id'];
+		$product_id = $refundsRow['product_id'];
 		
-		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$refundsRow['goods_id'].' and product_id = '.$refundsRow['product_id']);
+		$orderGoodsRow = $orderGoodsDB->getObj('order_id = '.$order_id.' and goods_id = '.$goods_id.' and product_id = '.$product_id);
 		$order_goods_id = $orderGoodsRow['id'];
 		
 		//原订单中没有未退货的订单那，状态改为作废
@@ -1749,10 +1751,32 @@ class Order_Class
 		$orderGoodsDB->setData(array('is_send' => 2,'refunds_status'=>12));
 		$orderGoodsDB->update('id = '.$order_goods_id);
 		
-		
-		//生成新订单
 		$orderRow = $order_db->getObj('id='.$order_id);
-		$goodsRow = $goods_db->getObj('id='.$refundsRow['goods_id'],'exp,point');
+		$exp = $goods_db->getField('id='.$goods_id,'exp');
+        if($product_id!=0){
+            $point = $product_db->getField('id='.$product_id,'point');
+        }else{
+            $point = $goods_db->getField('id='.$goods_id,'point');
+        }
+          
+        //(3)减少经验值
+        $memberData = array(
+                'exp'   => $exp*$orderGoodsRow['goods_nums'],
+        );
+        $memberObj = new IModel('member');
+        $memberObj->addNum('user_id = '.$user_id,$memberData,1,false);
+    
+        $order_url = IUrl::getHost().IUrl::creatUrl("/ucenter/order_detail/id/{$order_id}");
+        //(4)减少积分
+        $pointConfig = array(
+                'user_id' => $user_id,
+                'point'   => $point*$orderGoodsRow['goods_nums'],
+                'log'     => '成功更换了订单号：<a href="'.$order_url.'">'.$orderRow['order_no'].'</a>中的商品,减少积分'.$point*$orderGoodsRow['goods_nums'],
+        );
+        $pointObj = new Point();
+        $pointObj->update($pointConfig, false);
+        
+        //生成新订单
 		$new_order_data = array(
 			'order_no' => Order_Class::createOrderNum(),
 			'user_id' => $orderRow['user_id'],
@@ -1772,8 +1796,8 @@ class Order_Class
 			'mobile'      => $orderRow['mobile'],
 			'pay_time'    => $orderRow['pay_time'],
 			'create_time' => ITime::getDateTime(),
-			'exp'         => $goodsRow['exp']*$orderGoodsRow['goods_nums'],
-			'point'       => $goodsRow['point']*$orderGoodsRow['goods_nums'],
+			'exp'         => $exp*$orderGoodsRow['goods_nums'],
+			'point'       => $point*$orderGoodsRow['goods_nums'],
 			'type'        => $orderRow['type'],
 			'trade_no'    => $orderRow['trade_no'],
 			'takeself'    => $orderRow['takeself'],
@@ -1818,10 +1842,10 @@ class Order_Class
 		self::updateStore($new_goods_id,'reduce');
 
 		//获取原商品货号
-		if($refundsRow['product_id']!=0){
-			$old_good_no = $product_db->getField('id='.$refundsRow['product_id'],'products_no');
+		if($product_id!=0){
+			$old_good_no = $product_db->getField('id='.$product_id,'products_no');
 		}else{
-			$old_good_no = $goods_db->getField('id='.$refundsRow['goods_id'],'goods_no');
+			$old_good_no = $goods_db->getField('id='.$goods_id,'goods_no');
 		}
 		
 		//生成订单日志

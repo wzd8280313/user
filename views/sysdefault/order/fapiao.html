@@ -45,7 +45,8 @@ $main_name = $config->name;
 	</div>
 </div>
 <form name="orderForm" action="{url:/order/fapiao_del}" method="post" onsubmit="return checkboxCheck('id[]','尚未选中任何记录！')">
-<input type='hidden' name='toaction' value='fapiao'/>
+<input type='hidden' name='redi' value='fapiao' />
+<input type="hidden" name="plat" value="{$plat}">
 	<div class="content">
 		<table class="list_table">
 			<colgroup>

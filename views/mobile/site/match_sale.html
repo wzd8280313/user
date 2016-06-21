@@ -83,6 +83,7 @@
 		       		<p class="online_bu">￥<span class="js_select_sell_price js_main_sell_price">{$sell_price}</span></p>
 
 		       	</div>
+                {if:$spec_array}
                 <div name="tc_shop" class="tc-modal-active" style="display:none;"> 
                               <div class="tc_le tc_tite">          
                                 <div class="tc_img">
@@ -118,7 +119,7 @@
                               {/if}
                               <div class="tc_le"><input class="submit" type="button" value="确定" onclick=""/></div>
                         </div>
-
+                {/if}
 
        </div>
 
@@ -155,7 +156,6 @@
           <!-- 属性弹出层 --></div>
                           
                 <!--点击加入购物车弹框 -->
-                          
                           {if:$goods['spec_array']}
                            <div name="tc_shop" class="tc-modal-active" style="display:none;"> 
                               <div class="tc_le tc_tite">          

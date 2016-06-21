@@ -16,7 +16,7 @@ class Point
 	 * @brief 积分操作的构造函数
 	 * @param array $config => array('user_id' => 用户ID , 'point' => 积分增减(正，负区分) , 'log' => 日志记录内容)
 	 */
-	public function update($config)
+	public function update($config, $add = true)
 	{
 		if(!isset($config['user_id']) || intval($config['user_id']) <= 0)
 		{
@@ -32,7 +32,7 @@ class Point
 		}
 		else
 		{
-			$is_success = $this->editPoint($config['user_id'],$config['point']);
+			$is_success = $this->editPoint($config['user_id'],$config['point'], $add);
 			if($is_success)
 			{
 				if(!$this->writeLog($config))
@@ -78,10 +78,17 @@ class Point
 	 * @param int $user_id 用户ID
 	 * @param int $point   积分数(正，负)
 	 */
-	private function editPoint($user_id,$point)
+	private function editPoint($user_id,$point,$add = true)
 	{
 		$memberObj   = new IModel('member');
-		$memberArray = array('point' => 'point + '.$point);
+        if($add)
+        {
+		    $memberArray = array('point' => 'point + '.$point);
+        }
+        else
+        {
+            $memberArray = array('point' => 'point - '.$point);
+        }
 		$memberObj->setData($memberArray);
 		return $memberObj->update('user_id = '.$user_id,'point');
 	}

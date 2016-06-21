@@ -791,9 +791,8 @@ class CountSum
 		foreach($goodsResult['goodsList'] as $key => $val)
 		{
 			$deliveryRow = Delivery::getDelivery($province_id,$val['delivery_id'],$val['goods_id'],$val['product_id'],$val['count']);
-
 			//商品无法送达
-			if($deliveryRow['if_delivery'] == 1)
+			if(!isset($deliveryRow['if_delivery']) || $deliveryRow['if_delivery'] == 1)
 			{
 				return "您所选购的商品：".$val['name']."，无法送达";
 			}

@@ -1796,7 +1796,7 @@ class Simple extends IController
     //订单总金额为0时直接修改为已支付
     public function update_order_status(){
     	$order_no = IFilter::act(IReq::get('order_no'));
-    	$order_id = Order_Class::updateOrderStatus($order_no);
+    	$order_id = Order_Class::updateOrderStatus($order_no, '', '', 1);
     	if($order_id)
     	{
     		$this->redirect('/site/success/message/'.urlencode("订单支付成功，等待发货"));
