@@ -41,8 +41,13 @@ class Order extends IController
 			if($data)
 			{
                 $goodsList = array();
-                $orderGoods = new IModel('order_goods');     
-                $temp = $orderGoods->query('order_id='.$data['id'].' and seller_id='.$data['seller_id'], 'goods_id, goods_price, real_price, goods_nums');
+                $orderGoods = new IModel('order_goods');
+                $where = 'order_id='.$data['id'];
+                if(!is_null($data['seller_id']))
+                {
+                    $where .= ' and seller_id='.$data['seller_id'];
+                }     
+                $temp = $orderGoods->query($where, 'goods_id, goods_price, real_price, goods_nums');
                 foreach($temp as $v)
                 {
                     $goodsList[$v['goods_id']] = array('sum' => $v['goods_price'] * $v['goods_nums'], 'reduce' => ($v['goods_price']-$v['real_price'])*$v['goods_nums']);
