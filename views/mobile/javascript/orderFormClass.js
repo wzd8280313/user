@@ -125,7 +125,7 @@ function orderFormClass()
                     success:function(content)
                     {
                         //地区无法送达
-                        if(content.if_delivery == 1)
+                        if(content.if_delivery == 1 || content.error == 1)
                         {
                             alert('您选择地区部分商品无法送达');
                             $('#'+obj).html("<span style='color:red'>无法送达</span>");
@@ -133,8 +133,6 @@ function orderFormClass()
                         else
                         {
                             price += (content.price);
-                            _g.push(content.goodsList);
-                            _group = content.group_id;
                             var html = parseFloat(content.price).toFixed(2);
                             //允许保价
                             if(content.protect_price > 0)
@@ -143,6 +141,8 @@ function orderFormClass()
                             }
                             _t.html(html);
                         }
+                        _g.push(content.goodsList);
+                        _group = content.group_id;
                     },
                     timeout:1000,
                 })

@@ -245,6 +245,11 @@ class Block extends IController
        $deliveryId = IFilter::act(IReq::get("deliveryId"),'int');//配送方式
        $num = IFilter::act(IReq::get('num'),'int');
        $data = Delivery::getDelivery($area, $deliveryId, $goodsId, $productId, $num);
+       if(is_string($data))
+       {
+           unset($data);
+           $data['error'] = 1;
+       }
        if($productId)
         {
             $model = new IModel('products');
@@ -278,7 +283,7 @@ class Block extends IController
             $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
         } 
        $data['group_id'] = $countSumObj->getGroupId();
-       $data['goodsList'] = $goodsList;                
+       $data['goodsList'] = $goodsList;               
        echo JSON::encode($data);
    }
     
