@@ -218,4 +218,9 @@ function count_price(){
 }
   
     
-  
+$(function(){
+    $(".share_btn,.sharebg").click(function(){
+        $(".sharebg").hide();
+        $(".tc-modal-active").hide();
+    })
+});
