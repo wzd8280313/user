@@ -116,7 +116,7 @@ class Site extends IController
 	//团购页面
 	public function tuangou(){
 		$this->logoUrl = 'images/tglogo.png';
-		//$this->tuangou = 1;
+		$this->tuangou = 1;
 		$this->topList = array();
         $this->onTimeList = array();
 		$this->brandList = array();

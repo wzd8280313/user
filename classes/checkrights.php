@@ -249,7 +249,7 @@ class CheckRights extends IInterceptorBase
                 $temp = $_GET;
                 foreach($temp as $k => $v)
                 {
-                    if($k == 'controller' || $k == 'action')
+                    if($k == 'controller' || $k == 'action' || empty($v))
                     {
                         continue;
                     }

@@ -78,7 +78,7 @@
                                     <td><input type="text" name="goodsSort[]" value="{$item['sort']}" /></td>
                                     <td>{if:$item['is_del'] == 0}上架{elseif:$item['is_del'] == 2}下架{elseif:$item['is_del'] == 3}待审{else:}预售{/if}</td>
                                     <td><input type="hidden" name="goods_id[]" value="{$item['goods_id']}"/>
-                                    <a href="javasctipt:;" onclick="_removeGoods(this)">删除</a> </td>
+                                    <a href="javascript:;" onclick="_removeGoods(this)">删除</a> </td>
                                     </tr>
                                 {/foreach}
                                 {/if}
