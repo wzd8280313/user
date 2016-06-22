@@ -68,8 +68,8 @@ a{cursor: pointer;}
 
 .focus_banner .active_list{ width:100%; height:auto; overflow:hidden; margin:0 auto; }
 .focus_banner .active_list .list_total{ width:990px; height:auto; overflow:hidden;     margin: 15px auto 0 auto; }
-.list_total .page_left{ width:192px; float:left; margin-right:10px;}
-.list_total .page_left img{width:192px; height: 485px;}
+.list_total .page_left{ width:192px; float:left; margin-right:10px;height: 550px;}
+.list_total .page_left img{width:192px; height: 500px;}
 .list_total .page_right{ float:left; width:788px; }
 .focus_banner .active_list .list_total .page_right ul{ width:795px;}
 .focus_banner .active_list .list_total .page_right ul li{width:193px; height:auto; background:#fff; overflow:hidden; float:left;margin:0 0 6px 5px;}
