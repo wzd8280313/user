@@ -61,7 +61,7 @@ class APIUcenter
 		$page = IReq::get('page') ? IFilter::act(IReq::get('page'),'int') : 1;
 		$query = new IQuery('comment as c');
 		$query->join   = "left join order_goods as og on c.order_id=og.order_id and c.goods_id=og.goods_id left join goods as go on c.goods_id = go.id ";
-		$query->where  = ($status === '') ? "c.user_id = ".$userid.' and c.pid=0' : "c.user_id = ".$userid." and c.status = ".$status.' and c.pid=0';
+		$query->where  = ($status === '') ? "c.user_id = ".$userid.' and c.pid=0' : ($status == 0 ? "c.user_id = ".$userid." and c.status = 0 and c.pid=0" : "c.user_id = ".$userid." and c.status <> 0 and c.pid=0");
 		$query->fields = "go.name,go.img,c.*";
 		$query->page   = $page;
 		$query->order = 'c.id desc';
