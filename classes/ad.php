@@ -238,6 +238,11 @@ OEF;
 	{
 		$now    = date("Y-m-d H:i:s",ITime::getNow());
 		$adDB   = new IModel("ad_manage");
-		return $adDB->query("position_id={$position} and goods_cat_id = {$goods_cat_id} and start_time < '{$now}' AND end_time > '{$now}' ORDER BY `order` ASC ");
+        $where = '';
+        if($goods_cat_id)
+        {
+            $where = " and goods_cat_id = {$goods_cat_id}";
+        }
+		return $adDB->query("position_id={$position} {$where} and start_time < '{$now}' AND end_time > '{$now}' ORDER BY `order` ASC ");
 	}
 }

@@ -241,6 +241,9 @@ class System extends IController
         $save_rate = IFilter::act(IReq::get('save_rate'),'float');
         //最低保价
         $low_price = IFilter::act(IReq::get('low_price'),'float');
+        
+        //设为默认
+        $is_default = IFilter::act(IReq::get('is_default'), 'int');
         $data = array(
             'name'         => $name,
         	'deli_type'    => $type,
@@ -259,8 +262,8 @@ class System extends IController
         	'description'  => $description,
         	'save_rate'    => $save_rate,
         	'low_price'    => $low_price,
+            'is_default'   => $is_default
         );
-        
         if($message != null)
         {
             $data['id'] = $id;
@@ -270,7 +273,12 @@ class System extends IController
             Util::showMessage($message);    
         }
         else
-        {    
+        {
+            if($is_default)
+            {
+                $delivery->setData(array('is_default' => 0));
+                $delivery->update(1);
+            }    
             $delivery->setData($data);
             $logObj = new log('db');
 

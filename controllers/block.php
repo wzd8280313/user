@@ -164,21 +164,8 @@ class Block extends IController
     	$distribution = IFilter::act(IReq::get("distribution"),'int');//配送方式
     	$num          = IReq::get("num") ? IFilter::act(IReq::get("num"),'int') : 1;
         $final_sum = IReq::get('final_sum') ? IReq::get('final_sum') : 0;
-		$data         = array();
 		
-		if($distribution)
-		{
-			$data = Delivery::getDelivery($area,$distribution,$goodsId,$productId,$num);
-		}
-		else
-		{
-			$delivery     = new IModel('delivery');
-			$deliveryList = $delivery->query('is_delete = 0 and status = 1');
-			foreach($deliveryList as $key => $item)
-			{
-				$data[$item['id']] = Delivery::getDelivery($area,$item['id'],$goodsId,$productId,$num);
-			}
-		}
+		$data = Delivery::getDelivery($area,$distribution,$goodsId,$productId,$num);
         if($productId)
         {
             $model = new IModel('products');
@@ -210,10 +197,11 @@ class Block extends IController
             }
             $minPrice = min($minPrice,$sell_price);
             $goodsList[$goodsId]['reduce'] = $num * ($sell_price - $minPrice);
-        }                    
+        }                   
         $group_id     = $countSumObj->getGroupId();
         $proObj = new ProRule($final_sum);
         $proObj->setUserGroup($group_id);
+        
         $data['isFreeFreight'] = $proObj->isFreeFreight($area, $goodsList);
     	echo JSON::encode($data);
     }

@@ -66,7 +66,12 @@ class Delivery
      */
     public static function getDelivery($area,$delivery_id,$goods_id,$product_id = 0,$num = 1)
     {
-        //特殊化原始数据
+        $delivery    = new IModel('delivery');
+        //没有配送方式则使后台设置的默认运费模板
+        if(!$delivery_id)
+        {
+            $delivery_id = $delivery->getField('is_delete = 0 and status = 1 and is_default = 1', 'id');
+        }
         if(!$delivery_id)
         {
             return array('price' => 0, 'protect_price' => 0, 'if_delivery' => 0);
@@ -82,7 +87,6 @@ class Delivery
             return array('price' => 0, 'protect_price' => 0, 'if_delivery' => 0);
         }
         //获取默认的配送方式信息
-        $delivery    = new IModel('delivery');
         $deliveryRow = $delivery->getObj('is_delete = 0 and status = 1 and id = '.$delivery_id);
         if(!$deliveryRow)
         {

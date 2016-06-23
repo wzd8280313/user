@@ -64,7 +64,6 @@ function createAreaSelect(name,parent_id,select_id)
                 break;
             }
             
-            
             get_delivery_fee(name);
             
             if(!childName)//最后一级
@@ -96,30 +95,23 @@ function get_delivery_fee(name){
     var productId = $('#product_id').val();
     var deliveryId = $('#delivery_id').val();
     var price = $("#real_price").html();
-    if(deliveryId != 0)
-    {
-        $.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"distribution":deliveryId,"productId":productId,"num":buyNums,'final_sum':price*buyNums},function(content){
-            var delivery_fee = 99999;
-            if(content.if_delivery)
-            {
-               if(content.price<delivery_fee){
-                    delivery_fee = content.price;
-               }
-               if(delivery_fee!=99999){
-                   $('span[name=fee_box').text('运费：'+delivery_fee);
-               } 
-            }
-            if(content.isFreeFreight)
-            {
-                $('span[name=fee_box').text('运费：0');
-            }
-            
-        })
-    }
-    else
-    {
-        $('span[name=fee_box').text('运费：0');
-    }
+    $.getJSON(delivery_fee_url,{"area":area_id,"goodsId":goods_id,"distribution":deliveryId,"productId":productId,"num":buyNums,'final_sum':parseFloat(price)*buyNums},function(content){
+        var delivery_fee = 99999;
+        if(content.if_delivery == 0)
+        {
+           if(content.price<delivery_fee){
+                delivery_fee = content.price;
+           }
+           if(delivery_fee!=99999){
+               $('span[name=fee_box').text('运费：'+delivery_fee);
+           } 
+        }
+        if(content.isFreeFreight)
+        {
+            $('span[name=fee_box').text('运费：0');
+        }
+        
+    })
 }
 //运费初始化
 function delivery_init(){
@@ -139,7 +131,6 @@ function delivery_init(){
 function delivery(provinceId,provinceName)
 {
     $('.sel_area').text(provinceName);
-
    get_delivery_fee();
 }
 $(function(){

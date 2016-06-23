@@ -50,7 +50,7 @@
 				<tr>
 					<th>广告位：</th>
 					<td>
-						<select name='position_id' class='normal' pattern='required' alt='广告位不能为空'>
+						<select name='position_id' class='normal' pattern='required' alt='广告位不能为空' onchange="js_show_category(this)">
 							<option value=''>请选择</option>
 							{query:name=ad_position}
 							<option value='{$item['id']}'>{$item['name']}</option>
@@ -59,7 +59,7 @@
 						<label>*在选择的广告位置内进行展示（必选）</label>
 					</td>
 				</tr>
-                <tr>
+                <tr class="js_show_category" style="display: none;">
                     <th>所属分类：</th>
                     <td>
                         <select name='goods_cat_id' class='normal'>
@@ -117,6 +117,27 @@ $('input:radio[name="type"]').each(
 		);
 	}
 );
+
+$(function(){
+    var _p = {$this->adRow['position_id']};
+    if(_p == 21)
+    {
+        $('.js_show_category').show();
+    }
+})
+
+function js_show_category(obj)
+{
+    var _p = $(obj).val();
+    if(_p == 21)
+    {
+        $('.js_show_category').show();
+    }
+    else
+    {
+        $('.js_show_category').hide();
+    }
+}
 
 //广告type 控件的show,hide切换
 function showType(indexVal)
