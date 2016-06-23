@@ -178,7 +178,7 @@ $(document).on('click', '.js_remove_ad', function(){
 //提交表单前的检查
 function checkForm()
 {
-    if(!$('input:radio[name="type"]:checked').val()){
+    if(!$('input:radio[name="type"]:checked').val() && $("input[name^='id']").length > 0){
         alert('请选择广告展示类型');
         return false;
     }

@@ -690,7 +690,7 @@ class Tools extends IController
             $content = IReq::get('code','post');
             break;
         }
-        if($upObj != null)
+        if(isset($upObj))
         {
             //目录散列
             $dir = IWeb::$app->config['upload'].'/'.date('Y')."/".date('m')."/".date('d');
@@ -712,7 +712,12 @@ class Tools extends IController
         $data = array();
         
         //删除
-        $adObj->del('id not in('.join(',', $_POST['id']).') and position_id = '.$position_id);
+        $where = '';
+        if(isset($_POST['id']))
+        {
+            $where = ' and id not in('.join(',', $_POST['id']).')';
+        }
+        $adObj->del('position_id = '.$position_id.$where);
         if(isset($_POST['name']))
         {
             foreach($_POST['name'] as $key => $value)
