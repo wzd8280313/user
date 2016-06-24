@@ -566,13 +566,13 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
     background: #e65b08;
     line-height: 35px;
     border: none;
-    padding: 0 30px;
-    margin-top: 40px;
+    padding: 5px 68px;
+    margin-top: 65px;
     float: initial;
     position: absolute;
     color: #fff;
     font-size: 16px;
-    left: 11px;
+    left: 42px;
 }
 .clearfix_left .in_join {
     background: #ff9024;
@@ -589,7 +589,7 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
 
 .hpl_ypl {
     position: relative;
-    top: 42px;
+    top: 66px;
     left: -25px;
 }
 .hpl_ypl img{float:left;}

@@ -78,7 +78,7 @@
 .today_end_time .icon.one{margin: 0 12px 15px 3px;}
 .hpl_ypl.one {
     position: relative;
-    top: 42px;
+    top: 66px;
     left:-37px;}
 .hpl_ypl .blue.one{ color:#09F; margin-left:10px; position: absolute; right:6px;}
 .buy_num_con.one{color:#959595;position: absolute; top: 88px;left:385px;}
@@ -87,13 +87,13 @@
     background: #e65b08;
     line-height: 35px;
     border: none;
-    padding: 0 33px;
-    margin-top: 40px;
+    padding: 5px 68px;
+    margin-top: 65px;
     float: initial;
     position: absolute;
     color: #fff;
     font-size: 16px;
-    left: 15px;
+    left: 48px;
 }
 .clearfix_left .in_join.one {
     background: #ff9024;
