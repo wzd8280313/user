@@ -564,15 +564,16 @@ auto 0 80px;position:absolute;text-align:center;width:109px;bottom:70px}
 
 .clearfix_left .now_buy {
     background: #e65b08;
-    line-height: 35px;
     border: none;
-    padding: 5px 68px;
+    padding: 0 68px;
     margin-top: 65px;
     float: initial;
     position: absolute;
     color: #fff;
     font-size: 16px;
     left: 42px;
+    height: 42px;
+    line-height: 42px;
 }
 .clearfix_left .in_join {
     background: #ff9024;
