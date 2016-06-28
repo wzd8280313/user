@@ -1729,7 +1729,6 @@ class Order_Class
 		$refundDB    = new IModel('refundment_doc');
 		$order_db = new IModel('order');
 		$goods_db = new IModel('goods');
-        $product_db = new IModel('products');
 		
 		
 		//获取goods_id和product_id用于给用户减积分，经验
@@ -1826,6 +1825,7 @@ class Order_Class
 			'seller_id' => $orderGoodsRow['seller_id']
 		);
 		if($orderGoodsRow['comment_id']!=0)$new_order_good['comment_id']=-1;
+		$product_db = new IModel('products');
 		if($new_product_id){//存在货品
 			$resData = $product_db->getObj('id='.$new_product_id,'sell_price,spec_array,products_no as goods_no');
 		
