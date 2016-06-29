@@ -307,6 +307,7 @@ class search_goods
 						{
 							$wordWhere[]     = ' name like "%'.$defaultWhere['search'].'%" or find_in_set("'.$defaultWhere['search'].'",search_words) ';
 							$wordLikeOrder[] = $defaultWhere['search'];
+
 						}
 						//进行分词
 						else if(IString::getStrLen($defaultWhere['search']) >= 4 || IString::getStrLen($defaultWhere['search']) <= 100)
@@ -334,6 +335,7 @@ class search_goods
 							{
 								$orderTempArray[] = "(CASE WHEN name LIKE '%".$val."%' THEN ".$key." ELSE 100 END)";
 							}
+
 							$orderArray[] = " (".join('+',$orderTempArray).") asc ";
 						}
 						$goodsCondArray[] = join(' or ',$wordWhere);
@@ -373,13 +375,11 @@ class search_goods
 			}
 			
 			$goodsCondData = $goodsDB->query("go.id in (".join(',',$GoodsId).") and (go.is_del = 0 OR go.is_del = 4) ","id");
-			
 			$GoodsId = array();
 			foreach($goodsCondData as $key => $val)
 			{
 				$GoodsId[] = $val['id'];
 			}
-
 			$GoodsId = array_slice($GoodsId,0,search_goods::MAX_GOODSID);
 			if(count($GoodsId)!=0){
 				$where .= " and go.id in (".join(',',$GoodsId).") ";
@@ -400,11 +400,9 @@ class search_goods
 						if(!in_array($v['model_id'],$modelTemp))
 							$modelTemp[] = $v['model_id'];
 					}
-			
 					if(!empty($modelTemp)){
 						$model_db = new IModel('model');
 						self::$modelSearch = $model_db->query('id in ('.implode(',',$modelTemp).')','id,name');
-					
 						if(count(self::$modelSearch)==1){
 							$model_id = self::$modelSearch[0]['id'];
 							self::$modelSearch = array();
@@ -442,19 +440,21 @@ class search_goods
 							}
 						}
 					}
-				
 					//属性的数据拼接
 					if($attrTemp)
 					{
 						$attrDB   = new IModel('attribute');
+
 						$attrData = $attrDB->query("id in (".join(',',array_keys($attrTemp)).") and search = 1","*","id","asc",8);
+
 						foreach($attrData as $key => $val)
 						{
 							self::$attrSearch[] = array('id' => $val['id'],'name' => $val['name'],'value' => $attrTemp[$val['id']]);
 						}
 					}
+
 					/******属性 结束******/
-					
+
 				}
 				
 

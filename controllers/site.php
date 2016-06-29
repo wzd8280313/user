@@ -14,7 +14,7 @@
  */
 class Site extends IController
 {
-    //public $layout='site';
+    public $layout='site';
 
 	function init()
 	{
@@ -831,7 +831,7 @@ class Site extends IController
 		$tb_tag->fields = 't.name,t.img';
 		$tb_tag->limit = 5;
 		$goods_info['tag_data'] = $tb_tag->find();
-		var_dump($goods_info['tag_data']);
+		//var_dump($goods_info['tag_data']);
 		//获取商家信息
 		if($goods_info['seller_id'])
 		{
@@ -854,7 +854,7 @@ class Site extends IController
 		user_like::add_like_cate($goods_id,$this->user['user_id']);
 	//	print_r($goods_info);
 	//	print_r($specArray);
-                          var_dump($goods_info);   
+                          //var_dump($goods_info);
 		$this->setRenderData($goods_info);
 		$this->redirect('products');
 	}

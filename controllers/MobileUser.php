@@ -56,6 +56,7 @@ class MobileUser extends IController
 					//member表
 					$memberArray = array(
 						'user_id' => $user_id,
+						'mobile'=>$phone,
 						'time' => ITime::getDateTime(),
 						'status' => 1,
 					);
@@ -226,7 +227,7 @@ class MobileUser extends IController
 		$token=sha1($user_id.time());
 		$tokenModel=new IModel('token');
 		if($tokenModel->getObj('user_id='.$user_id)){
-			$tokenModel->setData(array('user_id'=>$user_id,'token'=>$token));
+			$tokenModel->setData(array('user_id'=>$user_id,'token'=>$token,'time'=>date('Y-m-d H:i:s',time())));
 			$tokenModel->update('user_id='.$user_id);
 		} else{
 			$tokenModel->setData(array('user_id'=>$user_id,'token'=>$token));
@@ -245,27 +246,188 @@ class MobileUser extends IController
 			return false;
 		}
 	}
-	public function test(){
-		$arr1 = array (
-			'0' => array ('fid' => 1, 'tid' => 1, 'name' =>'Name1' ),
-			'1' => array ('fid' => 1, 'tid' => 2 , 'name' =>'Name2' ),
-			'2' => array ('fid' => 1, 'tid' => 5 , 'name' =>'Name3' ),
-			'3' => array ('fid' => 1, 'tid' => 7 , 'name' =>'Name4' ),
-			'4' => array ('fid' => 3, 'tid' => 9, 'name' =>'Name5' )
-		);
-		foreach($arr1 as $k => $v){
-			$temp[$v['fid']][] = array(
-				'tid' => $v['tid'],
-				'name' => $v['name'],
-			);
-		}
-		foreach($temp as $v){
-			$arr2[] = $v;
-		}
-		var_dump($arr2);die;
+	/**
+	 *用户帮助接口
+     */
+	public function getHelpCat(){
+		$helpCat=new IQuery('help_category');
+		$helpCat->fields='id,name';
+		$helpCat->order='`sort` asc';
+		$helpCatList=$helpCat->find();
+		$helpObj=new IQuery('help');
+		$res=array();
+		$helpObj->fields='id,cat_id,name';
+		$helpObj->order='`sort` asc';
+		foreach($helpCatList as $k=>$v){
+			$helpObj->where=' cat_id ='.$v['id'];
 
+			$res[$k]['data']=$helpList=$helpObj->find();
+			$res[$k]['id']=$v['id'];
+			$res[$k]['name']=$v['name'];
+		}
+		die(JSON::encode($res));
+		//var_dump($res);
+	}
+
+	/**
+	 *修改收获地址,添加收获地址
+     */
+	public function editAdress(){
+		$token=IFilter::act(IReq::get('token','post'));
+		if($token){
+			$tokenObj=new IModel('token');
+			if($res=$tokenObj->getObj('token=\''.$token.'\'')){
+				$addId=IFilter::act(IReq::get('add_id','post'),'int');
+				$accept_name=IFilter::act(IReq::get('accept_name','post'));
+				$address=IFilter::act(IReq::get('$address','post'));
+				$mobile = IFilter::act(IReq::get('mobile','post'));
+				$zip=IFilter::act(IReq::get('zip','post'),'int');
+				if(!$accept_name){
+					die(JSON::encode(['code'=>0,'info'=>'请填写收货人姓名']));
+				}
+				if(!$address){
+					die(JSON::encode(['code'=>0,'info'=>'请输入地址']));
+				}
+				if(!IValidate::phone($mobile)){
+					die(JSON::encode(['code'=>0,'info'=>'请输入手机号']));
+				}
+				if(!IValidate::zip($zip)){
+					die(JSON::encode(['code'=>0,'info'=>'请输入邮箱']));
+				}
+				$addObj=new IModel('address');
+				$data['accept_name']=$accept_name;
+				$data['address']=$address;
+				$data['mobile']=$mobile;
+				$data['zip']=$zip;
+				$data['default']=IFilter::act(IReq::get('default','post'),'int')?IFilter::act(IReq::get('default','post'),'int'):0;
+				$data['province']=0;
+				$data['city']=0;
+				$data['area']=0;
+				if($addId){
+					$oldAddData=$addObj->getObj('id='.$addId);
+					$data['province']=$oldAddData['province'];
+					$data['city']=$oldAddData['city'];
+					$data['area']=$oldAddData['area'];
+					if($addObj->setData($data)->update('id='.$addId)){
+						die(JSON::encode(['code'=>1,'info'=>'修改成功']));
+					}else{
+						die(JSON::encode(['code'=>0,'info'=>'修改失败']));
+					}
+				}else{
+					if($addObj->setData($data)->add()){
+					die(JSON::encode(['code'=>0,'info'=>'添加成功']));
+					}else{
+						die(JSON::encode(['code'=>1,'info'=>'添加失败']));
+					}
+				}
+			}else{
+				die(JSON::encode(['code'=>0,'info'=>'请登录']));
+			}
+		}else{
+			die(JSON::encode(['code'=>0,'info'=>'请登录']));
+		}
 
 	}
+
+	/**
+	 *修改头像
+     */
+	public function userIcoUpload(){
+		$token=IReq::get('token','post');
+		$tokenObj=new IModel('token');
+		$user=$tokenObj->getObj('token=\''.$token.'\'');
+		if(!$user) {
+			die(JSON::encode(['code'=>0,'info'=>'请登录']));
+		}
+		if(isset($_FILES['attach']['name']) && $_FILES['attach']['name'] != '')
+		{
+			$photoObj = new PhotoUpload();
+			$photo    = $photoObj->run();
+
+			if($photo['attach']['img'])
+			{
+				$user_id   = $user['user_id'];
+				$user_obj  = new IModel('user');
+				$dataArray = array(
+					'head_ico' => $photo['attach']['img'],
+				);
+				$user_obj->setData($dataArray);
+				$where  = 'id='.$user_id;
+				$isSuss = $user_obj->update($where);
+
+				if($isSuss !== false)
+				{
+					die(json_encode(['code'=>1,'info'=>'http://192.168.2.9/iweb2/'.$photo['attach']['img']]));
+
+				}
+				else
+				{
+					die(json_encode(['code'=>0,'info'=>'上传失败']));
+
+				}
+			}
+		}
+	}
+
+	/**
+	 *修改昵称
+     */
+	public function editUserName(){
+		$token=IFilter::act(IReq::get('token','post'));
+		$tokenObj=new IModel('token');
+		$user=$tokenObj->getObj('token=\''.$token.'\'');
+		if(!$user){
+			die(JSON::encode(['code'=>0,'info'=>'请登录']));
+		}
+		$userName=IFilter::act(IReq::get('user_name','post'));
+		if(!$userName){
+			die(JSON::encode(['code'=>0,'info'=>'请输入用户名']));
+		}
+		$userObj=new IModel('user');
+		if($userObj->getObj('username=\''.$userName.'\'')){
+			die(JSON::encode(['code'=>0,'info'=>'用户名重复']));
+		}
+		$userObj->setData(['username'=>$userName]);
+		$res=$userObj->update('id='.$user['user_id']);
+		if($res){
+			die(JSON::encode(['code'=>1,'info'=>'修改成功']));
+		}else{
+			die(JSON::encode(['code'=>0,'info'=>'修改失败']));
+		}
+	}
+
+	/**
+	 *反馈意见接口
+     */
+	public function addSuggestion(){
+		$token=IFilter::act(IReq::get('token','post'));
+		$tokenObj=new IModel('token');
+		$user=$tokenObj->getObj('token=\''.$token.'\'');
+		if(!$user){
+			die(JSON::encode(['code'=>0,'info'=>'请登录']));
+		}
+		$title=IFilter::act(IReq::get('title','post'));
+		$content=IFilter::act(IReq::get('content','post'));
+		$time=date('Y-m-d H:i:s',time());
+		if(!$content){
+			die(JSON::encode(['code'=>0,'info'=>'内容不能为空']));
+		}
+		$data=[
+			'title'=>$title,
+			'content'=>$content,
+			'user_id'=>$user['user_id'],
+			'time'=>$time
+		];
+		$suggesion=new IModel('suggestion');
+		$suggesion->setData($data);
+		if($suggesion->add()){
+			die(JSON::encode(['code'=>1,'info'=>'反馈成功']));
+		}else{
+			die(JSON::encode(['code'=>0,'info'=>'反馈失败']));
+		}
+
+	}
+
 }
 
 

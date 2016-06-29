@@ -1,3 +1,4 @@
+
 {set:
 	$site_config=new Config('site_config');
 	$seo_data=array();
@@ -88,11 +89,16 @@ _mvq.push(['$logConversion']);
 					<ul style=''>
 						{foreach:$items=$this->index_slide }
 							{set:$key=$key+1}
+                            {if:strstr($item['url'], 'http://')}
+                            {set:$linkUrl = $item['url']}
+                            {else:}
+                            {set:unset($linkUrl)}
+                            {/if}
 							{if:$key==1}
 							{set:$fUrl=$item['url'];$fImg=$item['img'];}
-								<li class="nonce" alt="{$key}" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}"></li>
+								<li class="nonce" alt="{$key}" target_color="{$item['color']}" {if:isset($linkUrl)} target_link="{$linkUrl}" {else:} target_link="{webroot:$item['url']}" {/if} target_src="{webroot:$item['img']}"></li>
 							{else:}
-								<li class="initial" alt="1" target_color="{$item['color']}" target_link="{webroot:$item['url']}" target_src="{webroot:$item['img']}"></li>
+								<li class="initial" alt="1" target_color="{$item['color']}" {if:isset($linkUrl)} target_link="{$linkUrl}" {else:} target_link="{webroot:$item['url']}" {/if} target_src="{webroot:$item['img']}"></li>
 							{/if}
 						{/foreach}
 					</ul>
@@ -235,7 +241,7 @@ _mvq.push(['$logConversion']);
 								});
 							</script>
 						    </div>
-		便民服务--><a href="{url:/simple/seller}" target="_blank"><img src="{skin:images/bianmin.png}" style="width:228px;height:200px;margin-top:5px;"></a>
+		便民服务--><div style="margin-top: 5px">{echo:Ad::show("首页公告下方")}</div>
 						</div>
 		                  <!--便民服务-->
 		        </div>
@@ -421,4 +427,5 @@ _mvq.push(['$logConversion']);
 	
 	<!--分类产品列表-->
 </div>	
+
 

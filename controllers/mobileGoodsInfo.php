@@ -50,6 +50,7 @@
 			$tb_goods = new IModel('goods');
 			//获得当前商品的详情
 			$goods_info = $tb_goods->getObj('id='.$goods_id." AND (is_del=0 or is_del=4)");
+
 			if(!$goods_info)
 			{	$data['code']=0;
 				$data['info']='这件商品不存在或已下架';
@@ -105,10 +106,11 @@
 					$goods_info['photo'][$key] = $temp;
 				}
 			}
-			$goods_info['img']='http://localhost/iweb2/'.$goods_info['img'];
+		
+			$goods_info['img']='http://192.168.2.9/iweb2/'.$goods_info['img'];
 			//处理图片地址
 			foreach($goods_info['photo'] as $k=>$v){
-				$goods_info['photo'][$k]['img']='http://localhost/iweb2/'.$v['img'];
+				$goods_info['photo'][$k]['img']='http://192.168.2.9/iweb2/'.$v['img'];
 
 			}
 			//商品是否参加促销活动(团购，抢购)
@@ -149,7 +151,9 @@
 			//处理图片地址
 			if(!empty($goods_info['buyer_info'])){
 				foreach($goods_info['buyer_info'] as $k=>$v){
-					$goods_info['buyer_info'][$k]['img']='http://localhost/iweb2/'.$v['img'];
+					$goods_info['buyer_info'][$k]['img']='http://192.168.2.9/iweb2/'.$v['img'];
+					$goods_info['buyer_info'][$k]['goods_id']=$v['id'];
+					unset($goods_info['buyer_info'][$k]['id']);
 				}
 
 			}
@@ -211,7 +215,7 @@
 				$sellerDB = new IModel('seller');
 				//获取商家的id，名称，邮箱，手机号，logo图片，客服号码，总评分，评价总数
 				$goods_info['seller'] = $sellerDB->getObj('id = '.$goods_info['seller_id'],'id,true_name,email,mobile,logo_img,server_num,point,num');
-				$goods_info['seller']['logo_img']='http://localhost/iweb2/'.$goods_info['seller']['logo_img'];
+				$goods_info['seller']['logo_img']='http://192.168.2.9/iweb2/'.$goods_info['seller']['logo_img'];
 			}
 			user_like::add_like_cate($goods_id,$this->user['user_id']);
 			//获得评论内容
@@ -222,16 +226,35 @@
 			$m_comment->where='c.goods_id='.$goods_id.' and c.status=1';
 			$commentInfo=$m_comment->find();
 			$goods_info['comment']=$commentInfo;
+			$commentImgObj=new IQuery('comment_photo as cp');
 			if(!empty($goods_info['comment'])){
 				foreach($goods_info['comment'] as $k=>$v){
-					$goods_info['comment'][$k]['head_ico']='http://localhost/iweb2/'.$v['head_ico'];
+					$goods_info['comment'][$k]['head_ico']='http://192.168.2.9/iweb2/'.$v['head_ico'];
+					$commentImgObj->where='comment_id='.$v['id'];
+					$commentImgObj->fields='cp.id,cp.img';
+					$commentImgs=$commentImgObj->find();
+					if($commentImgs) {
+						foreach ($commentImgs as $kk => $vv) {
+							$commentImgs[$kk]['img'] = 'http://192.168.2.9/iweb2/' . $vv['img'];
+						}
+					}
+					$goods_info['comment'][$k]['img']=$commentImgs;
 				}
 			}
 			//分享的url
-			$goods_info['sharurl']='http://localhost/iweb2/site/products?id='.$goods_id;
+			$goods_info['sharurl']='http://192.168.2.9/iweb2/site/products?id='.$goods_id;
 			$goods_info['code']=1;
+
+			$goods_info['dealId']=$goods_info['id'];
 			echo JSON::encode($goods_info);
 			//var_dump($goods_info);
+		}
+		public function test(){
+			$time='2016-6-17 00:00';
+			$date=date('Y-m-d',strtotime($time));
+			var_dump($date);
+
+
 		}
 	}
 

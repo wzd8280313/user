@@ -1,3 +1,4 @@
+
 {set:
 	$seo_data=array();
 	$site_config=new Config('site_config');
@@ -6,30 +7,37 @@
 	$seo_data['description']=$description;
 	seo::set($seo_data);
 	
-}
-
+}               
 {js:cookie}
-{set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule');}
+{set:$breadGuide = goods_class::catRecursion($category);$promotion=Api::run('getProrule', $id);}
 {foreach:items=$promotion}
 	{if:$item['type']==6}<!--获取免配送费的信息-->
 	{set:$freightInfo=$item['info']}
 	{/if}
 {/foreach}
 <link rel="stylesheet" href="{skin:css/index1.css}">
+<link rel="stylesheet" type='text/css' href="{skin:css/sales_css/Portfolio_sales.css}"/>
 <link rel="stylesheet" type='text/css' href="{skin:css/detail.css}"/>
 <link rel="stylesheet" type='text/css' href="{skin:css/css.css}"/>
-<link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />
+<link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />      
+<script type='text/javascript' src="{theme:javascript/sales_js/jquery.SuperSlide2.js}" ></script>
+<script type='text/javascript' src="{theme:javascript/sales_js/Portfolio_sales.js}" ></script>
+
 <script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
 <script type='text/javascript' src="{theme:javascript/piczoom.js}"></script>
 <script type='text/javascript' src="{theme:javascript/detail.js}" ></script>
+<script type='text/javascript' src="{theme:javascript/combine.js}" ></script>
+
 <script type='text/javascript' >
 	var product = {$product};
-	var buy_now_url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
-	var join_cart_url = '{url:/simple/joinCart}';
+    var buy_now_url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@}';
+    var join_cart_url = '{url:/simple/joinCart}';
+	var buy_now_combine_url = '{url:/simple/cart2/id/@id@/num/@buyNums@/type/@type@/comId/@comId@}';
 	var goods_id = {$id};
 	var show_cart_url = '{url:/simple/showCart}';
 	var get_product_url = '{url:/site/getProduct}';
-	var spec_show_obj = new Spec_show();
+    var spec_show_obj = new Spec_show();
+	var spec_combine_show_obj = new Spec_combine_show();
 	//获取地区
 	var area_url = '{url:/block/area_child}';
 	var delivery_fee_url = '{url:/block/order_delivery}';
@@ -43,7 +51,8 @@
 	<div class="summary" style='margin-right:15px;'>
 
 		<!--货品ID，当为商品时值为空-->
-		<input type='hidden' id='product_id' alt='货品ID' value='' />
+        <input type='hidden' id='product_id' alt='货品ID' value='' />
+		<input type='hidden' id='delivery_id' alt='配送方式ID' value='{$delivery_id}' />
 		<!--基本信息区域-->
 		<div id='detail'>
 			<div id="J_DetailMeta" class="tm-detail-meta tm-clear">
@@ -156,14 +165,14 @@
 						<li id="J_ItemRates" class="tm-ind-item tm-ind-reviewCount canClick tm-line3">
 							<div class="tm-indcon"  onclick="jumpTo('point')">
 								<span class="tm-label">累计评价</span>
-								<span class="tm-count">{$comments}</span>
+								<span class="tm-count">{$comment_num}</span>
 							</div>
 						</li>
 						<li class="tm-ind-item tm-ind-emPointCount" >
 							<div class="tm-indcon">
 								<a target="_blank" href="" >
 									<span class="tm-label">送积分</span>
-									<span class="tm-count">{$point}</span>
+									<span class="tm-count js_point_core">{$point}</span>
 								</a>
 							</div>
 						</li>
@@ -171,7 +180,6 @@
 					<div class="tb-key">
 						<div class="tb-skin">
 							<div class="tb-sku">
-								
 								{if:$spec_array}
 								{set:$specArray = JSON::decode($spec_array);}
 								{foreach:items=$specArray}
@@ -221,7 +229,7 @@
 
 			<input class="submit_buy" type="button" id="buyNowButton" onclick="spec_show_obj.buy_now();" value="立即购买" />
 
-
+            {if:$type==0}
 			<div class="shop_cart" style="z-index:1">
 				<input class="submit_join" type="button" id="joinCarButton" onclick="spec_show_obj.joinCart();" value="加入购物车" />
 
@@ -237,6 +245,7 @@
 					</dl>
 				</div>
 			</div>
+            {/if}
 			{/if}
 		</div>
 		
@@ -328,6 +337,175 @@
 </script>
 
 
+
+{if:!empty($this->combineList)}
+<!--组合销售开始-->
+
+<!-- 遮罩层start -->
+<div class="mask_layer" style="display:none;"></div>
+
+	<div class="port_overlay" style="display:none;">     
+       <a href="javascript:void('close')" class="overlay_close">
+    	<i style="background: url({skin:images/sales_img/close_g.png}) center no-repeat;}"></i>
+       </a>
+    
+    <div class="overlay-content">
+		
+    <div class="portialog">
+    	<!-- <div class="portheader"></div>   -->
+    	<div class="port_body">
+        <div class="port_title"><b>!</b>请选择套餐内的商品信息</div>
+        <div class="port_scroll">
+            <div id='combineInfoBox'></div>
+            <script type='text/html' id='combineInfoTemplate'>
+        	<div class="port_item js_data_<%=id%>" <%if(combine_price && combine_price != '0.00'){%> js_data="<%=combine_price%>" <%}else{%>js_data="<%=sell_price%>" <%}%> js_product_id="0" js_goods_id="<%=id%>" >
+        		<div class="item_img"><a href="javascript:;" target="_blank" title="<%=name%>" alt="<%=name%>"><img src="{webroot:<%=img%>}"></a>
+        		</div>
+        	    <div class="port_meta">                          
+        		    <div class="container">
+        		       <div class="demo">
+        		       
+        		           <div class="yListr">
+        		               <%if(spec_array){%>
+        		               <ul>
+                                    <%for(var i in spec_array) {%>
+        		                    <li><span><%=spec_array[i].name%></span>
+        		                    <div class="yListr_flot">
+                                    <%if(spec_array[i].type == 1){%>
+                                    <%for(j = 0; j < spec_array[i].specVal.length; j ++) {%>
+                                    <%if(spec_array[i].specVal.length == 1){%>
+                                    <em class="yListrclickem allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><%=spec_array[i].specVal[j]%><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}else{%>
+                                    <em class="allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><%=spec_array[i].specVal[j]%><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}%>
+                                    <%}%>
+                                   <%}else{%>
+                                   <%for(j = 0; j < spec_array[i].specVal.length; j ++) {%>
+                                    <%if(spec_array[i].specVal.length == 1){%>
+                                    <em class="yListrclickem allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><img src="{webroot:<%=spec_array[i].specVal[j]%>}"><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}else{%>	
+                                    <em class="allowed" onclick="spec_combine_show_obj.sele_spec(this, <%=id%>, <%=product%>);" value='{"id":"<%=spec_array[i].id%>","type":"<%=spec_array[i].type%>","value":"<%=spec_array[i].specVal[j]%>","name":"<%=spec_array[i].name%>"}'><img src="{webroot:<%=spec_array[i].specVal[j]%>}"><i style="background-image: url({skin:images/sales_img/righbt.png});"></i></em>
+                                    <%}%>
+                                    <%}%>
+                                   
+                                   <%}%>
+                                   </div>
+                                   </li>
+                                   <%}%>
+        		               </ul>
+                               <%}%>
+        		           </div>
+        		       </div>
+        		    </div>      
+        	    </div>
+        	 </div>
+             </script>
+        </div>    
+     </div>    
+   <!-- 底部结算栏start -->
+         <div class="port_footer">         
+         	<div class="ft_buy">        购买<input id="J_SComboAmount" onblur="spec_combine_show_obj.count_price();" value="1">套         
+         		<span class="ft_totalprice">合计<i>¥</i><s class="js_combine_price_data">0.00</s></span>         
+         		<button class="J_ComboBuy js_buyNowButton" onclick="spec_combine_show_obj.buy_now(this);">确定购买套餐</button>
+         		<button class="J_ComboAddCart js_joinCarButton" onclick="spec_combine_show_obj.joinCart(this)" style="display: none;" >确定加入购物车</button>         
+         		<span class="ft_notice"></span>     
+         </div> </div>
+         
+      <!-- 底部结算栏end -->
+
+
+
+        </div>
+           </div>
+
+
+
+
+		</div>
+<!-- 遮罩层end -->
+<script type="text/javascript">
+    var _url = '{url:/site/getCombineInfo/}'
+</script>
+<div class="portfolio_sales">
+
+<div class="portfolio">
+  <div class="title cf">
+ 
+    <ul class="title-list fr cf ">
+        {set:$k=0}
+        {foreach:$items=$this->combineList item=$combine}
+        {set:$k=$k+1}
+          <li {if:$k==1}class="on"{/if}>{$combine['name']}</li>
+        {/foreach}
+      <p><b></b></p>
+    </ul>
+  </div>
+  <div class="product-wrap">
+   <dl>
+   {if:$this->goodsImg}
+   <dd><a href="javascript:;"><img src="{url:/pic/thumb/img/$this->goodsImg['img']/w/60/h/60}" width="150" height="150" alt="" /></a></dd>
+   {else:}
+   <dd><a href="javascript:;"><img src="{skin:images/front/nopic_435_435.gif}" width="150" height="150" alt="" /></a></dd>
+   {/if}
+   <dd><p class="mt10"> <a href="javascript:;"> {$name} </a></p></dd>
+   <dd>
+   <input class="fuxuan" name="" type="checkbox" onclick="return false;" value="{$id}" checked>
+   <p class="pb10">¥<b>{if:$combine_price && $combine_price != '0.00'}{$combine_price}{else:}{$sell_price}{/if}</b></p> </dd>       
+  </dl>
+  <dl class="jiahao">
+  <dd><img src="{skin:images/sales_img/jiahao.jpg}" width="30" height="30" alt="加"></dd>
+  </dl>
+    {set:$k=0}
+    {foreach:$items=$this->combineList item=$combine}
+    {set:$k=$k+1}
+    <div class="product js_post_data {if:$k==1} show {/if}" js_data="{$combine['id']}">
+ 
+
+    <div class="friend">
+    <div class="mr_frbox">
+        
+        <div class="mr_frUl">
+            <ul id="mr_fu">
+            {foreach:$items=$combine['goodsList'] item=$goods}
+                <li><a href="{url:/site/products/id/$goods[id]}">
+                <img src="{url:/pic/thumb/img/$goods[img]/w/85/h/85}" width="150" height="150" alt=""></a>
+                <p class="mt10"> <a href="{url:/site/products/id/$goods[id]}">{$goods['name']} </a></p>
+                <input class="fuxuan"  name="chooise" type="checkbox" value="{$goods['id']}" {if:$combine['type'] == 1}style="display:none;"{/if} checked="checked">
+                <p class="pb10">¥<b>{if:$goods['combine_price'] && $goods['combine_price'] != '0.00'}{$goods['combine_price']}{else:}{$goods['sell_price']}{/if}</b></p>
+                </li>
+            {/foreach}
+            </ul>
+        </div>
+         <div class="mr_frBtnR next"><img src="{skin:images/sales_img/imageNavLeft.gif}" width="50" height="30"></div>
+	<div class="mr_frBtnL prev"><img src="{skin:images/sales_img/imageNavRight.gif}" width="50" height="30"></div>
+       
+    </div>
+    
+</div>
+      
+    </div>
+    {/foreach}
+      <div class="sales">
+   <!--<a class="combo-price" href="javascript:;">套餐价：<i>¥</i><s>5326.00</s></a>-->
+    
+    <a class="liji js_show_chooice" href="javascript:;" js_data="{$id}">立即购买</a>
+     <a class="gouwu js_show_chooice" href="javascript:;" js_data="{$id}">加入购物车</a>
+    
+          </div>
+  </div>
+</div>
+
+   </div>
+{/if}
+<script type="text/javascript">
+         jQuery(".mr_frbox").slide({titCell:"",mainCell:".mr_frUl ul",autoPage:true,effect:"left",autoPlay:true,scroll:4,vis:4,trigger:"click"});
+        
+        </script>
+
+
+<!--组合销售结束-->
+
+
 <div class="wrapper clearfix container_2">
 
 	<!--左边栏-->
@@ -402,7 +580,7 @@
 		<!--热卖商品-->
 	</div>
 
-	{include:layouts/goods_det.html}
+    {include:layouts/goods_det.html}
 </div>
 <script type='text/javascript' src='{theme:javascript/area_show.js}'></script>
 <script type="text/javascript">
@@ -474,7 +652,7 @@ $('[name="showButton"]>label').click(function(){
 		
 				case (3+add):
 				{
-					refer_ajax();
+					refer_ajax(1,{$this->type});
 				}
 				break;
 		
@@ -485,8 +663,6 @@ $('[name="showButton"]>label').click(function(){
 
 
 });
-
-
 
 //加载根据地域获取城市
 function getAddress()
@@ -527,34 +703,6 @@ function searchDelivery(province)
 	});
 }
 
-
-/**
- * 获取评论数据
- * @page 分页数
- */
-function comment_ajax(page)
-{
-	if(!page && $.trim($('#commentBox').text()))
-	{
-		return;
-	}
-	page = page ? page : 1;
-	var url = '{url:/site/comment_ajax/page/@page@/goods_id/$id}';
-	url = url.replace("@page@",page);
-	$.getJSON(url,function(json)
-	{
-		//清空评论数据
-		$('#commentBox').empty();
-
-		for(var item in json.data)
-		{
-			var commentHtml = template.render('commentRowTemplate',json.data[item]);
-			$('#commentBox').append(commentHtml);
-		}
-		$('#commentBox').append(json.pageHtml);
-	});
-}
-
 /**
  * 获取购买记录数据
  * @page 分页数
@@ -580,33 +728,6 @@ function history_ajax(page)
 			$('#historyBox').append(historyHtml);
 		}
 		$('#historyBox').parent().after(json.pageHtml);
-	});
-}
-
-/**
- * 获取购买记录数据
- * @page 分页数
- */
-function refer_ajax(page)
-{
-	if(!page && $.trim($('#referBox').text()))
-	{
-		return;
-	}
-	page = page ? page : 1;
-	var url = '{url:/site/refer_ajax/page/@page@/goods_id/$id}';
-	url = url.replace("@page@",page);
-	$.getJSON(url,function(json)
-	{
-		//清空评论数据
-		$('#referBox').empty();
-
-		for(var item in json.data)
-		{
-			var commentHtml = template.render('referRowTemplate',json.data[item]);
-			$('#referBox').append(commentHtml);
-		}
-		$('#referBox').append(json.pageHtml);
 	});
 }
 
@@ -668,3 +789,4 @@ function favorite_add(obj)
 
 </div>
 	
+

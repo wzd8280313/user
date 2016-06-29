@@ -13,8 +13,8 @@
  */
 class Ad
 {
-	//是否加载过js
-	private static $isLoadJs = false;
+		//是否加载过js
+		private static $isLoadJs = false;
 
 	/**
 	 * @brief 广告类型展示解析

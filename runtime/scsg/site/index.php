@@ -18,12 +18,14 @@ $favorite_ids = implode(',',$favorite_id_arr);?>
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <head>	
 	<title><?php echo $siteConfig->name;?> </title>
+	<script type="text/javascript"src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/jquery.1.4.2-min.js";?>"></script>
 	<link rel="stylesheet" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/public.css";?>">
 	<link rel="stylesheet" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/index.css";?>">
 	<link rel="stylesheet" type="text/css" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/style.css";?>">
 	<LINK rel="stylesheet" type="text/css" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/css.css";?>">
 	<link rel="stylesheet" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/PyoBeside.css";?>"/>
 	<link rel="stylesheet" href="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/css/index1.css";?>">
+
 <script type="text/javascript" src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/javascript/PyoBeside.js";?>"></script>
 	<meta name="renderer" content="webkit">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,uer-scalabe=no"/>
@@ -456,7 +458,8 @@ if($("#actionimg").length>0){
 	<script type=text/javascript >$('#shan_ad').find('img').css('width','100%');</script>
 <?php }?>
 <div style='width:1190px;margin:5px auto;'>
-	<?php 
+	
+<?php 
 	$site_config=new Config('site_config');
 	$seo_data=array();
 	$seo_data['title']=$site_config->name;
@@ -546,11 +549,16 @@ _mvq.push(['$logConversion']);
 					<ul style=''>
 						<?php foreach($this->index_slide as $key => $item){?>
 							<?php $key=$key+1?>
+                            <?php if(strstr($item['url'], 'http://')){?>
+                            <?php $linkUrl = $item['url']?>
+                            <?php }else{?>
+                            <?php unset($linkUrl)?>
+                            <?php }?>
 							<?php if($key==1){?>
 							<?php $fUrl=$item['url'];$fImg=$item['img'];?>
-								<li class="nonce" alt="<?php echo isset($key)?$key:"";?>" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
+								<li class="nonce" alt="<?php echo isset($key)?$key:"";?>" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" <?php if(isset($linkUrl)){?> target_link="<?php echo isset($linkUrl)?$linkUrl:"";?>" <?php }else{?> target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" <?php }?> target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
 							<?php }else{?>
-								<li class="initial" alt="1" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
+								<li class="initial" alt="1" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" <?php if(isset($linkUrl)){?> target_link="<?php echo isset($linkUrl)?$linkUrl:"";?>" <?php }else{?> target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" <?php }?> target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
 							<?php }?>
 						<?php }?>
 					</ul>
@@ -693,7 +701,7 @@ _mvq.push(['$logConversion']);
 								});
 							</script>
 						    </div>
-		便民服务--><a href="<?php echo IUrl::creatUrl("/simple/seller");?>" target="_blank"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/bianmin.png";?>" style="width:228px;height:200px;margin-top:5px;"></a>
+		便民服务--><div style="margin-top: 5px"><?php echo Ad::show("首页公告下方");?></div>
 						</div>
 		                  <!--便民服务-->
 		        </div>
@@ -879,11 +887,13 @@ _mvq.push(['$logConversion']);
 	
 	<!--分类产品列表-->
 </div>	
+
 
 
 </div>
 <?php }else{?>
-	<?php 
+	
+<?php 
 	$site_config=new Config('site_config');
 	$seo_data=array();
 	$seo_data['title']=$site_config->name;
@@ -973,11 +983,16 @@ _mvq.push(['$logConversion']);
 					<ul style=''>
 						<?php foreach($this->index_slide as $key => $item){?>
 							<?php $key=$key+1?>
+                            <?php if(strstr($item['url'], 'http://')){?>
+                            <?php $linkUrl = $item['url']?>
+                            <?php }else{?>
+                            <?php unset($linkUrl)?>
+                            <?php }?>
 							<?php if($key==1){?>
 							<?php $fUrl=$item['url'];$fImg=$item['img'];?>
-								<li class="nonce" alt="<?php echo isset($key)?$key:"";?>" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
+								<li class="nonce" alt="<?php echo isset($key)?$key:"";?>" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" <?php if(isset($linkUrl)){?> target_link="<?php echo isset($linkUrl)?$linkUrl:"";?>" <?php }else{?> target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" <?php }?> target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
 							<?php }else{?>
-								<li class="initial" alt="1" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
+								<li class="initial" alt="1" target_color="<?php echo isset($item['color'])?$item['color']:"";?>" <?php if(isset($linkUrl)){?> target_link="<?php echo isset($linkUrl)?$linkUrl:"";?>" <?php }else{?> target_link="<?php echo IUrl::creatUrl("")."".$item['url']."";?>" <?php }?> target_src="<?php echo IUrl::creatUrl("")."".$item['img']."";?>"></li>
 							<?php }?>
 						<?php }?>
 					</ul>
@@ -1120,7 +1135,7 @@ _mvq.push(['$logConversion']);
 								});
 							</script>
 						    </div>
-		便民服务--><a href="<?php echo IUrl::creatUrl("/simple/seller");?>" target="_blank"><img src="<?php echo IUrl::creatUrl("")."views/".$this->theme."/skin/".$this->skin."/images/bianmin.png";?>" style="width:228px;height:200px;margin-top:5px;"></a>
+		便民服务--><div style="margin-top: 5px"><?php echo Ad::show("首页公告下方");?></div>
 						</div>
 		                  <!--便民服务-->
 		        </div>
@@ -1306,6 +1321,7 @@ _mvq.push(['$logConversion']);
 	
 	<!--分类产品列表-->
 </div>	
+
 
 
 <?php }?>

@@ -1,0 +1,133 @@
+body{
+	background:#ed1b24;
+	font-family: 'Lato', sans-serif;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+border-top: none;	
+}
+a:hover, a:focus {
+    color:#fb920b;
+    text-decoration:none;
+}
+.hd3_dt{
+	margin: 0px auto;
+    padding: 0px;
+    width: 100%;
+}
+.hd3_dt .mui-zebra-module div img{
+	width: 1190px;
+	height: 500px;
+}
+/*头部广告图*/
+.act-module-header {
+width: 100%;
+overflow: hidden;
+margin-bottom: 10px;
+background-color: transparent;
+}
+.act-module-header .act-header-inner {
+width: 990px;
+position: relative;
+margin: 0 auto;
+}
+.sct .hd3{
+	width: 990px;
+	margin: 0 auto;
+}
+.fale_top_img img{
+	width: 104px;
+height: 104px;
+}
+.sct .hd3 .hd3_tit{
+	display: inline-block;
+	float:left; 
+	padding-left: 4px;
+	margin-bottom: 35px;
+	height:65px;
+	width: 246px;
+}
+
+.sct .hd3  a{
+	display: block;
+	
+}
+.sct .hd3 .hd3_tit img{
+	width:242px;
+	height: 88px;
+    
+}
+.sct .hd3 .hd3_cont {
+	display: inline-block;
+	float:left; 
+	background: #fff;
+	margin-left: 4px;
+	margin-bottom: 10px;
+	width: 242px;
+}
+.sct .hd3 .hd3_cont  a img{
+	width:242px;
+	height:200px;
+}
+.hd3_cont a .hr1{
+	margin: 5px 15px;
+	background: red;
+	border: 0;
+	height: 3px;
+}
+.hd3_cont a  .hr2{
+	margin: 5px 15px;
+	background: red;
+	border: 0;
+	height: 1px;
+}
+
+.hd3_cont p{
+	margin: 5px 15px;
+  	font-weight: 600;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+}
+.c_gm{
+	margin: 5px 15px;
+}
+.c_gm .price{
+	color: red;
+font-size: 25px;
+font-weight: 700;
+font-family: fantasy;
+display: initial;
+height: 72px;
+line-height: 73px;
+}
+.c_gm .gmtu{
+	float: right;
+}
+.clear {
+  clear: both;
+  }
+  
+  /*右侧导航*/
+
+#menu{width: 120px;height: auto; position: fixed;top: 40%;left: 15px;margin-top: -135px; display: none;}
+#menu ul{display: block;list-style: none}
+#menu ul li a{width: 120px; height: 40px; line-height: 
+	40px; text-align: center;display: block;
+	font-size:12px;
+}
+#menu ul li a:hover,#menu ul li a.cur{background-color: rgba(0, 0, 0, 0.68);color: #fff;}
+.rutn_top{
+	text-align: center;
+}
+.rutn_top a{
+	font-size: 10px;
+	color:#EFECEC;
+}
+span.icon-angle-up p{
+	font-size: 12px;
+}
