@@ -228,6 +228,7 @@ class Payment
 			$payment['P_PostCode']  = $orderRow['postcode'];
 			$payment['P_Telephone'] = $orderRow['telphone'];
 			$payment['P_Address']   = $orderRow['address'];
+            $payment['pay_level'] = $pay_level;
 		}
 		else if($type == 'recharge')
 		{
@@ -262,7 +263,6 @@ class Payment
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
         
-        $payment['pay_level'] = $pay_level;
 
 		//交易信息
 		$payment['M_Time']      = time();
