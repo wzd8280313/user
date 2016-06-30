@@ -184,6 +184,10 @@ class trade_alipay extends paymentPlugin
 		//生成签名结果
 		$mysign = $this->buildMysign($para_sort,Payment::getConfigParam($paymentId,'M_PartnerKey'));
 
+        if(isset($callbackData['pay_level']))
+        {
+            $pay_level = $callbackData['pay_level'] ? $callbackData['pay_level'] : 2;
+        }
 		if($callbackData['sign'] == $mysign)
 		{
 			//回传数据
@@ -199,7 +203,14 @@ class trade_alipay extends paymentPlugin
 
 			if($callbackData['trade_status'] == 'TRADE_FINISHED' || $callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
 			{
-				return true;
+				if(isset($pay_level))
+                {
+                    return array('result' => true, 'pay_level' => $pay_level);
+                }
+                else
+                {
+                    return true;
+                }
 			}
 		}
 		else

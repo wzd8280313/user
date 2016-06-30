@@ -58,5 +58,5 @@ class WxPayConfig
 	const REPORT_LEVENL = 1;     
     
     //回调地址
-    const NOTIFY_URL = "http://www.yqtvt.com/block/server_callback/_id/13";
+    const NOTIFY_URL = "http://www.yqtvt.com/plugins/payments/pay_scan_wechat/notify.php";
 }

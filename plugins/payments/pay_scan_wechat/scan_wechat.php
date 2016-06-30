@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__)."/lib/WxPay.Exception.php";
+//require_once dirname(__FILE__)."/lib/WxPay.Exception.php";
 require_once dirname(__FILE__)."/lib/WxPay.Config.php";
-require_once dirname(__FILE__)."/lib/WxPay.Data.php";
-//require_once dirname(__FILE__)."/lib/WxPay.Api.php";        
+//require_once dirname(__FILE__)."/lib/WxPay.Data.php";
+require_once dirname(__FILE__)."/lib/WxPay.Api.php";        
 require_once dirname(__FILE__)."/WxPay.NativePay.php";        
 //require_once dirname(__FILE__)."/log.php";
 /**
@@ -64,12 +64,6 @@ class scan_wechat extends paymentPlugin
         //获取通知的数据
         $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
             
-        $log_name=dirname(__FILE__)."logs/logd.log";//log文件路径
-        $fp = fopen($log_name,"a");
-        flock($fp, LOCK_EX) ;
-        fwrite($fp,"执行日期：".strftime("%Y-%m-%d-%H:%M:%S",time())."n".$GLOBALS['HTTP_RAW_POST_DATA']."nn");
-        flock($fp, LOCK_UN);
-        fclose($fp);
         //如果返回成功则验证签名
         try {
             $result = WxPayResults::Init($xml);
@@ -111,19 +105,17 @@ class scan_wechat extends paymentPlugin
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag('');
-        $input->SetNotify_url($this->serverCallbackUrl);
+        $input->SetNotify_url($this->wecheatCallbackUrl);
         $input->SetTrade_type("NATIVE");
         $input->SetProduct_id($payment['M_OrderId']);
         $input->SetAppid($paraData['M_merId']);
         $input->SetMch_id($paraData['M_mchid']);           
         $result = $notify->GetPayUrl($input);
-        var_dump($this->serverCallbackUrl);
-        var_dump($result);exit;
         if(isset($payment['pay_level']))
         {
             $result['code_url'] .= $payment['pay_level'] ? '&pay_level='.$payment['pay_level'] : '&pay_level=2';
         }
-        return($result["code_url"]);
+        return(array('wecheat_code_url' => $result["code_url"], 'product_id' => $M_mchid.date("YmdHis")));
     }
 }
 

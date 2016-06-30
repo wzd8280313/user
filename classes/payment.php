@@ -166,6 +166,7 @@ class Payment
 		$payment['R_Name']      = isset($site_config['name'])    ? $site_config['name']    : '';
 		$payment['R_Mobile']    = isset($site_config['mobile'])  ? $site_config['mobile']  : '';
 		$payment['R_Telephone'] = isset($site_config['phone'])   ? $site_config['phone']   : '';
+        $payment['pay_level'] = 2;
 		
 		return $payment;
 		

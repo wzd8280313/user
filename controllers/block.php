@@ -423,31 +423,14 @@ class Block extends IController
 		{
 			IError::show(403,'发生支付错误');
 		}
-        if(is_array($sendData))
+        if(!isset($sendData['wecheat_code_url']))
         {
             $paymentInstance->doPay($sendData);
         }
         else
         {
-            $filename = 'pay_'.ITime::getTime();
-            $this->qrcode($sendData, $filename);
-            $this->redirect('/site/payCode', false, $filename);
+           $this->redirect('/site/payCode?data='.urlencode($sendData['wecheat_code_url']).'&id='.$sendData['product_id'], false);
         }                                  
-    }
-    //生成二维码
-    function qrcode($url,$file)
-    {
-        IWeb::autoload('phpqrcode');
-        // 二维码数据 
-        $url = $url; 
-        // 生成的文件名 
-        $filename = $file.'.png'; 
-        // 纠错级别：L、M、Q、H 
-        $errorCorrectionLevel = 'L';  
-        // 点的大小：1到10 
-        $matrixPointSize = 6;  
-        //创建一个二维码文件 
-        QRcode::png($url, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
     }
 	/**
 	 * 合并支付同步回调
@@ -649,6 +632,7 @@ class Block extends IController
 	 */
 	function server_callback()
 	{
+        
 		//从URL中获取支付方式
 		$payment_id      = IFilter::act(IReq::get('_id'),'int');
 		$paymentInstance = Payment::createPaymentInstance($payment_id);
@@ -672,7 +656,7 @@ class Block extends IController
  
 		
 		//支付成功
-		if($return == 1)
+		if($return && !is_array($return))
 		{
 			
 			//充值方式
@@ -685,7 +669,10 @@ class Block extends IController
 					exit;
 				}
 			}
-			else if(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false)
+        }
+        elseif(is_array($return))
+        {
+			if(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false)
 			{
 				$order_id = Preorder_Class::updateOrderStatus($orderNo);
 				if($order_id)
@@ -698,7 +685,7 @@ class Block extends IController
 			else
 			{
 				
-				$order_id = Order_Class::updateOrderStatus($orderNo);
+				$order_id = Order_Class::updateOrderStatus($orderNo, '', '', $return['pay_level']);
 				if($order_id)
 				{
 					$paymentInstance->notifyStop();
@@ -714,6 +701,12 @@ class Block extends IController
 			exit;
 		}
 	}
+    
+    //微信支付成功回调函数
+    public function wecheat_callback()
+    {
+        
+    }
 
 	/**
      * @brief 【重要】支付中断处理
