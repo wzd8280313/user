@@ -78,10 +78,7 @@ class scan_wechat extends paymentPlugin
         
     }*/
     
-    public function serverCallback($callbackData,&$paymentId,&$money,&$message,&$orderNo)
-    {
-        
-    }
+    public function serverCallback($callbackData,&$paymentId,&$money,&$message,&$orderNo){}
     
     public function getSendData($payment)
     {  
@@ -113,9 +110,13 @@ class scan_wechat extends paymentPlugin
         $result = $notify->GetPayUrl($input);
         if(isset($payment['pay_level']))
         {
-            $result['code_url'] .= $payment['pay_level'] ? '&pay_level='.$payment['pay_level'] : '&pay_level=2';
+            $pay_level = $payment['pay_level'] ? $payment['pay_level'] : 2;
+            return(array('wecheat_code_url' => $result["code_url"],'order_id' => $payment['M_OrderNO'], 'product_id' => $M_mchid.date("YmdHis"),'pay_level' => $pay_level));
         }
-        return(array('wecheat_code_url' => $result["code_url"], 'product_id' => $M_mchid.date("YmdHis")));
+        else
+        {
+            return(array('wecheat_code_url' => $result["code_url"],'order_id' => $payment['M_OrderNO'], 'product_id' => $M_mchid.date("YmdHis"),'pay_level' => 0));
+        }
     }
 }
 

@@ -429,7 +429,7 @@ class Block extends IController
         }
         else
         {
-           $this->redirect('/site/payCode?data='.urlencode($sendData['wecheat_code_url']).'&id='.$sendData['product_id'], false);
+           $this->redirect('/site/payCode?data='.urlencode($sendData['wecheat_code_url']).'&id='.$sendData['product_id'].'&oId='.$sendData['order_id'].'&pay_level='.$sendData['pay_level'], false);
         }                                  
     }
 	/**
@@ -705,7 +705,61 @@ class Block extends IController
     //微信支付成功回调函数
     public function wecheat_callback()
     {
+        $orderNo = IReq::get('oId');
+        $pay_level = IReq::get('pay_level');
         
+        //充值方式
+        if(stripos($orderNo,'recharge') !== false)
+        {
+            $recharge_no = str_replace('recharge','',$orderNo);
+            if(payment::updateRecharge($recharge_no))
+            {
+                $this->redirect('/site/success/message/'.urlencode("充值成功").'/?callback=/ucenter/account_log');
+                exit;
+            }
+            IError::show(403,'充值失败');
+        }
+        elseif(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false)
+        {
+            $order_id = Preorder_Class::updateOrderStatus($orderNo);
+            if($order_id)
+            {
+                $url  = '/site/success/message/'.urlencode("支付成功");
+                if(IClient::getDevice()=='mobile'){
+                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
+                }
+                else{
+                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+                }
+                
+                $this->redirect($url);
+                exit;
+            }
+            IError::show(403,'订单修改失败');
+        }
+        else{
+            $order_id = Order_Class::updateOrderStatus($orderNo, '', '', $pay_level);
+            if($order_id && !is_array($order_id))
+            {
+                $url  = '/site/success/message/'.urlencode("支付成功");
+                if(IClient::getDevice()=='mobile'){
+                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
+                }
+                else{
+                    $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
+                }
+                $this->redirect($url);
+                exit;
+            }
+            elseif(is_array($order_id))
+            {
+                $url  = '/site/success/message/'.urlencode("支付成功");
+                $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
+                $this->redirect($url);
+                exit;
+            }
+            IError::show(403,'订单修改失败');
+        }
     }
 
 	/**

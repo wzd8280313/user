@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-{set:$id=IReq::get('id');$file = IFilter::act(IReq::get('data'));}
+{set:$id=IReq::get('id');$oId=IReq::get('oId');$pay_level=IReq::get('pay_level');$file = IFilter::act(IReq::get('data'));}
 <head>
 	<meta charset="UTF-8">
 	<title>微信支付</title>
@@ -68,7 +68,7 @@
                 if(data.state == 'SUCCESS')
                 {
                     window.clearInterval(t1);
-                    window.location = '{url:/block/wecheat_callback/}'
+                    window.location = '{url:/block/wecheat_callback/oId/$oId/pay_level/$pay_level}'
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
