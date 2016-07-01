@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-{set:$id=IReq::get('id');$oId=IReq::get('oId');$pay_level=IReq::get('pay_level');$file = IFilter::act(IReq::get('data'));}
+{set:$id=IReq::get('product_id');$oId=IReq::get('order_id');$pay_level=IReq::get('pay_level');$total = IReq::get('pay_total');$data = IFilter::act(IReq::get('code_url'));$file = urlencode($data);}
 <head>
 	<meta charset="UTF-8">
 	<title>微信支付</title>
@@ -64,11 +64,40 @@
                 
             },
             success:function(data){
-                console.info(data);
                 if(data.state == 'SUCCESS')
                 {
                     window.clearInterval(t1);
-                    window.location = '{url:/block/wecheat_callback/oId/$oId/pay_level/$pay_level}'
+                    var oId = '{$oId}';
+                    var pay_level = '{$pay_level}';
+                    var pay_total = '{$total}';
+                    $.ajax({
+                        type:'post',
+                        async:false,
+                        data:{oId:oId,pay_level:pay_level,id:id,pay_total:pay_total},
+                        dataType:'json',
+                        url:'{url:/block/wecheat_callback}',
+                        beforeSend:function(){
+                            
+                        },
+                        success:function(res){
+                            if(res.status == 1)
+                            {
+                                window.location = res.url;
+                            }
+                            else
+                            {
+                                alert(res.msg);
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown){
+                            console.info(textStatus);
+                        }
+                    })
+                }
+                else if(data.state == 'fail')
+                {
+                    window.clearInterval(t1);
+                    alert(data.info)
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){

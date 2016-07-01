@@ -1,10 +1,7 @@
 <?php
-//require_once dirname(__FILE__)."/lib/WxPay.Exception.php";
 require_once dirname(__FILE__)."/lib/WxPay.Config.php";
-//require_once dirname(__FILE__)."/lib/WxPay.Data.php";
 require_once dirname(__FILE__)."/lib/WxPay.Api.php";        
-require_once dirname(__FILE__)."/WxPay.NativePay.php";        
-//require_once dirname(__FILE__)."/log.php";
+require_once dirname(__FILE__)."/WxPay.NativePay.php";      
 /**
  * @file scan_wechat.php
  * @brief 微信二维码插件类
@@ -49,7 +46,7 @@ class scan_wechat extends paymentPlugin
      */
     public function getSubmitUrl()
     {
-        
+        return 'http://www.yqtvt.com/site/payCode';
     }
     
     /**
@@ -59,24 +56,7 @@ class scan_wechat extends paymentPlugin
         
     }
     
-    public function callback($callbackData,&$paymentId,&$money,&$message,&$orderNo)
-    {
-        //获取通知的数据
-        $xml = $GLOBALS['HTTP_RAW_POST_DATA'];
-            
-        //如果返回成功则验证签名
-        try {
-            $result = WxPayResults::Init($xml);
-        } catch (WxPayException $e){
-            $message = $e->errorMessage();
-            return false;
-        }
-        //return true;
-    }
-    /*public function callback($callbackData,&$paymentId,&$money,&$message,&$orderNo)
-    {
-        
-    }*/
+    public function callback($callbackData,&$paymentId,&$money,&$message,&$orderNo){}
     
     public function serverCallback($callbackData,&$paymentId,&$money,&$message,&$orderNo){}
     
@@ -106,17 +86,65 @@ class scan_wechat extends paymentPlugin
         $input->SetTrade_type("NATIVE");
         $input->SetProduct_id($payment['M_OrderId']);
         $input->SetAppid($paraData['M_merId']);
-        $input->SetMch_id($paraData['M_mchid']);           
+        $input->SetMch_id($M_mchid);           
         $result = $notify->GetPayUrl($input);
         if(isset($payment['pay_level']))
         {
             $pay_level = $payment['pay_level'] ? $payment['pay_level'] : 2;
-            return(array('wecheat_code_url' => $result["code_url"],'order_id' => $payment['M_OrderNO'], 'product_id' => $M_mchid.date("YmdHis"),'pay_level' => $pay_level));
+            return(array('code_url' => $result["code_url"],'order_id' => $payment['M_OrderNO'], 'product_id' => $M_mchid.date("YmdHis"),'pay_total' => $payment['M_Amount']*100,'pay_level' => $pay_level));
         }
         else
         {
-            return(array('wecheat_code_url' => $result["code_url"],'order_id' => $payment['M_OrderNO'], 'product_id' => $M_mchid.date("YmdHis"),'pay_level' => 0));
+            return(array('code_url' => $result["code_url"],'order_id' => $payment['M_OrderNO'], 'product_id' => $M_mchid.date("YmdHis"),'pay_total' => $payment['M_Amount']*100,'pay_level' => 0));
         }
+    }
+    
+    //记录交易号
+    function recordTN($orderNo, $tradeNo, $pay_level)
+    {
+        $this->recordTradeNo($orderNo, $tradeNo, $pay_level);
+    }
+    
+    function addTradeData($tradeData)
+    {
+        $this->addTrade($tradeData);
+    }
+    
+    //退款
+    function refund($payment)
+    {
+        $payModel = new IModel('payment');
+        $payPara = $payModel->getField('id=13', 'config_param');
+        $paraData = JSON::decode($payPara);     
+        $M_mchid = $paraData['M_mchid'] ? $paraData['M_mchid'] : WxPayConfig::MCHID;
+        $tradeObj = new IModel('trade_record');
+        $total = $tradeObj->getField('trade_no = "'.$payment['M_Trade_NO'].'"', 'money');
+        $out_trade_no = $payment["M_Trade_NO"];
+        $refund_fee = $payment["M_Amount"]*100;
+        $input = new WxPayRefund();
+        $input->SetOut_trade_no($out_trade_no);
+        $input->SetTotal_fee($total*100);
+        $input->SetRefund_fee($refund_fee);
+        $input->SetOut_refund_no($M_mchid.date("YmdHis"));
+        $input->SetOp_user_id($M_mchid);
+        $result = WxPayApi::refund($input);
+        if(isset($result['result_code']) && $result['result_code'] == 'SUCCESS')
+        {
+            $resArr = array(
+                'order_no'     => $payment['M_Order_NO'],
+                'trade_no'        => $result['out_refund_no'],
+                'orig_trade_no'        => $result['out_trade_no'],
+                'trade_type'   => 2,
+                'money'        => $result['cash_refund_fee']/100,
+                'pay_type'     => 13,
+                'trade_status' => 1,
+                'time'         => date('Y-m-d H:i:s')
+            );
+        
+            self::addTrade($resArr);
+            return true;
+        }
+        return false;
     }
 }
 

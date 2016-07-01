@@ -134,6 +134,7 @@ class trade_alipay extends paymentPlugin
 
 		//生成签名结果
 		$mysign = $this->buildMysign($para_sort,Payment::getConfigParam($paymentId,'M_PartnerKey'));
+        $pay_level = 0;
         if(isset($callbackData['pay_level']))
         {
             $pay_level = $callbackData['pay_level'] ? $callbackData['pay_level'] : 2;
@@ -147,13 +148,13 @@ class trade_alipay extends paymentPlugin
 			//记录等待发货流水号
 			if($callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS' && isset($callbackData['trade_no']))
 			{
-				$this->recordTradeNo($orderNo,$callbackData['trade_no']);
+				$this->recordTradeNo($orderNo,$callbackData['trade_no'],$pay_level);
 				self::addTradeData($callbackData);
 			}
 
 			if($callbackData['trade_status'] == 'TRADE_FINISHED' || $callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
 			{
-                if(isset($pay_level))
+                if($pay_level)
                 {
                     return array('result' => true, 'pay_level' => $pay_level);
                 }
@@ -184,6 +185,7 @@ class trade_alipay extends paymentPlugin
 		//生成签名结果
 		$mysign = $this->buildMysign($para_sort,Payment::getConfigParam($paymentId,'M_PartnerKey'));
 
+        $pay_level = 0;
         if(isset($callbackData['pay_level']))
         {
             $pay_level = $callbackData['pay_level'] ? $callbackData['pay_level'] : 2;
@@ -197,13 +199,13 @@ class trade_alipay extends paymentPlugin
 			//记录等待发货流水号
 			if($callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS' && isset($callbackData['trade_no']))
 			{
-				$this->recordTradeNo($orderNo,$callbackData['trade_no']);
+				$this->recordTradeNo($orderNo,$callbackData['trade_no'],$pay_level);
 				self::addTradeData($callbackData,1);
 			}
 
 			if($callbackData['trade_status'] == 'TRADE_FINISHED' || $callbackData['trade_status'] == 'WAIT_SELLER_SEND_GOODS')
 			{
-				if(isset($pay_level))
+				if($pay_level)
                 {
                     return array('result' => true, 'pay_level' => $pay_level);
                 }

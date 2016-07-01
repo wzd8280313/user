@@ -103,6 +103,7 @@ class unionpay extends paymentPlugin
 	{
 		if (isset ( $callbackData['signature'] ))
 		{
+            $pay_level = 0;
             if(isset($callbackData['pay_level']))
             {
                 $pay_level = $callbackData['pay_level'] ? $callbackData['pay_level'] : 2;
@@ -111,10 +112,10 @@ class unionpay extends paymentPlugin
 			{
 				$orderNo = $callbackData['orderId'];//订单号
 				if(isset($callbackData['queryId'])){
-					$this->recordTradeNo($orderNo,$callbackData['queryId']);
+					$this->recordTradeNo($orderNo,$callbackData['queryId'],$pay_level);
 				}
 				self::addTradeData($callbackData);//添加交易记录
-                if(isset($pay_level))
+                if($pay_level)
                 {
                     return array('result' => true, 'pay_level' => $pay_level);
                 }
@@ -142,6 +143,7 @@ class unionpay extends paymentPlugin
 	{
 		if (isset ( $callbackData['signature'] ))
 		{
+            $pay_level = 0;
             if(isset($callbackData['pay_level']))
             {
                 $pay_level = $callbackData['pay_level'] ? $callbackData['pay_level'] : 2;
@@ -150,10 +152,10 @@ class unionpay extends paymentPlugin
 			{
 				$orderNo = $callbackData['orderId'];//订单号
 				if(isset($callbackData['queryId'])){
-					$this->recordTradeNo($orderNo,$callbackData['queryId']);
+					$this->recordTradeNo($orderNo,$callbackData['queryId'],$pay_level);
 				}
 				self::addTradeData($callbackData,1);//添加交易记录
-				if(isset($pay_level))
+				if($pay_level)
                 {
                     return array('result' => true, 'pay_level' => $pay_level);
                 }

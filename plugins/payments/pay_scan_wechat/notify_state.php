@@ -14,7 +14,16 @@ else
     $input = new WxPayOrderQuery();
     $input->SetOut_trade_no($id);
     $r = WxPayApi::orderQuery($input);
-    $msg['state'] = $r['trade_state'];
-    $msg['info'] = $r['trade_state'];
+    if(isset($r['err_code']) && $r['err_code'])
+    {
+        $msg['state'] = 'fail';
+        $msg['info'] = $r['err_code'];
+    }
+    elseif(isset($r['trade_state']) && $r['trade_state'])
+    {
+        $msg['state'] = $r['trade_state'];
+        $msg['info'] = $r['trade_state'];
+    }
+    
 }
 echo json_encode($msg);

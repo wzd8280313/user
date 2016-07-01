@@ -423,14 +423,7 @@ class Block extends IController
 		{
 			IError::show(403,'发生支付错误');
 		}
-        if(!isset($sendData['wecheat_code_url']))
-        {
-            $paymentInstance->doPay($sendData);
-        }
-        else
-        {
-           $this->redirect('/site/payCode?data='.urlencode($sendData['wecheat_code_url']).'&id='.$sendData['product_id'].'&oId='.$sendData['order_id'].'&pay_level='.$sendData['pay_level'], false);
-        }                                  
+        $paymentInstance->doPay($sendData);                             
     }
 	/**
 	 * 合并支付同步回调
@@ -705,8 +698,28 @@ class Block extends IController
     //微信支付成功回调函数
     public function wecheat_callback()
     {
+        $paymentInstance = Payment::createPaymentInstance(13);
+
+        if(!is_object($paymentInstance))
+        {
+            IError::show(403,'支付方式不存在');
+        }
         $orderNo = IReq::get('oId');
         $pay_level = IReq::get('pay_level');
+        $tradeNo = IReq::get('id');
+        $pay_total = IReq::get('pay_total');
+        $paymentInstance->recordTN($orderNo,$tradeNo,$pay_level);
+        $resArr = array(
+                'order_no'     => $orderNo,
+                'trade_no'     => $tradeNo,
+                'trade_type'   => 1,
+                'money'        => $pay_total/100,
+                'pay_type'     => 13,
+                'trade_status' => 1,
+                'time'         => date('Y-m-d H:i:s')
+            );
+        $paymentInstance->addTradeData($resArr);
+        $msg = array();
         
         //充值方式
         if(stripos($orderNo,'recharge') !== false)
@@ -714,17 +727,21 @@ class Block extends IController
             $recharge_no = str_replace('recharge','',$orderNo);
             if(payment::updateRecharge($recharge_no))
             {
-                $this->redirect('/site/success/message/'.urlencode("充值成功").'/?callback=/ucenter/account_log');
-                exit;
+                $msg['status'] = 1;
+                $msg['url'] = IUrl::getHost().IUrl::creatUrl('/site/success/message/'.urlencode("充值成功").'/?callback=/ucenter/account_log');
             }
-            IError::show(403,'充值失败');
+            else
+            {
+                $msg['status'] = 0;
+                $msg['msg'] = '充值失败';
+            }
         }
         elseif(stripos($orderNo,'pre') !== false || stripos($orderNo,'wei') !== false)
         {
             $order_id = Preorder_Class::updateOrderStatus($orderNo);
             if($order_id)
             {
-                $url  = '/site/success/message/'.urlencode("支付成功");
+                $url  = IUrl::getHost().IUrl::creatUrl('/site/success/message/'.urlencode("支付成功"));
                 if(IClient::getDevice()=='mobile'){
                     $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
                 }
@@ -732,34 +749,43 @@ class Block extends IController
                     $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
                 }
                 
-                $this->redirect($url);
-                exit;
+                $msg['status'] = 1;
+                $msg['url'] = $url;
             }
-            IError::show(403,'订单修改失败');
+            else
+            {
+                $msg['status'] = 0;
+                $msg['msg'] = '充值失败';
+            }
         }
         else{
             $order_id = Order_Class::updateOrderStatus($orderNo, '', '', $pay_level);
             if($order_id && !is_array($order_id))
             {
-                $url  = '/site/success/message/'.urlencode("支付成功");
+                $url  = IUrl::getHost().IUrl::creatUrl('/site/success/message/'.urlencode("支付成功"));
                 if(IClient::getDevice()=='mobile'){
                     $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
                 }
                 else{
                     $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order_detail/id/'.$order_id : '';
                 }
-                $this->redirect($url);
-                exit;
+                $msg['status'] = 1;
+                $msg['url'] = $url;
             }
             elseif(is_array($order_id))
             {
-                $url  = '/site/success/message/'.urlencode("支付成功");
+                $url  = IUrl::getHost().IUrl::creatUrl('/site/success/message/'.urlencode("支付成功"));
                 $url .= ISafe::get('user_id') ? '/?callback=/ucenter/order' : '';
-                $this->redirect($url);
-                exit;
+                $msg['status'] = 1;
+                $msg['url'] = $url;
             }
-            IError::show(403,'订单修改失败');
+            else
+            {
+                $msg['status'] = 0;
+                $msg['msg'] = '充值失败';
+            }
         }
+        echo JSON::encode($msg);
     }
 
 	/**

@@ -50,7 +50,7 @@ abstract class paymentPlugin
 	 * @param $tradeNo string 交易流水号
 	 * @return boolean
 	 */
-	protected function recordTradeNo($orderNo,$tradeNo)
+	protected function recordTradeNo($orderNo,$tradeNo, $pay_level = 2)
 	{
 		if(stripos($orderNo,'recharge') !== false){//充值
 			$orderDB = new IModel('online_recharge');
@@ -66,9 +66,19 @@ abstract class paymentPlugin
 			return $orderDB->update('order_no = "'.$orderNo.'"');
 		}
 		else{
-			$orderDB  = new IModel('order');
-			$orderDB->setData(array('trade_no' => $tradeNo));
-			return $orderDB->update('order_no = "'.$orderNo.'"');
+            if($pay_level == 1)
+            {
+                $orderParentDB = new IModel('order_parent');
+                $id = $orderParentDB->getField('order_no = "'.$orderNo.'"', 'id');
+                $where = 'pid='.$id;
+            }
+            else
+            {
+			    $where = 'order_no = "'.$orderNo.'"';
+            }
+            $orderDB  = new IModel('order');
+            $orderDB->setData(array('trade_no' => $tradeNo));
+            return $orderDB->update($where);
 		}
 	}
 	/**
