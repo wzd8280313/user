@@ -19,11 +19,13 @@ define('APP_DEBUG',True);
 
 // 定义应用目录
 define('APP_PATH','./Application/');
-define('SITE_URL','http://192.168.2.9/lianxi/');
+define('SITE_URL','http://localhost/lianxi/');
 define('CSS_URL',SITE_URL.'Public/Home/style/');
 define('JS_URL',SITE_URL.'Public/Home/js/');
 define('IMG_URL',SITE_URL.'Public/Home/images/');
-
+define('AD_CSS_URL',SITE_URL.'Public/Admin/css/');
+define('AD_JS_URL',SITE_URL.'Public/Admin/js/');
+define('AD_IMG_URL',SITE_URL.'Public/Admin/images/');
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 
