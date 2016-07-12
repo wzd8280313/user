@@ -15,7 +15,7 @@ class UserController extends Controller{
         $this->display();
     }
     public function registerAction(){
-
+        echo 1;
         $this->display();
     }
 }
