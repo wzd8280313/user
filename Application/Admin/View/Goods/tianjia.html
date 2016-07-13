@@ -5,7 +5,7 @@
 <script type="text/javascript" charset="utf-8" src="{$Think.const.PLUGIN_URL}ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="{$Think.const.PLUGIN_URL}ueditor/ueditor.all.min.js"> </script>
 <script type="text/javascript" charset="utf-8" src="{$Think.const.PLUGIN_URL}ueditor/lang/zh-cn/zh-cn.js"></script>
-
+<script type='text/javascript' charset="utf-8" src="{$Think.const.AD_JS_URL}jquery.js"></script>
 <title>无标题文档</title>
 <style type="text/css">
 <!--
@@ -39,8 +39,45 @@ a:link{
 a:visited{
     color:#e1e2e3; text-decoration:none;
 }
+
+
 -->
+/*
+标签切换css样式
+*/
+ #tabbar-div {background: none repeat scroll 0 0 #80BDCB;height:20px; padding-left:10px;padding-top:1px}
+ #tabbar-div p{margin: 2px 0 0;font-size: 12px;}
+.tab-front {
+  background: none repeat scroll 0 0 #BBDDE5;
+  border-right:2px solid #278296;
+  cursor:pointer;
+  font-weight:bold;
+  line-height:20px;padding:4px 15px 4px 18px;
+ }
+.tab-back{
+  border-right:1px solid #FFFFFF;
+  color:#FFFFFF;
+  cursor:pointer;line-height:20px;
+  padding: 4px 15px 4px 18px;
+}
 </style>
+  <script type="text/javascript" charset="utf8">
+    //加载事件
+    $(function(){
+      $('#tabbar-div span').click(function(){
+        //全部标签变暗
+        $('#tabbar-div span').attr('class','tab-back');
+        //全部"标签内容"变暗
+        //$('table[id$=-show]').hide();
+
+        //当前点击的高亮
+        $(this).attr('class','tab-front');
+        //当前点击的"标签内容"高亮
+      //  var idflag = $(this).attr('id');//id属性值标志
+      //  $('#'+idflag+"-show").show();
+      });
+    });
+  </script>
 </head>
 
 <body>
@@ -63,6 +100,22 @@ a:visited{
         </table></td>
       </tr>
     </table></td>
+  </tr>
+  <tr>
+    <td colspan="100">
+      <div id="tabbar-div" style="margin-bottom:5px">
+        <p>
+          <span id="general-tab" class="tab-front">通用信息</span>
+          <span id="detail-tab" class="tab-back">详细描述</span>
+          <span id="mix-tab" class="tab-back">其他信息</span>
+          <span id="properties-tab" class="tab-back">商品属性</span>
+          <span id="gallery-tab" class="tab-back">商品相册</span>
+          <span id="linkgoods-tab" class="tab-back">关联商品</span>
+          <span id="groupgoods-tab" class="tab-back">配件</span>
+          <span id="article-tab" class="tab-back">关联文章</span>
+        </p>
+      </div>
+    </td>
   </tr>
   <tr>
     <td>
