@@ -1,3 +1,5 @@
+create database shop_43 charset=utf8;
+use shop_43;
 create table sp_goods(
 	goods_id mediumint unsigned not null auto_increment comment '主键id',
 	goods_name varchar(64) not null comment '商品名称',

@@ -26,6 +26,8 @@ define('IMG_URL',SITE_URL.'Public/Home/images/');
 define('AD_CSS_URL',SITE_URL.'Public/Admin/css/');
 define('AD_JS_URL',SITE_URL.'Public/Admin/js/');
 define('AD_IMG_URL',SITE_URL.'Public/Admin/images/');
+//定义插件常量
+define('PLUGIN_URL',SITE_URL.'Common/Plugin/Plugin/');
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 
