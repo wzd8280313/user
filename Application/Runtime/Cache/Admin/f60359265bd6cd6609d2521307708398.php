@@ -68,13 +68,13 @@ a:visited{
         //全部标签变暗
         $('#tabbar-div span').attr('class','tab-back');
         //全部"标签内容"变暗
-        //$('table[id$=-show]').hide();
+        $('table[id$=-show]').hide();
 
         //当前点击的高亮
         $(this).attr('class','tab-front');
         //当前点击的"标签内容"高亮
-      //  var idflag = $(this).attr('id');//id属性值标志
-      //  $('#'+idflag+"-show").show();
+        var idflag = $(this).attr('id');//id属性值标志
+          $('#'+idflag+"-show").show();
       });
     });
   </script>
@@ -120,7 +120,7 @@ a:visited{
   <tr>
     <td>
     <form action="/lianxi/index.php/Admin/Goods/tianjia.html" method="post">
-    <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+    <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce" id="general-tab-show">
       <tr>
         <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="right"><span class="STYLE19">商品名称：</span></div></td>
         <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="left">
@@ -139,6 +139,7 @@ a:visited{
         <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="right"><span class="STYLE19">重量：</span></div></td>
         <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="left"><input type="text" name="goods_weight" /></div></td>
       </tr>
+      <table width="100%" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce" style="display: none" id="detail-tab-show">
       <tr>
         <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="right"><span class="STYLE19">详情描述：</span></div></td>
         <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="left">
@@ -147,6 +148,9 @@ a:visited{
         ></textarea>
         </div></td>
       </tr>
+        </table>
+      </table>
+      <table align="center" wdith="100%" cellspacing="1" cellpadding="0" bgcolor="#a8c7ce" >
       <tr>
         <td height="20" bgcolor="#FFFFFF" class="STYLE6" colspan='2'>
         <div align="center">
