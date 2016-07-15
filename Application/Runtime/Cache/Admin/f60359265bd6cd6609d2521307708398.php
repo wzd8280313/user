@@ -1,11 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="text/javascript" charset="utf-8" src="{$Think.const.PLUGIN_URL}ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="{$Think.const.PLUGIN_URL}ueditor/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="{$Think.const.PLUGIN_URL}ueditor/lang/zh-cn/zh-cn.js"></script>
-<script type='text/javascript' charset="utf-8" src="{$Think.const.AD_JS_URL}jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo (PLUGIN_URL); ?>ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo (PLUGIN_URL); ?>ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="<?php echo (PLUGIN_URL); ?>ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type='text/javascript' charset="utf-8" src="<?php echo (AD_JS_URL); ?>jquery.js"></script>
 <title>无标题文档</title>
 <style type="text/css">
 <!--
@@ -89,12 +89,12 @@ a:visited{
           <tr>
             <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td width="6%" height="19" valign="bottom"><div align="center"><img src="{$Think.const.AD_IMG_URL}tb.gif" width="14" height="14" /></div></td>
+                <td width="6%" height="19" valign="bottom"><div align="center"><img src="<?php echo (AD_IMG_URL); ?>tb.gif" width="14" height="14" /></div></td>
                 <td width="94%" valign="bottom"><span class="STYLE1"> 商品管理 -> 添加商品</span></td>
               </tr>
             </table></td>
             <td><div align="right"><span class="STYLE1"> 
-            <a href="{:U('showlist')}">返回</a>   &nbsp; </span>
+            <a href="<?php echo U('showlist');?>">返回</a>   &nbsp; </span>
               <span class="STYLE1"> &nbsp;</span></div></td>
           </tr>
         </table></td>
@@ -119,7 +119,7 @@ a:visited{
   </tr>
   <tr>
     <td>
-    <form action="__SELF__" method="post" enctype="multipart/form-data">
+    <form action="/lianxi/index.php/Admin/Goods/tianjia.html" method="post" enctype="multipart/form-data">
     <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce" id="general-tab-show">
       <tr>
         <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="right"><span class="STYLE19">商品名称：</span></div></td>
